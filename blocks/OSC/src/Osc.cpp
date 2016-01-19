@@ -1463,6 +1463,11 @@ void ReceiverTcp::bindImpl()
 		handleAcceptorError( ec );
 		return;
 	}
+	mAcceptor->set_option(asio::ip::tcp::acceptor::reuse_address(true), ec);
+	if( ec ) {
+		handleAcceptorError( ec );
+		return;
+	}
 	mAcceptor->bind( mLocalEndpoint, ec );
 	if( ec ) {
 		handleAcceptorError( ec );
