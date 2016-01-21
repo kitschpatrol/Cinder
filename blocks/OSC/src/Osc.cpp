@@ -1463,7 +1463,7 @@ void ReceiverTcp::bindImpl()
 		handleAcceptorError( ec );
 		return;
 	}
-	mAcceptor->set_option(asio::ip::tcp::acceptor::reuse_address(true), ec);
+	mAcceptor->set_option(tcp::acceptor::reuse_address(true), ec);
 	if( ec ) {
 		handleAcceptorError( ec );
 		return;
