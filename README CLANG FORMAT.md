@@ -1,7 +1,7 @@
 ##This branch of Cinder includes experimental integration of the [ClangFormat](http://clang.llvm.org/docs/ClangFormat.html) tool.
 
 
-See [this Cinder forum thread]([https://forum.libcinder.org/topic/cinder-clangformat-style]) for more discussion.
+See [this Cinder forum thread](https://forum.libcinder.org/topic/cinder-clangformat-style) for more discussion.
 
 
 
