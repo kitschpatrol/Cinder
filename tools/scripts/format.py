@@ -3,13 +3,13 @@ import sys
 import shutil
 import platform
 from subprocess import call
-from os.path import join
+from os.path import join, dirname
 
 #Pick a Clang-Format binary
 if platform.system() == 'Darwin':
-	clang_format_path = '../ClangFormat-Mac/clang-format'
+	clang_format_path = join(dirname(os.path.realpath(__file__)), '..', 'ClangFormat-Mac/clang-format')
 elif platform.system() == 'Windows':
-	clang_format_path = '../ClangFormat-Windows/clang-format'	
+	clang_format_path = join(dirname(os.path.realpath(__file__)), '..', 'ClangFormat-Windows/clang-format')
 else:
 	print("Platform not supported: " + platform.system())
 	exit()
