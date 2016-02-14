@@ -2,9 +2,9 @@
 #include "SceneController.h"
 #include "Config.h"
 
-#include "cinder/CinderAssert.h"
 #include "cinder/Log.h"
 #include "cinder/Rand.h"
+#include "cinder/CinderAssert.h"
 #include "cinder/app/App.h"
 
 #include <array>
@@ -24,26 +24,11 @@ using namespace ci;
 
 namespace {
 
-float metersToPoints( float var )
-{
-	return var * METERS_TO_POINTS;
-}
-vec2 metersToPoints( const vec2 &var )
-{
-	return var * METERS_TO_POINTS;
-}
-float pointsToMeters( float var )
-{
-	return var * POINTS_TO_METERS;
-}
-vec2 pointsToMeters( const vec2 &var )
-{
-	return var * POINTS_TO_METERS;
-}
-b2Vec2 pointsToMeters( const b2Vec2 &var )
-{
-	return POINTS_TO_METERS * var;
-}
+float metersToPoints( float var )			{ return var * METERS_TO_POINTS; }
+vec2 metersToPoints( const vec2 &var )	{ return var * METERS_TO_POINTS; }
+float pointsToMeters( float var )			{ return var * POINTS_TO_METERS; }
+vec2 pointsToMeters( const vec2 &var )	{ return var * POINTS_TO_METERS; }
+b2Vec2 pointsToMeters( const b2Vec2 &var )	{ return POINTS_TO_METERS * var; }
 
 } // anonymous namespace
 
@@ -102,7 +87,7 @@ void SceneController::update()
 
 void SceneController::setupWalls()
 {
-	vec2  center = pointsToMeters( vec2( app::getWindowCenter() ) );
+	vec2 center = pointsToMeters( vec2( app::getWindowCenter() ) );
 	float inset = pointsToMeters( mParams.mWallInset );
 
 	vec2 size( center.x - inset, center.y - inset );
@@ -111,8 +96,9 @@ void SceneController::setupWalls()
 	bodyDef.position.Set( inset, center.y );
 	bodyDef.type = b2_staticBody;
 
+
 	b2EdgeShape leftWallShape;
-	leftWallShape.Set( b2Vec2( 0, -size.y ), b2Vec2( 0, size.y ) );
+	leftWallShape.Set( b2Vec2( 0, - size.y ), b2Vec2( 0, size.y ) );
 
 	b2FixtureDef leftWallFixture;
 	leftWallFixture.shape = &leftWallShape;
@@ -127,10 +113,11 @@ void SceneController::setupWalls()
 	leftWall->mBody->CreateFixture( &leftWallFixture );
 	leftWall->mBody->SetUserData( leftWall.get() );
 
+
 	bodyDef.position.Set( pointsToMeters( app::getWindowWidth() ) - inset, center.y );
 
 	b2EdgeShape rightWallShape;
-	rightWallShape.Set( b2Vec2( 0, -size.y ), b2Vec2( 0, size.y ) );
+	rightWallShape.Set( b2Vec2( 0, - size.y ), b2Vec2( 0, size.y ) );
 
 	b2FixtureDef rightWallFixture;
 	rightWallFixture.shape = &rightWallShape;
@@ -166,11 +153,11 @@ vector<ci::vec2> SceneController::calcNextOuterBumperVerts( float baseHeight, fl
 {
 	vector<vec2> result;
 
-	result.emplace_back( -baseWidth / 2, 0 );
-	result.emplace_back( -baseWidth / 2, -baseHeight );
-	result.emplace_back( -topWidth / 2, -baseHeight - topHeight );
-	result.emplace_back( topWidth / 2, -baseHeight - topHeight );
-	result.emplace_back( baseWidth / 2, -baseHeight );
+	result.emplace_back( - baseWidth / 2, 0 );
+	result.emplace_back( - baseWidth / 2, - baseHeight );
+	result.emplace_back( - topWidth / 2, - baseHeight - topHeight );
+	result.emplace_back( topWidth / 2, - baseHeight - topHeight );
+	result.emplace_back( baseWidth / 2, - baseHeight );
 	result.emplace_back( baseWidth / 2, 0 );
 
 	return result;
@@ -184,12 +171,12 @@ vector<vec2> SceneController::calcInnerBumperVerts( float baseHeight, float topH
 	float innerTopHeight = topHeight * innerPercent;
 	float innerBaseWidth = baseWidth * innerPercent;
 
-	const float bottomOffset = -( baseHeight - innerBaseHeight ) / 2;
+	const float bottomOffset = - ( baseHeight - innerBaseHeight ) / 2 ;
 
 	vector<vec2> result;
 
-	result.emplace_back( -innerBaseWidth / 2, bottomOffset );
-	result.emplace_back( -innerBaseWidth / 2, bottomOffset - innerBaseHeight );
+	result.emplace_back( - innerBaseWidth / 2, bottomOffset );
+	result.emplace_back( - innerBaseWidth / 2, bottomOffset - innerBaseHeight );
 	result.emplace_back( 0, bottomOffset - innerBaseHeight - innerTopHeight );
 	result.emplace_back( innerBaseWidth / 2, bottomOffset - innerBaseHeight );
 	result.emplace_back( innerBaseWidth / 2, bottomOffset );
@@ -231,11 +218,11 @@ void SceneController::addGear( const vec2 &pos )
 {
 	float wallDeadZoneWidth = mParams.mWallInset + mParams.mWallWidth / 2;
 	if( pos.x < wallDeadZoneWidth || pos.x > ( app::getWindowWidth() - wallDeadZoneWidth ) )
-		return;
+	   return;
 
 	vec2 posScaled = pointsToMeters( pos );
 
-	auto        imageTex = getRandomGearTex();
+	auto imageTex = getRandomGearTex();
 	const float radius = mParams.mGearScale * imageTex->getWidth() / 2.0f;
 
 	b2BodyDef bodyDef;
@@ -270,7 +257,7 @@ void SceneController::addGear( const vec2 &pos )
 ci::gl::TextureRef SceneController::getRandomGearTex() const
 {
 	const auto &gears = Config::instance()->getGearData();
-	int32_t     index = randInt( 0, gears.size() );
+	int32_t index = randInt( 0, gears.size() );
 
 	return gears.at( index ).mImageTex;
 }
@@ -284,8 +271,9 @@ void SceneController::removeOffscreenGears()
 			gear->mBody.reset();
 	}
 
-	mGears.erase( remove_if( mGears.begin(), mGears.end(), []( const shared_ptr<Gear> &gear ) { return !gear->mBody; } ),
-	    mGears.end() );
+	mGears.erase( remove_if( mGears.begin(), mGears.end(),
+								  []( const shared_ptr<Gear> &gear ) { return ! gear->mBody; } ),
+					   mGears.end() );
 }
 
 void SceneController::scrollIslands( float deltaTime )
@@ -303,7 +291,7 @@ void SceneController::scrollIslands( float deltaTime )
 			b2Vec2 pos = island->mBody->GetPosition();
 			pos.y -= deltaDecentMeters;
 
-			if( pos.y < -islandHeightMeters ) {
+			if( pos.y < - islandHeightMeters ) {
 				needsReConfig = true;
 				break;
 			}
@@ -316,7 +304,7 @@ void SceneController::scrollIslands( float deltaTime )
 	}
 }
 
-void SceneController::reConfigIslandGroup( IslandContainerT &islandGroup, float yOffset )
+void SceneController::reConfigIslandGroup( IslandContainerT &islandGroup, float yOffset  )
 {
 	CI_ASSERT( islandGroup.size() == 4 );
 
@@ -328,8 +316,7 @@ void SceneController::reConfigIslandGroup( IslandContainerT &islandGroup, float 
 	bool isMinor = randBool();
 
 	islandGroup[0]->mFreqMidi = f0;
-	islandGroup[1]->mFreqMidi = f0 + ( isMinor ? 3 : 4 );
-	;
+	islandGroup[1]->mFreqMidi = f0 + ( isMinor ? 3 : 4 );;
 	islandGroup[2]->mFreqMidi = f0 + 7;
 	islandGroup[3]->mFreqMidi = f0 + ( isMinor ? 10 : 11 );
 
@@ -337,7 +324,7 @@ void SceneController::reConfigIslandGroup( IslandContainerT &islandGroup, float 
 
 	for( auto &island : islandGroup ) {
 		float x = lmap<float>( island->mFreqMidi, FUNDAMENTAL_MIN, pitchMax, 0, app::getWindowWidth() );
-		float perYOffset = pointsToMeters( randFloat( -mParams.mYOffsetVariance, mParams.mYOffsetVariance ) );
+		float perYOffset = pointsToMeters( randFloat( - mParams.mYOffsetVariance, mParams.mYOffsetVariance ) );
 		island->setPosition( vec2( pointsToMeters( x ), islandY + perYOffset ) );
 	}
 }
@@ -361,7 +348,7 @@ size_t SceneController::calcNextFundamental()
 	return fundamental;
 }
 
-void SceneController::BeginContact( b2Contact *contact )
+void SceneController::BeginContact( b2Contact* contact )
 {
 	void *userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 	void *userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
@@ -396,7 +383,7 @@ void SceneController::handleIslandCollision( Island *island, SceneObject *object
 	island->handleCollision( gear, contactPoint );
 }
 
-void SceneController::handleWallCollision( Wall *wall, SceneObject *object, const vec2 &contactPoint )
+void SceneController::handleWallCollision( Wall *wall, SceneObject *object, const vec2 &contactPoint  )
 {
 	Gear *gear = dynamic_cast<Gear *>( object );
 

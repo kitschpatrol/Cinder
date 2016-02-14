@@ -25,51 +25,48 @@
 
 #pragma once
 
-#include "cinder/ChanTraits.h"
 #include "cinder/Cinder.h"
-#include "cinder/CinderMath.h"
+#include "cinder/ChanTraits.h"
 #include "cinder/Vector.h"
+#include "cinder/CinderMath.h"
 
 namespace cinder {
 
-typedef enum {
+typedef	enum {
 	CM_RGB, // Red[0 - 1.0] Green[0 - 1.0] Blue[0 - 1.0]
-	CM_HSV // Hue[0 - 1.0] Saturation[0 - 1.0] Value[0 - 1.0]
+	CM_HSV  // Hue[0 - 1.0] Saturation[0 - 1.0] Value[0 - 1.0]
 } ColorModel;
 
-template <typename T>
-class ColorT {
+template<typename T>
+class ColorT
+{
   public:
-	T r, g, b;
-
-	ColorT()
-	    : r( 0 ), g( 0 ), b( 0 ) {}
+	T		r, g, b;
+	
+	ColorT() : r( 0 ), g( 0 ), b( 0 ) {}
 	ColorT( T red, T green, T blue )
-	    : r( red ), g( green ), b( blue )
-	{
-	}
-	ColorT( const ColorT<T> &src )
-	    : r( src.r ), g( src.g ), b( src.b )
-	{
-	}
+		: r( red ), g( green ), b( blue )
+	{}
+	ColorT( const ColorT<T> &src ) 
+		: r( src.r ), g( src.g ), b( src.b )
+	{}
 	ColorT( const char *svgColorName );
 
 	ColorT( ColorModel cm, const vec3 &v );
 	ColorT( ColorModel cm, float c0, float c1, float c2 );
 
-	template <typename FromT>
-	ColorT( const ColorT<FromT> &src )
-	    : r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) )
-	{
-	}
+	template<typename FromT>
+	ColorT( const ColorT<FromT> &src ) 
+		: r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) ) 
+	{}
 
-	template <class FromT>
+	template<class FromT>
 	ColorT<T> operator=( const ColorT<FromT> &rhs )
 	{
 		r = CHANTRAIT<T>::convert( rhs.r );
 		g = CHANTRAIT<T>::convert( rhs.g );
 		b = CHANTRAIT<T>::convert( rhs.b );
-		return *this;
+		return * this;
 	}
 
 	//! Returns the components of the Color as expressed in the ColorModel \a cm
@@ -77,124 +74,53 @@ class ColorT {
 	//! Sets the Color using ColorModel \a cm.
 	void set( ColorModel cm, const vec3 &v );
 
-	T &operator[]( int n )
+	T& operator[]( int n )
 	{
 		assert( n >= 0 && n <= 2 );
-		return ( &r )[n];
+		return (&r)[n];
 	}
 
-	const T &operator[]( int n ) const
+	const T& operator[]( int n ) const
 	{
 		assert( n >= 0 && n <= 2 );
-		return ( &r )[n];
+		return (&r)[n];
 	}
 
-	T *       ptr() const { return &( const_cast<ColorT *>( this )->r ); }
-	ColorT<T> operator+( const ColorT<T> &rhs ) const { return ColorT<T>( r + rhs.r, g + rhs.g, b + rhs.b ); }
-	ColorT<T> operator+( const glm::vec3 &rhs ) const { return ColorT<T>( r + CHANTRAIT<T>::convert( rhs.r ), g + CHANTRAIT<T>::convert( rhs.g ), b + CHANTRAIT<T>::convert( rhs.b ) ); }
-	ColorT<T> operator-( const ColorT<T> &rhs ) const { return ColorT<T>( r - rhs.r, g - rhs.g, b - rhs.b ); }
-	ColorT<T> operator-( const glm::vec3 &rhs ) const { return ColorT<T>( r - CHANTRAIT<T>::convert( rhs.r ), g - CHANTRAIT<T>::convert( rhs.g ), b - CHANTRAIT<T>::convert( rhs.b ) ); }
-	ColorT<T> operator*( const ColorT<T> &rhs ) const { return ColorT<T>( r * rhs.r, g * rhs.g, b * rhs.b ); }
-	ColorT<T> operator*( const glm::vec3 &rhs ) const { return ColorT<T>( r * CHANTRAIT<T>::convert( rhs.r ), g * CHANTRAIT<T>::convert( rhs.g ), b * CHANTRAIT<T>::convert( rhs.b ) ); }
-	ColorT<T> operator/( const ColorT<T> &rhs ) const { return ColorT<T>( r / rhs.r, g / rhs.g, b / rhs.b ); }
-	ColorT<T> operator/( const glm::vec3 &rhs ) const { return ColorT<T>( r / CHANTRAIT<T>::convert( rhs.r ), g / CHANTRAIT<T>::convert( rhs.g ), b / CHANTRAIT<T>::convert( rhs.b ) ); }
-	const ColorT<T> &operator+=( const ColorT<T> &rhs )
-	{
-		r += rhs.r;
-		g += rhs.g;
-		b += rhs.b;
-		return *this;
-	}
-	const ColorT<T> &operator+=( const glm::vec3 &rhs )
-	{
-		r += CHANTRAIT<T>::convert( rhs.r );
-		g += CHANTRAIT<T>::convert( rhs.g );
-		b += CHANTRAIT<T>::convert( rhs.b );
-		return *this;
-	}
-	const ColorT<T> &operator-=( const ColorT<T> &rhs )
-	{
-		r -= rhs.r;
-		g -= rhs.g;
-		b -= rhs.b;
-		return *this;
-	}
-	const ColorT<T> &operator-=( const glm::vec3 &rhs )
-	{
-		r -= CHANTRAIT<T>::convert( rhs.r );
-		g -= CHANTRAIT<T>::convert( rhs.g );
-		b -= CHANTRAIT<T>::convert( rhs.b );
-		return *this;
-	}
-	const ColorT<T> &operator*=( const ColorT<T> &rhs )
-	{
-		r *= rhs.r;
-		g *= rhs.g;
-		b *= rhs.b;
-		return *this;
-	}
-	const ColorT<T> &operator*=( const glm::vec3 &rhs )
-	{
-		r *= CHANTRAIT<T>::convert( rhs.r );
-		g *= CHANTRAIT<T>::convert( rhs.g );
-		b *= CHANTRAIT<T>::convert( rhs.b );
-		return *this;
-	}
-	const ColorT<T> &operator/=( const ColorT<T> &rhs )
-	{
-		r /= rhs.r;
-		g /= rhs.g;
-		b /= rhs.b;
-		return *this;
-	}
-	const ColorT<T> &operator/=( const glm::vec3 &rhs )
-	{
-		r /= CHANTRAIT<T>::convert( rhs.r );
-		g /= CHANTRAIT<T>::convert( rhs.g );
-		b /= CHANTRAIT<T>::convert( rhs.b );
-		return *this;
-	}
-	ColorT<T> operator+( T rhs ) const { return ColorT<T>( r + rhs, g + rhs, b + rhs ); }
-	ColorT<T> operator-( T rhs ) const { return ColorT<T>( r - rhs, g - rhs, b - rhs ); }
-	ColorT<T> operator*( T rhs ) const { return ColorT<T>( r * rhs, g * rhs, b * rhs ); }
-	ColorT<T> operator/( T rhs ) const { return ColorT<T>( r / rhs, g / rhs, b / rhs ); }
-	const ColorT<T> &operator+=( T rhs )
-	{
-		r += rhs;
-		g += rhs;
-		b += rhs;
-		return *this;
-	}
-	const ColorT<T> &operator-=( T rhs )
-	{
-		r -= rhs;
-		g -= rhs;
-		b -= rhs;
-		return *this;
-	}
-	const ColorT<T> &operator*=( T rhs )
-	{
-		r *= rhs;
-		g *= rhs;
-		b *= rhs;
-		return *this;
-	}
-	const ColorT<T> &operator/=( T rhs )
-	{
-		r /= rhs;
-		g /= rhs;
-		b /= rhs;
-		return *this;
-	}
+	T*  ptr() const { return &(const_cast<ColorT*>( this )->r); }
 
-	bool operator==( const ColorT<T> &rhs ) const
+	ColorT<T>		operator+( const ColorT<T> &rhs ) const { return ColorT<T>( r + rhs.r, g + rhs.g, b + rhs.b ); }
+	ColorT<T>		operator+( const glm::vec3 &rhs ) const { return ColorT<T>( r + CHANTRAIT<T>::convert( rhs.r ), g + CHANTRAIT<T>::convert( rhs.g ), b + CHANTRAIT<T>::convert( rhs.b ) ); }
+	ColorT<T>		operator-( const ColorT<T> &rhs ) const { return ColorT<T>( r - rhs.r, g - rhs.g, b - rhs.b ); }
+	ColorT<T>		operator-( const glm::vec3 &rhs ) const { return ColorT<T>( r - CHANTRAIT<T>::convert( rhs.r ), g - CHANTRAIT<T>::convert( rhs.g ), b - CHANTRAIT<T>::convert( rhs.b ) ); }
+	ColorT<T>		operator*( const ColorT<T> &rhs ) const { return ColorT<T>( r * rhs.r, g * rhs.g, b * rhs.b ); }
+	ColorT<T>		operator*( const glm::vec3 &rhs ) const { return ColorT<T>( r * CHANTRAIT<T>::convert( rhs.r ), g * CHANTRAIT<T>::convert( rhs.g ), b * CHANTRAIT<T>::convert( rhs.b ) ); }
+	ColorT<T>		operator/( const ColorT<T> &rhs ) const { return ColorT<T>( r / rhs.r, g / rhs.g, b / rhs.b ); }
+	ColorT<T>		operator/( const glm::vec3 &rhs ) const { return ColorT<T>( r / CHANTRAIT<T>::convert( rhs.r ), g / CHANTRAIT<T>::convert( rhs.g ), b / CHANTRAIT<T>::convert( rhs.b ) ); }
+	const ColorT<T>&	operator+=( const ColorT<T> &rhs ) { r += rhs.r; g += rhs.g; b += rhs.b; return *this; }
+	const ColorT<T>&	operator+=( const glm::vec3 &rhs ) { r += CHANTRAIT<T>::convert( rhs.r ); g += CHANTRAIT<T>::convert( rhs.g ); b += CHANTRAIT<T>::convert( rhs.b ); return *this; }
+	const ColorT<T>&	operator-=( const ColorT<T> &rhs ) { r -= rhs.r; g -= rhs.g; b -= rhs.b; return *this; }
+	const ColorT<T>&	operator-=( const glm::vec3 &rhs ) { r -= CHANTRAIT<T>::convert( rhs.r ); g -= CHANTRAIT<T>::convert( rhs.g ); b -= CHANTRAIT<T>::convert( rhs.b ); return *this; }
+	const ColorT<T>&	operator*=( const ColorT<T> &rhs ) { r *= rhs.r; g *= rhs.g; b *= rhs.b; return *this; }
+	const ColorT<T>&	operator*=( const glm::vec3 &rhs ) { r *= CHANTRAIT<T>::convert( rhs.r ); g *= CHANTRAIT<T>::convert( rhs.g ); b *= CHANTRAIT<T>::convert( rhs.b ); return *this; }
+	const ColorT<T>&	operator/=( const ColorT<T> &rhs ) { r /= rhs.r; g /= rhs.g; b /= rhs.b; return *this; }
+	const ColorT<T>&	operator/=( const glm::vec3 &rhs ) { r /= CHANTRAIT<T>::convert( rhs.r ); g /= CHANTRAIT<T>::convert( rhs.g ); b /= CHANTRAIT<T>::convert( rhs.b ); return *this; }
+	ColorT<T>		operator+( T rhs ) const { return ColorT<T>( r + rhs, g + rhs, b + rhs ); }
+	ColorT<T>		operator-( T rhs ) const { return ColorT<T>( r - rhs, g - rhs, b - rhs ); }
+	ColorT<T>		operator*( T rhs ) const { return ColorT<T>( r * rhs, g * rhs, b * rhs ); }
+	ColorT<T>		operator/( T rhs ) const { return ColorT<T>( r / rhs, g / rhs, b / rhs ); }
+	const ColorT<T>&	operator+=( T rhs ) { r += rhs; g += rhs; b += rhs; return *this; }
+	const ColorT<T>&	operator-=( T rhs ) { r -= rhs; g -= rhs; b -= rhs; return *this; }
+	const ColorT<T>&	operator*=( T rhs ) { r *= rhs; g *= rhs; b *= rhs; return *this; }
+	const ColorT<T>&	operator/=( T rhs ) { r /= rhs; g /= rhs; b /= rhs; return *this; }
+
+	bool operator==( const ColorT<T>& rhs ) const
 	{
 		return ( r == rhs.r ) && ( g == rhs.g ) && ( b == rhs.b );
 	}
 
-	bool operator!=( const ColorT<T> &rhs ) const
+	bool operator!=( const ColorT<T>& rhs ) const
 	{
-		return !( *this == rhs );
+		return ! ( *this == rhs );
 	}
 
 	ColorT<T> lerp( float fact, const ColorT<T> &d ) const
@@ -227,203 +153,115 @@ class ColorT {
 	{
 		uint8_t red = ( hexValue >> 16 ) & 255;
 		uint8_t green = ( hexValue >> 8 ) & 255;
-		uint8_t blue = hexValue & 255;
+		uint8_t blue = hexValue & 255;		
 		return ColorT<T>( CHANTRAIT<T>::convert( red ), CHANTRAIT<T>::convert( green ), CHANTRAIT<T>::convert( blue ) );
 	}
 
 	operator glm::vec3() const { return vec3( r, g, b ); }
 };
 
+
 //////////////////////////////////////////////////////////////
 // ColorAT
 
-template <typename T>
+template<typename T>
 class ColorAT {
-  public:
-	T r, g, b, a;
+ public: 
+	T		r,g,b,a;
 
-	ColorAT()
-	    : r( 0 ), g( 0 ), b( 0 ), a( 0 )
-	{
-	}
+	ColorAT() 
+		: r( 0 ), g( 0 ), b( 0 ), a( 0 )
+	{}
 	ColorAT( T red, T green, T blue, T alpha = CHANTRAIT<T>::convert( 1.0f ) )
-	    : r( red ), g( green ), b( blue ), a( alpha )
-	{
-	}
-	ColorAT( const ColorAT<T> &src )
-	    : r( src.r ), g( src.g ), b( src.b ), a( src.a )
-	{
-	}
+		: r( red ), g( green ), b( blue ), a( alpha )
+	{}
+	ColorAT( const ColorAT<T> &src ) 
+		: r( src.r ), g( src.g ), b( src.b ), a( src.a )
+	{}
 	ColorAT( const ColorT<T> &color, T alpha = CHANTRAIT<T>::convert( 1.0f ) )
-	    : r( color.r ), g( color.g ), b( color.b ), a( alpha )
-	{
-	}
+		: r( color.r ), g( color.g ), b( color.b ), a( alpha )
+	{}
 	ColorAT( const char *svgColorName, T aA = CHANTRAIT<T>::convert( 1.0f ) );
 
 	ColorAT( ColorModel cm, float c0, float c1, float c2, float alpha = CHANTRAIT<T>::convert( 1.0f ) );
 
-	template <typename FromT>
-	ColorAT( const ColorT<FromT> &src )
-	    : r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) ), a( CHANTRAIT<T>::convert( 1.0f ) )
-	{
-	}
-
+	template<typename FromT>
+	ColorAT( const ColorT<FromT> &src ) 
+		: r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) ), a( CHANTRAIT<T>::convert( 1.0f ) ) 
+	{}
+	
 	ColorAT( const vec4 &src )
-	    : r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) ), a( CHANTRAIT<T>::convert( src.a ) )
+		: r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) ), a( CHANTRAIT<T>::convert( src.a ) )
 	{
 	}
 
-	template <typename FromT>
-	ColorAT( const ColorAT<FromT> &src )
-	    : r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) ), a( CHANTRAIT<T>::convert( src.a ) )
-	{
-	}
+	template<typename FromT>
+	ColorAT( const ColorAT<FromT>& src )
+		: r( CHANTRAIT<T>::convert( src.r ) ), g( CHANTRAIT<T>::convert( src.g ) ), b( CHANTRAIT<T>::convert( src.b ) ), a( CHANTRAIT<T>::convert( src.a ) )
+	{}
 
-	template <class FromT>
-	ColorAT<T> operator=( const ColorAT<FromT> &rhs )
+	template<class FromT>
+	ColorAT<T> operator=( const ColorAT<FromT>& rhs ) 
 	{
 		r = CHANTRAIT<T>::convert( rhs.r );
 		g = CHANTRAIT<T>::convert( rhs.g );
 		b = CHANTRAIT<T>::convert( rhs.b );
 		a = CHANTRAIT<T>::convert( rhs.a );
-		return *this;
+		return * this;
 	}
-
+	
 	//! Returns the components of the Color as expressed in the ColorModel \a cm
 	vec3 get( ColorModel cm ) const;
 	//! Sets the Color using ColorModel \a cm. The fourth component represents alpha.
 	void set( ColorModel cm, const vec4 &v );
 
-	T &operator[]( int n )
+	T& operator[]( int n )
 	{
 		assert( n >= 0 && n <= 3 );
-		return ( &r )[n];
+		return (&r)[n];
 	}
 
-	const T &operator[]( int n ) const
+	const T& operator[]( int n ) const
 	{
 		assert( n >= 0 && n <= 3 );
-		return ( &r )[n];
+		return (&r)[n];
 	}
 
-	T *        ptr() const { return &( const_cast<ColorAT *>( this )->r ); }
-	ColorAT<T> operator+( const ColorAT<T> &rhs ) const { return ColorAT<T>( r + rhs.r, g + rhs.g, b + rhs.b, a + rhs.a ); }
-	ColorAT<T> operator+( const glm::vec4 &rhs ) const { return ColorAT<T>( r + CHANTRAIT<T>::convert( rhs.r ), g + CHANTRAIT<T>::convert( rhs.g ), b + CHANTRAIT<T>::convert( rhs.b ), a + CHANTRAIT<T>::convert( rhs.a ) ); }
-	ColorAT<T> operator-( const ColorAT<T> &rhs ) const { return ColorAT<T>( r - rhs.r, g - rhs.g, b - rhs.b, a - rhs.a ); }
-	ColorAT<T> operator-( const glm::vec4 &rhs ) const { return ColorAT<T>( r - CHANTRAIT<T>::convert( rhs.r ), g - CHANTRAIT<T>::convert( rhs.g ), b - CHANTRAIT<T>::convert( rhs.b ), a - CHANTRAIT<T>::convert( rhs.a ) ); }
-	ColorAT<T> operator*( const ColorAT<T> &rhs ) const { return ColorAT<T>( r * rhs.r, g * rhs.g, b * rhs.b, a * rhs.a ); }
-	ColorAT<T> operator*( const glm::vec4 &rhs ) const { return ColorAT<T>( r * CHANTRAIT<T>::convert( rhs.r ), g * CHANTRAIT<T>::convert( rhs.g ), b * CHANTRAIT<T>::convert( rhs.b ), a * CHANTRAIT<T>::convert( rhs.a ) ); }
-	ColorAT<T> operator/( const ColorAT<T> &rhs ) const { return ColorAT<T>( r / rhs.r, g / rhs.g, b / rhs.b, a / rhs.a ); }
-	ColorAT<T> operator/( const glm::vec4 &rhs ) const { return ColorAT<T>( r / CHANTRAIT<T>::convert( rhs.r ), g / CHANTRAIT<T>::convert( rhs.g ), b / CHANTRAIT<T>::convert( rhs.b ), a / CHANTRAIT<T>::convert( rhs.a ) ); }
-	const ColorAT<T> &operator+=( const ColorAT<T> &rhs )
-	{
-		r += rhs.r;
-		g += rhs.g;
-		b += rhs.b;
-		a += rhs.a;
-		return *this;
-	}
-	const ColorAT<T> &operator+=( const glm::vec4 &rhs )
-	{
-		r += CHANTRAIT<T>::convert( rhs.r );
-		g += CHANTRAIT<T>::convert( rhs.g );
-		b += CHANTRAIT<T>::convert( rhs.b );
-		a += CHANTRAIT<T>::convert( rhs.a );
-		return *this;
-	}
-	const ColorAT<T> &operator-=( const ColorAT<T> &rhs )
-	{
-		r -= rhs.r;
-		g -= rhs.g;
-		b -= rhs.b;
-		a -= rhs.a;
-		return *this;
-	}
-	const ColorAT<T> &operator-=( const glm::vec4 &rhs )
-	{
-		r -= CHANTRAIT<T>::convert( rhs.r );
-		g -= CHANTRAIT<T>::convert( rhs.g );
-		b -= CHANTRAIT<T>::convert( rhs.b );
-		a -= CHANTRAIT<T>::convert( rhs.a );
-		return *this;
-	}
-	const ColorAT<T> &operator*=( const ColorAT<T> &rhs )
-	{
-		r *= rhs.r;
-		g *= rhs.g;
-		b *= rhs.b;
-		a *= rhs.a;
-		return *this;
-	}
-	const ColorAT<T> &operator*=( const glm::vec4 &rhs )
-	{
-		r *= CHANTRAIT<T>::convert( rhs.r );
-		g *= CHANTRAIT<T>::convert( rhs.g );
-		b *= CHANTRAIT<T>::convert( rhs.b );
-		a *= CHANTRAIT<T>::convert( rhs.a );
-		return *this;
-	}
-	const ColorAT<T> &operator/=( const ColorAT<T> &rhs )
-	{
-		r /= rhs.r;
-		g /= rhs.g;
-		b /= rhs.b;
-		a /= rhs.a;
-		return *this;
-	}
-	const ColorAT<T> &operator/=( const vec4 &rhs )
-	{
-		r /= CHANTRAIT<T>::convert( rhs.r );
-		g /= CHANTRAIT<T>::convert( rhs.g );
-		b /= CHANTRAIT<T>::convert( rhs.b );
-		a /= CHANTRAIT<T>::convert( rhs.a );
-		return *this;
-	}
-	ColorAT<T> operator+( T rhs ) const { return ColorAT<T>( r + rhs, g + rhs, b + rhs, a + rhs ); }
-	ColorAT<T> operator-( T rhs ) const { return ColorAT<T>( r - rhs, g - rhs, b - rhs, a - rhs ); }
-	ColorAT<T> operator*( T rhs ) const { return ColorAT<T>( r * rhs, g * rhs, b * rhs, a * rhs ); }
-	ColorAT<T> operator/( T rhs ) const { return ColorAT<T>( r / rhs, g / rhs, b / rhs, a / rhs ); }
-	const ColorAT<T> &operator+=( T rhs )
-	{
-		r += rhs;
-		g += rhs;
-		b += rhs;
-		a += rhs;
-		return *this;
-	}
-	const ColorAT<T> &operator-=( T rhs )
-	{
-		r -= rhs;
-		g -= rhs;
-		b -= rhs;
-		a -= rhs;
-		return *this;
-	}
-	const ColorAT<T> &operator*=( T rhs )
-	{
-		r *= rhs;
-		g *= rhs;
-		b *= rhs;
-		a *= rhs;
-		return *this;
-	}
-	const ColorAT<T> &operator/=( T rhs )
-	{
-		r /= rhs;
-		g /= rhs;
-		b /= rhs;
-		a /= rhs;
-		return *this;
-	}
+	T*  ptr() const { return &(const_cast<ColorAT*>( this )->r); }
 
-	bool operator==( const ColorAT<T> &rhs ) const
+	ColorAT<T>	operator+( const ColorAT<T> &rhs ) const { return ColorAT<T>( r + rhs.r, g + rhs.g, b + rhs.b, a + rhs.a ); }
+	ColorAT<T>	operator+( const glm::vec4 &rhs ) const { return ColorAT<T>( r + CHANTRAIT<T>::convert( rhs.r ), g + CHANTRAIT<T>::convert( rhs.g ), b + CHANTRAIT<T>::convert( rhs.b ), a + CHANTRAIT<T>::convert( rhs.a ) ); }
+	ColorAT<T>	operator-( const ColorAT<T> &rhs ) const { return ColorAT<T>( r - rhs.r, g - rhs.g, b - rhs.b, a - rhs.a ); }
+	ColorAT<T>	operator-( const glm::vec4 &rhs ) const { return ColorAT<T>( r - CHANTRAIT<T>::convert( rhs.r ), g - CHANTRAIT<T>::convert( rhs.g ), b - CHANTRAIT<T>::convert( rhs.b ), a - CHANTRAIT<T>::convert( rhs.a ) ); }
+	ColorAT<T>	operator*( const ColorAT<T> &rhs ) const { return ColorAT<T>( r * rhs.r, g * rhs.g, b * rhs.b, a * rhs.a ); }
+	ColorAT<T>	operator*( const glm::vec4 &rhs ) const { return ColorAT<T>( r * CHANTRAIT<T>::convert( rhs.r ), g * CHANTRAIT<T>::convert( rhs.g ), b * CHANTRAIT<T>::convert( rhs.b ), a * CHANTRAIT<T>::convert( rhs.a ) ); }
+	ColorAT<T>	operator/( const ColorAT<T> &rhs ) const { return ColorAT<T>( r / rhs.r, g / rhs.g, b / rhs.b, a / rhs.a ); }
+	ColorAT<T>	operator/( const glm::vec4 &rhs ) const { return ColorAT<T>( r / CHANTRAIT<T>::convert( rhs.r ), g / CHANTRAIT<T>::convert( rhs.g ), b / CHANTRAIT<T>::convert( rhs.b ), a / CHANTRAIT<T>::convert( rhs.a ) ); }
+	const ColorAT<T>&	operator+=( const ColorAT<T> &rhs ) { r += rhs.r; g += rhs.g; b += rhs.b; a += rhs.a; return *this; }
+	const ColorAT<T>&	operator+=( const glm::vec4 &rhs ) { r += CHANTRAIT<T>::convert( rhs.r ); g += CHANTRAIT<T>::convert( rhs.g ); b += CHANTRAIT<T>::convert( rhs.b ); a += CHANTRAIT<T>::convert( rhs.a ); return *this; }
+	const ColorAT<T>&	operator-=( const ColorAT<T> &rhs ) { r -= rhs.r;	g -= rhs.g;	b -= rhs.b;	a -= rhs.a;	return *this; }
+	const ColorAT<T>&	operator-=( const glm::vec4 &rhs ) { r -= CHANTRAIT<T>::convert( rhs.r ); g -= CHANTRAIT<T>::convert( rhs.g ); b -= CHANTRAIT<T>::convert( rhs.b ); a -= CHANTRAIT<T>::convert( rhs.a ); return *this; }
+	const ColorAT<T>&	operator*=( const ColorAT<T> &rhs ) { r *= rhs.r; g *= rhs.g; b *= rhs.b; a *= rhs.a; return *this; }
+	const ColorAT<T>&	operator*=( const glm::vec4 &rhs ) { r *= CHANTRAIT<T>::convert( rhs.r ); g *= CHANTRAIT<T>::convert( rhs.g ); b *= CHANTRAIT<T>::convert( rhs.b ); a *= CHANTRAIT<T>::convert( rhs.a ); return *this; }
+	const ColorAT<T>&	operator/=( const ColorAT<T> &rhs ) { r /= rhs.r; g /= rhs.g; b /= rhs.b; a /= rhs.a; return *this; }
+	const ColorAT<T>&	operator/=( const vec4 &rhs ) { r /= CHANTRAIT<T>::convert( rhs.r ); g /= CHANTRAIT<T>::convert( rhs.g ); b /= CHANTRAIT<T>::convert( rhs.b ); a /= CHANTRAIT<T>::convert( rhs.a ); return *this; }
+	ColorAT<T>	operator+( T rhs ) const { return ColorAT<T>( r + rhs, g + rhs, b + rhs, a + rhs ); }
+	ColorAT<T>	operator-( T rhs ) const { return ColorAT<T>( r - rhs, g - rhs, b - rhs, a - rhs ); }
+	ColorAT<T>	operator*( T rhs ) const { return ColorAT<T>( r * rhs, g * rhs, b * rhs, a * rhs ); }
+	ColorAT<T>	operator/( T rhs ) const { return ColorAT<T>( r / rhs, g / rhs, b / rhs, a / rhs ); }
+	const ColorAT<T>&	operator+=( T rhs ) {	r += rhs; g += rhs; b += rhs; a += rhs; return *this; }
+	const ColorAT<T>&	operator-=( T rhs ) {	r -= rhs; g -= rhs; b -= rhs; a -= rhs;	return * this; }
+	const ColorAT<T>&	operator*=( T rhs ) { r *= rhs; g *= rhs; b *= rhs; a *= rhs; return * this; }
+	const ColorAT<T>&	operator/=( T rhs ) { r /= rhs; g /= rhs; b /= rhs; a /= rhs;	return * this; }
+
+	bool operator==( const ColorAT<T>& rhs ) const
 	{
 		return ( r == rhs.r ) && ( g == rhs.g ) && ( b == rhs.b ) && ( a == rhs.a );
 	}
 
-	bool operator!=( const ColorAT<T> &rhs ) const
+	bool operator!=( const ColorAT<T>& rhs ) const
 	{
-		return !( *this == rhs );
+		return ! ( *this == rhs );
 	}
 
 	ColorAT<T> premultiplied() const
@@ -461,7 +299,7 @@ class ColorAT {
 	{
 		uint8_t red = ( hexValue >> 16 ) & 255;
 		uint8_t green = ( hexValue >> 8 ) & 255;
-		uint8_t blue = hexValue & 255;
+		uint8_t blue = hexValue & 255;		
 		return ColorAT<T>( CHANTRAIT<T>::convert( red ), CHANTRAIT<T>::convert( green ), CHANTRAIT<T>::convert( blue ), CHANTRAIT<T>::max() );
 	}
 
@@ -480,16 +318,8 @@ class ColorAT {
 };
 
 // Operators
-template <typename T, typename Y>
-inline ColorT<T> operator*( Y s, const ColorT<T> &c )
-{
-	return ColorT<T>( s * c.r, s * c.g, s * c.b );
-}
-template <typename T, typename Y>
-inline ColorAT<T> operator*( Y s, const ColorAT<T> &c )
-{
-	return ColorAT<T>( s * c.r, s * c.g, s * c.b, s * c.a );
-}
+template<typename T, typename Y> inline ColorT<T>  operator*( Y s, const ColorT<T>& c )  { return ColorT<T>( s*c.r, s*c.g, s*c.b ); }
+template<typename T, typename Y> inline ColorAT<T> operator*( Y s, const ColorAT<T>& c ) { return ColorAT<T>( s*c.r, s*c.g, s*c.b, s*c.a ); }
 
 // Free Functions
 extern ColorT<float> hsvToRgb( const vec3 &hsv );
@@ -498,190 +328,166 @@ extern vec3 rgbToHsv( const ColorT<float> &c );
 extern ColorT<uint8_t> svgNameToRgb( const char *svgName, bool *found = NULL );
 
 // These are designed to mimic GLM
-template <typename T>
+template<typename T>
 inline float distance( const ColorT<T> &c0, const ColorT<T> &c1 )
 {
-	return (typename CHANTRAIT<T>::Accum)sqrt( (float)( ( c0.r - c1.r ) * ( c0.r - c1.r ) + ( c0.g - c1.g ) * ( c0.g - c1.g ) + ( c0.b - c1.b ) * ( c0.b - c1.b ) ) );
+	return (typename CHANTRAIT<T>::Accum)sqrt( (float)( (c0.r - c1.r)*(c0.r - c1.r) + (c0.g - c1.g)*(c0.g - c1.g) + (c0.b - c1.b)*(c0.b - c1.b) ) );
 }
 
-template <typename T>
+template<typename T>
 inline float distance( const ColorAT<T> &c0, const ColorAT<T> &c1 )
 {
-	return (typename CHANTRAIT<T>::Accum)sqrt( (float)( ( c0.r - c1.r ) * ( c0.r - c1.r ) + ( c0.g - c1.g ) * ( c0.g - c1.g ) + ( c0.b - c1.b ) * ( c0.b - c1.b ) + ( c0.a - c1.a ) * ( c0.a - c1.a ) ) );
+	return (typename CHANTRAIT<T>::Accum)sqrt( (float)( (c0.r - c1.r)*(c0.r - c1.r) + (c0.g - c1.g)*(c0.g - c1.g) + (c0.b - c1.b)*(c0.b - c1.b) + (c0.a - c1.a)*(c0.a - c1.a) ) );
 }
 
-template <typename T>
+template<typename T>
 inline typename CHANTRAIT<T>::Accum distance2( const ColorT<T> &c0, const ColorT<T> &c1 )
 {
-	return ( typename CHANTRAIT<T>::Accum )( ( c0.r - c1.r ) * ( c0.r - c1.r ) + ( c0.g - c1.g ) * ( c0.g - c1.g ) + ( c0.b - c1.b ) * ( c0.b - c1.b ) );
+	return (typename CHANTRAIT<T>::Accum)( (c0.r - c1.r)*(c0.r - c1.r) + (c0.g - c1.g)*(c0.g - c1.g) + (c0.b - c1.b)*(c0.b - c1.b) );
 }
 
-template <typename T>
+template<typename T>
 inline typename CHANTRAIT<T>::Accum distance2( const ColorAT<T> &c0, const ColorAT<T> &c1 )
 {
-	return ( typename CHANTRAIT<T>::Accum )( ( c0.r - c1.r ) * ( c0.r - c1.r ) + ( c0.g - c1.g ) * ( c0.g - c1.g ) + ( c0.b - c1.b ) * ( c0.b - c1.b ) + ( c0.a - c1.a ) * ( c0.a - c1.a ) );
+	return (typename CHANTRAIT<T>::Accum)( (c0.r - c1.r)*(c0.r - c1.r) + (c0.g - c1.g)*(c0.g - c1.g) + (c0.b - c1.b)*(c0.b - c1.b) + (c0.a - c1.a)*(c0.a - c1.a) );
 }
 
-template <typename T>
+template<typename T>
 inline float length( const ColorT<T> &c )
 {
 	return (typename CHANTRAIT<T>::Accum)sqrt( (float)( c.r * c.r + c.g * c.g + c.b * c.b ) );
 }
 
-template <typename T>
+template<typename T>
 inline float length( const ColorAT<T> &c )
 {
 	return (typename CHANTRAIT<T>::Accum)sqrt( (float)( c.r * c.r + c.g * c.g + c.b * c.b + c.a * c.a ) );
 }
 
-template <typename T>
+template<typename T>
 inline typename CHANTRAIT<T>::Accum length2( const ColorT<T> &c )
 {
-	return ( typename CHANTRAIT<T>::Accum )( c.r * c.r + c.g * c.g + c.b * c.b );
+	return (typename CHANTRAIT<T>::Accum)( c.r * c.r + c.g * c.g + c.b * c.b );
 }
 
-template <typename T>
+template<typename T>
 inline typename CHANTRAIT<T>::Accum length2( const ColorAT<T> &c )
 {
-	return ( typename CHANTRAIT<T>::Accum )( c.r * c.r + c.g * c.g + c.b * c.b + c.a * c.a );
+	return (typename CHANTRAIT<T>::Accum)( c.r * c.r + c.g * c.g + c.b * c.b + c.a * c.a );
 }
 
-template <typename T>
+template<typename T>
 inline typename CHANTRAIT<T>::Accum dot( const ColorT<T> &c0, const ColorT<T> &c1 )
 {
-	return ( typename CHANTRAIT<T>::Accum )( c0.r * c1.r + c0.g * c1.g + c0.b * c1.b );
+	return (typename CHANTRAIT<T>::Accum)( c0.r * c1.r + c0.g * c1.g + c0.b * c1.b );
 }
 
-template <typename T>
+template<typename T>
 inline typename CHANTRAIT<T>::Accum dot( const ColorAT<T> &c0, const ColorAT<T> &c1 )
 {
-	return ( CHANTRAIT<T>::Accum )( c0.r * c1.r + c0.g * c1.g + c0.b * c1.b + c0.a * c1.a );
+	return (CHANTRAIT<T>::Accum)( c0.r * c1.r + c0.g * c1.g + c0.b * c1.b + c0.a * c1.a );
 }
 
-template <typename T>
+template<typename T>
 inline ColorT<T> normalize( const ColorT<T> &c0 )
 {
 	float s = length( c0 );
 	if( s > 0 )
-		return ColorT<T>( ( T )( c0.r / s ), ( T )( c0.g / s ), ( T )( c0.b / s ) );
+		return ColorT<T>( (T)( c0.r / s ), (T)( c0.g / s ), (T)( c0.b / s ) );
 	else
 		return ColorT<T>( 0, 0, 0 );
 }
 
-template <typename T>
+template<typename T>
 inline ColorAT<T> normalize( const ColorAT<T> &c0 )
 {
 	float s = length( c0 );
 	if( s > 0 )
-		return ColorAT<T>( ( T )( c0.r / s ), ( T )( c0.g / s ), ( T )( c0.b / s ), ( T )( c0.a / s ) );
+		return ColorAT<T>( (T)( c0.r / s ), (T)( c0.g / s ), (T)( c0.b / s ), (T)( c0.a / s ) );
 	else
 		return ColorAT<T>( 0, 0, 0, 0 );
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 // uint8_t * operators specializations
-template <>
-inline const ColorAT<uint8_t> &ColorAT<uint8_t>::operator*=( const ColorAT<uint8_t> &rhs )
-{
-	r = r * rhs.r / 255;
-	g = g * rhs.g / 255;
-	b = b * rhs.b / 255;
-	a = a * rhs.r;
-	return *this;
+template<>
+inline const ColorAT<uint8_t>& ColorAT<uint8_t>::operator*=( const ColorAT<uint8_t> &rhs )
+{ 
+	r = r * rhs.r / 255; g = g * rhs.g / 255; b = b * rhs.b / 255; a = a * rhs.r; return *this;
 }
 
-template <>
-inline const ColorAT<uint8_t> &ColorAT<uint8_t>::operator*=( uint8_t rhs )
-{
-	r = r * rhs / 255;
-	g = g * rhs / 255;
-	b = b * rhs / 255;
-	return *this;
+template<>
+inline const ColorAT<uint8_t>& ColorAT<uint8_t>::operator*=( uint8_t rhs )
+{ 
+	r = r * rhs / 255; g = g * rhs / 255; b = b * rhs / 255; return *this;
 }
 
-template <>
+template<>
 inline ColorAT<uint8_t> ColorAT<uint8_t>::operator*( const ColorAT<uint8_t> &rhs ) const
-{
+{ 
 	return ColorAT<uint8_t>( r * rhs.r / 255, g * rhs.g / 255, b * rhs.b / 255 );
 }
 
-template <>
+template<>
 inline ColorAT<uint8_t> ColorAT<uint8_t>::operator*( uint8_t rhs ) const
-{
+{ 
 	return ColorAT<uint8_t>( r * rhs / 255, g * rhs / 255, b * rhs / 255 );
 }
 
+
 //////////////////////////////////////////////////////////////////////////////////
 // uint8_t / operators specializations
-template <>
-inline const ColorAT<uint8_t> &ColorAT<uint8_t>::operator/=( const ColorAT<uint8_t> &rhs )
-{
-	r = r * 255 / rhs.r;
-	g = g * 255 / rhs.g;
-	b = b / 255 * rhs.b;
-	return *this;
+template<>
+inline const ColorAT<uint8_t>& ColorAT<uint8_t>::operator/=( const ColorAT<uint8_t> &rhs )
+{ 
+	r = r * 255 / rhs.r; g = g * 255 / rhs.g; b = b / 255 * rhs.b; return *this;
 }
 
-template <>
-inline const ColorAT<uint8_t> &ColorAT<uint8_t>::operator/=( uint8_t rhs )
-{
-	r = r * 255 / rhs;
-	g = g * 255 / rhs;
-	b = b / 255 * rhs;
-	return *this;
+template<>
+inline const ColorAT<uint8_t>& ColorAT<uint8_t>::operator/=( uint8_t rhs )
+{ 
+	r = r * 255 / rhs; g = g * 255 / rhs; b = b / 255 * rhs; return *this;
 }
 
-template <>
+template<>
 inline ColorAT<uint8_t> ColorAT<uint8_t>::operator/( const ColorAT<uint8_t> &rhs ) const
-{
+{ 
 	return ColorAT<uint8_t>( r * 255 / rhs.r, g * 255 / rhs.g, b * 255 / rhs.b, a );
 }
 
-template <>
+template<>
 inline ColorAT<uint8_t> ColorAT<uint8_t>::operator/( uint8_t rhs ) const
-{
+{ 
 	return ColorAT<uint8_t>( r * 255 / rhs, g * 255 / rhs, b * 255 / rhs, a );
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 // uint8_t additional specializations
-template <>
+template<>
 inline ColorAT<uint8_t> ColorAT<uint8_t>::lerp( uint8_t fact, const ColorAT<uint8_t> &d ) const
 {
 	return ColorAT<uint8_t>( r + ( d.r - r ) * fact / 255, g + ( d.g - g ) * fact / 255, b + ( d.b - b ) * fact / 255, a + ( d.a - a ) * fact / 255 );
 }
 
-extern std::ostream &operator<<( std::ostream &lhs, const ColorT<float> &rhs );
-extern std::ostream &operator<<( std::ostream &lhs, const ColorAT<float> &rhs );
-extern std::ostream &operator<<( std::ostream &lhs, const ColorT<uint8_t> &rhs );
-extern std::ostream &operator<<( std::ostream &lhs, const ColorAT<uint8_t> &rhs );
 
-typedef ColorT<float>    Colorf;
-typedef Colorf           Color;
-typedef ColorT<uint8_t>  Color8u;
-typedef ColorAT<float>   ColorA;
-typedef ColorAT<float>   ColorAf;
-typedef ColorAT<uint8_t> ColorA8u;
+extern std::ostream& operator<<( std::ostream &lhs, const ColorT<float> &rhs );
+extern std::ostream& operator<<( std::ostream &lhs, const ColorAT<float> &rhs );
+extern std::ostream& operator<<( std::ostream &lhs, const ColorT<uint8_t> &rhs );
+extern std::ostream& operator<<( std::ostream &lhs, const ColorAT<uint8_t> &rhs );
 
-template <uint8_t DIM, typename T>
-struct COLORDIM {
-};
+typedef ColorT<float>		Colorf;
+typedef Colorf				Color;
+typedef ColorT<uint8_t>		Color8u;
+typedef ColorAT<float>		ColorA;
+typedef ColorAT<float>		ColorAf;
+typedef ColorAT<uint8_t>	ColorA8u;
 
-template <>
-struct COLORDIM<3, float> {
-	typedef Colorf TYPE;
-};
-template <>
-struct COLORDIM<3, uint8_t> {
-	typedef Color8u TYPE;
-};
-template <>
-struct COLORDIM<4, float> {
-	typedef ColorAf TYPE;
-};
-template <>
-struct COLORDIM<4, uint8_t> {
-	typedef ColorA8u TYPE;
-};
+
+template<uint8_t DIM, typename T> struct COLORDIM {};
+
+template<> struct COLORDIM<3, float>	{ typedef Colorf	TYPE; };
+template<> struct COLORDIM<3, uint8_t>	{ typedef Color8u	TYPE; };
+template<> struct COLORDIM<4, float>	{ typedef ColorAf	TYPE; };
+template<> struct COLORDIM<4, uint8_t>	{ typedef ColorA8u	TYPE; };
 
 } // namespace cinder

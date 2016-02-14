@@ -32,7 +32,9 @@
 #include <AEDataModel.h>
 #endif
 
+
 /*Note: The functions for interacting with events has moved to AEInteraction.h*/
+
 
 #if PRAGMA_ONCE
 #pragma once
@@ -47,43 +49,47 @@ extern "C" {
 #endif
 
 enum {
-	/* Keywords for Apple event parameters */
-	keyDirectObject = FOUR_CHAR_CODE( '----' ),
-	keyErrorNumber = FOUR_CHAR_CODE( 'errn' ),
-	keyErrorString = FOUR_CHAR_CODE( 'errs' ),
-	keyProcessSerialNumber = FOUR_CHAR_CODE( 'psn ' ), /* Keywords for special handlers */
-	keyPreDispatch = FOUR_CHAR_CODE( 'phac' ), /* preHandler accessor call */
-	keySelectProc = FOUR_CHAR_CODE( 'selh' ), /* more selector call */
-	/* Keyword for recording */
-	keyAERecorderCount = FOUR_CHAR_CODE( 'recr' ), /* available only in vers 1.0.1 and greater */
-	/* Keyword for version information */
-	keyAEVersion = FOUR_CHAR_CODE( 'vers' ) /* available only in vers 1.0.1 and greater */
+                                        /* Keywords for Apple event parameters */
+  keyDirectObject               = FOUR_CHAR_CODE('----'),
+  keyErrorNumber                = FOUR_CHAR_CODE('errn'),
+  keyErrorString                = FOUR_CHAR_CODE('errs'),
+  keyProcessSerialNumber        = FOUR_CHAR_CODE('psn '), /* Keywords for special handlers */
+  keyPreDispatch                = FOUR_CHAR_CODE('phac'), /* preHandler accessor call */
+  keySelectProc                 = FOUR_CHAR_CODE('selh'), /* more selector call */
+                                        /* Keyword for recording */
+  keyAERecorderCount            = FOUR_CHAR_CODE('recr'), /* available only in vers 1.0.1 and greater */
+                                        /* Keyword for version information */
+  keyAEVersion                  = FOUR_CHAR_CODE('vers') /* available only in vers 1.0.1 and greater */
 };
 
 /* Event Class */
 enum {
-	kCoreEventClass = FOUR_CHAR_CODE( 'aevt' )
+  kCoreEventClass               = FOUR_CHAR_CODE('aevt')
 };
 
 /* Event ID's */
 enum {
-	kAEOpenApplication = FOUR_CHAR_CODE( 'oapp' ),
-	kAEOpenDocuments = FOUR_CHAR_CODE( 'odoc' ),
-	kAEPrintDocuments = FOUR_CHAR_CODE( 'pdoc' ),
-	kAEQuitApplication = FOUR_CHAR_CODE( 'quit' ),
-	kAEAnswer = FOUR_CHAR_CODE( 'ansr' ),
-	kAEApplicationDied = FOUR_CHAR_CODE( 'obit' ),
-	kAEShowPreferences = FOUR_CHAR_CODE( 'pref' ) /* sent by Mac OS X when the user chooses the Preferences item */
+  kAEOpenApplication            = FOUR_CHAR_CODE('oapp'),
+  kAEOpenDocuments              = FOUR_CHAR_CODE('odoc'),
+  kAEPrintDocuments             = FOUR_CHAR_CODE('pdoc'),
+  kAEQuitApplication            = FOUR_CHAR_CODE('quit'),
+  kAEAnswer                     = FOUR_CHAR_CODE('ansr'),
+  kAEApplicationDied            = FOUR_CHAR_CODE('obit'),
+  kAEShowPreferences            = FOUR_CHAR_CODE('pref') /* sent by Mac OS X when the user chooses the Preferences item */
 };
 
 /* Constants for recording */
 enum {
-	kAEStartRecording = FOUR_CHAR_CODE( 'reca' ), /* available only in vers 1.0.1 and greater */
-	kAEStopRecording = FOUR_CHAR_CODE( 'recc' ), /* available only in vers 1.0.1 and greater */
-	kAENotifyStartRecording = FOUR_CHAR_CODE( 'rec1' ), /* available only in vers 1.0.1 and greater */
-	kAENotifyStopRecording = FOUR_CHAR_CODE( 'rec0' ), /* available only in vers 1.0.1 and greater */
-	kAENotifyRecording = FOUR_CHAR_CODE( 'recr' ) /* available only in vers 1.0.1 and greater */
+  kAEStartRecording             = FOUR_CHAR_CODE('reca'), /* available only in vers 1.0.1 and greater */
+  kAEStopRecording              = FOUR_CHAR_CODE('recc'), /* available only in vers 1.0.1 and greater */
+  kAENotifyStartRecording       = FOUR_CHAR_CODE('rec1'), /* available only in vers 1.0.1 and greater */
+  kAENotifyStopRecording        = FOUR_CHAR_CODE('rec0'), /* available only in vers 1.0.1 and greater */
+  kAENotifyRecording            = FOUR_CHAR_CODE('recr') /* available only in vers 1.0.1 and greater */
 };
+
+
+
+
 
 /*
  * AEEventSource is defined as an SInt8 for compatability with pascal.
@@ -93,11 +99,11 @@ enum {
  */
 typedef SInt8 AEEventSource;
 enum {
-	kAEUnknownSource = 0,
-	kAEDirectCall = 1,
-	kAESameProcess = 2,
-	kAELocalProcess = 3,
-	kAERemoteProcess = 4
+  kAEUnknownSource              = 0,
+  kAEDirectCall                 = 1,
+  kAESameProcess                = 2,
+  kAELocalProcess               = 3,
+  kAERemoteProcess              = 4
 };
 
 /**************************************************************************
@@ -113,11 +119,12 @@ enum {
  */
 EXTERN_API( OSErr )
 AEInstallEventHandler(
-    AEEventClass      theAEEventClass,
-    AEEventID         theAEEventID,
-    AEEventHandlerUPP handler,
-    long              handlerRefcon,
-    Boolean           isSysHandler ) THREEWORDINLINE( 0x303C, 0x091F, 0xA816 );
+  AEEventClass        theAEEventClass,
+  AEEventID           theAEEventID,
+  AEEventHandlerUPP   handler,
+  long                handlerRefcon,
+  Boolean             isSysHandler)                           THREEWORDINLINE(0x303C, 0x091F, 0xA816);
+
 
 /*
  *  AERemoveEventHandler()
@@ -129,10 +136,11 @@ AEInstallEventHandler(
  */
 EXTERN_API( OSErr )
 AERemoveEventHandler(
-    AEEventClass      theAEEventClass,
-    AEEventID         theAEEventID,
-    AEEventHandlerUPP handler,
-    Boolean           isSysHandler ) THREEWORDINLINE( 0x303C, 0x0720, 0xA816 );
+  AEEventClass        theAEEventClass,
+  AEEventID           theAEEventID,
+  AEEventHandlerUPP   handler,
+  Boolean             isSysHandler)                           THREEWORDINLINE(0x303C, 0x0720, 0xA816);
+
 
 /*
  *  AEGetEventHandler()
@@ -144,11 +152,14 @@ AERemoveEventHandler(
  */
 EXTERN_API( OSErr )
 AEGetEventHandler(
-    AEEventClass       theAEEventClass,
-    AEEventID          theAEEventID,
-    AEEventHandlerUPP *handler,
-    long *             handlerRefcon,
-    Boolean            isSysHandler ) THREEWORDINLINE( 0x303C, 0x0921, 0xA816 );
+  AEEventClass         theAEEventClass,
+  AEEventID            theAEEventID,
+  AEEventHandlerUPP *  handler,
+  long *               handlerRefcon,
+  Boolean              isSysHandler)                          THREEWORDINLINE(0x303C, 0x0921, 0xA816);
+
+
+
 
 /**************************************************************************
   These calls are used to set up and modify special hooks into the
@@ -164,9 +175,10 @@ AEGetEventHandler(
  */
 EXTERN_API( OSErr )
 AEInstallSpecialHandler(
-    AEKeyword         functionClass,
-    AEEventHandlerUPP handler,
-    Boolean           isSysHandler ) THREEWORDINLINE( 0x303C, 0x0500, 0xA816 );
+  AEKeyword           functionClass,
+  AEEventHandlerUPP   handler,
+  Boolean             isSysHandler)                           THREEWORDINLINE(0x303C, 0x0500, 0xA816);
+
 
 /*
  *  AERemoveSpecialHandler()
@@ -178,9 +190,10 @@ AEInstallSpecialHandler(
  */
 EXTERN_API( OSErr )
 AERemoveSpecialHandler(
-    AEKeyword         functionClass,
-    AEEventHandlerUPP handler,
-    Boolean           isSysHandler ) THREEWORDINLINE( 0x303C, 0x0501, 0xA816 );
+  AEKeyword           functionClass,
+  AEEventHandlerUPP   handler,
+  Boolean             isSysHandler)                           THREEWORDINLINE(0x303C, 0x0501, 0xA816);
+
 
 /*
  *  AEGetSpecialHandler()
@@ -192,9 +205,11 @@ AERemoveSpecialHandler(
  */
 EXTERN_API( OSErr )
 AEGetSpecialHandler(
-    AEKeyword          functionClass,
-    AEEventHandlerUPP *handler,
-    Boolean            isSysHandler ) THREEWORDINLINE( 0x303C, 0x052D, 0xA816 );
+  AEKeyword            functionClass,
+  AEEventHandlerUPP *  handler,
+  Boolean              isSysHandler)                          THREEWORDINLINE(0x303C, 0x052D, 0xA816);
+
+
 
 /**************************************************************************
   This call was added in version 1.0.1. If called with the keyword
@@ -212,8 +227,14 @@ AEGetSpecialHandler(
  */
 EXTERN_API( OSErr )
 AEManagerInfo(
-    AEKeyword keyWord,
-    long *    result ) THREEWORDINLINE( 0x303C, 0x0441, 0xA816 );
+  AEKeyword   keyWord,
+  long *      result)                                         THREEWORDINLINE(0x303C, 0x0441, 0xA816);
+
+
+
+
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -226,3 +247,4 @@ AEManagerInfo(
 #endif
 
 #endif /* __APPLEEVENTS__ */
+

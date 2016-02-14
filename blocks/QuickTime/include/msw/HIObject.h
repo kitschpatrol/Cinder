@@ -28,6 +28,9 @@
 #include <CarbonEventsCore.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -39,6 +42,7 @@ extern "C" {
 #if PRAGMA_IMPORT
 #pragma import on
 #endif
+
 
 /*
  *  HIObject
@@ -137,8 +141,8 @@ extern "C" {
  *    yourself up for some hurt. Just clean up and return from your
  *    handler.
  */
-typedef struct OpaqueHIObjectClassRef *HIObjectClassRef;
-typedef struct OpaqueHIObjectRef *     HIObjectRef;
+typedef struct OpaqueHIObjectClassRef*  HIObjectClassRef;
+typedef struct OpaqueHIObjectRef*       HIObjectRef;
 
 /*
  *  Discussion:
@@ -146,25 +150,27 @@ typedef struct OpaqueHIObjectRef *     HIObjectRef;
  */
 enum {
 
-	/*
+  /*
    * You are trying to register a class ID that already exists.
    */
-	hiObjectClassExistsErr = -22080,
+  hiObjectClassExistsErr        = -22080,
 
-	/*
+  /*
    * You are trying to unregister a class which has instances which
    * still exist. You must destroy them first, before they destroy you!
    */
-	hiObjectClassHasInstancesErr = -22081,
-	hiObjectClassHasSubclassesErr = -22082,
+  hiObjectClassHasInstancesErr  = -22081,
+  hiObjectClassHasSubclassesErr = -22082,
 
-	/*
+  /*
    * You are trying to create an HIObject class that is defined as
    * being abstract. You must subclass it instead. Oh yes. Don't make
    * us say it twice!
    */
-	hiObjectClassIsAbstractErr = -22083
+  hiObjectClassIsAbstractErr    = -22083
 };
+
+
 
 /*
     Parameters for HIObject events:
@@ -194,12 +200,12 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * The event class for HIObject events
    */
-	kEventClassHIObject = FOUR_CHAR_CODE( 'hiob' ),
+  kEventClassHIObject           = FOUR_CHAR_CODE('hiob'),
 
-	/*
+  /*
    * Your object is being constructed. When your event handler is
    * called with this event, it is being called directly and not
    * through the normal event dispatching mechanism. This means that
@@ -208,44 +214,45 @@ enum {
    * HIObjectRef of your base class for you to record in your instance
    * data.
    */
-	kEventHIObjectConstruct = 1,
+  kEventHIObjectConstruct       = 1,
 
-	/*
+  /*
    * Your object is being initialized. Your handler should pass this
    * onto the superclass first before handling this event. This is done
    * by calling CallNextEventHandler with the event. When that function
    * returns, you should make sure the result is noErr. If not, you
    * should NOT continue to initialize your class.
    */
-	kEventHIObjectInitialize = 2,
+  kEventHIObjectInitialize      = 2,
 
-	/*
+  /*
    * Your object is being destroyed. This is your chance to dispose of
    * anything you might have allocated for your object. Do NOT call
    * through with CallNextEventHandler, as you will disrupt the fabric
    * of space-time.
    */
-	kEventHIObjectDestruct = 3,
+  kEventHIObjectDestruct        = 3,
 
-	/*
+  /*
    * HIObjectIsEqual has been called, and you are being asked to
    * determine if your object is equivalent to the one being passed to
    * your handler. You should return true if so, and false if not.
    */
-	kEventHIObjectIsEqual = 4,
+  kEventHIObjectIsEqual         = 4,
 
-	/*
+  /*
    * HIObjectPrintDebugInfo has been called, and you are being asked to
    * print your information to stdout. This event is sent to all
    * handlers and you should NOT call CallNextEventHandler.
    */
-	kEventHIObjectPrintDebugInfo = 5
+  kEventHIObjectPrintDebugInfo  = 5
 };
 
 enum {
-	kEventParamHIObjectInstance = FOUR_CHAR_CODE( 'hioi' ),
-	typeHIObjectRef = FOUR_CHAR_CODE( 'hiob' )
+  kEventParamHIObjectInstance   = FOUR_CHAR_CODE('hioi'),
+  typeHIObjectRef               = FOUR_CHAR_CODE('hiob')
 };
+
 
 #define _HIObjectRegisterSubclass HIObjectRegisterSubclass
 /*
@@ -308,14 +315,15 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 HIObjectRegisterSubclass(
-    CFStringRef          inClassID,
-    CFStringRef          inBaseClassID,
-    OptionBits           inOptions,
-    EventHandlerUPP      inConstructProc,
-    UInt32               inNumEvents,
-    const EventTypeSpec *inEventList,
-    void *               inConstructData,
-    HIObjectClassRef *   outClassRef ); /* can be NULL */
+  CFStringRef            inClassID,
+  CFStringRef            inBaseClassID,
+  OptionBits             inOptions,
+  EventHandlerUPP        inConstructProc,
+  UInt32                 inNumEvents,
+  const EventTypeSpec *  inEventList,
+  void *                 inConstructData,
+  HIObjectClassRef *     outClassRef);          /* can be NULL */
+
 
 /*
  *  HIObjectUnregisterClass()
@@ -339,7 +347,8 @@ HIObjectRegisterSubclass(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-HIObjectUnregisterClass( HIObjectClassRef inClassRef );
+HIObjectUnregisterClass(HIObjectClassRef inClassRef);
+
 
 #define _HIObjectCreate HIObjectCreate
 /*
@@ -375,9 +384,12 @@ HIObjectUnregisterClass( HIObjectClassRef inClassRef );
  */
 EXTERN_API_C( OSStatus )
 HIObjectCreate(
-    CFStringRef  inClassID,
-    EventRef     inConstructData,
-    HIObjectRef *outObject );
+  CFStringRef    inClassID,
+  EventRef       inConstructData,
+  HIObjectRef *  outObject);
+
+
+
 
 #define _HIObjectGetEventTarget HIObjectGetEventTarget
 /*
@@ -400,7 +412,8 @@ HIObjectCreate(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( EventTargetRef )
-HIObjectGetEventTarget( HIObjectRef inObject );
+HIObjectGetEventTarget(HIObjectRef inObject);
+
 
 #define _HIObjectPrintDebugInfo HIObjectPrintDebugInfo
 /*
@@ -421,7 +434,8 @@ HIObjectGetEventTarget( HIObjectRef inObject );
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( void )
-HIObjectPrintDebugInfo( HIObjectRef inObject );
+HIObjectPrintDebugInfo(HIObjectRef inObject);
+
 
 #define _HIObjectCopyClassID HIObjectCopyClassID
 /*
@@ -444,7 +458,8 @@ HIObjectPrintDebugInfo( HIObjectRef inObject );
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( CFStringRef )
-HIObjectCopyClassID( HIObjectRef inObject );
+HIObjectCopyClassID(HIObjectRef inObject);
+
 
 #define _HIObjectIsOfClass HIObjectIsOfClass
 /*
@@ -474,8 +489,9 @@ HIObjectCopyClassID( HIObjectRef inObject );
  */
 EXTERN_API_C( Boolean )
 HIObjectIsOfClass(
-    HIObjectRef inObject,
-    CFStringRef inObjectClassID );
+  HIObjectRef   inObject,
+  CFStringRef   inObjectClassID);
+
 
 #define _HIObjectDynamicCast HIObjectDynamicCast
 /*
@@ -511,8 +527,9 @@ HIObjectIsOfClass(
  */
 EXTERN_API_C( void * )
 HIObjectDynamicCast(
-    HIObjectRef inObject,
-    CFStringRef inClassID );
+  HIObjectRef   inObject,
+  CFStringRef   inClassID);
+
 
 /*
  *  HIObjectCreateFromBundle()
@@ -545,8 +562,9 @@ HIObjectDynamicCast(
  */
 EXTERN_API_C( OSStatus )
 HIObjectCreateFromBundle(
-    CFBundleRef  inBundle,
-    HIObjectRef *outObject );
+  CFBundleRef    inBundle,
+  HIObjectRef *  outObject);
+
 
 /*
  *  HIObjectIsAccessibilityIgnored()
@@ -572,7 +590,8 @@ HIObjectCreateFromBundle(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIObjectIsAccessibilityIgnored( HIObjectRef inObject );
+HIObjectIsAccessibilityIgnored(HIObjectRef inObject);
+
 
 /*
  *  HIObjectSetAccessibilityIgnored()
@@ -607,8 +626,9 @@ HIObjectIsAccessibilityIgnored( HIObjectRef inObject );
  */
 EXTERN_API_C( OSStatus )
 HIObjectSetAccessibilityIgnored(
-    HIObjectRef inObject,
-    Boolean     inIgnored );
+  HIObjectRef   inObject,
+  Boolean       inIgnored);
+
 
 /*==============================================================================*/
 /*  DEPRECATED! DO NOT USE. USE CF ROUTINES INSTEAD!!!                          */
@@ -623,7 +643,8 @@ HIObjectSetAccessibilityIgnored(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIObjectRef )
-_HIObjectRetain( HIObjectRef inObject );
+_HIObjectRetain(HIObjectRef inObject);
+
 
 /* Use CFRelease instead!*/
 /*
@@ -635,7 +656,8 @@ _HIObjectRetain( HIObjectRef inObject );
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( void )
-_HIObjectRelease( HIObjectRef inObject );
+_HIObjectRelease(HIObjectRef inObject);
+
 
 /* Use CFGetRetainCount instead!*/
 /*
@@ -647,7 +669,8 @@ _HIObjectRelease( HIObjectRef inObject );
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( UInt32 )
-_HIObjectGetRetainCount( HIObjectRef inObject );
+_HIObjectGetRetainCount(HIObjectRef inObject);
+
 
 /* Use CFEqual instead!*/
 /*
@@ -660,8 +683,9 @@ _HIObjectGetRetainCount( HIObjectRef inObject );
  */
 EXTERN_API_C( Boolean )
 _HIObjectIsEqual(
-    HIObjectRef inObject,
-    HIObjectRef inOtherObject );
+  HIObjectRef   inObject,
+  HIObjectRef   inOtherObject);
+
 
 /*
    These are no longer necessary! Just put the HIObjectRef directly into
@@ -695,6 +719,8 @@ extern const CFDictionaryKeyCallBacks kHIObjectCFDictKeyCallbacks;
  */
 extern const CFDictionaryValueCallBacks kHIObjectCFDictValueCallbacks;
 
+
+
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
 #elif PRAGMA_IMPORT
@@ -706,3 +732,4 @@ extern const CFDictionaryValueCallBacks kHIObjectCFDictValueCallbacks;
 #endif
 
 #endif /* __HIOBJECT__ */
+

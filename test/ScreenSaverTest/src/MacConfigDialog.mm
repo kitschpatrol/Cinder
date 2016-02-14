@@ -7,20 +7,22 @@
 
 static ConfigWindowController *sController = nil;
 
+
 void loadConfigMac( cinder::app::AppScreenSaver *app, Configuration *config )
 {
-	NSBundle *           ssaverBundle = app->getBundle();
+	NSBundle *ssaverBundle = app->getBundle();
 	ScreenSaverDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:[ssaverBundle bundleIdentifier]];
-
+	
 	[defaults registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
-	                                             @"YES", @"DrawCinderLogo", nil]];
-
+                   @"YES", @"DrawCinderLogo",
+                   nil]];
+				   
 	config->mDrawCinderLogo = [defaults boolForKey:@"DrawCinderLogo"];
 }
 
-NSWindow *getConfigDialogMac( cinder::app::AppScreenSaver *app, Configuration *config )
-{
-	if( !sController ) {
+NSWindow* getConfigDialogMac( cinder::app::AppScreenSaver *app, Configuration *config )
+{	
+	if( ! sController ) {
 		sController = [[ConfigWindowController alloc] initWithWindowNibName:@"MacConfigDialog"];
 	}
 	sController->config = config;
@@ -33,12 +35,12 @@ NSWindow *getConfigDialogMac( cinder::app::AppScreenSaver *app, Configuration *c
 
 void saveConfigMac( cinder::app::AppScreenSaver *app, const Configuration *config )
 {
-	NSBundle *           ssaverBundle = app->getBundle();
+	NSBundle *ssaverBundle = app->getBundle();
 	ScreenSaverDefaults *defaults = [ScreenSaverDefaults defaultsForModuleWithName:[ssaverBundle bundleIdentifier]];
-
+			
 	// Update our defaults
-	[defaults setBool:config->mDrawCinderLogo
-	           forKey:@"DrawCinderLogo"];
+	[defaults setBool:config->mDrawCinderLogo 
+			 forKey:@"DrawCinderLogo"];
 
 	// Save the settings to disk
 	[defaults synchronize];
@@ -52,19 +54,19 @@ void saveConfigMac( cinder::app::AppScreenSaver *app, const Configuration *confi
 
 - (id)initWithWindow:(NSWindow *)windowP
 {
-	self = [super initWithWindow:windowP];
-	if( self ) {
-		// Initialization code here.
-	}
-
-	return self;
+    self = [super initWithWindow:windowP];
+    if (self) {
+        // Initialization code here.
+    }
+    
+    return self;
 }
 
 - (void)windowDidLoad
 {
-	[super windowDidLoad];
-
-	// Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    [super windowDidLoad];
+    
+    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 	[drawCinderLogoButton setState:config->mDrawCinderLogo];
 }
 

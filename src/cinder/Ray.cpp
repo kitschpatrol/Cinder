@@ -27,17 +27,17 @@ namespace cinder {
 // algorithm from "Fast, Minimum Storage Ray-Triangle Intersection"
 bool Ray::calcTriangleIntersection( const vec3 &vert0, const vec3 &vert1, const vec3 &vert2, float *result ) const
 {
-	vec3        edge1, edge2, tvec, pvec, qvec;
-	float       det;
-	float       u, v;
+	vec3 edge1, edge2, tvec, pvec, qvec;
+	float det;
+	float u, v;
 	const float EPSILON = 0.000001f;
-
+	
 	edge1 = vert1 - vert0;
 	edge2 = vert2 - vert0;
-
+	
 	pvec = cross( getDirection(), edge2 );
 	det = dot( edge1, pvec );
-
+	
 #if 0 // we don't want to backface cull
 	if ( det < EPSILON )
 		  return false;

@@ -1,12 +1,12 @@
 #include "cinder/app/App.h"
-#include "cinder/Rand.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/Rand.h"
 #include "cinder/gl/gl.h"
 
 #include "cinder/audio/Context.h"
 #include "cinder/audio/GenNode.h"
-#include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/NodeEffects.h"
+#include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/Utilities.h"
 
 #include "../../common/AudioDrawUtils.h"
@@ -22,12 +22,12 @@ class NodeAdvancedApp : public App {
 	void update() override;
 	void draw() override;
 
-	audio::GenNodeRef           mGen; // GenNode's generate audio signals
-	audio::FilterLowPassNodeRef mLowpass; // lowpass filter to reduce high frequency content.
-	audio::GainNodeRef          mGain; // modifies the volume of the signal
-	audio::MonitorNodeRef       mMonitor; // lets you retrieve audio samples in a thread-safe manner
+	audio::GenNodeRef				mGen;		// GenNode's generate audio signals
+	audio::FilterLowPassNodeRef		mLowpass;	// lowpass filter to reduce high frequency content.
+	audio::GainNodeRef				mGain;		// modifies the volume of the signal
+	audio::MonitorNodeRef			mMonitor;	// lets you retrieve audio samples in a thread-safe manner
 
-	vector<size_t> mCPentatonicScale;
+	vector<size_t>	mCPentatonicScale;
 
 	float mFreqRampTime;
 };
@@ -75,7 +75,7 @@ void NodeAdvancedApp::setup()
 
 void NodeAdvancedApp::mouseDrag( MouseEvent event )
 {
-	if( !getWindowBounds().contains( event.getPos() ) )
+	if( ! getWindowBounds().contains( event.getPos() ) )
 		return;
 
 	float yPercent = 1.0f - (float)event.getPos().y / (float)getWindowHeight();

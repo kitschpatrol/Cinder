@@ -13,20 +13,20 @@
 // triggers the interaction between visuals and audio.
 
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/Timeline.h"
 #include "cinder/Rand.h"
 #include "cinder/Text.h"
-#include "cinder/Timeline.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 
-#include "AudioController.h"
 #include "cinder/audio/Utilities.h"
+#include "AudioController.h"
 
-#include "Box2dUtils.h"
 #include "Config.h"
 #include "SceneController.h"
+#include "Box2dUtils.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -49,14 +49,14 @@ class FallingGearsApp : public App {
 	void drawDebug();
 	void drawInfo();
 
-	SceneController        mScene;
-	box2d::DebugDraw       mDebugDraw;
-	bool                   mDrawDebug, mDrawInfo;
-	AudioController        mAudio;
-	gl::TextureRef         mBackgroundTex;
-	params::InterfaceGlRef mParams;
-	float                  mFps;
-	float                  mMasterGain;
+	SceneController			mScene;
+	box2d::DebugDraw		mDebugDraw;
+	bool					mDrawDebug, mDrawInfo;
+	AudioController			mAudio;
+	gl::TextureRef			mBackgroundTex;
+	params::InterfaceGlRef	mParams;
+	float					mFps;
+	float					mMasterGain;
 };
 
 void FallingGearsApp::setup()
@@ -89,7 +89,7 @@ void FallingGearsApp::setupParams()
 {
 	mParams = params::InterfaceGl::create( "params", ivec2( 250, 350 ) );
 	mParams->minimize();
-
+	
 	mParams->addParam( "fps", &mFps, "", true );
 	mParams->addParam( "show info", &mDrawInfo ).key( "i" );
 	mParams->addParam( "show debug", &mDrawDebug ).key( "d" );
@@ -111,7 +111,7 @@ void FallingGearsApp::keyDown( KeyEvent event )
 
 	if( isModDown ) {
 		if( event.getCode() == KeyEvent::KEY_SLASH )
-			audio::master()->setEnabled( !audio::master()->isEnabled() );
+			audio::master()->setEnabled( ! audio::master()->isEnabled() );
 		else if( event.getChar() == 'r' ) {
 			Config::instance()->reload();
 
@@ -121,7 +121,7 @@ void FallingGearsApp::keyDown( KeyEvent event )
 			mAudio.reset();
 		}
 		else if( event.getChar() == 'c' )
-			mDebugDraw.setCenterOfMassEnabled( !mDebugDraw.isCenterOfMassEnabled() );
+			mDebugDraw.setCenterOfMassEnabled( ! mDebugDraw.isCenterOfMassEnabled() );
 	}
 }
 
@@ -179,7 +179,7 @@ void FallingGearsApp::draw()
 
 void FallingGearsApp::drawBackground()
 {
-	if( !mBackgroundTex )
+	if( ! mBackgroundTex )
 		return;
 
 	Area destRect = mBackgroundTex->getBounds();
@@ -194,6 +194,7 @@ void FallingGearsApp::drawBackground()
 	gl::translate( 0, decentMod * 0.5f );
 
 	gl::draw( mBackgroundTex, destRect, destRect );
+
 }
 
 void FallingGearsApp::drawDebug()
@@ -221,6 +222,7 @@ void FallingGearsApp::drawInfo()
 	vec2 offset( getWindowWidth() - tex->getWidth() - 16, 10 );
 	gl::color( Color::white() );
 	gl::draw( tex, offset );
+
 }
 
 CINDER_APP( FallingGearsApp, RendererGl( RendererGl::Options().msaa( 8 ) ), []( App::Settings *settings ) {

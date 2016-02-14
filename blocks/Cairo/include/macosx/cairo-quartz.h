@@ -45,17 +45,17 @@
 CAIRO_BEGIN_DECLS
 
 cairo_public cairo_surface_t *
-cairo_quartz_surface_create( cairo_format_t format,
-    unsigned int                            width,
-    unsigned int                            height );
+cairo_quartz_surface_create (cairo_format_t format,
+                             unsigned int width,
+                             unsigned int height);
 
 cairo_public cairo_surface_t *
-cairo_quartz_surface_create_for_cg_context( CGContextRef cgContext,
-    unsigned int                                         width,
-    unsigned int                                         height );
+cairo_quartz_surface_create_for_cg_context (CGContextRef cgContext,
+                                            unsigned int width,
+                                            unsigned int height);
 
 cairo_public CGContextRef
-cairo_quartz_surface_get_cg_context( cairo_surface_t *surface );
+cairo_quartz_surface_get_cg_context (cairo_surface_t *surface);
 
 #if CAIRO_HAS_QUARTZ_FONT
 
@@ -64,11 +64,11 @@ cairo_quartz_surface_get_cg_context( cairo_surface_t *surface );
  */
 
 cairo_public cairo_font_face_t *
-cairo_quartz_font_face_create_for_cgfont( CGFontRef font );
+cairo_quartz_font_face_create_for_cgfont (CGFontRef font);
 
 #ifndef __LP64__
 cairo_public cairo_font_face_t *
-cairo_quartz_font_face_create_for_atsu_font_id( ATSUFontID font_id );
+cairo_quartz_font_face_create_for_atsu_font_id (ATSUFontID font_id);
 #endif
 
 #endif /* CAIRO_HAS_QUARTZ_FONT */
@@ -77,7 +77,7 @@ CAIRO_END_DECLS
 
 #else
 
-#error Cairo was not compiled with support for the quartz backend
+# error Cairo was not compiled with support for the quartz backend
 
 #endif /* CAIRO_HAS_QUARTZ_SURFACE */
 

@@ -16,6 +16,8 @@
 #ifndef __CFXMLNODE__
 #define __CFXMLNODE__
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -26,8 +28,8 @@
 
 #include <CFTree.h>
 
-typedef struct __CFTree *CFTreeRef;
-typedef CFTreeRef        CFXMLTreeRef;
+typedef struct __CFTree*                CFTreeRef;
+typedef CFTreeRef                       CFXMLTreeRef;
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -35,4 +37,6 @@ typedef CFTreeRef        CFXMLTreeRef;
 #pragma import reset
 #endif
 
+
 #endif /* __CFXMLNODE__ */
+

@@ -20,6 +20,7 @@
 #ifndef __ASSERTMACROS__
 #define __ASSERTMACROS__
 
+
 /*
  *  Macro overview:
  *  
@@ -61,6 +62,7 @@
  *
  */
 
+
 /*
  *  Before including this file, #define DEBUG_ASSERT_COMPONENT_NAME_STRING to
  *  a C-string containing the name of your client. This string will be passed to
@@ -71,8 +73,9 @@
  *  the assertion macros.
  */
 #ifndef DEBUG_ASSERT_COMPONENT_NAME_STRING
-#define DEBUG_ASSERT_COMPONENT_NAME_STRING ""
+    #define DEBUG_ASSERT_COMPONENT_NAME_STRING ""
 #endif
+
 
 /*
  *  To activate the additional assertion code and messages for non-production builds,
@@ -82,8 +85,9 @@
  *  (production code = no assertion code and no messages).
  */
 #ifndef DEBUG_ASSERT_PRODUCTION_CODE
-#define DEBUG_ASSERT_PRODUCTION_CODE !DEBUG
+   #define DEBUG_ASSERT_PRODUCTION_CODE !DEBUG
 #endif
+
 
 /*
  *  DEBUG_ASSERT_MESSAGE()
@@ -160,16 +164,20 @@
  *  If you do not define DEBUG_ASSERT_MESSAGE, a simple printf to stderr will be used.
  */
 #ifndef DEBUG_ASSERT_MESSAGE
-#ifdef KERNEL
-#include <syslog.h>
-#define DEBUG_ASSERT_MESSAGE( name, assertion, label, message, file, line, value ) \
-	syslog( LOG_ERR, "AssertMacros: %s, %s file: %s, line: %d\n", assertion, ( message != 0 ) ? message : "", file, line );
-#else
-#include <stdio.h>
-#define DEBUG_ASSERT_MESSAGE( name, assertion, label, message, file, line, value ) \
-	fprintf( stderr, "AssertMacros: %s, %s file: %s, line: %d\n", assertion, ( message != 0 ) ? message : "", file, line );
+   #ifdef KERNEL
+      #include <syslog.h>
+      #define DEBUG_ASSERT_MESSAGE(name, assertion, label, message, file, line, value) \
+     								syslog(LOG_ERR, "AssertMacros: %s, %s file: %s, line: %d\n", assertion, (message!=0) ? message : "", file, line);
+   #else
+      #include <stdio.h>
+      #define DEBUG_ASSERT_MESSAGE(name, assertion, label, message, file, line, value) \
+     								fprintf(stderr, "AssertMacros: %s, %s file: %s, line: %d\n", assertion, (message!=0) ? message : "", file, line);
+   #endif
 #endif
-#endif
+
+
+
+
 
 /*
  *  debug_string(message)
@@ -186,20 +194,22 @@
  *
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define debug_string( message )
+   #define debug_string(message)
 #else
-#define debug_string( message )                 \
-	do {                                        \
-		DEBUG_ASSERT_MESSAGE(                   \
-		    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-		    "",                                 \
-		    0,                                  \
-		    message,                            \
-		    __FILE__,                           \
-		    __LINE__,                           \
-		    0 );                                \
-	} while( 0 )
+   #define debug_string(message)                                              \
+      do                                                                      \
+      {                                                                       \
+          DEBUG_ASSERT_MESSAGE(                                               \
+              DEBUG_ASSERT_COMPONENT_NAME_STRING,                             \
+              "",                                                             \
+              0,                                                              \
+              message,                                                        \
+              __FILE__,                                                       \
+              __LINE__,                                                       \
+              0);                                                             \
+      } while ( 0 )
 #endif
+
 
 /*
  *  check(assertion)
@@ -216,25 +226,28 @@
  *      The assertion expression.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define check( assertion )
+   #define check(assertion)
 #else
-#define check( assertion )                          \
-	do {                                            \
-		if( !( assertion ) ) {                      \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #assertion,                         \
-			    0,                                  \
-			    0,                                  \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    0 );                                \
-		}                                           \
-	} while( 0 )
+   #define check(assertion)                                                   \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  0,                                                          \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define ncheck( assertion ) \
-	check( !( assertion ) )
+#define ncheck(assertion)                                                     \
+  check(!(assertion))
+
 
 /*
  *  check_string(assertion, message)
@@ -254,25 +267,28 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define check_string( assertion, message )
+   #define check_string(assertion, message)
 #else
-#define check_string( assertion, message )          \
-	do {                                            \
-		if( !( assertion ) ) {                      \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #assertion,                         \
-			    0,                                  \
-			    message,                            \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    0 );                                \
-		}                                           \
-	} while( 0 )
+   #define check_string(assertion, message)                                   \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  0,                                                          \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define ncheck_string( assertion, message ) \
-	check_string( !( assertion ), message )
+#define ncheck_string(assertion, message)                                     \
+  check_string(!(assertion), message)
+
 
 /*
  *  check_noerr(errorCode)
@@ -289,23 +305,26 @@
  *      The errorCode expression to compare with 0.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define check_noerr( errorCode )
+   #define check_noerr(errorCode)
 #else
-#define check_noerr( errorCode )                    \
-	do {                                            \
-		int evalOnceErrorCode = ( errorCode );      \
-		if( 0 != evalOnceErrorCode ) {              \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #errorCode " == 0 ",                \
-			    0,                                  \
-			    0,                                  \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    evalOnceErrorCode );                \
-		}                                           \
-	} while( 0 )
+   #define check_noerr(errorCode)                                             \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  0,                                                          \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+				  evalOnceErrorCode);                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
+
 
 /*
  *  check_noerr_string(errorCode, message)
@@ -326,23 +345,26 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define check_noerr_string( errorCode, message )
+   #define check_noerr_string(errorCode, message)
 #else
-#define check_noerr_string( errorCode, message )    \
-	do {                                            \
-		int evalOnceErrorCode = ( errorCode );      \
-		if( 0 != evalOnceErrorCode ) {              \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #errorCode " == 0 ",                \
-			    0,                                  \
-			    message,                            \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    evalOnceErrorCode );                \
-		}                                           \
-	} while( 0 )
+   #define check_noerr_string(errorCode, message)                             \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  0,                                                          \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  evalOnceErrorCode);                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
+
 
 /*
  *  verify(assertion)
@@ -360,29 +382,34 @@
  *      The assertion expression.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define verify( assertion )    \
-	do {                       \
-		if( !( assertion ) ) { \
-		}                      \
-	} while( 0 )
+   #define verify(assertion)                                                  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define verify( assertion )                         \
-	do {                                            \
-		if( !( assertion ) ) {                      \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #assertion,                         \
-			    0,                                  \
-			    0,                                  \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    0 );                                \
-		}                                           \
-	} while( 0 )
+   #define verify(assertion)                                                  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  0,                                                          \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define nverify( assertion ) \
-	verify( !( assertion ) )
+#define nverify(assertion)                                                    \
+  verify(!(assertion))
+
 
 /*
  *  verify_string(assertion, message)
@@ -403,29 +430,34 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define verify_string( assertion, message ) \
-	do {                                    \
-		if( !( assertion ) ) {              \
-		}                                   \
-	} while( 0 )
+   #define verify_string(assertion, message)                                  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define verify_string( assertion, message )         \
-	do {                                            \
-		if( !( assertion ) ) {                      \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #assertion,                         \
-			    0,                                  \
-			    message,                            \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    0 );                                \
-		}                                           \
-	} while( 0 )
+   #define verify_string(assertion, message)                                  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  0,                                                          \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define nverify_string( assertion, message ) \
-	verify_string( !( assertion ), message )
+#define nverify_string(assertion, message)                                    \
+  verify_string(!(assertion), message)
+
 
 /*
  *  verify_noerr(errorCode)
@@ -443,27 +475,32 @@
  *      The expression to compare to 0.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define verify_noerr( errorCode )  \
-	do {                           \
-		if( 0 != ( errorCode ) ) { \
-		}                          \
-	} while( 0 )
+   #define verify_noerr(errorCode)                                            \
+      do                                                                      \
+      {                                                                       \
+          if ( 0 != (errorCode) )                                             \
+          {                                                                   \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define verify_noerr( errorCode )                   \
-	do {                                            \
-		int evalOnceErrorCode = ( errorCode );      \
-		if( 0 != evalOnceErrorCode ) {              \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #errorCode " == 0 ",                \
-			    0,                                  \
-			    0,                                  \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    evalOnceErrorCode );                \
-		}                                           \
-	} while( 0 )
+   #define verify_noerr(errorCode)                                            \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  0,                                                          \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  evalOnceErrorCode);                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
+
 
 /*
  *  verify_noerr_string(errorCode, message)
@@ -484,27 +521,32 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define verify_noerr_string( errorCode, message ) \
-	do {                                          \
-		if( 0 != ( errorCode ) ) {                \
-		}                                         \
-	} while( 0 )
+   #define verify_noerr_string(errorCode, message)                            \
+      do                                                                      \
+      {                                                                       \
+          if ( 0 != (errorCode) )                                             \
+          {                                                                   \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define verify_noerr_string( errorCode, message )   \
-	do {                                            \
-		int evalOnceErrorCode = ( errorCode );      \
-		if( 0 != evalOnceErrorCode ) {              \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #errorCode " == 0 ",                \
-			    0,                                  \
-			    message,                            \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    evalOnceErrorCode );                \
-		}                                           \
-	} while( 0 )
+   #define verify_noerr_string(errorCode, message)                            \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  0,                                                          \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  evalOnceErrorCode);                                         \
+          }                                                                   \
+      } while ( 0 )
 #endif
+
 
 /*
  *  require(assertion, exceptionLabel)
@@ -525,31 +567,36 @@
  *      The label.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require( assertion, exceptionLabel ) \
-	do {                                     \
-		if( !( assertion ) ) {               \
-			goto exceptionLabel;             \
-		}                                    \
-	} while( 0 )
+   #define require(assertion, exceptionLabel)                                 \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require( assertion, exceptionLabel )        \
-	do {                                            \
-		if( !( assertion ) ) {                      \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #assertion,                         \
-			    #exceptionLabel,                    \
-			    0,                                  \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    0 );                                \
-			goto exceptionLabel;                    \
-		}                                           \
-	} while( 0 )
+   #define require(assertion, exceptionLabel)                                 \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  #exceptionLabel,                                            \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define nrequire( assertion, exceptionLabel ) \
-	require( !( assertion ), exceptionLabel )
+#define nrequire(assertion, exceptionLabel)                                   \
+  require(!(assertion), exceptionLabel)
+
 
 /*
  *  require_action(assertion, exceptionLabel, action)
@@ -575,37 +622,42 @@
  *      The statement or compound statement (block).
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require_action( assertion, exceptionLabel, action ) \
-	do {                                                    \
-		if( !( assertion ) ) {                              \
-			{                                               \
-				action;                                     \
-			}                                               \
-			goto exceptionLabel;                            \
-		}                                                   \
-	} while( 0 )
+   #define require_action(assertion, exceptionLabel, action)                  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require_action( assertion, exceptionLabel, action ) \
-	do {                                                    \
-		if( !( assertion ) ) {                              \
-			DEBUG_ASSERT_MESSAGE(                           \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING,         \
-			    #assertion,                                 \
-			    #exceptionLabel,                            \
-			    0,                                          \
-			    __FILE__,                                   \
-			    __LINE__,                                   \
-			    0 );                                        \
-			{                                               \
-				action;                                     \
-			}                                               \
-			goto exceptionLabel;                            \
-		}                                                   \
-	} while( 0 )
+   #define require_action(assertion, exceptionLabel, action)                  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  #exceptionLabel,                                            \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define nrequire_action( assertion, exceptionLabel, action ) \
-	require_action( !( assertion ), exceptionLabel, action )
+#define nrequire_action(assertion, exceptionLabel, action)                    \
+  require_action(!(assertion), exceptionLabel, action)
+
 
 /*
  *  require_quiet(assertion, exceptionLabel)
@@ -621,15 +673,18 @@
  *    exceptionLabel:
  *      The label.
  */
-#define require_quiet( assertion, exceptionLabel ) \
-	do {                                           \
-		if( !( assertion ) ) {                     \
-			goto exceptionLabel;                   \
-		}                                          \
-	} while( 0 )
+#define require_quiet(assertion, exceptionLabel)                              \
+  do                                                                          \
+  {                                                                           \
+      if ( !(assertion) )                                                     \
+      {                                                                       \
+          goto exceptionLabel;                                                \
+      }                                                                       \
+  } while ( 0 )
 
-#define nrequire_quiet( assertion, exceptionLabel ) \
-	require_quiet( !( assertion ), exceptionLabel )
+#define nrequire_quiet(assertion, exceptionLabel)                             \
+  require_quiet(!(assertion), exceptionLabel)
+
 
 /*
  *  require_action_quiet(assertion, exceptionLabel, action)
@@ -649,18 +704,21 @@
  *    action:
  *      The statement or compound statement (block).
  */
-#define require_action_quiet( assertion, exceptionLabel, action ) \
-	do {                                                          \
-		if( !( assertion ) ) {                                    \
-			{                                                     \
-				action;                                           \
-			}                                                     \
-			goto exceptionLabel;                                  \
-		}                                                         \
-	} while( 0 )
+#define require_action_quiet(assertion, exceptionLabel, action)               \
+  do                                                                          \
+  {                                                                           \
+      if ( !(assertion) )                                                     \
+      {                                                                       \
+          {                                                                   \
+              action;                                                         \
+          }                                                                   \
+          goto exceptionLabel;                                                \
+      }                                                                       \
+  } while ( 0 )
 
-#define nrequire_action_quiet( assertion, exceptionLabel, action ) \
-	require_action_quiet( !( assertion ), exceptionLabel, action )
+#define nrequire_action_quiet(assertion, exceptionLabel, action)              \
+  require_action_quiet(!(assertion), exceptionLabel, action)
+
 
 /*
  *  require_string(assertion, exceptionLabel, message)
@@ -684,31 +742,36 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require_string( assertion, exceptionLabel, message ) \
-	do {                                                     \
-		if( !( assertion ) ) {                               \
-			goto exceptionLabel;                             \
-		}                                                    \
-	} while( 0 )
+   #define require_string(assertion, exceptionLabel, message)                 \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require_string( assertion, exceptionLabel, message ) \
-	do {                                                     \
-		if( !( assertion ) ) {                               \
-			DEBUG_ASSERT_MESSAGE(                            \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING,          \
-			    #assertion,                                  \
-			    #exceptionLabel,                             \
-			    message,                                     \
-			    __FILE__,                                    \
-			    __LINE__,                                    \
-			    0 );                                         \
-			goto exceptionLabel;                             \
-		}                                                    \
-	} while( 0 )
+   #define require_string(assertion, exceptionLabel, message)                 \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  #exceptionLabel,                                            \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define nrequire_string( assertion, exceptionLabel, string ) \
-	require_string( !( assertion ), exceptionLabel, string )
+#define nrequire_string(assertion, exceptionLabel, string)                    \
+  require_string(!(assertion), exceptionLabel, string)
+
 
 /*
  *  require_action_string(assertion, exceptionLabel, action, message)
@@ -737,37 +800,42 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require_action_string( assertion, exceptionLabel, action, message ) \
-	do {                                                                    \
-		if( !( assertion ) ) {                                              \
-			{                                                               \
-				action;                                                     \
-			}                                                               \
-			goto exceptionLabel;                                            \
-		}                                                                   \
-	} while( 0 )
+   #define require_action_string(assertion, exceptionLabel, action, message)  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require_action_string( assertion, exceptionLabel, action, message ) \
-	do {                                                                    \
-		if( !( assertion ) ) {                                              \
-			DEBUG_ASSERT_MESSAGE(                                           \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
-			    #assertion,                                                 \
-			    #exceptionLabel,                                            \
-			    message,                                                    \
-			    __FILE__,                                                   \
-			    __LINE__,                                                   \
-			    0 );                                                        \
-			{                                                               \
-				action;                                                     \
-			}                                                               \
-			goto exceptionLabel;                                            \
-		}                                                                   \
-	} while( 0 )
+   #define require_action_string(assertion, exceptionLabel, action, message)  \
+      do                                                                      \
+      {                                                                       \
+          if ( !(assertion) )                                                 \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #assertion,                                                 \
+                  #exceptionLabel,                                            \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  0);                                                         \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
-#define nrequire_action_string( assertion, exceptionLabel, action, message ) \
-	require_action_string( !( assertion ), exceptionLabel, action, message )
+#define nrequire_action_string(assertion, exceptionLabel, action, message)    \
+  require_action_string(!(assertion), exceptionLabel, action, message)
+
 
 /*
  *  require_noerr(errorCode, exceptionLabel)
@@ -788,28 +856,32 @@
  *      The label.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require_noerr( errorCode, exceptionLabel ) \
-	do {                                           \
-		if( 0 != ( errorCode ) ) {                 \
-			goto exceptionLabel;                   \
-		}                                          \
-	} while( 0 )
+   #define require_noerr(errorCode, exceptionLabel)                           \
+      do                                                                      \
+      {                                                                       \
+          if ( 0 != (errorCode) )                                             \
+          {                                                                   \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require_noerr( errorCode, exceptionLabel )  \
-	do {                                            \
-		int evalOnceErrorCode = ( errorCode );      \
-		if( 0 != evalOnceErrorCode ) {              \
-			DEBUG_ASSERT_MESSAGE(                   \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING, \
-			    #errorCode " == 0 ",                \
-			    #exceptionLabel,                    \
-			    0,                                  \
-			    __FILE__,                           \
-			    __LINE__,                           \
-			    evalOnceErrorCode );                \
-			goto exceptionLabel;                    \
-		}                                           \
-	} while( 0 )
+   #define require_noerr(errorCode, exceptionLabel)                           \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  #exceptionLabel,                                            \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  evalOnceErrorCode);                                         \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
 /*
@@ -836,35 +908,40 @@
  *      The statement or compound statement (block).
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require_noerr_action( errorCode, exceptionLabel, action ) \
-	do {                                                          \
-		if( 0 != ( errorCode ) ) {                                \
-			{                                                     \
-				action;                                           \
-			}                                                     \
-			goto exceptionLabel;                                  \
-		}                                                         \
-	} while( 0 )
+   #define require_noerr_action(errorCode, exceptionLabel, action)            \
+      do                                                                      \
+      {                                                                       \
+          if ( 0 != (errorCode) )                                             \
+          {                                                                   \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require_noerr_action( errorCode, exceptionLabel, action ) \
-	do {                                                          \
-		int evalOnceErrorCode = ( errorCode );                    \
-		if( 0 != evalOnceErrorCode ) {                            \
-			DEBUG_ASSERT_MESSAGE(                                 \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING,               \
-			    #errorCode " == 0 ",                              \
-			    #exceptionLabel,                                  \
-			    0,                                                \
-			    __FILE__,                                         \
-			    __LINE__,                                         \
-			    evalOnceErrorCode );                              \
-			{                                                     \
-				action;                                           \
-			}                                                     \
-			goto exceptionLabel;                                  \
-		}                                                         \
-	} while( 0 )
+   #define require_noerr_action(errorCode, exceptionLabel, action)            \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  #exceptionLabel,                                            \
+                  0,                                                          \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  evalOnceErrorCode);                                         \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
+
 
 /*
  *  require_noerr_quiet(errorCode, exceptionLabel)
@@ -881,12 +958,15 @@
  *    exceptionLabel:
  *      The label.
  */
-#define require_noerr_quiet( errorCode, exceptionLabel ) \
-	do {                                                 \
-		if( 0 != ( errorCode ) ) {                       \
-			goto exceptionLabel;                         \
-		}                                                \
-	} while( 0 )
+#define require_noerr_quiet(errorCode, exceptionLabel)                        \
+  do                                                                          \
+  {                                                                           \
+      if ( 0 != (errorCode) )                                                 \
+      {                                                                       \
+          goto exceptionLabel;                                                \
+      }                                                                       \
+  } while ( 0 )
+
 
 /*
  *  require_noerr_action_quiet(errorCode, exceptionLabel, action)
@@ -907,15 +987,18 @@
  *    action:
  *      The statement or compound statement (block).
  */
-#define require_noerr_action_quiet( errorCode, exceptionLabel, action ) \
-	do {                                                                \
-		if( 0 != ( errorCode ) ) {                                      \
-			{                                                           \
-				action;                                                 \
-			}                                                           \
-			goto exceptionLabel;                                        \
-		}                                                               \
-	} while( 0 )
+#define require_noerr_action_quiet(errorCode, exceptionLabel, action)         \
+  do                                                                          \
+  {                                                                           \
+      if ( 0 != (errorCode) )                                                 \
+      {                                                                       \
+          {                                                                   \
+              action;                                                         \
+          }                                                                   \
+          goto exceptionLabel;                                                \
+      }                                                                       \
+  } while ( 0 )
+
 
 /*
  *  require_noerr_string(errorCode, exceptionLabel, message)
@@ -939,29 +1022,34 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require_noerr_string( errorCode, exceptionLabel, message ) \
-	do {                                                           \
-		if( 0 != ( errorCode ) ) {                                 \
-			goto exceptionLabel;                                   \
-		}                                                          \
-	} while( 0 )
+   #define require_noerr_string(errorCode, exceptionLabel, message)           \
+      do                                                                      \
+      {                                                                       \
+          if ( 0 != (errorCode) )                                             \
+          {                                                                   \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require_noerr_string( errorCode, exceptionLabel, message ) \
-	do {                                                           \
-		int evalOnceErrorCode = ( errorCode );                     \
-		if( 0 != evalOnceErrorCode ) {                             \
-			DEBUG_ASSERT_MESSAGE(                                  \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING,                \
-			    #errorCode " == 0 ",                               \
-			    #exceptionLabel,                                   \
-			    message,                                           \
-			    __FILE__,                                          \
-			    __LINE__,                                          \
-			    evalOnceErrorCode );                               \
-			goto exceptionLabel;                                   \
-		}                                                          \
-	} while( 0 )
+   #define require_noerr_string(errorCode, exceptionLabel, message)           \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  #exceptionLabel,                                            \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  evalOnceErrorCode);                                         \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
+
 
 /*
  *  require_noerr_action_string(errorCode, exceptionLabel, action, message)
@@ -990,34 +1078,40 @@
  *      The C string to display.
  */
 #if DEBUG_ASSERT_PRODUCTION_CODE
-#define require_noerr_action_string( errorCode, exceptionLabel, action, message ) \
-	do {                                                                          \
-		if( 0 != ( errorCode ) ) {                                                \
-			{                                                                     \
-				action;                                                           \
-			}                                                                     \
-			goto exceptionLabel;                                                  \
-		}                                                                         \
-	} while( 0 )
+   #define require_noerr_action_string(errorCode, exceptionLabel, action, message)\
+      do                                                                      \
+      {                                                                       \
+          if ( 0 != (errorCode) )                                             \
+          {                                                                   \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #else
-#define require_noerr_action_string( errorCode, exceptionLabel, action, message ) \
-	do {                                                                          \
-		int evalOnceErrorCode = ( errorCode );                                    \
-		if( 0 != evalOnceErrorCode ) {                                            \
-			DEBUG_ASSERT_MESSAGE(                                                 \
-			    DEBUG_ASSERT_COMPONENT_NAME_STRING,                               \
-			    #errorCode " == 0 ",                                              \
-			    #exceptionLabel,                                                  \
-			    message,                                                          \
-			    __FILE__,                                                         \
-			    __LINE__,                                                         \
-			    evalOnceErrorCode );                                              \
-			{                                                                     \
-				action;                                                           \
-			}                                                                     \
-			goto exceptionLabel;                                                  \
-		}                                                                         \
-	} while( 0 )
+   #define require_noerr_action_string(errorCode, exceptionLabel, action, message) \
+      do                                                                      \
+      {                                                                       \
+          int evalOnceErrorCode = (errorCode);                                \
+          if ( 0 != evalOnceErrorCode )                                       \
+          {                                                                   \
+              DEBUG_ASSERT_MESSAGE(                                           \
+                  DEBUG_ASSERT_COMPONENT_NAME_STRING,                         \
+                  #errorCode " == 0 ",                                        \
+                  #exceptionLabel,                                            \
+                  message,                                                    \
+                  __FILE__,                                                   \
+                  __LINE__,                                                   \
+                  evalOnceErrorCode);                                         \
+              {                                                               \
+                  action;                                                     \
+              }                                                               \
+              goto exceptionLabel;                                            \
+          }                                                                   \
+      } while ( 0 )
 #endif
 
+
 #endif /* __ASSERTMACROS__ */
+

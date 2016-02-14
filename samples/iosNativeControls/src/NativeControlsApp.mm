@@ -9,13 +9,13 @@
 // Note: this sample is compiled with ARC enabled
 
 #include "cinder/app/App.h"
-#include "cinder/Camera.h"
-#include "cinder/Font.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/app/cocoa/CinderViewCocoaTouch.h"
-#include "cinder/gl/Shader.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Shader.h"
+#include "cinder/Camera.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/Font.h"
 
 #include "NativeViewController.h"
 
@@ -37,7 +37,7 @@ class NativeControlsApp : public App {
 	void setupVisuals();
 	void infoTapped();
 
-	gl::TextureRef mTex;
+	gl::TextureRef			mTex;
 };
 
 // static
@@ -59,7 +59,7 @@ void NativeControlsApp::setup()
 #endif
 
 	// Example of how to add a std::function callback from a UIControl (NativeViewController's info button in the upper right)
-	[sNativeController setInfoButtonCallback:bind( &NativeControlsApp::infoTapped, this )];
+	[sNativeController setInfoButtonCallback: bind( &NativeControlsApp::infoTapped, this ) ];
 }
 
 void NativeControlsApp::cleanup()
@@ -70,7 +70,7 @@ void NativeControlsApp::cleanup()
 void NativeControlsApp::setupVisuals()
 {
 	// Create a blue-green gradient as an OpenGL texture
-	Surface8u       surface( 256, 256, false );
+	Surface8u surface( 256, 256, false );
 	Surface8u::Iter iter = surface.getIter();
 	while( iter.line() ) {
 		while( iter.pixel() ) {
@@ -88,10 +88,10 @@ void NativeControlsApp::setupVisuals()
 void NativeControlsApp::infoTapped()
 {
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bonzo!!"
-	                                                message:@"This button callback was triggered by a std::function."
-	                                               delegate:nil
-	                                      cancelButtonTitle:@"Ok"
-	                                      otherButtonTitles:nil];
+													message:@"This button callback was triggered by a std::function."
+												   delegate:nil
+										  cancelButtonTitle:@"Ok"
+										  otherButtonTitles:nil];
 	[alert show];
 }
 

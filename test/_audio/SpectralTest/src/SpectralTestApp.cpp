@@ -1,15 +1,15 @@
 #include "cinder/app/App.h"
-#include "cinder/Log.h"
-#include "cinder/Utilities.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/Utilities.h"
+#include "cinder/Log.h"
 
 #include "cinder/audio/GenNode.h"
 #include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/SamplePlayerNode.h"
 #include "cinder/audio/dsp/Dsp.h"
 
-#include "../../../../samples/_audio/common/AudioDrawUtils.h"
 #include "../../common/AudioTestGui.h"
+#include "../../../../samples/_audio/common/AudioDrawUtils.h"
 #include "Resources.h"
 
 // TODO: make these runtime configurable
@@ -20,6 +20,7 @@
 using namespace ci;
 using namespace ci::app;
 using namespace std;
+
 
 class SpectralTestApp : public App {
   public:
@@ -37,17 +38,18 @@ class SpectralTestApp : public App {
 	void processDrag( ivec2 pos );
 	void printBinFreq( size_t xPos );
 
-	audio::BufferPlayerNodeRef    mPlayerNode;
-	audio::GenNodeRef             mGen;
-	audio::MonitorSpectralNodeRef mMonitorSpectralNode;
-	audio::SourceFileRef          mSourceFile;
 
-	vector<TestWidget *> mWidgets;
-	Button               mEnableGraphButton, mPlaybackButton, mLoopButton, mScaleDecibelsButton;
-	VSelector            mTestSelector;
-	HSlider              mSmoothingFactorSlider, mFreqSlider;
-	SpectrumPlot         mSpectrumPlot;
-	float                mSpectroMargin;
+	audio::BufferPlayerNodeRef		mPlayerNode;
+	audio::GenNodeRef				mGen;
+	audio::MonitorSpectralNodeRef	mMonitorSpectralNode;
+	audio::SourceFileRef			mSourceFile;
+
+	vector<TestWidget *>			mWidgets;
+	Button							mEnableGraphButton, mPlaybackButton, mLoopButton, mScaleDecibelsButton;
+	VSelector						mTestSelector;
+	HSlider							mSmoothingFactorSlider, mFreqSlider;
+	SpectrumPlot					mSpectrumPlot;
+	float							mSpectroMargin;
 };
 
 void SpectralTestApp::setup()
@@ -137,7 +139,7 @@ void SpectralTestApp::setupUI()
 	mScaleDecibelsButton.mBounds = buttonRect;
 	mWidgets.push_back( &mScaleDecibelsButton );
 
-	vec2  sliderSize( 200.0f, 30.0f );
+	vec2 sliderSize( 200.0f, 30.0f );
 	Rectf selectorRect( getWindowWidth() - sliderSize.x - mSpectroMargin, buttonRect.y2 + padding, getWindowWidth() - mSpectroMargin, buttonRect.y2 + padding + sliderSize.y * 3 );
 	mTestSelector.mSegments.push_back( "sine" );
 	mTestSelector.mSegments.push_back( "sine (no output)" );
@@ -157,15 +159,16 @@ void SpectralTestApp::setupUI()
 	mFreqSlider.mBounds = sliderRect;
 	mFreqSlider.mTitle = "Sine Freq";
 	mFreqSlider.mMin = 0.0f;
-	//	mFreqSlider.mMax = mContext->getSampleRate() / 2.0f;
+//	mFreqSlider.mMax = mContext->getSampleRate() / 2.0f;
 	mFreqSlider.mMax = 800;
 	mFreqSlider.set( mGen->getFreq() );
 	mWidgets.push_back( &mFreqSlider );
 
-	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
+
+	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -178,12 +181,12 @@ void SpectralTestApp::printBinFreq( size_t xPos )
 	if( xPos < mSpectroMargin || xPos > getWindowWidth() - mSpectroMargin )
 		return;
 
-	//	freq = bin * samplerate / sizeFft
+//	freq = bin * samplerate / sizeFft
 
 	size_t numBins = mMonitorSpectralNode->getFftSize() / 2;
 	size_t spectroWidth = getWindowWidth() - mSpectroMargin * 2;
 	size_t bin = ( numBins * ( xPos - mSpectroMargin ) ) / spectroWidth;
-	float  freq = bin * audio::master()->getSampleRate() / float( mMonitorSpectralNode->getFftSize() );
+	float freq = bin * audio::master()->getSampleRate() / float( mMonitorSpectralNode->getFftSize() );
 
 	CI_LOG_V( "bin: " << bin << ", freq: " << freq );
 }
@@ -194,17 +197,17 @@ void SpectralTestApp::processTap( ivec2 pos )
 {
 	auto ctx = audio::master();
 	if( mEnableGraphButton.hitTest( pos ) )
-		ctx->setEnabled( !ctx->isEnabled() );
+		ctx->setEnabled( ! ctx->isEnabled() );
 	else if( mPlaybackButton.hitTest( pos ) ) {
 		if( mTestSelector.currentSection() == "sine" || mTestSelector.currentSection() == "sine (no output)" )
-			mGen->setEnabled( !mGen->isEnabled() );
+			mGen->setEnabled( ! mGen->isEnabled() );
 		else
-			mPlayerNode->setEnabled( !mPlayerNode->isEnabled() );
+			mPlayerNode->setEnabled( ! mPlayerNode->isEnabled() );
 	}
 	else if( mLoopButton.hitTest( pos ) )
-		mPlayerNode->setLoopEnabled( !mPlayerNode->isLoopEnabled() );
+		mPlayerNode->setLoopEnabled( ! mPlayerNode->isLoopEnabled() );
 	else if( mScaleDecibelsButton.hitTest( pos ) )
-		mSpectrumPlot.enableScaleDecibels( !mSpectrumPlot.getScaleDecibels() );
+		mSpectrumPlot.enableScaleDecibels( ! mSpectrumPlot.getScaleDecibels() );
 	else
 		printBinFreq( pos.x );
 
@@ -225,6 +228,7 @@ void SpectralTestApp::processTap( ivec2 pos )
 
 		ctx->setEnabled( enabled );
 	}
+
 }
 
 void SpectralTestApp::processDrag( ivec2 pos )
@@ -255,7 +259,7 @@ void SpectralTestApp::resize()
 void SpectralTestApp::update()
 {
 	// update playback button, since the player node may stop itself at the end of a file.
-	if( mTestSelector.currentSection() == "sample" && !mPlayerNode->isEnabled() )
+	if( mTestSelector.currentSection() == "sample" && ! mPlayerNode->isEnabled() )
 		mPlaybackButton.setEnabled( false );
 }
 
@@ -267,7 +271,7 @@ void SpectralTestApp::draw()
 	auto &mag = mMonitorSpectralNode->getMagSpectrum();
 	mSpectrumPlot.draw( mag );
 
-	if( !mag.empty() ) {
+	if( ! mag.empty() ) {
 		auto min = min_element( mag.begin(), mag.end() );
 		auto max = max_element( mag.begin(), mag.end() );
 

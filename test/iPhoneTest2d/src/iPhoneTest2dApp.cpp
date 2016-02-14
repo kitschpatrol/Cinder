@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/ImageIo.h"
+#include "cinder/app/Renderer.h"
 #include "cinder/Surface.h"
 #include "cinder/Utilities.h"
-#include "cinder/app/Renderer.h"
+#include "cinder/ImageIo.h"
 
 #include <CoreGraphics/CoreGraphics.h>
 
@@ -11,12 +11,12 @@ using namespace ci::app;
 
 class TestApp : public App {
   public:
-	void setup() override;
-	void mouseDown( MouseEvent event ) override;
-	void update() override;
-	void draw() override;
+	void	setup() override;
+	void	mouseDown( MouseEvent event ) override;
+	void	update() override;
+	void	draw() override;
 
-	float anim, mRadius;
+	float			anim, mRadius;
 };
 
 void TestApp::setup()
@@ -42,7 +42,7 @@ void TestApp::draw()
 {
 	CGContextRef ctx( createWindowCgContext() );
 
-	//console() << "Run size: " << getWindowSize() << std::endl;
+//console() << "Run size: " << getWindowSize() << std::endl;
 
 	// Clear out to bkg color
 	CGContextBeginPath( ctx );
@@ -52,7 +52,7 @@ void TestApp::draw()
 
 	CGContextBeginPath( ctx );
 	CGContextSetRGBFillColor( ctx, 1, 0.5f, 0.2f, 1 );
-	CGContextAddEllipseInRect( ctx, CGRectMake( getWindowWidth() / 2 - mRadius / 2, getWindowHeight() / 4 - mRadius / 2, mRadius, mRadius ) );
+	CGContextAddEllipseInRect( ctx, CGRectMake( getWindowWidth()/2 - mRadius / 2, getWindowHeight() / 4 - mRadius / 2, mRadius, mRadius ) );
 	CGContextFillPath( ctx );
 }
 

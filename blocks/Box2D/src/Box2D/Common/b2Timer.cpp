@@ -18,7 +18,7 @@
 
 #include <Box2D/Common/b2Timer.h>
 
-#if defined( _WIN32 )
+#if defined(_WIN32)
 
 float64 b2Timer::s_invFrequency = 0.0f;
 
@@ -28,56 +28,58 @@ b2Timer::b2Timer()
 {
 	LARGE_INTEGER largeInteger;
 
-	if( s_invFrequency == 0.0f ) {
-		QueryPerformanceFrequency( &largeInteger );
-		s_invFrequency = float64( largeInteger.QuadPart );
-		if( s_invFrequency > 0.0f ) {
+	if (s_invFrequency == 0.0f)
+	{
+		QueryPerformanceFrequency(&largeInteger);
+		s_invFrequency = float64(largeInteger.QuadPart);
+		if (s_invFrequency > 0.0f)
+		{
 			s_invFrequency = 1000.0f / s_invFrequency;
 		}
 	}
 
-	QueryPerformanceCounter( &largeInteger );
-	m_start = float64( largeInteger.QuadPart );
+	QueryPerformanceCounter(&largeInteger);
+	m_start = float64(largeInteger.QuadPart);
 }
 
 void b2Timer::Reset()
 {
 	LARGE_INTEGER largeInteger;
-	QueryPerformanceCounter( &largeInteger );
-	m_start = float64( largeInteger.QuadPart );
+	QueryPerformanceCounter(&largeInteger);
+	m_start = float64(largeInteger.QuadPart);
 }
 
 float32 b2Timer::GetMilliseconds() const
 {
 	LARGE_INTEGER largeInteger;
-	QueryPerformanceCounter( &largeInteger );
-	float64 count = float64( largeInteger.QuadPart );
-	float32 ms = float32( s_invFrequency * ( count - m_start ) );
+	QueryPerformanceCounter(&largeInteger);
+	float64 count = float64(largeInteger.QuadPart);
+	float32 ms = float32(s_invFrequency * (count - m_start));
 	return ms;
 }
 
-#elif defined( __linux__ ) || defined( __APPLE__ )
+#elif defined(__linux__) || defined (__APPLE__)
 
 #include <sys/time.h>
 
 b2Timer::b2Timer()
 {
-	Reset();
+    Reset();
 }
 
 void b2Timer::Reset()
 {
-	timeval t;
-	gettimeofday( &t, 0 );
-	m_start_sec = t.tv_sec;
-	m_start_msec = t.tv_usec * 0.001f;
+    timeval t;
+    gettimeofday(&t, 0);
+    m_start_sec = t.tv_sec;
+    m_start_msec = t.tv_usec * 0.001f;
 }
 
 float32 b2Timer::GetMilliseconds() const
 {
-	timeval t;
-	gettimeofday( &t, 0 );
-	return ( t.tv_sec - m_start_sec ) * 1000 + t.tv_usec * 0.001f - m_start_msec;
+    timeval t;
+    gettimeofday(&t, 0);
+    return (t.tv_sec - m_start_sec) * 1000 + t.tv_usec * 0.001f - m_start_msec;
 }
 
 #else

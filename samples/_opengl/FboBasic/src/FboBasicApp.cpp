@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/Camera.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/Fbo.h"
+#include "cinder/Camera.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Fbo.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -12,16 +12,16 @@ using namespace std;
 // into an FBO, and uses that as a Texture onto the sides of a blue cube.
 class FboBasicApp : public App {
   public:
-	void setup() override;
-	void update() override;
-	void draw() override;
+	void	setup() override;
+	void	update() override;
+	void	draw() override;
 
   private:
-	void renderSceneToFbo();
-
-	gl::FboRef       mFbo;
-	mat4             mRotation;
-	static const int FBO_WIDTH = 256, FBO_HEIGHT = 256;
+	void			renderSceneToFbo();
+	
+	gl::FboRef			mFbo;
+	mat4				mRotation;
+	static const int	FBO_WIDTH = 256, FBO_HEIGHT = 256;
 };
 
 void FboBasicApp::setup()
@@ -50,12 +50,12 @@ void FboBasicApp::renderSceneToFbo()
 	// setup our camera to render the torus scene
 	CameraPersp cam( mFbo->getWidth(), mFbo->getHeight(), 60.0f );
 	cam.setPerspective( 60, mFbo->getAspectRatio(), 1, 1000 );
-	cam.lookAt( vec3( 2.8f, 1.8f, -2.8f ), vec3( 0 ) );
+	cam.lookAt( vec3( 2.8f, 1.8f, -2.8f ), vec3( 0 ));
 	gl::setMatrices( cam );
 
 	// set the modelview matrix to reflect our current rotation
 	gl::setModelMatrix( mRotation );
-
+	
 	// render the color cube
 	gl::ScopedGlslProg shaderScp( gl::getStockShader( gl::ShaderDef().color() ) );
 	gl::color( Color( 1.0f, 0.5f, 0.25f ) );
@@ -67,7 +67,7 @@ void FboBasicApp::update()
 {
 	// Rotate the torus by .06 radians around an arbitrary axis
 	mRotation *= rotate( 0.06f, normalize( vec3( 0.16666f, 0.333333f, 0.666666f ) ) );
-
+	
 	// render into our FBO
 	renderSceneToFbo();
 }

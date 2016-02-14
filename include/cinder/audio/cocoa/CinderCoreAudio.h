@@ -25,21 +25,19 @@
 
 #include "cinder/audio/dsp/Converter.h"
 
-#include <AudioToolbox/AudioToolbox.h>
 #include <memory>
 #include <vector>
+#include <AudioToolbox/AudioToolbox.h>
 
 struct AudioStreamBasicDescription;
 
-namespace cinder {
-namespace audio {
-namespace cocoa {
+namespace cinder { namespace audio { namespace cocoa {
 
 //! convience function for pretty printing \a asbd
 void printASBD( const ::AudioStreamBasicDescription &asbd );
 
 struct AudioBufferListDeleter {
-	void operator()(::AudioBufferList *bufferList );
+	void operator()( ::AudioBufferList *bufferList );
 
 	bool mShallow = false;
 };
@@ -49,13 +47,14 @@ typedef std::unique_ptr<::AudioBufferList, AudioBufferListDeleter> AudioBufferLi
 AudioBufferListPtr createNonInterleavedBufferList( size_t numFrames, size_t numChannels );
 AudioBufferListPtr createNonInterleavedBufferListShallow( size_t numChannels );
 
+
 ::AudioComponent findAudioComponent( const ::AudioComponentDescription &componentDescription );
 void findAndCreateAudioComponent( const ::AudioComponentDescription &componentDescription, ::AudioComponentInstance *componentInstance );
 
 ::AudioStreamBasicDescription createFloatAsbd( size_t sampleRate, size_t numChannels, bool isInterleaved = false );
 ::AudioStreamBasicDescription createInt16Asbd( size_t sampleRate, size_t numChannels, bool isInterleaved = false );
 
-inline void copyToBufferList(::AudioBufferList *bufferList, const Buffer *buffer )
+inline void copyToBufferList( ::AudioBufferList *bufferList, const Buffer *buffer )
 {
 	for( UInt32 i = 0; i < bufferList->mNumberBuffers; i++ )
 		memcpy( bufferList->mBuffers[i].mData, buffer->getChannel( i ), bufferList->mBuffers[i].mDataByteSize );
@@ -82,18 +81,18 @@ class ConverterImplCoreAudio : public dsp::Converter {
 	ConverterImplCoreAudio( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock );
 	virtual ~ConverterImplCoreAudio();
 
-	std::pair<size_t, size_t> convert( const Buffer *sourceBuffer, Buffer *destBuffer ) override;
-	void clear() override;
+	std::pair<size_t,size_t>	convert( const Buffer *sourceBuffer, Buffer *destBuffer )	override;
+	void						clear()														override;
 
   private:
-	std::pair<size_t, size_t> convertComplexImpl( const Buffer *sourceBuffer, Buffer *destBuffer );
-	static OSStatus converterCallback(::AudioConverterRef inAudioConverter, UInt32 *ioNumberDataPackets, ::AudioBufferList *ioData, ::AudioStreamPacketDescription **outDataPacketDescription, void *inUserData );
+	std::pair<size_t,size_t> convertComplexImpl( const Buffer *sourceBuffer, Buffer *destBuffer );
+	static OSStatus converterCallback( ::AudioConverterRef inAudioConverter, UInt32 *ioNumberDataPackets, ::AudioBufferList *ioData, ::AudioStreamPacketDescription **outDataPacketDescription, void *inUserData);
 
-	Buffer        mMixingBuffer;
+	Buffer mMixingBuffer;
 	const Buffer *mSourceBuffer;
-	size_t        mNumReadFramesNeeded, mNumSourceBufferFramesUsed;
+	size_t mNumReadFramesNeeded, mNumSourceBufferFramesUsed;
 
-	AudioBufferListPtr  mOutputBufferList;
+	AudioBufferListPtr mOutputBufferList;
 	::AudioConverterRef mAudioConverter;
 };
 
@@ -101,63 +100,61 @@ class ConverterImplCoreAudio : public dsp::Converter {
 // MARK: - Audio Unit Utils
 // ----------------------------------------------------------------------------------------------------
 
-::AudioComponentDescription   getOutputAudioUnitDesc();
-::AudioStreamBasicDescription getAudioUnitASBD(::AudioUnit audioUnit, ::AudioUnitScope scope, ::AudioUnitElement bus );
+::AudioComponentDescription getOutputAudioUnitDesc();
+::AudioStreamBasicDescription getAudioUnitASBD( ::AudioUnit audioUnit, ::AudioUnitScope scope, ::AudioUnitElement bus );
 
 template <typename PropT>
-inline void setAudioUnitProperty(::AudioUnit audioUnit, ::AudioUnitPropertyID propertyId, const PropT &property, ::AudioUnitScope scope, ::AudioUnitElement bus )
+inline void setAudioUnitProperty( ::AudioUnit audioUnit, ::AudioUnitPropertyID propertyId, const PropT &property, ::AudioUnitScope scope, ::AudioUnitElement bus )
 {
 	OSStatus status = ::AudioUnitSetProperty( audioUnit, propertyId, scope, bus, &property, sizeof( property ) );
 	CI_VERIFY( status == noErr );
 }
 
 template <typename PropT>
-inline PropT getAudioUnitProperty(::AudioUnit audioUnit, ::AudioUnitPropertyID propertyId, ::AudioUnitScope scope, ::AudioUnitElement bus )
+inline PropT getAudioUnitProperty( ::AudioUnit audioUnit, ::AudioUnitPropertyID propertyId, ::AudioUnitScope scope, ::AudioUnitElement bus )
 {
-	PropT    result;
-	UInt32   resultSize = sizeof( result );
+	PropT result;
+	UInt32 resultSize = sizeof( result );
 	OSStatus status = ::AudioUnitGetProperty( audioUnit, propertyId, scope, bus, &result, &resultSize );
 	CI_VERIFY( status == noErr );
 	return result;
 }
 
 template <typename ResultT>
-inline void getAudioUnitParam(::AudioUnit audioUnit, ::AudioUnitParameterID paramId, ResultT &result, ::AudioUnitScope scope, size_t bus )
+inline void getAudioUnitParam( ::AudioUnit audioUnit, ::AudioUnitParameterID paramId, ResultT &result, ::AudioUnitScope scope, size_t bus )
 {
 	::AudioUnitParameterValue param;
-	::AudioUnitElement        busElement = static_cast<::AudioUnitElement>( bus );
-	OSStatus                  status = ::AudioUnitGetParameter( audioUnit, paramId, scope, busElement, &param );
+	::AudioUnitElement busElement = static_cast<::AudioUnitElement>( bus );
+	OSStatus status = ::AudioUnitGetParameter( audioUnit, paramId, scope, busElement, &param );
 	CI_VERIFY( status == noErr );
 	result = static_cast<ResultT>( param );
 }
 
 template <typename ParamT>
-inline void setAudioUnitParam(::AudioUnit audioUnit, ::AudioUnitParameterID paramId, const ParamT &param, ::AudioUnitScope scope, size_t bus )
+inline void setAudioUnitParam( ::AudioUnit audioUnit, ::AudioUnitParameterID paramId, const ParamT &param, ::AudioUnitScope scope, size_t bus )
 {
 	::AudioUnitParameterValue value = static_cast<::AudioUnitParameterValue>( param );
-	::AudioUnitElement        busElement = static_cast<::AudioUnitElement>( bus );
-	OSStatus                  status = ::AudioUnitSetParameter( audioUnit, paramId, scope, busElement, value, 0 );
+	::AudioUnitElement busElement = static_cast<::AudioUnitElement>( bus );
+	OSStatus status = ::AudioUnitSetParameter( audioUnit, paramId, scope, busElement, value, 0 );
 	CI_VERIFY( status == noErr );
 }
 
-inline std::vector<::AUChannelInfo> getAudioUnitChannelInfo(::AudioUnit audioUnit, ::AudioUnitElement bus )
+inline std::vector<::AUChannelInfo> getAudioUnitChannelInfo( ::AudioUnit audioUnit, ::AudioUnitElement bus )
 {
 	std::vector<::AUChannelInfo> result;
-	UInt32                       resultSize;
-	OSStatus                     status = ::AudioUnitGetPropertyInfo( audioUnit, kAudioUnitProperty_SupportedNumChannels, kAudioUnitScope_Global, 0, &resultSize, NULL );
+	UInt32 resultSize;
+	OSStatus status = ::AudioUnitGetPropertyInfo( audioUnit, kAudioUnitProperty_SupportedNumChannels, kAudioUnitScope_Global, 0, &resultSize, NULL );
 	if( status == kAudioUnitErr_InvalidProperty ) {
 		// "if this property is NOT implemented an FX unit is expected to deal with same channel valance in and out" - CAPublicUtility / CAAudioUnit.cpp
 		return result;
-	}
-	else
+	} else
 		CI_VERIFY( status == noErr );
 
-	result.resize( resultSize / sizeof(::AUChannelInfo ) );
+	result.resize( resultSize / sizeof( ::AUChannelInfo ) );
 	status = ::AudioUnitGetProperty( audioUnit, kAudioUnitProperty_SupportedNumChannels, kAudioUnitScope_Global, 0, result.data(), &resultSize );
 	CI_VERIFY( status == noErr );
 
 	return result;
 }
-}
-}
-} // namespace cinder::audio::cocoa
+
+} } } // namespace cinder::audio::cocoa

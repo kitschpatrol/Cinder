@@ -22,16 +22,16 @@
 */
 
 #include "cinder/app/AppScreenSaver.h"
-#include "cinder/CinderAssert.h"
 #include "cinder/app/Renderer.h"
+#include "cinder/CinderAssert.h"
 
 #if defined( CINDER_MAC )
-#import "cinder/app/cocoa/AppImplMacScreenSaver.h"
-#include "cinder/app/cocoa/PlatformCocoa.h"
-#include "cinder/ImageSourceFileQuartz.h"
-#include "cinder/ImageTargetFileQuartz.h"
+	#import "cinder/app/cocoa/AppImplMacScreenSaver.h"
+	#include "cinder/app/cocoa/PlatformCocoa.h"
+	#include "cinder/ImageSourceFileQuartz.h"
+	#include "cinder/ImageTargetFileQuartz.h"	
 #elif defined( CINDER_MSW )
-#include "cinder/app/msw/AppImplMswScreenSaver.h"
+	#include "cinder/app/msw/AppImplMswScreenSaver.h"
 #endif
 
 cinder::app::AppScreenSaver *cinder::app::AppScreenSaver::sInstance = nullptr;
@@ -39,26 +39,25 @@ cinder::app::AppScreenSaver *cinder::app::AppScreenSaver::sInstance = nullptr;
 HWND cinder::app::AppScreenSaver::sMainHwnd = 0;
 #endif
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 #if defined( CINDER_MAC )
 //static cinder::app::AppScreenSaverFactory *CINDER_SCREENSAVER_FACTORY = 0;
 
 AppScreenSaver::AppScreenSaver()
-    : mImpl( nullptr )
+	: mImpl( nullptr )
 {
 	AppBase::sInstance = sInstance = this;
 	const Settings *settings = dynamic_cast<Settings *>( sSettingsFromMain );
 	CI_ASSERT( settings );
-
+	
 	auto platform = dynamic_cast<PlatformCocoa *>( Platform::get() );
 	CI_ASSERT_MSG( platform, "expected global Platform object to be of type PlatformCocoa" );
 
 	platform->setBundle( getBundle() );
-
+	
 	ImageSourceFileQuartz::registerSelf();
-	ImageTargetFileQuartz::registerSelf();
+	ImageTargetFileQuartz::registerSelf();	
 }
 
 #elif defined( CINDER_MSW )
@@ -73,7 +72,7 @@ AppScreenSaver::AppScreenSaver()
 void AppScreenSaver::launch()
 {
 	mImpl->run();
-	// NOTHING AFTER THIS LINE RUNS
+// NOTHING AFTER THIS LINE RUNS
 }
 
 LRESULT AppScreenSaver::eventHandler( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
@@ -110,7 +109,7 @@ bool AppScreenSaver::isPreview() const
 }
 
 #if defined( CINDER_COCOA )
-NSBundle *AppScreenSaver::getBundle() const
+NSBundle* AppScreenSaver::getBundle() const
 {
 	return [NSBundle bundleForClass:[AppImplMacScreenSaver class]];
 }
@@ -142,5 +141,5 @@ WindowRef AppScreenSaver::getWindowIndex( size_t index ) const
 	return mImpl->getWindowIndex( index );
 #endif
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

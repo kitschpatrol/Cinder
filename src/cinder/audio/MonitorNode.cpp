@@ -22,22 +22,21 @@
 */
 
 #include "cinder/audio/MonitorNode.h"
-#include "cinder/CinderMath.h"
-#include "cinder/audio/dsp/Fft.h"
 #include "cinder/audio/dsp/RingBuffer.h"
+#include "cinder/audio/dsp/Fft.h"
+#include "cinder/CinderMath.h"
 
 using namespace std;
 using namespace ci;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - MonitorNode
 // ----------------------------------------------------------------------------------------------------
 
 MonitorNode::MonitorNode( const Format &format )
-    : NodeAutoPullable( format ), mWindowSize( format.getWindowSize() ), mRingBufferPaddingFactor( 2 )
+	: NodeAutoPullable( format ), mWindowSize( format.getWindowSize() ), mRingBufferPaddingFactor( 2 )
 {
 }
 
@@ -47,9 +46,9 @@ MonitorNode::~MonitorNode()
 
 void MonitorNode::initialize()
 {
-	if( !mWindowSize )
+	if( ! mWindowSize )
 		mWindowSize = getFramesPerBlock();
-	else if( !isPowerOf2( mWindowSize ) )
+	else if( ! isPowerOf2( mWindowSize ) )
 		mWindowSize = nextPowerOf2( static_cast<uint32_t>( mWindowSize ) );
 
 	for( size_t ch = 0; ch < getNumChannels(); ch++ )
@@ -62,12 +61,12 @@ void MonitorNode::process( Buffer *buffer )
 {
 	size_t numFrames = std::min( buffer->getNumFrames(), mRingBuffers[0].getSize() );
 	for( size_t ch = 0; ch < getNumChannels(); ch++ ) {
-		if( !mRingBuffers[ch].write( buffer->getChannel( ch ), numFrames ) )
+		if( ! mRingBuffers[ch].write( buffer->getChannel( ch ), numFrames ) )
 			return;
 	}
 }
 
-const Buffer &MonitorNode::getBuffer()
+const Buffer& MonitorNode::getBuffer()
 {
 	fillCopiedBuffer();
 	return mCopiedBuffer;
@@ -88,7 +87,7 @@ float MonitorNode::getVolume( size_t channel )
 void MonitorNode::fillCopiedBuffer()
 {
 	for( size_t ch = 0; ch < getNumChannels(); ch++ ) {
-		if( !mRingBuffers[ch].read( mCopiedBuffer.getChannel( ch ), mCopiedBuffer.getNumFrames() ) )
+		if( ! mRingBuffers[ch].read( mCopiedBuffer.getChannel( ch ), mCopiedBuffer.getNumFrames() ) )
 			return;
 	}
 }
@@ -98,7 +97,7 @@ void MonitorNode::fillCopiedBuffer()
 // ----------------------------------------------------------------------------------------------------
 
 MonitorSpectralNode::MonitorSpectralNode( const Format &format )
-    : MonitorNode( format ), mFftSize( format.getFftSize() ), mWindowType( format.getWindowType() ), mSmoothingFactor( 0.5f )
+	: MonitorNode( format ), mFftSize( format.getFftSize() ), mWindowType( format.getWindowType() ), mSmoothingFactor( 0.5f )
 {
 }
 
@@ -112,17 +111,17 @@ void MonitorSpectralNode::initialize()
 
 	if( mFftSize < mWindowSize )
 		mFftSize = mWindowSize;
-	if( !isPowerOf2( mFftSize ) )
+	if( ! isPowerOf2( mFftSize ) )
 		mFftSize = nextPowerOf2( static_cast<uint32_t>( mFftSize ) );
-
+	
 	mFft = unique_ptr<dsp::Fft>( new dsp::Fft( mFftSize ) );
 	mFftBuffer = audio::Buffer( mFftSize );
 	mBufferSpectral = audio::BufferSpectral( mFftSize );
 	mMagSpectrum.resize( mFftSize / 2 );
 
-	if( !mWindowSize )
+	if( ! mWindowSize  )
 		mWindowSize = mFftSize;
-	else if( !isPowerOf2( mWindowSize ) )
+	else if( ! isPowerOf2( mWindowSize ) )
 		mWindowSize = nextPowerOf2( static_cast<uint32_t>( mWindowSize ) );
 
 	mWindowingTable = makeAlignedArray<float>( mWindowSize );
@@ -131,7 +130,7 @@ void MonitorSpectralNode::initialize()
 
 // TODO: When getNumChannels() > 1, use generic channel converter.
 // - alternatively, this tap can force mono output, which only works if it isn't a tap but is really a leaf node (no output).
-const std::vector<float> &MonitorSpectralNode::getMagSpectrum()
+const std::vector<float>& MonitorSpectralNode::getMagSpectrum()
 {
 	fillCopiedBuffer();
 
@@ -178,5 +177,5 @@ float MonitorSpectralNode::getFreqForBin( size_t bin )
 {
 	return bin * getSampleRate() / (float)getFftSize();
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

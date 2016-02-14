@@ -23,26 +23,25 @@
 
 #pragma once
 
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/platform.h"
+#include "cinder/gl/Texture.h"
 
-#include "cinder/Camera.h"
-#include "cinder/Font.h"
 #include "cinder/GeomIo.h"
 #include "cinder/PolyLine.h"
 #include "cinder/Shape2d.h"
+#include "cinder/Camera.h"
+#include "cinder/Font.h"
 
 // forward declarations
 namespace cinder {
-class TriMesh;
-class Path2d;
-class Shape2d;
+	class TriMesh;
+	class Path2d;
+	class Shape2d;
 }
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
-typedef std::shared_ptr<class VboMesh> VboMeshRef;
+typedef std::shared_ptr<class VboMesh>			VboMeshRef;
 
 //! Draws the VboMesh \a mesh. Consider a gl::Batch as a faster alternative. Optionally specify a \a first vertex index and a \a count of vertices.
 void draw( const VboMeshRef &mesh, GLint first = 0, GLsizei count = -1 );
@@ -82,10 +81,7 @@ void drawColorCube( const vec3 &center, const vec3 &size );
 //! Renders a stroked cube centered at \a center of size \a size.
 void drawStrokedCube( const vec3 &center, const vec3 &size );
 //! Renders a stroked cube using \a box as the guide for center and size.
-inline void drawStrokedCube( const ci::AxisAlignedBox &box )
-{
-	drawStrokedCube( box.getCenter(), box.getSize() );
-}
+inline void drawStrokedCube( const ci::AxisAlignedBox &box ) { drawStrokedCube( box.getCenter(), box.getSize() ); }
 //! Renders a solid \a sphere, subdivided on both longitude and latitude into \a subdivisions.
 void drawSphere( const Sphere &sphere, int subdivisions = -1 );
 //! Renders a solid sphere at \a center of radius \a radius, subdivided on both longitude and latitude into \a subdivisions.
@@ -105,7 +101,7 @@ void drawLine( const vec2 &a, const vec2 &b );
 //! Draws \a texture on the XY-plane
 void drawSolidRect( const Rectf &r, const vec2 &upperLeftTexCoord = vec2( 0, 1 ), const vec2 &lowerRightTexCoord = vec2( 1, 0 ) );
 //! Draws a solid rounded rectangle centered around \a rect, with a corner radius of \a cornerRadius
-void drawSolidRoundedRect( const Rectf &r, float cornerRadius, int numSegmentsPerCorner = 0, const vec2 &upperLeftTexCoord = vec2( 0, 1 ), const vec2 &lowerRightTexCoord = vec2( 1, 0 ) );
+void drawSolidRoundedRect( const Rectf &r, float cornerRadius, int numSegmentsPerCorner = 0,  const vec2 &upperLeftTexCoord = vec2( 0, 1 ), const vec2 &lowerRightTexCoord = vec2( 1, 0 ) );
 //! Draws a filled circle centered around \a center with a radius of \a radius. Default \a numSegments requests a conservative (high-quality but slow) number based on radius.
 void drawSolidCircle( const vec2 &center, float radius, int numSegments = -1 );
 //! Draws a filled ellipse centered around \a center with an X-axis radius of \a radiusX and a Y-axis radius of \a radiusY. Default \a numSegments requests a conservative (high-quality but slow) number based on radius.
@@ -137,13 +133,14 @@ void drawSolidTriangle( const vec2 &pt0, const vec2 &pt1, const vec2 &pt2 );
 void drawSolidTriangle( const vec2 &pt0, const vec2 &pt1, const vec2 &pt2, const vec2 &texPt0, const vec2 &texPt1, const vec2 &texPt2 );
 //! Renders a textured triangle.
 void drawSolidTriangle( const vec2 pts[3], const vec2 texCoord[3] = nullptr );
-
-void drawArrays( GLenum mode, GLint first, GLsizei count );
-void drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid *indices );
+	
+	
+void	drawArrays( GLenum mode, GLint first, GLsizei count );
+void	drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid *indices );
 
 #if defined( CINDER_GL_HAS_DRAW_INSTANCED )
-void drawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei instanceCount );
-void drawElementsInstanced( GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei instanceCount );
+void	drawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei instanceCount );
+void	drawElementsInstanced( GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei instanceCount );
 #endif
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

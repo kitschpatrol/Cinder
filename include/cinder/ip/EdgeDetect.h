@@ -24,16 +24,15 @@
 
 #include "cinder/Surface.h"
 
-namespace cinder {
-namespace ip {
+namespace cinder { namespace ip {
 
-template <typename T>
+template<typename T>
 void edgeDetectSobel( const ChannelT<T> &srcChannel, const Area &srcArea, const ivec2 &dstOffset, ChannelT<T> *dstChannel );
-template <typename T>
+template<typename T>
 void edgeDetectSobel( const SurfaceT<T> &srcSurface, const Area &srcArea, const ivec2 &dstOffset, SurfaceT<T> *dstSuface );
-template <typename T>
+template<typename T>
 void edgeDetectSobel( const ChannelT<T> &srcChannel, ChannelT<T> *dstChannel );
-template <typename T>
+template<typename T>
 void edgeDetectSobel( const SurfaceT<T> &srcSurface, SurfaceT<T> *dstSuface );
-}
-} // namespace cinder::ip
+
+} } // namespace cinder::ip

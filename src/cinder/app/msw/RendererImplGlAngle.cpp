@@ -24,46 +24,43 @@
 #if defined( CINDER_GL_ANGLE )
 
 #include "cinder/app/msw/RendererImplGlAngle.h"
-#include "cinder/Log.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/Log.h"
 
 #include "cinder/app/AppBase.h"
 #include "cinder/gl/Environment.h"
 #include <signal.h>
 
 #if defined( CINDER_WINRT )
-#include "cinder/winrt/WinRTUtils.h"
-#include "angle_windowsstore.h"
+	#include "cinder/winrt/WinRTUtils.h"
+	#include "angle_windowsstore.h"
 #endif
 
 #define DEBUG_GL 1
 
-#if !defined( CI_SCREENSAVER )
-#define CI_BREAK()      \
-	{                   \
-		__debugbreak(); \
-	}
+#if ! defined( CI_SCREENSAVER )
+#define CI_BREAK() { __debugbreak(); }
 //#define CI_BREAK() { __asm int 3; }
 #else
-#define CI_BREAK()
+#define CI_BREAK() 
 #endif
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 void checkGlStatus();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // RendererImplGlAngle
 RendererImplGlAngle::RendererImplGlAngle( RendererGl *renderer )
-    : mRenderer( renderer )
+	: mRenderer( renderer )
 {
+	
 }
 
 #if defined( CINDER_MSW )
 bool RendererImplGlAngle::initialize( HWND wnd, HDC dc, RendererRef sharedRenderer )
 #elif defined( CINDER_WINRT )
-bool RendererImplGlAngle::initialize(::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer )
+bool RendererImplGlAngle::initialize( ::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer )
 #endif
 {
 	mWnd = wnd;
@@ -75,39 +72,36 @@ bool RendererImplGlAngle::initialize(::Platform::Agile<Windows::UI::Core::CoreWi
 		CI_LOG_E( "ANGLE does not currenty supported shared renderers." );
 
 	std::vector<EGLint> configAttribs;
-	configAttribs.push_back( EGL_RED_SIZE );
-	configAttribs.push_back( 8 );
-	configAttribs.push_back( EGL_GREEN_SIZE );
-	configAttribs.push_back( 8 );
-	configAttribs.push_back( EGL_BLUE_SIZE );
-	configAttribs.push_back( 8 );
-	configAttribs.push_back( EGL_ALPHA_SIZE );
-	configAttribs.push_back( EGL_DONT_CARE );
-	configAttribs.push_back( EGL_DEPTH_SIZE );
-	configAttribs.push_back( mRenderer->getOptions().getDepthBufferDepth() );
-	configAttribs.push_back( EGL_STENCIL_SIZE );
-	configAttribs.push_back( mRenderer->getOptions().getStencil() ? 8 : EGL_DONT_CARE );
-	// multisampling doesn't currently appear to work
-	//	configAttribs.push_back( EGL_SAMPLE_BUFFERS ); configAttribs.push_back( 1 );
+	configAttribs.push_back( EGL_RED_SIZE ); configAttribs.push_back( 8 );
+	configAttribs.push_back( EGL_GREEN_SIZE ); configAttribs.push_back( 8 );
+	configAttribs.push_back( EGL_BLUE_SIZE ); configAttribs.push_back( 8 );
+	configAttribs.push_back( EGL_ALPHA_SIZE ); configAttribs.push_back( EGL_DONT_CARE );
+	configAttribs.push_back( EGL_DEPTH_SIZE ); configAttribs.push_back( mRenderer->getOptions().getDepthBufferDepth() );
+	configAttribs.push_back( EGL_STENCIL_SIZE ); configAttribs.push_back( mRenderer->getOptions().getStencil() ? 8 : EGL_DONT_CARE );
+// multisampling doesn't currently appear to work
+//	configAttribs.push_back( EGL_SAMPLE_BUFFERS ); configAttribs.push_back( 1 );
 	configAttribs.push_back( EGL_NONE );
 
 	EGLint surfaceAttribList[] = {
 		EGL_NONE, EGL_NONE
 	};
 
-	PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT = reinterpret_cast<PFNEGLGETPLATFORMDISPLAYEXTPROC>( eglGetProcAddress( "eglGetPlatformDisplayEXT" ) );
-	if( !eglGetPlatformDisplayEXT )
+	PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT = reinterpret_cast<PFNEGLGETPLATFORMDISPLAYEXTPROC>( eglGetProcAddress("eglGetPlatformDisplayEXT") );
+	if( ! eglGetPlatformDisplayEXT )
 		return false;
 
 #if defined( CINDER_MSW )
 	const EGLint displayAttributes[] = {
-		EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE, EGL_NONE
+		EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
+		EGL_NONE
 	};
 
 	mDisplay = eglGetPlatformDisplayEXT( EGL_PLATFORM_ANGLE_ANGLE, dc, displayAttributes );
 #else
 	const EGLint displayAttributes[] = {
-		EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE, EGL_ANGLE_DISPLAY_ALLOW_RENDER_TO_BACK_BUFFER, EGL_TRUE, EGL_NONE,
+		EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
+		EGL_ANGLE_DISPLAY_ALLOW_RENDER_TO_BACK_BUFFER, EGL_TRUE, 
+		EGL_NONE,
 	};
 
 	mDisplay = eglGetPlatformDisplayEXT( EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY, displayAttributes );
@@ -120,7 +114,11 @@ bool RendererImplGlAngle::initialize(::Platform::Agile<Windows::UI::Core::CoreWi
 #if defined( CINDER_MSW )
 		// try again with D3D11 Feature Level 9.3 if 10.0+ is unavailable
 		const EGLint fl9_3DisplayAttributes[] = {
-			EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE, EGL_PLATFORM_ANGLE_DEVICE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_DEVICE_TYPE_HARDWARE_ANGLE, EGL_PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE, 9, EGL_PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE, 3, EGL_NONE,
+			EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
+			EGL_PLATFORM_ANGLE_DEVICE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_DEVICE_TYPE_HARDWARE_ANGLE,
+			EGL_PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE, 9,
+			EGL_PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE, 3,
+			EGL_NONE,
 		};
 
 		mDisplay = eglGetPlatformDisplayEXT( EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY, fl9_3DisplayAttributes );
@@ -140,31 +138,29 @@ bool RendererImplGlAngle::initialize(::Platform::Agile<Windows::UI::Core::CoreWi
 	if( eglGetError() != EGL_SUCCESS )
 		return false;
 
-	EGLint    configCount;
+	EGLint configCount;
 	EGLConfig config;
-	if( !eglChooseConfig( mDisplay, configAttribs.data(), &config, 1, &configCount ) || ( configCount != 1 ) )
+	if( ! eglChooseConfig( mDisplay, configAttribs.data(), &config, 1, &configCount ) || (configCount != 1) )
 		return false;
 
 #if defined( CINDER_MSW )
 	mSurface = eglCreateWindowSurface( mDisplay, config, wnd, NULL );
 #else
-	Windows::Foundation::Collections::PropertySet ^ surfaceCreationProperties = ref new Windows::Foundation::Collections::PropertySet();
-	surfaceCreationProperties->Insert( ref new ::Platform::String( EGLNativeWindowTypeProperty ), wnd.Get() );
+	Windows::Foundation::Collections::PropertySet^ surfaceCreationProperties = ref new Windows::Foundation::Collections::PropertySet();
+	surfaceCreationProperties->Insert( ref new ::Platform::String(EGLNativeWindowTypeProperty), wnd.Get() );
 
-	mSurface = eglCreateWindowSurface( mDisplay, config, reinterpret_cast<IInspectable *>( surfaceCreationProperties ), NULL );
+	mSurface = eglCreateWindowSurface( mDisplay, config, reinterpret_cast<IInspectable*>(surfaceCreationProperties), NULL );
 #endif
-
+ 
 	auto err = eglGetError();
 	if( err != EGL_SUCCESS )
 		return false;
 
 	EGLint contextAttibutes[] = {
 #if defined( CINDER_GL_ES_3 )
-		EGL_CONTEXT_CLIENT_VERSION,
-		3,
+		EGL_CONTEXT_CLIENT_VERSION, 3,
 #else
-		EGL_CONTEXT_CLIENT_VERSION,
-		2,
+		EGL_CONTEXT_CLIENT_VERSION, 2,
 #endif
 		EGL_NONE
 	};
@@ -204,12 +200,12 @@ void RendererImplGlAngle::kill()
 
 void RendererImplGlAngle::prepareToggleFullScreen()
 {
-	//	mImpl->prepareToggleFullScreen();
+//	mImpl->prepareToggleFullScreen();
 }
 
 void RendererImplGlAngle::finishToggleFullScreen()
 {
-	//	mImpl->finishToggleFullScreen();
+//	mImpl->finishToggleFullScreen();
 }
 
 void RendererImplGlAngle::defaultResize() const
@@ -253,38 +249,22 @@ EGLint getEglError()
 std::string getEglErrorString( EGLint err )
 {
 	switch( err ) {
-	case EGL_SUCCESS:
-		return "EGL_SUCCESS";
-	case EGL_NOT_INITIALIZED:
-		return "EGL_NOT_INITIALIZED";
-	case EGL_BAD_ACCESS:
-		return "EGL_BAD_ACCESS";
-	case EGL_BAD_ALLOC:
-		return "EGL_BAD_ALLOC";
-	case EGL_BAD_ATTRIBUTE:
-		return "EGL_BAD_ATTRIBUTE";
-	case EGL_BAD_CONTEXT:
-		return "EGL_BAD_CONTEXT";
-	case EGL_BAD_CONFIG:
-		return "EGL_BAD_CONFIG";
-	case EGL_BAD_CURRENT_SURFACE:
-		return "EGL_BAD_CURRENT_SURFACE";
-	case EGL_BAD_DISPLAY:
-		return "EGL_BAD_DISPLAY";
-	case EGL_BAD_SURFACE:
-		return "EGL_BAD_SURFACE";
-	case EGL_BAD_MATCH:
-		return "EGL_BAD_MATCH";
-	case EGL_BAD_PARAMETER:
-		return "EGL_BAD_PARAMETER";
-	case EGL_BAD_NATIVE_PIXMAP:
-		return "EGL_BAD_NATIVE_PIXMAP";
-	case EGL_BAD_NATIVE_WINDOW:
-		return "EGL_BAD_NATIVE_WINDOW";
-	case EGL_CONTEXT_LOST:
-		return "EGL_CONTEXT_LOST";
-	default:
-		return "unknown error code";
+		case EGL_SUCCESS: return "EGL_SUCCESS";
+		case EGL_NOT_INITIALIZED: return "EGL_NOT_INITIALIZED";
+		case EGL_BAD_ACCESS: return "EGL_BAD_ACCESS";
+		case EGL_BAD_ALLOC: return "EGL_BAD_ALLOC";
+		case EGL_BAD_ATTRIBUTE: return "EGL_BAD_ATTRIBUTE";
+		case EGL_BAD_CONTEXT: return "EGL_BAD_CONTEXT";
+		case EGL_BAD_CONFIG: return "EGL_BAD_CONFIG";
+		case EGL_BAD_CURRENT_SURFACE: return "EGL_BAD_CURRENT_SURFACE";
+		case EGL_BAD_DISPLAY: return "EGL_BAD_DISPLAY";
+		case EGL_BAD_SURFACE: return "EGL_BAD_SURFACE";
+		case EGL_BAD_MATCH: return "EGL_BAD_MATCH";
+		case EGL_BAD_PARAMETER: return "EGL_BAD_PARAMETER";
+		case EGL_BAD_NATIVE_PIXMAP: return "EGL_BAD_NATIVE_PIXMAP";
+		case EGL_BAD_NATIVE_WINDOW: return "EGL_BAD_NATIVE_WINDOW";
+		case EGL_CONTEXT_LOST: return "EGL_CONTEXT_LOST";
+		default: return "unknown error code";
 	}
 }
 
@@ -303,7 +283,8 @@ void checkGlStatus()
 	}
 #endif // DEBUG_GL
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app
+
 
 #endif // defined( CINDER_GL_ANGLE )

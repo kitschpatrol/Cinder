@@ -25,35 +25,33 @@
 
 #include "cinder/audio/dsp/Converter.h"
 
-#include <memory>
 #include <vector>
+#include <memory>
 
 namespace r8b {
-class CDSPResampler24;
+	class CDSPResampler24;
 }
 
-namespace cinder {
-namespace audio {
-namespace dsp {
+namespace cinder { namespace audio { namespace dsp {
 
 //! \a Converter implementation using the r8brain samplerate conversion library by designed by Aleksey Vaneev.
 class ConverterImplR8brain : public Converter {
   public:
+
 	ConverterImplR8brain( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock );
 	virtual ~ConverterImplR8brain();
 
-	std::pair<size_t, size_t> convert( const Buffer *sourceBuffer, Buffer *destBuffer ) override;
-	void clear() override;
+	std::pair<size_t, size_t>	convert( const Buffer *sourceBuffer, Buffer *destBuffer )	override;
+	void						clear()														override;
 
   private:
 	std::pair<size_t, size_t> convertImpl( const Buffer *sourceBuffer, Buffer *destBuffer, int readCount );
 	std::pair<size_t, size_t> convertImplUpMixing( const Buffer *sourceBuffer, Buffer *destBuffer, int readCount );
 	std::pair<size_t, size_t> convertImplDownMixing( const Buffer *sourceBuffer, Buffer *destBuffer, int readCount );
 
-	std::vector<std::unique_ptr<r8b::CDSPResampler24>> mResamplers;
-	BufferT<double>                                    mBufferd;
-	Buffer                                             mMixingBuffer;
+	std::vector<std::unique_ptr<r8b::CDSPResampler24> > mResamplers;
+	BufferT<double> mBufferd;
+	Buffer mMixingBuffer;
 };
-}
-}
-} // namespace cinder::audio::dsp
+
+} } } // namespace cinder::audio::dsp

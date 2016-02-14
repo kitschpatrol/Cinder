@@ -29,8 +29,7 @@
 #include <set>
 #include <vector>
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 //! \brief Class for parsing and processing GLSL preprocessor directives.
 //!
@@ -47,39 +46,39 @@ class ShaderPreprocessor {
   public:
 	ShaderPreprocessor();
 	//! \brief Parses and processes the shader source at \a sourcePath. If \a includedFiles is provided, this will be filled with paths to any files detected as `#include`ed. \return a preprocessed source string.
-	std::string parse( const fs::path &sourcePath, std::set<fs::path> *includedFiles = nullptr );
+	std::string		parse( const fs::path &sourcePath, std::set<fs::path> *includedFiles = nullptr );
 	//! Parses and processes the shader source \a source, which can be found at \a sourcePath. If \a includedFiles is provided, this will be filled with paths to any files detected as `#include`ed. \return a preprocessed source string.
-	std::string parse( const std::string &source, const fs::path &sourcePath, std::set<fs::path> *includedFiles = nullptr );
+	std::string		parse( const std::string &source, const fs::path &sourcePath, std::set<fs::path> *includedFiles = nullptr );
 
 	//! Adds a custom search directory to the search list. The last directory added will be searched first.
-	void addSearchDirectory( const fs::path &directory );
+	void	addSearchDirectory( const fs::path &directory );
 	//! Removes a custom search directory from the search list.
-	void removeSearchDirectory( const fs::path &directory );
+	void	removeSearchDirectory( const fs::path &directory );
 
 	//! Adds a define directive
-	void addDefine( const std::string &define );
+	void	addDefine( const std::string &define );
 	//! Adds a define directive
-	void addDefine( const std::string &define, const std::string &value );
+	void	addDefine( const std::string &define, const std::string &value );
 	//! Specifies a series of define directives to add to the shader sources
-	void setDefineDirectives( const std::vector<std::string> &defines );
+	void	setDefineDirectives( const std::vector<std::string> &defines );
 	//! Specifies the #version directive to add to the shader sources
-	void setVersion( int version ) { mVersion = version; }
-  private:
-	std::string parseTopLevel( const std::string &source, const fs::path &currentDirectory, std::set<fs::path> &includeTree );
-	std::string parseRecursive( const fs::path &path, const fs::path &currentDirectory, std::set<fs::path> &includeTree );
-	std::string parseDirectives( const std::string &source );
-	fs::path findFullPath( const fs::path &includePath, const fs::path &currentPath );
+	void	setVersion( int version )	{ mVersion = version; }
 
-	int                      mVersion;
-	std::vector<std::string> mDefineDirectives;
-	std::vector<fs::path>    mSearchDirectories;
+  private:
+	std::string		parseTopLevel( const std::string &source, const fs::path &currentDirectory, std::set<fs::path> &includeTree );
+	std::string		parseRecursive( const fs::path &path, const fs::path &currentDirectory, std::set<fs::path> &includeTree );
+	std::string		parseDirectives( const std::string &source );
+	fs::path		findFullPath( const fs::path &includePath, const fs::path &currentPath );
+
+	int								mVersion;
+	std::vector<std::string>		mDefineDirectives;
+	std::vector<fs::path>			mSearchDirectories;
 };
 
 //! Exception thrown when there is an error preprocessing the shader source in `ShaderPreprocessor`.
 class ShaderPreprocessorExc : public Exception {
   public:
-	ShaderPreprocessorExc( const std::string &description )
-	    : Exception( description ) {}
+	ShaderPreprocessorExc( const std::string &description ) : Exception( description )	{}
 };
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

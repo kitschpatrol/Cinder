@@ -25,20 +25,20 @@
 
 #include <boost/preprocessor/seq.hpp>
 
-namespace cinder {
-namespace ip {
 
-template <typename T>
+namespace cinder { namespace ip {
+
+template<typename T>
 void grayscale( const SurfaceT<T> &srcSurface, SurfaceT<T> *dstSurface )
 {
 	Area area = srcSurface.getBounds().getClipBy( dstSurface->getBounds() );
 
-	int8_t  srcPixelInc = srcSurface.getPixelInc();
+	int8_t srcPixelInc = srcSurface.getPixelInc();
 	uint8_t srcRedOffset = srcSurface.getRedOffset(), srcGreenOffset = srcSurface.getGreenOffset(), srcBlueOffset = srcSurface.getBlueOffset();
-	uint8_t dstRedOffset = dstSurface->getRedOffset(), dstGreenOffset = dstSurface->getGreenOffset(), dstBlueOffset = dstSurface->getBlueOffset();
-	int8_t  dstPixelInc = dstSurface->getPixelInc();
+	uint8_t dstRedOffset = dstSurface->getRedOffset(), dstGreenOffset = dstSurface->getGreenOffset(), dstBlueOffset = dstSurface->getBlueOffset();	
+	int8_t dstPixelInc = dstSurface->getPixelInc();
 	for( int32_t y = 0; y < area.getHeight(); ++y ) {
-		T *      dstPtr = dstSurface->getData( ivec2( area.getX1(), y ) );
+		T *dstPtr = dstSurface->getData( ivec2( area.getX1(), y ) );
 		const T *srcPtr = srcSurface.getData( ivec2( area.getX1(), y ) );
 		for( int32_t x = area.getX1(); x < area.getX2(); ++x ) {
 			T gray = CHANTRAIT<T>::grayscale( srcPtr[srcRedOffset], srcPtr[srcGreenOffset], srcPtr[srcBlueOffset] );
@@ -51,16 +51,16 @@ void grayscale( const SurfaceT<T> &srcSurface, SurfaceT<T> *dstSurface )
 	}
 }
 
-template <typename T>
+template<typename T>
 void grayscale( const SurfaceT<T> &srcSurface, ChannelT<T> *dstChannel )
 {
 	Area area = srcSurface.getBounds().getClipBy( dstChannel->getBounds() );
 
-	int8_t  srcPixelInc = srcSurface.getPixelInc();
+	int8_t srcPixelInc = srcSurface.getPixelInc();
 	uint8_t srcRedOffset = srcSurface.getRedOffset(), srcGreenOffset = srcSurface.getGreenOffset(), srcBlueOffset = srcSurface.getBlueOffset();
-	int8_t  dstPixelInc = dstChannel->getIncrement();
+	int8_t dstPixelInc = dstChannel->getIncrement();
 	for( int32_t y = 0; y < area.getHeight(); ++y ) {
-		T *      dstPtr = dstChannel->getData( ivec2( area.getX1(), y ) );
+		T *dstPtr = dstChannel->getData( ivec2( area.getX1(), y ) );
 		const T *srcPtr = srcSurface.getData( ivec2( area.getX1(), y ) );
 		for( int32_t x = area.getX1(); x < area.getX2(); ++x ) {
 			*dstPtr = CHANTRAIT<T>::grayscale( srcPtr[srcRedOffset], srcPtr[srcGreenOffset], srcPtr[srcBlueOffset] );
@@ -70,17 +70,17 @@ void grayscale( const SurfaceT<T> &srcSurface, ChannelT<T> *dstChannel )
 	}
 }
 
-template <>
+template<>
 void grayscale( const Surface8u &srcSurface, Channel8u *dstChannel )
 {
 	Area area = srcSurface.getBounds().getClipBy( dstChannel->getBounds() );
 
-	int8_t        srcPixelInc = srcSurface.getPixelInc();
-	uint8_t       srcRedOffset = srcSurface.getRedOffset(), srcGreenOffset = srcSurface.getGreenOffset(), srcBlueOffset = srcSurface.getBlueOffset();
-	int8_t        dstPixelInc = dstChannel->getIncrement();
+	int8_t srcPixelInc = srcSurface.getPixelInc();
+	uint8_t srcRedOffset = srcSurface.getRedOffset(), srcGreenOffset = srcSurface.getGreenOffset(), srcBlueOffset = srcSurface.getBlueOffset();
+	int8_t dstPixelInc = dstChannel->getIncrement();
 	const uint8_t redWeight = 74, greenWeight = 147, blueWeight = 35;
 	for( int32_t y = 0; y < area.getHeight(); ++y ) {
-		uint8_t *      dstPtr = dstChannel->getData( ivec2( area.getX1(), y ) );
+		uint8_t *dstPtr = dstChannel->getData( ivec2( area.getX1(), y ) );
 		const uint8_t *srcPtr = srcSurface.getData( ivec2( area.getX1(), y ) );
 		for( int32_t x = area.getX1(); x < area.getX2(); ++x ) {
 			uint32_t sum = srcPtr[srcRedOffset] * redWeight + srcPtr[srcGreenOffset] * greenWeight + srcPtr[srcBlueOffset] * blueWeight;
@@ -91,11 +91,12 @@ void grayscale( const Surface8u &srcSurface, Channel8u *dstChannel )
 	}
 }
 
-#define grayscale_PROTOTYPES( r, data, T ) \
+#define grayscale_PROTOTYPES(r,data,T)\
 	template void grayscale( const SurfaceT<T> &srcSurface, SurfaceT<T> *dstSurface );
-
+	
 template void grayscale( const SurfaceT<float> &srcSurface, ChannelT<float> *dstChannel );
 
 BOOST_PP_SEQ_FOR_EACH( grayscale_PROTOTYPES, ~, CHANNEL_TYPES )
-}
-} // namespace cinder::ip
+
+
+} } // namespace cinder::ip

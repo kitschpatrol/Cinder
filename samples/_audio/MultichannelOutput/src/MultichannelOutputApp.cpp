@@ -1,9 +1,9 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 
-#include "cinder/audio/ChannelRouterNode.h"
-#include "cinder/audio/GainNode.h"
 #include "cinder/audio/GenNode.h"
+#include "cinder/audio/GainNode.h"
+#include "cinder/audio/ChannelRouterNode.h"
 #include "cinder/audio/MonitorNode.h"
 
 #include "../../common/AudioDrawUtils.h"
@@ -16,8 +16,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-const float MAX_GAIN = 0.4f;
-const float RAMP_SECONDS = 1.0f;
+const float MAX_GAIN		= 0.4f;
+const float RAMP_SECONDS	= 1.0f;
 
 class MultichannelOutputApp : public App {
   public:
@@ -29,10 +29,10 @@ class MultichannelOutputApp : public App {
 	void rampGain();
 	void shiftRouteChannel();
 
-	audio::GenNodeRef           mGen; // Gen's generate audio signals
-	audio::GainNodeRef          mGain; // GainNode modifies the volume of the signal
-	audio::MonitorNodeRef       mMonitor; // Scope lets you retrieve audio samples in a thread-safe manner
-	audio::ChannelRouterNodeRef mChannelRouterNode; // Scope lets you retrieve audio samples in a thread-safe manner
+	audio::GenNodeRef				mGen;			// Gen's generate audio signals
+	audio::GainNodeRef				mGain;			// GainNode modifies the volume of the signal
+	audio::MonitorNodeRef			mMonitor;			// Scope lets you retrieve audio samples in a thread-safe manner
+	audio::ChannelRouterNodeRef	mChannelRouterNode;	// Scope lets you retrieve audio samples in a thread-safe manner
 
 	size_t mCurrentChannel;
 };
@@ -72,15 +72,14 @@ void MultichannelOutputApp::setupMultichannelDevice()
 	audio::DeviceRef deviceWithMaxOutputs;
 
 	for( const auto &dev : audio::Device::getDevices() ) {
-		if( !deviceWithMaxOutputs || deviceWithMaxOutputs->getNumOutputChannels() < dev->getNumOutputChannels() )
+		if( ! deviceWithMaxOutputs || deviceWithMaxOutputs->getNumOutputChannels() < dev->getNumOutputChannels() )
 			deviceWithMaxOutputs = dev;
 	}
 
-	console() << endl
-	          << "max output channels: " << deviceWithMaxOutputs->getNumOutputChannels() << endl;
+	console() << endl << "max output channels: " << deviceWithMaxOutputs->getNumOutputChannels() << endl;
 	getWindow()->setTitle( deviceWithMaxOutputs->getName() );
 
-	auto                       ctx = audio::master();
+	auto ctx = audio::master();
 	audio::OutputDeviceNodeRef multichannelOutputDeviceNode = ctx->createOutputDeviceNode( deviceWithMaxOutputs, audio::Node::Format().channels( deviceWithMaxOutputs->getNumOutputChannels() ) );
 	ctx->setOutput( multichannelOutputDeviceNode );
 }
@@ -97,7 +96,7 @@ void MultichannelOutputApp::shiftRouteChannel()
 
 	mChannelRouterNode->disconnectAllInputs();
 	mGain->disconnectAllOutputs();
-
+	
 	mGain >> mChannelRouterNode->route( 0, mCurrentChannel );
 }
 

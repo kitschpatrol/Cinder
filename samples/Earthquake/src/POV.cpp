@@ -1,10 +1,10 @@
 #include "POV.h"
 
-#include "cinder/CinderMath.h"
 #include "cinder/gl/gl.h"
+#include "cinder/CinderMath.h"
 
 POV::POV( ci::app::App *aApp, ci::vec3 aEye, ci::vec3 aCenter )
-    : mApp( aApp ), mEye( aEye ), mCenter( aCenter )
+	: mApp( aApp ), mEye( aEye ), mCenter( aCenter )
 {
 	mAspectRatio = mApp->getWindowAspectRatio();
 	mFOV = 60.0f;

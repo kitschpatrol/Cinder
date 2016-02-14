@@ -32,47 +32,47 @@
 
 namespace cinder {
 
-template <typename T>
+template<typename T>
 class BandedMatrix {
-  public:
+ public:
 	BandedMatrix( int iSize, int iLBands, int iUBands );
-	BandedMatrix( const BandedMatrix &rkM );
+	BandedMatrix( const BandedMatrix& rkM );
 	~BandedMatrix();
 
-	BandedMatrix &operator=( const BandedMatrix &rkM );
+	BandedMatrix& operator=( const BandedMatrix &rkM );
 
 	int getSize() const;
 	int getLBands() const;
 	int getUBands() const;
 
-	T *      getDBand();
-	const T *getDBand() const;
+	T* getDBand();
+	const T* getDBand() const;
 
-	int getLBandMax( int i ) const; // LBand(i):  0 <= index < LBandMax
-	T *getLBand( int i );
-	const T *getLBand( int i ) const;
+	int getLBandMax( int i ) const;  // LBand(i):  0 <= index < LBandMax
+	T* getLBand( int i );
+	const T* getLBand( int i ) const;
 
-	int getUBandMax( int i ) const; // UBand(i):  0 <= index < UBandMax
-	T *getUBand( int i );
-	const T *getUBand( int i ) const;
+	int getUBandMax( int i ) const;  // UBand(i):  0 <= index < UBandMax
+	T* getUBand( int i );
+	const T* getUBand( int i ) const;
 
-	T &operator()( int iRow, int iCol );
+	T& operator()( int iRow, int iCol );
 	T operator()( int iRow, int iCol ) const;
 
 	void setZero();
 	void setIdentity();
 
-  private:
+ private:
 	void allocate();
 	void deallocate();
 
 	int m_iSize, m_iLBands, m_iUBands;
-	T * m_afDBand;
-	T **m_aafLBand;
-	T **m_aafUBand;
+	T* m_afDBand;
+	T** m_aafLBand;
+	T** m_aafUBand;
 };
 
-typedef BandedMatrix<float>  BandedMatrixf;
+typedef BandedMatrix<float> BandedMatrixf;
 typedef BandedMatrix<double> BandedMatrixd;
 
 } // namespace cindernt

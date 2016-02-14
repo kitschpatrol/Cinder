@@ -1,13 +1,13 @@
 #include "Resources.h"
 
-#include "cinder/Arcball.h"
-#include "cinder/CameraUi.h"
-#include "cinder/ImageIo.h"
 #include "cinder/ObjLoader.h"
-#include "cinder/Sphere.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Arcball.h"
+#include "cinder/CameraUi.h"
+#include "cinder/Sphere.h"
+#include "cinder/ImageIo.h"
 #include "cinder/ip/Checkerboard.h"
 
 #include "Resources.h"
@@ -17,29 +17,29 @@ using namespace ci::app;
 
 class ObjLoaderApp : public App {
   public:
-	void setup() override;
+	void	setup() override;
 
-	void mouseDown( MouseEvent event ) override;
-	void mouseDrag( MouseEvent event ) override;
-	void keyDown( KeyEvent event ) override;
+	void	mouseDown( MouseEvent event ) override;
+	void	mouseDrag( MouseEvent event ) override;
+	void	keyDown( KeyEvent event ) override;
 
-	void loadObj( const DataSourceRef &dataSource );
-	void writeObj();
-	void frameCurrentObject();
-	void draw() override;
-
-	Arcball         mArcball;
-	CameraUi        mCamUi;
-	CameraPersp     mCam;
-	TriMeshRef      mMesh;
-	Sphere          mBoundingSphere;
-	gl::BatchRef    mBatch;
-	gl::GlslProgRef mGlsl;
-	gl::TextureRef  mCheckerTexture;
+	void	loadObj( const DataSourceRef &dataSource );
+	void	writeObj();
+	void	frameCurrentObject();
+	void	draw() override;
+	
+	Arcball			mArcball;
+	CameraUi		mCamUi;
+	CameraPersp		mCam;
+	TriMeshRef		mMesh;
+	Sphere			mBoundingSphere;
+	gl::BatchRef	mBatch;
+	gl::GlslProgRef	mGlsl;
+	gl::TextureRef	mCheckerTexture;
 };
 
 void ObjLoaderApp::setup()
-{
+{	
 #if defined( CINDER_GL_ES )
 	mGlsl = gl::GlslProg::create( loadAsset( "shader_es2.vert" ), loadAsset( "shader_es2.frag" ) );
 #else
@@ -79,11 +79,11 @@ void ObjLoaderApp::loadObj( const DataSourceRef &dataSource )
 	ObjLoader loader( dataSource );
 	mMesh = TriMesh::create( loader );
 
-	if( !loader.getAvailableAttribs().count( geom::NORMAL ) )
+	if( ! loader.getAvailableAttribs().count( geom::NORMAL ) )
 		mMesh->recalculateNormals();
 
 	mBatch = gl::Batch::create( *mMesh, mGlsl );
-
+	
 	mBoundingSphere = Sphere::calculateBoundingSphere( mMesh->getPositions<3>(), mMesh->getNumVertices() );
 	mArcball.setSphere( mBoundingSphere );
 }
@@ -91,7 +91,7 @@ void ObjLoaderApp::loadObj( const DataSourceRef &dataSource )
 void ObjLoaderApp::writeObj()
 {
 	fs::path filePath = getSaveFilePath();
-	if( !filePath.empty() ) {
+	if( ! filePath.empty() ) {
 		console() << "writing mesh to file path: " << filePath << std::endl;
 		ci::writeObj( writeFile( filePath ), mMesh );
 	}
@@ -106,7 +106,7 @@ void ObjLoaderApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'o' ) {
 		fs::path path = getOpenFilePath();
-		if( !path.empty() ) {
+		if( ! path.empty() ) {
 			loadObj( loadFile( path ) );
 		}
 	}
@@ -122,17 +122,18 @@ void ObjLoaderApp::draw()
 {
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
-
+	
 	gl::clear( Color( 0.0f, 0.1f, 0.2f ) );
 
 	gl::setMatrices( mCam );
 
 	gl::pushMatrices();
-	gl::rotate( mArcball.getQuat() );
-	mBatch->draw();
+		gl::rotate( mArcball.getQuat() );
+		mBatch->draw();
 	gl::popMatrices();
 }
 
-CINDER_APP( ObjLoaderApp, RendererGl, []( App::Settings *settings ) {
+
+CINDER_APP( ObjLoaderApp, RendererGl, [] ( App::Settings *settings ) {
 	settings->setMultiTouchEnabled( false );
 } )

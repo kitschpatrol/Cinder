@@ -28,9 +28,9 @@
 
 namespace cinder {
 
-typedef std::shared_ptr<class Buffer>     BufferRef;
-typedef std::shared_ptr<class DataSource> DataSourceRef;
-typedef std::shared_ptr<class DataTarget> DataTargetRef;
+typedef std::shared_ptr<class Buffer>		BufferRef;
+typedef std::shared_ptr<class DataSource>	DataSourceRef;
+typedef std::shared_ptr<class DataTarget>	DataTargetRef;
 
 class Buffer {
   public:
@@ -45,35 +45,38 @@ class Buffer {
 	//! move constructor
 	Buffer( Buffer &&rhs );
 	//! copy assignment operator
-	Buffer &operator=( const Buffer &rhs );
+	Buffer&	operator=( const Buffer &rhs );
 	//! move assignment operator
-	Buffer &operator=( Buffer &&rhs );
+	Buffer&	operator=( Buffer &&rhs );
 	//! destructor.
 	~Buffer();
 
 	//! Creates a Buffer from a DataSource
 	explicit Buffer( const DataSourceRef &dataSource );
 
-	static BufferRef create( size_t size ) { return std::make_shared<Buffer>( size ); }
-	static BufferRef create( void *buffer, size_t size ) { return std::make_shared<Buffer>( buffer, size ); }
-	void setSize( size_t size ) { mDataSize = size; }
-	size_t               getSize() const { return mDataSize; }
-	size_t               getAllocatedSize() const { return mAllocatedSize; }
-	void *               getData() { return mData; }
-	const void *         getData() const { return mData; }
-	void resize( size_t newSize );
+	static BufferRef	create( size_t size ) { return std::make_shared<Buffer>( size ); }
+	static BufferRef	create( void *buffer, size_t size ) { return std::make_shared<Buffer>( buffer, size ); }
 
+	void	setSize( size_t size )		{ mDataSize = size; }
+	size_t	getSize() const				{ return mDataSize; }
+	size_t	getAllocatedSize() const	{ return mAllocatedSize; }
+
+	void*		getData()				{ return mData; }
+	const void* getData() const			{ return mData; }
+	
+	void resize( size_t newSize );
+	
 	void copyFrom( const void *data, size_t length );
 	//TODO: copy from region of another buffer
-
+	
 	//! Writes a Buffer to a DataTarget
-	void write( const DataTargetRef &dataTarget );
-
+	void	write( const DataTargetRef &dataTarget );
+	
   private:
-	void * mData;
-	size_t mAllocatedSize;
-	size_t mDataSize;
-	bool   mOwnsData;
+	void*	mData;
+	size_t	mAllocatedSize;
+	size_t	mDataSize;
+	bool	mOwnsData;
 };
 
 Buffer compressBuffer( const Buffer &buffer, int8_t compressionLevel = DEFAULT_COMPRESSION_LEVEL, bool resizeResult = true );

@@ -28,23 +28,22 @@
 namespace cinder {
 
 CameraUi::CameraUi()
-    : mCamera( nullptr ), mWindowSize( 640, 480 ), mMouseWheelMultiplier( 1.2f ), mMinimumPivotDistance( 1.0f ),
-      mEnabled( true ), mLastAction( ACTION_NONE )
-{
-}
+	: mCamera( nullptr ), mWindowSize( 640, 480 ), mMouseWheelMultiplier( 1.2f ), mMinimumPivotDistance( 1.0f ),
+		mEnabled( true ), mLastAction( ACTION_NONE )
+{}
 
 CameraUi::CameraUi( CameraPersp *camera, const app::WindowRef &window, int signalPriority )
-    : mCamera( camera ), mWindowSize( 640, 480 ), mMouseWheelMultiplier( 1.2f ), mMinimumPivotDistance( 1.0f ),
-      mEnabled( true )
+	: mCamera( camera ), mWindowSize( 640, 480 ), mMouseWheelMultiplier( 1.2f ), mMinimumPivotDistance( 1.0f ),
+		mEnabled( true )
 {
 	connect( window, signalPriority );
 }
 
 CameraUi::CameraUi( const CameraUi &rhs )
-    : mCamera( rhs.mCamera ), mWindowSize( rhs.mWindowSize ),
-      mWindow( rhs.mWindow ), mSignalPriority( rhs.mSignalPriority ),
-      mMouseWheelMultiplier( rhs.mMouseWheelMultiplier ), mMinimumPivotDistance( rhs.mMinimumPivotDistance ),
-      mEnabled( rhs.mEnabled )
+	: mCamera( rhs.mCamera ), mWindowSize( rhs.mWindowSize ),
+		mWindow( rhs.mWindow ), mSignalPriority( rhs.mSignalPriority ),
+		mMouseWheelMultiplier( rhs.mMouseWheelMultiplier ), mMinimumPivotDistance( rhs.mMinimumPivotDistance ),
+		mEnabled( rhs.mEnabled )
 {
 	connect( mWindow, mSignalPriority );
 }
@@ -54,7 +53,7 @@ CameraUi::~CameraUi()
 	disconnect();
 }
 
-CameraUi &CameraUi::operator=( const CameraUi &rhs )
+CameraUi& CameraUi::operator=( const CameraUi &rhs )
 {
 	mCamera = rhs.mCamera;
 	mWindowSize = rhs.mWindowSize;
@@ -74,23 +73,24 @@ void CameraUi::connect( const app::WindowRef &window, int signalPriority )
 	mSignalPriority = signalPriority;
 	if( window ) {
 		mMouseDownConnection = window->getSignalMouseDown().connect( signalPriority,
-		    [this]( app::MouseEvent &event ) { mouseDown( event ); } );
+			[this]( app::MouseEvent &event ) { mouseDown( event ); } );
 		mMouseUpConnection = window->getSignalMouseUp().connect( signalPriority,
-		    [this]( app::MouseEvent &event ) { mouseUp( event ); } );
+			[this]( app::MouseEvent &event ) { mouseUp( event ); } );
 		mMouseDragConnection = window->getSignalMouseDrag().connect( signalPriority,
-		    [this]( app::MouseEvent &event ) { mouseDrag( event ); } );
+			[this]( app::MouseEvent &event ) { mouseDrag( event ); } );
 		mMouseWheelConnection = window->getSignalMouseWheel().connect( signalPriority,
-		    [this]( app::MouseEvent &event ) { mouseWheel( event ); } );
+			[this]( app::MouseEvent &event ) { mouseWheel( event ); } );
 		mWindowResizeConnection = window->getSignalResize().connect( signalPriority,
-		    [this]() {
-			    setWindowSize( mWindow->getSize() );
-			    if( mCamera )
-				    mCamera->setAspectRatio( mWindow->getAspectRatio() );
-			} );
+			[this]() {
+				setWindowSize( mWindow->getSize() );
+				if( mCamera )
+					mCamera->setAspectRatio( mWindow->getAspectRatio() );
+			}
+		);
 	}
 	else
 		disconnect();
-
+		
 	mLastAction = ACTION_NONE;
 }
 
@@ -110,14 +110,14 @@ bool CameraUi::isConnected() const
 	return mWindow != nullptr;
 }
 
-signals::Signal<void()> &CameraUi::getSignalCameraChange()
+signals::Signal<void()>& CameraUi::getSignalCameraChange()
 {
 	return mSignalCameraChange;
 }
 
 void CameraUi::mouseDown( app::MouseEvent &event )
 {
-	if( !mEnabled )
+	if( ! mEnabled )
 		return;
 
 	mouseDown( event.getPos() );
@@ -126,7 +126,7 @@ void CameraUi::mouseDown( app::MouseEvent &event )
 
 void CameraUi::mouseUp( app::MouseEvent &event )
 {
-	if( !mEnabled )
+	if( ! mEnabled )
 		return;
 
 	mouseUp( event.getPos() );
@@ -135,7 +135,7 @@ void CameraUi::mouseUp( app::MouseEvent &event )
 
 void CameraUi::mouseWheel( app::MouseEvent &event )
 {
-	if( !mEnabled )
+	if( ! mEnabled )
 		return;
 
 	mouseWheel( event.getWheelIncrement() );
@@ -149,7 +149,7 @@ void CameraUi::mouseUp( const vec2 &mousePos )
 
 void CameraUi::mouseDown( const vec2 &mousePos )
 {
-	if( !mCamera || !mEnabled )
+	if( ! mCamera || ! mEnabled )
 		return;
 
 	mInitialMousePos = mousePos;
@@ -160,7 +160,7 @@ void CameraUi::mouseDown( const vec2 &mousePos )
 
 void CameraUi::mouseDrag( app::MouseEvent &event )
 {
-	if( !mEnabled )
+	if( ! mEnabled )
 		return;
 
 	bool isLeftDown = event.isLeftDown();
@@ -176,7 +176,7 @@ void CameraUi::mouseDrag( app::MouseEvent &event )
 
 void CameraUi::mouseDrag( const vec2 &mousePos, bool leftDown, bool middleDown, bool rightDown )
 {
-	if( !mCamera || !mEnabled )
+	if( ! mCamera || ! mEnabled )
 		return;
 
 	int action;
@@ -188,37 +188,37 @@ void CameraUi::mouseDrag( const vec2 &mousePos, bool leftDown, bool middleDown, 
 		action = ACTION_TUMBLE;
 	else
 		return;
-
+	
 	if( action != mLastAction ) {
 		mInitialCam = *mCamera;
 		mInitialPivotDistance = mCamera->getPivotDistance();
 		mInitialMousePos = mousePos;
 	}
-
+	
 	mLastAction = action;
 
 	if( action == ACTION_ZOOM ) { // zooming
 		int mouseDelta = ( mousePos.x - mInitialMousePos.x ) + ( mousePos.y - mInitialMousePos.y );
 
 		float newPivotDistance = powf( 2.71828183f, 2 * -mouseDelta / length( vec2( getWindowSize() ) ) ) * mInitialPivotDistance;
-		vec3  oldTarget = mInitialCam.getEyePoint() + mInitialCam.getViewDirection() * mInitialPivotDistance;
-		vec3  newEye = oldTarget - mInitialCam.getViewDirection() * newPivotDistance;
+		vec3 oldTarget = mInitialCam.getEyePoint() + mInitialCam.getViewDirection() * mInitialPivotDistance;
+		vec3 newEye = oldTarget - mInitialCam.getViewDirection() * newPivotDistance;
 		mCamera->setEyePoint( newEye );
 		mCamera->setPivotDistance( std::max<float>( newPivotDistance, mMinimumPivotDistance ) );
 	}
 	else if( action == ACTION_PAN ) { // panning
 		float deltaX = ( mousePos.x - mInitialMousePos.x ) / (float)getWindowSize().x * mInitialPivotDistance;
 		float deltaY = ( mousePos.y - mInitialMousePos.y ) / (float)getWindowSize().y * mInitialPivotDistance;
-		vec3  right, up;
+		vec3 right, up;
 		mInitialCam.getBillboardVectors( &right, &up );
 		mCamera->setEyePoint( mInitialCam.getEyePoint() - right * deltaX + up * deltaY );
 	}
 	else { // tumbling
 		float deltaX = ( mousePos.x - mInitialMousePos.x ) / -100.0f;
 		float deltaY = ( mousePos.y - mInitialMousePos.y ) / 100.0f;
-		vec3  mW = normalize( mInitialCam.getViewDirection() );
-		bool  invertMotion = ( mInitialCam.getOrientation() * mInitialCam.getWorldUp() ).y < 0.0f;
-
+		vec3 mW = normalize( mInitialCam.getViewDirection() );
+		bool invertMotion = ( mInitialCam.getOrientation() * mInitialCam.getWorldUp() ).y < 0.0f;
+		
 		vec3 mU = normalize( cross( mInitialCam.getWorldUp(), mW ) );
 
 		if( invertMotion ) {
@@ -232,15 +232,15 @@ void CameraUi::mouseDrag( const vec2 &mousePos, bool leftDown, bool middleDown, 
 		mCamera->setEyePoint( mInitialCam.getEyePoint() + mInitialCam.getViewDirection() * mInitialPivotDistance + rotatedVec );
 		mCamera->setOrientation( glm::angleAxis( deltaX, mInitialCam.getWorldUp() ) * glm::angleAxis( deltaY, mU ) * mInitialCam.getOrientation() );
 	}
-
+	
 	mSignalCameraChange.emit();
 }
 
 void CameraUi::mouseWheel( float increment )
 {
-	if( !mCamera || !mEnabled )
+	if( ! mCamera || ! mEnabled )
 		return;
-
+	
 	// some mice issue mouseWheel events during middle-clicks; filter that out
 	if( mLastAction != ACTION_NONE )
 		return;
@@ -253,7 +253,7 @@ void CameraUi::mouseWheel( float increment )
 	vec3 newEye = mCamera->getEyePoint() + mCamera->getViewDirection() * ( mCamera->getPivotDistance() * ( 1 - multiplier ) );
 	mCamera->setEyePoint( newEye );
 	mCamera->setPivotDistance( std::max<float>( mCamera->getPivotDistance() * multiplier, mMinimumPivotDistance ) );
-
+	
 	mSignalCameraChange.emit();
 }
 

@@ -23,13 +23,13 @@
 */
 
 #include "cinder/gl/GlslProg.h"
-#include "cinder/Log.h"
-#include "cinder/Noncopyable.h"
-#include "cinder/gl/ConstantConversions.h"
 #include "cinder/gl/Context.h"
+#include "cinder/gl/ConstantConversions.h"
 #include "cinder/gl/Environment.h"
 #include "cinder/gl/ShaderPreprocessor.h"
 #include "cinder/gl/scoped.h"
+#include "cinder/Log.h"
+#include "cinder/Noncopyable.h"
 
 #include "glm/gtc/type_ptr.hpp"
 
@@ -40,23 +40,22 @@
 
 using namespace std;
 
-namespace cinder {
-namespace gl {
-
-static GlslProg::UniformSemanticMap sDefaultUniformNameToSemanticMap;
-static GlslProg::AttribSemanticMap  sDefaultAttribNameToSemanticMap;
-
+namespace cinder { namespace gl {
+    
+static GlslProg::UniformSemanticMap	sDefaultUniformNameToSemanticMap;
+static GlslProg::AttribSemanticMap	sDefaultAttribNameToSemanticMap;
+	
 class UniformValueCache : cinder::Noncopyable {
   public:
 	UniformValueCache( uint32_t bufferSize )
-	    : mBuffer( new uint8_t[bufferSize] ), mValidBytes( new bool[bufferSize] ), mBufferSize( bufferSize )
+		: mBuffer( new uint8_t[bufferSize] ), mValidBytes( new bool[bufferSize] ), mBufferSize( bufferSize )
 	{
 		for( uint32_t b = 0; b < bufferSize; ++b )
 			mValidBytes[b] = false;
 	}
-
+	
 	// 'uniformByteOffset' expresses where the first element of an array is: example[0], although 'arrayIndex' may be >0
-	bool shouldBuffer( uint32_t uniformByteOffset, uint32_t typeSize, int arrayIndex, int indexCount, const void *valuePointer )
+	bool shouldBuffer( uint32_t uniformByteOffset, uint32_t typeSize, int arrayIndex, int indexCount, const void* valuePointer )
 	{
 		// are all the bytes in this range valid?
 		bool cacheValid = true;
@@ -66,10 +65,10 @@ class UniformValueCache : cinder::Noncopyable {
 				break;
 			}
 		}
-
-		uint8_t *cachePtr = mBuffer.get() + uniformByteOffset + arrayIndex * typeSize;
-
-		if( !cacheValid ) { // if not, record it and cache it
+	
+		uint8_t* cachePtr = mBuffer.get() + uniformByteOffset + arrayIndex * typeSize;
+		
+		if( ! cacheValid ) { // if not, record it and cache it
 			for( uint32_t b = uniformByteOffset + arrayIndex * typeSize; b < uniformByteOffset + ( arrayIndex + indexCount ) * typeSize; ++b )
 				mValidBytes[b] = true;
 
@@ -87,130 +86,115 @@ class UniformValueCache : cinder::Noncopyable {
 			}
 		}
 	}
-
+	
   private:
-	std::vector<uint32_t>      mCachedByteOffsets;
-	std::unique_ptr<uint8_t[]> mBuffer;
-	std::unique_ptr<bool[]>    mValidBytes;
-	uint32_t                   mBufferSize;
+	std::vector<uint32_t>			mCachedByteOffsets;
+	std::unique_ptr<uint8_t[]>		mBuffer;
+	std::unique_ptr<bool[]>			mValidBytes;
+	uint32_t						mBufferSize;
 };
-
+	
 //////////////////////////////////////////////////////////////////////////
 // GlslProg::Attribute
-
+	
 // This function and variable layout is based on the specification from
 // https://www.opengl.org/registry/specs/ARB/vertex_attrib_64bit.txt
 void GlslProg::Attribute::getShaderAttribLayout( GLenum type, uint32_t *numDimsPerVertexPointer, uint32_t *numLocationsExpected )
 {
-	switch( type ) {
-	case GL_UNSIGNED_INT:
-	case GL_INT:
-	case GL_FLOAT:
-		*numDimsPerVertexPointer = 1;
-		*numLocationsExpected = 1;
+	switch ( type ) {
+		case GL_UNSIGNED_INT:
+		case GL_INT:
+		case GL_FLOAT:
+			*numDimsPerVertexPointer = 1; *numLocationsExpected = 1;
 		break;
-#if !defined( CINDER_GL_ES_2 )
-	case GL_UNSIGNED_INT_VEC2:
+#if ! defined( CINDER_GL_ES_2 )
+		case GL_UNSIGNED_INT_VEC2:
 #endif
-	case GL_INT_VEC2:
-	case GL_FLOAT_VEC2:
-		*numDimsPerVertexPointer = 2;
-		*numLocationsExpected = 1;
+		case GL_INT_VEC2:
+		case GL_FLOAT_VEC2:
+			*numDimsPerVertexPointer = 2; *numLocationsExpected = 1;
 		break;
-#if !defined( CINDER_GL_ES_2 )
-	case GL_UNSIGNED_INT_VEC3:
+#if ! defined( CINDER_GL_ES_2 )
+		case GL_UNSIGNED_INT_VEC3:
 #endif
-	case GL_INT_VEC3:
-	case GL_FLOAT_VEC3:
-		*numDimsPerVertexPointer = 3;
-		*numLocationsExpected = 1;
+		case GL_INT_VEC3:
+		case GL_FLOAT_VEC3:
+			*numDimsPerVertexPointer = 3; *numLocationsExpected = 1;
 		break;
-#if !defined( CINDER_GL_ES_2 )
-	case GL_UNSIGNED_INT_VEC4:
+#if ! defined( CINDER_GL_ES_2 )
+		case GL_UNSIGNED_INT_VEC4:
 #endif
-	case GL_INT_VEC4:
-	case GL_FLOAT_VEC4:
-		*numDimsPerVertexPointer = 4;
-		*numLocationsExpected = 1;
+		case GL_INT_VEC4:
+		case GL_FLOAT_VEC4:
+			*numDimsPerVertexPointer = 4; *numLocationsExpected = 1;
 		break;
-	case GL_FLOAT_MAT2:
-		*numDimsPerVertexPointer = 2;
-		*numLocationsExpected = 2;
+		case GL_FLOAT_MAT2:
+			*numDimsPerVertexPointer = 2; *numLocationsExpected = 2;
 		break;
-#if !defined( CINDER_GL_ES_2 )
-	case GL_FLOAT_MAT2x3:
-		*numDimsPerVertexPointer = 3;
-		*numLocationsExpected = 2;
+#if ! defined( CINDER_GL_ES_2 )
+		case GL_FLOAT_MAT2x3:
+			*numDimsPerVertexPointer = 3; *numLocationsExpected = 2;
 		break;
-	case GL_FLOAT_MAT3x2:
-		*numDimsPerVertexPointer = 2;
-		*numLocationsExpected = 3;
+		case GL_FLOAT_MAT3x2:
+			*numDimsPerVertexPointer = 2; *numLocationsExpected = 3;
 		break;
-	case GL_FLOAT_MAT4x2:
-		*numDimsPerVertexPointer = 2;
-		*numLocationsExpected = 4;
+		case GL_FLOAT_MAT4x2:
+			*numDimsPerVertexPointer = 2; *numLocationsExpected = 4;
 		break;
-	case GL_FLOAT_MAT2x4:
-		*numDimsPerVertexPointer = 4;
-		*numLocationsExpected = 2;
+		case GL_FLOAT_MAT2x4:
+			*numDimsPerVertexPointer = 4; *numLocationsExpected = 2;
 		break;
 #endif
-	case GL_FLOAT_MAT3:
-		*numDimsPerVertexPointer = 3;
-		*numLocationsExpected = 3;
+		case GL_FLOAT_MAT3:
+			*numDimsPerVertexPointer = 3; *numLocationsExpected = 3;
 		break;
-#if !defined( CINDER_GL_ES_2 )
-	case GL_FLOAT_MAT3x4:
-		*numDimsPerVertexPointer = 4;
-		*numLocationsExpected = 3;
+#if ! defined( CINDER_GL_ES_2 )
+		case GL_FLOAT_MAT3x4:
+			*numDimsPerVertexPointer = 4; *numLocationsExpected = 3;
 		break;
-	case GL_FLOAT_MAT4x3:
-		*numDimsPerVertexPointer = 3;
-		*numLocationsExpected = 4;
+		case GL_FLOAT_MAT4x3:
+			*numDimsPerVertexPointer = 3; *numLocationsExpected = 4;
 		break;
 #endif
-	case GL_FLOAT_MAT4:
-		*numDimsPerVertexPointer = 4;
-		*numLocationsExpected = 4;
+		case GL_FLOAT_MAT4:
+			*numDimsPerVertexPointer = 4; *numLocationsExpected = 4;
 		break;
-	default:
-		CI_LOG_E( "Unknown type for attrib: " << constantToString( type ) );
-		*numDimsPerVertexPointer = 0;
-		*numLocationsExpected = 0;
-		break;
+		default:
+			CI_LOG_E( "Unknown type for attrib: " << constantToString( type ) );
+			*numDimsPerVertexPointer = 0; *numLocationsExpected = 0;
+			break;
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 // GlslProg::Format
 GlslProg::Format::Format()
-    : mPreprocessingEnabled( true ), mVersion( 0 )
+	: mPreprocessingEnabled( true ), mVersion( 0 )
 #if defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )
-      ,
-      mTransformFormat( -1 )
+	, mTransformFormat( -1 )
 #endif
 {
 }
 
-GlslProg::Format &GlslProg::Format::vertex( const DataSourceRef &dataSource )
+GlslProg::Format& GlslProg::Format::vertex( const DataSourceRef &dataSource )
 {
 	setShaderSource( dataSource, &mVertexShader, &mVertexShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::vertex( const string &vertexShader )
+GlslProg::Format& GlslProg::Format::vertex( const string &vertexShader )
 {
 	setShaderSource( vertexShader, &mVertexShader, &mVertexShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::fragment( const DataSourceRef &dataSource )
+GlslProg::Format& GlslProg::Format::fragment( const DataSourceRef &dataSource )
 {
 	setShaderSource( dataSource, &mFragmentShader, &mFragmentShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::fragment( const string &fragmentShader )
+GlslProg::Format& GlslProg::Format::fragment( const string &fragmentShader )
 {
 	setShaderSource( fragmentShader, &mFragmentShader, &mFragmentShaderPath );
 	return *this;
@@ -218,13 +202,13 @@ GlslProg::Format &GlslProg::Format::fragment( const string &fragmentShader )
 
 #if defined( CINDER_GL_HAS_GEOM_SHADER )
 
-GlslProg::Format &GlslProg::Format::geometry( const DataSourceRef &dataSource )
+GlslProg::Format& GlslProg::Format::geometry( const DataSourceRef &dataSource )
 {
 	setShaderSource( dataSource, &mGeometryShader, &mGeometryShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::geometry( const string &geometryShader )
+GlslProg::Format& GlslProg::Format::geometry( const string &geometryShader )
 {
 	setShaderSource( geometryShader, &mGeometryShader, &mGeometryShaderPath );
 	return *this;
@@ -233,25 +217,25 @@ GlslProg::Format &GlslProg::Format::geometry( const string &geometryShader )
 #endif // defined( CINDER_GL_HAS_GEOM_SHADER )
 
 #if defined( CINDER_GL_HAS_TESS_SHADER )
-GlslProg::Format &GlslProg::Format::tessellationCtrl( const DataSourceRef &dataSource )
+GlslProg::Format& GlslProg::Format::tessellationCtrl( const DataSourceRef &dataSource )
 {
 	setShaderSource( dataSource, &mTessellationCtrlShader, &mTessellationCtrlShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::tessellationCtrl( const string &tessellationCtrlShader )
+GlslProg::Format& GlslProg::Format::tessellationCtrl( const string &tessellationCtrlShader )
 {
 	setShaderSource( tessellationCtrlShader, &mTessellationCtrlShader, &mTessellationCtrlShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::tessellationEval( const DataSourceRef &dataSource )
+GlslProg::Format& GlslProg::Format::tessellationEval( const DataSourceRef &dataSource )
 {
 	setShaderSource( dataSource, &mTessellationEvalShader, &mTessellationEvalShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::tessellationEval( const string &tessellationEvalShader )
+GlslProg::Format& GlslProg::Format::tessellationEval( const string &tessellationEvalShader )
 {
 	setShaderSource( tessellationEvalShader, &mTessellationEvalShader, &mTessellationEvalShaderPath );
 	return *this;
@@ -261,13 +245,13 @@ GlslProg::Format &GlslProg::Format::tessellationEval( const string &tessellation
 
 #if defined( CINDER_GL_HAS_COMPUTE_SHADER )
 
-GlslProg::Format &GlslProg::Format::compute( const DataSourceRef &dataSource )
+GlslProg::Format& GlslProg::Format::compute( const DataSourceRef &dataSource )
 {
 	setShaderSource( dataSource, &mComputeShader, &mComputeShaderPath );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::compute( const string &computeShader )
+GlslProg::Format& GlslProg::Format::compute( const string &computeShader )
 {
 	setShaderSource( computeShader, &mComputeShader, &mComputeShaderPath );
 	return *this;
@@ -281,7 +265,7 @@ void GlslProg::Format::setShaderSource( const DataSourceRef &dataSource, string 
 		Buffer buffer( dataSource );
 		shaderSourceDest->resize( buffer.getSize() + 1 );
 		memcpy( (void *)shaderSourceDest->data(), buffer.getData(), buffer.getSize() );
-		( *shaderSourceDest )[buffer.getSize()] = 0;
+		(*shaderSourceDest)[buffer.getSize()] = 0;
 		if( dataSource->isFilePath() )
 			*shaderPathDest = dataSource->getFilePath();
 		else
@@ -299,9 +283,9 @@ void GlslProg::Format::setShaderSource( const std::string &source, std::string *
 	shaderPathDest->clear();
 }
 
-GlslProg::Format &GlslProg::Format::attrib( geom::Attrib semantic, const std::string &attribName )
+GlslProg::Format& GlslProg::Format::attrib( geom::Attrib semantic, const std::string &attribName )
 {
-	for( auto &attrib : mAttributes ) {
+	for( auto& attrib : mAttributes ) {
 		if( attrib.mName == attribName ) {
 			attrib.mSemantic = semantic;
 			return *this;
@@ -321,9 +305,9 @@ GlslProg::Format &GlslProg::Format::attrib( geom::Attrib semantic, const std::st
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::uniform( UniformSemantic semantic, const std::string &uniformName )
+GlslProg::Format& GlslProg::Format::uniform( UniformSemantic semantic, const std::string &uniformName )
 {
-	for( auto &uniform : mUniforms ) {
+	for( auto& uniform : mUniforms ) {
 		if( uniform.mName == uniformName ) {
 			uniform.mSemantic = semantic;
 			return *this;
@@ -343,33 +327,33 @@ GlslProg::Format &GlslProg::Format::uniform( UniformSemantic semantic, const std
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::define( const std::string &define )
+GlslProg::Format& GlslProg::Format::define( const std::string &define )
 {
 	mDefineDirectives.push_back( define );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::define( const std::string &define, const std::string &value )
+GlslProg::Format& GlslProg::Format::define( const std::string &define, const std::string &value )
 {
 	mDefineDirectives.push_back( define + " " + value );
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::defineDirectives( const std::vector<std::string> &defines )
+GlslProg::Format& GlslProg::Format::defineDirectives( const std::vector<std::string> &defines )
 {
 	mDefineDirectives = defines;
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::version( int version )
+GlslProg::Format& GlslProg::Format::version( int version )
 {
 	mVersion = version;
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::attribLocation( const std::string &attribName, GLint location )
+GlslProg::Format& GlslProg::Format::attribLocation( const std::string &attribName, GLint location )
 {
-	for( auto &attrib : mAttributes ) {
+	for( auto& attrib : mAttributes ) {
 		if( attrib.mName == attribName ) {
 			attrib.mLoc = location;
 			return *this;
@@ -389,9 +373,9 @@ GlslProg::Format &GlslProg::Format::attribLocation( const std::string &attribNam
 	return *this;
 }
 
-GlslProg::Format &GlslProg::Format::attribLocation( geom::Attrib attribSemantic, GLint location )
+GlslProg::Format& GlslProg::Format::attribLocation( geom::Attrib attribSemantic, GLint location )
 {
-	for( auto &attrib : mAttributes ) {
+	for( auto& attrib : mAttributes ) {
 		if( attrib.mSemantic == attribSemantic ) {
 			attrib.mLoc = location;
 			return *this;
@@ -410,8 +394,8 @@ GlslProg::Format &GlslProg::Format::attribLocation( geom::Attrib attribSemantic,
 	return *this;
 }
 
-#if !defined( CINDER_GL_ES )
-GlslProg::Format &GlslProg::Format::fragDataLocation( GLuint colorNumber, const std::string &name )
+#if ! defined( CINDER_GL_ES )
+GlslProg::Format& GlslProg::Format::fragDataLocation( GLuint colorNumber, const std::string &name )
 {
 	mFragDataLocations[name] = colorNumber;
 	return *this;
@@ -426,7 +410,7 @@ GlslProgRef GlslProg::create( const Format &format )
 	return GlslProgRef( new GlslProg( format ) );
 }
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 GlslProgRef GlslProg::create( DataSourceRef vertexShader, DataSourceRef fragmentShader, DataSourceRef geometryShader, DataSourceRef tessEvalShader, DataSourceRef tessCtrlShader )
 {
 	return GlslProgRef( new GlslProg( GlslProg::Format().vertex( vertexShader ).fragment( fragmentShader ).geometry( geometryShader ).tessellationEval( tessEvalShader ).tessellationCtrl( tessCtrlShader ) ) );
@@ -436,7 +420,7 @@ GlslProgRef GlslProg::create( const string &vertexShader, const string &fragment
 {
 	return GlslProgRef( new GlslProg( GlslProg::Format().vertex( vertexShader ).fragment( fragmentShader ).geometry( geometryShader ).tessellationEval( tessEvalShader ).tessellationCtrl( tessCtrlShader ) ) );
 }
-
+	
 #else
 GlslProgRef GlslProg::create( DataSourceRef vertexShader, DataSourceRef fragmentShader )
 {
@@ -447,9 +431,9 @@ GlslProgRef GlslProg::create( const string &vertexShader, const string &fragment
 {
 	return GlslProgRef( new GlslProg( GlslProg::Format().vertex( vertexShader ).fragment( fragmentShader ) ) );
 }
-
+	
 #endif
-
+	
 GlslProg::~GlslProg()
 {
 	auto ctx = gl::context();
@@ -465,10 +449,9 @@ GlslProg::~GlslProg()
 // GlslProg
 
 GlslProg::GlslProg( const Format &format )
-    : mUniformValueCache( nullptr )
+	: mUniformValueCache( nullptr )
 #if defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )
-      ,
-      mTransformFeedbackFormat( -1 )
+		, mTransformFeedbackFormat( -1 )
 #endif
 {
 	mHandle = glCreateProgram();
@@ -488,43 +471,44 @@ GlslProg::GlslProg( const Format &format )
 			mShaderPreprocessor->setVersion( format.getVersion() );
 	}
 
-	if( !format.getVertex().empty() )
+	if( ! format.getVertex().empty() )
 		loadShader( format.getVertex(), format.mVertexShaderPath, GL_VERTEX_SHADER );
-	if( !format.getFragment().empty() )
+	if( ! format.getFragment().empty() )
 		loadShader( format.getFragment(), format.mFragmentShaderPath, GL_FRAGMENT_SHADER );
 #if defined( CINDER_GL_HAS_GEOM_SHADER )
-	if( !format.getGeometry().empty() )
+	if( ! format.getGeometry().empty() )
 		loadShader( format.getGeometry(), format.mGeometryShaderPath, GL_GEOMETRY_SHADER );
 #endif
 #if defined( CINDER_GL_HAS_TESS_SHADER )
-	if( !format.getTessellationCtrl().empty() )
+	if( ! format.getTessellationCtrl().empty() )
 		loadShader( format.getTessellationCtrl(), format.mTessellationCtrlShaderPath, GL_TESS_CONTROL_SHADER );
-	if( !format.getTessellationEval().empty() )
+	if( ! format.getTessellationEval().empty() )
 		loadShader( format.getTessellationEval(), format.mTessellationEvalShaderPath, GL_TESS_EVALUATION_SHADER );
 #endif
 #if defined( CINDER_GL_HAS_COMPUTE_SHADER )
-	if( !format.getCompute().empty() )
+	if( ! format.getCompute().empty() )
 		loadShader( format.getCompute(), format.mComputeShaderPath, GL_COMPUTE_SHADER );
-#endif
-	auto &userDefinedAttribs = format.getAttributes();
-
+#endif    
+    auto & userDefinedAttribs = format.getAttributes();
+	
 	bool foundPositionSemantic = false;
 	// if the user has provided a location make sure to bind that location before we go further
 	for( auto &attrib : userDefinedAttribs ) {
 		if( attrib.mLoc > -1 ) {
 			if( attrib.mName == "ciPosition" || attrib.mSemantic == geom::Attrib::POSITION )
 				foundPositionSemantic = true;
-
+			
 			// The user may have defined a location for an attrib but is relying on the default
 			// name used by Cinder. Therefore, we need to find the attrib in the map and affix
 			// the default name.
 			std::string attribName = attrib.mName;
 			if( attribName.empty() ) {
 				const auto &defaultAttribMap = getDefaultAttribNameToSemanticMap();
-				auto        attribSemantic = attrib.mSemantic;
-				auto foundDefaultAttrib = find_if( defaultAttribMap.begin(), defaultAttribMap.end(), [attribSemantic]( const std::pair<const std::string, geom::Attrib> &defaultAttrib ) {
-					return defaultAttrib.second == attribSemantic;
-				} );
+				auto attribSemantic = attrib.mSemantic;
+				auto foundDefaultAttrib = find_if( defaultAttribMap.begin(), defaultAttribMap.end(),
+					[attribSemantic]( const std::pair<const std::string, geom::Attrib> &defaultAttrib ){
+						return defaultAttrib.second == attribSemantic;
+				});
 				if( foundDefaultAttrib != defaultAttribMap.end() )
 					attribName = foundDefaultAttrib->first;
 				else {
@@ -535,21 +519,21 @@ GlslProg::GlslProg( const Format &format )
 			glBindAttribLocation( mHandle, attrib.mLoc, attribName.c_str() );
 		}
 	}
-
+	
 	// we always want to force position to be at vertex attribute 0; an imperfect workaround for
 	// http://stackoverflow.com/questions/13348885/why-does-opengl-drawing-fail-when-vertex-attrib-array-zero-is-disabled
-	if( !foundPositionSemantic )
+	if( ! foundPositionSemantic )
 		glBindAttribLocation( mHandle, 0, "ciPosition" );
-
+	
 #if defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )
-	if( !format.getVaryings().empty() && format.getTransformFormat() > 0 ) {
-		auto &userVaryings = format.getVaryings();
+	if( ! format.getVaryings().empty() && format.getTransformFormat() > 0 ) {
+		auto & userVaryings = format.getVaryings();
 		mTransformFeedbackVaryings.resize( format.getVaryings().size() );
-		std::vector<const GLchar *> transformFeedbackStarts;
-		int                         i = 0;
+		std::vector<const GLchar*> transformFeedbackStarts;
+		int i = 0;
 		// This is a mess due to an NVidia driver bug on MSW which expects the memory passed to glTransformFeedbackVaryings
 		// to still be around after the call. We allocate the storage and put it on the GlslProg itself to be freed at destruction
-		for( auto &transformFeedbackVaryings : mTransformFeedbackVaryings ) {
+		for( auto & transformFeedbackVaryings : mTransformFeedbackVaryings ) {
 			transformFeedbackVaryings.mName = userVaryings[i++];
 			transformFeedbackStarts.push_back( transformFeedbackVaryings.mName.c_str() );
 		}
@@ -558,18 +542,18 @@ GlslProg::GlslProg( const Format &format )
 	}
 #endif
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	// setup fragment data locations
 	for( const auto &fragDataLocation : format.getFragDataLocations() )
 		glBindFragDataLocation( mHandle, fragDataLocation.second, fragDataLocation.first.c_str() );
 #endif
 
 	link();
-
+	
 	cacheActiveAttribs();
 	cacheActiveUniforms();
 #if defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )
-	if( !format.getVaryings().empty() ) {
+	if( ! format.getVaryings().empty() ) {
 		cacheActiveTransformFeedbackVaryings();
 	}
 #endif
@@ -577,11 +561,11 @@ GlslProg::GlslProg( const Format &format )
 	cacheActiveUniformBlocks();
 #endif
 
-	auto &userDefinedUniforms = format.getUniforms();
+	auto & userDefinedUniforms = format.getUniforms();
 	// check if the user thinks there's a uniform that isn't active
 	for( auto &userUniform : userDefinedUniforms ) {
 		bool foundUserDefined = false;
-		for( auto &activeUniform : mUniforms ) {
+		for( auto & activeUniform : mUniforms ) {
 			// if the user defined name and the active name are the same
 			if( userUniform.mName == activeUniform.mName ) {
 				foundUserDefined = true;
@@ -591,7 +575,7 @@ GlslProg::GlslProg( const Format &format )
 				break;
 			}
 		}
-		if( !foundUserDefined ) {
+		if( ! foundUserDefined ) {
 			CI_LOG_W( "Unknown uniform: \"" << userUniform.mName << "\"" );
 			mLoggedUniformNames.insert( userUniform.mName );
 		}
@@ -602,7 +586,8 @@ GlslProg::GlslProg( const Format &format )
 		for( auto &activeAttrib : mAttributes ) {
 			// check if either the user defined name or user defined loc for
 			// this attrib are the same as the active attribute
-			if( userAttrib.mName == activeAttrib.mName || userAttrib.mLoc == activeAttrib.mLoc ) {
+			if( userAttrib.mName == activeAttrib.mName ||
+			    userAttrib.mLoc == activeAttrib.mLoc ) {
 				// we've found the user defined attribute
 				active = true;
 				// check if the user defined attribute has cached what type
@@ -613,19 +598,19 @@ GlslProg::GlslProg( const Format &format )
 				break;
 			}
 		}
-		if( !active ) {
+		if( ! active ) {
 			CI_LOG_W( "Unknown attribute: \"" << userAttrib.mName << "\"" );
 		}
 	}
-
+    
 	setLabel( format.getLabel() );
 	gl::context()->glslProgCreated( this );
 }
 
-GlslProg::UniformSemanticMap &GlslProg::getDefaultUniformNameToSemanticMap()
+GlslProg::UniformSemanticMap& GlslProg::getDefaultUniformNameToSemanticMap()
 {
 	static bool initialized = false;
-	if( !initialized ) {
+	if( ! initialized ) {
 		sDefaultUniformNameToSemanticMap["ciModelMatrix"] = UNIFORM_MODEL_MATRIX;
 		sDefaultUniformNameToSemanticMap["ciModelMatrixInverse"] = UNIFORM_MODEL_MATRIX_INVERSE;
 		sDefaultUniformNameToSemanticMap["ciModelMatrixInverseTranspose"] = UNIFORM_MODEL_MATRIX_INVERSE_TRANSPOSE;
@@ -645,14 +630,14 @@ GlslProg::UniformSemanticMap &GlslProg::getDefaultUniformNameToSemanticMap()
 		sDefaultUniformNameToSemanticMap["ciElapsedSeconds"] = UNIFORM_ELAPSED_SECONDS;
 		initialized = true;
 	}
-
+	
 	return sDefaultUniformNameToSemanticMap;
 }
 
-GlslProg::AttribSemanticMap &GlslProg::getDefaultAttribNameToSemanticMap()
+GlslProg::AttribSemanticMap& GlslProg::getDefaultAttribNameToSemanticMap()
 {
 	static bool initialized = false;
-	if( !initialized ) {
+	if( ! initialized ) {
 		sDefaultAttribNameToSemanticMap["ciPosition"] = geom::Attrib::POSITION;
 		sDefaultAttribNameToSemanticMap["ciNormal"] = geom::Attrib::NORMAL;
 		sDefaultAttribNameToSemanticMap["ciTangent"] = geom::Attrib::TANGENT;
@@ -666,7 +651,7 @@ GlslProg::AttribSemanticMap &GlslProg::getDefaultAttribNameToSemanticMap()
 		sDefaultAttribNameToSemanticMap["ciBoneWeight"] = geom::Attrib::BONE_WEIGHT;
 		initialized = true;
 	}
-
+	
 	return sDefaultAttribNameToSemanticMap;
 }
 
@@ -675,21 +660,21 @@ void GlslProg::loadShader( const string &shaderSource, const fs::path &shaderPat
 	GLuint handle = glCreateShader( shaderType );
 	if( mShaderPreprocessor ) {
 		set<fs::path> includedFiles;
-		string        preprocessedSource = mShaderPreprocessor->parse( shaderSource, shaderPath, &includedFiles );
+		string preprocessedSource = mShaderPreprocessor->parse( shaderSource, shaderPath, &includedFiles );
 		mShaderPreprocessorIncludedFiles.insert( mShaderPreprocessorIncludedFiles.end(), includedFiles.begin(), includedFiles.end() );
 
 		const char *cStr = preprocessedSource.c_str();
-		glShaderSource( handle, 1, reinterpret_cast<const GLchar **>( &cStr ), NULL );
+		glShaderSource( handle, 1, reinterpret_cast<const GLchar**>( &cStr ), NULL );
 	}
 	else {
 		const char *cStr = shaderSource.c_str();
-		glShaderSource( handle, 1, reinterpret_cast<const GLchar **>( &cStr ), NULL );
+		glShaderSource( handle, 1, reinterpret_cast<const GLchar**>( &cStr ), NULL );
 	}
 
 	glCompileShader( handle );
-
+	
 	GLint status;
-	glGetShaderiv( (GLuint)handle, GL_COMPILE_STATUS, &status );
+	glGetShaderiv( (GLuint) handle, GL_COMPILE_STATUS, &status );
 	if( status != GL_TRUE ) {
 		std::string log = getShaderLog( (GLuint)handle );
 		throw GlslProgCompileExc( log, shaderType );
@@ -700,72 +685,72 @@ void GlslProg::loadShader( const string &shaderSource, const fs::path &shaderPat
 void GlslProg::link()
 {
 	glLinkProgram( mHandle );
-
+	
 	// test for a GLSL link error and throw it if we have one
 	GLint status;
 	glGetProgramiv( mHandle, GL_LINK_STATUS, &status );
 	if( status != GL_TRUE ) {
 		string log;
-		GLint  logLength = 0;
-		GLint  charsWritten = 0;
+		GLint logLength = 0;
+		GLint charsWritten = 0;
 		glGetProgramiv( mHandle, GL_INFO_LOG_LENGTH, &logLength );
-
+		
 		if( logLength > 0 ) {
-			unique_ptr<GLchar[]> debugLog( new GLchar[logLength + 1] );
+			unique_ptr<GLchar[]> debugLog( new GLchar[logLength+1] );
 			glGetProgramInfoLog( mHandle, logLength, &charsWritten, debugLog.get() );
 			log.append( debugLog.get(), 0, logLength );
 		}
-
+		
 		throw GlslProgLinkExc( log );
 	}
 }
-
+	
 void GlslProg::cacheActiveAttribs()
 {
 	GLint numActiveAttrs = 0;
 	glGetProgramiv( mHandle, GL_ACTIVE_ATTRIBUTES, &numActiveAttrs );
-
-	auto &semanticNameMap = getDefaultAttribNameToSemanticMap();
+	
+	auto & semanticNameMap = getDefaultAttribNameToSemanticMap();
 	for( GLint i = 0; i < numActiveAttrs; ++i ) {
-		char    name[512];
+		char name[512];
 		GLsizei nameLength;
-		GLint   count;
-		GLenum  type;
-
+		GLint count;
+		GLenum type;
+		
 		glGetActiveAttrib( mHandle, (GLuint)i, 511, &nameLength, &count, &type, name );
 		auto loc = glGetAttribLocation( mHandle, name );
-
+		
 		geom::Attrib attributeSemantic = geom::Attrib::USER_DEFINED;
-		auto         foundSemantic = semanticNameMap.find( name );
+		auto foundSemantic = semanticNameMap.find( name );
 		if( foundSemantic != semanticNameMap.end() ) {
 			attributeSemantic = foundSemantic->second;
 		}
-
+		
 		Attribute attrib;
-		attrib.mName = name;
-		attrib.mLoc = loc;
-		attrib.mCount = count;
-		attrib.mType = type;
-		attrib.mSemantic = attributeSemantic;
+		attrib.mName		= name;
+		attrib.mLoc			= loc;
+		attrib.mCount		= count;
+		attrib.mType		= type;
+		attrib.mSemantic	= attributeSemantic;
 		mAttributes.push_back( attrib );
 	}
 }
-
+	
 void GlslProg::cacheActiveUniforms()
 {
 	GLint numActiveUniforms = 0;
 	glGetProgramiv( mHandle, GL_ACTIVE_UNIFORMS, &numActiveUniforms );
-
-	auto &semanticNameMap = getDefaultUniformNameToSemanticMap();
-
+	
+	auto & semanticNameMap = getDefaultUniformNameToSemanticMap();
+	
 	uint32_t uniformValueCacheSize = 0;
-
+	
 	for( GLint i = 0; i < numActiveUniforms; ++i ) {
-		char    name[512];
+		char name[512];
 		GLsizei nameLength;
-		GLint   count;
-		GLenum  type;
-
+		GLint count;
+		GLenum type;
+		
 		glGetActiveUniform( mHandle, (GLuint)i, 511, &nameLength, &count, &type, name );
 		auto loc = glGetUniformLocation( mHandle, name );
 		// This may be a part of a uniform block, in that case it will be counted as
@@ -773,27 +758,27 @@ void GlslProg::cacheActiveUniforms()
 		// when we cache the uniform block.
 		if( loc != -1 ) {
 			UniformSemantic uniformSemantic = UniformSemantic::UNIFORM_USER_DEFINED;
-
+			
 			auto foundSemantic = semanticNameMap.find( name );
 			if( foundSemantic != semanticNameMap.end() ) {
 				uniformSemantic = foundSemantic->second;
 			}
-
+			
 			Uniform uniform;
-			uniform.mName = name;
-			uniform.mLoc = loc;
-			uniform.mIndex = i;
-			uniform.mCount = count;
-			uniform.mType = type;
-			uniform.mTypeSize = gl::typeToBytes( type );
-			uniform.mSemantic = uniformSemantic;
-			uniform.mBytePointer = uniformValueCacheSize;
-			uniformValueCacheSize += uniform.mTypeSize * count;
+			uniform.mName			= name;
+			uniform.mLoc			= loc;
+			uniform.mIndex			= i;
+			uniform.mCount			= count;
+			uniform.mType			= type;
+			uniform.mTypeSize		= gl::typeToBytes( type );
+			uniform.mSemantic		= uniformSemantic;
+			uniform.mBytePointer	= uniformValueCacheSize;
+			uniformValueCacheSize  += uniform.mTypeSize * count;
 			mUniforms.push_back( uniform );
 		}
 	}
-
-#if !defined( DISABLE_UNIFORM_CACHING )
+	
+#if ! defined( DISABLE_UNIFORM_CACHING )
 	if( numActiveUniforms )
 		mUniformValueCache = unique_ptr<UniformValueCache>( new UniformValueCache( uniformValueCacheSize ) );
 #endif
@@ -804,84 +789,84 @@ void GlslProg::cacheActiveUniformBlocks()
 {
 	GLint numActiveUniformBlocks = 0;
 	glGetProgramiv( mHandle, GL_ACTIVE_UNIFORM_BLOCKS, &numActiveUniformBlocks );
-
-	auto &semanticNameMap = getDefaultUniformNameToSemanticMap();
+	
+	auto & semanticNameMap = getDefaultUniformNameToSemanticMap();
 	for( GLint i = 0; i < numActiveUniformBlocks; i++ ) {
-		GLchar  name[500];
+		GLchar name[500];
 		GLsizei nameLength;
-		GLint   blockBinding;
-		GLint   dataSize;
-		GLint   numActiveUniforms;
-
+		GLint blockBinding;
+		GLint dataSize;
+		GLint numActiveUniforms;
+		
 		glGetActiveUniformBlockName( mHandle, i, 500, &nameLength, name );
 		name[nameLength] = 0;
-
+		
 		glGetActiveUniformBlockiv( mHandle, i, GL_UNIFORM_BLOCK_BINDING, &blockBinding );
 		glGetActiveUniformBlockiv( mHandle, i, GL_UNIFORM_BLOCK_DATA_SIZE, &dataSize );
 		glGetActiveUniformBlockiv( mHandle, i, GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, &numActiveUniforms );
-
+		
 		const GLuint loc = glGetUniformBlockIndex( mHandle, name );
-
+		
 		UniformBlock uniformBlock;
 		uniformBlock.mName = name;
 		uniformBlock.mLoc = loc;
 		uniformBlock.mDataSize = dataSize;
 		uniformBlock.mBlockBinding = blockBinding;
-
+		
 		std::vector<GLint> uniformIndices( numActiveUniforms );
 		glGetActiveUniformBlockiv( mHandle, i, GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, uniformIndices.data() );
 		std::vector<GLuint> unSignedIndices( numActiveUniforms );
-		int                 j = 0;
-		for( auto &index : uniformIndices ) {
-			char    name[512];
+		int j = 0;
+		for( auto & index : uniformIndices ) {
+			char name[512];
 			GLsizei nameLength;
-			GLint   count;
-			GLenum  type;
-
+			GLint count;
+			GLenum type;
+			
 			glGetActiveUniform( mHandle, (GLuint)index, 511, &nameLength, &count, &type, name );
-
+			
 			UniformSemantic uniformSemantic = UniformSemantic::UNIFORM_USER_DEFINED;
-
+			
 			auto foundSemantic = semanticNameMap.find( name );
 			if( foundSemantic != semanticNameMap.end() ) {
 				uniformSemantic = foundSemantic->second;
 			}
-
+			
 			Uniform uniform;
-			uniform.mName = name;
-			uniform.mLoc = -1;
-			uniform.mIndex = index;
-			uniform.mCount = count;
-			uniform.mType = type;
-			uniform.mSemantic = uniformSemantic;
-			unSignedIndices[j++] = index;
-
+			uniform.mName		= name;
+			uniform.mLoc		= -1;
+			uniform.mIndex      = index;
+			uniform.mCount		= count;
+			uniform.mType		= type;
+			uniform.mSemantic	= uniformSemantic;
+			unSignedIndices[j++]= index;
+			
 			uniformBlock.mActiveUniforms.push_back( uniform );
 		}
 
 		std::vector<GLint> uniformOffset( numActiveUniforms );
 		glGetActiveUniformsiv( mHandle,
-		    numActiveUniforms,
-		    unSignedIndices.data(),
-		    GL_UNIFORM_OFFSET,
-		    uniformOffset.data() );
+							  numActiveUniforms,
+							  unSignedIndices.data(),
+							  GL_UNIFORM_OFFSET,
+							  uniformOffset.data() );
 		std::vector<GLint> uniformArrayStride( numActiveUniforms );
 		glGetActiveUniformsiv( mHandle,
-		    numActiveUniforms,
-		    unSignedIndices.data(),
-		    GL_UNIFORM_ARRAY_STRIDE,
-		    uniformArrayStride.data() );
+							  numActiveUniforms,
+							  unSignedIndices.data(),
+							  GL_UNIFORM_ARRAY_STRIDE,
+							  uniformArrayStride.data() );
 		std::vector<GLint> uniformMatrixStride( numActiveUniforms );
 		glGetActiveUniformsiv( mHandle,
-		    numActiveUniforms,
-		    unSignedIndices.data(),
-		    GL_UNIFORM_MATRIX_STRIDE,
-		    uniformMatrixStride.data() );
-
+							  numActiveUniforms,
+							  unSignedIndices.data(),
+							  GL_UNIFORM_MATRIX_STRIDE,
+							  uniformMatrixStride.data() );
+		
 		uniformBlock.mActiveUniformInfo.insert( make_pair( GL_UNIFORM_OFFSET, uniformOffset ) );
 		uniformBlock.mActiveUniformInfo.insert( make_pair( GL_UNIFORM_ARRAY_STRIDE, uniformArrayStride ) );
 		uniformBlock.mActiveUniformInfo.insert( make_pair( GL_UNIFORM_MATRIX_STRIDE, uniformMatrixStride ) );
-
+		
 		mUniformBlocks.push_back( uniformBlock );
 	}
 }
@@ -893,17 +878,17 @@ void GlslProg::cacheActiveTransformFeedbackVaryings()
 {
 	GLint numActiveTransformFeedbackVaryings;
 	glGetProgramiv( mHandle, GL_TRANSFORM_FEEDBACK_VARYINGS, &numActiveTransformFeedbackVaryings );
-
+	
 	if( numActiveTransformFeedbackVaryings > 0 ) {
 		for( int i = 0; i < numActiveTransformFeedbackVaryings; i++ ) {
-			GLchar  name[500];
-			GLint   length;
+			GLchar name[500];
+			GLint length;
 			GLsizei count;
-			GLenum  type;
-
+			GLenum type;
+			
 			glGetTransformFeedbackVarying( mHandle, i, 500, &length, &count, &type, name );
 			name[length] = 0;
-
+			
 			// So they've told us at setup what to look for. Find the varying, they told us
 			// about so that we can finish the setup.
 			auto varying = findTransformFeedbackVaryings( name );
@@ -919,7 +904,7 @@ void GlslProg::cacheActiveTransformFeedbackVaryings()
 void GlslProg::bind() const
 {
 	// this will in turn call bindImpl; this is so that the context can update its reference to the active shader
-	gl::context()->bindGlslProg( const_cast<GlslProg *>( this ) );
+	gl::context()->bindGlslProg( const_cast<GlslProg*>( this ) );
 }
 
 // This is called by the Context whenever a GlslProg is bound. The indirection is so that the Context can update its reference to the active shader
@@ -931,22 +916,22 @@ void GlslProg::bindImpl() const
 std::string GlslProg::getShaderLog( GLuint handle ) const
 {
 	string log;
-
-	GLchar *debugLog;
-	GLint   charsWritten = 0;
-	GLint   debugLength = 0;
+	
+	GLchar* debugLog;
+	GLint charsWritten	= 0;
+	GLint debugLength	= 0;
 	glGetShaderiv( handle, GL_INFO_LOG_LENGTH, &debugLength );
-
+	
 	if( debugLength > 0 ) {
 		debugLog = new GLchar[debugLength];
 		glGetShaderInfoLog( handle, debugLength, &charsWritten, debugLog );
 		log.append( debugLog, 0, debugLength );
-		delete[] debugLog;
+		delete [] debugLog;
 	}
-
+	
 	return log;
 }
-
+	
 void GlslProg::logMissingUniform( const std::string &name ) const
 {
 	if( mLoggedUniformNames.count( name ) == 0 ) {
@@ -954,7 +939,7 @@ void GlslProg::logMissingUniform( const std::string &name ) const
 		mLoggedUniformNames.insert( name );
 	}
 }
-
+	
 void GlslProg::logMissingUniform( int location ) const
 {
 	if( mLoggedUniformLocations.count( location ) == 0 ) {
@@ -962,23 +947,21 @@ void GlslProg::logMissingUniform( int location ) const
 		mLoggedUniformLocations.insert( location );
 	}
 }
-
+	
 void GlslProg::logUniformWrongType( const std::string &name, GLenum uniformType, const std::string &userType ) const
 {
 	if( mLoggedUniformNames.count( name ) == 0 ) {
-		CI_LOG_W( "Uniform type mismatch for \"" << name << "\", expected "
-		                                         << gl::constantToString( uniformType )
-		                                         << " and received "
-		                                         << userType );
+		CI_LOG_W("Uniform type mismatch for \"" << name << "\", expected "
+				 << gl::constantToString( uniformType ) << " and received " << userType );
 		mLoggedUniformNames.insert( name );
 	}
 }
-
+	
 void GlslProg::setLabel( const std::string &label )
 {
 	mLabel = label;
 #if defined( CINDER_GL_ES )
-#if !defined( CINDER_GL_ANGLE )
+#if ! defined( CINDER_GL_ANGLE )
 	env()->objectLabel( GL_PROGRAM_OBJECT_EXT, mHandle, (GLsizei)label.size(), label.c_str() );
 #endif
 #else
@@ -988,15 +971,15 @@ void GlslProg::setLabel( const std::string &label )
 
 GLint GlslProg::getUniformLocation( const std::string &name ) const
 {
-	int            uniformLocation;
+	int uniformLocation;
 	const Uniform *uniform = findUniform( name, &uniformLocation );
 	if( uniform )
 		return uniformLocation;
 	else
 		return -1;
 }
-
-GlslProg::Attribute *GlslProg::findAttrib( const std::string &name )
+	
+GlslProg::Attribute* GlslProg::findAttrib( const std::string &name )
 {
 	Attribute *ret = nullptr;
 	for( auto &attrib : mAttributes ) {
@@ -1008,9 +991,9 @@ GlslProg::Attribute *GlslProg::findAttrib( const std::string &name )
 	return ret;
 }
 
-const GlslProg::Attribute *GlslProg::findAttrib( const std::string &name ) const
+const GlslProg::Attribute* GlslProg::findAttrib( const std::string &name ) const
 {
-	const Attribute *ret = nullptr;
+	const Attribute* ret = nullptr;
 	for( auto &attrib : mAttributes ) {
 		if( attrib.mName == name ) {
 			ret = &attrib;
@@ -1019,8 +1002,8 @@ const GlslProg::Attribute *GlslProg::findAttrib( const std::string &name ) const
 	}
 	return ret;
 }
-
-const GlslProg::Attribute *GlslProg::findAttrib( geom::Attrib semantic ) const
+	
+const GlslProg::Attribute* GlslProg::findAttrib( geom::Attrib semantic ) const
 {
 	const Attribute *ret = nullptr;
 	for( const auto &attrib : mAttributes ) {
@@ -1032,10 +1015,10 @@ const GlslProg::Attribute *GlslProg::findAttrib( geom::Attrib semantic ) const
 	return ret;
 }
 
-const GlslProg::Uniform *GlslProg::findUniform( const std::string &name, int *resultLocation ) const
+const GlslProg::Uniform* GlslProg::findUniform( const std::string &name, int *resultLocation ) const
 {
 	// first check if there is an exact name match with mUniforms and simply return it if we find one
-	for( const auto &uniform : mUniforms ) {
+	for( const auto & uniform : mUniforms ) {
 		if( uniform.mName == name ) {
 			*resultLocation = uniform.mLoc;
 			return &uniform;
@@ -1047,8 +1030,8 @@ const GlslProg::Uniform *GlslProg::findUniform( const std::string &name, int *re
 	size_t requestedNameRightSquareBracket = ( requestedNameLeftSquareBracket != string::npos ? name.find( ']' ) : string::npos );
 
 	// if we didn't find an exact match, look for the array version in the active uniforms list
-	bool           needsLocationOffset = false;
-	const Uniform *resultUniform = nullptr;
+	bool needsLocationOffset = false;
+	const Uniform* resultUniform = nullptr;	
 	for( const auto &uniform : mUniforms ) {
 		size_t activeUniformLeftSquareBracket = uniform.mName.find( '[' );
 		// skip match detection if this active uniform isn't an array
@@ -1102,14 +1085,14 @@ const GlslProg::Uniform *GlslProg::findUniform( const std::string &name, int *re
 		else
 			*resultLocation = resultUniform->mLoc;
 	}
-
+	
 	return resultUniform;
 }
 
-const GlslProg::Uniform *GlslProg::findUniform( int location, int *resultLocation ) const
+const GlslProg::Uniform* GlslProg::findUniform( int location, int *resultLocation ) const
 {
-	const Uniform *ret = nullptr;
-	for( const auto &uniform : mUniforms ) {
+	const Uniform* ret = nullptr;
+	for( const auto & uniform : mUniforms ) {
 		if( ( location >= uniform.mLoc ) && ( location < uniform.mLoc + uniform.mCount ) ) {
 			ret = &uniform;
 			// '*resultLocation' becomes 'location' to match signature & behavior of findUniform( const string& )
@@ -1118,43 +1101,45 @@ const GlslProg::Uniform *GlslProg::findUniform( int location, int *resultLocatio
 			break;
 		}
 	}
-
+	
 	return ret;
 }
-
+    
 bool GlslProg::hasAttribSemantic( geom::Attrib semantic ) const
 {
-	auto found = find_if( mAttributes.begin(), mAttributes.end(), [semantic]( const Attribute &attrib ) {
-		return attrib.mSemantic == semantic;
-	} );
+    auto found = find_if( mAttributes.begin(), mAttributes.end(),
+                   [semantic]( const Attribute &attrib ) {
+                       return attrib.mSemantic == semantic;
+				   } );
 
 	return found != mAttributes.end();
 }
-
+    
 GLint GlslProg::getAttribSemanticLocation( geom::Attrib semantic ) const
 {
-	auto found = find_if( mAttributes.begin(), mAttributes.end(), [semantic]( const Attribute &attrib ) {
-		return attrib.mSemantic == semantic;
-	} );
+    auto found = find_if( mAttributes.begin(), mAttributes.end(),
+                         [semantic]( const Attribute &attrib ) {
+                             return attrib.mSemantic == semantic;
+                         } );
 
-	if( found != mAttributes.end() )
-		return found->mLoc;
-	else
-		return -1;
+    if( found != mAttributes.end() )
+        return found->mLoc;
+    else
+        return -1;
 }
-
+    
 GLint GlslProg::getAttribLocation( const std::string &name ) const
 {
 	auto found = findAttrib( name );
-	if( found )
-		return found->mLoc;
-	else
-		return -1;
+    if( found )
+        return found->mLoc;
+    else
+        return -1;
 }
-
+    
 #if defined( CINDER_GL_HAS_UNIFORM_BLOCKS )
 
-GlslProg::UniformBlock *GlslProg::findUniformBlock( const std::string &name )
+GlslProg::UniformBlock* GlslProg::findUniformBlock( const std::string &name )
 {
 	UniformBlock *ret = nullptr;
 	for( auto &uniformBlock : mUniformBlocks ) {
@@ -1165,8 +1150,8 @@ GlslProg::UniformBlock *GlslProg::findUniformBlock( const std::string &name )
 	}
 	return ret;
 }
-
-const GlslProg::UniformBlock *GlslProg::findUniformBlock( const std::string &name ) const
+	
+const GlslProg::UniformBlock* GlslProg::findUniformBlock( const std::string &name ) const
 {
 	const UniformBlock *ret = nullptr;
 	for( auto &uniformBlock : mUniformBlocks ) {
@@ -1180,9 +1165,10 @@ const GlslProg::UniformBlock *GlslProg::findUniformBlock( const std::string &nam
 
 void GlslProg::uniformBlock( int loc, int binding )
 {
-	auto found = find_if( mUniformBlocks.begin(), mUniformBlocks.end(), [loc]( const UniformBlock &block ) {
-		return block.mLoc == loc;
-	} );
+	auto found = find_if( mUniformBlocks.begin(), mUniformBlocks.end(),
+						 [loc]( const UniformBlock &block ) {
+							 return block.mLoc == loc;
+						 } );
 
 	if( found != mUniformBlocks.end() ) {
 		if( found->mBlockBinding != binding ) {
@@ -1220,9 +1206,10 @@ GLint GlslProg::getUniformBlockLocation( const std::string &name ) const
 
 GLint GlslProg::getUniformBlockSize( GLint blockBinding ) const
 {
-	auto found = find_if( mUniformBlocks.begin(), mUniformBlocks.end(), [=]( const UniformBlock &block ) {
-		return block.mBlockBinding == blockBinding;
-	} );
+	auto found = find_if( mUniformBlocks.begin(), mUniformBlocks.end(),
+						 [=]( const UniformBlock &block ) {
+							 return block.mBlockBinding == blockBinding;
+						 } );
 
 	if( found != mUniformBlocks.end() )
 		return found->mDataSize;
@@ -1233,7 +1220,7 @@ GLint GlslProg::getUniformBlockSize( GLint blockBinding ) const
 #endif // defined( CINDER_GL_HAS_UNIFORM_BLOCKS )
 #if defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )
 
-const GlslProg::TransformFeedbackVaryings *GlslProg::findTransformFeedbackVaryings( const std::string &name ) const
+const GlslProg::TransformFeedbackVaryings* GlslProg::findTransformFeedbackVaryings( const std::string &name ) const
 {
 	const TransformFeedbackVaryings *ret = nullptr;
 	for( const auto &varying : mTransformFeedbackVaryings ) {
@@ -1243,8 +1230,8 @@ const GlslProg::TransformFeedbackVaryings *GlslProg::findTransformFeedbackVaryin
 	}
 	return ret;
 }
-
-GlslProg::TransformFeedbackVaryings *GlslProg::findTransformFeedbackVaryings( const std::string &name )
+	
+GlslProg::TransformFeedbackVaryings* GlslProg::findTransformFeedbackVaryings( const std::string &name )
 {
 	TransformFeedbackVaryings *ret = nullptr;
 	for( auto &varying : mTransformFeedbackVaryings ) {
@@ -1264,13 +1251,13 @@ bool GlslProg::checkUniformValueCache( const Uniform &uniform, int location, con
 	else // no uniform cache means we've disabled it
 		return true;
 }
-
-template <typename LookUp, typename T>
+	
+template<typename LookUp, typename T>
 inline void GlslProg::uniformImpl( const LookUp &lookUp, const T &data ) const
 {
-	int  uniformLocation = -1;
+	int uniformLocation = -1;
 	auto found = findUniform( lookUp, &uniformLocation );
-	if( !found ) {
+	if( ! found ) {
 		logMissingUniform( lookUp );
 		return;
 	}
@@ -1278,12 +1265,12 @@ inline void GlslProg::uniformImpl( const LookUp &lookUp, const T &data ) const
 		uniformFunc( uniformLocation, data );
 }
 
-template <typename LookUp, typename T>
-inline void GlslProg::uniformMatImpl( const LookUp &lookUp, const T &data, bool transpose ) const
+template<typename LookUp, typename T>
+inline void	GlslProg::uniformMatImpl( const LookUp &lookUp, const T &data, bool transpose ) const
 {
-	int  uniformLocation = -1;
+	int uniformLocation = -1;
 	auto found = findUniform( lookUp, &uniformLocation );
-	if( !found ) {
+	if( ! found ) {
 		logMissingUniform( lookUp );
 		return;
 	}
@@ -1291,12 +1278,12 @@ inline void GlslProg::uniformMatImpl( const LookUp &lookUp, const T &data, bool 
 		uniformMatFunc( uniformLocation, data, transpose );
 }
 
-template <typename LookUp, typename T>
-inline void GlslProg::uniformImpl( const LookUp &lookUp, const T *data, int count ) const
+template<typename LookUp, typename T>
+inline void	GlslProg::uniformImpl( const LookUp &lookUp, const T *data, int count ) const
 {
-	int  uniformLocation = -1;
+	int uniformLocation = -1;
 	auto found = findUniform( lookUp, &uniformLocation );
-	if( !found ) {
+	if( ! found ) {
 		logMissingUniform( lookUp );
 		return;
 	}
@@ -1304,23 +1291,23 @@ inline void GlslProg::uniformImpl( const LookUp &lookUp, const T *data, int coun
 		uniformFunc( uniformLocation, data, count );
 }
 
-template <typename LookUp, typename T>
-inline void GlslProg::uniformMatImpl( const LookUp &lookUp, const T *data, int count, bool transpose ) const
+template<typename LookUp, typename T>
+inline void	GlslProg::uniformMatImpl( const LookUp &lookUp, const T *data, int count, bool transpose ) const
 {
-	int  uniformLocation = -1;
+	int uniformLocation = -1;
 	auto found = findUniform( lookUp, &uniformLocation );
-	if( !found ) {
+	if( ! found ) {
 		logMissingUniform( lookUp );
 		return;
 	}
 	if( validateUniform( *found, uniformLocation, data, count ) )
 		uniformMatFunc( uniformLocation, data, count, transpose );
 }
-
-template <typename T>
+	
+template<typename T>
 inline bool GlslProg::validateUniform( const Uniform &uniform, int uniformLocation, const T &val ) const
 {
-	if( !checkUniformType<T>( uniform.mType ) ) {
+	if( ! checkUniformType<T>( uniform.mType ) ) {
 		logUniformWrongType( uniform.mName, uniform.mType, cppTypeToGlslTypeName<T>() );
 		return false;
 	}
@@ -1329,10 +1316,10 @@ inline bool GlslProg::validateUniform( const Uniform &uniform, int uniformLocati
 	}
 }
 
-template <typename T>
+template<typename T>
 inline bool GlslProg::validateUniform( const Uniform &uniform, int uniformLocation, const T *val, int count ) const
 {
-	if( !checkUniformType<T>( uniform.mType ) ) {
+	if( ! checkUniformType<T>( uniform.mType ) ) {
 		logUniformWrongType( uniform.mName, uniform.mType, cppTypeToGlslTypeName<T>() + "[" + to_string( count ) + "]" );
 		return false;
 	}
@@ -1341,154 +1328,93 @@ inline bool GlslProg::validateUniform( const Uniform &uniform, int uniformLocati
 	}
 }
 
-template <typename T>
+template<typename T>
 string GlslProg::cppTypeToGlslTypeName()
 {
-	if( std::is_same<T, bool>::value )
-		return "bool";
-	else if( std::is_same<T, glm::bvec2>::value )
-		return "bvec2";
-	else if( std::is_same<T, glm::bvec3>::value )
-		return "bvec3";
-	else if( std::is_same<T, glm::bvec4>::value )
-		return "bvec4";
+		 if( std::is_same<T,bool>::value ) return "bool";
+	else if( std::is_same<T,glm::bvec2>::value ) return "bvec2";
+	else if( std::is_same<T,glm::bvec3>::value ) return "bvec3";
+	else if( std::is_same<T,glm::bvec4>::value ) return "bvec4";
 	// unsigned int
-	else if( std::is_same<T, uint32_t>::value )
-		return "uint32_t";
-	else if( std::is_same<T, glm::uvec2>::value )
-		return "uvec2";
-	else if( std::is_same<T, glm::uvec3>::value )
-		return "uvec3";
-	else if( std::is_same<T, glm::uvec4>::value )
-		return "uvec4";
+	else if( std::is_same<T,uint32_t>::value ) return "uint32_t";
+	else if( std::is_same<T,glm::uvec2>::value ) return "uvec2";
+	else if( std::is_same<T,glm::uvec3>::value ) return "uvec3";
+	else if( std::is_same<T,glm::uvec4>::value ) return "uvec4";
 	// signed int
-	else if( std::is_same<T, int32_t>::value )
-		return "int32_t";
-	else if( std::is_same<T, glm::ivec2>::value )
-		return "ivec2";
-	else if( std::is_same<T, glm::ivec3>::value )
-		return "ivec3";
-	else if( std::is_same<T, glm::ivec4>::value )
-		return "ivec4";
+	else if( std::is_same<T,int32_t>::value ) return "int32_t";
+	else if( std::is_same<T,glm::ivec2>::value ) return "ivec2";
+	else if( std::is_same<T,glm::ivec3>::value ) return "ivec3";
+	else if( std::is_same<T,glm::ivec4>::value ) return "ivec4";
 	// float
-	else if( std::is_same<T, float>::value )
-		return "float";
-	else if( std::is_same<T, glm::vec2>::value )
-		return "vec2";
-	else if( std::is_same<T, glm::vec3>::value )
-		return "vec3";
-	else if( std::is_same<T, glm::vec4>::value )
-		return "vec4";
+	else if( std::is_same<T,float>::value ) return "float";
+	else if( std::is_same<T,glm::vec2>::value ) return "vec2";
+	else if( std::is_same<T,glm::vec3>::value ) return "vec3";
+	else if( std::is_same<T,glm::vec4>::value ) return "vec4";
 	// matrix
-	else if( std::is_same<T, glm::mat2>::value )
-		return "mat2";
-	else if( std::is_same<T, glm::mat3>::value )
-		return "mat3";
-	else if( std::is_same<T, glm::mat4>::value )
-		return "mat4";
+	else if( std::is_same<T,glm::mat2>::value ) return "mat2";
+	else if( std::is_same<T,glm::mat3>::value ) return "mat3";
+	else if( std::is_same<T,glm::mat4>::value ) return "mat4";
 	else
 		return "unknown";
 }
 
-template <typename T>
+template<typename T>
 bool GlslProg::checkUniformType( GLenum uniformType ) const
 {
 	switch( uniformType ) {
-	// bool
-	case GL_BOOL:
-		return std::is_same<T, bool>::value || std::is_same<T, int32_t>::value;
-	case GL_BOOL_VEC2:
-		return std::is_same<T, glm::bvec2>::value;
-	case GL_BOOL_VEC3:
-		return std::is_same<T, glm::bvec3>::value;
-	case GL_BOOL_VEC4:
-		return std::is_same<T, glm::bvec4>::value;
-	// signed int
-	case GL_INT:
-		return std::is_same<T, int32_t>::value;
-	case GL_INT_VEC2:
-		return std::is_same<T, glm::ivec2>::value;
-	case GL_INT_VEC3:
-		return std::is_same<T, glm::ivec3>::value;
-	case GL_INT_VEC4:
-		return std::is_same<T, glm::ivec4>::value;
-	case GL_SAMPLER_2D:
-		return std::is_same<T, int32_t>::value;
-	// unigned int
-	case GL_UNSIGNED_INT:
-		return std::is_same<T, uint32_t>::value;
-#if !defined( CINDER_GL_ES )
-	case GL_SAMPLER_1D:
-		return std::is_same<T, int32_t>::value;
-	case GL_SAMPLER_BUFFER_EXT:
-		return std::is_same<T, int32_t>::value;
-	case GL_UNSIGNED_INT_SAMPLER_BUFFER:
-		return std::is_same<T, int32_t>::value;
-	case GL_SAMPLER_2D_RECT:
-		return std::is_same<T, int32_t>::value;
-	case GL_INT_SAMPLER_2D_RECT:
-		return std::is_same<T, int32_t>::value;
-	case GL_UNSIGNED_INT_SAMPLER_2D_RECT:
-		return std::is_same<T, int32_t>::value;
+		// bool
+		case GL_BOOL: return std::is_same<T,bool>::value || std::is_same<T,int32_t>::value;
+		case GL_BOOL_VEC2: return std::is_same<T,glm::bvec2>::value;
+		case GL_BOOL_VEC3: return std::is_same<T,glm::bvec3>::value;
+		case GL_BOOL_VEC4: return std::is_same<T,glm::bvec4>::value;
+		// signed int
+		case GL_INT: return std::is_same<T,int32_t>::value;
+		case GL_INT_VEC2: return std::is_same<T,glm::ivec2>::value;
+		case GL_INT_VEC3: return std::is_same<T,glm::ivec3>::value;
+		case GL_INT_VEC4: return std::is_same<T,glm::ivec4>::value;
+		case GL_SAMPLER_2D: return std::is_same<T,int32_t>::value;
+		// unigned int
+		case GL_UNSIGNED_INT: return std::is_same<T,uint32_t>::value;
+#if ! defined( CINDER_GL_ES )
+		case GL_SAMPLER_1D:						return std::is_same<T,int32_t>::value;
+		case GL_SAMPLER_BUFFER_EXT:				return std::is_same<T,int32_t>::value;
+		case GL_UNSIGNED_INT_SAMPLER_BUFFER:	return std::is_same<T, int32_t>::value;
+		case GL_SAMPLER_2D_RECT:				return std::is_same<T,int32_t>::value;
+		case GL_INT_SAMPLER_2D_RECT:			return std::is_same<T,int32_t>::value;
+		case GL_UNSIGNED_INT_SAMPLER_2D_RECT:	return std::is_same<T,int32_t>::value;		
 #endif
-#if !defined( CINDER_GL_ES_2 )
-	case GL_SAMPLER_3D:
-		return std::is_same<T, int32_t>::value;
-	case GL_UNSIGNED_INT_VEC2:
-		return std::is_same<T, glm::uvec2>::value;
-	case GL_UNSIGNED_INT_VEC3:
-		return std::is_same<T, glm::uvec3>::value;
-	case GL_UNSIGNED_INT_VEC4:
-		return std::is_same<T, glm::uvec4>::value;
-	case GL_SAMPLER_2D_SHADOW:
-		return std::is_same<T, int32_t>::value;
-	case GL_SAMPLER_2D_ARRAY:
-		return std::is_same<T, int32_t>::value;
-	case GL_SAMPLER_2D_ARRAY_SHADOW:
-		return std::is_same<T, int32_t>::value;
-	case GL_SAMPLER_CUBE_SHADOW:
-		return std::is_same<T, int32_t>::value;
-	case GL_INT_SAMPLER_2D:
-		return std::is_same<T, int32_t>::value;
-	case GL_INT_SAMPLER_3D:
-		return std::is_same<T, int32_t>::value;
-	case GL_INT_SAMPLER_CUBE:
-		return std::is_same<T, int32_t>::value;
-	case GL_INT_SAMPLER_2D_ARRAY:
-		return std::is_same<T, int32_t>::value;
-	case GL_UNSIGNED_INT_SAMPLER_2D:
-		return std::is_same<T, int32_t>::value;
-	case GL_UNSIGNED_INT_SAMPLER_3D:
-		return std::is_same<T, int32_t>::value;
-	case GL_UNSIGNED_INT_SAMPLER_CUBE:
-		return std::is_same<T, int32_t>::value;
-	case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:
-		return std::is_same<T, int32_t>::value;
+#if ! defined( CINDER_GL_ES_2 )
+		case GL_SAMPLER_3D:						return std::is_same<T,int32_t>::value;
+		case GL_UNSIGNED_INT_VEC2:				return std::is_same<T,glm::uvec2>::value;
+		case GL_UNSIGNED_INT_VEC3:				return std::is_same<T,glm::uvec3>::value;
+		case GL_UNSIGNED_INT_VEC4:				return std::is_same<T,glm::uvec4>::value;
+		case GL_SAMPLER_2D_SHADOW:				return std::is_same<T,int32_t>::value;
+		case GL_SAMPLER_2D_ARRAY:				return std::is_same<T,int32_t>::value;		
+		case GL_SAMPLER_2D_ARRAY_SHADOW:		return std::is_same<T,int32_t>::value;
+		case GL_SAMPLER_CUBE_SHADOW:			return std::is_same<T,int32_t>::value;
+		case GL_INT_SAMPLER_2D:					return std::is_same<T,int32_t>::value;
+		case GL_INT_SAMPLER_3D:					return std::is_same<T,int32_t>::value;
+		case GL_INT_SAMPLER_CUBE:				return std::is_same<T,int32_t>::value;
+		case GL_INT_SAMPLER_2D_ARRAY:			return std::is_same<T,int32_t>::value;		
+		case GL_UNSIGNED_INT_SAMPLER_2D:		return std::is_same<T,int32_t>::value;
+		case GL_UNSIGNED_INT_SAMPLER_3D:		return std::is_same<T,int32_t>::value;
+		case GL_UNSIGNED_INT_SAMPLER_CUBE:		return std::is_same<T,int32_t>::value;		
+		case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:	return std::is_same<T,int32_t>::value;
 #else
-	case GL_SAMPLER_2D_SHADOW_EXT:
-		return std::is_same<T, int32_t>::value;
+		case GL_SAMPLER_2D_SHADOW_EXT: return std::is_same<T,int32_t>::value;
 #endif
-	case GL_SAMPLER_CUBE:
-		return std::is_same<T, int32_t>::value;
-	// float
-	case GL_FLOAT:
-		return std::is_same<T, float>::value;
-	case GL_FLOAT_VEC2:
-		return std::is_same<T, glm::vec2>::value;
-	case GL_FLOAT_VEC3:
-		return std::is_same<T, glm::vec3>::value;
-	case GL_FLOAT_VEC4:
-		return std::is_same<T, glm::vec4>::value;
-	// matrix
-	case GL_FLOAT_MAT2:
-		return std::is_same<T, glm::mat2>::value;
-	case GL_FLOAT_MAT3:
-		return std::is_same<T, glm::mat3>::value;
-	case GL_FLOAT_MAT4:
-		return std::is_same<T, glm::mat4>::value;
-	default:
-		CI_LOG_E( "Unknown uniform type" );
-		return false;
+		case GL_SAMPLER_CUBE: return std::is_same<T,int32_t>::value;
+		// float
+		case GL_FLOAT: return std::is_same<T,float>::value;
+		case GL_FLOAT_VEC2: return std::is_same<T,glm::vec2>::value;
+		case GL_FLOAT_VEC3: return std::is_same<T,glm::vec3>::value;
+		case GL_FLOAT_VEC4: return std::is_same<T,glm::vec4>::value;
+		// matrix
+		case GL_FLOAT_MAT2: return std::is_same<T,glm::mat2>::value;
+		case GL_FLOAT_MAT3: return std::is_same<T,glm::mat3>::value;
+		case GL_FLOAT_MAT4: return std::is_same<T,glm::mat4>::value;
+		default:
+			CI_LOG_E( "Unknown uniform type" ); return false;
 	}
 }
 
@@ -1497,50 +1423,50 @@ void GlslProg::uniform( const std::string &name, bool data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, bool data ) const
 {
 	uniformImpl( location, data );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc<bool>( int location, const bool &data ) const
 {
 	ScopedGlslProg shaderBind( this );
 	glUniform1i( location, data );
 }
-
-#if !defined( CINDER_GL_ES_2 )
+	
+#if ! defined( CINDER_GL_ES_2 )
 // uint32_t
 void GlslProg::uniform( const std::string &name, uint32_t data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, uint32_t data ) const
 {
 	uniformImpl( location, data );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const uint32_t &data ) const
 {
 	ScopedGlslProg shaderBind( this );
 	glUniform1ui( location, data );
 }
-
+	
 // uvec2
 void GlslProg::uniform( const std::string &name, const uvec2 &data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, const uvec2 &data ) const
 {
 	uniformImpl( location, data );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const uvec2 &data ) const
 {
 	ScopedGlslProg shaderBind( this );
@@ -1552,13 +1478,13 @@ void GlslProg::uniform( const std::string &name, const uvec3 &data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, const uvec3 &data ) const
 {
 	uniformImpl( location, data );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const uvec3 &data ) const
 {
 	ScopedGlslProg shaderBind( this );
@@ -1576,7 +1502,7 @@ void GlslProg::uniform( int location, const uvec4 &data ) const
 	uniformImpl( location, data );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const uvec4 &data ) const
 {
 	ScopedGlslProg shaderBind( this );
@@ -1587,13 +1513,13 @@ void GlslProg::uniform( const std::string &name, const uint32_t *data, int count
 {
 	uniformImpl( name, data, count );
 }
-
+	
 void GlslProg::uniform( int location, const uint32_t *data, int count ) const
 {
 	uniformImpl( location, data, count );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const uint32_t *data, int count ) const
 {
 	ScopedGlslProg shaderBind( this );
@@ -1601,41 +1527,41 @@ void GlslProg::uniformFunc( int location, const uint32_t *data, int count ) cons
 }
 
 #endif // ! defined( CINDER_GL_ES_2 )
-
+	
 // int
 void GlslProg::uniform( const std::string &name, int data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, int data ) const
 {
 	uniformImpl( location, data );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const int &data ) const
 {
 	ScopedGlslProg shaderBind( this );
-	glUniform1i( location, data );
+    glUniform1i( location, data );
 }
-
+	
 // ivec2
 void GlslProg::uniform( const std::string &name, const ivec2 &data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, const ivec2 &data ) const
 {
 	uniformImpl( location, data );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const ivec2 &data ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform2i( location, data.x, data.y );
+    ScopedGlslProg shaderBind( this );
+    glUniform2i( location, data.x, data.y );
 }
 
 // ivec3
@@ -1643,13 +1569,13 @@ void GlslProg::uniform( const std::string &name, const ivec3 &data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, const ivec3 &data ) const
 {
 	uniformImpl( location, data );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const ivec3 &data ) const
 {
 	ScopedGlslProg shaderBind( this );
@@ -1667,7 +1593,7 @@ void GlslProg::uniform( int location, const ivec4 &data ) const
 	uniformImpl( location, data );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const ivec4 &data ) const
 {
 	ScopedGlslProg shaderBind( this );
@@ -1679,35 +1605,35 @@ void GlslProg::uniform( const std::string &name, const int *data, int count ) co
 {
 	uniformImpl( name, data, count );
 }
-
+	
 void GlslProg::uniform( int location, const int *data, int count ) const
 {
 	uniformImpl( location, data, count );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const int *data, int count ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform1iv( location, count, data );
+    ScopedGlslProg shaderBind( this );
+    glUniform1iv( location, count, data );
 }
-
+	
 // ivec2 *, count
 void GlslProg::uniform( const std::string &name, const ivec2 *data, int count ) const
 {
 	uniformImpl( name, data, count );
 }
-
+	
 void GlslProg::uniform( int location, const ivec2 *data, int count ) const
 {
 	uniformImpl( location, data, count );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const ivec2 *data, int count ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform2iv( location, count, &data[0].x );
+    ScopedGlslProg shaderBind( this );
+    glUniform2iv( location, count, &data[0].x );
 }
 
 // float
@@ -1715,17 +1641,17 @@ void GlslProg::uniform( const std::string &name, float data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, float data ) const
 {
 	uniformImpl( location, data );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const float &data ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform1f( location, data );
+    ScopedGlslProg shaderBind( this );
+    glUniform1f( location, data );
 }
 
 // vec2
@@ -1738,12 +1664,12 @@ void GlslProg::uniform( int location, const vec2 &data ) const
 {
 	uniformImpl( location, data );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const vec2 &data ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform2f( location, data.x, data.y );
+    ScopedGlslProg shaderBind( this );
+    glUniform2f( location, data.x, data.y );
 }
 
 // vec3
@@ -1757,11 +1683,11 @@ void GlslProg::uniform( int location, const vec3 &data ) const
 	uniformImpl( location, data );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const vec3 &data ) const
 {
 	ScopedGlslProg shaderBind( this );
-	glUniform3f( location, data.x, data.y, data.z );
+    glUniform3f( location, data.x, data.y, data.z );
 }
 
 // vec4
@@ -1769,17 +1695,17 @@ void GlslProg::uniform( const std::string &name, const vec4 &data ) const
 {
 	uniformImpl( name, data );
 }
-
+	
 void GlslProg::uniform( int location, const vec4 &data ) const
 {
 	uniformImpl( location, data );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const vec4 &data ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform4f( location, data.x, data.y, data.z, data.w );
+    ScopedGlslProg shaderBind( this );
+    glUniform4f( location, data.x, data.y, data.z, data.w );
 }
 
 // mat2
@@ -1787,19 +1713,19 @@ void GlslProg::uniform( const std::string &name, const mat2 &data, bool transpos
 {
 	uniformMatImpl( name, data, transpose );
 }
-
+	
 void GlslProg::uniform( int location, const mat2 &data, bool transpose ) const
 {
 	uniformMatImpl( location, data, transpose );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformMatFunc( int location, const mat2 &data, bool transpose ) const
 {
 	ScopedGlslProg shaderBind( this );
 	glUniformMatrix2fv( location, 1, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( data ) );
 }
-
+	
 // mat3
 void GlslProg::uniform( const std::string &name, const mat3 &data, bool transpose ) const
 {
@@ -1810,12 +1736,12 @@ void GlslProg::uniform( int location, const mat3 &data, bool transpose ) const
 {
 	uniformMatImpl( location, data, transpose );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformMatFunc( int location, const mat3 &data, bool transpose ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniformMatrix3fv( location, 1, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( data ) );
+    ScopedGlslProg shaderBind( this );
+    glUniformMatrix3fv( location, 1, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( data ) );
 }
 
 // mat4
@@ -1823,17 +1749,17 @@ void GlslProg::uniform( const std::string &name, const mat4 &data, bool transpos
 {
 	uniformMatImpl( name, data, transpose );
 }
-
+	
 void GlslProg::uniform( int location, const mat4 &data, bool transpose ) const
 {
 	uniformMatImpl( location, data, transpose );
 }
 
-template <>
+template<>
 void GlslProg::uniformMatFunc( int location, const mat4 &data, bool transpose ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniformMatrix4fv( location, 1, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( data ) );
+    ScopedGlslProg shaderBind( this );
+    glUniformMatrix4fv( location, 1, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( data ) );
 }
 
 // float*, count
@@ -1841,17 +1767,17 @@ void GlslProg::uniform( const std::string &name, const float *data, int count ) 
 {
 	uniformImpl( name, data, count );
 }
-
+	
 void GlslProg::uniform( int location, const float *data, int count ) const
 {
 	uniformImpl( location, data, count );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformFunc( int location, const float *data, int count ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform1fv( location, count, data );
+    ScopedGlslProg shaderBind( this );
+    glUniform1fv( location, count, data );
 }
 
 // vec2*, count
@@ -1859,17 +1785,17 @@ void GlslProg::uniform( const std::string &name, const vec2 *data, int count ) c
 {
 	uniformImpl( name, data, count );
 }
-
+	
 void GlslProg::uniform( int location, const vec2 *data, int count ) const
 {
 	uniformImpl( location, data, count );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const vec2 *data, int count ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform2fv( location, count, &data[0].x );
+    ScopedGlslProg shaderBind( this );
+    glUniform2fv( location, count, &data[0].x );
 }
 
 // vec3*, count
@@ -1877,17 +1803,17 @@ void GlslProg::uniform( const std::string &name, const vec3 *data, int count ) c
 {
 	uniformImpl( name, data, count );
 }
-
+	
 void GlslProg::uniform( int location, const vec3 *data, int count ) const
 {
 	uniformImpl( location, data, count );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const vec3 *data, int count ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform3fv( location, count, &data[0].x );
+    ScopedGlslProg shaderBind( this );
+    glUniform3fv( location, count, &data[0].x );
 }
 
 // vec4*, count
@@ -1895,19 +1821,19 @@ void GlslProg::uniform( const std::string &name, const vec4 *data, int count ) c
 {
 	uniformImpl( name, data, count );
 }
-
+	
 void GlslProg::uniform( int location, const vec4 *data, int count ) const
 {
 	uniformImpl( location, data, count );
 }
 
-template <>
+template<>
 void GlslProg::uniformFunc( int location, const vec4 *data, int count ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniform4fv( location, count, &data[0].x );
+    ScopedGlslProg shaderBind( this );
+    glUniform4fv( location, count, &data[0].x );
 }
-
+	
 // mat2*, count
 void GlslProg::uniform( const std::string &name, const mat2 *data, int count, bool transpose ) const
 {
@@ -1918,8 +1844,8 @@ void GlslProg::uniform( int location, const mat2 *data, int count, bool transpos
 {
 	uniformMatImpl( location, data, count, transpose );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformMatFunc( int location, const mat2 *data, int count, bool transpose ) const
 {
 	ScopedGlslProg shaderBind( this );
@@ -1931,17 +1857,17 @@ void GlslProg::uniform( const std::string &name, const mat3 *data, int count, bo
 {
 	uniformMatImpl( name, data, count, transpose );
 }
-
+	
 void GlslProg::uniform( int location, const mat3 *data, int count, bool transpose ) const
 {
 	uniformMatImpl( location, data, count, transpose );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformMatFunc( int location, const mat3 *data, int count, bool transpose ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniformMatrix3fv( location, count, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( *data ) );
+    ScopedGlslProg shaderBind( this );
+    glUniformMatrix3fv( location, count, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( *data ) );
 }
 
 // mat4*, count
@@ -1949,25 +1875,25 @@ void GlslProg::uniform( const std::string &name, const mat4 *data, int count, bo
 {
 	uniformMatImpl( name, data, count, transpose );
 }
-
+	
 void GlslProg::uniform( int location, const mat4 *data, int count, bool transpose ) const
 {
 	uniformMatImpl( location, data, count, transpose );
 }
-
-template <>
+	
+template<>
 void GlslProg::uniformMatFunc( int location, const mat4 *data, int count, bool transpose ) const
 {
-	ScopedGlslProg shaderBind( this );
-	glUniformMatrix4fv( location, count, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( *data ) );
+    ScopedGlslProg shaderBind( this );
+    glUniformMatrix4fv( location, count, ( transpose ) ? GL_TRUE : GL_FALSE, glm::value_ptr( *data ) );
 }
 
-std::ostream &operator<<( std::ostream &os, const GlslProg &rhs )
+std::ostream& operator<<( std::ostream &os, const GlslProg &rhs )
 {
 	os << "ID: " << rhs.mHandle << std::endl;
-	if( !rhs.mLabel.empty() )
+	if( ! rhs.mLabel.empty() )
 		os << "    Label: " << rhs.mLabel << std::endl;
-
+	
 	auto attribs = rhs.getActiveAttributes();
 	os << "\tAttributes: " << std::endl;
 	for( auto &attrib : attribs ) {
@@ -1977,9 +1903,9 @@ std::ostream &operator<<( std::ostream &os, const GlslProg &rhs )
 		os << "\t\t Type: " << gl::constantToString( attrib.getType() ) << std::endl;
 		os << "\t\t Semantic: <" << geom::attribToString( attrib.getSemantic() ) << ">" << std::endl;
 	}
-
+	
 	os << "\tUniforms: " << std::endl;
-	auto &uniforms = rhs.getActiveUniforms();
+	auto & uniforms = rhs.getActiveUniforms();
 	for( auto &uniform : uniforms ) {
 		os << "\t\t\"" << uniform.getName() << "\":" << std::endl;
 		os << "\t\t Loc: " << uniform.getLocation() << std::endl;
@@ -1987,17 +1913,17 @@ std::ostream &operator<<( std::ostream &os, const GlslProg &rhs )
 		os << "\t\t Type: " << gl::constantToString( uniform.getType() ) << std::endl;
 		os << "\t\t Semantic: <" << gl::uniformSemanticToString( uniform.getUniformSemantic() ) << ">" << std::endl;
 	}
-
+	
 #if defined( CINDER_GL_HAS_UNIFORM_BLOCKS )
 	os << "\tUniform Blocks: " << std::endl;
-	auto &uniformBlocks = rhs.getActiveUniformBlocks();
-	for( auto &uniformBlock : uniformBlocks ) {
+	auto & uniformBlocks = rhs.getActiveUniformBlocks();
+	for( auto & uniformBlock : uniformBlocks ) {
 		os << "\t\t\"" << uniformBlock.getName() << "\":" << std::endl;
 		os << "\t\t Loc: " << uniformBlock.getLocation() << std::endl;
 		os << "\t\t Size: " << uniformBlock.getDataSize() << std::endl;
 		os << "\t\t BlockBinding: " << uniformBlock.getBlockBinding() << std::endl;
 		os << "\t\t Active Uniforms: " << endl;
-		for( auto &uniform : uniformBlock.getActiveUniforms() ) {
+		for( auto & uniform : uniformBlock.getActiveUniforms() ) {
 			os << "\t\t\t\"" << uniform.getName() << "\":" << std::endl;
 			os << "\t\t\t Loc: " << uniform.getLocation() << std::endl;
 			os << "\t\t\t Type: " << gl::constantToString( uniform.getType() ) << std::endl;
@@ -2007,8 +1933,8 @@ std::ostream &operator<<( std::ostream &os, const GlslProg &rhs )
 #endif // defined( CINDER_GL_HAS_UNIFORM_BLOCKS )
 #if defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )
 	os << "\tTransform Feedback Varyings: " << std::endl;
-	auto &feedbackVaryings = rhs.getActiveTransformFeedbackVaryings();
-	for( auto &varying : feedbackVaryings ) {
+	auto & feedbackVaryings = rhs.getActiveTransformFeedbackVaryings();
+	for( auto & varying : feedbackVaryings ) {
 		os << "\t\t\"" << varying.getName() << "\":" << std::endl;
 		os << "\t\t Type: " << gl::constantToString( varying.getType() ) << std::endl;
 		os << "\t\t Count: " << varying.getCount() << std::endl;
@@ -2024,35 +1950,22 @@ GlslProgCompileExc::GlslProgCompileExc( const std::string &log, GLint shaderType
 	string typeString;
 
 	switch( shaderType ) {
-	case GL_VERTEX_SHADER:
-		typeString = "VERTEX: ";
-		break;
-	case GL_FRAGMENT_SHADER:
-		typeString = "FRAGMENT: ";
-		break;
+		case GL_VERTEX_SHADER:			typeString = "VERTEX: "; break;
+		case GL_FRAGMENT_SHADER:		typeString = "FRAGMENT: "; break;
 #if defined( CINDER_GL_HAS_GEOM_SHADER )
-	case GL_GEOMETRY_SHADER:
-		typeString = "GEOMETRY: ";
-		break;
+		case GL_GEOMETRY_SHADER:		typeString = "GEOMETRY: "; break;
 #endif
 #if defined( CINDER_GL_HAS_TESS_SHADER )
-	case GL_TESS_CONTROL_SHADER:
-		typeString = "TESSELLATION CONTROL: ";
-		break;
-	case GL_TESS_EVALUATION_SHADER:
-		typeString = "TESSELLATION EVALUATION: ";
-		break;
+		case GL_TESS_CONTROL_SHADER:	typeString = "TESSELLATION CONTROL: "; break;
+		case GL_TESS_EVALUATION_SHADER:	typeString = "TESSELLATION EVALUATION: "; break;
 #endif
 #if defined( CINDER_GL_HAS_COMPUTE_SHADER )
-	case GL_COMPUTE_SHADER:
-		typeString = "COMPUTE: ";
-		break;
+		case GL_COMPUTE_SHADER:			typeString = "COMPUTE: "; break;
 #endif
-	default:
-		typeString = "UNKNOWN: ";
+		default:						typeString = "UNKNOWN: ";
 	}
 
 	setDescription( typeString + log );
 }
-}
-} // namespace cinder::gl
+	
+} } // namespace cinder::gl

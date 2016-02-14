@@ -37,7 +37,7 @@ void BlurrableTransform::set( const vec3 &pos, const quat &orientation, const ve
 {
 	mat4 m;
 	m = translate( m, pos );
-	m = rotate( m, angle( orientation ), axis( orientation ) );
+	m = rotate( m, angle(orientation), axis(orientation) );
 	m = scale( m, scaler );
 	mPreviousTransform = m;
 	mTransform = m;
@@ -47,7 +47,7 @@ void BlurrableTransform::update( const vec3 &pos, const quat &orientation, const
 {
 	mat4 m;
 	m = translate( m, pos );
-	m = rotate( m, angle( orientation ), axis( orientation ) );
+	m = rotate( m, angle(orientation), axis(orientation) );
 	m = scale( m, scaler );
 	mPreviousTransform = mTransform;
 	mTransform = m;
@@ -57,9 +57,9 @@ void BlurrableTransform::update( const vec3 &pos, const quat &orientation, const
 // BlurrableMesh
 //
 
-BlurrableMesh::BlurrableMesh( gl::VboMeshRef mesh, const vec3 &pos )
-    : mMesh( mesh ),
-      mPosition( pos )
+BlurrableMesh::BlurrableMesh( gl::VboMeshRef mesh, const vec3 &pos ):
+	mMesh( mesh ),
+	mPosition( pos )
 {
 	mTransform.set( mPosition, ci::angleAxis( mSpin, mAxis ), mScale );
 }

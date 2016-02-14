@@ -27,93 +27,92 @@
 
 ref class CinderFrameworkView;
 
-namespace Windows {
-namespace UI {
-namespace Core {
-ref class CoreWindow;
-ref class KeyEventArgs;
-}
-}
-} // namespace Windows:UI::Core
+namespace Windows { namespace UI {
+	namespace Core {
+		ref class CoreWindow;
+		ref class KeyEventArgs;
+	}
+} } // namespace Windows:UI::Core
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 class AppWinRt : public AppBase {
   public:
 	class Settings : public AppBase::Settings {
 	  public:
 		Settings() {}
+
 	  private:
-		friend AppWinRt;
+		friend	AppWinRt;
 	};
 
-	typedef std::function<void( Settings *settings )> SettingsFn;
+	typedef std::function<void( Settings *settings )>	SettingsFn;
 
 	AppWinRt();
 	virtual ~AppWinRt();
 
-	WindowRef createWindow( const Window::Format &format = Window::Format() ) override;
-	void quit() override;
+	WindowRef	createWindow( const Window::Format &format = Window::Format() ) override;
+	void		quit() override;
 
-	float getFrameRate() const override;
-	void setFrameRate( float frameRate ) override;
-	void disableFrameRate() override;
-	bool isFrameRateEnabled() const override;
+	float		getFrameRate() const override;
+	void		setFrameRate( float frameRate ) override;
+	void		disableFrameRate() override;
+	bool		isFrameRateEnabled() const override;
 
-	WindowRef getWindow() const override;
-	WindowRef getWindowIndex( size_t index ) const override;
-	size_t getNumWindows() const override;
+	WindowRef	getWindow() const override;
+	WindowRef	getWindowIndex( size_t index ) const override;
+	size_t		getNumWindows() const override;
 
-	WindowRef getForegroundWindow() const override;
+	WindowRef	getForegroundWindow() const override;
 
-	void  hideCursor() override;
-	void  showCursor() override;
-	ivec2 getMousePos() const override;
+	void		hideCursor() override;
+	void		showCursor() override;
+	ivec2		getMousePos() const override;
 
 	//! \cond
 	// Called from WinMain (in CINDER_APP_WINRT macro)
-	template <typename AppT>
-	static void main(::Platform::Array<::Platform::String ^> ^ args, const RendererRef &defaultRenderer, const SettingsFn &settingsFn = SettingsFn() );
+	template<typename AppT>
+	static void main( ::Platform::Array<::Platform::String^>^ args, const RendererRef &defaultRenderer, const SettingsFn &settingsFn = SettingsFn() );
 
-	static void executeLaunch( const std::function<AppWinRt *()> &appFactoryFn );
+	static void	executeLaunch( const std::function<AppWinRt*()> &appFactoryFn );
 	//! \endcond
 
   private:
-	static void initialize( AppWinRt::Settings *settings, ::Platform::Array<::Platform::String ^> ^ args, const RendererRef &defaultRenderer );
-	void launch() override {}
+	static void		initialize( AppWinRt::Settings *settings, ::Platform::Array<::Platform::String^>^ args, const RendererRef &defaultRenderer );
+	void			launch() override {}	
 	// Responsible for the primary runloop
-	void run( Windows::UI::Core::CoreWindow ^ window );
+	void			run( Windows::UI::Core::CoreWindow^ window );
 
-	void setWindow( const WindowRef &window );
-	WindowImplWinRt *findWindowForCoreWindow( Windows::UI::Core::CoreWindow ^ coreWindow );
+	void				setWindow( const WindowRef& window );
+	WindowImplWinRt*	findWindowForCoreWindow( Windows::UI::Core::CoreWindow^ coreWindow );
 
-	static AppWinRt *create();
+	static AppWinRt*	create();
 
 	// Event handlers; called by CinderFrameworkView
-	void setVisible( bool visible );
-	void windowSizeChange( Windows::UI::Core::CoreWindow ^ sender );
+	void			setVisible( bool visible );
+	void			windowSizeChange( Windows::UI::Core::CoreWindow^ sender );
 
-	void handlePointerDown( Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::PointerEventArgs ^ args );
-	void handlePointerMoved( Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::PointerEventArgs ^ args );
-	void handlePointerUp( Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::PointerEventArgs ^ args );
+	void			handlePointerDown( Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args );
+	void			handlePointerMoved( Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args ); 
+	void			handlePointerUp( Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::PointerEventArgs^ args );
 
-	void handleKeyDown( Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::KeyEventArgs ^ args );
-	void handleKeyUp( Windows::UI::Core::CoreWindow ^ sender, Windows::UI::Core::KeyEventArgs ^ args );
+	void			handleKeyDown( Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ args );
+	void			handleKeyUp( Windows::UI::Core::CoreWindow^ sender, Windows::UI::Core::KeyEventArgs^ args );
 
-	static std::function<AppWinRt *()> sAppFactoryFn;
 
-	std::vector<std::shared_ptr<WindowImplWinRt>> mWindows;
-	WindowRef                                     mActiveWindow;
+	static std::function<AppWinRt*()>	sAppFactoryFn;
 
-	bool mVisible, mShouldQuit;
+	std::vector<std::shared_ptr<WindowImplWinRt>>	mWindows;
+	WindowRef										mActiveWindow;
+
+	bool	mVisible, mShouldQuit;
 
 	friend ::CinderFrameworkView;
 	friend WindowImplWinRt;
 };
 
-template <typename AppT>
-void AppWinRt::main(::Platform::Array<::Platform::String ^> ^ args, const RendererRef &defaultRenderer, const SettingsFn &settingsFn )
+template<typename AppT>
+void AppWinRt::main( ::Platform::Array<::Platform::String^>^ args, const RendererRef &defaultRenderer, const SettingsFn &settingsFn )
 {
 	AppBase::prepareLaunch();
 
@@ -123,16 +122,17 @@ void AppWinRt::main(::Platform::Array<::Platform::String ^> ^ args, const Render
 	if( settingsFn )
 		settingsFn( &settings );
 
-	AppWinRt::executeLaunch( []() { return (AppWinRt *)( new AppT() ); } );
+	AppWinRt::executeLaunch( [] () { return (AppWinRt*)( new AppT() ); } );
 	AppBase::cleanupLaunch();
 }
-}
-} // namespace cinder::app
 
-#define CINDER_APP_WINRT( APP, RENDERER, ... )                                         \
-	[ ::Platform::MTAThread] int main(::Platform::Array<::Platform::String ^> ^ args ) \
-	{                                                                                  \
-		cinder::app::RendererRef renderer( new RENDERER );                             \
-		cinder::app::AppWinRt::main<APP>( args, renderer, ##__VA_ARGS__ );             \
-		return 0;                                                                      \
-	}
+} } // namespace cinder::app
+
+
+#define CINDER_APP_WINRT( APP, RENDERER, ... )													\
+[::Platform::MTAThread]																			\
+int main( ::Platform::Array<::Platform::String^>^ args ) {										\
+	cinder::app::RendererRef renderer( new RENDERER );											\
+	cinder::app::AppWinRt::main<APP>( args, renderer, ##__VA_ARGS__ );							\
+	return 0;																					\
+}

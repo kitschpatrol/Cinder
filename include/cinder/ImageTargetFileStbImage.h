@@ -31,21 +31,21 @@ typedef std::shared_ptr<class ImageTargetFileStbImage> ImageTargetFileStbImageRe
 
 class ImageTargetFileStbImage : public ImageTarget {
   public:
-	static ImageTargetRef create( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
+	static ImageTargetRef		create( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
 
-	void *getRowPointer( int32_t row ) override;
-	void finalize() override;
-
-	static void registerSelf();
-
+	void*	getRowPointer( int32_t row ) override;
+	void	finalize() override;
+	
+	static void		registerSelf();
+	
   protected:
 	ImageTargetFileStbImage( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
-
-	uint8_t                    mNumComponents;
-	size_t                     mRowBytes;
-	std::string                mExtension;
-	fs::path                   mFilePath;
-	std::unique_ptr<uint8_t[]> mData;
+	
+	uint8_t						mNumComponents;
+	size_t						mRowBytes;
+	std::string					mExtension;
+	fs::path					mFilePath;
+	std::unique_ptr<uint8_t[]>	mData;
 };
 
 } // namespace cinder

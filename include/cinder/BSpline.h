@@ -29,13 +29,13 @@
 
 #pragma once
 
-#include "cinder/Vector.h"
 #include <vector>
+#include "cinder/Vector.h"
 
 namespace cinder {
 
 class BSplineBasis {
-  public:
+ public:
 	BSplineBasis();
 
 	// Open uniform or periodic uniform.  The knot array is internally
@@ -47,16 +47,16 @@ class BSplineBasis {
 	// must be nondecreasing.  Each element must be in [0,1].  The caller is
 	// responsible for deleting afKnot.  An internal copy is made, so to
 	// dynamically change knots you must use the setKnot function.
-	BSplineBasis( int aNumCtrlPoints, int iDegree, const float *afKnot );
-	void create( int aNumCtrlPoints, int iDegree, const float *afKnot );
+	BSplineBasis( int aNumCtrlPoints, int iDegree, const float* afKnot );
+	void create( int aNumCtrlPoints, int iDegree, const float* afKnot );
 
 	BSplineBasis( const BSplineBasis &basis );
-	BSplineBasis &operator=( const BSplineBasis &basis );
+	BSplineBasis& operator=( const BSplineBasis &basis );
 
 	~BSplineBasis();
 
-	int  getNumControlPoints() const;
-	int  getDegree() const;
+	int getNumControlPoints() const;
+	int getDegree() const;
 	bool isOpen() const;
 	bool isUniform() const;
 
@@ -75,33 +75,33 @@ class BSplineBasis {
 	// evaluate basis functions and their derivatives
 	void compute( float fTime, unsigned int uiOrder, int &riMinIndex, int &riMaxIndex ) const;
 
-  protected:
+ protected:
 	int initialize( int iNumCtrlPoints, int iDegree, bool bOpen );
-	float **allocate() const;
-	void deallocate( float **aafArray );
+	float** allocate() const;
+	void deallocate( float** aafArray );
 
 	// Determine knot index i for which knot[i] <= rfTime < knot[i+1].
-	int getKey( float &rfTime ) const;
+	int getKey( float& rfTime ) const;
 
-	int    mNumCtrlPoints; // n+1
-	int    mDegree; // d
-	float *mKnots; // knot[n+d+2]
-	bool   mOpen, mUniform;
+	int mNumCtrlPoints;    // n+1
+	int mDegree;           // d
+	float *mKnots;          // knot[n+d+2]
+	bool mOpen, mUniform;
 
 	// Storage for the basis functions and their derivatives first three
 	// derivatives.  The basis array is always allocated by the constructor
 	// calls.  A derivative basis array is allocated on the first call to a
 	// derivative member function.
-	float **        m_aafBD0; // bd0[d+1][n+d+1]
-	mutable float **m_aafBD1; // bd1[d+1][n+d+1]
-	mutable float **m_aafBD2; // bd2[d+1][n+d+1]
-	mutable float **m_aafBD3; // bd3[d+1][n+d+1]
+	float **m_aafBD0;             // bd0[d+1][n+d+1]
+	mutable float **m_aafBD1;     // bd1[d+1][n+d+1]
+	mutable float **m_aafBD2;     // bd2[d+1][n+d+1]
+	mutable float **m_aafBD3;     // bd3[d+1][n+d+1]
 };
 
-template <int D, typename T>
+template<int D, typename T>
 class BSpline {
   public:
-	typedef typename VECDIM<D, T>::TYPE VecT;
+	typedef typename VECDIM<D, T>::TYPE	VecT;
 	// Construction and destruction.  The caller is responsible for deleting
 	// the input arrays if they were dynamically allocated.  Internal copies
 	// of the arrays are made, so to dynamically change control points or
@@ -124,23 +124,23 @@ class BSpline {
 	// reallocated and the first d points are replicated.  In either case the
 	// knot array is calculated accordingly.
 	BSpline( const std::vector<VecT> &points, int degree, bool loop, bool open );
-
+	
 	// Open, nonuniform spline.  The knot array must have n-d elements.  The
 	// elements must be nondecreasing.  Each element must be in [0,1].
-	BSpline()
-	    : mCtrlPoints( 0 ), mNumCtrlPoints( -1 ) {}
+	BSpline() : mCtrlPoints( 0 ), mNumCtrlPoints( -1 ) {}
 	BSpline( int numControlPoints, const VecT *controlPoints, int degree, bool loop, const float *knots );
 	BSpline( const BSpline &bspline );
-	BSpline &operator=( const BSpline &bspline );
+	BSpline& operator=( const BSpline &bspline );
 
 	~BSpline();
 
-	int  getNumControlPoints() const { return mNumCtrlPoints; }
-	int  getDegree() const { return mBasis.getDegree(); }
-	int  getNumSpans() const { return mNumCtrlPoints - mBasis.getDegree(); }
+	int getNumControlPoints() const { return mNumCtrlPoints; }
+	int getDegree() const { return mBasis.getDegree(); }
+	int getNumSpans() const { return mNumCtrlPoints - mBasis.getDegree(); }
 	bool isOpen() const { return mBasis.isOpen(); }
 	bool isUniform() const { return mBasis.isUniform(); }
 	bool isLoop() const { return mLoop; }
+
 	// Control points may be changed at any time.  The input index should be
 	// valid (0 <= i <= n).  If it is invalid, getControlPoint returns a
 	// vector whose components are all MAX_REAL.
@@ -176,22 +176,22 @@ class BSpline {
 
 	// Access the basis function to compute it without control points.  This
 	// is useful for least squares fitting of curves.
-	BSplineBasis &getBasis();
+	BSplineBasis& getBasis();
 
-  protected:
-	// Replicate the necessary number of control points when the create
-	// function has bLoop equal to true, in which case the spline curve must
-	// be a closed curve.
-	void createControl( const VecT *akCtrlPoint );
+ protected:
+    // Replicate the necessary number of control points when the create
+    // function has bLoop equal to true, in which case the spline curve must
+    // be a closed curve.
+    void createControl( const VecT *akCtrlPoint );
 
-	int          mNumCtrlPoints;
-	VecT *       mCtrlPoints; // ctrl[n+1]
-	bool         mLoop;
-	BSplineBasis mBasis;
-	int          mReplicate; // the number of replicated control points
+    int mNumCtrlPoints;
+    VecT *mCtrlPoints;  // ctrl[n+1]
+    bool mLoop;
+    BSplineBasis mBasis;
+    int mReplicate;  // the number of replicated control points
 };
 
-typedef BSpline<2, float> BSpline2f;
-typedef BSpline<3, float> BSpline3f;
+typedef BSpline<2,float> BSpline2f;
+typedef BSpline<3,float> BSpline3f;
 
 } // namespace cinder

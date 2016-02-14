@@ -29,10 +29,9 @@
 
 #include <memory>
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
-typedef std::shared_ptr<class Voice>                 VoiceRef;
+typedef std::shared_ptr<class Voice> VoiceRef;
 typedef std::shared_ptr<class VoiceSamplePlayerNode> VoiceSamplePlayerNodeRef;
 
 //! \brief Interface for performing high-level audio playback tasks.
@@ -50,44 +49,32 @@ class Voice {
 	//! Optional parameters passed into Voice::create() methods.
 	struct Options {
 		Options()
-		    : mChannels( 0 ), mMaxFramesForBufferPlayback( 96000 ), mConnectToMaster( true )
-		{
-		}
+			: mChannels( 0 ), mMaxFramesForBufferPlayback( 96000 ), mConnectToMaster( true )
+		{}
 
 		//! Sets the number of channels for the Voice.
-		Options &channels( size_t ch )
-		{
-			mChannels = ch;
-			return *this;
-		}
+		Options& channels( size_t ch )							{ mChannels = ch; return *this; }
 
 		//! \brief Sets the maximum number of frames acceptable for a VoiceSamplePlayerNode to use in-memory buffer playback via BufferPlayerNode
 		//!
 		//! If the file is larger than this, it will be streamed from disk using a FilePlayerNode. Default = 96,000.
-		Options &maxFramesForBufferPlayback( size_t frames )
-		{
-			mMaxFramesForBufferPlayback = frames;
-			return *this;
-		}
+		Options& maxFramesForBufferPlayback( size_t frames )	{ mMaxFramesForBufferPlayback = frames; return *this; }
 
 		//! \brief Sets whether the Voice's output is automatically connected to master()->getOutput().
 		//!
 		//! If set to false, the user must manage the connection of its output node. Default = true, automaitically connects to master output.
-		Options &connectToMaster( bool shouldConnect )
-		{
-			mConnectToMaster = shouldConnect;
-			return *this;
-		}
+		Options& connectToMaster( bool shouldConnect )			{ mConnectToMaster = shouldConnect; return *this; }
 
 		//! Returns the number of configured channels. \see channels()
-		size_t getChannels() const { return mChannels; }
+		size_t			getChannels() const						{ return mChannels; }
 		//! Returns the configured frame allowance for buffer playback. \see maxFramesForBufferPlayback()
-		size_t getMaxFramesForBufferPlayback() const { return mMaxFramesForBufferPlayback; }
+		size_t			getMaxFramesForBufferPlayback() const	{ return mMaxFramesForBufferPlayback; }
 		//! Returns whether or not the Voice will be automatically connected to master()->getOutput().
-		bool getConnectToMaster() const { return mConnectToMaster; }
+		bool			getConnectToMaster() const				{ return mConnectToMaster; }
+
 	  protected:
-		size_t mChannels, mMaxFramesForBufferPlayback;
-		bool   mConnectToMaster;
+		size_t			mChannels, mMaxFramesForBufferPlayback;
+		bool			mConnectToMaster;
 	};
 
 	virtual ~Voice();
@@ -119,8 +106,8 @@ class Voice {
 	float getPan() const;
 
   protected:
-	Voice()
-	    : mBusId( 0 ) {}
+	Voice() : mBusId( 0 ) {}
+
   private:
 	size_t mBusId;
 	friend class MixerImpl;
@@ -133,11 +120,13 @@ class Voice {
 //! Create with Voice::create( const SourceFileRef &sourceFile, const Options &options )
 class VoiceSamplePlayerNode : public Voice {
   public:
-	NodeRef getInputNode() const override { return mNode; }
+
+	NodeRef getInputNode() const override			{ return mNode; }
 	//! Returns a shared_ptr of the owned SamplePlayerNode.
-	SamplePlayerNodeRef getSamplePlayerNode() const { return mNode; }
-	void                start() override;
-	void                stop() override;
+	SamplePlayerNodeRef getSamplePlayerNode() const			{ return mNode; }
+
+	void start() override;
+	void stop() override;
 
   protected:
 	VoiceSamplePlayerNode( const SourceFileRef &sourceFile, const Options &options );
@@ -149,12 +138,13 @@ class VoiceSamplePlayerNode : public Voice {
 //! Concrete Voice for processing audio with a callback function. \see CallbackProcessorFn
 class VoiceCallbackProcessor : public Voice {
   public:
-	NodeRef getInputNode() const override { return mNode; }
+	NodeRef getInputNode() const override			{ return mNode; }
+
   protected:
 	VoiceCallbackProcessor( const CallbackProcessorFn &callbackFn, const Options &options );
 
 	CallbackProcessorNodeRef mNode;
 	friend class Voice;
 };
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

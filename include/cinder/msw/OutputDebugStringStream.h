@@ -29,57 +29,61 @@
 #include <sstream>
 #include <string>
 
+
 // This is a wrapper to make ::OutputDebugStringA behave like std::ostream
 // Derived from code written by Sven Axelsson
 // Documented: http://www.codeproject.com/KB/debug/debugout.aspx
 
-namespace cinder {
-namespace msw {
+namespace cinder { namespace msw {
 
-template <class CharT, class TraitsT = std::char_traits<CharT>>
-class basic_debugbuf : public std::basic_stringbuf<CharT, TraitsT> {
-  public:
-	virtual ~basic_debugbuf()
-	{
-		sync();
-	}
+template <class CharT, class TraitsT = std::char_traits<CharT> >
+class basic_debugbuf : 
+    public std::basic_stringbuf<CharT, TraitsT>
+{
+public:
 
-  protected:
-	int sync()
-	{
-		output_debug_string( str().c_str() );
-		str( std::basic_string<CharT>() ); // Clear the string buffer
+    virtual ~basic_debugbuf() {
+        sync();
+    }
 
-		return 0;
-	}
+protected:
+    int sync() {
+        output_debug_string(str().c_str());
+        str(std::basic_string<CharT>());    // Clear the string buffer
 
-	void output_debug_string( const CharT *text ) {}
+        return 0;
+    }
+
+    void output_debug_string(const CharT *text) {}
 };
 
-template <>
-void basic_debugbuf<char>::output_debug_string( const char *text )
+template<>
+void basic_debugbuf<char>::output_debug_string(const char *text)
 {
-	::OutputDebugStringA( text );
+    ::OutputDebugStringA(text);
 }
 
-template <>
-void basic_debugbuf<wchar_t>::output_debug_string( const wchar_t *text )
+template<>
+void basic_debugbuf<wchar_t>::output_debug_string(const wchar_t *text)
 {
-	::OutputDebugStringW( text );
+    ::OutputDebugStringW(text);
 }
 
-template <class CharT, class TraitsT = std::char_traits<CharT>>
-class basic_dostream : public std::basic_ostream<CharT, TraitsT> {
-  public:
-	basic_dostream()
-	    : std::basic_ostream<CharT, TraitsT>( new basic_debugbuf<CharT, TraitsT>() ) {}
-	~basic_dostream()
-	{
-		delete rdbuf();
-	}
+template<class CharT, class TraitsT = std::char_traits<CharT> >
+class basic_dostream : 
+    public std::basic_ostream<CharT, TraitsT>
+{
+public:
+
+    basic_dostream() : std::basic_ostream<CharT, TraitsT>
+                (new basic_debugbuf<CharT, TraitsT>()) {}
+    ~basic_dostream() 
+    {
+        delete rdbuf(); 
+    }
 };
 
 typedef basic_dostream<char>    dostream;
 typedef basic_dostream<wchar_t> wdostream;
-}
-} // namespace cinder::msw
+
+} } // namespace cinder::msw

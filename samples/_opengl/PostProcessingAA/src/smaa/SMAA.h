@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include "cinder/gl/Fbo.h"
-#include "cinder/gl/GlslProg.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Fbo.h"
+#include "cinder/gl/Texture.h"
 
 class SMAA {
   public:
@@ -34,27 +34,27 @@ class SMAA {
 	void draw( const ci::gl::Texture2dRef &source, const ci::Area &bounds );
 	void apply( const ci::gl::FboRef &destination, const ci::gl::FboRef &source );
 
-	ci::gl::Texture2dRef getEdgePass();
-	ci::gl::Texture2dRef getBlendPass();
+	ci::gl::Texture2dRef  getEdgePass();
+	ci::gl::Texture2dRef  getBlendPass();
 
   private:
-	ci::gl::Fbo::Format mFboFormat;
-	ci::gl::FboRef      mFboEdgePass;
-	ci::gl::FboRef      mFboBlendPass;
+	ci::gl::Fbo::Format   mFboFormat;
+	ci::gl::FboRef        mFboEdgePass;
+	ci::gl::FboRef        mFboBlendPass;
 
-	ci::gl::GlslProgRef mGlslFirstPass; // edge detection
-	ci::gl::GlslProgRef mGlslSecondPass; // blending weight calculation
-	ci::gl::GlslProgRef mGlslThirdPass; // neighborhood blending
+	ci::gl::GlslProgRef		mGlslFirstPass;		// edge detection
+	ci::gl::GlslProgRef		mGlslSecondPass;	// blending weight calculation
+	ci::gl::GlslProgRef		mGlslThirdPass;		// neighborhood blending
 
 	// These textures contain look-up tables that speed up the SMAA process.
-	ci::gl::Texture2dRef mAreaTex;
-	ci::gl::Texture2dRef mSearchTex;
+	ci::gl::Texture2dRef  mAreaTex;
+	ci::gl::Texture2dRef  mSearchTex;
 
 	// Size of our buffers, to be passed to the shaders.
-	ci::vec4 mMetrics;
+	ci::vec4              mMetrics;
 
-	void createBuffers( int width, int height );
+	void                  createBuffers( int width, int height );
 
-	void doEdgePass( const ci::gl::Texture2dRef &source );
-	void doBlendPass();
+	void                  doEdgePass( const ci::gl::Texture2dRef &source );
+	void                  doBlendPass();
 };

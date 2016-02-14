@@ -22,24 +22,25 @@
 */
 
 #include "cinder/Camera.h"
-#include "cinder/BSpline.h"
 #include "cinder/Frustum.h"
 #include "cinder/GeomIo.h"
-#include "cinder/Log.h"
-#include "cinder/Matrix.h"
 #include "cinder/Quaternion.h"
-#include "cinder/Sphere.h"
+#include "cinder/Log.h"
 #include "cinder/TriMesh.h"
 #include "cinder/Triangulate.h"
+#include "cinder/BSpline.h"
+#include "cinder/Matrix.h"
+#include "cinder/Sphere.h"
 #include <algorithm>
 
 using namespace std;
 
-namespace cinder {
-namespace geom {
+namespace cinder { namespace geom {
 
 std::string sAttribNames[(int)Attrib::NUM_ATTRIBS] = {
-	"POSITION", "COLOR", "TEX_COORD_0", "TEX_COORD_1", "TEX_COORD_2", "TEX_COORD_3", "NORMAL", "TANGENT", "BITANGENT", "BONE_INDEX", "BONE_WEIGHT", "CUSTOM_0", "CUSTOM_1", "CUSTOM_2", "CUSTOM_3", "CUSTOM_4", "CUSTOM_5", "CUSTOM_6", "CUSTOM_7", "CUSTOM_8", "CUSTOM_9"
+	"POSITION", "COLOR", "TEX_COORD_0", "TEX_COORD_1", "TEX_COORD_2", "TEX_COORD_3",
+	"NORMAL", "TANGENT", "BITANGENT", "BONE_INDEX", "BONE_WEIGHT",
+	"CUSTOM_0", "CUSTOM_1", "CUSTOM_2", "CUSTOM_3", "CUSTOM_4", "CUSTOM_5", "CUSTOM_6", "CUSTOM_7", "CUSTOM_8", "CUSTOM_9"
 };
 
 std::string sPrimitiveNames[(int)Primitive::NUM_PRIMITIVES] = {
@@ -81,7 +82,7 @@ Primitive Modifier::getPrimitive( const Modifier::Params &upstreamParams ) const
 	return upstreamParams.getPrimitive();
 }
 
-uint8_t Modifier::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
+uint8_t	Modifier::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
 {
 	return upstreamDims;
 }
@@ -90,6 +91,7 @@ AttribSet Modifier::getAvailableAttribs( const Modifier::Params &upstreamParams 
 {
 	return upstreamParams.getAvailableAttribs();
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // BufferLayout
@@ -111,7 +113,7 @@ bool BufferLayout::hasAttrib( Attrib attrib ) const
 	return false;
 }
 
-uint8_t BufferLayout::getAttribDims( Attrib attrib ) const
+uint8_t	BufferLayout::getAttribDims( Attrib attrib ) const
 {
 	for( const auto &atIt : mAttribs ) {
 		if( atIt.getAttrib() == attrib )
@@ -125,15 +127,15 @@ size_t BufferLayout::calcRequiredStorage( size_t numVertices ) const
 {
 	if( numVertices == 0 )
 		return 0;
-
+	
 	size_t result = 0;
 	for( auto &attrib : mAttribs ) {
 		size_t stride = attrib.getStride();
 		if( stride == 0 )
 			stride = attrib.getByteSize();
-		result = std::max( result, attrib.getOffset() + ( numVertices - 1 ) * stride + attrib.getByteSize() );
+		result = std::max( result, attrib.getOffset() + (numVertices-1) * stride + attrib.getByteSize() );
 	}
-
+	
 	return result;
 }
 
@@ -142,14 +144,14 @@ size_t BufferLayout::calcRequiredStorage( size_t numVertices ) const
 namespace { // these are helper functions for copyData() and copyDataMultAdd
 
 // Assumes source is tightly packed
-template <uint8_t SRCDIM, uint8_t DSTDIM>
+template<uint8_t SRCDIM, uint8_t DSTDIM>
 void copyDataImpl( const float *srcData, size_t numElements, size_t dstStrideBytes, float *dstData )
 {
 	static const float sFillerData[4] = { 0, 0, 0, 1 };
-	const uint8_t      MINDIM = ( SRCDIM < DSTDIM ) ? SRCDIM : DSTDIM;
+	const uint8_t MINDIM = (SRCDIM < DSTDIM) ? SRCDIM : DSTDIM;
 
 	if( dstStrideBytes == 0 )
-		dstStrideBytes = DSTDIM * sizeof( float );
+		dstStrideBytes = DSTDIM * sizeof(float);
 
 	for( size_t v = 0; v < numElements; ++v ) {
 		uint8_t d;
@@ -160,20 +162,20 @@ void copyDataImpl( const float *srcData, size_t numElements, size_t dstStrideByt
 			dstData[d] = sFillerData[d];
 		}
 		srcData += SRCDIM;
-		dstData = (float *)( (uint8_t *)dstData + dstStrideBytes );
+		dstData = (float*)((uint8_t*)dstData + dstStrideBytes);
 	}
 }
 
-template <uint8_t SRCDIM, uint8_t DSTDIM>
+template<uint8_t SRCDIM, uint8_t DSTDIM>
 void copyDataImpl( const float *srcData, size_t srcStrideBytes, size_t numElements, size_t dstStrideBytes, float *dstData )
 {
 	static const float sFillerData[4] = { 0, 0, 0, 1 };
-	const uint8_t      MINDIM = ( SRCDIM < DSTDIM ) ? SRCDIM : DSTDIM;
+	const uint8_t MINDIM = (SRCDIM < DSTDIM) ? SRCDIM : DSTDIM;
 
 	if( dstStrideBytes == 0 )
-		dstStrideBytes = DSTDIM * sizeof( float );
+		dstStrideBytes = DSTDIM * sizeof(float);
 	if( srcStrideBytes == 0 )
-		srcStrideBytes = SRCDIM * sizeof( float );
+		srcStrideBytes = SRCDIM * sizeof(float);
 
 	for( size_t v = 0; v < numElements; ++v ) {
 		uint8_t d;
@@ -183,8 +185,8 @@ void copyDataImpl( const float *srcData, size_t srcStrideBytes, size_t numElemen
 		for( ; d < DSTDIM; ++d ) {
 			dstData[d] = sFillerData[d];
 		}
-		srcData = (float *)( (uint8_t *)srcData + srcStrideBytes );
-		dstData = (float *)( (uint8_t *)dstData + dstStrideBytes );
+		srcData = (float*)((uint8_t*)srcData + srcStrideBytes);
+		dstData = (float*)((uint8_t*)dstData + dstStrideBytes);
 	}
 }
 } // anonymous namespace
@@ -192,99 +194,63 @@ void copyDataImpl( const float *srcData, size_t srcStrideBytes, size_t numElemen
 void copyData( uint8_t srcDimensions, size_t srcStrideBytes, const float *srcData, size_t numElements, uint8_t dstDimensions, size_t dstStrideBytes, float *dstData )
 {
 	if( srcStrideBytes == 0 )
-		srcStrideBytes = srcDimensions * sizeof( float );
+		srcStrideBytes = srcDimensions * sizeof(float);
 	if( dstStrideBytes == 0 )
-		dstStrideBytes = dstDimensions * sizeof( float );
+		dstStrideBytes = dstDimensions * sizeof(float);
 
 	if( srcDimensions == 0 ) { // fill with zeros
 		for( size_t v = 0; v < numElements; ++v ) {
 			for( uint8_t d = 0; d < dstDimensions; ++d )
 				dstData[d] = 0;
-			dstData = (float *)( (uint8_t *)dstData + dstStrideBytes );
+			dstData = (float*)((uint8_t*)dstData + dstStrideBytes);	
 		}
 	}
-	else if( srcStrideBytes == srcDimensions * sizeof( float ) ) // call equivalent method that doesn't support srcStrideBytes
+	else if( srcStrideBytes == srcDimensions * sizeof(float) ) 	// call equivalent method that doesn't support srcStrideBytes
 		copyData( srcDimensions, srcData, numElements, dstDimensions, dstStrideBytes, dstData );
 	// we can get away with a memcpy
-	else if( ( srcDimensions == dstDimensions ) && ( dstStrideBytes == dstDimensions * sizeof( float ) ) && ( srcStrideBytes == dstStrideBytes ) ) {
-		memcpy( dstData, srcData, numElements * srcDimensions * sizeof( float ) );
+	else if( (srcDimensions == dstDimensions) && (dstStrideBytes == dstDimensions * sizeof(float)) && (srcStrideBytes == dstStrideBytes) ) {
+		memcpy( dstData, srcData, numElements * srcDimensions * sizeof(float) );
 	}
 	else {
 		switch( srcDimensions ) {
-		case 1:
-			switch( dstDimensions ) {
 			case 1:
-				copyDataImpl<1, 1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 2:
-				copyDataImpl<1, 2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 3:
-				copyDataImpl<1, 3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 4:
-				copyDataImpl<1, 4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<1,1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<1,2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<1,3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<1,4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		case 2:
-			switch( dstDimensions ) {
-			case 1:
-				copyDataImpl<2, 1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
 			case 2:
-				copyDataImpl<2, 2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 3:
-				copyDataImpl<2, 3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 4:
-				copyDataImpl<2, 4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<2,1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<2,2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<2,3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<2,4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		case 3:
-			switch( dstDimensions ) {
-			case 1:
-				copyDataImpl<3, 1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 2:
-				copyDataImpl<3, 2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
 			case 3:
-				copyDataImpl<3, 3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 4:
-				copyDataImpl<3, 4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<3,1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<3,2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<3,3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<3,4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		case 4:
-			switch( dstDimensions ) {
-			case 1:
-				copyDataImpl<4, 1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 2:
-				copyDataImpl<4, 2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			case 3:
-				copyDataImpl<4, 3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
 			case 4:
-				copyDataImpl<4, 4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<4,1>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<4,2>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<4,3>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<4,4>( srcData, srcStrideBytes, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		default:
-			throw ExcIllegalSourceDimensions();
+			default:
+				throw ExcIllegalSourceDimensions();
 		}
 	}
 }
@@ -292,151 +258,118 @@ void copyData( uint8_t srcDimensions, size_t srcStrideBytes, const float *srcDat
 void copyData( uint8_t srcDimensions, const float *srcData, size_t numElements, uint8_t dstDimensions, size_t dstStrideBytes, float *dstData )
 {
 	if( dstStrideBytes == 0 )
-		dstStrideBytes = dstDimensions * sizeof( float );
+		dstStrideBytes = dstDimensions * sizeof(float);
 
 	// we can get away with a memcpy
 	if( srcDimensions == 0 ) { // fill with zeros
 		for( size_t v = 0; v < numElements; ++v ) {
 			for( uint8_t d = 0; d < dstDimensions; ++d )
 				dstData[d] = 0;
-			dstData = (float *)( (uint8_t *)dstData + dstStrideBytes );
+			dstData = (float*)((uint8_t*)dstData + dstStrideBytes);	
 		}
-	}
-	else if( ( srcDimensions == dstDimensions ) && ( dstStrideBytes == dstDimensions * sizeof( float ) ) ) {
-		memcpy( dstData, srcData, numElements * srcDimensions * sizeof( float ) );
+	}	
+	else if( (srcDimensions == dstDimensions) && (dstStrideBytes == dstDimensions * sizeof(float)) ) {
+		memcpy( dstData, srcData, numElements * srcDimensions * sizeof(float) );
 	}
 	else {
 		switch( srcDimensions ) {
-		case 1:
-			switch( dstDimensions ) {
 			case 1:
-				copyDataImpl<1, 1>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 2:
-				copyDataImpl<1, 2>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 3:
-				copyDataImpl<1, 3>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 4:
-				copyDataImpl<1, 4>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<1,1>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<1,2>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<1,3>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<1,4>( srcData, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		case 2:
-			switch( dstDimensions ) {
-			case 1:
-				copyDataImpl<2, 1>( srcData, numElements, dstStrideBytes, dstData );
-				break;
 			case 2:
-				copyDataImpl<2, 2>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 3:
-				copyDataImpl<2, 3>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 4:
-				copyDataImpl<2, 4>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<2,1>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<2,2>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<2,3>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<2,4>( srcData, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		case 3:
-			switch( dstDimensions ) {
-			case 1:
-				copyDataImpl<3, 1>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 2:
-				copyDataImpl<3, 2>( srcData, numElements, dstStrideBytes, dstData );
-				break;
 			case 3:
-				copyDataImpl<3, 3>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 4:
-				copyDataImpl<3, 4>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<3,1>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<3,2>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<3,3>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<3,4>( srcData, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		case 4:
-			switch( dstDimensions ) {
-			case 1:
-				copyDataImpl<4, 1>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 2:
-				copyDataImpl<4, 2>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			case 3:
-				copyDataImpl<4, 3>( srcData, numElements, dstStrideBytes, dstData );
-				break;
 			case 4:
-				copyDataImpl<4, 4>( srcData, numElements, dstStrideBytes, dstData );
-				break;
-			default:
-				throw ExcIllegalDestDimensions();
-			}
+				switch( dstDimensions ) {
+					case 1: copyDataImpl<4,1>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 2: copyDataImpl<4,2>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 3: copyDataImpl<4,3>( srcData, numElements, dstStrideBytes, dstData ); break;
+					case 4: copyDataImpl<4,4>( srcData, numElements, dstStrideBytes, dstData ); break;
+					default: throw ExcIllegalDestDimensions();
+				}
 			break;
-		default:
-			throw ExcIllegalSourceDimensions();
+			default:
+				throw ExcIllegalSourceDimensions();
 		}
 	}
 }
 
-namespace {
-template <typename T>
+
+namespace { 
+template<typename T>
 void copyIndexDataForceTrianglesImpl( Primitive primitive, const uint32_t *source, size_t numIndices, T indexOffset, T *target )
 {
 	switch( primitive ) {
-	case Primitive::LINES:
-	case Primitive::LINE_STRIP:
-	case Primitive::TRIANGLES:
-		if( indexOffset == 0 ) {
-			memcpy( target, source, sizeof( uint32_t ) * numIndices );
-		}
-		else {
-			for( size_t i = 0; i < numIndices; ++i )
-				target[i] = source[i] + indexOffset;
+		case Primitive::LINES:
+		case Primitive::LINE_STRIP:
+		case Primitive::TRIANGLES:
+			if( indexOffset == 0 ) {
+				memcpy( target, source, sizeof(uint32_t) * numIndices );
+			}
+			else {
+				for( size_t i = 0; i < numIndices; ++i )
+					target[i] = source[i] + indexOffset;
+			}
+		break;
+		case Primitive::TRIANGLE_STRIP: { // ABC, CBD, CDE, EDF, etc
+			if( numIndices < 3 )
+				return;
+			size_t outIdx = 0; // (012, 213), (234, 435), etc : (odd,even), (odd,even), etc
+			for( size_t i = 0; i < numIndices - 2; ++i ) {
+				if( i & 1 ) { // odd
+					target[outIdx++] = source[i+1];
+					target[outIdx++] = source[i];
+					target[outIdx++] = source[i+2];
+				}
+				else { // even
+					target[outIdx++] = source[i];
+					target[outIdx++] = source[i+1];
+					target[outIdx++] = source[i+2];
+				}
+			}
 		}
 		break;
-	case Primitive::TRIANGLE_STRIP: { // ABC, CBD, CDE, EDF, etc
-		if( numIndices < 3 )
-			return;
-		size_t outIdx = 0; // (012, 213), (234, 435), etc : (odd,even), (odd,even), etc
-		for( size_t i = 0; i < numIndices - 2; ++i ) {
-			if( i & 1 ) { // odd
-				target[outIdx++] = source[i + 1];
-				target[outIdx++] = source[i];
-				target[outIdx++] = source[i + 2];
-			}
-			else { // even
-				target[outIdx++] = source[i];
-				target[outIdx++] = source[i + 1];
-				target[outIdx++] = source[i + 2];
+		case Primitive::TRIANGLE_FAN: { // ABC, ACD, ADE, etc
+			if( numIndices < 3 )
+				return;
+			size_t outIdx = 0;
+			for( size_t i = 0; i < numIndices - 2; ++i ) {
+				target[outIdx++] = source[0];
+				target[outIdx++] = source[i+1];
+				target[outIdx++] = source[i+2];
 			}
 		}
-	} break;
-	case Primitive::TRIANGLE_FAN: { // ABC, ACD, ADE, etc
-		if( numIndices < 3 )
-			return;
-		size_t outIdx = 0;
-		for( size_t i = 0; i < numIndices - 2; ++i ) {
-			target[outIdx++] = source[0];
-			target[outIdx++] = source[i + 1];
-			target[outIdx++] = source[i + 2];
-		}
-	} break;
-	default:
-		throw ExcIllegalPrimitiveType();
+		break;
+		default:
+			throw ExcIllegalPrimitiveType();
 	}
 }
 
-// Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh".
+// Lengyel, Eric. "Computing Tangent Space Basis Vectors for an Arbitrary Mesh". 
 // Terathon Software 3D Graphics Library, 2001.
 // http://www.terathon.com/code/tangent.html
-template <typename TEXTYPE>
+template<typename TEXTYPE>
 void calculateTangentsImpl( size_t numIndices, const uint32_t *indices, size_t numVertices, const vec3 *positions, const vec3 *normals, const TEXTYPE *texCoords, vector<vec3> *resultTangents, vector<vec3> *resultBitangents )
 {
 	if( resultTangents )
@@ -468,30 +401,30 @@ void calculateTangentsImpl( size_t numIndices, const uint32_t *indices, size_t n
 		float t1 = w1.y - w0.y;
 		float t2 = w2.y - w0.y;
 
-		float r = ( s1 * t2 - s2 * t1 );
+		float r = (s1 * t2 - s2 * t1);
 		if( r != 0.0f ) r = 1.0f / r;
 
-		vec3 tangent( ( t2 * x1 - t1 * x2 ) * r, ( t2 * y1 - t1 * y2 ) * r, ( t2 * z1 - t1 * z2 ) * r );
+		vec3 tangent( (t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r );
 
-		( *resultTangents )[index0] += tangent;
-		( *resultTangents )[index1] += tangent;
-		( *resultTangents )[index2] += tangent;
+		(*resultTangents)[index0] += tangent;
+		(*resultTangents)[index1] += tangent;
+		(*resultTangents)[index2] += tangent;
 	}
 
 	for( size_t i = 0; i < numVertices; ++i ) {
 		vec3 normal = normals[i];
-		vec3 tangent = ( *resultTangents )[i];
-		( *resultTangents )[i] = ( tangent - normal * dot( normal, tangent ) );
+		vec3 tangent = (*resultTangents)[i];
+		(*resultTangents)[i] = ( tangent - normal * dot( normal, tangent ) );
 
-		float len = length2( ( *resultTangents )[i] );
+		float len = length2( (*resultTangents)[i] );
 		if( len > 0.0f )
-			( *resultTangents )[i] /= sqrt( len );
+			(*resultTangents)[i] /= sqrt( len );
 	}
 
 	if( resultBitangents ) {
 		resultBitangents->reserve( numVertices );
 		for( size_t i = 0; i < numVertices; ++i )
-			resultBitangents->emplace_back( normalize( cross( normals[i], ( *resultTangents )[i] ) ) );
+			resultBitangents->emplace_back( normalize( cross( normals[i], (*resultTangents)[i] ) ) );
 	}
 }
 
@@ -522,19 +455,20 @@ void Target::copyIndexDataForceTriangles( Primitive primitive, const uint32_t *s
 void Target::copyIndexDataForceLines( Primitive primitive, const uint32_t *source, size_t numIndices, uint32_t indexOffset, uint32_t *target )
 {
 	switch( primitive ) {
-	case Primitive::LINES:
-		for( size_t i = 0; i < numIndices; ++i )
-			target[i] = ( uint32_t )( source[i] + indexOffset );
+		case Primitive::LINES:
+			for( size_t i = 0; i < numIndices; ++i )
+				target[i] = (uint32_t)(source[i] + indexOffset);
 		break;
-	case Primitive::LINE_STRIP: {
-		size_t outIdx = 0;
-		for( size_t i = 0; i < numIndices - 1; ++i ) {
-			target[outIdx++] = ( uint32_t )( source[i + 0] + indexOffset );
-			target[outIdx++] = ( uint32_t )( source[i + 1] + indexOffset );
+		case Primitive::LINE_STRIP: {
+			size_t outIdx = 0;
+			for( size_t i = 0; i < numIndices - 1; ++i ) {
+				target[outIdx++] = (uint32_t)(source[i + 0] + indexOffset);
+				target[outIdx++] = (uint32_t)(source[i + 1] + indexOffset);
+			}
 		}
-	} break;
-	default:
-		throw ExcIllegalPrimitiveType();
+		break;
+		default:
+			throw ExcIllegalPrimitiveType();
 	}
 }
 
@@ -542,64 +476,67 @@ void Target::copyIndexDataForceLines( Primitive primitive, const uint32_t *sourc
 void Target::generateIndicesForceTriangles( Primitive primitive, size_t numInputIndices, uint32_t indexOffset, uint32_t *target )
 {
 	switch( primitive ) {
-	case Primitive::TRIANGLES:
-		for( size_t i = 0; i < numInputIndices; ++i )
-			target[i] = ( uint32_t )( indexOffset + i );
+		case Primitive::TRIANGLES:
+			for( size_t i = 0; i < numInputIndices; ++i )
+				target[i] = (uint32_t)(indexOffset + i);
 		break;
-	case Primitive::TRIANGLE_FAN: {
-		if( numInputIndices < 3 )
-			return;
-		size_t outIdx = 0;
-		for( size_t i = 0; i < numInputIndices - 2; ++i ) {
-			target[outIdx++] = (uint32_t)indexOffset;
-			target[outIdx++] = ( uint32_t )( i + 1 + indexOffset );
-			target[outIdx++] = ( uint32_t )( i + 2 + indexOffset );
-		}
-	} break;
-	case Primitive::TRIANGLE_STRIP: {
-		if( numInputIndices < 3 )
-			return;
-		size_t outIdx = 0; // (012, 213), (234, 435), etc : (odd,even), (odd,even), etc
-		for( size_t i = 0; i < numInputIndices - 2; ++i ) {
-			if( i & 1 ) { // odd
-				target[outIdx++] = ( uint32_t )( i + 1 + indexOffset );
-				target[outIdx++] = ( uint32_t )( i + 0 + indexOffset );
-				target[outIdx++] = ( uint32_t )( i + 2 + indexOffset );
-			}
-			else { // even
-				target[outIdx++] = ( uint32_t )( i + 0 + indexOffset );
-				target[outIdx++] = ( uint32_t )( i + 1 + indexOffset );
-				target[outIdx++] = ( uint32_t )( i + 2 + indexOffset );
+		case Primitive::TRIANGLE_FAN: {
+			if( numInputIndices < 3 )
+				return;
+			size_t outIdx = 0;
+			for( size_t i = 0; i < numInputIndices - 2; ++i ) {
+				target[outIdx++] = (uint32_t)indexOffset;
+				target[outIdx++] = (uint32_t)(i + 1 + indexOffset);
+				target[outIdx++] = (uint32_t)(i + 2 + indexOffset);
 			}
 		}
-	} break;
-	default:
-		throw ExcIllegalPrimitiveType();
+		break;
+		case Primitive::TRIANGLE_STRIP: {
+			if( numInputIndices < 3 )
+				return;
+			size_t outIdx = 0; // (012, 213), (234, 435), etc : (odd,even), (odd,even), etc
+			for( size_t i = 0; i < numInputIndices - 2; ++i ) {
+				if( i & 1 ) { // odd
+					target[outIdx++] = (uint32_t)(i + 1 + indexOffset);
+					target[outIdx++] = (uint32_t)(i + 0 + indexOffset);
+					target[outIdx++] = (uint32_t)(i + 2 + indexOffset);
+				}
+				else { // even
+					target[outIdx++] = (uint32_t)(i + 0 + indexOffset);
+					target[outIdx++] = (uint32_t)(i + 1 + indexOffset);
+					target[outIdx++] = (uint32_t)(i + 2 + indexOffset);
+				}
+			}
+		}
+		break;
+		default:
+			throw ExcIllegalPrimitiveType();
 	}
 }
 
 void Target::generateIndicesForceLines( Primitive primitive, size_t numInputIndices, uint32_t indexOffset, uint32_t *target )
 {
 	switch( primitive ) {
-	case Primitive::LINES:
-		for( size_t i = 0; i < numInputIndices; ++i )
-			target[i] = ( uint32_t )( indexOffset + i );
+		case Primitive::LINES:
+			for( size_t i = 0; i < numInputIndices; ++i )
+				target[i] = (uint32_t)(indexOffset + i);
 		break;
-	case Primitive::LINE_STRIP: {
-		size_t outIdx = 0;
-		for( size_t i = 0; i < numInputIndices - 1; ++i ) {
-			target[outIdx++] = ( uint32_t )( indexOffset + i );
-			target[outIdx++] = ( uint32_t )( indexOffset + i + 1 );
+		case Primitive::LINE_STRIP: {
+			size_t outIdx = 0;
+			for( size_t i = 0; i < numInputIndices - 1; ++i ) {
+				target[outIdx++] = (uint32_t)(indexOffset + i);
+				target[outIdx++] = (uint32_t)(indexOffset + i + 1);
+			}
 		}
-	} break;
-	default:
-		throw ExcIllegalPrimitiveType();
+		break;
+		default:
+			throw ExcIllegalPrimitiveType();
 	}
 }
 
 void Target::copyIndexData( const uint32_t *source, size_t numIndices, uint32_t *target )
 {
-	memcpy( target, source, numIndices * sizeof( float ) );
+	memcpy( target, source, numIndices * sizeof(float) );
 }
 
 void Target::copyIndexData( const uint32_t *source, size_t numIndices, uint16_t *target )
@@ -647,11 +584,11 @@ Primitive Target::determineCombinedPrimitive( Primitive a, Primitive b )
 //float Rect::sPositions[4*2] = { 0.5f,-0.5f,	-0.5f,-0.5f,	0.5f,0.5f,	-0.5f,0.5f };
 //float Rect::sColors[4*3] = { 1, 0, 1,	0, 0, 1,	1, 1, 1,	0, 1, 1 };
 //float Rect::sTexCoords[4*2] = { 1, 1,		0, 1,		1, 0,		0, 0 };
-const float Rect::sNormals[4 * 3] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
-const float Rect::sTangents[4 * 3] = { 0.7071067f, 0.7071067f, 0, 0.7071067f, 0.7071067f, 0, 0.7071067f, 0.7071067f, 0, 0.7071067f, 0.7071067f, 0 };
+const float Rect::sNormals[4*3] = {0, 0, 1,	0, 0, 1,	0, 0, 1,	0, 0, 1 };
+const float Rect::sTangents[4*3] = {0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0 };
 
 Rect::Rect()
-    : mHasColors( false )
+	: mHasColors( false )
 {
 	// upper-left, upper-right, lower-left, lower-right
 	mPositions[0] = vec2( -0.5f, -0.5f );
@@ -663,14 +600,14 @@ Rect::Rect()
 }
 
 Rect::Rect( const Rectf &r )
-    : mHasColors( false )
+	: mHasColors( false )
 {
 	rect( r );
 	setDefaultColors();
 	setDefaultTexCoords();
 }
 
-Rect &Rect::rect( const Rectf &r )
+Rect& Rect::rect( const Rectf &r )
 {
 	mPositions[0] = r.getUpperLeft();
 	mPositions[1] = r.getUpperRight();
@@ -679,7 +616,7 @@ Rect &Rect::rect( const Rectf &r )
 	return *this;
 }
 
-Rect &Rect::colors( const ColorAf &upperLeft, const ColorAf &upperRight, const ColorAf &lowerRight, const ColorAf &lowerLeft )
+Rect& Rect::colors( const ColorAf &upperLeft, const ColorAf &upperRight, const ColorAf &lowerRight, const ColorAf &lowerLeft )
 {
 	mHasColors = true;
 	mColors[0] = upperLeft;
@@ -689,7 +626,7 @@ Rect &Rect::colors( const ColorAf &upperLeft, const ColorAf &upperRight, const C
 	return *this;
 }
 
-Rect &Rect::texCoords( const vec2 &upperLeft, const vec2 &upperRight, const vec2 &lowerRight, const vec2 &lowerLeft )
+Rect& Rect::texCoords( const vec2 &upperLeft, const vec2 &upperRight, const vec2 &lowerRight, const vec2 &lowerLeft )
 {
 	mTexCoords[0] = upperLeft;
 	mTexCoords[1] = upperRight;
@@ -701,32 +638,27 @@ Rect &Rect::texCoords( const vec2 &upperLeft, const vec2 &upperRight, const vec2
 void Rect::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
 	if( requestedAttribs.count( Attrib::POSITION ) )
-		target->copyAttrib( Attrib::POSITION, 2, 0, (const float *)mPositions.data(), 4 );
+		target->copyAttrib( Attrib::POSITION, 2, 0, (const float*)mPositions.data(), 4 );
 	if( requestedAttribs.count( Attrib::NORMAL ) )
 		target->copyAttrib( Attrib::NORMAL, 3, 0, sNormals, 4 );
 	if( requestedAttribs.count( Attrib::TEX_COORD_0 ) )
-		target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float *)mTexCoords.data(), 4 );
+		target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float*)mTexCoords.data(), 4 );
 	if( requestedAttribs.count( Attrib::COLOR ) )
-		target->copyAttrib( Attrib::COLOR, 4, 0, (const float *)mColors.data(), 4 );
+		target->copyAttrib( Attrib::COLOR, 4, 0, (const float*)mColors.data(), 4 );
 	if( requestedAttribs.count( Attrib::TANGENT ) )
 		target->copyAttrib( Attrib::TANGENT, 3, 0, sTangents, 4 );
 }
 
-uint8_t Rect::getAttribDims( Attrib attr ) const
+uint8_t	Rect::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 2;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 4 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 2;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 4 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -756,78 +688,73 @@ void Rect::setDefaultTexCoords()
 ///////////////////////////////////////////////////////////////////////////////////////
 // RoundedRect
 RoundedRect::RoundedRect()
-    : mSubdivisions( -1 ), mCornerRadius( 0.1f ), mHasColors( false ), mNumVertices( 0 )
+	: mSubdivisions( -1 ), mCornerRadius( 0.1f ), mHasColors( false ), mNumVertices( 0 )
 {
 	rect( Rectf( -0.5f, -0.5f, 0.5f, 0.5f ) );
 	updateVertexCount();
 	setDefaultColors();
 	setDefaultTexCoords();
 }
-
+	
 RoundedRect::RoundedRect( const Rectf &r, float cornerRadius )
-    : mSubdivisions( -1 ), mCornerRadius( cornerRadius ), mHasColors( false ), mNumVertices( 0 )
+	: mSubdivisions( -1 ), mCornerRadius( cornerRadius ), mHasColors( false ), mNumVertices( 0 )
 {
 	rect( r );
 	updateVertexCount();
 	setDefaultColors();
 	setDefaultTexCoords();
 }
-
-RoundedRect &RoundedRect::cornerSubdivisions( int cornerSubdivisions )
+	
+RoundedRect& RoundedRect::cornerSubdivisions( int cornerSubdivisions )
 {
 	mSubdivisions = cornerSubdivisions;
 	updateVertexCount();
 	return *this;
 }
 
-RoundedRect &RoundedRect::cornerRadius( float cornerRadius )
+RoundedRect& RoundedRect::cornerRadius( float cornerRadius )
 {
 	mCornerRadius = cornerRadius;
 	updateVertexCount();
 	return *this;
 }
 
-RoundedRect &RoundedRect::texCoords( const vec2 &upperLeft, const vec2 &lowerRight )
+RoundedRect& RoundedRect::texCoords( const vec2 &upperLeft, const vec2 &lowerRight )
 {
 	mRectTexCoords = Rectf( upperLeft.x, lowerRight.y, lowerRight.x, upperLeft.y );
 	return *this;
 }
 
-RoundedRect &RoundedRect::colors( const ColorAf &upperLeft, const ColorAf &upperRight, const ColorAf &lowerRight, const ColorAf &lowerLeft )
+RoundedRect& RoundedRect::colors( const ColorAf &upperLeft, const ColorAf &upperRight, const ColorAf &lowerRight, const ColorAf &lowerLeft )
 {
 	mHasColors = true;
-	mColors[0] = lowerLeft;
-	mColors[1] = lowerRight;
-	mColors[2] = upperRight;
+	mColors[0] = lowerLeft;  
+	mColors[1] = lowerRight; 
+	mColors[2] = upperRight; 
 	mColors[3] = upperLeft;
 	return *this;
 }
-
+	
 void RoundedRect::updateVertexCount()
 {
 	if( mSubdivisions <= 0 ) {
 		mSubdivisions = (int)math<double>::floor( mCornerRadius * M_PI * 2 / 4 );
 	}
 	if( mSubdivisions < 2 ) mSubdivisions = 2;
-
+	
 	mNumVertices = ( mSubdivisions + 1 ) * 4 + 2;
 }
-
-uint8_t RoundedRect::getAttribDims( Attrib attr ) const
+	
+uint8_t	RoundedRect::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 2;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 4 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 2;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 4 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -835,7 +762,7 @@ AttribSet RoundedRect::getAvailableAttribs() const
 {
 	return { Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0, Attrib::COLOR, Attrib::TANGENT };
 }
-
+	
 void RoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &requestedAttribs ) const
 {
 	std::vector<vec2> positions;
@@ -853,16 +780,16 @@ void RoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &reque
 	std::vector<vec3> tangents;
 	if( requestedAttribs.count( geom::Attrib::TANGENT ) )
 		tangents.resize( mNumVertices );
-
+	
 	auto posCenter = mRectPositions.getCenter();
 	auto texCenter = mRectTexCoords.getCenter();
-
-	auto bufferPositions = !positions.empty();
-	auto bufferTexCoords = !texCoords.empty();
-	auto bufferNormals = !normals.empty();
-	auto bufferTangents = !tangents.empty();
-	auto bufferColors = !colors.empty();
-
+	
+	auto bufferPositions = ! positions.empty();
+	auto bufferTexCoords = ! texCoords.empty();
+	auto bufferNormals = ! normals.empty();
+	auto bufferTangents = ! tangents.empty();
+	auto bufferColors = ! colors.empty();
+	
 	if( bufferPositions )
 		positions[0] = posCenter;
 	if( bufferTexCoords )
@@ -872,12 +799,12 @@ void RoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &reque
 	if( bufferTangents )
 		tangents[0] = vec3( 0.7071067f, 0.7071067f, 0 );
 	if( bufferColors )
-		colors[0] = ( mColors[0] / 4.0f ) + ( mColors[1] / 4.0f ) + ( mColors[2] / 4.0f ) + ( mColors[3] / 4.0f );
+		colors[0] = (mColors[0] / 4.0f) + (mColors[1] / 4.0f) + (mColors[2] / 4.0f) + (mColors[3] / 4.0f);
 
 	float cornerRadius = glm::max( 0.0f, glm::min( mCornerRadius, 0.5f * glm::min( mRectPositions.getWidth(), mRectPositions.getHeight() ) ) );
 
-	size_t      tri = 1;
-	const float angleDelta = (float)( 1 / (float)mSubdivisions * M_PI / 2 );
+	size_t tri = 1;
+	const float angleDelta = (float)(1 / (float)mSubdivisions * M_PI / 2);
 	const std::array<vec2, 4> cornerCenterVerts = {
 		vec2( mRectPositions.x2 - cornerRadius, mRectPositions.y2 - cornerRadius ),
 		vec2( mRectPositions.x1 + cornerRadius, mRectPositions.y2 - cornerRadius ),
@@ -889,22 +816,22 @@ void RoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &reque
 		vec2( mRectTexCoords.x2 - texCoordOffset.x, texCoordOffset.y + mRectTexCoords.y1 ), // lower right
 		vec2( texCoordOffset.x + mRectTexCoords.x1, texCoordOffset.y + mRectTexCoords.y1 ), // lower left
 		vec2( texCoordOffset.x + mRectTexCoords.x1, mRectTexCoords.y2 - texCoordOffset.y ), // upper left
-		vec2( mRectTexCoords.x2 - texCoordOffset.x, mRectTexCoords.y2 - texCoordOffset.y ) // upper right
+		vec2( mRectTexCoords.x2 - texCoordOffset.x, mRectTexCoords.y2 - texCoordOffset.y )	// upper right
 	};
 	for( size_t corner = 0; corner < 4; ++corner ) {
-		float angle = (float)( corner * M_PI / 2.0f );
-		vec2  cornerCenter( cornerCenterVerts[corner] );
-		vec2  cornerTexCoord( cornerCenterTexCoords[corner] );
-		vec4  cornerColor( mColors[corner] );
+		float angle = (float)(corner * M_PI / 2.0f);
+		vec2 cornerCenter( cornerCenterVerts[corner] );
+		vec2 cornerTexCoord( cornerCenterTexCoords[corner] );
+		vec4 cornerColor( mColors[corner] );
 		for( int s = 0; s <= mSubdivisions; s++ ) {
 			auto cosVal = math<float>::cos( angle );
 			auto sinVal = math<float>::sin( angle );
 			// Need this calculation for texCoords and colors
 			auto currentTexCoord = vec2( cornerTexCoord.x + cosVal * texCoordOffset.x,
-			    cornerTexCoord.y - sinVal * texCoordOffset.y );
+										cornerTexCoord.y - sinVal * texCoordOffset.y );
 			if( bufferPositions )
 				positions[tri] = vec2( cornerCenter.x + cosVal * cornerRadius,
-				    cornerCenter.y + sinVal * cornerRadius );
+									   cornerCenter.y + sinVal * cornerRadius );
 			if( bufferTexCoords )
 				texCoords[tri] = currentTexCoord;
 			if( bufferNormals )
@@ -936,7 +863,7 @@ void RoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &reque
 		auto colorU1 = lerp( mColors[0], mColors[1], currentTexCoord.x / mRectTexCoords.getWidth() );
 		colors[tri] = lerp( colorU0, colorU1, currentTexCoord.y / mRectTexCoords.getHeight() );
 	}
-
+	
 	if( bufferPositions )
 		target->copyAttrib( geom::Attrib::POSITION, 2, 0, value_ptr( *positions.data() ), positions.size() );
 	if( bufferTexCoords )
@@ -948,7 +875,7 @@ void RoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &reque
 	if( bufferColors )
 		target->copyAttrib( geom::Attrib::COLOR, 4, 0, value_ptr( *colors.data() ), colors.size() );
 }
-
+	
 void RoundedRect::setDefaultColors()
 {
 	mColors[0] = ColorAf( 1.0f, 0.0f, 0.0f, 1.0f ); // lower-left
@@ -965,17 +892,17 @@ void RoundedRect::setDefaultTexCoords()
 ///////////////////////////////////////////////////////////////////////////////////////
 // Cube
 Cube::Cube()
-    : mSubdivisions( 1 ), mSize( 1 ), mHasColors( false )
+	: mSubdivisions( 1 ), mSize( 1 ), mHasColors( false )
 {
-	mColors[0] = Color( 1, 0, 0 );
-	mColors[1] = Color( 0, 1, 1 );
-	mColors[2] = Color( 0, 1, 0 );
-	mColors[3] = Color( 1, 0, 1 );
-	mColors[4] = Color( 0, 0, 1 );
-	mColors[5] = Color( 1, 1, 0 );
+	mColors[0] = Color(1,0,0);
+	mColors[1] = Color(0,1,1);
+	mColors[2] = Color(0,1,0);
+	mColors[3] = Color(1,0,1);
+	mColors[4] = Color(0,0,1);
+	mColors[5] = Color(1,1,0);
 }
 
-Cube &Cube::colors( const ColorAf &posX, const ColorAf &negX, const ColorAf &posY, const ColorAf &negY, const ColorAf &posZ, const ColorAf &negZ )
+Cube& Cube::colors( const ColorAf &posX, const ColorAf &negX, const ColorAf &posY, const ColorAf &negY, const ColorAf &posZ, const ColorAf &negZ )
 {
 	mHasColors = true;
 	mColors[0] = posX;
@@ -989,34 +916,29 @@ Cube &Cube::colors( const ColorAf &posX, const ColorAf &negX, const ColorAf &pos
 
 size_t Cube::getNumVertices() const
 {
-	return 2 * ( ( mSubdivisions.x + 1 ) * ( mSubdivisions.y + 1 ) ) // +-Z
-	    + 2 * ( ( mSubdivisions.y + 1 ) * ( mSubdivisions.z + 1 ) ) // +-X
-	    + 2 * ( ( mSubdivisions.x + 1 ) * ( mSubdivisions.z + 1 ) ); // +-Y
+	return 2 * ( (mSubdivisions.x+1) * (mSubdivisions.y+1) ) // +-Z
+			+ 2 * ( (mSubdivisions.y+1) * (mSubdivisions.z+1) ) // +-X
+			+ 2 * ( (mSubdivisions.x+1) * (mSubdivisions.z+1) ); // +-Y
 }
 
 size_t Cube::getNumIndices() const
 {
 	return 2 * 6 * ( mSubdivisions.x * mSubdivisions.y ) // +-Z
-	    + 2 * 6 * ( mSubdivisions.y * mSubdivisions.z ) // +-X
-	    + 2 * 6 * ( mSubdivisions.x * mSubdivisions.z ); // +-Y
+			+ 2 * 6 * ( mSubdivisions.y * mSubdivisions.z ) // +-X
+			+ 2 * 6 * ( mSubdivisions.x * mSubdivisions.z ); // +-Y
 }
 
-uint8_t Cube::getAttribDims( Attrib attr ) const
+uint8_t	Cube::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 4 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
-	}
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 4 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
+	}	
 }
 
 AttribSet Cube::getAvailableAttribs() const
@@ -1024,7 +946,10 @@ AttribSet Cube::getAvailableAttribs() const
 	return { Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0, Attrib::COLOR, Attrib::TANGENT };
 }
 
-void generateFace( const vec3 &faceCenter, const vec3 &uAxis, const vec3 &vAxis, int subdivU, int subdivV, vector<vec3> *positions, vector<vec3> *normals, const ColorA &color, vector<ColorA> *colors, vector<vec2> *texCoords, vector<uint32_t> *indices )
+void generateFace( const vec3 &faceCenter, const vec3 &uAxis, const vec3 &vAxis, int subdivU, int subdivV,
+					vector<vec3> *positions, vector<vec3> *normals,
+					const ColorA &color, vector<ColorA> *colors, vector<vec2> *texCoords,
+					vector<uint32_t> *indices )
 {
 	const vec3 normal = normalize( faceCenter );
 
@@ -1032,9 +957,9 @@ void generateFace( const vec3 &faceCenter, const vec3 &uAxis, const vec3 &vAxis,
 
 	// fill vertex data
 	for( int vi = 0; vi <= subdivV; vi++ ) {
-		const float v = vi / float( subdivV );
+		const float v = vi / float(subdivV);
 		for( int ui = 0; ui <= subdivU; ui++ ) {
-			const float u = ui / float( subdivU );
+			const float u = ui / float(subdivU);
 
 			positions->emplace_back( faceCenter + ( u - 0.5f ) * 2.0f * uAxis + ( v - 0.5f ) * 2.0f * vAxis );
 
@@ -1048,7 +973,7 @@ void generateFace( const vec3 &faceCenter, const vec3 &uAxis, const vec3 &vAxis,
 	}
 
 	// 'baseIdx' will correspond to the index of the first vertex we created in this call to generateFace()
-	//	const uint32_t baseIdx = indices->empty() ? 0 : ( indices->back() + 1 );
+//	const uint32_t baseIdx = indices->empty() ? 0 : ( indices->back() + 1 );
 	for( int u = 0; u < subdivU; u++ ) {
 		for( int v = 0; v < subdivV; v++ ) {
 			const int i = u + v * ( subdivU + 1 );
@@ -1067,17 +992,17 @@ void generateFace( const vec3 &faceCenter, const vec3 &uAxis, const vec3 &vAxis,
 
 void Cube::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	vector<vec3>     positions;
+	vector<vec3> positions;
 	vector<uint32_t> indices;
-	vector<vec3>     normals;
-	vector<ColorA>   colors;
-	vector<vec2>     texCoords;
-	vector<vec3> *   normalsPtr = nullptr;
-	vector<ColorA> * colorsPtr = nullptr;
-	vector<vec2> *   texCoordsPtr = nullptr;
-
+	vector<vec3> normals;
+	vector<ColorA> colors;
+	vector<vec2> texCoords;
+	vector<vec3> *normalsPtr = nullptr;
+	vector<ColorA> *colorsPtr = nullptr;
+	vector<vec2> *texCoordsPtr = nullptr;
+	
 	const size_t numVertices = getNumVertices();
-
+	
 	// reserve room in vectors and set pointers to non-null for normals, texcoords and colors as appropriate
 	positions.reserve( numVertices );
 	indices.reserve( getNumIndices() );
@@ -1095,35 +1020,41 @@ void Cube::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 	}
 
 	vec3 sz = 0.5f * mSize;
-
+	
 	// +X
-	generateFace( vec3( sz.x, 0, 0 ), vec3( 0, 0, sz.z ), vec3( 0, sz.y, 0 ), mSubdivisions.z, mSubdivisions.y, &positions, normalsPtr, mColors[0], colorsPtr, texCoordsPtr, &indices );
+	generateFace( vec3(sz.x,0,0), vec3(0,0,sz.z), vec3(0,sz.y,0), mSubdivisions.z, mSubdivisions.y, &positions,
+		normalsPtr, mColors[0], colorsPtr, texCoordsPtr, &indices );
 	// +Y
-	generateFace( vec3( 0, sz.y, 0 ), vec3( sz.x, 0, 0 ), vec3( 0, 0, sz.z ), mSubdivisions.x, mSubdivisions.z, &positions, normalsPtr, mColors[2], colorsPtr, texCoordsPtr, &indices );
+	generateFace( vec3(0,sz.y,0), vec3(sz.x,0,0), vec3(0,0,sz.z), mSubdivisions.x, mSubdivisions.z, &positions,
+		normalsPtr, mColors[2], colorsPtr, texCoordsPtr, &indices );
 	// +Z
-	generateFace( vec3( 0, 0, sz.z ), vec3( 0, sz.y, 0 ), vec3( sz.x, 0, 0 ), mSubdivisions.y, mSubdivisions.x, &positions, normalsPtr, mColors[4], colorsPtr, texCoordsPtr, &indices );
+	generateFace( vec3(0,0,sz.z), vec3(0,sz.y,0), vec3(sz.x,0,0), mSubdivisions.y, mSubdivisions.x, &positions,
+		normalsPtr, mColors[4], colorsPtr, texCoordsPtr, &indices );
 	// -X
-	generateFace( vec3( -sz.x, 0, 0 ), vec3( 0, sz.y, 0 ), vec3( 0, 0, sz.z ), mSubdivisions.y, mSubdivisions.z, &positions, normalsPtr, mColors[1], colorsPtr, texCoordsPtr, &indices );
+	generateFace( vec3(-sz.x,0,0), vec3(0,sz.y,0), vec3(0,0,sz.z), mSubdivisions.y, mSubdivisions.z, &positions,
+		normalsPtr, mColors[1], colorsPtr, texCoordsPtr, &indices );
 	// -Y
-	generateFace( vec3( 0, -sz.y, 0 ), vec3( 0, 0, sz.z ), vec3( sz.x, 0, 0 ), mSubdivisions.z, mSubdivisions.x, &positions, normalsPtr, mColors[3], colorsPtr, texCoordsPtr, &indices );
+	generateFace( vec3(0,-sz.y,0), vec3(0,0,sz.z), vec3(sz.x,0,0), mSubdivisions.z, mSubdivisions.x, &positions,
+		normalsPtr, mColors[3], colorsPtr, texCoordsPtr, &indices );
 	// -Z
-	generateFace( vec3( 0, 0, -sz.z ), vec3( sz.x, 0, 0 ), vec3( 0, sz.y, 0 ), mSubdivisions.x, mSubdivisions.y, &positions, normalsPtr, mColors[5], colorsPtr, texCoordsPtr, &indices );
+	generateFace( vec3(0,0,-sz.z), vec3(sz.x,0,0), vec3(0,sz.y,0), mSubdivisions.x, mSubdivisions.y, &positions,
+		normalsPtr, mColors[5], colorsPtr, texCoordsPtr, &indices );
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*)positions.data(), numVertices );
 	if( normalsPtr )
-		target->copyAttrib( Attrib::NORMAL, 3, 0, (const float *)normals.data(), numVertices );
+		target->copyAttrib( Attrib::NORMAL, 3, 0, (const float*)normals.data(), numVertices );
 	if( texCoordsPtr )
-		target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float *)texCoords.data(), numVertices );
+		target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float*)texCoords.data(), numVertices );
 	if( colorsPtr )
-		target->copyAttrib( Attrib::COLOR, 4, 0, (const float *)colors.data(), numVertices );
+		target->copyAttrib( Attrib::COLOR, 4, 0, (const float*)colors.data(), numVertices );
 
 	// generate tangents
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( getNumIndices(), indices.data(), numVertices, positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), numVertices );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), numVertices );
 	}
 
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), getNumIndices(), calcIndicesRequiredBytes( getNumIndices() ) );
@@ -1132,116 +1063,47 @@ void Cube::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 ///////////////////////////////////////////////////////////////////////////////////////
 // Icosahedron
 
-#undef PHI // take the reciprocal of phi, to obtain an icosahedron that fits a unit cube
-#define PHI ( 1.0f / ( ( 1.0f + math<float>::sqrt( 5.0f ) ) / 2.0f ) )
+#undef PHI	// take the reciprocal of phi, to obtain an icosahedron that fits a unit cube
+#define PHI (1.0f / ((1.0f + math<float>::sqrt(5.0f)) / 2.0f))
 
-float Icosahedron::sPositions[12 * 3] = {
-	-PHI, 1.0f, 0.0f, PHI, 1.0f, 0.0f, -PHI, -1.0f, 0.0f, PHI, -1.0f, 0.0f, 0.0f, -PHI, 1.0f, 0.0f, PHI, 1.0f, 0.0f, -PHI, -1.0f, 0.0f, PHI, -1.0f, 1.0f, 0.0f, -PHI, 1.0f, 0.0f, PHI, -1.0f, 0.0f, -PHI, -1.0f, 0.0f, PHI
-};
+float Icosahedron::sPositions[12*3] = { 
+	-PHI, 1.0f, 0.0f,    PHI, 1.0f, 0.0f,   -PHI,-1.0f, 0.0f,    PHI,-1.0f, 0.0f,
+	0.0f, -PHI, 1.0f,   0.0f,  PHI, 1.0f,   0.0f, -PHI,-1.0f,   0.0f,  PHI,-1.0f,
+	1.0f, 0.0f, -PHI,   1.0f, 0.0f,  PHI,  -1.0f, 0.0f, -PHI,  -1.0f, 0.0f,  PHI };
 
 float Icosahedron::sTexCoords[60 * 2] = {
-	0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
 
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
 
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
-	1.0f,
-	1.0f,
-	0.0f,
+	1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
 
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f,
-	1.0f,
-	0.0f,
-	0.0f
-};
+	1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f };
 
-uint32_t Icosahedron::sIndices[60] = {
-	0, 11, 5, 0, 5, 1, 0, 1, 7, 0, 7, 10, 0, 10, 11, 5, 11, 4, 1, 5, 9, 7, 1, 8, 10, 7, 6, 11, 10, 2, 3, 9, 4, 3, 4, 2, 3, 2, 6, 3, 6, 8, 3, 8, 9, 4, 9, 5, 2, 4, 11, 6, 2, 10, 8, 6, 7, 9, 8, 1
-};
+uint32_t Icosahedron::sIndices[60] ={
+	0,11, 5, 0, 5, 1, 0, 1, 7, 0, 7,10, 0,10,11,
+	5,11, 4, 1, 5, 9, 7, 1, 8,10, 7, 6,11,10, 2,
+	3, 9, 4, 3, 4, 2, 3, 2, 6, 3, 6, 8, 3, 8, 9,
+	4, 9, 5, 2, 4,11, 6, 2,10, 8, 6, 7, 9, 8, 1 };
 
 Icosahedron::Icosahedron()
-    : mHasColors( false )
+	: mHasColors( false )
 {
 }
 
@@ -1264,47 +1126,43 @@ void Icosahedron::calculate( vector<vec3> *positions, vector<vec3> *normals, vec
 	indices->reserve( 60 );
 
 	for( size_t i = 0; i < 60; ++i ) {
-		positions->emplace_back( *reinterpret_cast<const vec3 *>( &sPositions[sIndices[i] * 3] ) );
-		texcoords->emplace_back( *reinterpret_cast<const vec2 *>( &sTexCoords[i * 2] ) );
+		positions->emplace_back( *reinterpret_cast<const vec3*>(&sPositions[sIndices[i]*3]) );
+		texcoords->emplace_back( *reinterpret_cast<const vec2*>(&sTexCoords[i*2]) );
 		indices->push_back( (uint32_t)i );
 	}
 
 	// calculate the face normal for each triangle
 	size_t numTriangles = indices->size() / 3;
 	for( size_t i = 0; i < numTriangles; ++i ) {
-		const uint32_t index0 = ( *indices )[i * 3 + 0];
-		const uint32_t index1 = ( *indices )[i * 3 + 1];
-		const uint32_t index2 = ( *indices )[i * 3 + 2];
+		const uint32_t index0 = (*indices)[i*3+0];
+		const uint32_t index1 = (*indices)[i*3+1];
+		const uint32_t index2 = (*indices)[i*3+2];
 
-		const vec3 &v0 = ( *positions )[index0];
-		const vec3 &v1 = ( *positions )[index1];
-		const vec3 &v2 = ( *positions )[index2];
+		const vec3 &v0 = (*positions)[index0];
+		const vec3 &v1 = (*positions)[index1];
+		const vec3 &v2 = (*positions)[index2];
 
 		vec3 e0 = v1 - v0;
 		vec3 e1 = v2 - v0;
 
-		( *normals )[index0] = ( *normals )[index1] = ( *normals )[index2] = normalize( cross( e0, e1 ) );
+		(*normals)[index0] = (*normals)[index1] = (*normals)[index2] = normalize( cross( e0, e1 ) );
 	}
 
 	// color
 	size_t numPositions = positions->size();
 	for( size_t i = 0; i < numPositions; ++i )
-		colors->emplace_back( ( *positions )[i] * 0.5f + vec3( 0.5f ) );
+		colors->emplace_back( (*positions)[i] * 0.5f + vec3( 0.5f ) );
 }
 
-uint8_t Icosahedron::getAttribDims( Attrib attr ) const
+uint8_t	Icosahedron::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::COLOR:
-		return mHasColors ? 3 : 0;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::COLOR: return mHasColors ? 3 : 0;
+		case Attrib::TEX_COORD_0: return 2;
+		default:
+			return 0;
 	}
 }
 
@@ -1315,10 +1173,10 @@ AttribSet Icosahedron::getAvailableAttribs() const
 
 void Icosahedron::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	vector<vec3>     positions, normals, colors;
-	vector<vec2>     texcoords;
+	vector<vec3> positions, normals, colors;
+	vector<vec2> texcoords;
 	vector<uint32_t> indices;
-
+	
 	calculate( &positions, &normals, &colors, &texcoords, &indices );
 
 	target->copyAttrib( Attrib::POSITION, 3, 0, value_ptr( *positions.data() ), positions.size() );
@@ -1332,7 +1190,7 @@ void Icosahedron::loadInto( Target *target, const AttribSet &requestedAttribs ) 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Icosphere
 Icosphere::Icosphere()
-    : mSubdivision( 3 ), mCalculationsCached( false ), mHasColors( false )
+	: mSubdivision( 3 ), mCalculationsCached( false ), mHasColors( false )
 {
 }
 
@@ -1342,8 +1200,8 @@ void Icosphere::calculate() const
 		return;
 
 	// start by copying the base icosahedron in its entirety (vertices are shared among faces)
-	mPositions.assign( reinterpret_cast<vec3 *>( Icosahedron::sPositions ), reinterpret_cast<vec3 *>( Icosahedron::sPositions ) + 12 );
-	mNormals.assign( reinterpret_cast<vec3 *>( Icosahedron::sPositions ), reinterpret_cast<vec3 *>( Icosahedron::sPositions ) + 12 );
+	mPositions.assign( reinterpret_cast<vec3*>(Icosahedron::sPositions), reinterpret_cast<vec3*>(Icosahedron::sPositions) + 12 );
+	mNormals.assign( reinterpret_cast<vec3*>(Icosahedron::sPositions), reinterpret_cast<vec3*>(Icosahedron::sPositions) + 12 );
 	mIndices.assign( Icosahedron::sIndices, Icosahedron::sIndices + 60 );
 
 	// subdivide all triangles
@@ -1381,7 +1239,7 @@ void Icosphere::calculateImplUV() const
 	}
 
 	// lambda closure to easily add a vertex with unique texture coordinate to our mesh
-	auto addVertex = [&]( size_t i, const vec2 &uv ) {
+	auto addVertex = [&] ( size_t i, const vec2 &uv ) {
 		const uint32_t index = mIndices[i];
 		mIndices[i] = (uint32_t)mPositions.size();
 		mPositions.push_back( mPositions[index] );
@@ -1393,19 +1251,19 @@ void Icosphere::calculateImplUV() const
 	// fix texture seams (this is where the magic happens)
 	size_t numTriangles = mIndices.size() / 3;
 	for( size_t i = 0; i < numTriangles; ++i ) {
-		const vec2 &uv0 = mTexCoords[mIndices[i * 3 + 0]];
-		const vec2 &uv1 = mTexCoords[mIndices[i * 3 + 1]];
-		const vec2 &uv2 = mTexCoords[mIndices[i * 3 + 2]];
+		const vec2 &uv0 = mTexCoords[ mIndices[i * 3 + 0] ];
+		const vec2 &uv1 = mTexCoords[ mIndices[i * 3 + 1] ];
+		const vec2 &uv2 = mTexCoords[ mIndices[i * 3 + 2] ];
 
 		const float d1 = uv1.x - uv0.x;
 		const float d2 = uv2.x - uv0.x;
 
-		if( math<float>::abs( d1 ) > 0.5f && math<float>::abs( d2 ) > 0.5f )
-			addVertex( i * 3 + 0, uv0 + vec2( ( d1 > 0.0f ) ? 1.0f : -1.0f, 0.0f ) );
-		else if( math<float>::abs( d1 ) > 0.5f )
-			addVertex( i * 3 + 1, uv1 + vec2( ( d1 < 0.0f ) ? 1.0f : -1.0f, 0.0f ) );
-		else if( math<float>::abs( d2 ) > 0.5f )
-			addVertex( i * 3 + 2, uv2 + vec2( ( d2 < 0.0f ) ? 1.0f : -1.0f, 0.0f ) );
+		if( math<float>::abs(d1) > 0.5f && math<float>::abs(d2) > 0.5f )
+			addVertex( i * 3 + 0, uv0 + vec2( (d1 > 0.0f) ? 1.0f : -1.0f, 0.0f ) );
+		else if( math<float>::abs(d1) > 0.5f )
+			addVertex( i * 3 + 1, uv1 + vec2( (d1 < 0.0f) ? 1.0f : -1.0f, 0.0f ) );
+		else if( math<float>::abs(d2) > 0.5f )
+			addVertex( i * 3 + 2, uv2 + vec2( (d2 < 0.0f) ? 1.0f : -1.0f, 0.0f ) );
 	}
 }
 
@@ -1443,14 +1301,14 @@ void Icosphere::subdivide() const
 			mIndices.push_back( index2 );
 
 			// add new positions
-			mPositions.push_back( 0.5f * ( mPositions[index0] + mPositions[index1] ) );
-			mPositions.push_back( 0.5f * ( mPositions[index1] + mPositions[index2] ) );
-			mPositions.push_back( 0.5f * ( mPositions[index2] + mPositions[index0] ) );
+			mPositions.push_back( 0.5f * (mPositions[index0] + mPositions[index1]) );
+			mPositions.push_back( 0.5f * (mPositions[index1] + mPositions[index2]) );
+			mPositions.push_back( 0.5f * (mPositions[index2] + mPositions[index0]) );
 
 			// add new normals
-			mNormals.push_back( 0.5f * ( mNormals[index0] + mNormals[index1] ) );
-			mNormals.push_back( 0.5f * ( mNormals[index1] + mNormals[index2] ) );
-			mNormals.push_back( 0.5f * ( mNormals[index2] + mNormals[index0] ) );
+			mNormals.push_back( 0.5f * (mNormals[index0] + mNormals[index1]) );
+			mNormals.push_back( 0.5f * (mNormals[index1] + mNormals[index2]) );
+			mNormals.push_back( 0.5f * (mNormals[index2] + mNormals[index0]) );
 		}
 	}
 }
@@ -1458,18 +1316,13 @@ void Icosphere::subdivide() const
 uint8_t Icosphere::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TANGENT:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 3 : 0;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TANGENT: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 3 : 0;
+		default:
+			return 0;
 	}
 }
 
@@ -1500,155 +1353,82 @@ void Icosphere::loadInto( Target *target, const AttribSet &requestedAttribs ) co
 // Teapot
 const uint8_t Teapot::sPatchIndices[][16] = {
 	// rim
-	{ 102, 103, 104, 105, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+	{102, 103, 104, 105, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
 	// body
-	{ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 },
-	{ 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40 },
+	{12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27}, {24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
 	// lid
-	{
-	    96, 96, 96, 96, 97, 98, 99, 100, 101, 101, 101, 101, 0, 1, 2, 3,
-	},
-	{ 0, 1, 2, 3, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117 },
+	{96, 96, 96, 96, 97, 98, 99, 100, 101, 101, 101, 101, 0, 1, 2, 3,}, {0, 1, 2, 3, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117},
 	// bottom
-	{ 118, 118, 118, 118, 124, 122, 119, 121, 123, 126, 125, 120, 40, 39, 38, 37 },
+	{118, 118, 118, 118, 124, 122, 119, 121, 123, 126, 125, 120, 40, 39, 38, 37},
 	// handle
-	{ 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56 },
-	{ 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 28, 65, 66, 67 },
+	{41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56}, {53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 28, 65, 66, 67},
 	// spout
-	{ 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 },
-	{ 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95 }
+	{68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83}, {80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95}
 };
 
 #define LID 1.1f
 #define LID_Z 1.0f
-const float Teapot::sCurveData[127][3] = { { 0.2f * LID, 0.f * LID, 2.7f * LID_Z }, { 0.2f * LID, -0.112f * LID, 2.7f * LID_Z }, { 0.112f * LID, -0.2f * LID, 2.7f * LID_Z }, { 0.f * LID, -0.2f * LID, 2.7f * LID_Z }, { 1.3375f, 0.f, 2.53125f }, { 1.3375f, -0.749f, 2.53125f }, { 0.749f, -1.3375f, 2.53125f }, { 0.f, -1.3375f, 2.53125f }, { 1.4375f, 0.f, 2.53125f }, { 1.4375f, -0.805f, 2.53125f }, { 0.805f, -1.4375f, 2.53125f }, { 0.f, -1.4375f, 2.53125f }, { 1.5f, 0.f, 2.4f }, { 1.5f, -0.84f, 2.4f }, { 0.84f, -1.5f, 2.4f }, { 0.f, -1.5f, 2.4f }, { 1.75f, 0.f, 1.875f }, { 1.75f, -0.98f, 1.875f }, { 0.98f, -1.75f, 1.875f }, { 0.f, -1.75f, 1.875f }, { 2.f, 0.f, 1.35f }, { 2.f, -1.12f, 1.35f }, { 1.12f, -2.f, 1.35f }, { 0.f, -2.f, 1.35f }, { 2.f, 0.f, 0.9f }, { 2.f, -1.12f, 0.9f }, { 1.12f, -2.f, 0.9f }, { 0.f, -2.f, 0.9f }, { -2.f, 0.f, 0.9f }, { 2.f, 0.f, 0.45f }, { 2.f, -1.12f, 0.45f }, { 1.12f, -2.f, 0.45f }, { 0.f, -2.f, 0.45f },
+const float Teapot::sCurveData[127][3] =
+{	{0.2f*LID, 0.f*LID, 2.7f*LID_Z}, {0.2f*LID, -0.112f*LID, 2.7f*LID_Z}, {0.112f*LID, -0.2f*LID, 2.7f*LID_Z}, {0.f*LID, -0.2f*LID, 2.7f*LID_Z},
+	{1.3375f, 0.f, 2.53125f}, {1.3375f, -0.749f, 2.53125f}, {0.749f, -1.3375f, 2.53125f}, {0.f, -1.3375f, 2.53125f},
+	{1.4375f, 0.f, 2.53125f}, {1.4375f, -0.805f, 2.53125f}, {0.805f, -1.4375f, 2.53125f}, {0.f, -1.4375f, 2.53125f},
+	{1.5f, 0.f, 2.4f}, {1.5f, -0.84f, 2.4f}, {0.84f, -1.5f, 2.4f}, {0.f, -1.5f, 2.4f}, {1.75f, 0.f, 1.875f},
+	{1.75f, -0.98f, 1.875f}, {0.98f, -1.75f, 1.875f}, {0.f, -1.75f, 1.875f}, {2.f, 0.f, 1.35f}, {2.f, -1.12f, 1.35f},
+	{1.12f, -2.f, 1.35f}, {0.f, -2.f, 1.35f}, {2.f, 0.f, 0.9f}, {2.f, -1.12f, 0.9f}, {1.12f, -2.f, 0.9f},
+	{0.f, -2.f, 0.9f}, {-2.f, 0.f, 0.9f}, {2.f, 0.f, 0.45f}, {2.f, -1.12f, 0.45f}, {1.12f, -2.f, 0.45f}, {0.f, -2.f, 0.45f},
 	// 33
-	{ 1.5f, 0.f, 0.225f },
-	{ 1.5f, -0.84f, 0.225f },
-	{ 0.84f, -1.5f, 0.225f },
-	{ 0.f, -1.5f, 0.225f },
-	{ 1.5f, 0.f, 0.15f },
-	{ 1.5f, -0.84f, 0.15f },
-	{ 0.84f, -1.5f, 0.15f },
-	{ 0.f, -1.5f, 0.15f },
-	{ -1.6f, 0.f, 2.025f },
-	{ -1.6f, -0.3f, 2.025f },
-	{ -1.5f, -0.3f, 2.25f },
-	{ -1.5f, 0.f, 2.25f },
-	{ -2.3f, 0.f, 2.025f },
-	{ -2.3f, -0.3f, 2.025f },
-	{ -2.5f, -0.3f, 2.25f },
-	{ -2.5f, 0.f, 2.25f },
-	{ -2.7f, 0.f, 2.025f },
-	{ -2.7f, -0.3f, 2.025f },
-	{ -3.f, -0.3f, 2.25f },
-	{ -3.f, 0.f, 2.25f },
-	{ -2.7f, 0.f, 1.8f },
-	{ -2.7f, -0.3f, 1.8f },
-	{ -3.f, -0.3f, 1.8f },
-	{ -3.f, 0.f, 1.8f },
-	{ -2.7f, 0.f, 1.575f },
-	{ -2.7f, -0.3f, 1.575f },
-	{ -3.f, -0.3f, 1.35f },
-	{ -3.f, 0.f, 1.35f },
-	{ -2.5f, 0.f, 1.125f },
-	{ -2.5f, -0.3f, 1.125f },
-	{ -2.65f, -0.3f, 0.9375f },
-	{ -2.65f, 0.f, 0.9375f },
-	{ -2.f, -0.3f, 0.9f },
-	{ -1.9f, -0.3f, 0.6f },
+	{1.5f, 0.f, 0.225f},
+	{1.5f, -0.84f, 0.225f}, {0.84f, -1.5f, 0.225f}, {0.f, -1.5f, 0.225f}, {1.5f, 0.f, 0.15f}, {1.5f,
+	-0.84f, 0.15f}, {0.84f, -1.5f, 0.15f}, {0.f, -1.5f, 0.15f}, {-1.6f, 0.f, 2.025f}, {-1.6f, -0.3f,
+	2.025f}, {-1.5f, -0.3f, 2.25f}, {-1.5f, 0.f, 2.25f}, {-2.3f, 0.f, 2.025f}, {-2.3f, -0.3f, 2.025f},
+	{-2.5f, -0.3f, 2.25f}, {-2.5f, 0.f, 2.25f}, {-2.7f, 0.f, 2.025f}, {-2.7f, -0.3f, 2.025f}, {-3.f,
+	-0.3f, 2.25f}, {-3.f, 0.f, 2.25f}, {-2.7f, 0.f, 1.8f}, {-2.7f, -0.3f, 1.8f}, {-3.f, -0.3f, 1.8f},
+	{-3.f, 0.f, 1.8f}, {-2.7f, 0.f, 1.575f}, {-2.7f, -0.3f, 1.575f}, {-3.f, -0.3f, 1.35f}, {-3.f, 0.f,
+	1.35f}, {-2.5f, 0.f, 1.125f}, {-2.5f, -0.3f, 1.125f}, {-2.65f, -0.3f, 0.9375f}, {-2.65f, 0.f,
+	0.9375f}, {-2.f, -0.3f, 0.9f}, {-1.9f, -0.3f, 0.6f},
 	// 67
-	{ -1.9f, 0.f, 0.6f },
-	{ 1.7f, 0.f, 1.425f },
-	{ 1.7f, -0.66f, 1.425f },
-	{ 1.7f, -0.66f, 0.6f },
-	{ 1.7f, 0.f, 0.6f },
-	{ 2.6f, 0.f, 1.425f },
-	{ 2.6f, -0.66f, 1.425f },
-	{ 3.1f, -0.66f, 0.825f },
-	{ 3.1f, 0.f, 0.825f },
-	{ 2.3f, 0.f, 2.1f },
-	{ 2.3f, -0.25f, 2.1f },
-	{ 2.4f, -0.25f, 2.025f },
-	{ 2.4f, 0.f, 2.025f },
-	{ 2.7f, 0.f, 2.4f },
-	{ 2.7f, -0.25f, 2.4f },
-	{ 3.3f, -0.25f, 2.4f },
-	{ 3.3f, 0.f, 2.4f },
-	{ 2.8f, 0.f, 2.475f },
-	{ 2.8f, -0.25f, 2.475f },
-	{ 3.525f, -0.25f, 2.49375f },
-	{ 3.525f, 0.f, 2.49375f },
-	{ 2.9f, 0.f, 2.475f },
-	{ 2.9f, -0.15f, 2.475f },
-	{ 3.45f, -0.15f, 2.5125f },
-	{ 3.45f, 0.f, 2.5125f },
-	{ 2.8f, 0.f, 2.4f },
-	{ 2.8f, -0.15f, 2.4f },
-	{ 3.2f, -0.15f, 2.4f },
-	{ 3.2f, 0.f, 2.4f },
+	{-1.9f, 0.f, 0.6f}, {1.7f, 0.f, 1.425f}, {1.7f, -0.66f, 1.425f}, {1.7f, -0.66f, 0.6f}, {1.7f, 0.f, 0.6f}, {2.6f, 0.f, 1.425f}, {2.6f, -0.66f,
+	1.425f}, {3.1f, -0.66f, 0.825f}, {3.1f, 0.f, 0.825f}, {2.3f, 0.f, 2.1f}, {2.3f, -0.25f, 2.1f},
+	{2.4f, -0.25f, 2.025f}, {2.4f, 0.f, 2.025f}, {2.7f, 0.f, 2.4f}, {2.7f, -0.25f, 2.4f}, {3.3f, -0.25f,
+	2.4f}, {3.3f, 0.f, 2.4f}, {2.8f, 0.f, 2.475f}, {2.8f, -0.25f, 2.475f}, {3.525f, -0.25f, 2.49375f},
+	{3.525f, 0.f, 2.49375f}, {2.9f, 0.f, 2.475f}, {2.9f, -0.15f, 2.475f}, {3.45f, -0.15f, 2.5125f},
+	{3.45f, 0.f, 2.5125f}, {2.8f, 0.f, 2.4f}, {2.8f, -0.15f, 2.4f}, {3.2f, -0.15f, 2.4f}, {3.2f, 0.f,
+	2.4f},
 	// 96:
-	{ 0.f * LID, 0.f * LID, 3.15f * LID_Z },
-	{ 0.8f * LID, 0.f * LID, 3.15f * LID_Z },
-	{ 0.8f * LID, -0.45f * LID, 3.15f * LID_Z },
-	{ 0.45f * LID, -0.8f * LID, 3.15f * LID_Z },
-	{ 0.f * LID, -0.8f * LID, 3.15f * LID_Z },
-	{ 0.f * LID, 0.f * LID, 2.85f * LID_Z },
+	{0.f*LID, 0.f*LID, 3.15f*LID_Z}, {0.8f*LID, 0.f*LID, 3.15f*LID_Z}, {0.8f*LID, -0.45f*LID, 3.15f*LID_Z}, {0.45f*LID, -0.8f*LID, 3.15f*LID_Z},
+	{0.f*LID, -0.8f*LID, 3.15f*LID_Z}, {0.f*LID, 0.f*LID, 2.85f*LID_Z},
 	// 102:
-	{ 1.4f, 0.f, 2.4f },
-	{ 1.4f, -0.784f, 2.4f },
-	{ 0.784f, -1.4f, 2.4f },
-	{ 0.f, -1.4f, 2.4f },
+	{1.4f, 0.f, 2.4f}, {1.4f, -0.784f, 2.4f}, {0.784f, -1.4f, 2.4f}, {0.f, -1.4f, 2.4f},
 	// 106:
-	{ 0.4f * LID, 0.f * LID, 2.55f * LID_Z },
-	{ 0.4f * LID, -0.224f * LID, 2.55f * LID_Z },
-	{ 0.224f * LID, -0.4f * LID, 2.55f * LID_Z },
-	{ 0.f * LID, -0.4f * LID, 2.55f * LID_Z },
-	{ 1.3f * LID, 0.f * LID, 2.55f * LID_Z },
-	{ 1.3f * LID, -0.728f * LID, 2.55f * LID_Z },
-	{ 0.728f * LID, -1.3f * LID, 2.55f * LID_Z },
-	{ 0.f * LID, -1.3f * LID, 2.55f * LID_Z },
-	{ 1.3f * LID, 0.f * LID, 2.4f * LID_Z },
-	{ 1.3f * LID, -0.728f * LID, 2.4f * LID_Z },
-	{ 0.728f * LID, -1.3f * LID, 2.4f * LID_Z },
-	{ 0.f * LID, -1.3f * LID, 2.4f * LID_Z },
+	{0.4f*LID, 0.f*LID, 2.55f*LID_Z}, {0.4f*LID, -0.224f*LID, 2.55f*LID_Z}, {0.224f*LID, -0.4f*LID, 2.55f*LID_Z},
+	{0.f*LID, -0.4f*LID,2.55f*LID_Z}, {1.3f*LID, 0.f*LID, 2.55f*LID_Z}, {1.3f*LID, -0.728f*LID, 2.55f*LID_Z}, {0.728f*LID, -1.3f*LID, 2.55f*LID_Z}, {0.f*LID, -1.3f*LID, 2.55f*LID_Z},
+	{1.3f*LID, 0.f*LID, 2.4f*LID_Z}, {1.3f*LID, -0.728f*LID, 2.4f*LID_Z}, {0.728f*LID, -1.3f*LID, 2.4f*LID_Z}, {0.f*LID, -1.3f*LID, 2.4f*LID_Z},
 	// 118:
-	{ 0.f, 0.f, 0.f },
-	{ 1.425f, -0.798f, 0.f },
-	{ 1.5f, 0.f, 0.075f },
-	{ 1.425f, 0.f, 0.f },
-	{ 0.798f, -1.425f, 0.f },
-	{ 0.f, -1.5f, 0.075f },
-	{ 0.f, -1.425f, 0.f },
-	{ 1.5f, -0.84f, 0.075f },
-	{ 0.84f, -1.5f, 0.075f } };
+	{0.f, 0.f, 0.f}, {1.425f, -0.798f, 0.f}, {1.5f, 0.f, 0.075f}, {1.425f, 0.f, 0.f}, {0.798f, -1.425f, 0.f}, {0.f,
+	-1.5f, 0.075f}, {0.f, -1.425f, 0.f}, {1.5f, -0.84f, 0.075f}, {0.84f, -1.5f, 0.075f} };
 
 Teapot::Teapot()
-    : mSubdivision( 6 )
+	: mSubdivision( 6 )
 {
 	updateVertexCounts();
 }
 
-Teapot &Teapot::subdivisions( int sub )
+Teapot&	Teapot::subdivisions( int sub )
 {
 	mSubdivision = sub;
 	updateVertexCounts();
 	return *this;
 }
 
-uint8_t Teapot::getAttribDims( Attrib attr ) const
+uint8_t	Teapot::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -1661,7 +1441,7 @@ void Teapot::updateVertexCounts()
 {
 	int numFaces = mSubdivision * mSubdivision * 32;
 	mNumIndices = numFaces * 6;
-	mNumVertices = 32 * ( mSubdivision + 1 ) * ( mSubdivision + 1 );
+	mNumVertices = 32 * (mSubdivision + 1) * (mSubdivision + 1);
 }
 
 void Teapot::calculate( vector<float> *positions, vector<float> *normals, vector<float> *texCoords, vector<uint32_t> *indices ) const
@@ -1676,9 +1456,9 @@ void Teapot::calculate( vector<float> *positions, vector<float> *normals, vector
 
 void Teapot::generatePatches( float *v, float *n, float *tc, uint32_t *el, int grid )
 {
-	unique_ptr<float[]> B( new float[4 * ( grid + 1 )] ); // Pre-computed Bernstein basis functions
-	unique_ptr<float[]> dB( new float[4 * ( grid + 1 )] ); // Pre-computed derivitives of basis functions
-	int                 idx = 0, elIndex = 0, tcIndex = 0;
+	unique_ptr<float[]> B( new float[4*(grid+1)] );  // Pre-computed Bernstein basis functions
+	unique_ptr<float[]> dB( new float[4*(grid+1)] ); // Pre-computed derivitives of basis functions
+	int idx = 0, elIndex = 0, tcIndex = 0;
 
 	// Pre-compute the basis functions  (Bernstein polynomials)
 	// and their derivatives
@@ -1703,7 +1483,8 @@ void Teapot::generatePatches( float *v, float *n, float *tc, uint32_t *el, int g
 	buildPatchReflect( 9, B.get(), dB.get(), v, n, tc, el, idx, elIndex, tcIndex, grid, false, true );
 }
 
-void Teapot::buildPatchReflect( int patchNum, float *B, float *dB, float *v, float *n, float *tc, unsigned int *el, int &index, int &elIndex, int &tcIndex, int grid, bool reflectX, bool reflectY )
+void Teapot::buildPatchReflect( int patchNum, float *B, float *dB, float *v, float *n, float *tc, unsigned int *el,
+								int &index, int &elIndex, int &tcIndex, int grid, bool reflectX, bool reflectY )
 {
 	vec3 patch[4][4];
 	vec3 patchRevV[4][4];
@@ -1732,15 +1513,16 @@ void Teapot::buildPatchReflect( int patchNum, float *B, float *dB, float *v, flo
 	}
 }
 
-void Teapot::buildPatch( vec3 patch[][4], float *B, float *dB, float *v, float *n, float *tc, unsigned int *el, int &index, int &elIndex, int &tcIndex, int grid, mat3 reflect, bool invertNormal )
+void Teapot::buildPatch( vec3 patch[][4], float *B, float *dB, float *v, float *n, float *tc,
+						unsigned int *el, int &index, int &elIndex, int &tcIndex, int grid, mat3 reflect, bool invertNormal )
 {
-	int   startIndex = index / 3;
+	int startIndex = index / 3;
 	float tcFactor = 1.0f / grid;
 
 	float scale = 2.0f / 6.42813f; // awful hack to keep it within unit cube
 
 	for( int i = 0; i <= grid; i++ ) {
-		for( int j = 0; j <= grid; j++ ) {
+		for( int j = 0 ; j <= grid; j++) {
 			vec3 pt = reflect * evaluate( i, j, B, patch );
 			vec3 norm = reflect * evaluateNormal( i, j, B, dB, patch );
 			if( invertNormal )
@@ -1749,30 +1531,25 @@ void Teapot::buildPatch( vec3 patch[][4], float *B, float *dB, float *v, float *
 			if( abs( pt.x ) < 0.01f && abs( pt.y ) < 0.01f )
 				norm = ( pt.z < 1 ) ? vec3( 0, 0, -1 ) : vec3( 0, 0, 1 );
 
-			v[index] = pt.x * scale;
-			v[index + 1] = pt.z * scale;
-			v[index + 2] = pt.y * scale;
-			n[index] = norm.x;
-			n[index + 1] = norm.z;
-			n[index + 2] = norm.y;
-			tc[tcIndex] = i * tcFactor;
-			tc[tcIndex + 1] = j * tcFactor;
+			v[index] = pt.x * scale; v[index+1] = pt.z * scale; v[index+2] = pt.y * scale;
+			n[index] = norm.x; n[index+1] = norm.z; n[index+2] = norm.y;
+			tc[tcIndex] = i * tcFactor; tc[tcIndex+1] = j * tcFactor;
 			index += 3;
 			tcIndex += 2;
 		}
 	}
 
 	for( int i = 0; i < grid; i++ ) {
-		int iStart = i * ( grid + 1 ) + startIndex;
-		int nextiStart = ( i + 1 ) * ( grid + 1 ) + startIndex;
-		for( int j = 0; j < grid; j++ ) {
+		int iStart = i * (grid+1) + startIndex;
+		int nextiStart = (i+1) * (grid+1) + startIndex;
+		for( int j = 0; j < grid; j++) {
 			el[elIndex] = iStart + j;
-			el[elIndex + 1] = nextiStart + j + 1;
-			el[elIndex + 2] = nextiStart + j;
+			el[elIndex+1] = nextiStart + j + 1;
+			el[elIndex+2] = nextiStart + j;
 
-			el[elIndex + 3] = iStart + j;
-			el[elIndex + 4] = iStart + j + 1;
-			el[elIndex + 5] = nextiStart + j + 1;
+			el[elIndex+3] = iStart + j;
+			el[elIndex+4] = iStart + j + 1;
+			el[elIndex+5] = nextiStart + j + 1;
 
 			elIndex += 6;
 		}
@@ -1781,19 +1558,21 @@ void Teapot::buildPatch( vec3 patch[][4], float *B, float *dB, float *v, float *
 
 void Teapot::getPatch( int patchNum, vec3 patch[][4], bool reverseV )
 {
-	for( int u = 0; u < 4; u++ ) { // Loop in u direction
-		for( int v = 0; v < 4; v++ ) { // Loop in v direction
+	for( int u = 0; u < 4; u++) {          // Loop in u direction
+		for( int v = 0; v < 4; v++ ) {     // Loop in v direction
 			if( reverseV ) {
 				patch[u][v] = vec3(
-				    sCurveData[sPatchIndices[patchNum][u * 4 + ( 3 - v )]][0],
-				    sCurveData[sPatchIndices[patchNum][u * 4 + ( 3 - v )]][1],
-				    sCurveData[sPatchIndices[patchNum][u * 4 + ( 3 - v )]][2] );
+					sCurveData[sPatchIndices[patchNum][u*4+(3-v)]][0],
+					sCurveData[sPatchIndices[patchNum][u*4+(3-v)]][1],
+					sCurveData[sPatchIndices[patchNum][u*4+(3-v)]][2]
+				);
 			}
 			else {
 				patch[u][v] = vec3(
-				    sCurveData[sPatchIndices[patchNum][u * 4 + v]][0],
-				    sCurveData[sPatchIndices[patchNum][u * 4 + v]][1],
-				    sCurveData[sPatchIndices[patchNum][u * 4 + v]][2] );
+					sCurveData[sPatchIndices[patchNum][u*4+v]][0],
+					sCurveData[sPatchIndices[patchNum][u*4+v]][1],
+					sCurveData[sPatchIndices[patchNum][u*4+v]][2]
+				);
 			}
 		}
 	}
@@ -1805,27 +1584,27 @@ void Teapot::computeBasisFunctions( float *B, float *dB, int grid )
 	for( int i = 0; i <= grid; i++ ) {
 		float t = i * inc;
 		float tSqr = t * t;
-		float oneMinusT = ( 1.0f - t );
+		float oneMinusT = (1.0f - t);
 		float oneMinusT2 = oneMinusT * oneMinusT;
 
-		B[i * 4 + 0] = oneMinusT * oneMinusT2;
-		B[i * 4 + 1] = 3.0f * oneMinusT2 * t;
-		B[i * 4 + 2] = 3.0f * oneMinusT * tSqr;
-		B[i * 4 + 3] = t * tSqr;
+		B[i*4 + 0] = oneMinusT * oneMinusT2;
+		B[i*4 + 1] = 3.0f * oneMinusT2 * t;
+		B[i*4 + 2] = 3.0f * oneMinusT * tSqr;
+		B[i*4 + 3] = t * tSqr;
 
-		dB[i * 4 + 0] = -3.0f * oneMinusT2;
-		dB[i * 4 + 1] = -6.0f * t * oneMinusT + 3.0f * oneMinusT2;
-		dB[i * 4 + 2] = -3.0f * tSqr + 6.0f * t * oneMinusT;
-		dB[i * 4 + 3] = 3.0f * tSqr;
+		dB[i*4 + 0] = -3.0f * oneMinusT2;
+		dB[i*4 + 1] = -6.0f * t * oneMinusT + 3.0f * oneMinusT2;
+		dB[i*4 + 2] = -3.0f * tSqr + 6.0f * t * oneMinusT;
+		dB[i*4 + 3] = 3.0f * tSqr;
 	}
 }
 
 vec3 Teapot::evaluate( int gridU, int gridV, const float *B, const vec3 patch[][4] )
 {
 	vec3 p;
-	for( int i = 0; i < 4; i++ ) {
-		for( int j = 0; j < 4; j++ ) {
-			p += patch[i][j] * B[gridU * 4 + i] * B[gridV * 4 + j];
+	for( int i = 0; i < 4; i++) {
+		for( int j = 0; j < 4; j++) {
+			p += patch[i][j] * B[gridU*4+i] * B[gridV*4+j];
 		}
 	}
 
@@ -1837,8 +1616,8 @@ vec3 Teapot::evaluateNormal( int gridU, int gridV, const float *B, const float *
 	vec3 du, dv;
 	for( int i = 0; i < 4; i++ ) {
 		for( int j = 0; j < 4; j++ ) {
-			du += patch[i][j] * dB[gridU * 4 + i] * B[gridV * 4 + j];
-			dv += patch[i][j] * B[gridU * 4 + i] * dB[gridV * 4 + j];
+			du += patch[i][j] * dB[gridU*4+i] * B[gridV*4+j];
+			dv += patch[i][j] * B[gridU*4+i] * dB[gridV*4+j];
 		}
 	}
 
@@ -1847,9 +1626,9 @@ vec3 Teapot::evaluateNormal( int gridU, int gridV, const float *B, const float *
 
 void Teapot::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	vector<float>    positions, normals, texCoords;
+	vector<float> positions, normals, texCoords;
 	vector<uint32_t> indices;
-
+	
 	calculate( &positions, &normals, &texCoords, &indices );
 
 	target->copyAttrib( Attrib::POSITION, 3, 0, positions.data(), mNumVertices );
@@ -1858,7 +1637,7 @@ void Teapot::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 
 	if( requestedAttribs.count( Attrib::TANGENT ) ) {
 		vector<vec3> tangents;
-		calculateTangents( indices.size(), indices.data(), positions.size() / 3, (const vec3 *)positions.data(), (const vec3 *)normals.data(), (const vec2 *)texCoords.data(), &tangents, nullptr );
+		calculateTangents( indices.size(), indices.data(), positions.size() / 3, (const vec3*)positions.data(), (const vec3*)normals.data(), (const vec2*)texCoords.data(), &tangents, nullptr );
 		target->copyAttrib( Attrib::TANGENT, 3, 0, value_ptr( *tangents.data() ), tangents.size() );
 	}
 
@@ -1868,19 +1647,19 @@ void Teapot::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 ///////////////////////////////////////////////////////////////////////////////////////
 // Circle
 Circle::Circle()
-    : mRequestedSubdivisions( -1 ), mCenter( 0, 0 ), mRadius( 1.0f )
+	: mRequestedSubdivisions( -1 ), mCenter( 0, 0 ), mRadius( 1.0f )
 {
 	updateVertexCounts();
 }
 
-Circle &Circle::subdivisions( int subdivs )
+Circle&	Circle::subdivisions( int subdivs )
 {
 	mRequestedSubdivisions = subdivs;
 	updateVertexCounts();
 	return *this;
 }
 
-Circle &Circle::radius( float radius )
+Circle&	Circle::radius( float radius )
 {
 	mRadius = radius;
 	updateVertexCounts();
@@ -1891,7 +1670,7 @@ Circle &Circle::radius( float radius )
 void Circle::updateVertexCounts()
 {
 	if( mRequestedSubdivisions <= 0 )
-		mNumSubdivisions = (int)math<double>::floor( mRadius * float( M_PI * 2 ) );
+		mNumSubdivisions = (int)math<double>::floor( mRadius * float(M_PI * 2) );
 	else
 		mNumSubdivisions = mRequestedSubdivisions;
 
@@ -1904,17 +1683,14 @@ size_t Circle::getNumVertices() const
 	return mNumVertices;
 }
 
-uint8_t Circle::getAttribDims( Attrib attr ) const
+uint8_t	Circle::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 2;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	default:
-		return 0;
+		case Attrib::POSITION: return 2;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		default:
+			return 0;
 	}
 }
 
@@ -1939,7 +1715,7 @@ void Circle::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 
 	// iterate the segments
 	const float tDelta = 1 / (float)mNumSubdivisions * 2.0f * 3.14159f;
-	float       t = 0;
+	float t = 0;
 	for( int s = 0; s <= mNumSubdivisions; s++ ) {
 		vec2 unit( math<float>::cos( t ), math<float>::sin( t ) );
 		positions.emplace_back( mCenter + unit * mRadius );
@@ -1948,34 +1724,34 @@ void Circle::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 		t += tDelta;
 	}
 
-	target->copyAttrib( Attrib::POSITION, 2, 0, (const float *)positions.data(), mNumVertices );
-	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float *)normals.data(), mNumVertices );
-	target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float *)texCoords.data(), mNumVertices );
+	target->copyAttrib( Attrib::POSITION, 2, 0, (const float*)positions.data(), mNumVertices );
+	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float*)normals.data(), mNumVertices );
+	target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float*)texCoords.data(), mNumVertices );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Ring
 Ring::Ring()
-    : mRequestedSubdivisions( -1 ), mCenter( 0, 0 ), mRadius( 1.0f ), mWidth( 0.5f )
+	: mRequestedSubdivisions( -1 ), mCenter( 0, 0 ), mRadius( 1.0f ), mWidth( 0.5f )
 {
 	updateVertexCounts();
 }
 
-Ring &Ring::subdivisions( int subdivs )
+Ring&	Ring::subdivisions( int subdivs )
 {
 	mRequestedSubdivisions = subdivs;
 	updateVertexCounts();
 	return *this;
 }
 
-Ring &Ring::radius( float radius )
+Ring&	Ring::radius( float radius )
 {
 	mRadius = radius;
 	updateVertexCounts();
 	return *this;
 }
 
-Ring &Ring::width( float width )
+Ring&	Ring::width( float width )
 {
 	mWidth = width;
 	return *this;
@@ -1985,7 +1761,7 @@ Ring &Ring::width( float width )
 void Ring::updateVertexCounts()
 {
 	if( mRequestedSubdivisions <= 0 )
-		mNumSubdivisions = (int)math<double>::floor( mRadius * float( M_PI * 2 ) );
+		mNumSubdivisions = (int) math<double>::floor( mRadius * float( M_PI * 2 ) );
 	else
 		mNumSubdivisions = mRequestedSubdivisions;
 
@@ -1998,23 +1774,20 @@ size_t Ring::getNumVertices() const
 	return mNumVertices;
 }
 
-uint8_t Ring::getAttribDims( Attrib attr ) const
+uint8_t	Ring::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 2;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	default:
-		return 0;
+		case Attrib::POSITION: return 2;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		default:
+			return 0;
 	}
 }
 
 AttribSet Ring::getAvailableAttribs() const
 {
-	return { Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0 };
+	return{ Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0 };
 }
 
 void Ring::loadInto( Target *target, const AttribSet &requestedAttribs ) const
@@ -2030,34 +1803,34 @@ void Ring::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 	float outerRadius = mRadius + 0.5f * mWidth;
 
 	// iterate the segments
-	const float tDelta = 1 / (float)mNumSubdivisions * 2.0f * 3.14159f;
-	float       t = 0;
+	const float tDelta = 1 / (float) mNumSubdivisions * 2.0f * 3.14159f;
+	float t = 0;
 	for( int s = 0; s <= mNumSubdivisions; s++ ) {
 		vec2 unit( math<float>::cos( t ), math<float>::sin( t ) );
 		positions.emplace_back( mCenter + unit * innerRadius );
 		positions.emplace_back( mCenter + unit * outerRadius );
-		texCoords.emplace_back( vec2( 1, s / (float)mNumSubdivisions ) );
-		texCoords.emplace_back( vec2( 0, s / (float)mNumSubdivisions ) );
+		texCoords.emplace_back( vec2( 1, s / (float) mNumSubdivisions ) );
+		texCoords.emplace_back( vec2( 0, s / (float) mNumSubdivisions ) );
 		normals.emplace_back( 0, 0, 1 );
 		normals.emplace_back( 0, 0, 1 );
 		t += tDelta;
 	}
 
-	target->copyAttrib( Attrib::POSITION, 2, 0, (const float *)positions.data(), mNumVertices );
-	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float *)normals.data(), mNumVertices );
-	target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float *)texCoords.data(), mNumVertices );
+	target->copyAttrib( Attrib::POSITION, 2, 0, (const float*) positions.data(), mNumVertices );
+	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float*) normals.data(), mNumVertices );
+	target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float*) texCoords.data(), mNumVertices );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Sphere
 
 Sphere::Sphere()
-    : mSubdivisions( 18 ), mCenter( 0, 0, 0 ), mRadius( 1.0f ), mHasColors( false )
+	: mSubdivisions( 18 ), mCenter( 0, 0, 0 ), mRadius( 1.0f ), mHasColors( false )
 {
 }
 
 Sphere::Sphere( const ci::Sphere &sphere )
-    : mSubdivisions( 18 ), mCenter( sphere.getCenter() ), mRadius( sphere.getRadius() ), mHasColors( false )
+	: mSubdivisions( 18 ), mCenter( sphere.getCenter() ), mRadius( sphere.getRadius() ), mHasColors( false )
 {
 }
 
@@ -2065,7 +1838,7 @@ void Sphere::numRingsAndSegments( int *numRings, int *numSegments ) const
 {
 	*numSegments = mSubdivisions;
 	if( *numSegments < 4 )
-		*numSegments = std::max( 12, (int)math<double>::floor( mRadius * float( M_PI * 2 ) ) );
+		*numSegments = std::max( 12, (int)math<double>::floor( mRadius * float(M_PI * 2) ) );
 
 	*numRings = ( *numSegments >> 1 ) + 1;
 	*numSegments += 1;
@@ -2088,18 +1861,13 @@ size_t Sphere::getNumIndices() const
 uint8_t Sphere::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 3 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 3 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -2113,10 +1881,10 @@ void Sphere::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 	int numRings, numSegments;
 	numRingsAndSegments( &numRings, &numSegments );
 
-	std::vector<vec3>     positions;
-	std::vector<vec2>     texCoords;
-	std::vector<vec3>     normals;
-	std::vector<vec3>     colors;
+	std::vector<vec3> positions;
+	std::vector<vec2> texCoords;
+	std::vector<vec3> normals;
+	std::vector<vec3> colors;
 	std::vector<uint32_t> indices;
 
 	positions.resize( numSegments * numRings );
@@ -2137,9 +1905,9 @@ void Sphere::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 		float v = r * ringIncr;
 		for( int s = 0; s < numSegments; s++ ) {
 			float u = 1.0f - s * segIncr;
-			float x = math<float>::sin( float( M_PI * 2 ) * u ) * math<float>::sin( float( M_PI ) * v );
-			float y = math<float>::sin( float( M_PI ) * ( v - 0.5f ) );
-			float z = math<float>::cos( float( M_PI * 2 ) * u ) * math<float>::sin( float( M_PI ) * v );
+			float x = math<float>::sin( float(M_PI * 2) * u ) * math<float>::sin( float(M_PI) * v );
+			float y = math<float>::sin( float(M_PI) * (v - 0.5f) );
+			float z = math<float>::cos( float(M_PI * 2) * u ) * math<float>::sin( float(M_PI) * v );
 
 			*vertIt++ = vec3( x * radius + mCenter.x, y * radius + mCenter.y, z * radius + mCenter.z );
 
@@ -2151,17 +1919,17 @@ void Sphere::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 
 	auto indexIt = indices.begin();
 	for( int r = 0; r < numRings - 1; r++ ) {
-		for( int s = 0; s < numSegments - 1; s++ ) {
-			*indexIt++ = ( uint32_t )( r * numSegments + ( s + 1 ) );
-			*indexIt++ = ( uint32_t )( r * numSegments + s );
-			*indexIt++ = ( uint32_t )( ( r + 1 ) * numSegments + ( s + 1 ) );
+		for( int s = 0; s < numSegments - 1 ; s++ ) {
+			*indexIt++ = (uint32_t)(r * numSegments + ( s + 1 ));
+			*indexIt++ = (uint32_t)(r * numSegments + s);
+			*indexIt++ = (uint32_t)(( r + 1 ) * numSegments + ( s + 1 ));
 
-			*indexIt++ = ( uint32_t )( ( r + 1 ) * numSegments + s );
-			*indexIt++ = ( uint32_t )( ( r + 1 ) * numSegments + ( s + 1 ) );
-			*indexIt++ = ( uint32_t )( r * numSegments + s );
+			*indexIt++ = (uint32_t)(( r + 1 ) * numSegments + s);
+			*indexIt++ = (uint32_t)(( r + 1 ) * numSegments + ( s + 1 ));
+			*indexIt++ = (uint32_t)(r * numSegments + s);
 		}
 	}
-
+	
 	target->copyAttrib( Attrib::POSITION, 3, 0, value_ptr( *positions.data() ), positions.size() );
 	target->copyAttrib( Attrib::NORMAL, 3, 0, value_ptr( *normals.data() ), normals.size() );
 	target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, value_ptr( *texCoords.data() ), texCoords.size() );
@@ -2170,9 +1938,9 @@ void Sphere::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( indices.size(), indices.data(), positions.size(), positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), tangents.size() );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), tangents.size() );
 	}
 
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), indices.size(), 4 );
@@ -2181,13 +1949,13 @@ void Sphere::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 ///////////////////////////////////////////////////////////////////////////////////////
 // Capsule
 Capsule::Capsule()
-    : mDirection( 0, 1, 0 ), mLength( 1.0f ), mSubdivisionsAxis( 12 ), mHasColors( false )
+	: mDirection( 0, 1, 0 ), mLength( 1.0f ), mSubdivisionsAxis( 12 ), mHasColors( false )
 {
 	radius( 0.5f );
 	subdivisionsHeight( 12 );
 }
 
-Capsule &Capsule::set( const vec3 &from, const vec3 &to )
+Capsule& Capsule::set( const vec3 &from, const vec3 &to )
 {
 	const vec3 axis = to - from;
 	mLength = glm::length( axis );
@@ -2200,7 +1968,7 @@ void Capsule::updateCounts()
 {
 	mNumSegments = mSubdivisionsAxis;
 	if( mNumSegments < 4 )
-		mNumSegments = std::max( 12, (int)math<double>::floor( mRadius * float( M_PI * 2 ) ) );
+		mNumSegments = std::max( 12, (int)math<double>::floor( mRadius * float(M_PI * 2) ) );
 	mSubdivisionsHeight = std::max( mSubdivisionsHeight, 2 );
 }
 
@@ -2221,33 +1989,37 @@ void Capsule::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<
 	float bodyIncr = 1.0f / (float)( ringsBody - 1 );
 	float ringIncr = 1.0f / (float)( mSubdivisionsHeight - 1 );
 	for( int r = 0; r < mSubdivisionsHeight / 2; r++ )
-		calculateRing( mNumSegments, math<float>::sin( float( M_PI ) * r * ringIncr ), math<float>::sin( float( M_PI ) * ( r * ringIncr - 0.5f ) ), -0.5f, positions, normals, texCoords, colors );
+		calculateRing( mNumSegments, math<float>::sin( float(M_PI) * r * ringIncr), math<float>::sin( float(M_PI) * ( r * ringIncr - 0.5f ) ), -0.5f,
+							positions, normals, texCoords, colors );
 	for( size_t r = 0; r < ringsBody; r++ )
-		calculateRing( mNumSegments, 1.0f, 0.0f, r * bodyIncr - 0.5f, positions, normals, texCoords, colors );
+		calculateRing( mNumSegments, 1.0f, 0.0f, r * bodyIncr - 0.5f,
+							positions, normals, texCoords, colors );
 	for( int r = mSubdivisionsHeight / 2; r < mSubdivisionsHeight; r++ )
-		calculateRing( mNumSegments, math<float>::sin( float( M_PI ) * r * ringIncr ), math<float>::sin( float( M_PI ) * ( r * ringIncr - 0.5f ) ), +0.5f, positions, normals, texCoords, colors );
+		calculateRing( mNumSegments, math<float>::sin( float(M_PI) * r * ringIncr), math<float>::sin( float(M_PI) * ( r * ringIncr - 0.5f ) ), +0.5f,
+							positions, normals, texCoords, colors );
 
 	for( size_t r = 0; r < ringsTotal - 1; r++ ) {
 		for( int s = 0; s < mNumSegments - 1; s++ ) {
-			indices->push_back( ( uint32_t )( r * mNumSegments + ( s + 1 ) ) );
-			indices->push_back( ( uint32_t )( r * mNumSegments + ( s + 0 ) ) );
-			indices->push_back( ( uint32_t )( ( r + 1 ) * mNumSegments + ( s + 1 ) ) );
+			indices->push_back( (uint32_t)(r * mNumSegments + ( s + 1 )) );
+			indices->push_back( (uint32_t)(r * mNumSegments + ( s + 0 )) );
+			indices->push_back( (uint32_t)(( r + 1 ) * mNumSegments + ( s + 1 )) );
 
-			indices->push_back( ( uint32_t )( ( r + 1 ) * mNumSegments + ( s + 0 ) ) );
-			indices->push_back( ( uint32_t )( ( r + 1 ) * mNumSegments + ( s + 1 ) ) );
-			indices->push_back( ( uint32_t )( r * mNumSegments + s ) );
+			indices->push_back( (uint32_t)(( r + 1 ) * mNumSegments + ( s + 0 )) );
+			indices->push_back( (uint32_t)(( r + 1 ) * mNumSegments + ( s + 1 )) );
+			indices->push_back( (uint32_t)(r * mNumSegments + s) );
 		}
 	}
 }
 
-void Capsule::calculateRing( size_t segments, float radius, float y, float dy, vector<vec3> *positions, vector<vec3> *normals, vector<vec2> *texCoords, vector<vec3> *colors ) const
+void Capsule::calculateRing( size_t segments, float radius, float y, float dy,
+								vector<vec3> *positions, vector<vec3> *normals, vector<vec2> *texCoords, vector<vec3> *colors ) const
 {
 	const quat quaternion( vec3( 0, 1, 0 ), mDirection );
 
 	float segIncr = 1.0f / (float)( segments - 1 );
 	for( size_t s = 0; s < segments; s++ ) {
-		float x = math<float>::cos( float( M_PI * 2 ) * s * segIncr ) * radius;
-		float z = math<float>::sin( float( M_PI * 2 ) * s * segIncr ) * radius;
+		float x = math<float>::cos( float(M_PI * 2) * s * segIncr ) * radius;
+		float z = math<float>::sin( float(M_PI * 2) * s * segIncr ) * radius;
 
 		positions->emplace_back( mCenter + ( quaternion * glm::vec3( mRadius * x, mRadius * y + mLength * dy, mRadius * z ) ) );
 
@@ -2255,13 +2027,13 @@ void Capsule::calculateRing( size_t segments, float radius, float y, float dy, v
 			normals->emplace_back( quaternion * glm::vec3( x, y, z ) );
 		// perform cylindrical projection
 		if( texCoords ) {
-			float u = 1.0f - ( s * segIncr );
-			float v = 0.5f - ( ( mRadius * y + mLength * dy ) / ( 2.0f * mRadius + mLength ) );
+			float u = 1.0f - (s * segIncr);
+			float v = 0.5f - ((mRadius * y + mLength * dy) / (2.0f * mRadius + mLength));
 			texCoords->emplace_back( u, v );
 		}
-
+		
 		if( colors ) {
-			float g = 0.5f + ( ( mRadius * y + mLength * dy ) / ( 2.0f * mRadius + mLength ) );
+			float g = 0.5f + ((mRadius * y + mLength * dy) / (2.0f * mRadius + mLength));
 			colors->emplace_back( x * 0.5f + 0.5f, g, z * 0.5f + 0.5f );
 		}
 	}
@@ -2280,18 +2052,13 @@ size_t Capsule::getNumIndices() const
 uint8_t Capsule::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 3 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 3 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -2302,9 +2069,9 @@ AttribSet Capsule::getAvailableAttribs() const
 
 void Capsule::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	std::vector<vec3>     positions, normals;
-	std::vector<vec2>     texCoords;
-	std::vector<vec3>     colors;
+	std::vector<vec3> positions, normals;
+	std::vector<vec2> texCoords;
+	std::vector<vec3> colors;
 	std::vector<uint32_t> indices;
 
 	vector<vec3> *normalsPtr = ( requestedAttribs.count( Attrib::NORMAL ) || requestedAttribs.count( Attrib::TANGENT ) ) ? &normals : nullptr;
@@ -2324,33 +2091,34 @@ void Capsule::loadInto( Target *target, const AttribSet &requestedAttribs ) cons
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( indices.size(), indices.data(), positions.size(), positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), tangents.size() );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), tangents.size() );
 	}
 
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), indices.size(), 4 );
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////
 // Torus
 Torus::Torus()
-    : mCenter( 0, 0, 0 ), mRadiusMajor( 1.0f ), mRadiusMinor( 0.75f ), mCoils( 1 ), mHeight( 0 ),
-      mSubdivisionsAxis( 18 ), mSubdivisionsHeight( 18 ), mTwist( 0 ), mTwistOffset( 0 ), mHasColors( false )
+	: mCenter( 0, 0, 0), mRadiusMajor( 1.0f ), mRadiusMinor( 0.75f ), mCoils( 1 ), mHeight( 0 ),
+	mSubdivisionsAxis( 18 ), mSubdivisionsHeight( 18 ), mTwist( 0 ), mTwistOffset( 0 ), mHasColors( false )
 {
 	updateCounts();
 }
 
 void Torus::updateCounts()
 {
-	mNumAxis = (int)math<float>::ceil( mSubdivisionsAxis * mCoils );
+	mNumAxis = (int) math<float>::ceil( mSubdivisionsAxis * mCoils );
 	if( mNumAxis < 4 )
-		mNumAxis = std::max( 12, (int)math<double>::floor( mRadiusMajor * float( M_PI * 2 ) ) );
+		mNumAxis = std::max( 12, (int)math<double>::floor( mRadiusMajor * float(M_PI * 2) ) );
 	mNumAxis += 1;
 
 	mNumRings = mSubdivisionsHeight;
 	if( mNumRings < 3 )
-		mNumRings = std::max( 12, (int)math<double>::floor( mRadiusMajor * float( M_PI * 2 ) ) ) + 1;
+		mNumRings = std::max( 12, (int)math<double>::floor( mRadiusMajor * float(M_PI * 2) ) ) + 1;
 	mNumRings += 1;
 }
 
@@ -2361,7 +2129,7 @@ size_t Torus::getNumVertices() const
 
 size_t Torus::getNumIndices() const
 {
-	return ( mNumAxis - 1 ) * ( mNumRings - 1 ) * 6;
+	return (mNumAxis - 1) * (mNumRings - 1) * 6;
 }
 
 void Torus::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<vec2> *texCoords, vector<vec3> *colors, vector<uint32_t> *indices ) const
@@ -2371,24 +2139,24 @@ void Torus::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<ve
 	texCoords->reserve( mNumAxis * mNumRings );
 	if( colors )
 		colors->reserve( mNumAxis * mNumRings );
-	indices->reserve( ( mNumAxis - 1 ) * ( mNumRings - 1 ) * 6 );
+	indices->reserve( (mNumAxis - 1) * (mNumRings - 1) * 6 );
 
-	float majorIncr = 1.0f / ( mNumAxis - 1 );
-	float minorIncr = 1.0f / ( mNumRings - 1 );
+	float majorIncr = 1.0f / (mNumAxis - 1);
+	float minorIncr = 1.0f / (mNumRings - 1);
 	float radiusDiff = mRadiusMajor - mRadiusMinor;
-	float angle = float( M_PI * 2 ) * mCoils;
+	float angle = float(M_PI * 2) * mCoils;
 	float twist = angle * mTwist * minorIncr * majorIncr;
 
 	// vertex, normal, tex coord and color buffers
 	for( int i = 0; i < mNumAxis; ++i ) {
 		float phi = i * majorIncr * angle;
 		float cosPhi = -math<float>::cos( phi );
-		float sinPhi = math<float>::sin( phi );
+		float sinPhi =  math<float>::sin( phi );
 
 		for( int j = 0; j < mNumRings; ++j ) {
-			float theta = j * minorIncr * float( M_PI * 2 ) + i * twist + mTwistOffset;
+			float theta = j * minorIncr * float(M_PI * 2) + i * twist + mTwistOffset;
 			float cosTheta = -math<float>::cos( theta );
-			float sinTheta = math<float>::sin( theta );
+			float sinTheta =  math<float>::sin( theta );
 
 			float r = mRadiusMinor + cosTheta * radiusDiff;
 			float x = r * cosPhi;
@@ -2407,14 +2175,14 @@ void Torus::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<ve
 
 	// index buffer
 	for( int i = 0; i < mNumAxis - 1; ++i ) {
-		for( int j = 0; j < mNumRings - 1; ++j ) {
-			indices->push_back( ( uint32_t )( ( i + 0 ) * mNumRings + ( j + 0 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 1 ) * mNumRings + ( j + 1 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 1 ) * mNumRings + ( j + 0 ) ) );
+		for ( int j = 0; j < mNumRings - 1; ++j ) {
+			indices->push_back( (uint32_t)((i + 0) * mNumRings + (j + 0)) );
+			indices->push_back( (uint32_t)((i + 1) * mNumRings + (j + 1)) );
+			indices->push_back( (uint32_t)((i + 1) * mNumRings + (j + 0)) );
 
-			indices->push_back( ( uint32_t )( ( i + 0 ) * mNumRings + ( j + 0 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 0 ) * mNumRings + ( j + 1 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 1 ) * mNumRings + ( j + 1 ) ) );
+			indices->push_back( (uint32_t)((i + 0) * mNumRings + (j + 0)) );
+			indices->push_back( (uint32_t)((i + 0) * mNumRings + (j + 1)) );
+			indices->push_back( (uint32_t)((i + 1) * mNumRings + (j + 1)) );
 		}
 	}
 }
@@ -2422,18 +2190,13 @@ void Torus::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<ve
 uint8_t Torus::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 3 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 3 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -2444,9 +2207,9 @@ AttribSet Torus::getAvailableAttribs() const
 
 void Torus::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	std::vector<vec3>     positions, normals;
-	std::vector<vec2>     texCoords;
-	std::vector<vec3>     colors;
+	std::vector<vec3> positions, normals;
+	std::vector<vec2> texCoords;
+	std::vector<vec3> colors;
 	std::vector<uint32_t> indices;
 
 	vector<vec3> *colorsPtr = ( requestedAttribs.count( Attrib::COLOR ) ) ? &colors : nullptr;
@@ -2462,9 +2225,9 @@ void Torus::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( indices.size(), indices.data(), positions.size(), positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), tangents.size() );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), tangents.size() );
 	}
 
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), indices.size(), 4 );
@@ -2473,7 +2236,7 @@ void Torus::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 ///////////////////////////////////////////////////////////////////////////////////////
 // TorusKnot
 TorusKnot::TorusKnot()
-    : mP( 2 ), mQ( 3 ), mRadius( 0.2f ), mSubdivisionsAxis( 12 ), mSubdivisionsHeight( 128 ), mScale( 1 ), mHasColors( false )
+	: mP( 2 ), mQ( 3 ), mRadius( 0.2f ), mSubdivisionsAxis( 12 ), mSubdivisionsHeight( 128 ), mScale( 1 ), mHasColors( false )
 {
 }
 
@@ -2490,24 +2253,19 @@ size_t TorusKnot::getNumIndices() const
 uint8_t TorusKnot::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 3 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 3 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
 AttribSet TorusKnot::getAvailableAttribs() const
 {
-	return { Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0, Attrib::COLOR, Attrib::TANGENT };
+	return{ Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0, Attrib::COLOR, Attrib::TANGENT };
 }
 
 void TorusKnot::loadInto( Target *target, const AttribSet &requestedAttribs ) const
@@ -2515,10 +2273,10 @@ void TorusKnot::loadInto( Target *target, const AttribSet &requestedAttribs ) co
 	auto numVertices = getNumVertices();
 	auto numIndices = getNumIndices();
 
-	std::vector<vec3>     positions( numVertices ), normals( numVertices );
-	std::vector<vec2>     texCoords( numVertices );
-	std::vector<vec3>     colors( numVertices );
-	std::vector<vec3>     tangents( numVertices );
+	std::vector<vec3> positions( numVertices ), normals( numVertices );
+	std::vector<vec2> texCoords( numVertices );
+	std::vector<vec3> colors( numVertices );
+	std::vector<vec3> tangents( numVertices );
 	std::vector<uint32_t> indices( numIndices );
 
 	std::vector<vec3> *colorsPtr = ( requestedAttribs.count( Attrib::COLOR ) ) ? &colors : nullptr;
@@ -2552,7 +2310,7 @@ void TorusKnot::calculate( std::vector<vec3> *positions, std::vector<vec3> *norm
 		float p = _p * i * stepHeight;
 		float q = _q * i * stepHeight;
 		float r = 0.5f * ( 2.0f + glm::cos( q ) );
-		vec3  center( r * glm::sin( p ) * mScale.x, r * glm::sin( q ) * mScale.y, r * glm::cos( p ) * mScale.z );
+		vec3 center( r * glm::sin( p ) * mScale.x, r * glm::sin( q ) * mScale.y, r * glm::cos( p ) * mScale.z );
 
 		p = _p * ( i + 1 ) * stepHeight;
 		q = _q * ( i + 1 ) * stepHeight;
@@ -2575,8 +2333,8 @@ void TorusKnot::calculate( std::vector<vec3> *positions, std::vector<vec3> *norm
 			( *texCoords )[idx].x = float( i ) / mSubdivisionsHeight;
 
 			if( tangents )
-				( *tangents )[idx] = T;
-
+				( *tangents )[idx] = T; 
+			
 			if( colors )
 				( *colors )[idx] = ( *normals )[idx] * 0.5f + 0.5f;
 		}
@@ -2599,13 +2357,13 @@ void TorusKnot::calculate( std::vector<vec3> *positions, std::vector<vec3> *norm
 ///////////////////////////////////////////////////////////////////////////////////////
 // Cylinder
 Cylinder::Cylinder()
-    : mOrigin( 0, 0, 0 ), mHeight( 2.0f ), mDirection( 0, 1, 0 ), mRadiusBase( 1.0f ), mRadiusApex( 1.0f ),
-      mSubdivisionsAxis( 18 ), mSubdivisionsHeight( 1 ), mSubdivisionsCap( 3 ), mHasColors( false )
+	: mOrigin( 0, 0, 0 ), mHeight( 2.0f ), mDirection( 0, 1, 0 ), mRadiusBase( 1.0f ), mRadiusApex( 1.0f ),
+		mSubdivisionsAxis( 18 ), mSubdivisionsHeight( 1 ), mSubdivisionsCap( 3 ), mHasColors( false )
 {
 	updateCounts();
 }
 
-Cylinder &Cylinder::set( const vec3 &from, const vec3 &to )
+Cylinder& Cylinder::set( const vec3 &from, const vec3 &to )
 {
 	const vec3 axis = ( to - from );
 	mHeight = length( axis );
@@ -2619,7 +2377,7 @@ void Cylinder::updateCounts()
 	mNumSegments = mSubdivisionsAxis + 1;
 	if( mNumSegments < 4 ) {
 		float radius = math<float>::max( mRadiusBase, mRadiusApex );
-		mNumSegments = std::max( 12, (int)math<double>::floor( radius * float( M_PI * 2 ) ) ) + 1;
+		mNumSegments = std::max( 12, (int)math<double>::floor( radius * float(M_PI * 2) ) ) + 1;
 	}
 	mNumSlices = math<int>::max( mSubdivisionsHeight, 1 ) + 1;
 }
@@ -2649,24 +2407,24 @@ void Cylinder::calculate( vector<vec3> *positions, vector<vec3> *normals, vector
 	positions->reserve( mNumSegments * mNumSlices );
 	normals->reserve( mNumSegments * mNumSlices );
 	texCoords->reserve( mNumSegments * mNumSlices );
-	indices->reserve( ( mNumSegments - 1 ) * ( mNumSlices - 1 ) * 6 );
+	indices->reserve( (mNumSegments - 1) * (mNumSlices - 1) * 6 );
 
 	colors->reserve( mNumSegments * mNumSlices );
 
-	const float segmentIncr = 1.0f / ( mNumSegments - 1 );
-	const float ringIncr = 1.0f / ( mNumSlices - 1 );
-	const quat  axis = glm::rotation( vec3( 0, 1, 0 ), mDirection );
+	const float segmentIncr = 1.0f / (mNumSegments - 1);
+	const float ringIncr = 1.0f / (mNumSlices - 1);
+	const quat axis = glm::rotation( vec3( 0, 1, 0 ), mDirection );
 
 	// vertex, normal, tex coord and color buffers
 	for( int i = 0; i < mNumSegments; ++i ) {
 		for( int j = 0; j < mNumSlices; ++j ) {
-			float cosPhi = -math<float>::cos( i * segmentIncr * float( M_PI * 2 ) );
-			float sinPhi = math<float>::sin( i * segmentIncr * float( M_PI * 2 ) );
+			float cosPhi = -math<float>::cos( i * segmentIncr * float(M_PI * 2) );
+			float sinPhi =  math<float>::sin( i * segmentIncr * float(M_PI * 2) );
 
-			float      r = lerp<float>( mRadiusBase, mRadiusApex, j * ringIncr );
-			float      x = r * cosPhi;
-			float      y = mHeight * j * ringIncr;
-			float      z = r * sinPhi;
+			float r = lerp<float>( mRadiusBase, mRadiusApex, j * ringIncr );
+			float x = r * cosPhi;
+			float y = mHeight * j * ringIncr;
+			float z = r * sinPhi;
 			const vec3 n = normalize( vec3( mHeight * cosPhi, mRadiusBase - mRadiusApex, mHeight * sinPhi ) );
 
 			positions->emplace_back( mOrigin + axis * vec3( x, y, z ) );
@@ -2677,15 +2435,15 @@ void Cylinder::calculate( vector<vec3> *positions, vector<vec3> *normals, vector
 	}
 
 	// index buffer
-	for( int j = 0; j < mNumSlices - 1; ++j ) {
+	for ( int j = 0; j < mNumSlices - 1; ++j ) {
 		for( int i = 0; i < mNumSegments - 1; ++i ) {
-			indices->push_back( ( uint32_t )( ( i + 0 ) * mNumSlices + ( j + 0 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 1 ) * mNumSlices + ( j + 0 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 1 ) * mNumSlices + ( j + 1 ) ) );
+			indices->push_back( (uint32_t)((i + 0) * mNumSlices + (j + 0)) );
+			indices->push_back( (uint32_t)((i + 1) * mNumSlices + (j + 0)) );
+			indices->push_back( (uint32_t)((i + 1) * mNumSlices + (j + 1)) );
 
-			indices->push_back( ( uint32_t )( ( i + 0 ) * mNumSlices + ( j + 0 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 1 ) * mNumSlices + ( j + 1 ) ) );
-			indices->push_back( ( uint32_t )( ( i + 0 ) * mNumSlices + ( j + 1 ) ) );
+			indices->push_back( (uint32_t)((i + 0) * mNumSlices + (j + 0)) );
+			indices->push_back( (uint32_t)((i + 1) * mNumSlices + (j + 1)) );
+			indices->push_back( (uint32_t)((i + 0) * mNumSlices + (j + 1)) );
 		}
 	}
 
@@ -2697,12 +2455,13 @@ void Cylinder::calculate( vector<vec3> *positions, vector<vec3> *normals, vector
 		calculateCap( false, mHeight, mRadiusApex, positions, normals, texCoords, colors, indices );
 }
 
-void Cylinder::calculateCap( bool flip, float height, float radius, vector<vec3> *positions, vector<vec3> *normals, vector<vec2> *texCoords, vector<vec3> *colors, vector<uint32_t> *indices ) const
+void Cylinder::calculateCap( bool flip, float height, float radius, vector<vec3> *positions, vector<vec3> *normals,
+								vector<vec2> *texCoords, vector<vec3> *colors, vector<uint32_t> *indices ) const
 {
 	const size_t index = positions->size();
-	const vec3   n = flip ? -mDirection : mDirection;
+	const vec3 n = flip ? -mDirection : mDirection;
 	normals->resize( index + mSubdivisionsCap * mNumSegments * 2, n );
-	colors->resize( index + mSubdivisionsCap * mNumSegments * 2, vec3( n.x * 0.5f + 0.5f, n.y * 0.5f + 0.5f, n.z * 0.5f + 0.5f ) );
+	colors->resize( index + mSubdivisionsCap *mNumSegments * 2, vec3( n.x * 0.5f + 0.5f, n.y * 0.5f + 0.5f, n.z * 0.5f + 0.5f ) );
 
 	const quat axis = glm::rotation( vec3( 0, 1, 0 ), mDirection );
 
@@ -2737,22 +2496,22 @@ void Cylinder::calculateCap( bool flip, float height, float radius, vector<vec3>
 	for( int r = 0; r < mSubdivisionsCap; ++r ) {
 		for( int i = 0; i < ( mNumSegments - 1 ); ++i ) {
 			if( flip ) {
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 0 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 2 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 3 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 0 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 2 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 3 ) );
 
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 0 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 3 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 1 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 0 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 3 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 1 ) );
 			}
 			else {
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 0 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 3 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 2 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 0 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 3 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 2 ) );
 
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 0 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 1 ) );
-				indices->push_back( ( uint32_t )( index + r * mNumSegments * 2 + i * 2 + 3 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 0 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 1 ) );
+				indices->push_back( (uint32_t)( index + r * mNumSegments * 2 + i * 2 + 3 ) );
 			}
 		}
 	}
@@ -2761,18 +2520,13 @@ void Cylinder::calculateCap( bool flip, float height, float radius, vector<vec3>
 uint8_t Cylinder::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::COLOR:
-		return mHasColors ? 3 : 0;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::COLOR: return mHasColors ? 3 : 0;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -2783,8 +2537,8 @@ AttribSet Cylinder::getAvailableAttribs() const
 
 void Cylinder::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	vector<vec3>     positions, normals, colors;
-	vector<vec2>     texCoords;
+	vector<vec3> positions, normals, colors;
+	vector<vec2> texCoords;
 	vector<uint32_t> indices;
 
 	calculate( &positions, &normals, &texCoords, &colors, &indices );
@@ -2797,9 +2551,9 @@ void Cylinder::loadInto( Target *target, const AttribSet &requestedAttribs ) con
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( indices.size(), indices.data(), positions.size(), positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), tangents.size() );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), tangents.size() );
 	}
 
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), indices.size(), 4 );
@@ -2808,20 +2562,20 @@ void Cylinder::loadInto( Target *target, const AttribSet &requestedAttribs ) con
 ///////////////////////////////////////////////////////////////////////////////////////
 // Plane
 Plane::Plane()
-    : mOrigin( 0, 0, 0 ), mAxisU( 1, 0, 0 ), mAxisV( 0, 0, 1 ), mSize( 2, 2 ), mSubdivisions( 1, 1 )
+	: mOrigin( 0, 0, 0 ), mAxisU( 1, 0, 0 ), mAxisV( 0, 0, 1 ), mSize( 2, 2 ), mSubdivisions( 1, 1 )
 {
 }
 
-Plane &Plane::subdivisions( const ivec2 &subdivisions )
+Plane& Plane::subdivisions( const ivec2 &subdivisions )
 {
 	mSubdivisions.x = std::max( subdivisions.x, 1 );
 	mSubdivisions.y = std::max( subdivisions.y, 1 );
 	return *this;
 }
 
-Plane &Plane::normal( const vec3 &normal )
+Plane& Plane::normal( const vec3 &normal )
 {
-	auto  normalNormal = normalize( normal );
+	auto normalNormal = normalize( normal );
 	float yAxisDot = dot( normalNormal, vec3( 0, 1, 0 ) );
 	if( abs( yAxisDot ) < 0.999f ) {
 		quat normalQuat = glm::rotation( vec3( 0, 1, 0 ), normalNormal );
@@ -2837,7 +2591,7 @@ Plane &Plane::normal( const vec3 &normal )
 	return *this;
 }
 
-Plane &Plane::axes( const vec3 &uAxis, const vec3 &vAxis )
+Plane& Plane::axes( const vec3 &uAxis, const vec3 &vAxis )
 {
 	mAxisU = normalize( uAxis );
 	mAxisV = normalize( vAxis );
@@ -2847,16 +2601,12 @@ Plane &Plane::axes( const vec3 &uAxis, const vec3 &vAxis )
 uint8_t Plane::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 2;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 2;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -2867,8 +2617,8 @@ AttribSet Plane::getAvailableAttribs() const
 
 void Plane::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	std::vector<vec3>     positions, normals;
-	std::vector<vec2>     texCoords;
+	std::vector<vec3> positions, normals;
+	std::vector<vec2> texCoords;
 	std::vector<uint32_t> indices;
 
 	const size_t numVerts = ( mSubdivisions.x + 1 ) * ( mSubdivisions.y + 1 );
@@ -2905,6 +2655,7 @@ void Plane::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 		}
 	}
 
+
 	target->copyAttrib( Attrib::POSITION, 3, 0, value_ptr( *positions.data() ), positions.size() );
 	target->copyAttrib( Attrib::NORMAL, 3, 0, value_ptr( *normals.data() ), normals.size() );
 	target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, value_ptr( *texCoords.data() ), texCoords.size() );
@@ -2913,17 +2664,17 @@ void Plane::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( getNumIndices(), indices.data(), positions.size(), positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), tangents.size() );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), tangents.size() );
 	}
-
+	
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), indices.size(), 4 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Transform
-uint8_t Transform::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
+uint8_t	Transform::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
 {
 	if( attr == Attrib::POSITION )
 		return 3;
@@ -2934,35 +2685,35 @@ uint8_t Transform::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
 void Transform::process( SourceModsContext *ctx, const AttribSet &requestedAttribs ) const
 {
 	ctx->processUpstream( requestedAttribs );
-
+	
 	const size_t numVertices = ctx->getNumVertices();
 
 	if( ctx->getAttribDims( POSITION ) == 2 ) {
-		const vec2 * inPositions = reinterpret_cast<vec2 *>( ctx->getAttribData( POSITION ) );
+		const vec2* inPositions = reinterpret_cast<vec2*>( ctx->getAttribData( POSITION ) );
 		vector<vec3> outPositions;
 		outPositions.reserve( numVertices );
 		for( size_t v = 0; v < numVertices; ++v )
 			outPositions.push_back( vec3( mTransform * vec4( inPositions[v], 0, 1 ) ) );
-		ctx->copyAttrib( POSITION, 3, 0, (const float *)outPositions.data(), numVertices );
+		ctx->copyAttrib( POSITION, 3, 0, (const float*)outPositions.data(), numVertices );
 	}
 	else if( ctx->getAttribDims( POSITION ) == 3 ) {
-		vec3 *positions = reinterpret_cast<vec3 *>( ctx->getAttribData( POSITION ) );
+		vec3* positions = reinterpret_cast<vec3*>( ctx->getAttribData( POSITION ) );
 		for( size_t v = 0; v < numVertices; ++v )
 			positions[v] = vec3( mTransform * vec4( positions[v], 1 ) );
 	}
 	else if( ctx->getAttribDims( POSITION ) == 4 ) {
-		vec4 *positions = reinterpret_cast<vec4 *>( ctx->getAttribData( POSITION ) );
+		vec4* positions = reinterpret_cast<vec4*>( ctx->getAttribData( POSITION ) );
 		for( size_t v = 0; v < numVertices; ++v )
 			positions[v] = mTransform * positions[v];
 	}
 	else if( ctx->getAttribDims( POSITION ) != 0 )
 		CI_LOG_W( "Unsupported dimension for geom::POSITION passed to geom::Transform" );
-
+	
 	// we'll make the sort of modification to our normals (if they're present)
 	// using the inverse transpose of 'mTransform'
 	if( ctx->getAttribDims( NORMAL ) == 3 ) {
-		vec3 *normals = reinterpret_cast<vec3 *>( ctx->getAttribData( NORMAL ) );
-		mat3  normalsTransform = glm::transpose( inverse( mat3( mTransform ) ) );
+		vec3* normals = reinterpret_cast<vec3*>( ctx->getAttribData( NORMAL ) );
+		mat3 normalsTransform = glm::transpose( inverse( mat3( mTransform ) ) );
 		for( size_t v = 0; v < numVertices; ++v )
 			normals[v] = normalize( normalsTransform * normals[v] );
 	}
@@ -2972,8 +2723,8 @@ void Transform::process( SourceModsContext *ctx, const AttribSet &requestedAttri
 	// and finally, we'll make the sort of modification to our tangents (if they're present)
 	// using the inverse transpose of 'mTransform'
 	if( ctx->getAttribDims( TANGENT ) == 3 ) {
-		vec3 *tangents = reinterpret_cast<vec3 *>( ctx->getAttribData( TANGENT ) );
-		mat3  tangentsTransform = glm::transpose( inverse( mat3( mTransform ) ) );
+		vec3* tangents = reinterpret_cast<vec3*>( ctx->getAttribData( TANGENT ) );
+		mat3 tangentsTransform = glm::transpose( inverse( mat3( mTransform ) ) );
 		for( size_t v = 0; v < numVertices; ++v )
 			tangents[v] = normalize( tangentsTransform * tangents[v] );
 	}
@@ -2986,19 +2737,19 @@ void Transform::process( SourceModsContext *ctx, const AttribSet &requestedAttri
 void Twist::process( SourceModsContext *ctx, const AttribSet &requestedAttribs ) const
 {
 	ctx->processUpstream( requestedAttribs );
-
+	
 	const size_t numVertices = ctx->getNumVertices();
-	const float  invAxisLength = 1.0f / distance( mAxisStart, mAxisEnd );
-	const vec3   axisDir = ( mAxisEnd - mAxisStart ) * vec3( invAxisLength );
+	const float invAxisLength = 1.0f / distance( mAxisStart, mAxisEnd );
+	const vec3 axisDir = ( mAxisEnd - mAxisStart ) * vec3( invAxisLength );
 
 	if( ctx->getAttribDims( POSITION ) == 3 ) {
-		vec3 *positions = reinterpret_cast<vec3 *>( ctx->getAttribData( POSITION ) );
-		vec3 *normals = nullptr, *tangents = nullptr;
+		vec3* positions = reinterpret_cast<vec3*>( ctx->getAttribData( POSITION ) );
+		vec3* normals = nullptr, *tangents = nullptr;
 		if( ctx->getAttribDims( NORMAL ) == 3 )
-			normals = reinterpret_cast<vec3 *>( ctx->getAttribData( NORMAL ) );
+			normals = reinterpret_cast<vec3*>( ctx->getAttribData( NORMAL ) );
 		if( ctx->getAttribDims( TANGENT ) == 3 )
-			tangents = reinterpret_cast<vec3 *>( ctx->getAttribData( TANGENT ) );
-
+			tangents = reinterpret_cast<vec3*>( ctx->getAttribData( TANGENT ) );
+		
 		for( size_t v = 0; v < numVertices; ++v ) {
 			// find the 't' value of the point on the axis that inPosition is closest to
 			float closestDist = dot( positions[v] - mAxisStart, axisDir );
@@ -3033,30 +2784,32 @@ size_t Lines::getNumIndices( const Modifier::Params &upstreamParams ) const
 size_t Lines::calcNumIndices( Primitive primitive, size_t upstreamNumIndices, size_t upstreamNumVertices )
 {
 	switch( primitive ) {
-	case LINES:
-		return upstreamNumIndices;
+		case LINES:
+			return upstreamNumIndices;
 		break;
-	case LINE_STRIP:
-		return upstreamNumIndices ? ( ( upstreamNumIndices - 1 ) * 2 ) : ( ( upstreamNumVertices - 1 ) * 2 );
+		case LINE_STRIP:
+			return upstreamNumIndices ? ((upstreamNumIndices - 1) * 2 ) : ((upstreamNumVertices - 1) * 2 );
 		break;
-	case TRIANGLES:
-		return upstreamNumIndices ? ( upstreamNumIndices * 2 ) : ( upstreamNumVertices * 2 );
+		case TRIANGLES:
+			return upstreamNumIndices ? (upstreamNumIndices * 2) : (upstreamNumVertices * 2);
 		break;
-	case TRIANGLE_STRIP:
-		return std::max<int>( 0, upstreamNumIndices ? (int)( ( upstreamNumVertices - 2 ) * 6 ) : (int)( upstreamNumIndices - 2 ) * 6 );
+		case TRIANGLE_STRIP:
+			return std::max<int>( 0, upstreamNumIndices ? (int)((upstreamNumVertices - 2) * 6 )
+				: (int)(upstreamNumIndices - 2) * 6 );
 		break;
-	case TRIANGLE_FAN:
-		return std::max<int>( 0, upstreamNumIndices ? (int)( upstreamNumVertices * 4 - 2 ) : (int)( upstreamNumIndices * 4 - 2 ) );
+		case TRIANGLE_FAN:
+			return std::max<int>( 0, upstreamNumIndices ? (int)(upstreamNumVertices * 4 - 2 )
+				: (int)(upstreamNumIndices * 4 - 2 ) );
 		break;
-	default:
-		return upstreamNumIndices;
+		default:
+			return upstreamNumIndices;
 	}
 }
 
 void Lines::process( SourceModsContext *ctx, const AttribSet &requestedAttribs ) const
 {
 	ctx->processUpstream( requestedAttribs );
-
+	
 	const size_t numInIndices = ctx->getNumIndices();
 	const size_t numInVertices = ctx->getNumVertices();
 	const size_t numOutIndices = calcNumIndices( ctx->getPrimitive(), numInIndices, numInVertices );
@@ -3065,110 +2818,96 @@ void Lines::process( SourceModsContext *ctx, const AttribSet &requestedAttribs )
 		return;
 
 	switch( ctx->getPrimitive() ) {
-	case Primitive::LINES: // pass-through
+		case Primitive::LINES: // pass-through
 		break;
-	case Primitive::LINE_STRIP: {
-		vector<uint32_t> outIndices;
-		outIndices.reserve( numOutIndices );
-		const uint32_t *indices = ctx->getIndicesData();
-		if( indices ) {
-			for( size_t i = 0; i < numInIndices - 1; i++ ) {
-				outIndices.push_back( indices[i] );
-				outIndices.push_back( indices[i + 1] );
+		case Primitive::LINE_STRIP: {
+			vector<uint32_t> outIndices;
+			outIndices.reserve( numOutIndices );
+			const uint32_t *indices = ctx->getIndicesData();
+			if( indices ) {
+				for( size_t i = 0; i < numInIndices - 1; i++ ) {
+					outIndices.push_back( indices[i] ); outIndices.push_back( indices[i + 1] );
+				}
 			}
+			else {
+				for( size_t i = 0; i < numInVertices - 1; i++ ) {
+					outIndices.push_back( (uint32_t)i ); outIndices.push_back( (uint32_t)(i + 1) );
+				}
+			}
+			
+			ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
 		}
-		else {
-			for( size_t i = 0; i < numInVertices - 1; i++ ) {
-				outIndices.push_back( (uint32_t)i );
-				outIndices.push_back( ( uint32_t )( i + 1 ) );
+		break;
+		case Primitive::TRIANGLE_FAN: {
+			vector<uint32_t> outIndices;
+			outIndices.reserve( numOutIndices );
+			const uint32_t *indices = ctx->getIndicesData();
+			if( indices ) {
+				for( size_t i = 1; i < numInIndices; i++ ) { // lines connecting first vertex ("hub") and all others
+					outIndices.push_back( indices[0] ); outIndices.push_back( indices[i] );
+				}
+				for( size_t j = numInIndices-1, i = 0; i < numInIndices; j = i++ ) {// lines connecting adjacent vertices
+					outIndices.push_back( indices[j] ); outIndices.push_back( indices[i] );
+				}
 			}
+			else {
+				for( size_t i = 1; i < numInVertices; i++ ) { // lines connecting first vertex ("hub") and all others
+					outIndices.push_back( 0 ); outIndices.push_back( (uint32_t)i );
+				}
+				for( size_t j = numInVertices-1, i = 0; i < numInVertices; j = i++ ) {// lines connecting adjacent vertices
+					outIndices.push_back( (uint32_t)j ); outIndices.push_back( (uint32_t)i );
+				}
+			}
+			
+			ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
 		}
-
-		ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
-	} break;
-	case Primitive::TRIANGLE_FAN: {
-		vector<uint32_t> outIndices;
-		outIndices.reserve( numOutIndices );
-		const uint32_t *indices = ctx->getIndicesData();
-		if( indices ) {
-			for( size_t i = 1; i < numInIndices; i++ ) { // lines connecting first vertex ("hub") and all others
-				outIndices.push_back( indices[0] );
-				outIndices.push_back( indices[i] );
+		break;
+		case Primitive::TRIANGLES: {
+			vector<uint32_t> outIndices;
+			outIndices.reserve( numOutIndices );
+			const uint32_t *indices = ctx->getIndicesData();
+			if( indices ) {
+				for( size_t i = 0; i < numInIndices; i += 3 ) {
+					outIndices.push_back( indices[i + 0] ); outIndices.push_back( indices[i + 1] );
+					outIndices.push_back( indices[i + 1] ); outIndices.push_back( indices[i + 2] );
+					outIndices.push_back( indices[i + 2] ); outIndices.push_back( indices[i + 0] );
+				}
 			}
-			for( size_t j = numInIndices - 1, i = 0; i < numInIndices; j = i++ ) { // lines connecting adjacent vertices
-				outIndices.push_back( indices[j] );
-				outIndices.push_back( indices[i] );
+			else {
+				for( uint32_t i = 0; i < numInVertices; i += 3 ) {
+					outIndices.push_back( i + 0 ); outIndices.push_back( i + 1 );
+					outIndices.push_back( i + 1 ); outIndices.push_back( i + 2 );
+					outIndices.push_back( i + 2 ); outIndices.push_back( i + 0 );
+				}
 			}
+			
+			ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
 		}
-		else {
-			for( size_t i = 1; i < numInVertices; i++ ) { // lines connecting first vertex ("hub") and all others
-				outIndices.push_back( 0 );
-				outIndices.push_back( (uint32_t)i );
+		break;
+		case Primitive::TRIANGLE_STRIP: {
+			vector<uint32_t> outIndices;
+			outIndices.reserve( numOutIndices );
+			const uint32_t *indices = ctx->getIndicesData();
+			if( indices ) {
+				for( size_t i = 0; i < numInIndices - 2; i++ ) {
+					outIndices.push_back( indices[i + 0] ); outIndices.push_back( indices[i + 1] );
+					outIndices.push_back( indices[i + 1] ); outIndices.push_back( indices[i + 2] );
+					outIndices.push_back( indices[i + 2] ); outIndices.push_back( indices[i + 0] );
+				}
 			}
-			for( size_t j = numInVertices - 1, i = 0; i < numInVertices; j = i++ ) { // lines connecting adjacent vertices
-				outIndices.push_back( (uint32_t)j );
-				outIndices.push_back( (uint32_t)i );
+			else {
+				for( uint32_t i = 0; i < numInVertices - 2; i++ ) {
+					outIndices.push_back( i + 0 ); outIndices.push_back( i + 1 );
+					outIndices.push_back( i + 1 ); outIndices.push_back( i + 2 );
+					outIndices.push_back( i + 2 ); outIndices.push_back( i + 0 );
+				}
 			}
+			
+			ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
 		}
-
-		ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
-	} break;
-	case Primitive::TRIANGLES: {
-		vector<uint32_t> outIndices;
-		outIndices.reserve( numOutIndices );
-		const uint32_t *indices = ctx->getIndicesData();
-		if( indices ) {
-			for( size_t i = 0; i < numInIndices; i += 3 ) {
-				outIndices.push_back( indices[i + 0] );
-				outIndices.push_back( indices[i + 1] );
-				outIndices.push_back( indices[i + 1] );
-				outIndices.push_back( indices[i + 2] );
-				outIndices.push_back( indices[i + 2] );
-				outIndices.push_back( indices[i + 0] );
-			}
-		}
-		else {
-			for( uint32_t i = 0; i < numInVertices; i += 3 ) {
-				outIndices.push_back( i + 0 );
-				outIndices.push_back( i + 1 );
-				outIndices.push_back( i + 1 );
-				outIndices.push_back( i + 2 );
-				outIndices.push_back( i + 2 );
-				outIndices.push_back( i + 0 );
-			}
-		}
-
-		ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
-	} break;
-	case Primitive::TRIANGLE_STRIP: {
-		vector<uint32_t> outIndices;
-		outIndices.reserve( numOutIndices );
-		const uint32_t *indices = ctx->getIndicesData();
-		if( indices ) {
-			for( size_t i = 0; i < numInIndices - 2; i++ ) {
-				outIndices.push_back( indices[i + 0] );
-				outIndices.push_back( indices[i + 1] );
-				outIndices.push_back( indices[i + 1] );
-				outIndices.push_back( indices[i + 2] );
-				outIndices.push_back( indices[i + 2] );
-				outIndices.push_back( indices[i + 0] );
-			}
-		}
-		else {
-			for( uint32_t i = 0; i < numInVertices - 2; i++ ) {
-				outIndices.push_back( i + 0 );
-				outIndices.push_back( i + 1 );
-				outIndices.push_back( i + 1 );
-				outIndices.push_back( i + 2 );
-				outIndices.push_back( i + 2 );
-				outIndices.push_back( i + 0 );
-			}
-		}
-
-		ctx->copyIndices( geom::LINES, outIndices.data(), outIndices.size(), 4 );
-	} break;
-	default:
-		CI_LOG_E( "geom::Lines unsupported primitive: " << primitiveToString( ctx->getPrimitive() ) );
+		break;
+		default:
+			CI_LOG_E( "geom::Lines unsupported primitive: " << primitiveToString( ctx->getPrimitive() ) );
 		break;
 	}
 }
@@ -3178,10 +2917,9 @@ void Lines::process( SourceModsContext *ctx, const AttribSet &requestedAttribs )
 uint8_t ColorFromAttrib::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
 {
 	switch( attr ) {
-	case Attrib::COLOR:
-		return 3;
-	default:
-		return upstreamDims;
+		case Attrib::COLOR: return 3;
+		default:
+			return upstreamDims;
 	}
 }
 
@@ -3193,8 +2931,8 @@ AttribSet ColorFromAttrib::getAvailableAttribs( const Modifier::Params &upstream
 }
 
 namespace {
-template <typename I, typename IFD, typename O>
-void processColorAttrib( const I *inputData, O *outputData, const std::function<O( IFD )> &fn, size_t numVertices )
+template<typename I, typename IFD, typename O>
+void processColorAttrib( const I* inputData, O *outputData, const std::function<O(IFD)> &fn, size_t numVertices )
 {
 	for( size_t v = 0; v < numVertices; ++v ) {
 		IFD in( (IFD)inputData[v] );
@@ -3202,8 +2940,8 @@ void processColorAttrib( const I *inputData, O *outputData, const std::function<
 	}
 }
 
-template <typename O>
-void processColorAttrib2d( const vec2 *inputData, O *outputData, const std::function<O( vec3 )> &fn, size_t numVertices )
+template<typename O>
+void processColorAttrib2d( const vec2* inputData, O *outputData, const std::function<O(vec3)> &fn, size_t numVertices )
 {
 	for( size_t v = 0; v < numVertices; ++v ) {
 		vec3 in( inputData[v], 0 );
@@ -3219,7 +2957,7 @@ void ColorFromAttrib::process( SourceModsContext *ctx, const AttribSet &requeste
 	ctx->processUpstream( request );
 
 	// if we have no function to apply just continue
-	if( ( !mFnColor2 ) && ( !mFnColor3 ) )
+	if( ( ! mFnColor2 ) && ( ! mFnColor3 ) )
 		return;
 
 	if( ctx->getAttribDims( mAttrib ) == 0 ) {
@@ -3227,26 +2965,26 @@ void ColorFromAttrib::process( SourceModsContext *ctx, const AttribSet &requeste
 		return;
 	}
 
-	const auto          numVertices = ctx->getNumVertices();
+	const auto numVertices = ctx->getNumVertices();
 	unique_ptr<float[]> mColorData( new float[numVertices * 3] );
-	uint8_t             inputAttribDims = ctx->getAttribDims( mAttrib );
-	const float *       inputAttribData = ctx->getAttribData( mAttrib );
-
+	uint8_t inputAttribDims = ctx->getAttribDims( mAttrib );
+	const float* inputAttribData = ctx->getAttribData( mAttrib );
+	
 	if( mFnColor2 ) {
 		if( inputAttribDims == 2 )
-			processColorAttrib( reinterpret_cast<const vec2 *>( inputAttribData ), reinterpret_cast<Colorf *>( mColorData.get() ), mFnColor2, numVertices );
+			processColorAttrib( reinterpret_cast<const vec2*>( inputAttribData ), reinterpret_cast<Colorf*>( mColorData.get() ), mFnColor2, numVertices );
 		else if( inputAttribDims == 3 )
-			processColorAttrib( reinterpret_cast<const vec3 *>( inputAttribData ), reinterpret_cast<Colorf *>( mColorData.get() ), mFnColor2, numVertices );
+			processColorAttrib( reinterpret_cast<const vec3*>( inputAttribData ), reinterpret_cast<Colorf*>( mColorData.get() ), mFnColor2, numVertices );
 		else if( inputAttribDims == 4 )
-			processColorAttrib( reinterpret_cast<const vec4 *>( inputAttribData ), reinterpret_cast<Colorf *>( mColorData.get() ), mFnColor2, numVertices );
+			processColorAttrib( reinterpret_cast<const vec4*>( inputAttribData ), reinterpret_cast<Colorf*>( mColorData.get() ), mFnColor2, numVertices );
 	}
 	else if( mFnColor3 ) {
 		if( inputAttribDims == 2 )
-			processColorAttrib2d( reinterpret_cast<const vec2 *>( inputAttribData ), reinterpret_cast<Colorf *>( mColorData.get() ), mFnColor3, numVertices );
+			processColorAttrib2d( reinterpret_cast<const vec2*>( inputAttribData ), reinterpret_cast<Colorf*>( mColorData.get() ), mFnColor3, numVertices );
 		if( inputAttribDims == 3 )
-			processColorAttrib( reinterpret_cast<const vec3 *>( inputAttribData ), reinterpret_cast<Colorf *>( mColorData.get() ), mFnColor3, numVertices );
+			processColorAttrib( reinterpret_cast<const vec3*>( inputAttribData ), reinterpret_cast<Colorf*>( mColorData.get() ), mFnColor3, numVertices );
 		else if( inputAttribDims == 4 )
-			processColorAttrib( reinterpret_cast<const vec4 *>( inputAttribData ), reinterpret_cast<Colorf *>( mColorData.get() ), mFnColor3, numVertices );
+			processColorAttrib( reinterpret_cast<const vec4*>( inputAttribData ), reinterpret_cast<Colorf*>( mColorData.get() ), mFnColor3, numVertices );
 	}
 
 	ctx->copyAttrib( Attrib::COLOR, 3, 0, mColorData.get(), numVertices );
@@ -3274,41 +3012,45 @@ void Constant::process( SourceModsContext *ctx, const AttribSet &requestedAttrib
 	ctx->processUpstream( requestedAttribs );
 
 	const size_t numVertices = ctx->getNumVertices();
-
+	
 	switch( mDims ) {
-	case 1: {
-		unique_ptr<float[]> mColorData( new float[numVertices] );
-		for( size_t v = 0; v < numVertices; ++v )
-			mColorData[v] = mValue.x;
-		ctx->copyAttrib( mAttrib, 1, 0, (const float *)mColorData.get(), numVertices );
-	} break;
-	case 2: {
-		unique_ptr<vec2[]> mColorData( new vec2[numVertices] );
-		for( size_t v = 0; v < numVertices; ++v )
-			mColorData[v] = vec2( mValue.x, mValue.y );
-		ctx->copyAttrib( mAttrib, 2, 0, (const float *)mColorData.get(), numVertices );
-	} break;
-	case 3: {
-		unique_ptr<vec3[]> mColorData( new vec3[numVertices] );
-		for( size_t v = 0; v < numVertices; ++v )
-			mColorData[v] = vec3( mValue.x, mValue.y, mValue.z );
-		ctx->copyAttrib( mAttrib, 3, 0, (const float *)mColorData.get(), numVertices );
-	} break;
-	case 4: {
-		unique_ptr<vec4[]> mColorData( new vec4[numVertices] );
-		for( size_t v = 0; v < numVertices; ++v )
-			mColorData[v] = mValue;
-		ctx->copyAttrib( mAttrib, 4, 0, (const float *)mColorData.get(), numVertices );
-	} break;
-	default:
-		CI_LOG_E( "Illegal dimensions." );
+		case 1: {
+			unique_ptr<float[]> mColorData( new float[numVertices] );
+			for( size_t v = 0; v < numVertices; ++v )
+				mColorData[v] = mValue.x;
+			ctx->copyAttrib( mAttrib, 1, 0, (const float*)mColorData.get(), numVertices );
+		}
+		break;
+		case 2: {
+			unique_ptr<vec2[]> mColorData( new vec2[numVertices] );
+			for( size_t v = 0; v < numVertices; ++v )
+				mColorData[v] = vec2( mValue.x, mValue.y );
+			ctx->copyAttrib( mAttrib, 2, 0, (const float*)mColorData.get(), numVertices );
+		}
+		break;
+		case 3: {
+			unique_ptr<vec3[]> mColorData( new vec3[numVertices] );
+			for( size_t v = 0; v < numVertices; ++v )
+				mColorData[v] = vec3( mValue.x, mValue.y, mValue.z );
+			ctx->copyAttrib( mAttrib, 3, 0, (const float*)mColorData.get(), numVertices );
+		}
+		break;
+		case 4: {
+			unique_ptr<vec4[]> mColorData( new vec4[numVertices] );
+			for( size_t v = 0; v < numVertices; ++v )
+				mColorData[v] = mValue;
+			ctx->copyAttrib( mAttrib, 4, 0, (const float*)mColorData.get(), numVertices );
+		}
+		break;
+		default:
+			CI_LOG_E( "Illegal dimensions." );
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // AttribFn
-template <typename S, typename D>
-uint8_t AttribFn<S, D>::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
+template<typename S, typename D>
+uint8_t AttribFn<S,D>::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
 {
 	if( attr == mDstAttrib )
 		return DSTDIM;
@@ -3316,8 +3058,8 @@ uint8_t AttribFn<S, D>::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
 		return upstreamDims;
 }
 
-template <typename S, typename D>
-AttribSet AttribFn<S, D>::getAvailableAttribs( const Modifier::Params &upstreamParams ) const
+template<typename S, typename D>
+AttribSet AttribFn<S,D>::getAvailableAttribs( const Modifier::Params &upstreamParams ) const
 {
 	AttribSet result = upstreamParams.getAvailableAttribs();
 	result.insert( mDstAttrib );
@@ -3325,19 +3067,19 @@ AttribSet AttribFn<S, D>::getAvailableAttribs( const Modifier::Params &upstreamP
 }
 
 namespace {
-template <typename S, typename D>
-void processAttrib( const float *inputDataFloat, float *outputDataFloat, const std::function<D( S )> &fn, size_t numVertices )
+template<typename S, typename D>
+void processAttrib( const float *inputDataFloat, float *outputDataFloat, const std::function<D(S)> &fn, size_t numVertices )
 {
-	const S *inData = reinterpret_cast<const S *>( inputDataFloat );
-	D *      outData = reinterpret_cast<D *>( outputDataFloat );
+	const S *inData = reinterpret_cast<const S*>( inputDataFloat );
+	D *outData = reinterpret_cast<D*>( outputDataFloat );
 
 	for( size_t v = 0; v < numVertices; ++v )
 		outData[v] = fn( inData[v] );
 }
 } // anonymous namespace
 
-template <typename S, typename D>
-void geom::AttribFn<S, D>::process( SourceModsContext *ctx, const AttribSet &requestedAttribs ) const
+template<typename S, typename D>
+void geom::AttribFn<S,D>::process( SourceModsContext *ctx, const AttribSet &requestedAttribs ) const
 {
 	AttribSet request = requestedAttribs;
 	request.insert( mSrcAttrib );
@@ -3348,11 +3090,11 @@ void geom::AttribFn<S, D>::process( SourceModsContext *ctx, const AttribSet &req
 		return;
 	}
 
-	const auto               numVertices = ctx->getNumVertices();
+	const auto numVertices = ctx->getNumVertices();
 	std::unique_ptr<float[]> outData( new float[numVertices * DSTDIM] );
 	std::unique_ptr<float[]> tempInData;
-	const float *            inputAttribData;
-	const uint8_t            inputAttribDims = ctx->getAttribDims( mSrcAttrib );
+	const float *inputAttribData;
+	const uint8_t inputAttribDims = ctx->getAttribDims( mSrcAttrib );
 	// if the actual input dims of the attribute don't equal SRCDIMS, we'll need to temporarily copy it to a buffer
 	if( inputAttribDims != SRCDIM ) {
 		CI_LOG_W( "AttribFn source dimensions don't match for attrib " << attribToString( mSrcAttrib ) );
@@ -3363,15 +3105,15 @@ void geom::AttribFn<S, D>::process( SourceModsContext *ctx, const AttribSet &req
 	}
 	else
 		inputAttribData = ctx->getAttribData( mSrcAttrib );
-
-	processAttrib<S, D>( inputAttribData, outData.get(), mFn, numVertices );
+	
+	processAttrib<S,D>( inputAttribData, outData.get(), mFn, numVertices );
 	ctx->copyAttrib( mDstAttrib, DSTDIM, 0, outData.get(), numVertices );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Extrude
 Extrude::Extrude( const Shape2d &shape, float distance, float approximationScale )
-    : mDistance( distance ), mApproximationScale( approximationScale ), mFrontCap( true ), mBackCap( true ), mSubdivisions( 1 )
+	: mDistance( distance ), mApproximationScale( approximationScale ), mFrontCap( true ), mBackCap( true ), mSubdivisions( 1 )
 {
 	for( const auto &contour : shape.getContours() )
 		mPaths.push_back( contour );
@@ -3406,23 +3148,23 @@ void Extrude::updatePathSubdivision()
 	Triangulator triangulator;
 	for( const auto &subdivision : mPathSubdivisionPositions )
 		triangulator.addPolyLine( subdivision );
-
+	
 	mCap = triangulator.createMesh();
 }
 
 void Extrude::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<vec3> *texCoords, vector<uint32_t> *indices ) const
 {
 	// CAPS VERTICES
-	uint32_t    numCapVertices = (uint32_t)mCap->getNumVertices();
-	const vec2 *capPositions = mCap->getPositions<2>();
+	uint32_t numCapVertices = (uint32_t)mCap->getNumVertices();
+	const vec2* capPositions = mCap->getPositions<2>();
 	// front cap
 	if( mFrontCap )
 		for( size_t v = 0; v < numCapVertices; ++v ) {
 			positions->emplace_back( vec3( capPositions[v], mDistance * 0.5f ) );
 			normals->emplace_back( vec3( 0, 0, 1 ) );
 			texCoords->emplace_back( vec3( ( positions->back().x - mCapBounds.x1 ) / mCapBounds.getWidth(),
-			    1.0f - ( positions->back().y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-			    0 ) );
+											1.0f - ( positions->back().y - mCapBounds.y1 ) / mCapBounds.getHeight(),
+											0 ) );
 		}
 	// back cap
 	if( mBackCap )
@@ -3430,8 +3172,8 @@ void Extrude::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<
 			positions->emplace_back( vec3( capPositions[v], -mDistance * 0.5f ) );
 			normals->emplace_back( vec3( 0, 0, -1 ) );
 			texCoords->emplace_back( vec3( ( positions->back().x - mCapBounds.x1 ) / mCapBounds.getWidth(),
-			    1.0f - ( positions->back().y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-			    1 ) );
+											1.0f - ( positions->back().y - mCapBounds.y1 ) / mCapBounds.getHeight(),
+											1 ) );
 		}
 
 	// CAP INDICES
@@ -3443,12 +3185,12 @@ void Extrude::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<
 	// back cap
 	if( mBackCap ) {
 		for( size_t i = 0; i < capIndices.size(); i += 3 ) { // we need to reverse the winding order for the back cap
-			indices->push_back( capIndices[i + 2] + numCapVertices );
-			indices->push_back( capIndices[i + 1] + numCapVertices );
-			indices->push_back( capIndices[i + 0] + numCapVertices );
+			indices->push_back( capIndices[i+2] + numCapVertices );
+			indices->push_back( capIndices[i+1] + numCapVertices );
+			indices->push_back( capIndices[i+0] + numCapVertices );
 		}
 	}
-
+	
 	// EXTRUSION
 	// we don't make use of the caps' vertices because their normals are wrong,
 	// so we'll need to create verts unique to the extrusion
@@ -3464,13 +3206,13 @@ void Extrude::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<
 				positions->emplace_back( pathPositions[v], distance );
 				normals->emplace_back( vec2( pathTangents[v].y, -pathTangents[v].x ), 0 );
 				texCoords->emplace_back( ( positions->back().x - mCapBounds.x1 ) / mCapBounds.getWidth(),
-				    1.0f - ( positions->back().y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-				    t );
+											1.0f - ( positions->back().y - mCapBounds.y1 ) / mCapBounds.getHeight(),
+											t );
 			}
 			// add the indices
 			if( sub != mSubdivisions ) {
 				uint32_t numSubdivVerts = (uint32_t)pathPositions.size();
-				for( uint32_t j = numSubdivVerts - 1, i = 0; i < numSubdivVerts; j = i++ ) {
+				for( uint32_t j = numSubdivVerts-1, i = 0; i < numSubdivVerts; j = i++ ) {
 					indices->push_back( baseIndex + i );
 					indices->push_back( baseIndex + j );
 					indices->push_back( baseIndex + numSubdivVerts + j );
@@ -3482,12 +3224,12 @@ void Extrude::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<
 		}
 	}
 }
-
+	
 size_t Extrude::getNumVertices() const
 {
 	size_t result = 0;
 	for( size_t p = 0; p < mPathSubdivisionPositions.size(); ++p )
-		result += mPathSubdivisionPositions[p].size() * ( mSubdivisions + 1 );
+		result += mPathSubdivisionPositions[p].size() * (mSubdivisions + 1);
 	if( mFrontCap )
 		result += mCap->getNumVertices();
 	if( mBackCap )
@@ -3507,19 +3249,15 @@ size_t Extrude::getNumIndices() const
 	return result;
 }
 
-uint8_t Extrude::getAttribDims( Attrib attr ) const
+uint8_t	Extrude::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 3;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 3;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -3530,22 +3268,22 @@ AttribSet Extrude::getAvailableAttribs() const
 
 void Extrude::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	vector<vec3>     positions, normals, texCoords;
+	vector<vec3> positions, normals, texCoords;
 	vector<uint32_t> indices;
 
 	calculate( &positions, &normals, &texCoords, &indices );
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), positions.size() );
-	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float *)normals.data(), normals.size() );
-	target->copyAttrib( Attrib::TEX_COORD_0, 3, 0, (const float *)texCoords.data(), texCoords.size() );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*)positions.data(), positions.size() );
+	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float*)normals.data(), normals.size() );
+	target->copyAttrib( Attrib::TEX_COORD_0, 3, 0, (const float*)texCoords.data(), texCoords.size() );
 
 	// generate tangents
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( getNumIndices(), indices.data(), positions.size(), positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), tangents.size() );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), tangents.size() );
 	}
 
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), indices.size(), calcIndicesRequiredBytes( indices.size() ) );
@@ -3553,34 +3291,34 @@ void Extrude::loadInto( Target *target, const AttribSet &requestedAttribs ) cons
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Extrude
-ExtrudeSpline::ExtrudeSpline( const Shape2d &shape, const ci::BSpline<3, float> &spline, int splineSubdivisions, float approximationScale )
-    : mApproximationScale( approximationScale ), mFrontCap( true ), mBackCap( true ), mSubdivisions( splineSubdivisions )
+ExtrudeSpline::ExtrudeSpline( const Shape2d &shape, const ci::BSpline<3,float> &spline, int splineSubdivisions, float approximationScale )
+	: mApproximationScale( approximationScale ), mFrontCap( true ), mBackCap( true ), mSubdivisions( splineSubdivisions )
 {
 	for( const auto &contour : shape.getContours() )
 		mPaths.push_back( contour );
 
 	const float splineLength = spline.getLength( 0, 1 );
-	vec3        prevPos = spline.getPosition( 0 );
-	vec3        prevTangent = spline.getDerivative( 0 );
+	vec3 prevPos = spline.getPosition( 0 );
+	vec3 prevTangent = spline.getDerivative( 0 );
 	mSplineFrames.emplace_back( firstFrame( prevPos, spline.getPosition( 0.1f ), spline.getPosition( 0.2f ) ) );
 	mSplineTimes.push_back( 0 );
 	for( int sub = 1; sub <= mSubdivisions; ++sub ) {
 		const float t = spline.getTime( sub / (float)mSubdivisions * splineLength );
-		const vec3  curPos = spline.getPosition( t );
-		const vec3  curTangent = normalize( spline.getDerivative( t ) );
+		const vec3 curPos = spline.getPosition( t );
+		const vec3 curTangent = normalize( spline.getDerivative( t ) );
 		mSplineFrames.emplace_back( nextFrame( mSplineFrames.back(), prevPos, curPos, prevTangent, curTangent ) );
 		mSplineTimes.push_back( t );
 		prevPos = curPos;
 		prevTangent = curTangent;
 	}
-
+	
 	updatePathSubdivision();
 }
 
 void ExtrudeSpline::updatePathSubdivision()
 {
 	bool capBoundsEmpty = true;
-
+	
 	// iterate all the paths of the shape and subdivide, calculating both positions and tangents
 	for( const auto &path : mPaths ) {
 		if( capBoundsEmpty ) {
@@ -3593,7 +3331,7 @@ void ExtrudeSpline::updatePathSubdivision()
 		mPathSubdivisionTangents.emplace_back( vector<vec2>() );
 		path.subdivide( &mPathSubdivisionPositions.back(), &mPathSubdivisionTangents.back(), mApproximationScale );
 		// normalize the tangents
-		for( auto &tan : mPathSubdivisionTangents.back() )
+		for( auto& tan : mPathSubdivisionTangents.back() )
 			tan = normalize( tan );
 	}
 
@@ -3601,16 +3339,16 @@ void ExtrudeSpline::updatePathSubdivision()
 	Triangulator triangulator;
 	for( const auto &subdivision : mPathSubdivisionPositions )
 		triangulator.addPolyLine( subdivision );
-
+	
 	mCap = triangulator.createMesh();
 }
 
 void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, vector<vec3> *texCoords, vector<uint32_t> *indices ) const
 {
 	auto capNumVertices = mCap->getNumVertices();
-
+	
 	// CAP VERTICES
-	const vec2 *capPositions = mCap->getPositions<2>();
+	const vec2* capPositions = mCap->getPositions<2>();
 	// front cap
 	if( mFrontCap ) {
 		const vec3 frontNormal = vec3( mSplineFrames.front() * vec4( 0, 0, -1, 0 ) );
@@ -3618,8 +3356,8 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 			positions->emplace_back( mSplineFrames.front() * vec4( capPositions[v], 0, 1 ) );
 			normals->emplace_back( frontNormal );
 			texCoords->emplace_back( vec3( ( capPositions[v].x - mCapBounds.x1 ) / mCapBounds.getWidth(),
-			    1.0f - ( capPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-			    0 ) );
+											1.0f - ( capPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
+											0 ) );
 		}
 	}
 	// back cap
@@ -3629,11 +3367,11 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 			positions->emplace_back( mSplineFrames.back() * vec4( capPositions[v], 0, 1 ) );
 			normals->emplace_back( backNormal );
 			texCoords->emplace_back( vec3( ( capPositions[v].x - mCapBounds.x1 ) / mCapBounds.getWidth(),
-			    1.0f - ( capPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-			    1 ) );
+											1.0f - ( capPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
+											1 ) );
 		}
 	}
-
+	
 	// CAP INDICES
 	auto capIndices = mCap->getIndices();
 	// front cap
@@ -3643,9 +3381,9 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 	// back cap
 	if( mBackCap ) {
 		for( size_t i = 0; i < capIndices.size(); i += 3 ) { // we need to reverse the winding order for the back cap
-			indices->push_back( capIndices[i + 2] + (uint32_t)capNumVertices );
-			indices->push_back( capIndices[i + 1] + (uint32_t)capNumVertices );
-			indices->push_back( capIndices[i + 0] + (uint32_t)capNumVertices );
+			indices->push_back( capIndices[i+2] + (uint32_t)capNumVertices );
+			indices->push_back( capIndices[i+1] + (uint32_t)capNumVertices );
+			indices->push_back( capIndices[i+0] + (uint32_t)capNumVertices );
 		}
 	}
 
@@ -3661,13 +3399,13 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 				positions->emplace_back( vec3( transform * vec4( pathPositions[v], 0, 1 ) ) );
 				normals->emplace_back( transform * vec4( vec2( pathTangents[v].y, -pathTangents[v].x ), 0, 0 ) );
 				texCoords->emplace_back( ( pathPositions[v].x - mCapBounds.x1 ) / mCapBounds.getWidth(),
-				    1.0f - ( pathPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-				    mSplineTimes[sub] );
+											1.0f - ( pathPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
+											mSplineTimes[sub] );
 			}
 			// add the indices
 			if( sub != mSubdivisions ) {
 				uint32_t numSubdivVerts = (uint32_t)pathPositions.size();
-				for( uint32_t j = numSubdivVerts - 1, i = 0; i < numSubdivVerts; j = i++ ) {
+				for( uint32_t j = numSubdivVerts-1, i = 0; i < numSubdivVerts; j = i++ ) {
 					indices->push_back( baseIndex + i );
 					indices->push_back( baseIndex + j );
 					indices->push_back( baseIndex + numSubdivVerts + j );
@@ -3679,12 +3417,12 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 		}
 	}
 }
-
+	
 size_t ExtrudeSpline::getNumVertices() const
 {
 	size_t result = 0;
 	for( size_t p = 0; p < mPathSubdivisionPositions.size(); ++p )
-		result += mPathSubdivisionPositions[p].size() * ( mSubdivisions + 1 );
+		result += mPathSubdivisionPositions[p].size() * (mSubdivisions + 1);
 	if( mFrontCap )
 		result += mCap->getNumVertices();
 	if( mBackCap )
@@ -3704,19 +3442,15 @@ size_t ExtrudeSpline::getNumIndices() const
 	return result;
 }
 
-uint8_t ExtrudeSpline::getAttribDims( Attrib attr ) const
+uint8_t	ExtrudeSpline::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-	case Attrib::POSITION:
-		return 3;
-	case Attrib::NORMAL:
-		return 3;
-	case Attrib::TEX_COORD_0:
-		return 3;
-	case Attrib::TANGENT:
-		return 3;
-	default:
-		return 0;
+		case Attrib::POSITION: return 3;
+		case Attrib::NORMAL: return 3;
+		case Attrib::TEX_COORD_0: return 3;
+		case Attrib::TANGENT: return 3;
+		default:
+			return 0;
 	}
 }
 
@@ -3727,90 +3461,85 @@ AttribSet ExtrudeSpline::getAvailableAttribs() const
 
 void ExtrudeSpline::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
-	vector<vec3>     positions, normals, texCoords;
+	vector<vec3> positions, normals, texCoords;
 	vector<uint32_t> indices;
 
 	calculate( &positions, &normals, &texCoords, &indices );
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), positions.size() );
-	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float *)normals.data(), normals.size() );
-	target->copyAttrib( Attrib::TEX_COORD_0, 3, 0, (const float *)texCoords.data(), texCoords.size() );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*)positions.data(), positions.size() );
+	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float*)normals.data(), normals.size() );
+	target->copyAttrib( Attrib::TEX_COORD_0, 3, 0, (const float*)texCoords.data(), texCoords.size() );
 
 	// generate tangents
 	if( requestedAttribs.count( geom::TANGENT ) ) {
 		vector<vec3> tangents;
 		calculateTangents( getNumIndices(), indices.data(), positions.size(), positions.data(), normals.data(), texCoords.data(), &tangents, nullptr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), tangents.size() );
+			target->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), tangents.size() );
 	}
 
 	target->copyIndices( Primitive::TRIANGLES, indices.data(), indices.size(), calcIndicesRequiredBytes( indices.size() ) );
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////
 // BSpline
-template <int D, typename T>
-BSpline::BSpline( const ci::BSpline<D, T> &spline, int subdivisions )
-    : mPositionDims( D )
+template<int D, typename T>
+BSpline::BSpline( const ci::BSpline<D,T> &spline, int subdivisions )
+	: mPositionDims( D )
 {
 	CI_ASSERT( D >= 2 && D <= 4 );
-
+	
 	subdivisions = std::max( 2, subdivisions );
 	mNumVertices = subdivisions;
-
+	
 	mPositions.reserve( mNumVertices * D );
 	mNormals.reserve( mNumVertices );
 
 	init( spline, subdivisions );
 }
 
-template <typename T>
-void BSpline::init( const ci::BSpline<2, T> &spline, int subdivisions )
+template<typename T>
+void BSpline::init( const ci::BSpline<2,T> &spline, int subdivisions )
 {
 	const float tInc = 1.0f / ( subdivisions - 1 );
 
 	for( size_t i = 0; i < (size_t)subdivisions; ++i ) {
 		auto pos = spline.getPosition( i * tInc );
 		auto deriv = spline.getDerivative( i * tInc );
-		mPositions.push_back( pos.x );
-		mPositions.push_back( pos.y );
+		mPositions.push_back( pos.x ); mPositions.push_back( pos.y );
 		mNormals.emplace_back( vec3( normalize( vec2( deriv.y, -deriv.x ) ), 0 ) );
 	}
 }
 
-template <typename T>
-void BSpline::init( const ci::BSpline<3, T> &spline, int subdivisions )
+template<typename T>
+void BSpline::init( const ci::BSpline<3,T> &spline, int subdivisions )
 {
 	const float tInc = 1.0f / ( subdivisions - 1 );
 
 	for( size_t i = 0; i < (size_t)subdivisions; ++i ) {
 		auto pos = spline.getPosition( i * tInc );
 		auto deriv = spline.getDerivative( i * tInc );
-		mPositions.push_back( pos.x );
-		mPositions.push_back( pos.y );
-		mPositions.push_back( pos.z );
+		mPositions.push_back( pos.x ); mPositions.push_back( pos.y ); mPositions.push_back( pos.z );
 		mNormals.emplace_back( normalize( vec3( deriv.y, -deriv.x, deriv.z ) ) );
 	}
 }
 
-template <typename T>
-void BSpline::init( const ci::BSpline<4, T> &spline, int subdivisions )
+template<typename T>
+void BSpline::init( const ci::BSpline<4,T> &spline, int subdivisions )
 {
 	const float tInc = 1.0f / ( subdivisions - 1 );
 
 	for( size_t i = 0; i < (size_t)subdivisions; ++i ) {
 		auto pos = spline.getPosition( i * tInc );
 		auto deriv = spline.getDerivative( i * tInc );
-		mPositions.push_back( pos.x );
-		mPositions.push_back( pos.y );
-		mPositions.push_back( pos.z );
-		mPositions.push_back( pos.w );
+		mPositions.push_back( pos.x ); mPositions.push_back( pos.y ); mPositions.push_back( pos.z ); mPositions.push_back( pos.w );
 		mNormals.emplace_back( normalize( vec3( deriv.y, -deriv.x, deriv.z ) ) );
 	}
 }
 
-uint8_t BSpline::getAttribDims( Attrib attr ) const
+uint8_t	BSpline::getAttribDims( Attrib attr ) const
 {
 	if( attr == Attrib::POSITION )
 		return mPositionDims;
@@ -3828,20 +3557,20 @@ AttribSet BSpline::getAvailableAttribs() const
 void BSpline::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
 	target->copyAttrib( Attrib::POSITION, mPositionDims, 0, mPositions.data(), mNumVertices );
-	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float *)mNormals.data(), mNumVertices );
+	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float*)mNormals.data(), mNumVertices );
 }
 
-template BSpline::BSpline( const ci::BSpline<2, float> &, int );
-template BSpline::BSpline( const ci::BSpline<3, float> &, int );
+template BSpline::BSpline( const ci::BSpline<2,float>&, int );
+template BSpline::BSpline( const ci::BSpline<3, float>&, int );
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireCapsule
 WireCapsule::WireCapsule()
-    : mDirection( 0, 1, 0 ), mLength( 1.0f ), mSubdivisionsAxis( 6 ), mNumSegments( 72 ), mSubdivisionsHeight( 1 ), mRadius( 0.5f )
+	: mDirection( 0, 1, 0 ), mLength( 1.0f ), mSubdivisionsAxis( 6 ), mNumSegments( 72 ), mSubdivisionsHeight( 1 ), mRadius( 0.5f )
 {
 }
 
-WireCapsule &WireCapsule::set( const vec3 &from, const vec3 &to )
+WireCapsule& WireCapsule::set( const vec3 &from, const vec3 &to )
 {
 	const vec3 axis = to - from;
 	mLength = glm::length( axis );
@@ -3854,7 +3583,7 @@ void WireCapsule::calculate( vector<vec3> *positions ) const
 {
 	positions->reserve( getNumVertices() );
 
-	float bodyIncr = 1.0f / (float)( mSubdivisionsHeight );
+	float bodyIncr = 1.0f / (float) ( mSubdivisionsHeight );
 	for( int r = 1; r < mSubdivisionsHeight; ++r ) {
 		float t = r * bodyIncr - 0.5f;
 		float h = ( mLength + 2 * mRadius ) * t;
@@ -3868,10 +3597,10 @@ void WireCapsule::calculate( vector<vec3> *positions ) const
 
 	const quat quaternion = glm::rotation( vec3( 0, 1, 0 ), mDirection );
 
-	int   subdivisionsAxis = mSubdivisionsAxis > 1 ? mSubdivisionsAxis : 0;
-	float axisIncr = 1.0f / (float)( mSubdivisionsAxis );
-	int   numSegments = mNumSegments / 2;
-	float segIncr = 1.0f / (float)( numSegments );
+	int subdivisionsAxis = mSubdivisionsAxis > 1 ? mSubdivisionsAxis : 0;
+	float axisIncr = 1.0f / (float) ( mSubdivisionsAxis );
+	int numSegments = mNumSegments / 2;
+	float segIncr = 1.0f / (float) ( numSegments );
 	for( int i = 0; i < subdivisionsAxis; ++i ) {
 		// Straight lines.
 		float a = float( M_PI * 2 ) * i * axisIncr;
@@ -3901,7 +3630,7 @@ void WireCapsule::calculateRing( float radius, float d, vector<vec3> *positions 
 	const quat quaternion = glm::rotation( vec3( 0, 1, 0 ), mDirection );
 
 	float length = mLength + 2 * mRadius;
-	float segIncr = 1.0f / (float)( mNumSegments );
+	float segIncr = 1.0f / (float) ( mNumSegments );
 	positions->emplace_back( mCenter + ( quaternion * glm::vec3( radius, d * length, 0 ) ) );
 	for( int s = 1; s < mNumSegments; s++ ) {
 		float a = float( M_PI * 2 ) * s * segIncr;
@@ -3931,10 +3660,11 @@ void WireCapsule::loadInto( Target *target, const AttribSet &requestedAttribs ) 
 	target->copyAttrib( Attrib::POSITION, 3, 0, value_ptr( *positions.data() ), positions.size() );
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireCircle
 WireCircle::WireCircle()
-    : mRadius( 1 ), mNumSegments( 12 )
+	: mRadius( 1 ), mNumSegments( 12 )
 {
 }
 
@@ -3960,33 +3690,33 @@ void WireCircle::loadInto( Target *target, const AttribSet &requestedAttribs ) c
 	}
 	*ptr++ = mCenter + mRadius * vec3( 1, 0, 0 );
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
 }
-
+	
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireRoundedRect
 WireRoundedRect::WireRoundedRect()
-    : mCornerSubdivisions( -1 ), mCornerRadius( 0.1f ), mNumVertices( 0 )
+	: mCornerSubdivisions( -1 ), mCornerRadius( 0.1f ), mNumVertices( 0 )
 {
 	rect( Rectf( -0.5f, -0.5f, 0.5f, 0.5f ) );
 	updateVertexCount();
 }
-
+	
 WireRoundedRect::WireRoundedRect( const Rectf &r, float cornerRadius )
-    : mCornerSubdivisions( -1 ), mCornerRadius( cornerRadius ), mNumVertices( 0 )
+	: mCornerSubdivisions( -1 ), mCornerRadius( cornerRadius ), mNumVertices( 0 )
 {
 	rect( r );
 	updateVertexCount();
 }
-
-WireRoundedRect &WireRoundedRect::cornerSubdivisions( int cornerSubdivisions )
+	
+WireRoundedRect& WireRoundedRect::cornerSubdivisions( int cornerSubdivisions )
 {
 	mCornerSubdivisions = cornerSubdivisions;
 	updateVertexCount();
 	return *this;
 }
 
-WireRoundedRect &WireRoundedRect::cornerRadius( float cornerRadius )
+WireRoundedRect& WireRoundedRect::cornerRadius( float cornerRadius )
 {
 	mCornerRadius = cornerRadius;
 	updateVertexCount();
@@ -3999,17 +3729,17 @@ void WireRoundedRect::updateVertexCount()
 		mCornerSubdivisions = (int)math<double>::floor( mCornerRadius * M_PI * 2 / 4 );
 	}
 	if( mCornerSubdivisions < 2 ) mCornerSubdivisions = 2;
-
-	mNumVertices = ( 2 * ( mCornerSubdivisions + 1 ) * 4 ) + 1;
+	
+	mNumVertices = (2 * ( mCornerSubdivisions + 1 ) * 4) + 1;
 }
-
+	
 void WireRoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &requestedAttribs ) const
 {
 	float cornerRadius = glm::max( 0.0f, glm::min( mCornerRadius, 0.5f * glm::min( mRectPositions.getWidth(), mRectPositions.getHeight() ) ) );
 
 	std::vector<vec2> verts( mNumVertices );
-	vec2 *            ptr = verts.data();
-	const float       angleDelta = (float)( 1 / (float)mCornerSubdivisions * M_PI / 2 );
+	vec2* ptr = verts.data();
+	const float angleDelta = (float)(1 / (float)mCornerSubdivisions * M_PI / 2);
 	const std::array<vec2, 4> cornerCenterVerts = {
 		vec2( mRectPositions.x2 - cornerRadius, mRectPositions.y2 - cornerRadius ),
 		vec2( mRectPositions.x1 + cornerRadius, mRectPositions.y2 - cornerRadius ),
@@ -4018,21 +3748,21 @@ void WireRoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &r
 	};
 	// provide the last vert as the starting point to loop around to.
 	*ptr++ = vec2( cornerCenterVerts[3].x + math<float>::cos( ( 3 * (float)M_PI / 2 ) + ( angleDelta * mCornerSubdivisions ) ) * mCornerRadius,
-	    cornerCenterVerts[3].y + math<float>::sin( ( 3 * (float)M_PI / 2 ) + ( angleDelta * mCornerSubdivisions ) ) * mCornerRadius );
+				 cornerCenterVerts[3].y + math<float>::sin( ( 3 * (float)M_PI / 2 ) + ( angleDelta * mCornerSubdivisions ) ) * mCornerRadius );
 	for( size_t corner = 0; corner < 4; ++corner ) {
 		float angle = corner * (float)M_PI / 2;
-		vec2  cornerCenter( cornerCenterVerts[corner] );
+		vec2 cornerCenter( cornerCenterVerts[corner] );
 		for( int s = 0; s <= mCornerSubdivisions; s++ ) {
 			// This is the ending point of the first line
 			*ptr++ = vec2( cornerCenter.x + math<float>::cos( angle ) * cornerRadius,
-			    cornerCenter.y + math<float>::sin( angle ) * cornerRadius );
-			// This is the starting point of the next line
+						   cornerCenter.y + math<float>::sin( angle ) * cornerRadius );
+			 // This is the starting point of the next line
 			*ptr++ = vec2( cornerCenter.x + math<float>::cos( angle ) * cornerRadius,
-			    cornerCenter.y + math<float>::sin( angle ) * cornerRadius );
+						   cornerCenter.y + math<float>::sin( angle ) * cornerRadius );
 			angle += angleDelta;
 		}
 	}
-
+	
 	target->copyAttrib( geom::Attrib::POSITION, 2, 0, value_ptr( *verts.data() ), verts.size() );
 }
 
@@ -4112,8 +3842,9 @@ void WireCube::loadInto( Target *target, const AttribSet &requestedAttribs ) con
 		*ptr++ = vec3( d.x, d.y, z );
 	}
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireCylinder
@@ -4141,7 +3872,7 @@ void WireCylinder::loadInto( Target *target, const AttribSet &requestedAttribs )
 
 	glm::mat3 m = glm::toMat3( glm::rotation( vec3( 0, 1, 0 ), mDirection ) );
 
-	if( mSubdivisionsAxis > 1 ) {
+	if ( mSubdivisionsAxis > 1 ) {
 		float angle = float( 2.0 * M_PI / mSubdivisionsAxis );
 		for( int i = 0; i < mSubdivisionsAxis; ++i ) {
 			float c = glm::cos( i * angle );
@@ -4150,7 +3881,7 @@ void WireCylinder::loadInto( Target *target, const AttribSet &requestedAttribs )
 			*ptr++ = mOrigin + m * vec3( mRadiusApex * c, mHeight, mRadiusApex * s );
 		}
 	}
-
+	
 	float angle = float( 2.0 * M_PI / mNumSegments );
 	for( int i = 0; i <= mSubdivisionsHeight; ++i ) {
 		float height = i * mHeight / mSubdivisionsHeight;
@@ -4167,7 +3898,7 @@ void WireCylinder::loadInto( Target *target, const AttribSet &requestedAttribs )
 		*ptr++ = mOrigin + m * vec3( radius, height, 0 );
 	}
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
 }
 
 std::vector<vec3> WireIcosahedron::sPositions;
@@ -4177,10 +3908,10 @@ size_t WireIcosahedron::getNumVertices() const
 	return 120;
 }
 
-void WireIcosahedron::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireIcosahedron::loadInto( Target * target, const AttribSet & requestedAttribs ) const
 {
 	calculate();
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)sPositions.data(), 120 );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) sPositions.data(), 120 );
 }
 
 void WireIcosahedron::calculate() const
@@ -4189,12 +3920,12 @@ void WireIcosahedron::calculate() const
 		sPositions.reserve( 60 );
 
 		for( size_t i = 0; i < 20; ++i ) {
-			sPositions.emplace_back( *reinterpret_cast<const vec3 *>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 0] * 3] ) );
-			sPositions.emplace_back( *reinterpret_cast<const vec3 *>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 1] * 3] ) );
-			sPositions.emplace_back( *reinterpret_cast<const vec3 *>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 1] * 3] ) );
-			sPositions.emplace_back( *reinterpret_cast<const vec3 *>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 2] * 3] ) );
-			sPositions.emplace_back( *reinterpret_cast<const vec3 *>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 2] * 3] ) );
-			sPositions.emplace_back( *reinterpret_cast<const vec3 *>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 0] * 3] ) );
+			sPositions.emplace_back( *reinterpret_cast<const vec3*>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 0] * 3] ) );
+			sPositions.emplace_back( *reinterpret_cast<const vec3*>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 1] * 3] ) );
+			sPositions.emplace_back( *reinterpret_cast<const vec3*>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 1] * 3] ) );
+			sPositions.emplace_back( *reinterpret_cast<const vec3*>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 2] * 3] ) );
+			sPositions.emplace_back( *reinterpret_cast<const vec3*>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 2] * 3] ) );
+			sPositions.emplace_back( *reinterpret_cast<const vec3*>( &Icosahedron::sPositions[Icosahedron::sIndices[i * 3 + 0] * 3] ) );
 		}
 	}
 }
@@ -4222,32 +3953,20 @@ void WireFrustum::loadInto( Target *target, const AttribSet &requestedAttribs ) 
 	positions.resize( numVertices );
 
 	vec3 *ptr = positions.data();
-	*ptr++ = ntl;
-	*ptr++ = ntr;
-	*ptr++ = ntr;
-	*ptr++ = nbr;
-	*ptr++ = nbr;
-	*ptr++ = nbl;
-	*ptr++ = nbl;
-	*ptr++ = ntl;
+	*ptr++ = ntl;	*ptr++ = ntr;
+	*ptr++ = ntr;	*ptr++ = nbr;
+	*ptr++ = nbr;	*ptr++ = nbl;
+	*ptr++ = nbl;	*ptr++ = ntl;
 
-	*ptr++ = ftl;
-	*ptr++ = ftr;
-	*ptr++ = ftr;
-	*ptr++ = fbr;
-	*ptr++ = fbr;
-	*ptr++ = fbl;
-	*ptr++ = fbl;
-	*ptr++ = ftl;
+	*ptr++ = ftl;	*ptr++ = ftr;
+	*ptr++ = ftr;	*ptr++ = fbr;
+	*ptr++ = fbr;	*ptr++ = fbl;
+	*ptr++ = fbl;	*ptr++ = ftl;
 
-	*ptr++ = ftl;
-	*ptr++ = ntl;
-	*ptr++ = ftr;
-	*ptr++ = ntr;
-	*ptr++ = fbr;
-	*ptr++ = nbr;
-	*ptr++ = fbl;
-	*ptr++ = nbl;
+	*ptr++ = ftl;	*ptr++ = ntl;
+	*ptr++ = ftr;	*ptr++ = ntr;
+	*ptr++ = fbr;	*ptr++ = nbr;
+	*ptr++ = fbl;	*ptr++ = nbl;
 
 	//gl::ScopedColor color( 0.25f * gl::context()->getCurrentColor() );
 	//implDrawLine( eye, nearTopLeft );
@@ -4255,21 +3974,21 @@ void WireFrustum::loadInto( Target *target, const AttribSet &requestedAttribs ) 
 	//implDrawLine( eye, nearBottomRight );
 	//implDrawLine( eye, nearBottomLeft );
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WirePlane
-WirePlane &WirePlane::subdivisions( const ivec2 &subdivisions )
+WirePlane& WirePlane::subdivisions( const ivec2 &subdivisions )
 {
 	mSubdivisions.x = std::max( subdivisions.x, 1 );
 	mSubdivisions.y = std::max( subdivisions.y, 1 );
 	return *this;
 }
 
-WirePlane &WirePlane::normal( const vec3 &normal )
+WirePlane& WirePlane::normal( const vec3 &normal )
 {
-	auto  normalNormal = normalize( normal );
+	auto normalNormal = normalize( normal );
 	float yAxisDot = dot( normalNormal, vec3( 0, 1, 0 ) );
 	if( abs( yAxisDot ) < 0.999f ) {
 		quat normalQuat = glm::rotation( vec3( 0, 1, 0 ), normalNormal );
@@ -4285,7 +4004,7 @@ WirePlane &WirePlane::normal( const vec3 &normal )
 	return *this;
 }
 
-WirePlane &WirePlane::axes( const vec3 &uAxis, const vec3 &vAxis )
+WirePlane& WirePlane::axes( const vec3 &uAxis, const vec3 &vAxis )
 {
 	mAxisU = normalize( uAxis );
 	mAxisV = normalize( vAxis );
@@ -4305,8 +4024,8 @@ void WirePlane::loadInto( Target *target, const AttribSet &requestedAttribs ) co
 
 	for( int x = 0; x <= mSubdivisions.x; ++x ) {
 		float u = x * stepIncr.x - 0.5f;
-		*ptr++ = mOrigin + ( mSize.x * u ) * mAxisU + ( mSize.y * -0.5f ) * mAxisV;
-		*ptr++ = mOrigin + ( mSize.x * u ) * mAxisU + ( mSize.y * +0.5f ) * mAxisV;
+		*ptr++ = mOrigin + ( mSize.x *  u ) * mAxisU + ( mSize.y * -0.5f ) * mAxisV;
+		*ptr++ = mOrigin + ( mSize.x *  u ) * mAxisU + ( mSize.y * +0.5f ) * mAxisV;
 	}
 
 	for( int y = 0; y <= mSubdivisions.y; ++y ) {
@@ -4315,8 +4034,9 @@ void WirePlane::loadInto( Target *target, const AttribSet &requestedAttribs ) co
 		*ptr++ = mOrigin + ( mSize.x * +0.5f ) * mAxisU + ( mSize.y * v ) * mAxisV;
 	}
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireSphere
@@ -4339,7 +4059,7 @@ void WireSphere::loadInto( Target *target, const AttribSet &requestedAttribs ) c
 	for( int i = 1; i < mSubdivisionsHeight; ++i ) {
 		float f = float( i ) / mSubdivisionsHeight * 2.0f - 1.0f;
 		float radius = mRadius * glm::cos( f * float( M_PI / 2.0 ) );
-		vec3  center = mCenter + mRadius * vec3( 0, glm::sin( f * float( M_PI / 2.0 ) ), 0 );
+		vec3 center = mCenter + mRadius * vec3( 0, glm::sin( f * float( M_PI / 2.0 ) ), 0 );
 
 		*ptr++ = center + vec3( 0, 0, 1 ) * radius;
 		for( int j = 1; j < mNumSegments; ++j ) {
@@ -4351,7 +4071,7 @@ void WireSphere::loadInto( Target *target, const AttribSet &requestedAttribs ) c
 	}
 
 	if( mSubdivisionsAxis > 1 ) {
-		int   semidiv = ( mNumSegments + 1 ) / 2;
+		int semidiv = ( mNumSegments + 1 ) / 2;
 		float semi = float( M_PI / semidiv );
 		float angle = float( 2.0 * M_PI / mSubdivisionsAxis );
 
@@ -4366,8 +4086,9 @@ void WireSphere::loadInto( Target *target, const AttribSet &requestedAttribs ) c
 		}
 	}
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireTorus
@@ -4392,7 +4113,7 @@ void WireTorus::loadInto( Target *target, const AttribSet &requestedAttribs ) co
 		float step = float( 2.0 * M_PI / mNumSegments );
 		for( int i = 0; i < mSubdivisionsHeight; ++i ) {
 			float radius = mRadiusMinor + ( mRadiusMajor - mRadiusMinor ) * glm::cos( i * angle );
-			vec3  center = mCenter + vec3( 0, ( mRadiusMajor - mRadiusMinor ) * glm::sin( i * angle ), 0 );
+			vec3 center = mCenter + vec3( 0, ( mRadiusMajor - mRadiusMinor ) * glm::sin( i*angle ), 0 );
 
 			*ptr++ = center + radius * vec3( 0, 0, 1 );
 			for( int j = 1; j < mNumSegments; ++j ) {
@@ -4411,7 +4132,7 @@ void WireTorus::loadInto( Target *target, const AttribSet &requestedAttribs ) co
 			float radius = mRadiusMinor;
 			float c = glm::cos( i * angle );
 			float s = glm::sin( i * angle );
-			vec3  center = mCenter + vec3( radius * c, 0, radius * s );
+			vec3 center = mCenter + vec3( radius * c, 0, radius * s );
 
 			radius = ( mRadiusMajor - mRadiusMinor );
 			*ptr++ = center + vec3( radius * c, 0, radius * s );
@@ -4424,13 +4145,13 @@ void WireTorus::loadInto( Target *target, const AttribSet &requestedAttribs ) co
 		}
 	}
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float *)positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // VertexNormalLines
 VertexNormalLines::VertexNormalLines( float length, Attrib attrib )
-    : mLength( length ), mAttrib( attrib )
+	: mLength( length ), mAttrib( attrib )
 {
 }
 
@@ -4487,17 +4208,17 @@ void VertexNormalLines::process( SourceModsContext *ctx, const AttribSet &reques
 	}
 
 	const uint32_t *indices = ctx->getIndicesData();
-	const vec3 *    positions = reinterpret_cast<const vec3 *>( ctx->getAttribData( Attrib::POSITION ) );
-	const vec3 *    attrib = reinterpret_cast<const vec3 *>( ctx->getAttribData( mAttrib ) );
-	const float *   texCoords = nullptr;
-	size_t          texCoordDims = ctx->getAttribDims( Attrib::TEX_COORD_0 );
+	const vec3 *positions = reinterpret_cast<const vec3*>( ctx->getAttribData( Attrib::POSITION ) );
+	const vec3 *attrib = reinterpret_cast<const vec3*>( ctx->getAttribData( mAttrib ) );
+	const float *texCoords = nullptr;
+	size_t texCoordDims = ctx->getAttribDims( Attrib::TEX_COORD_0 );
 	if( texCoordDims > 0 )
-		texCoords = reinterpret_cast<const float *>( ctx->getAttribData( Attrib::TEX_COORD_0 ) );
+		texCoords = reinterpret_cast<const float*>( ctx->getAttribData( Attrib::TEX_COORD_0 ) );
 
-	vector<vec3>  outPositions;
+	vector<vec3> outPositions;
 	vector<float> outCustom0;
 	vector<float> outTexCoord0;
-	size_t        numVertices = ctx->getNumIndices() ? ( ctx->getNumIndices() * 2 ) : ( ctx->getNumVertices() * 2 );
+	size_t numVertices = ctx->getNumIndices() ? ( ctx->getNumIndices() * 2 ) : ( ctx->getNumVertices() * 2 );
 	outPositions.reserve( numVertices );
 	outCustom0.reserve( numVertices );
 	if( texCoords )
@@ -4505,10 +4226,8 @@ void VertexNormalLines::process( SourceModsContext *ctx, const AttribSet &reques
 
 	if( indices ) {
 		for( size_t i = 0; i < numInIndices; i++ ) { // lines connecting first vertex ("hub") and all others
-			outPositions.emplace_back( positions[indices[i]] );
-			outPositions.emplace_back( positions[indices[i]] + attrib[indices[i]] * mLength );
-			outCustom0.emplace_back( 0.0f );
-			outCustom0.emplace_back( 1.0f );
+			outPositions.emplace_back( positions[indices[i]] ); outPositions.emplace_back( positions[indices[i]] + attrib[indices[i]] * mLength );
+			outCustom0.emplace_back( 0.0f ); outCustom0.emplace_back( 1.0f );
 			if( texCoords ) {
 				for( size_t d = 0; d < texCoordDims; ++d )
 					outTexCoord0.push_back( texCoords[indices[i] * texCoordDims + d] );
@@ -4519,10 +4238,8 @@ void VertexNormalLines::process( SourceModsContext *ctx, const AttribSet &reques
 	}
 	else {
 		for( size_t i = 0; i < numInVertices; i++ ) { // lines connecting first vertex ("hub") and all others
-			outPositions.emplace_back( positions[i] );
-			outPositions.emplace_back( positions[i] + attrib[i] * mLength );
-			outCustom0.emplace_back( 0.0f );
-			outCustom0.emplace_back( 1.0f );
+			outPositions.emplace_back( positions[i] ); outPositions.emplace_back( positions[i] + attrib[i] * mLength );
+			outCustom0.emplace_back( 0.0f ); outCustom0.emplace_back( 1.0f );
 			if( texCoords ) {
 				for( size_t d = 0; d < texCoordDims; ++d )
 					outTexCoord0.push_back( texCoords[i * texCoordDims + d] );
@@ -4531,11 +4248,11 @@ void VertexNormalLines::process( SourceModsContext *ctx, const AttribSet &reques
 			}
 		}
 	}
-
-	ctx->copyAttrib( Attrib::POSITION, 3, 0, (const float *)outPositions.data(), numVertices );
-	ctx->copyAttrib( Attrib::CUSTOM_0, 1, 0, (const float *)outCustom0.data(), numVertices );
+	
+	ctx->copyAttrib( Attrib::POSITION, 3, 0, (const float*)outPositions.data(), numVertices );
+	ctx->copyAttrib( Attrib::CUSTOM_0, 1, 0, (const float*)outCustom0.data(), numVertices );
 	if( texCoords )
-		ctx->copyAttrib( Attrib::TEX_COORD_0, texCoordDims, 0, (const float *)outTexCoord0.data(), numVertices );
+		ctx->copyAttrib( Attrib::TEX_COORD_0, texCoordDims, 0, (const float*)outTexCoord0.data(), numVertices );
 
 	// if the upstream has mAttrib, we should clear that out too; otherwise we are likely to get an error about incorrect count if the
 	// consumer were expecting that attribute. For example, geom::Cube >> geom::VertexNormalLines() rendered with a Lambert would error
@@ -4591,19 +4308,19 @@ void Tangents::process( SourceModsContext *ctx, const AttribSet &requestedAttrib
 		return;
 	}
 
-	const vec3 *positions = (const vec3 *)ctx->getAttribData( geom::POSITION );
-	const vec3 *normals = (const vec3 *)ctx->getAttribData( geom::NORMAL );
-	const vec2 *texCoords = (const vec2 *)ctx->getAttribData( geom::TEX_COORD_0 );
-
+	const vec3 *positions = (const vec3*)ctx->getAttribData( geom::POSITION );
+	const vec3 *normals = (const vec3*)ctx->getAttribData( geom::NORMAL );
+	const vec2 *texCoords = (const vec2*)ctx->getAttribData( geom::TEX_COORD_0 );
+	
 	if( requestedAttribs.count( geom::TANGENT ) || requestedAttribs.count( geom::BITANGENT ) ) {
-		vector<vec3>  tangents, bitangents;
+		vector<vec3> tangents, bitangents;
 		vector<vec3> *bitangentPtr = ( requestedAttribs.count( geom::BITANGENT ) ) ? &bitangents : nullptr;
 		calculateTangents( numIndices, ctx->getIndicesData(), numVertices, positions, normals, texCoords, &tangents, bitangentPtr );
-
+		
 		if( requestedAttribs.count( geom::TANGENT ) )
-			ctx->copyAttrib( Attrib::TANGENT, 3, 0, (const float *)tangents.data(), numVertices );
+			ctx->copyAttrib( Attrib::TANGENT, 3, 0, (const float*)tangents.data(), numVertices );
 		if( bitangentPtr )
-			ctx->copyAttrib( Attrib::BITANGENT, 3, 0, (const float *)bitangentPtr, numVertices );
+			ctx->copyAttrib( Attrib::BITANGENT, 3, 0, (const float*)bitangentPtr, numVertices );
 	}
 }
 
@@ -4617,12 +4334,12 @@ void Invert::process( SourceModsContext *ctx, const AttribSet &requestedAttribs 
 		CI_LOG_W( "geom::Invert missing attrib: " << attribToString( mAttrib ) );
 		return;
 	}
-
+	
 	float *d = ctx->getAttribData( mAttrib );
 	size_t maxIdx = ctx->getAttribDims( mAttrib ) * ctx->getNumVertices();
 	for( size_t i = 0; i < maxIdx; ++i )
 		d[i] = -d[i];
-
+	
 	// we don't need to copyAttrib() because we processed in place
 }
 
@@ -4656,35 +4373,35 @@ namespace {
 size_t determineRequiredIndices( Primitive sourcePrimitive, Primitive destPrimitive, size_t numIndices )
 {
 	switch( destPrimitive ) {
-	case Primitive::TRIANGLES:
-		switch( sourcePrimitive ) {
 		case Primitive::TRIANGLES:
-			return numIndices;
-			break;
-		case Primitive::TRIANGLE_STRIP: // ABC, CBD, CDE, EDF, etc
-			return ( numIndices - 2 ) * 3; // Triangles: 3:1  4:2  5:3;
-			break;
-		case Primitive::TRIANGLE_FAN: // ABC, ACD, ADE, etc
-			return ( numIndices - 2 ) * 3; // Triangles: 3:1  4:2  5:3;
-			break;
-		default:
-			return 0;
-		}
+			switch( sourcePrimitive ) {
+				case Primitive::TRIANGLES:
+					return numIndices;
+				break;
+				case Primitive::TRIANGLE_STRIP: // ABC, CBD, CDE, EDF, etc
+					return ( numIndices - 2 ) * 3; // Triangles: 3:1  4:2  5:3;
+				break;
+				case Primitive::TRIANGLE_FAN: // ABC, ACD, ADE, etc
+					return ( numIndices - 2 ) * 3; // Triangles: 3:1  4:2  5:3;
+				break;
+				default:
+					return 0;
+			}
 		break;
-	case Primitive::LINES:
-		switch( sourcePrimitive ) {
 		case Primitive::LINES:
-			return numIndices;
-			break;
-		case Primitive::LINE_STRIP:
-			return ( numIndices - 1 ) * 2;
-			break;
+			switch( sourcePrimitive ) {
+				case Primitive::LINES:
+					return numIndices;
+				break;
+				case Primitive::LINE_STRIP:
+					return (numIndices - 1) * 2;
+				break;
+				default:
+					return 0;
+			}
+		break;
 		default:
 			return 0;
-		}
-		break;
-	default:
-		return 0;
 	}
 }
 }
@@ -4696,16 +4413,16 @@ void Bounds::process( SourceModsContext *ctx, const AttribSet &requestedAttribs 
 	AttribSet request = requestedAttribs;
 	request.insert( mAttrib );
 	ctx->processUpstream( request );
-
+	
 	uint8_t dims = ctx->getAttribDims( mAttrib );
 	if( dims == 0 ) {
 		CI_LOG_W( "geom::Bounds requested attribute " << attribToString( mAttrib ) << " missing." );
 		return;
 	}
-
-	size_t       numVertices = ctx->getNumVertices();
+	
+	size_t numVertices = ctx->getNumVertices();
 	const float *data = ctx->getAttribData( mAttrib );
-	vec3         minResult( FLT_MAX ), maxResult( FLT_MIN );
+	vec3 minResult( FLT_MAX ), maxResult( FLT_MIN );
 	for( size_t v = 0; v < numVertices; ++v ) {
 		if( dims == 1 ) {
 			minResult.x = std::min<float>( minResult.x, data[0] );
@@ -4727,7 +4444,7 @@ void Bounds::process( SourceModsContext *ctx, const AttribSet &requestedAttribs 
 		}
 		data += dims;
 	}
-
+	
 	if( mResult )
 		*mResult = AxisAlignedBox( minResult, maxResult );
 }
@@ -4761,7 +4478,7 @@ void Subdivide::process( SourceModsContext *ctx, const AttribSet &requestedAttri
 	AttribSet request = requestedAttribs;
 	request.insert( POSITION );
 	ctx->processUpstream( request );
-
+	
 	if( ctx->getPrimitive() != Primitive::TRIANGLES ) {
 		CI_LOG_E( "geom::PhongTessellate only supports TRIANGLES primitive." );
 		return;
@@ -4771,63 +4488,60 @@ void Subdivide::process( SourceModsContext *ctx, const AttribSet &requestedAttri
 		CI_LOG_E( "geom::Subdivide requires 3D POSITION." );
 		return;
 	}
-
+	
 	const size_t numInVertices = ctx->getNumVertices();
 	const size_t numInIndices = ctx->getNumIndices();
-
+	
 	const uint32_t *inIndices = ctx->getIndicesData();
-	const vec3 *    inPositions = reinterpret_cast<const vec3 *>( ctx->getAttribData( POSITION ) );
-
-	vector<vec3>     outPositions;
+	const vec3 *inPositions = reinterpret_cast<const vec3*>( ctx->getAttribData( POSITION ) );
+	
+	vector<vec3> outPositions;
 	vector<uint32_t> outIndices;
-
+	
 	for( size_t idx = 0; idx < numInIndices; idx += 3 ) {
-		vec3 sumPos = inPositions[inIndices[idx + 0]] + inPositions[inIndices[idx + 1]] + inPositions[inIndices[idx + 2]];
+		vec3 sumPos = inPositions[inIndices[idx+0]] + inPositions[inIndices[idx+1]] +
+						inPositions[inIndices[idx+2]];
 		outPositions.push_back( sumPos / 3.0f );
-
-		uint32_t newIdx = ( uint32_t )( outPositions.size() + numInVertices - 1 );
+		
+		uint32_t newIdx = (uint32_t)(outPositions.size() + numInVertices - 1);
 		// 0-new-2
-		outIndices.push_back( inIndices[idx + 0] );
-		outIndices.push_back( newIdx );
-		outIndices.push_back( inIndices[idx + 2] );
+		outIndices.push_back( inIndices[idx+0] ); outIndices.push_back( newIdx ); outIndices.push_back( inIndices[idx+2] );
 		// 0-1-new
-		outIndices.push_back( inIndices[idx + 0] );
-		outIndices.push_back( inIndices[idx + 1] );
-		outIndices.push_back( newIdx );
+		outIndices.push_back( inIndices[idx+0] ); outIndices.push_back( inIndices[idx+1] ); outIndices.push_back( newIdx );
 		// new-1-2
-		outIndices.push_back( newIdx );
-		outIndices.push_back( inIndices[idx + 1] );
-		outIndices.push_back( inIndices[idx + 2] );
+		outIndices.push_back( newIdx ); outIndices.push_back( inIndices[idx+1] ); outIndices.push_back( inIndices[idx+2] );
 	}
-
+	
 	// iterate the attributes and lerp
 	for( const auto &attr : ctx->getAvailableAttribs() ) {
 		// we processed POSITION in the previous loop
 		if( attr == POSITION )
 			continue;
-
+	
 		vector<float> outData;
-		const float * inData = ctx->getAttribData( attr );
-		uint8_t       dims = ctx->getAttribDims( attr );
+		const float *inData = ctx->getAttribData( attr );
+		uint8_t dims = ctx->getAttribDims( attr );
 		outData.reserve( numInIndices / 3 * dims );
 		for( size_t idx = 0; idx < numInIndices; idx += 3 ) {
 			for( uint8_t dim = 0; dim < dims; ++dim )
-				outData.push_back( ( inData[inIndices[idx + 0] * dims + dim] + inData[inIndices[idx + 1] * dims + dim] + inData[inIndices[idx + 2] * dims + dim] ) / 3.0f );
+				outData.push_back( (inData[inIndices[idx+0]*dims + dim] +
+									inData[inIndices[idx+1]*dims + dim] +
+									inData[inIndices[idx+2]*dims + dim]) / 3.0f );
 		}
-
+		
 		// normalize 3D NORMAL, TANGENT or BITANGENT
-		if( ( ( attr == NORMAL ) || ( attr == TANGENT ) || ( attr == BITANGENT ) ) && ( dims == 3 ) ) {
+		if( ( (attr == NORMAL) || (attr == TANGENT) || (attr == BITANGENT) ) && ( dims == 3 ) ) {
 			size_t numVerts = outData.size() / 3;
 			for( size_t v = 0; v < numVerts; ++v ) {
-				vec3 *d = reinterpret_cast<vec3 *>( &outData[v * 3] );
+				vec3 *d = reinterpret_cast<vec3*>( &outData[v * 3] );
 				*d = normalize( *d );
 			}
 		}
 
 		ctx->appendAttrib( attr, dims, outData.data(), outData.size() / dims );
 	}
-
-	ctx->appendAttrib( POSITION, 3, (const float *)outPositions.data(), outPositions.size() );
+	
+	ctx->appendAttrib( POSITION, 3, (const float*)outPositions.data(), outPositions.size() );
 	ctx->copyIndices( ctx->getPrimitive(), outIndices.data(), outIndices.size(), 4 );
 }
 
@@ -4861,7 +4575,7 @@ size_t SourceMods::getNumVertices() const
 	}
 	else {
 		size_t result = 0;
-		for( auto &child : mChildren )
+		for( auto& child : mChildren )
 			result += child->getNumVertices();
 		return result;
 	}
@@ -4875,7 +4589,7 @@ size_t SourceMods::getNumIndices() const
 	}
 	else {
 		size_t result = 0;
-		for( auto &child : mChildren )
+		for( auto& child : mChildren )
 			result += child->getNumIndices();
 		return result;
 	}
@@ -4888,10 +4602,10 @@ Primitive SourceMods::getPrimitive() const
 		return mParamsStack.back().getPrimitive();
 	}
 	else {
-		if( !mChildren.empty() ) {
+		if( ! mChildren.empty() ) {
 			Primitive result = mChildren.front()->getPrimitive();
 			for( auto childIt = ++mChildren.begin(); childIt != mChildren.end(); ++childIt )
-				result = Target::determineCombinedPrimitive( result, ( *childIt )->getPrimitive() );
+				result = Target::determineCombinedPrimitive( result, (*childIt)->getPrimitive() );
 			return result;
 		}
 		else
@@ -4899,19 +4613,19 @@ Primitive SourceMods::getPrimitive() const
 	}
 }
 
-uint8_t SourceMods::getAttribDims( Attrib attr ) const
+uint8_t	SourceMods::getAttribDims( Attrib attr ) const
 {
 	cacheVariables();
-
+	
 	if( mSourcePtr ) {
 		uint8_t result = mSourcePtr->getAttribDims( attr );
 		for( auto &mod : mModifiers )
 			result = mod->getAttribDims( attr, result );
-
+		
 		return result;
 	}
 	else {
-		if( !mChildren.empty() )
+		if( ! mChildren.empty() )
 			return mChildren.front()->getAttribDims( attr );
 		else
 			return 0;
@@ -4923,7 +4637,7 @@ AttribSet SourceMods::getAvailableAttribs() const
 	cacheVariables();
 	if( mSourcePtr )
 		return mParamsStack.back().getAvailableAttribs();
-	else if( !mChildren.empty() )
+	else if( ! mChildren.empty() )
 		return mChildren.front()->getAvailableAttribs();
 	else
 		return AttribSet();
@@ -4938,13 +4652,13 @@ AttribSet SourceMods::getAvailableAttribs() const
 // or the Source if this is the first modifier, because we are setting 'mCachedPrimitive' in the loop
 void SourceMods::cacheVariables() const
 {
-	if( mVariablesCached || ( !mSourcePtr ) )
+	if( mVariablesCached || ( ! mSourcePtr ) )
 		return;
 
 	// this is important to set first; modifiers' get*() methods might call into one of our get*() methods
 	// in which case we need cacheVariables() to return immediately
 	mVariablesCached = true;
-
+	
 	mParamsStack.push_back( Modifier::Params() );
 	mParamsStack.back().mNumVertices = mSourcePtr->getNumVertices();
 	mParamsStack.back().mNumIndices = mSourcePtr->getNumIndices();
@@ -4974,17 +4688,17 @@ void SourceMods::loadInto( Target *target, const AttribSet &requestedAttribs ) c
 		else {
 			SourceModsContext context( this );
 			context.loadInto( target, requestedAttribs );
-		}
+		}	
 	}
-	else if( !mChildren.empty() ) { // children
+	else if( ! mChildren.empty() ) { // children
 		SourceModsContext context( this );
-		for( auto &child : mChildren ) {
+		for( auto& child : mChildren ) {
 			SourceModsContext siblingContext( child.get() );
 			siblingContext.preload( requestedAttribs );
 			context.combine( siblingContext );
 		}
-
-		context.complete( target, requestedAttribs );
+	
+		context.complete( target, requestedAttribs );	
 	}
 }
 
@@ -5002,7 +4716,7 @@ void SourceMods::append( const Source &source )
 void SourceMods::append( const SourceMods &sourceMods )
 {
 	// if we don't have a Source (ie we're not a "bachelor"), this is no problem; just add 'sourceMods' as another child
-	if( !mSourcePtr ) {
+	if( ! mSourcePtr ) {
 		mChildren.emplace_back( sourceMods.clone() );
 	}
 	else { // we're a "bachelor"; now we need to make a child of ourselves and then add 'sourceMods' as the second child
@@ -5020,25 +4734,25 @@ void SourceMods::append( const SourceMods &sourceMods )
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SourceModsContext
 SourceModsContext::SourceModsContext( const SourceMods *sourceMods )
-    : mNumIndices( 0 ), mNumVertices( 0 ), mAttribMask( nullptr ), mPrimitive( NUM_PRIMITIVES )
+	: mNumIndices( 0 ), mNumVertices( 0 ), mAttribMask( nullptr ), mPrimitive( NUM_PRIMITIVES )
 {
 	mSource = sourceMods->getSource();
-
-	if( !sourceMods->mParamsStack.empty() ) // this allows for a non-indexed Source to have never specified the primitive via copyIndices()
+	
+	if( ! sourceMods->mParamsStack.empty() ) // this allows for a non-indexed Source to have never specified the primitive via copyIndices()
 		mPrimitive = sourceMods->mParamsStack.front().mPrimitive;
-
+	
 	for( auto &modifier : sourceMods->mModifiers )
 		mModiferStack.push_back( modifier.get() );
 }
 
 SourceModsContext::SourceModsContext()
-    : mNumIndices( 0 ), mNumVertices( 0 ), mSource( nullptr ), mAttribMask( nullptr ), mPrimitive( NUM_PRIMITIVES )
+	: mNumIndices( 0 ), mNumVertices( 0 ), mSource( nullptr ), mAttribMask( nullptr ), mPrimitive( NUM_PRIMITIVES )
 {
 }
 
 void SourceModsContext::preload( const AttribSet &requestedAttribs )
 {
-	if( !mSource ) {
+	if( ! mSource ) {
 		CI_LOG_E( "SourceModsContext::preload() called with a NULL source." );
 		return;
 	}
@@ -5046,7 +4760,7 @@ void SourceModsContext::preload( const AttribSet &requestedAttribs )
 	// If we have modifiers, initiate the chain by calling the last modifier's process() method.
 	// This in turn will call processUpstream(), which will call the next modifier's process(), until there
 	// are no remaining modifiers. Finally processUpstream() will call loadInto() on the Source
-	if( !mModiferStack.empty() ) {
+	if( ! mModiferStack.empty() ) {
 		auto modifier = mModiferStack.back();
 		mModiferStack.pop_back();
 		modifier->process( this, requestedAttribs );
@@ -5068,15 +4782,15 @@ void SourceModsContext::combine( const SourceModsContext &rhs )
 			const auto &count = rhs.mAttribCount.find( attribInfo.first )->second;
 			this->copyAttrib( attribInfo.first, attribInfo.second.getDims(), attribInfo.second.getStride(), data.get(), count );
 		}
-
+			
 		return;
 	}
 
 	Primitive rhsPrimitive = rhs.getPrimitive();
 	Primitive combinedPrimitive = determineCombinedPrimitive( getPrimitive(), rhsPrimitive );
-	if( ( combinedPrimitive != Primitive::LINES ) && ( combinedPrimitive != Primitive::TRIANGLES ) ) {
+	if( (combinedPrimitive != Primitive::LINES) && (combinedPrimitive != Primitive::TRIANGLES) ) {
 		CI_LOG_E( "Can't combine Primitives: " << primitiveToString( getPrimitive() ) << " with "
-		                                       << primitiveToString( rhsPrimitive ) );
+					<< primitiveToString( rhsPrimitive ) );
 		return;
 	}
 
@@ -5085,14 +4799,14 @@ void SourceModsContext::combine( const SourceModsContext &rhs )
 	size_t rhsNumIndices = rhs.getNumIndices(); // rhs indices
 	size_t numVertices = getNumVertices(); // upstream vertices
 	size_t rhsNumVertices = rhs.getNumVertices(); // rhs vertices
-
+	
 	size_t numOutIndices = determineRequiredIndices( getPrimitive(), combinedPrimitive, numIndices ? numIndices : numVertices );
 	size_t rhsNumOutIndices = determineRequiredIndices( rhsPrimitive, combinedPrimitive, rhsNumIndices ? rhsNumIndices : rhsNumVertices );
 	size_t totalOutIndices = numOutIndices + rhsNumOutIndices;
-
+	
 	std::vector<uint32_t> outIndices;
 	outIndices.resize( totalOutIndices );
-
+	
 	if( combinedPrimitive == Primitive::TRIANGLES ) {
 		if( getNumIndices() ) // 'this is indexed
 			Target::copyIndexDataForceTriangles( getPrimitive(), getIndicesData(), numIndices, 0, outIndices.data() );
@@ -5101,7 +4815,8 @@ void SourceModsContext::combine( const SourceModsContext &rhs )
 
 		// rhs
 		if( rhs.getNumIndices() ) // 'rhs' is indexed
-			Target::copyIndexDataForceTriangles( rhsPrimitive, rhs.getIndicesData(), rhsNumIndices, (uint32_t)numVertices, outIndices.data() + numOutIndices );
+			Target::copyIndexDataForceTriangles( rhsPrimitive, rhs.getIndicesData(),
+				rhsNumIndices, (uint32_t)numVertices, outIndices.data() + numOutIndices );
 		else // 'rhs' wasn't previously indexed but needs to be
 			Target::generateIndicesForceTriangles( rhsPrimitive, rhsNumVertices, (uint32_t)numVertices, outIndices.data() + numOutIndices );
 	}
@@ -5113,13 +4828,14 @@ void SourceModsContext::combine( const SourceModsContext &rhs )
 
 		// rhs
 		if( rhs.getNumIndices() ) // 'rhs' is indexed
-			Target::copyIndexDataForceLines( rhsPrimitive, rhs.getIndicesData(), rhsNumIndices, (uint32_t)numVertices, outIndices.data() + numOutIndices );
+			Target::copyIndexDataForceLines( rhsPrimitive, rhs.getIndicesData(),
+				rhsNumIndices, (uint32_t)numVertices, outIndices.data() + numOutIndices );
 		else // 'rhs' wasn't previously indexed but needs to be
 			Target::generateIndicesForceLines( rhsPrimitive, rhsNumVertices, (uint32_t)numVertices, outIndices.data() + numOutIndices );
 	}
 
 	this->copyIndices( combinedPrimitive, outIndices.data(), outIndices.size(), 4 );
-
+	
 	// Handle Attributes
 	for( const auto &attribInfo : mAttribInfo ) {
 		uint8_t dims = getAttribDims( attribInfo.first );
@@ -5135,7 +4851,7 @@ void SourceModsContext::combine( const SourceModsContext &rhs )
 // Expects preload() to have been called, with 0 or more combine()s preceding
 void SourceModsContext::complete( Target *target, const AttribSet &requestedAttribs )
 {
-	if( ( mSource == nullptr ) && ( !mModiferStack.empty() ) ) {
+	if( ( mSource == nullptr ) && ( ! mModiferStack.empty() ) ) {
 		// If we have modifiers, initiate the chain by calling the last modifier's process() method.
 		// This in turn will call processUpstream(), which will call the next modifier's process(), until there
 		// are no remaining modifiers. Finally processUpstream() will call loadInto() on the Source
@@ -5148,19 +4864,19 @@ void SourceModsContext::complete( Target *target, const AttribSet &requestedAttr
 	for( const auto &attribCount : mAttribCount )
 		if( attribCount.second != mNumVertices && ( requestedAttribs.count( attribCount.first ) > 0 ) )
 			CI_LOG_E( "Attribute " << attribToString( attribCount.first ) << " count is " << attribCount.first << " instead of " << mNumVertices );
-
+	
 	for( const auto &attribInfoPair : mAttribInfo ) {
-		Attrib            attrib = attribInfoPair.first;
+		Attrib attrib = attribInfoPair.first;
 		const AttribInfo &attribInfo = attribInfoPair.second;
 		target->copyAttrib( attrib, attribInfo.getDims(), attribInfo.getStride(), mAttribData[attrib].get(), mAttribCount[attrib] );
 	}
 
-	target->copyIndices( mPrimitive, mIndices.get(), mNumIndices, calcIndicesRequiredBytes( mNumIndices ) );
+	target->copyIndices( mPrimitive, mIndices.get(), mNumIndices, calcIndicesRequiredBytes( mNumIndices ) );	
 }
 
 void SourceModsContext::loadInto( Target *target, const AttribSet &requestedAttribs )
 {
-	if( !mSource ) {
+	if( ! mSource ) {
 		CI_LOG_E( "SourceModsContext::loadInto() called with a NULL source." );
 		return;
 	}
@@ -5168,21 +4884,21 @@ void SourceModsContext::loadInto( Target *target, const AttribSet &requestedAttr
 	// initiate the chain by calling the last modifier's process() method.
 	// This in turn will call processUpstream(), which will call the next modifier's process(), until there
 	// are no remaining modifiers. Finally processUpstream() will call loadInto() on the Source
-	if( !mModiferStack.empty() ) {
+	if( ! mModiferStack.empty() ) {
 		auto modifier = mModiferStack.back();
 		mModiferStack.pop_back();
 		modifier->process( this, requestedAttribs );
 
 		// We've finished processing all Modifiers and the Source. Now iterate all the attribute data and the indices
 		// and copy them to the target.
-
+		
 		// first let's verify that all counts on our requested attributes are the same. If not, we'll continue to process but with an error
 		for( const auto &attribCount : mAttribCount )
 			if( attribCount.second != mNumVertices && ( requestedAttribs.count( attribCount.first ) > 0 ) )
 				CI_LOG_E( "Attribute " << attribToString( attribCount.first ) << " count is " << attribCount.first << " instead of " << mNumVertices );
-
+		
 		for( const auto &attribInfoPair : mAttribInfo ) {
-			Attrib            attrib = attribInfoPair.first;
+			Attrib attrib = attribInfoPair.first;
 			const AttribInfo &attribInfo = attribInfoPair.second;
 			target->copyAttrib( attrib, attribInfo.getDims(), attribInfo.getStride(), mAttribData[attrib].get(), mAttribCount[attrib] );
 		}
@@ -5211,8 +4927,8 @@ void SourceModsContext::processUpstream( const AttribSet &requestedAttribs )
 		modifier->process( this, requestedAttribs );
 	}
 }
-
-uint8_t SourceModsContext::getAttribDims( Attrib attr ) const
+	
+uint8_t	SourceModsContext::getAttribDims( Attrib attr ) const
 {
 	auto attrInfoIt = mAttribInfo.find( attr );
 	if( attrInfoIt != mAttribInfo.end() )
@@ -5236,7 +4952,7 @@ Primitive SourceModsContext::getPrimitive() const
 	return mPrimitive;
 }
 
-float *SourceModsContext::getAttribData( Attrib attr )
+float* SourceModsContext::getAttribData( Attrib attr )
 {
 	auto attrDataIt = mAttribData.find( attr );
 	if( attrDataIt != mAttribData.end() ) {
@@ -5254,7 +4970,7 @@ AttribSet SourceModsContext::getAvailableAttribs() const
 	return result;
 }
 
-uint32_t *SourceModsContext::getIndicesData()
+uint32_t* SourceModsContext::getIndicesData()
 {
 	return mIndices.get();
 }
@@ -5274,20 +4990,20 @@ void SourceModsContext::copyAttrib( Attrib attr, uint8_t dims, size_t strideByte
 	// we definitely need allocation if we haven't encountered this attrib before
 	bool needsAllocation = ( mAttribCount.count( attr ) == 0 ) || ( mAttribData.count( attr ) == 0 ) || ( mAttribInfo.count( attr ) == 0 );
 	// we need allocation if we have this attrib but with different parameters
-	if( !needsAllocation ) {
+	if( ! needsAllocation ) {
 		const AttribInfo &attribInfo = mAttribInfo.at( attr );
 		needsAllocation = ( attribInfo.getStride() != strideBytes ) || ( attribInfo.getDims() != dims ) || ( count != mAttribCount[attr] );
 	}
-
+	
 	if( needsAllocation ) {
 		mAttribData[attr] = unique_ptr<float[]>( new float[dims * count] );
 		mAttribCount[attr] = count;
 		// oddly elaborate logic necessary to replace set contents w/o a default-constructible type
 		// equivalent to mAttribInfo[attr] = AttribInfo( ... )
-		auto it = mAttribInfo.insert( make_pair( attr, AttribInfo( attr, dims, dims * sizeof( float ), (size_t)0 ) ) ).first;
-		it->second = AttribInfo( attr, dims, dims * sizeof( float ), (size_t)0 ); // only necessary if the key already exists
+		auto it = mAttribInfo.insert( make_pair( attr, AttribInfo( attr, dims, dims * sizeof(float), (size_t)0 ) ) ).first;
+		it->second = AttribInfo( attr, dims, dims * sizeof(float), (size_t)0 ); // only necessary if the key already exists
 	}
-
+	
 	copyData( dims, strideBytes, srcData, count, dims, 0, mAttribData.at( attr ).get() );
 }
 
@@ -5298,14 +5014,14 @@ void SourceModsContext::appendAttrib( Attrib attr, uint8_t dims, const float *sr
 		copyAttrib( attr, dims, 0, srcData, count );
 		return;
 	}
-	auto         attribInfoIt = mAttribInfo.at( attr );
-	uint8_t      existingDims = attribInfoIt.getDims();
-	size_t       existingCount = mAttribCount[attr];
+	auto attribInfoIt = mAttribInfo.at( attr );
+	uint8_t existingDims = attribInfoIt.getDims();
+	size_t existingCount = mAttribCount[attr];
 	const float *existingData = mAttribData[attr].get();
 
-	auto newData = unique_ptr<float[]>( new float[( existingCount + count ) * existingDims] );
+	auto newData = unique_ptr<float[]>( new float[(existingCount + count) * existingDims] );
 	// copy old data
-	memcpy( newData.get(), existingData, sizeof( float ) * existingCount * existingDims );
+	memcpy( newData.get(), existingData, sizeof(float) * existingCount * existingDims );
 	// append new data
 	copyData( dims, 0, srcData, count, existingDims, 0, newData.get() + existingCount * existingDims );
 	// reassign data
@@ -5324,25 +5040,25 @@ void SourceModsContext::copyIndices( Primitive primitive, const uint32_t *source
 		mNumIndices = numIndices;
 		mIndices = unique_ptr<uint32_t[]>( new uint32_t[numIndices] );
 	}
-	memcpy( mIndices.get(), source, sizeof( uint32_t ) * numIndices );
+	memcpy( mIndices.get(), source, sizeof(uint32_t) * numIndices );
 }
 
 void SourceModsContext::appendIndices( Primitive primitive, const uint32_t *source, size_t numIndices, uint8_t requiredBytes )
 {
 	if( mPrimitive != primitive )
 		CI_LOG_E( "Primitive types don't match" );
-
+	
 	auto newIndices = unique_ptr<uint32_t[]>( new uint32_t[numIndices + mNumIndices] );
 	mIndicesRequiredBytes = std::max( mIndicesRequiredBytes, requiredBytes );
 
 	// copy old index data
 	if( mNumIndices && mIndices.get() )
-		memcpy( newIndices.get(), mIndices.get(), sizeof( uint32_t ) * mNumIndices );
+		memcpy( newIndices.get(), mIndices.get(), sizeof(uint32_t) * mNumIndices );
 	// and append new index data
-	memcpy( newIndices.get() + mNumIndices, source, sizeof( uint32_t ) * numIndices );
+	memcpy( newIndices.get() + mNumIndices, source, sizeof(uint32_t) * numIndices );
 	// total indices += new number of indices
 	mNumIndices = mNumIndices + numIndices;
-
+	
 	mIndices = std::move( newIndices );
 }
 
@@ -5362,21 +5078,9 @@ void SourceModsContext::clearIndices()
 ///////////////////////////////////////////////////////////////////////////////////////
 // Modifier
 
-template class AttribFn<float, float>;
-template class AttribFn<float, vec2>;
-template class AttribFn<float, vec3>;
-template class AttribFn<float, vec4>;
-template class AttribFn<vec2, float>;
-template class AttribFn<vec2, vec2>;
-template class AttribFn<vec2, vec3>;
-template class AttribFn<vec2, vec4>;
-template class AttribFn<vec3, float>;
-template class AttribFn<vec3, vec2>;
-template class AttribFn<vec3, vec3>;
-template class AttribFn<vec3, vec4>;
-template class AttribFn<vec4, float>;
-template class AttribFn<vec4, vec2>;
-template class AttribFn<vec4, vec3>;
-template class AttribFn<vec4, vec4>;
-}
-} // namespace cinder::geom
+template class AttribFn<float,float>;	template class AttribFn<float,vec2>;	template class AttribFn<float,vec3>;	template class AttribFn<float,vec4>;
+template class AttribFn<vec2,float>;	template class AttribFn<vec2,vec2>;		template class AttribFn<vec2,vec3>;		template class AttribFn<vec2,vec4>;
+template class AttribFn<vec3,float>;	template class AttribFn<vec3,vec2>;		template class AttribFn<vec3,vec3>;		template class AttribFn<vec3,vec4>;
+template class AttribFn<vec4,float>;	template class AttribFn<vec4,vec2>;		template class AttribFn<vec4,vec3>;		template class AttribFn<vec4,vec4>;
+
+} } // namespace cinder::geom

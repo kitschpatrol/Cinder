@@ -1,18 +1,15 @@
 
 #include "Config.h"
 
-#include "cinder/ImageIo.h"
-#include "cinder/Log.h"
-#include "cinder/System.h"
 #include "cinder/app/App.h"
+#include "cinder/Log.h"
+#include "cinder/ImageIo.h"
+#include "cinder/System.h"
 
 using namespace std;
 using namespace ci;
 
-#define LOG_EXCEPTION( exc )                                                                                              \
-	{                                                                                                                     \
-		CI_LOG_E( "exception caught: " << System::demangleTypeName( typeid( exc ).name() ) << ", what: " << exc.what() ); \
-	}
+#define LOG_EXCEPTION( exc )	{ CI_LOG_E( "exception caught: " << System::demangleTypeName( typeid( exc ).name() ) << ", what: " << exc.what() ); }
 
 Config::Config()
 {
@@ -76,7 +73,7 @@ void Config::loadGearData()
 // ----------------------------------------------------------------------------------------------------
 
 // static
-Config *Config::instance()
+Config* Config::instance()
 {
 	static Config sInstance;
 	return &sInstance;

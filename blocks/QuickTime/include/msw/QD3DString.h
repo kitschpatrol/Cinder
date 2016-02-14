@@ -21,6 +21,9 @@
 #include <QD3D.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -34,26 +37,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = power
+    #pragma options align=power
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-#if defined( __fourbyteints__ ) && !__fourbyteints__
-#define __QD3DSTRING__RESTORE_TWOBYTEINTS
-#pragma fourbyteints on
-#endif
-#pragma enumsalwaysint on
+    #if defined(__fourbyteints__) && !__fourbyteints__ 
+        #define __QD3DSTRING__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints on
+    #endif
+    #pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =int
+    #pragma option enum=int
 #elif PRAGMA_ENUM_PACK
-#if __option( pack_enums )
-#define __QD3DSTRING__RESTORE_PACKED_ENUMS
-#pragma options( !pack_enums )
-#endif
+    #if __option(pack_enums)
+        #define __QD3DSTRING__RESTORE_PACKED_ENUMS
+        #pragma options(!pack_enums)
+    #endif
 #endif
 
 /******************************************************************************
@@ -71,7 +74,9 @@ extern "C" {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3String_GetType( TQ3StringObject stringObj );
+Q3String_GetType(TQ3StringObject stringObj);
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -87,7 +92,8 @@ Q3String_GetType( TQ3StringObject stringObj );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3StringObject )
-Q3CString_New( const char *str );
+Q3CString_New(const char * str);
+
 
 /*
  *  Q3CString_GetLength()
@@ -99,8 +105,9 @@ Q3CString_New( const char *str );
  */
 EXTERN_API_C( TQ3Status )
 Q3CString_GetLength(
-    TQ3StringObject stringObj,
-    unsigned long * length );
+  TQ3StringObject   stringObj,
+  unsigned long *   length);
+
 
 /*
  *  Q3CString_SetString()
@@ -112,10 +119,11 @@ Q3CString_GetLength(
  */
 EXTERN_API_C( TQ3Status )
 Q3CString_SetString(
-    TQ3StringObject stringObj,
-    const char *    str );
+  TQ3StringObject   stringObj,
+  const char *      str);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -128,8 +136,9 @@ Q3CString_SetString(
  */
 EXTERN_API_C( TQ3Status )
 Q3CString_GetString(
-    TQ3StringObject stringObj,
-    char **         str );
+  TQ3StringObject   stringObj,
+  char **           str);
+
 
 /*
  *  Q3CString_EmptyData()
@@ -140,27 +149,30 @@ Q3CString_GetString(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3CString_EmptyData( char **str );
+Q3CString_EmptyData(char ** str);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
+
+
 
 #if PRAGMA_ENUM_ALWAYSINT
-#pragma enumsalwaysint reset
-#ifdef __QD3DSTRING__RESTORE_TWOBYTEINTS
-#pragma fourbyteints off
-#endif
+    #pragma enumsalwaysint reset
+    #ifdef __QD3DSTRING__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints off
+    #endif
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =reset
-#elif defined( __QD3DSTRING__RESTORE_PACKED_ENUMS )
-#pragma options( pack_enums )
+    #pragma option enum=reset
+#elif defined(__QD3DSTRING__RESTORE_PACKED_ENUMS)
+    #pragma options(pack_enums)
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -174,3 +186,4 @@ Q3CString_EmptyData( char **str );
 #endif
 
 #endif /* __QD3DSTRING__ */
+

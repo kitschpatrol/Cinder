@@ -28,6 +28,10 @@
 #include <IntlResources.h>
 #endif
 
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,11 +45,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /*
@@ -65,49 +69,49 @@ extern "C" {
 
 */
 struct NumFormatString {
-	UInt8 fLength;
-	UInt8 fVersion;
-	char  data[254]; /* private data */
+  UInt8               fLength;
+  UInt8               fVersion;
+  char                data[254];              /* private data */
 };
-typedef struct NumFormatString NumFormatString;
-typedef NumFormatString        NumFormatStringRec;
-typedef short                  FormatStatus;
+typedef struct NumFormatString          NumFormatString;
+typedef NumFormatString                 NumFormatStringRec;
+typedef short                           FormatStatus;
 enum {
-	fVNumber = 0 /* first version of NumFormatString */
-};
-
-typedef SInt8 FormatClass;
-enum {
-	fPositive = 0,
-	fNegative = 1,
-	fZero = 2
+  fVNumber                      = 0     /* first version of NumFormatString */
 };
 
-typedef SInt8 FormatResultType;
+typedef SInt8                           FormatClass;
 enum {
-	fFormatOK = 0,
-	fBestGuess = 1,
-	fOutOfSynch = 2,
-	fSpuriousChars = 3,
-	fMissingDelimiter = 4,
-	fExtraDecimal = 5,
-	fMissingLiteral = 6,
-	fExtraExp = 7,
-	fFormatOverflow = 8,
-	fFormStrIsNAN = 9,
-	fBadPartsTable = 10,
-	fExtraPercent = 11,
-	fExtraSeparator = 12,
-	fEmptyFormatString = 13
+  fPositive                     = 0,
+  fNegative                     = 1,
+  fZero                         = 2
+};
+
+typedef SInt8                           FormatResultType;
+enum {
+  fFormatOK                     = 0,
+  fBestGuess                    = 1,
+  fOutOfSynch                   = 2,
+  fSpuriousChars                = 3,
+  fMissingDelimiter             = 4,
+  fExtraDecimal                 = 5,
+  fMissingLiteral               = 6,
+  fExtraExp                     = 7,
+  fFormatOverflow               = 8,
+  fFormStrIsNAN                 = 9,
+  fBadPartsTable                = 10,
+  fExtraPercent                 = 11,
+  fExtraSeparator               = 12,
+  fEmptyFormatString            = 13
 };
 
 struct FVector {
-	short start;
-	short length;
+  short               start;
+  short               length;
 };
-typedef struct FVector FVector;
+typedef struct FVector                  FVector;
 /* index by [fPositive..fZero] */
-typedef FVector TripleInt[3];
+typedef FVector                         TripleInt[3];
 #if CALL_NOT_IN_CARBON
 /*
  *  stringtonum()
@@ -119,8 +123,9 @@ typedef FVector TripleInt[3];
  */
 EXTERN_API_C( void )
 stringtonum(
-    const char *theString,
-    long *      theNum );
+  const char *  theString,
+  long *        theNum);
+
 
 /*
  *  numtostring()
@@ -132,10 +137,11 @@ stringtonum(
  */
 EXTERN_API_C( void )
 numtostring(
-    long  theNum,
-    char *theString );
+  long    theNum,
+  char *  theString);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  StringToNum()
@@ -147,8 +153,9 @@ numtostring(
  */
 EXTERN_API( void )
 StringToNum(
-    ConstStr255Param theString,
-    long *           theNum );
+  ConstStr255Param   theString,
+  long *             theNum);
+
 
 /*
  *  NumToString()
@@ -160,8 +167,9 @@ StringToNum(
  */
 EXTERN_API( void )
 NumToString(
-    long   theNum,
-    Str255 theString );
+  long     theNum,
+  Str255   theString);
+
 
 /*
  *  ExtendedToString()
@@ -173,10 +181,11 @@ NumToString(
  */
 EXTERN_API( FormatStatus )
 ExtendedToString(
-    const extended80 *     x,
-    const NumFormatString *myCanonical,
-    const NumberParts *    partsTable,
-    Str255                 outString ) FOURWORDINLINE( 0x2F3C, 0x8210, 0xFFE8, 0xA8B5 );
+  const extended80 *       x,
+  const NumFormatString *  myCanonical,
+  const NumberParts *      partsTable,
+  Str255                   outString)                         FOURWORDINLINE(0x2F3C, 0x8210, 0xFFE8, 0xA8B5);
+
 
 /*
  *  StringToExtended()
@@ -188,10 +197,11 @@ ExtendedToString(
  */
 EXTERN_API( FormatStatus )
 StringToExtended(
-    ConstStr255Param       source,
-    const NumFormatString *myCanonical,
-    const NumberParts *    partsTable,
-    extended80 *           x ) FOURWORDINLINE( 0x2F3C, 0x8210, 0xFFE6, 0xA8B5 );
+  ConstStr255Param         source,
+  const NumFormatString *  myCanonical,
+  const NumberParts *      partsTable,
+  extended80 *             x)                                 FOURWORDINLINE(0x2F3C, 0x8210, 0xFFE6, 0xA8B5);
+
 
 /*
  *  StringToFormatRec()
@@ -203,9 +213,10 @@ StringToExtended(
  */
 EXTERN_API( FormatStatus )
 StringToFormatRec(
-    ConstStr255Param   inString,
-    const NumberParts *partsTable,
-    NumFormatString *  outString ) FOURWORDINLINE( 0x2F3C, 0x820C, 0xFFEC, 0xA8B5 );
+  ConstStr255Param     inString,
+  const NumberParts *  partsTable,
+  NumFormatString *    outString)                             FOURWORDINLINE(0x2F3C, 0x820C, 0xFFEC, 0xA8B5);
+
 
 /*
  *  FormatRecToString()
@@ -217,28 +228,31 @@ StringToFormatRec(
  */
 EXTERN_API( FormatStatus )
 FormatRecToString(
-    const NumFormatString *myCanonical,
-    const NumberParts *    partsTable,
-    Str255                 outString,
-    TripleInt              positions ) FOURWORDINLINE( 0x2F3C, 0x8210, 0xFFEA, 0xA8B5 );
+  const NumFormatString *  myCanonical,
+  const NumberParts *      partsTable,
+  Str255                   outString,
+  TripleInt                positions)                         FOURWORDINLINE(0x2F3C, 0x8210, 0xFFEA, 0xA8B5);
+
+
 
 #if OLDROUTINENAMES
-#define FormatX2Str( x, myCanonical, partsTable, outString ) \
-	ExtendedToString( x, myCanonical, partsTable, outString )
-#define FormatStr2X( source, myCanonical, partsTable, x ) \
-	StringToExtended( source, myCanonical, partsTable, x )
-#define Str2Format( inString, partsTable, outString ) \
-	StringToFormatRec( inString, partsTable, outString )
-#define Format2Str( myCanonical, partsTable, outString, positions ) \
-	FormatRecToString( myCanonical, partsTable, outString, positions )
-#endif /* OLDROUTINENAMES */
+#define FormatX2Str(x, myCanonical, partsTable, outString)  \
+         ExtendedToString( x, myCanonical, partsTable, outString)
+#define FormatStr2X(source, myCanonical, partsTable, x)  \
+         StringToExtended( source, myCanonical, partsTable, x)
+#define Str2Format(inString, partsTable, outString)  \
+         StringToFormatRec(inString, partsTable, outString)
+#define Format2Str(myCanonical, partsTable, outString, positions)  \
+         FormatRecToString(myCanonical, partsTable, outString, positions)
+#endif  /* OLDROUTINENAMES */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -252,3 +266,4 @@ FormatRecToString(
 #endif
 
 #endif /* __NUMBERFORMATTING__ */
+

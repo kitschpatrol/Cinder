@@ -22,10 +22,10 @@
 
 #pragma once
 
+#include "cinder/gl/GlslProg.h"
 #include "cinder/Cinder.h"
 #include "cinder/Color.h"
 #include "cinder/Vector.h"
-#include "cinder/gl/GlslProg.h"
 #include <vector>
 
 // Forward declarations.
@@ -36,18 +36,18 @@ class Camera;
 typedef std::shared_ptr<class Piston> PistonRef;
 
 class Piston {
-  public:
+public:
 	Piston();
 	Piston( float x, float z );
 
-	void update( const ci::Camera &camera );
+	void update( const ci::Camera& camera );
 	void draw( float time );
 
 	// Our custom sorting comparator.
-	static int CompareByDistanceToCamera( const void *a, const void *b )
+	static int CompareByDistanceToCamera( const void* a, const void* b )
 	{
-		const Piston *pA = reinterpret_cast<const Piston *>( a );
-		const Piston *pB = reinterpret_cast<const Piston *>( b );
+		const Piston* pA = reinterpret_cast<const Piston*>( a );
+		const Piston* pB = reinterpret_cast<const Piston*>( b );
 		if( pA->mDistance < pB->mDistance )
 			return -1;
 		if( pA->mDistance > pB->mDistance )
@@ -55,7 +55,7 @@ class Piston {
 		return 0;
 	}
 
-  private:
+private:
 	float      mDistance;
 	float      mOffset;
 	ci::Colorf mColor;
@@ -63,13 +63,13 @@ class Piston {
 };
 
 class Pistons {
-  public:
+public:
 	Pistons();
 
-	void update( const ci::Camera &camera );
-	void draw( const ci::Camera &camera, float time );
-
-  private:
-	std::vector<Piston> mPistons;
-	ci::gl::GlslProgRef mShader;
+	void update( const ci::Camera& camera );
+	void draw( const ci::Camera& camera, float time );
+private:
+	std::vector<Piston>    mPistons;
+	ci::gl::GlslProgRef    mShader;
 };
+

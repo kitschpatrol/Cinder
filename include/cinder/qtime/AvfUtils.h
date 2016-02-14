@@ -27,18 +27,17 @@
 #if defined( CINDER_COCOA_TOUCH ) || ( defined( CINDER_MAC ) && ( MAC_OS_X_VERSION_MIN_REQUIRED >= 1080 ) )
 
 #include "cinder/Cinder.h"
-#include "cinder/ImageIo.h"
-#include "cinder/Surface.h"
 #include "cinder/Url.h"
+#include "cinder/Surface.h"
+#include "cinder/ImageIo.h"
 
 #include <string>
 
 #if defined( CINDER_COCOA )
-#include <CoreVideo/CoreVideo.h>
+	#include <CoreVideo/CoreVideo.h>
 #endif
 
-namespace cinder {
-namespace qtime {
+namespace cinder { namespace qtime {
 
 bool setAudioSessionModes();
 bool dictionarySetValue( CFMutableDictionaryRef dict, CFStringRef key, SInt32 value );
@@ -62,28 +61,29 @@ class ImageTargetCvPixelBuffer : public cinder::ImageTarget {
 	static ImageTargetCvPixelBufferRef createRef( ImageSourceRef imageSource, CVPixelBufferPoolRef pbPool );
 	~ImageTargetCvPixelBuffer();
 
-	virtual void *getRowPointer( int32_t row );
-	virtual void finalize();
+	virtual void*		getRowPointer( int32_t row );
+	virtual void		finalize();
 
-	::CVPixelBufferRef getCvPixelBuffer() const { return mPixelBufferRef; }
+	::CVPixelBufferRef	getCvPixelBuffer() const { return mPixelBufferRef; }
+
   protected:
 	ImageTargetCvPixelBuffer( ImageSourceRef imageSource, bool convertToYpCbCr );
 	ImageTargetCvPixelBuffer( ImageSourceRef imageSource, CVPixelBufferPoolRef pbPool );
+	
+	void		convertDataToYpCbCr();
+	void		convertDataToAYpCbCr();
 
-	void convertDataToYpCbCr();
-	void convertDataToAYpCbCr();
-
-	::CVPixelBufferRef mPixelBufferRef;
-	size_t             mRowBytes;
-	uint8_t *          mData;
-	bool               mConvertToYpCbCr;
+	::CVPixelBufferRef	mPixelBufferRef;
+	size_t				mRowBytes;
+	uint8_t				*mData;
+	bool				mConvertToYpCbCr;
 };
 
 //! Creates a CVPixelBufferRef from an ImageSource. Release the result with CVPixelBufferRelease(). If \a convertToYpCbCr the resulting CVPixelBuffer will be in either \c k444YpCbCr8CodecType or \c k4444YpCbCrA8PixelFormat
 CVPixelBufferRef createCvPixelBuffer( ImageSourceRef imageSource, bool convertToYpCbCr = false );
 
 CVPixelBufferRef createCvPixelBuffer( ImageSourceRef imageSource, CVPixelBufferPoolRef pbPool );
-}
-} // namespace cinder::qtime
+
+} } // namespace cinder::qtime
 
 #endif

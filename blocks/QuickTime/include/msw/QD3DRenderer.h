@@ -33,12 +33,15 @@
 #include <RAVE.h>
 #endif
 
+
 #if TARGET_OS_MAC
 #ifndef __EVENTS__
 #include <Events.h>
 #endif
 
-#endif /* TARGET_OS_MAC */
+#endif  /* TARGET_OS_MAC */
+
+
 
 #if PRAGMA_ONCE
 #pragma once
@@ -53,26 +56,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = power
+    #pragma options align=power
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-#if defined( __fourbyteints__ ) && !__fourbyteints__
-#define __QD3DRENDERER__RESTORE_TWOBYTEINTS
-#pragma fourbyteints on
-#endif
-#pragma enumsalwaysint on
+    #if defined(__fourbyteints__) && !__fourbyteints__ 
+        #define __QD3DRENDERER__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints on
+    #endif
+    #pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =int
+    #pragma option enum=int
 #elif PRAGMA_ENUM_PACK
-#if __option( pack_enums )
-#define __QD3DRENDERER__RESTORE_PACKED_ENUMS
-#pragma options( !pack_enums )
-#endif
+    #if __option(pack_enums)
+        #define __QD3DRENDERER__RESTORE_PACKED_ENUMS
+        #pragma options(!pack_enums)
+    #endif
 #endif
 
 /******************************************************************************
@@ -89,26 +92,26 @@ extern "C" {
  *  If the application does not handle the event it must return kQ3False and 
  *  the dialog's event filter will pass the event to the system unhandled.   
  */
-typedef CALLBACK_API_C( TQ3Boolean, TQ3MacOSDialogEventHandler )( const EventRecord *event );
+typedef CALLBACK_API_C( TQ3Boolean , TQ3MacOSDialogEventHandler )(const EventRecord * event);
 struct TQ3DialogAnchor {
-	TQ3MacOSDialogEventHandler clientEventHandler;
+  TQ3MacOSDialogEventHandler  clientEventHandler;
 };
-typedef struct TQ3DialogAnchor TQ3DialogAnchor;
-#endif /* TARGET_OS_MAC */
+typedef struct TQ3DialogAnchor          TQ3DialogAnchor;
+#endif  /* TARGET_OS_MAC */
 
 #if TARGET_OS_WIN32
 struct TQ3DialogAnchor {
-	HWND ownerWindow;
+  HWND                ownerWindow;
 };
-typedef struct TQ3DialogAnchor TQ3DialogAnchor;
-#endif /* TARGET_OS_WIN32 */
+typedef struct TQ3DialogAnchor          TQ3DialogAnchor;
+#endif  /* TARGET_OS_WIN32 */
 
 #if TARGET_OS_UNIX
 struct TQ3DialogAnchor {
-	void *notUsed; /* place holder */
+  void *              notUsed;                /* place holder */
 };
-typedef struct TQ3DialogAnchor TQ3DialogAnchor;
-#endif /* TARGET_OS_UNIX */
+typedef struct TQ3DialogAnchor          TQ3DialogAnchor;
+#endif  /* TARGET_OS_UNIX */
 
 /******************************************************************************
  **                                                                          **
@@ -125,7 +128,8 @@ typedef struct TQ3DialogAnchor TQ3DialogAnchor;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3RendererObject )
-Q3Renderer_NewFromType( TQ3ObjectType rendererObjectType );
+Q3Renderer_NewFromType(TQ3ObjectType rendererObjectType);
+
 
 /*
  *  Q3Renderer_GetType()
@@ -136,11 +140,14 @@ Q3Renderer_NewFromType( TQ3ObjectType rendererObjectType );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3Renderer_GetType( TQ3RendererObject renderer );
+Q3Renderer_GetType(TQ3RendererObject renderer);
+
+
 
 /* Q3Renderer_Flush has been replaced by Q3View_Flush */
 /* Q3Renderer_Sync has been replaced by Q3View_Sync */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
+
 
 /*
  *  Q3Renderer_IsInteractive
@@ -156,7 +163,9 @@ Q3Renderer_GetType( TQ3RendererObject renderer );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Boolean )
-Q3Renderer_IsInteractive( TQ3RendererObject renderer );
+Q3Renderer_IsInteractive(TQ3RendererObject renderer);
+
+
 
 /*
  *  Q3Renderer_HasModalConfigure
@@ -188,7 +197,8 @@ Q3Renderer_IsInteractive( TQ3RendererObject renderer );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Boolean )
-Q3Renderer_HasModalConfigure( TQ3RendererObject renderer );
+Q3Renderer_HasModalConfigure(TQ3RendererObject renderer);
+
 
 /*
  *  Q3Renderer_ModalConfigure()
@@ -200,9 +210,10 @@ Q3Renderer_HasModalConfigure( TQ3RendererObject renderer );
  */
 EXTERN_API_C( TQ3Status )
 Q3Renderer_ModalConfigure(
-    TQ3RendererObject renderer,
-    TQ3DialogAnchor   dialogAnchor,
-    TQ3Boolean *      canceled );
+  TQ3RendererObject   renderer,
+  TQ3DialogAnchor     dialogAnchor,
+  TQ3Boolean *        canceled);
+
 
 /*
  *  Q3RendererClass_GetNickNameString
@@ -226,8 +237,10 @@ Q3Renderer_ModalConfigure(
  */
 EXTERN_API_C( TQ3Status )
 Q3RendererClass_GetNickNameString(
-    TQ3ObjectType            rendererClassType,
-    TQ3ObjectClassNameString rendererClassString );
+  TQ3ObjectType              rendererClassType,
+  TQ3ObjectClassNameString   rendererClassString);
+
+
 
 /*
  *  Q3Renderer_GetConfigurationData
@@ -256,10 +269,11 @@ Q3RendererClass_GetNickNameString(
  */
 EXTERN_API_C( TQ3Status )
 Q3Renderer_GetConfigurationData(
-    TQ3RendererObject renderer,
-    unsigned char *   dataBuffer,
-    unsigned long     bufferSize,
-    unsigned long *   actualDataSize );
+  TQ3RendererObject   renderer,
+  unsigned char *     dataBuffer,
+  unsigned long       bufferSize,
+  unsigned long *     actualDataSize);
+
 
 /*
  *  Q3Renderer_SetConfigurationData()
@@ -271,9 +285,12 @@ Q3Renderer_GetConfigurationData(
  */
 EXTERN_API_C( TQ3Status )
 Q3Renderer_SetConfigurationData(
-    TQ3RendererObject renderer,
-    unsigned char *   dataBuffer,
-    unsigned long     bufferSize );
+  TQ3RendererObject   renderer,
+  unsigned char *     dataBuffer,
+  unsigned long       bufferSize);
+
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -281,23 +298,23 @@ Q3Renderer_SetConfigurationData(
  **                                                                          **
  *****************************************************************************/
 /* CSG IDs attribute */
-#define kQ3AttributeTypeConstructiveSolidGeometryID Q3_OBJECT_TYPE( 'c', 's', 'g', 'i' )
+#define kQ3AttributeTypeConstructiveSolidGeometryID     Q3_OBJECT_TYPE('c','s','g','i')
 /* Object IDs, to be applied as attributes on geometries */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
-#define kQ3SolidGeometryObjNone ( -1 )
-#define kQ3SolidGeometryObjA 0
-#define kQ3SolidGeometryObjB 1
-#define kQ3SolidGeometryObjC 2
-#define kQ3SolidGeometryObjD 3
-#define kQ3SolidGeometryObjE 4
+#define kQ3SolidGeometryObjNone (-1)
+#define kQ3SolidGeometryObjA    0
+#define kQ3SolidGeometryObjB    1
+#define kQ3SolidGeometryObjC    2
+#define kQ3SolidGeometryObjD    3
+#define kQ3SolidGeometryObjE    4
 /* Possible CSG equations */
 enum TQ3CSGEquation {
-	kQ3CSGEquationAandB = (long)0x88888888,
-	kQ3CSGEquationAandnotB = 0x22222222,
-	kQ3CSGEquationAanBonCad = 0x2F222F22,
-	kQ3CSGEquationnotAandB = 0x44444444,
-	kQ3CSGEquationnAaBorCanB = 0x74747474
+  kQ3CSGEquationAandB           = (long)0x88888888,
+  kQ3CSGEquationAandnotB        = 0x22222222,
+  kQ3CSGEquationAanBonCad       = 0x2F222F22,
+  kQ3CSGEquationnotAandB        = 0x44444444,
+  kQ3CSGEquationnAaBorCanB      = 0x74747474
 };
 typedef enum TQ3CSGEquation TQ3CSGEquation;
 
@@ -312,8 +329,9 @@ typedef enum TQ3CSGEquation TQ3CSGEquation;
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_SetCSGEquation(
-    TQ3RendererObject renderer,
-    TQ3CSGEquation    equation );
+  TQ3RendererObject   renderer,
+  TQ3CSGEquation      equation);
+
 
 /*
  *  Q3InteractiveRenderer_GetCSGEquation()
@@ -325,8 +343,9 @@ Q3InteractiveRenderer_SetCSGEquation(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_GetCSGEquation(
-    TQ3RendererObject renderer,
-    TQ3CSGEquation *  equation );
+  TQ3RendererObject   renderer,
+  TQ3CSGEquation *    equation);
+
 
 /*
  *  Q3InteractiveRenderer_SetPreferences()
@@ -338,9 +357,10 @@ Q3InteractiveRenderer_GetCSGEquation(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_SetPreferences(
-    TQ3RendererObject renderer,
-    long              vendorID,
-    long              engineID );
+  TQ3RendererObject   renderer,
+  long                vendorID,
+  long                engineID);
+
 
 /*
  *  Q3InteractiveRenderer_GetPreferences()
@@ -352,9 +372,10 @@ Q3InteractiveRenderer_SetPreferences(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_GetPreferences(
-    TQ3RendererObject renderer,
-    long *            vendorID,
-    long *            engineID );
+  TQ3RendererObject   renderer,
+  long *              vendorID,
+  long *              engineID);
+
 
 /*
  *  Q3InteractiveRenderer_SetDoubleBufferBypass()
@@ -366,8 +387,9 @@ Q3InteractiveRenderer_GetPreferences(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_SetDoubleBufferBypass(
-    TQ3RendererObject renderer,
-    TQ3Boolean        bypass );
+  TQ3RendererObject   renderer,
+  TQ3Boolean          bypass);
+
 
 /*
  *  Q3InteractiveRenderer_GetDoubleBufferBypass()
@@ -379,8 +401,9 @@ Q3InteractiveRenderer_SetDoubleBufferBypass(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_GetDoubleBufferBypass(
-    TQ3RendererObject renderer,
-    TQ3Boolean *      bypass );
+  TQ3RendererObject   renderer,
+  TQ3Boolean *        bypass);
+
 
 /*
  *  Q3InteractiveRenderer_SetRAVEContextHints()
@@ -392,8 +415,9 @@ Q3InteractiveRenderer_GetDoubleBufferBypass(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_SetRAVEContextHints(
-    TQ3RendererObject renderer,
-    unsigned long     RAVEContextHints );
+  TQ3RendererObject   renderer,
+  unsigned long       RAVEContextHints);
+
 
 /*
  *  Q3InteractiveRenderer_GetRAVEContextHints()
@@ -405,8 +429,9 @@ Q3InteractiveRenderer_SetRAVEContextHints(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_GetRAVEContextHints(
-    TQ3RendererObject renderer,
-    unsigned long *   RAVEContextHints );
+  TQ3RendererObject   renderer,
+  unsigned long *     RAVEContextHints);
+
 
 /*
  *  Q3InteractiveRenderer_SetRAVETextureFilter()
@@ -418,8 +443,9 @@ Q3InteractiveRenderer_GetRAVEContextHints(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_SetRAVETextureFilter(
-    TQ3RendererObject renderer,
-    unsigned long     RAVEtextureFilterValue );
+  TQ3RendererObject   renderer,
+  unsigned long       RAVEtextureFilterValue);
+
 
 /*
  *  Q3InteractiveRenderer_GetRAVETextureFilter()
@@ -431,8 +457,9 @@ Q3InteractiveRenderer_SetRAVETextureFilter(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_GetRAVETextureFilter(
-    TQ3RendererObject renderer,
-    unsigned long *   RAVEtextureFilterValue );
+  TQ3RendererObject   renderer,
+  unsigned long *     RAVEtextureFilterValue);
+
 
 /*
  *  Q3InteractiveRenderer_CountRAVEDrawContexts()
@@ -444,12 +471,13 @@ Q3InteractiveRenderer_GetRAVETextureFilter(
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_CountRAVEDrawContexts(
-    TQ3RendererObject renderer,
-    unsigned long *   numRAVEContexts );
+  TQ3RendererObject   renderer,
+  unsigned long *     numRAVEContexts);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-typedef CALLBACK_API_C( void, TQ3RaveDestroyCallback )( TQ3RendererObject renderer );
+#endif  /* CALL_NOT_IN_CARBON */
+
+typedef CALLBACK_API_C( void , TQ3RaveDestroyCallback )(TQ3RendererObject renderer);
 #if CALL_NOT_IN_CARBON
 /*
  *  Q3InteractiveRenderer_GetRAVEDrawContexts()
@@ -461,11 +489,15 @@ typedef CALLBACK_API_C( void, TQ3RaveDestroyCallback )( TQ3RendererObject render
  */
 EXTERN_API_C( TQ3Status )
 Q3InteractiveRenderer_GetRAVEDrawContexts(
-    TQ3RendererObject      renderer,
-    TQADrawContext **      raveDrawContextList,
-    TQAEngine **           raveDrawingEnginesList,
-    unsigned long *        numRAVEContexts,
-    TQ3RaveDestroyCallback raveDestroyCallback );
+  TQ3RendererObject        renderer,
+  TQADrawContext **        raveDrawContextList,
+  TQAEngine **             raveDrawingEnginesList,
+  unsigned long *          numRAVEContexts,
+  TQ3RaveDestroyCallback   raveDestroyCallback);
+
+
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -499,9 +531,10 @@ Q3InteractiveRenderer_GetRAVEDrawContexts(
  */
 EXTERN_API_C( TQ3Status )
 Q3XView_IdleProgress(
-    TQ3ViewObject view,
-    unsigned long current,
-    unsigned long completed );
+  TQ3ViewObject   view,
+  unsigned long   current,
+  unsigned long   completed);
+
 
 /*
  *  Called by an asynchronous renderer when it completes a frame.
@@ -515,7 +548,9 @@ Q3XView_IdleProgress(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3XView_EndFrame( TQ3ViewObject view );
+Q3XView_EndFrame(TQ3ViewObject view);
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -543,31 +578,34 @@ Q3XView_EndFrame( TQ3ViewObject view );
  */
 EXTERN_API_C( void * )
 Q3XAttributeSet_GetPointer(
-    TQ3AttributeSet  attributeSet,
-    TQ3AttributeType attributeType );
+  TQ3AttributeSet    attributeSet,
+  TQ3AttributeType   attributeType);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 enum {
-	kQ3XAttributeMaskNone = 0L,
-	kQ3XAttributeMaskSurfaceUV = 1 << ( kQ3AttributeTypeSurfaceUV - 1 ),
-	kQ3XAttributeMaskShadingUV = 1 << ( kQ3AttributeTypeShadingUV - 1 ),
-	kQ3XAttributeMaskNormal = 1 << ( kQ3AttributeTypeNormal - 1 ),
-	kQ3XAttributeMaskAmbientCoefficient = 1 << ( kQ3AttributeTypeAmbientCoefficient - 1 ),
-	kQ3XAttributeMaskDiffuseColor = 1 << ( kQ3AttributeTypeDiffuseColor - 1 ),
-	kQ3XAttributeMaskSpecularColor = 1 << ( kQ3AttributeTypeSpecularColor - 1 ),
-	kQ3XAttributeMaskSpecularControl = 1 << ( kQ3AttributeTypeSpecularControl - 1 ),
-	kQ3XAttributeMaskTransparencyColor = 1 << ( kQ3AttributeTypeTransparencyColor - 1 ),
-	kQ3XAttributeMaskSurfaceTangent = 1 << ( kQ3AttributeTypeSurfaceTangent - 1 ),
-	kQ3XAttributeMaskHighlightState = 1 << ( kQ3AttributeTypeHighlightState - 1 ),
-	kQ3XAttributeMaskSurfaceShader = 1 << ( kQ3AttributeTypeSurfaceShader - 1 ),
-	kQ3XAttributeMaskCustomAttribute = (long)0x80000000,
-	kQ3XAttributeMaskAll = 0x800007FF,
-	kQ3XAttributeMaskInherited = 0x03FF,
-	kQ3XAttributeMaskInterpolated = kQ3XAttributeMaskSurfaceUV | kQ3XAttributeMaskShadingUV | kQ3XAttributeMaskNormal | kQ3XAttributeMaskAmbientCoefficient | kQ3XAttributeMaskDiffuseColor | kQ3XAttributeMaskSpecularColor | kQ3XAttributeMaskSpecularControl | kQ3XAttributeMaskTransparencyColor | kQ3XAttributeMaskSurfaceTangent
+  kQ3XAttributeMaskNone         = 0L,
+  kQ3XAttributeMaskSurfaceUV    = 1 << (kQ3AttributeTypeSurfaceUV - 1),
+  kQ3XAttributeMaskShadingUV    = 1 << (kQ3AttributeTypeShadingUV - 1),
+  kQ3XAttributeMaskNormal       = 1 << (kQ3AttributeTypeNormal - 1),
+  kQ3XAttributeMaskAmbientCoefficient = 1 << (kQ3AttributeTypeAmbientCoefficient - 1),
+  kQ3XAttributeMaskDiffuseColor = 1 << (kQ3AttributeTypeDiffuseColor - 1),
+  kQ3XAttributeMaskSpecularColor = 1 << (kQ3AttributeTypeSpecularColor - 1),
+  kQ3XAttributeMaskSpecularControl = 1 << (kQ3AttributeTypeSpecularControl - 1),
+  kQ3XAttributeMaskTransparencyColor = 1 << (kQ3AttributeTypeTransparencyColor - 1),
+  kQ3XAttributeMaskSurfaceTangent = 1 << (kQ3AttributeTypeSurfaceTangent - 1),
+  kQ3XAttributeMaskHighlightState = 1 << (kQ3AttributeTypeHighlightState - 1),
+  kQ3XAttributeMaskSurfaceShader = 1 << (kQ3AttributeTypeSurfaceShader - 1),
+  kQ3XAttributeMaskCustomAttribute = (long)0x80000000,
+  kQ3XAttributeMaskAll          = 0x800007FF,
+  kQ3XAttributeMaskInherited    = 0x03FF,
+  kQ3XAttributeMaskInterpolated = kQ3XAttributeMaskSurfaceUV | kQ3XAttributeMaskShadingUV | kQ3XAttributeMaskNormal | kQ3XAttributeMaskAmbientCoefficient | kQ3XAttributeMaskDiffuseColor | kQ3XAttributeMaskSpecularColor | kQ3XAttributeMaskSpecularControl | kQ3XAttributeMaskTransparencyColor | kQ3XAttributeMaskSurfaceTangent
 };
 
-typedef unsigned long TQ3XAttributeMask;
+
+typedef unsigned long                   TQ3XAttributeMask;
 #if CALL_NOT_IN_CARBON
 /*
  *  Q3XAttributeSet_GetMask()
@@ -578,16 +616,18 @@ typedef unsigned long TQ3XAttributeMask;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3XAttributeMask )
-Q3XAttributeSet_GetMask( TQ3AttributeSet attributeSet );
+Q3XAttributeSet_GetMask(TQ3AttributeSet attributeSet);
+
+
 
 /******************************************************************************
  **                                                                          **
  **                         Renderer Draw Context Tools                      **
  **                                                                          **
  *****************************************************************************/
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
-typedef struct OpaqueTQ3XDrawRegion *TQ3XDrawRegion;
+typedef struct OpaqueTQ3XDrawRegion*    TQ3XDrawRegion;
 #if CALL_NOT_IN_CARBON
 /*
  *  Q3XDrawContext_GetDrawRegion()
@@ -599,34 +639,35 @@ typedef struct OpaqueTQ3XDrawRegion *TQ3XDrawRegion;
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawContext_GetDrawRegion(
-    TQ3DrawContextObject drawContext,
-    TQ3XDrawRegion *     drawRegion );
+  TQ3DrawContextObject   drawContext,
+  TQ3XDrawRegion *       drawRegion);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 enum TQ3XDrawContextValidationMasks {
-	kQ3XDrawContextValidationClearFlags = 0x00000000,
-	kQ3XDrawContextValidationDoubleBuffer = 1 << 0,
-	kQ3XDrawContextValidationShader = 1 << 1,
-	kQ3XDrawContextValidationClearFunction = 1 << 2,
-	kQ3XDrawContextValidationActiveBuffer = 1 << 3,
-	kQ3XDrawContextValidationInternalOffScreen = 1 << 4,
-	kQ3XDrawContextValidationPane = 1 << 5,
-	kQ3XDrawContextValidationMask = 1 << 6,
-	kQ3XDrawContextValidationDevice = 1 << 7,
-	kQ3XDrawContextValidationWindow = 1 << 8,
-	kQ3XDrawContextValidationWindowSize = 1 << 9,
-	kQ3XDrawContextValidationWindowClip = 1 << 10,
-	kQ3XDrawContextValidationWindowPosition = 1 << 11,
-	kQ3XDrawContextValidationPlatformAttributes = 1 << 12,
-	kQ3XDrawContextValidationForegroundShader = 1 << 13,
-	kQ3XDrawContextValidationBackgroundShader = 1 << 14,
-	kQ3XDrawContextValidationColorPalette = 1 << 15,
-	kQ3XDrawContextValidationAll = (long)0xFFFFFFFF
+  kQ3XDrawContextValidationClearFlags = 0x00000000,
+  kQ3XDrawContextValidationDoubleBuffer = 1 << 0,
+  kQ3XDrawContextValidationShader = 1 << 1,
+  kQ3XDrawContextValidationClearFunction = 1 << 2,
+  kQ3XDrawContextValidationActiveBuffer = 1 << 3,
+  kQ3XDrawContextValidationInternalOffScreen = 1 << 4,
+  kQ3XDrawContextValidationPane = 1 << 5,
+  kQ3XDrawContextValidationMask = 1 << 6,
+  kQ3XDrawContextValidationDevice = 1 << 7,
+  kQ3XDrawContextValidationWindow = 1 << 8,
+  kQ3XDrawContextValidationWindowSize = 1 << 9,
+  kQ3XDrawContextValidationWindowClip = 1 << 10,
+  kQ3XDrawContextValidationWindowPosition = 1 << 11,
+  kQ3XDrawContextValidationPlatformAttributes = 1 << 12,
+  kQ3XDrawContextValidationForegroundShader = 1 << 13,
+  kQ3XDrawContextValidationBackgroundShader = 1 << 14,
+  kQ3XDrawContextValidationColorPalette = 1 << 15,
+  kQ3XDrawContextValidationAll  = (long)0xFFFFFFFF
 };
 typedef enum TQ3XDrawContextValidationMasks TQ3XDrawContextValidationMasks;
 
-typedef unsigned long TQ3XDrawContextValidation;
+typedef unsigned long                   TQ3XDrawContextValidation;
 #if CALL_NOT_IN_CARBON
 /*
  *  Q3XDrawContext_ClearValidationFlags()
@@ -637,7 +678,8 @@ typedef unsigned long TQ3XDrawContextValidation;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3XDrawContext_ClearValidationFlags( TQ3DrawContextObject drawContext );
+Q3XDrawContext_ClearValidationFlags(TQ3DrawContextObject drawContext);
+
 
 /*
  *  Q3XDrawContext_GetValidationFlags()
@@ -649,71 +691,74 @@ Q3XDrawContext_ClearValidationFlags( TQ3DrawContextObject drawContext );
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawContext_GetValidationFlags(
-    TQ3DrawContextObject       drawContext,
-    TQ3XDrawContextValidation *validationFlags );
+  TQ3DrawContextObject         drawContext,
+  TQ3XDrawContextValidation *  validationFlags);
+
+
 
 /******************************************************************************
  **                                                                          **
  **                         Renderer Draw Region Tools                       **
  **                                                                          **
  *****************************************************************************/
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 enum TQ3XDevicePixelType {
-	/* These do not indicate byte ordering   */
-	kQ3XDevicePixelTypeInvalid = 0, /* Unknown, un-initialized type    */
-	kQ3XDevicePixelTypeRGB32 = 1, /* Alpha:8 (ignored), R:8, G:8, B:8 */
-	kQ3XDevicePixelTypeARGB32 = 2, /* Alpha:8, R:8, G:8, B:8           */
-	kQ3XDevicePixelTypeRGB24 = 3, /* 24 bits/pixel, R:8, G:8, B:8    */
-	kQ3XDevicePixelTypeRGB16 = 4, /* Alpha:1 (ignored), R:5, G:5, B:5 */
-	kQ3XDevicePixelTypeARGB16 = 5, /* Alpha:1, R:5, G:5, B:5           */
-	kQ3XDevicePixelTypeRGB16_565 = 6, /* 16 bits/pixel, R:5, G:6, B:5    */
-	kQ3XDevicePixelTypeIndexed8 = 7, /* 8-bit color table index          */
-	kQ3XDevicePixelTypeIndexed4 = 8, /* 4-bit color table index          */
-	kQ3XDevicePixelTypeIndexed2 = 9, /* 2-bit color table index          */
-	kQ3XDevicePixelTypeIndexed1 = 10 /* 1-bit color table index          */
+                                        /* These do not indicate byte ordering   */
+  kQ3XDevicePixelTypeInvalid    = 0,    /* Unknown, un-initialized type    */
+  kQ3XDevicePixelTypeRGB32      = 1,    /* Alpha:8 (ignored), R:8, G:8, B:8 */
+  kQ3XDevicePixelTypeARGB32     = 2,    /* Alpha:8, R:8, G:8, B:8           */
+  kQ3XDevicePixelTypeRGB24      = 3,    /* 24 bits/pixel, R:8, G:8, B:8    */
+  kQ3XDevicePixelTypeRGB16      = 4,    /* Alpha:1 (ignored), R:5, G:5, B:5 */
+  kQ3XDevicePixelTypeARGB16     = 5,    /* Alpha:1, R:5, G:5, B:5           */
+  kQ3XDevicePixelTypeRGB16_565  = 6,    /* 16 bits/pixel, R:5, G:6, B:5    */
+  kQ3XDevicePixelTypeIndexed8   = 7,    /* 8-bit color table index          */
+  kQ3XDevicePixelTypeIndexed4   = 8,    /* 4-bit color table index          */
+  kQ3XDevicePixelTypeIndexed2   = 9,    /* 2-bit color table index          */
+  kQ3XDevicePixelTypeIndexed1   = 10    /* 1-bit color table index          */
 };
 typedef enum TQ3XDevicePixelType TQ3XDevicePixelType;
 
 enum TQ3XClipMaskState {
-	kQ3XClipMaskFullyExposed = 0,
-	kQ3XClipMaskPartiallyExposed = 1,
-	kQ3XClipMaskNotExposed = 2
+  kQ3XClipMaskFullyExposed      = 0,
+  kQ3XClipMaskPartiallyExposed  = 1,
+  kQ3XClipMaskNotExposed        = 2
 };
 typedef enum TQ3XClipMaskState TQ3XClipMaskState;
 
 struct TQ3XColorDescriptor {
-	unsigned long redShift;
-	unsigned long redMask;
-	unsigned long greenShift;
-	unsigned long greenMask;
-	unsigned long blueShift;
-	unsigned long blueMask;
-	unsigned long alphaShift;
-	unsigned long alphaMask;
+  unsigned long       redShift;
+  unsigned long       redMask;
+  unsigned long       greenShift;
+  unsigned long       greenMask;
+  unsigned long       blueShift;
+  unsigned long       blueMask;
+  unsigned long       alphaShift;
+  unsigned long       alphaMask;
 };
-typedef struct TQ3XColorDescriptor TQ3XColorDescriptor;
+typedef struct TQ3XColorDescriptor      TQ3XColorDescriptor;
 struct TQ3XDrawRegionDescriptor {
-	unsigned long       width;
-	unsigned long       height;
-	unsigned long       rowBytes;
-	unsigned long       pixelSize;
-	TQ3XDevicePixelType pixelType;
-	TQ3XColorDescriptor colorDescriptor;
-	TQ3Endian           bitOrder;
-	TQ3Endian           byteOrder;
-	TQ3Bitmap *         clipMask;
+  unsigned long       width;
+  unsigned long       height;
+  unsigned long       rowBytes;
+  unsigned long       pixelSize;
+  TQ3XDevicePixelType  pixelType;
+  TQ3XColorDescriptor  colorDescriptor;
+  TQ3Endian           bitOrder;
+  TQ3Endian           byteOrder;
+  TQ3Bitmap *         clipMask;
 };
 typedef struct TQ3XDrawRegionDescriptor TQ3XDrawRegionDescriptor;
 enum TQ3XDrawRegionServicesMasks {
-	kQ3XDrawRegionServicesNoneFlag = 0L,
-	kQ3XDrawRegionServicesClearFlag = 1 << 0,
-	kQ3XDrawRegionServicesDontLockDDSurfaceFlag = 1 << 1
+  kQ3XDrawRegionServicesNoneFlag = 0L,
+  kQ3XDrawRegionServicesClearFlag = 1 << 0,
+  kQ3XDrawRegionServicesDontLockDDSurfaceFlag = 1 << 1
 };
 typedef enum TQ3XDrawRegionServicesMasks TQ3XDrawRegionServicesMasks;
 
-typedef unsigned long TQ3XDrawRegionServices;
-typedef CALLBACK_API_C( void, TQ3XDrawRegionRendererPrivateDeleteMethod )( void *rendererPrivate );
+
+typedef unsigned long                   TQ3XDrawRegionServices;
+typedef CALLBACK_API_C( void , TQ3XDrawRegionRendererPrivateDeleteMethod )(void * rendererPrivate);
 #if CALL_NOT_IN_CARBON
 /*
  *  Q3XDrawRegion_GetDeviceScaleX()
@@ -725,8 +770,9 @@ typedef CALLBACK_API_C( void, TQ3XDrawRegionRendererPrivateDeleteMethod )( void 
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetDeviceScaleX(
-    TQ3XDrawRegion drawRegion,
-    float *        deviceScaleX );
+  TQ3XDrawRegion   drawRegion,
+  float *          deviceScaleX);
+
 
 /*
  *  Q3XDrawRegion_GetDeviceScaleY()
@@ -738,8 +784,10 @@ Q3XDrawRegion_GetDeviceScaleX(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetDeviceScaleY(
-    TQ3XDrawRegion drawRegion,
-    float *        deviceScaleY );
+  TQ3XDrawRegion   drawRegion,
+  float *          deviceScaleY);
+
+
 
 /*
  *  Q3XDrawRegion_GetDeviceOffsetX()
@@ -751,8 +799,9 @@ Q3XDrawRegion_GetDeviceScaleY(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetDeviceOffsetX(
-    TQ3XDrawRegion drawRegion,
-    float *        deviceOffsetX );
+  TQ3XDrawRegion   drawRegion,
+  float *          deviceOffsetX);
+
 
 /*
  *  Q3XDrawRegion_GetDeviceOffsetY()
@@ -764,8 +813,10 @@ Q3XDrawRegion_GetDeviceOffsetX(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetDeviceOffsetY(
-    TQ3XDrawRegion drawRegion,
-    float *        deviceOffsetX );
+  TQ3XDrawRegion   drawRegion,
+  float *          deviceOffsetX);
+
+
 
 /*
  *  Q3XDrawRegion_GetWindowScaleX()
@@ -777,8 +828,9 @@ Q3XDrawRegion_GetDeviceOffsetY(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetWindowScaleX(
-    TQ3XDrawRegion drawRegion,
-    float *        windowScaleX );
+  TQ3XDrawRegion   drawRegion,
+  float *          windowScaleX);
+
 
 /*
  *  Q3XDrawRegion_GetWindowScaleY()
@@ -790,8 +842,10 @@ Q3XDrawRegion_GetWindowScaleX(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetWindowScaleY(
-    TQ3XDrawRegion drawRegion,
-    float *        windowScaleY );
+  TQ3XDrawRegion   drawRegion,
+  float *          windowScaleY);
+
+
 
 /*
  *  Q3XDrawRegion_GetWindowOffsetX()
@@ -803,8 +857,9 @@ Q3XDrawRegion_GetWindowScaleY(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetWindowOffsetX(
-    TQ3XDrawRegion drawRegion,
-    float *        windowOffsetX );
+  TQ3XDrawRegion   drawRegion,
+  float *          windowOffsetX);
+
 
 /*
  *  Q3XDrawRegion_GetWindowOffsetY()
@@ -816,8 +871,9 @@ Q3XDrawRegion_GetWindowOffsetX(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetWindowOffsetY(
-    TQ3XDrawRegion drawRegion,
-    float *        windowOffsetY );
+  TQ3XDrawRegion   drawRegion,
+  float *          windowOffsetY);
+
 
 /*
  *  Q3XDrawRegion_IsActive()
@@ -829,8 +885,10 @@ Q3XDrawRegion_GetWindowOffsetY(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_IsActive(
-    TQ3XDrawRegion drawRegion,
-    TQ3Boolean *   isActive );
+  TQ3XDrawRegion   drawRegion,
+  TQ3Boolean *     isActive);
+
+
 
 /*
  *  Q3XDrawRegion_GetNextRegion()
@@ -842,8 +900,9 @@ Q3XDrawRegion_IsActive(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetNextRegion(
-    TQ3XDrawRegion  drawRegion,
-    TQ3XDrawRegion *nextDrawRegion );
+  TQ3XDrawRegion    drawRegion,
+  TQ3XDrawRegion *  nextDrawRegion);
+
 
 /* 
  *  One of the next two functions must be called before using a draw region 
@@ -862,9 +921,10 @@ Q3XDrawRegion_GetNextRegion(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_Start(
-    TQ3XDrawRegion             drawRegion,
-    TQ3XDrawRegionServices     services,
-    TQ3XDrawRegionDescriptor **descriptor );
+  TQ3XDrawRegion               drawRegion,
+  TQ3XDrawRegionServices       services,
+  TQ3XDrawRegionDescriptor **  descriptor);
+
 
 /*
  *  Use this Start function if double buffering or image access services from 
@@ -880,10 +940,11 @@ Q3XDrawRegion_Start(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_StartAccessToImageBuffer(
-    TQ3XDrawRegion             drawRegion,
-    TQ3XDrawRegionServices     services,
-    TQ3XDrawRegionDescriptor **descriptor,
-    void **                    image );
+  TQ3XDrawRegion               drawRegion,
+  TQ3XDrawRegionServices       services,
+  TQ3XDrawRegionDescriptor **  descriptor,
+  void **                      image);
+
 
 /*
  *  This function is used to indicate that access to a DrawRegion is ended.
@@ -897,7 +958,8 @@ Q3XDrawRegion_StartAccessToImageBuffer(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3XDrawRegion_End( TQ3XDrawRegion drawRegion );
+Q3XDrawRegion_End(TQ3XDrawRegion drawRegion);
+
 
 /*
  *  Q3XDrawRegion_GetDeviceTransform()
@@ -909,8 +971,9 @@ Q3XDrawRegion_End( TQ3XDrawRegion drawRegion );
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetDeviceTransform(
-    TQ3XDrawRegion drawRegion,
-    TQ3Matrix4x4 **deviceTransform );
+  TQ3XDrawRegion   drawRegion,
+  TQ3Matrix4x4 **  deviceTransform);
+
 
 /*
  *  Q3XDrawRegion_GetClipFlags()
@@ -922,8 +985,9 @@ Q3XDrawRegion_GetDeviceTransform(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetClipFlags(
-    TQ3XDrawRegion     drawRegion,
-    TQ3XClipMaskState *clipMaskState );
+  TQ3XDrawRegion       drawRegion,
+  TQ3XClipMaskState *  clipMaskState);
+
 
 /*
  *  Q3XDrawRegion_GetClipMask()
@@ -935,10 +999,11 @@ Q3XDrawRegion_GetClipFlags(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetClipMask(
-    TQ3XDrawRegion drawRegion,
-    TQ3Bitmap **   clipMask );
+  TQ3XDrawRegion   drawRegion,
+  TQ3Bitmap **     clipMask);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if TARGET_OS_MAC
 #if CALL_NOT_IN_CARBON
@@ -952,8 +1017,9 @@ Q3XDrawRegion_GetClipMask(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetClipRegion(
-    TQ3XDrawRegion drawRegion,
-    RgnHandle *    rgnHandle );
+  TQ3XDrawRegion   drawRegion,
+  RgnHandle *      rgnHandle);
+
 
 /*
  *  Q3XDrawRegion_GetGDHandle()
@@ -965,12 +1031,13 @@ Q3XDrawRegion_GetClipRegion(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetGDHandle(
-    TQ3XDrawRegion drawRegion,
-    GDHandle *     gdHandle );
+  TQ3XDrawRegion   drawRegion,
+  GDHandle *       gdHandle);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* TARGET_OS_MAC */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* TARGET_OS_MAC */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -983,8 +1050,9 @@ Q3XDrawRegion_GetGDHandle(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetRendererPrivate(
-    TQ3XDrawRegion drawRegion,
-    void **        rendererPrivate );
+  TQ3XDrawRegion   drawRegion,
+  void **          rendererPrivate);
+
 
 /*
  *  Q3XDrawRegion_SetRendererPrivate()
@@ -996,9 +1064,10 @@ Q3XDrawRegion_GetRendererPrivate(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_SetRendererPrivate(
-    TQ3XDrawRegion                            drawRegion,
-    const void *                              rendererPrivate,
-    TQ3XDrawRegionRendererPrivateDeleteMethod deleteMethod );
+  TQ3XDrawRegion                              drawRegion,
+  const void *                                rendererPrivate,
+  TQ3XDrawRegionRendererPrivateDeleteMethod   deleteMethod);
+
 
 /*
  *  Q3XDrawRegion_SetUseDefaultRendererFlag()
@@ -1010,8 +1079,9 @@ Q3XDrawRegion_SetRendererPrivate(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_SetUseDefaultRendererFlag(
-    TQ3XDrawRegion drawRegion,
-    TQ3Boolean     flag );
+  TQ3XDrawRegion   drawRegion,
+  TQ3Boolean       flag);
+
 
 /*
  *  Q3XDrawRegion_GetUseDefaultRendererFlag()
@@ -1023,8 +1093,11 @@ Q3XDrawRegion_SetUseDefaultRendererFlag(
  */
 EXTERN_API_C( TQ3Status )
 Q3XDrawRegion_GetUseDefaultRendererFlag(
-    TQ3XDrawRegion drawRegion,
-    TQ3Boolean *   useDefaultRenderingFlag );
+  TQ3XDrawRegion   drawRegion,
+  TQ3Boolean *     useDefaultRenderingFlag);
+
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -1095,11 +1168,12 @@ Q3XDrawRegion_GetUseDefaultRendererFlag(
  *  
  *  OPTIONAL
  */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 enum {
-	kQ3XMethodTypeRendererIsInteractive = FOUR_CHAR_CODE( 'isin' )
+  kQ3XMethodTypeRendererIsInteractive = FOUR_CHAR_CODE('isin')
 };
+
 
 /*
  *  TQ3XRendererModalConfigureMethod
@@ -1125,10 +1199,10 @@ enum {
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererModalConfigure = FOUR_CHAR_CODE( 'rdmc' )
+  kQ3XMethodTypeRendererModalConfigure = FOUR_CHAR_CODE('rdmc')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererModalConfigureMethod )( TQ3RendererObject renderer, TQ3DialogAnchor dialogAnchor, TQ3Boolean *canceled, void *rendererPrivate );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererModalConfigureMethod )(TQ3RendererObject renderer, TQ3DialogAnchor dialogAnchor, TQ3Boolean *canceled, void *rendererPrivate);
 /*
  *  kQ3XMethodTypeRendererGetNickNameString
  *  
@@ -1147,10 +1221,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererModalConfigureMethod )( TQ3Render
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererGetNickNameString = FOUR_CHAR_CODE( 'rdns' )
+  kQ3XMethodTypeRendererGetNickNameString = FOUR_CHAR_CODE('rdns')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererGetNickNameStringMethod )( unsigned char *dataBuffer, unsigned long bufferSize, unsigned long *actualDataSize );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererGetNickNameStringMethod )(unsigned char *dataBuffer, unsigned long bufferSize, unsigned long *actualDataSize);
 /*
  *  kQ3XMethodTypeRendererGetConfigurationData
  *  
@@ -1171,10 +1245,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererGetNickNameStringMethod )( unsign
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererGetConfigurationData = FOUR_CHAR_CODE( 'rdgp' )
+  kQ3XMethodTypeRendererGetConfigurationData = FOUR_CHAR_CODE('rdgp')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererGetConfigurationDataMethod )( TQ3RendererObject renderer, unsigned char *dataBuffer, unsigned long bufferSize, unsigned long *actualDataSize, void *rendererPrivate );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererGetConfigurationDataMethod )(TQ3RendererObject renderer, unsigned char *dataBuffer, unsigned long bufferSize, unsigned long *actualDataSize, void *rendererPrivate);
 /*
  *  TQ3XRendererSetConfigurationDataMethod
  *  
@@ -1190,10 +1264,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererGetConfigurationDataMethod )( TQ3
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererSetConfigurationData = FOUR_CHAR_CODE( 'rdsp' )
+  kQ3XMethodTypeRendererSetConfigurationData = FOUR_CHAR_CODE('rdsp')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSetConfigurationDataMethod )( TQ3RendererObject renderer, unsigned char *dataBuffer, unsigned long bufferSize, void *rendererPrivate );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererSetConfigurationDataMethod )(TQ3RendererObject renderer, unsigned char *dataBuffer, unsigned long bufferSize, void *rendererPrivate);
 /******************************************************************************
  **                                                                          **
  **                     Renderer Drawing State Methods                       **
@@ -1225,10 +1299,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSetConfigurationDataMethod )( TQ3
  *  REQUIRED
  */
 enum {
-	kQ3XMethodTypeRendererStartFrame = FOUR_CHAR_CODE( 'rdcl' )
+  kQ3XMethodTypeRendererStartFrame = FOUR_CHAR_CODE('rdcl')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererStartFrameMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3DrawContextObject drawContext );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererStartFrameMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3DrawContextObject drawContext);
 /*
  *  kQ3XMethodTypeRendererStartPass
  *  TQ3XRendererStartPassMethod
@@ -1253,10 +1327,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererStartFrameMethod )( TQ3ViewObject
  *  REQUIRED
  */
 enum {
-	kQ3XMethodTypeRendererStartPass = FOUR_CHAR_CODE( 'rdst' )
+  kQ3XMethodTypeRendererStartPass = FOUR_CHAR_CODE('rdst')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererStartPassMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3CameraObject camera, TQ3GroupObject lightGroup );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererStartPassMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3CameraObject camera, TQ3GroupObject lightGroup);
 /*
  *  kQ3XMethodTypeRendererFlushFrame
  *  TQ3XRendererFlushFrameMethod
@@ -1290,10 +1364,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererStartPassMethod )( TQ3ViewObject 
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererFlushFrame = FOUR_CHAR_CODE( 'rdfl' )
+  kQ3XMethodTypeRendererFlushFrame = FOUR_CHAR_CODE('rdfl')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererFlushFrameMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3DrawContextObject drawContext );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererFlushFrameMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3DrawContextObject drawContext);
 /*
  *  kQ3XMethodTypeRendererEndPass
  *  TQ3XRendererEndPassMethod
@@ -1332,10 +1406,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererFlushFrameMethod )( TQ3ViewObject
  *  REQUIRED
  */
 enum {
-	kQ3XMethodTypeRendererEndPass = FOUR_CHAR_CODE( 'rded' )
+  kQ3XMethodTypeRendererEndPass = FOUR_CHAR_CODE('rded')
 };
 
-typedef CALLBACK_API_C( TQ3ViewStatus, TQ3XRendererEndPassMethod )( TQ3ViewObject view, void *rendererPrivate );
+typedef CALLBACK_API_C( TQ3ViewStatus , TQ3XRendererEndPassMethod )(TQ3ViewObject view, void *rendererPrivate);
 /*
  *  kQ3XMethodTypeRendererEndFrame
  *  TQ3XRendererEndFrame
@@ -1362,10 +1436,10 @@ typedef CALLBACK_API_C( TQ3ViewStatus, TQ3XRendererEndPassMethod )( TQ3ViewObjec
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererEndFrame = FOUR_CHAR_CODE( 'rdsy' )
+  kQ3XMethodTypeRendererEndFrame = FOUR_CHAR_CODE('rdsy')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererEndFrameMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3DrawContextObject drawContext );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererEndFrameMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3DrawContextObject drawContext);
 /*
  *  The RendererCancel method is called after Q3View_StartRendering
  *  and signals the termination of all rendering operations.
@@ -1382,10 +1456,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererEndFrameMethod )( TQ3ViewObject v
  *  REQUIRED
  */
 enum {
-	kQ3XMethodTypeRendererCancel = FOUR_CHAR_CODE( 'rdab' )
+  kQ3XMethodTypeRendererCancel  = FOUR_CHAR_CODE('rdab')
 };
 
-typedef CALLBACK_API_C( void, TQ3XRendererCancelMethod )( TQ3ViewObject view, void *rendererPrivate );
+typedef CALLBACK_API_C( void , TQ3XRendererCancelMethod )(TQ3ViewObject view, void *rendererPrivate);
 /******************************************************************************
  **                                                                          **
  **                     Renderer DrawContext Methods                         **
@@ -1460,15 +1534,15 @@ typedef CALLBACK_API_C( void, TQ3XRendererCancelMethod )( TQ3ViewObject view, vo
  *  
  */
 enum {
-	kQ3XMethodTypeRendererPush = FOUR_CHAR_CODE( 'rdps' )
+  kQ3XMethodTypeRendererPush    = FOUR_CHAR_CODE('rdps')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererPushMethod )( TQ3ViewObject view, void *rendererPrivate );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererPushMethod )(TQ3ViewObject view, void *rendererPrivate);
 enum {
-	kQ3XMethodTypeRendererPop = FOUR_CHAR_CODE( 'rdpo' )
+  kQ3XMethodTypeRendererPop     = FOUR_CHAR_CODE('rdpo')
 };
 
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererPopMethod )( TQ3ViewObject view, void *rendererPrivate );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererPopMethod )(TQ3ViewObject view, void *rendererPrivate);
 /******************************************************************************
  **                                                                          **
  **                         Renderer Cull Methods                            **
@@ -1490,10 +1564,10 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererPopMethod )( TQ3ViewObject view, 
  *  
  */
 enum {
-	kQ3XMethodTypeRendererIsBoundingBoxVisible = FOUR_CHAR_CODE( 'rdbx' )
+  kQ3XMethodTypeRendererIsBoundingBoxVisible = FOUR_CHAR_CODE('rdbx')
 };
 
-typedef CALLBACK_API_C( TQ3Boolean, TQ3XRendererIsBoundingBoxVisibleMethod )( TQ3ViewObject view, void *rendererPrivate, const TQ3BoundingBox *bBox );
+typedef CALLBACK_API_C( TQ3Boolean , TQ3XRendererIsBoundingBoxVisibleMethod )(TQ3ViewObject view, void *rendererPrivate, const TQ3BoundingBox *bBox);
 
 /******************************************************************************
  **                                                                          **
@@ -1518,15 +1592,15 @@ typedef CALLBACK_API_C( TQ3Boolean, TQ3XRendererIsBoundingBoxVisibleMethod )( TQ
  *  REQUIRED
  */
 enum {
-	kQ3XMethodTypeRendererSubmitGeometryMetaHandler = FOUR_CHAR_CODE( 'rdgm' )
+  kQ3XMethodTypeRendererSubmitGeometryMetaHandler = FOUR_CHAR_CODE('rdgm')
 };
 
-typedef CALLBACK_API_C( TQ3XFunctionPointer, TQ3XRendererSubmitGeometryMetaHandlerMethod )( TQ3ObjectType geometryType );
+typedef CALLBACK_API_C( TQ3XFunctionPointer , TQ3XRendererSubmitGeometryMetaHandlerMethod )(TQ3ObjectType geometryType);
 /*
  *  The TQ3XRendererSubmitGeometryMetaHandlerMethod switches on geometryType
  *  of kQ3GeometryTypeFoo and returns methods of type:
  */
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSubmitGeometryMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3GeometryObject geometry, const void *publicData );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererSubmitGeometryMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3GeometryObject geometry, const void *publicData);
 /*
  *  Camera MetaHandler
  *  
@@ -1540,15 +1614,15 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSubmitGeometryMethod )( TQ3ViewOb
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererSubmitCameraMetaHandler = FOUR_CHAR_CODE( 'rdcm' )
+  kQ3XMethodTypeRendererSubmitCameraMetaHandler = FOUR_CHAR_CODE('rdcm')
 };
 
-typedef CALLBACK_API_C( TQ3XFunctionPointer, TQ3XRendererSubmitCameraMetaHandlerMethod )( TQ3ObjectType cameraType );
+typedef CALLBACK_API_C( TQ3XFunctionPointer , TQ3XRendererSubmitCameraMetaHandlerMethod )(TQ3ObjectType cameraType);
 /*
  *  The TQ3XRendererSubmitCameraMetaHandlerMethod switches on cameraType
  *  of kQ3CameraTypeFoo and returns methods of type:
  */
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSubmitCameraMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3CameraObject camera, const void *publicData );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererSubmitCameraMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3CameraObject camera, const void *publicData);
 /*
  *  Light MetaHandler
  *  
@@ -1560,15 +1634,15 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSubmitCameraMethod )( TQ3ViewObje
  *  OPTIONAL
  */
 enum {
-	kQ3XMethodTypeRendererSubmitLightMetaHandler = FOUR_CHAR_CODE( 'rdlg' )
+  kQ3XMethodTypeRendererSubmitLightMetaHandler = FOUR_CHAR_CODE('rdlg')
 };
 
-typedef CALLBACK_API_C( TQ3XFunctionPointer, TQ3XRendererSubmitLightMetaHandlerMethod )( TQ3ObjectType lightType );
+typedef CALLBACK_API_C( TQ3XFunctionPointer , TQ3XRendererSubmitLightMetaHandlerMethod )(TQ3ObjectType lightType);
 /*
  *  The TQ3XRendererSubmitLightMetaHandlerMethod switches on lightType
  *  of kQ3LightTypeFoo and returns methods of type:
  */
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSubmitLightMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3LightObject light, const void *publicData );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererSubmitLightMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3LightObject light, const void *publicData);
 /*
  *
  *  Update methods
@@ -1586,99 +1660,100 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererSubmitLightMethod )( TQ3ViewObjec
  *  Style
  */
 enum {
-	kQ3XMethodTypeRendererUpdateStyleMetaHandler = FOUR_CHAR_CODE( 'rdyu' )
+  kQ3XMethodTypeRendererUpdateStyleMetaHandler = FOUR_CHAR_CODE('rdyu')
 };
 
-typedef CALLBACK_API_C( TQ3XFunctionPointer, TQ3XRendererUpdateStyleMetaHandlerMethod )( TQ3ObjectType styleType );
+typedef CALLBACK_API_C( TQ3XFunctionPointer , TQ3XRendererUpdateStyleMetaHandlerMethod )(TQ3ObjectType styleType);
 /*
  *  The TQ3XRendererUpdateStyleMetaHandlerMethod switches on styleType
  *  of kQ3StyleTypeFoo and returns methods of type:
  */
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererUpdateStyleMethod )( TQ3ViewObject view, void *rendererPrivate, const void *publicData );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererUpdateStyleMethod )(TQ3ViewObject view, void *rendererPrivate, const void *publicData);
 /*
  *  Attributes
  */
 enum {
-	kQ3XMethodTypeRendererUpdateAttributeMetaHandler = FOUR_CHAR_CODE( 'rdau' )
+  kQ3XMethodTypeRendererUpdateAttributeMetaHandler = FOUR_CHAR_CODE('rdau')
 };
 
-typedef CALLBACK_API_C( TQ3XFunctionPointer, TQ3XRendererUpdateAttributeMetaHandlerMethod )( TQ3AttributeType attributeType );
+typedef CALLBACK_API_C( TQ3XFunctionPointer , TQ3XRendererUpdateAttributeMetaHandlerMethod )(TQ3AttributeType attributeType);
 /*
  *  The TQ3XRendererUpdateStyleMetaHandlerMethod switches on attributeType
  *  of kQ3AttributeTypeFoo and returns methods of type:
  */
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererUpdateAttributeMethod )( TQ3ViewObject view, void *rendererPrivate, const void *publicData );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererUpdateAttributeMethod )(TQ3ViewObject view, void *rendererPrivate, const void *publicData);
 /*
  *  Shaders
  */
 enum {
-	kQ3XMethodTypeRendererUpdateShaderMetaHandler = FOUR_CHAR_CODE( 'rdsu' )
+  kQ3XMethodTypeRendererUpdateShaderMetaHandler = FOUR_CHAR_CODE('rdsu')
 };
 
-typedef CALLBACK_API_C( TQ3XFunctionPointer, TQ3XRendererUpdateShaderMetaHandlerMethod )( TQ3ObjectType shaderType );
+typedef CALLBACK_API_C( TQ3XFunctionPointer , TQ3XRendererUpdateShaderMetaHandlerMethod )(TQ3ObjectType shaderType);
 /*
  *  The TQ3XRendererUpdateShaderMetaHandlerMethod switches on shaderType
  *  of kQ3ShaderTypeFoo and returns methods of type:
  */
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererUpdateShaderMethod )( TQ3ViewObject view, void *rendererPrivate, TQ3Object *shaderObject );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererUpdateShaderMethod )(TQ3ViewObject view, void *rendererPrivate, TQ3Object *shaderObject);
 /*
  *  Matrices
  */
 enum {
-	kQ3XMethodTypeRendererUpdateMatrixMetaHandler = FOUR_CHAR_CODE( 'rdxu' )
+  kQ3XMethodTypeRendererUpdateMatrixMetaHandler = FOUR_CHAR_CODE('rdxu')
 };
 
-typedef TQ3XMetaHandler TQ3XRendererUpdateMatrixMetaHandlerMethod;
+typedef TQ3XMetaHandler                 TQ3XRendererUpdateMatrixMetaHandlerMethod;
 /*
  *  The TQ3XRendererUpdateShaderMetaHandlerMethod switches on methods
  *  of the form kQ3MethodTypeRendererUpdateMatrixFoo:
  */
 enum {
-	kQ3XMethodTypeRendererUpdateMatrixLocalToWorld = FOUR_CHAR_CODE( 'ulwx' )
+  kQ3XMethodTypeRendererUpdateMatrixLocalToWorld = FOUR_CHAR_CODE('ulwx')
 };
 
 enum {
-	kQ3XMethodTypeRendererUpdateMatrixLocalToWorldInverse = FOUR_CHAR_CODE( 'ulwi' )
+  kQ3XMethodTypeRendererUpdateMatrixLocalToWorldInverse = FOUR_CHAR_CODE('ulwi')
 };
 
 enum {
-	kQ3XMethodTypeRendererUpdateMatrixLocalToWorldInverseTranspose = FOUR_CHAR_CODE( 'ulwt' )
+  kQ3XMethodTypeRendererUpdateMatrixLocalToWorldInverseTranspose = FOUR_CHAR_CODE('ulwt')
 };
 
 enum {
-	kQ3XMethodTypeRendererUpdateMatrixLocalToCamera = FOUR_CHAR_CODE( 'ulcx' )
+  kQ3XMethodTypeRendererUpdateMatrixLocalToCamera = FOUR_CHAR_CODE('ulcx')
 };
 
 enum {
-	kQ3XMethodTypeRendererUpdateMatrixLocalToFrustum = FOUR_CHAR_CODE( 'ulfx' )
+  kQ3XMethodTypeRendererUpdateMatrixLocalToFrustum = FOUR_CHAR_CODE('ulfx')
 };
 
 enum {
-	kQ3XMethodTypeRendererUpdateMatrixWorldToFrustum = FOUR_CHAR_CODE( 'uwfx' )
+  kQ3XMethodTypeRendererUpdateMatrixWorldToFrustum = FOUR_CHAR_CODE('uwfx')
 };
 
 /*
  *  and returns methods of type:
  */
-typedef CALLBACK_API_C( TQ3Status, TQ3XRendererUpdateMatrixMethod )( TQ3ViewObject view, void *rendererPrivate, const TQ3Matrix4x4 *matrix );
+typedef CALLBACK_API_C( TQ3Status , TQ3XRendererUpdateMatrixMethod )(TQ3ViewObject view, void *rendererPrivate, const TQ3Matrix4x4 *matrix);
+
 
 #if PRAGMA_ENUM_ALWAYSINT
-#pragma enumsalwaysint reset
-#ifdef __QD3DRENDERER__RESTORE_TWOBYTEINTS
-#pragma fourbyteints off
-#endif
+    #pragma enumsalwaysint reset
+    #ifdef __QD3DRENDERER__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints off
+    #endif
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =reset
-#elif defined( __QD3DRENDERER__RESTORE_PACKED_ENUMS )
-#pragma options( pack_enums )
+    #pragma option enum=reset
+#elif defined(__QD3DRENDERER__RESTORE_PACKED_ENUMS)
+    #pragma options(pack_enums)
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1692,3 +1767,4 @@ typedef CALLBACK_API_C( TQ3Status, TQ3XRendererUpdateMatrixMethod )( TQ3ViewObje
 #endif
 
 #endif /* __QD3DRENDERER__ */
+

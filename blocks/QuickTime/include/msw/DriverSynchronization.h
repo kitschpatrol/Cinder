@@ -24,6 +24,9 @@
 #include <MacTypes.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -46,9 +49,10 @@ extern "C" {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-SynchronizeIO( void ) ONEWORDINLINE( 0x4E71 );
+SynchronizeIO(void)                                           ONEWORDINLINE(0x4E71);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  CompareAndSwap()
@@ -60,9 +64,10 @@ SynchronizeIO( void ) ONEWORDINLINE( 0x4E71 );
  */
 EXTERN_API_C( Boolean )
 CompareAndSwap(
-    UInt32  oldVvalue,
-    UInt32  newValue,
-    UInt32 *OldValueAdr );
+  UInt32    oldVvalue,
+  UInt32    newValue,
+  UInt32 *  OldValueAdr);
+
 
 /*
  *  TestAndClear()
@@ -74,8 +79,9 @@ CompareAndSwap(
  */
 EXTERN_API_C( Boolean )
 TestAndClear(
-    UInt32 bit,
-    UInt8 *startAddress );
+  UInt32   bit,
+  UInt8 *  startAddress);
+
 
 /*
  *  TestAndSet()
@@ -87,8 +93,9 @@ TestAndClear(
  */
 EXTERN_API_C( Boolean )
 TestAndSet(
-    UInt32 bit,
-    UInt8 *startAddress );
+  UInt32   bit,
+  UInt8 *  startAddress);
+
 
 /*
  *  IncrementAtomic8()
@@ -99,7 +106,8 @@ TestAndSet(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt8 )
-IncrementAtomic8( SInt8 *value );
+IncrementAtomic8(SInt8 * value);
+
 
 /*
  *  DecrementAtomic8()
@@ -110,7 +118,8 @@ IncrementAtomic8( SInt8 *value );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt8 )
-DecrementAtomic8( SInt8 *value );
+DecrementAtomic8(SInt8 * value);
+
 
 /*
  *  AddAtomic8()
@@ -122,8 +131,9 @@ DecrementAtomic8( SInt8 *value );
  */
 EXTERN_API_C( SInt8 )
 AddAtomic8(
-    SInt32 amount,
-    SInt8 *value );
+  SInt32   amount,
+  SInt8 *  value);
+
 
 /*
  *  BitAndAtomic8()
@@ -135,8 +145,9 @@ AddAtomic8(
  */
 EXTERN_API_C( UInt8 )
 BitAndAtomic8(
-    UInt32 mask,
-    UInt8 *value );
+  UInt32   mask,
+  UInt8 *  value);
+
 
 /*
  *  BitOrAtomic8()
@@ -148,8 +159,9 @@ BitAndAtomic8(
  */
 EXTERN_API_C( UInt8 )
 BitOrAtomic8(
-    UInt32 mask,
-    UInt8 *value );
+  UInt32   mask,
+  UInt8 *  value);
+
 
 /*
  *  BitXorAtomic8()
@@ -161,8 +173,9 @@ BitOrAtomic8(
  */
 EXTERN_API_C( UInt8 )
 BitXorAtomic8(
-    UInt32 mask,
-    UInt8 *value );
+  UInt32   mask,
+  UInt8 *  value);
+
 
 /*
  *  IncrementAtomic16()
@@ -173,7 +186,8 @@ BitXorAtomic8(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt16 )
-IncrementAtomic16( SInt16 *value );
+IncrementAtomic16(SInt16 * value);
+
 
 /*
  *  DecrementAtomic16()
@@ -184,7 +198,8 @@ IncrementAtomic16( SInt16 *value );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt16 )
-DecrementAtomic16( SInt16 *value );
+DecrementAtomic16(SInt16 * value);
+
 
 /*
  *  AddAtomic16()
@@ -196,8 +211,9 @@ DecrementAtomic16( SInt16 *value );
  */
 EXTERN_API_C( SInt16 )
 AddAtomic16(
-    SInt32  amount,
-    SInt16 *value );
+  SInt32    amount,
+  SInt16 *  value);
+
 
 /*
  *  BitAndAtomic16()
@@ -209,8 +225,9 @@ AddAtomic16(
  */
 EXTERN_API_C( UInt16 )
 BitAndAtomic16(
-    UInt32  mask,
-    UInt16 *value );
+  UInt32    mask,
+  UInt16 *  value);
+
 
 /*
  *  BitOrAtomic16()
@@ -222,8 +239,9 @@ BitAndAtomic16(
  */
 EXTERN_API_C( UInt16 )
 BitOrAtomic16(
-    UInt32  mask,
-    UInt16 *value );
+  UInt32    mask,
+  UInt16 *  value);
+
 
 /*
  *  BitXorAtomic16()
@@ -235,8 +253,9 @@ BitOrAtomic16(
  */
 EXTERN_API_C( UInt16 )
 BitXorAtomic16(
-    UInt32  mask,
-    UInt16 *value );
+  UInt32    mask,
+  UInt16 *  value);
+
 
 /*
  *  IncrementAtomic()
@@ -247,7 +266,8 @@ BitXorAtomic16(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt32 )
-IncrementAtomic( SInt32 *value );
+IncrementAtomic(SInt32 * value);
+
 
 /*
  *  DecrementAtomic()
@@ -258,7 +278,8 @@ IncrementAtomic( SInt32 *value );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt32 )
-DecrementAtomic( SInt32 *value );
+DecrementAtomic(SInt32 * value);
+
 
 /*
  *  AddAtomic()
@@ -270,8 +291,9 @@ DecrementAtomic( SInt32 *value );
  */
 EXTERN_API_C( SInt32 )
 AddAtomic(
-    SInt32  amount,
-    SInt32 *value );
+  SInt32    amount,
+  SInt32 *  value);
+
 
 /*
  *  BitAndAtomic()
@@ -283,8 +305,9 @@ AddAtomic(
  */
 EXTERN_API_C( UInt32 )
 BitAndAtomic(
-    UInt32  mask,
-    UInt32 *value );
+  UInt32    mask,
+  UInt32 *  value);
+
 
 /*
  *  BitOrAtomic()
@@ -296,8 +319,9 @@ BitAndAtomic(
  */
 EXTERN_API_C( UInt32 )
 BitOrAtomic(
-    UInt32  mask,
-    UInt32 *value );
+  UInt32    mask,
+  UInt32 *  value);
+
 
 /*
  *  BitXorAtomic()
@@ -309,8 +333,11 @@ BitOrAtomic(
  */
 EXTERN_API_C( UInt32 )
 BitXorAtomic(
-    UInt32  mask,
-    UInt32 *value );
+  UInt32    mask,
+  UInt32 *  value);
+
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -323,3 +350,4 @@ BitXorAtomic(
 #endif
 
 #endif /* __DRIVERSYNCHRONIZATION__ */
+

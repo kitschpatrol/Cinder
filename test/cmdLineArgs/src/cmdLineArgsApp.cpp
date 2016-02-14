@@ -7,7 +7,7 @@ using namespace std;
 
 // We'll create a new Cinder Application by deriving from the App class
 class cmdLineArgsApp : public App {
-  public:
+ public:
 	void setup();
 	void draw();
 };

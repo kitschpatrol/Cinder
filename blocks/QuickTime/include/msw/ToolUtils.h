@@ -28,6 +28,8 @@
 #include <TextUtils.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,11 +43,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /*
@@ -92,8 +94,9 @@ extern "C" {
  */
 EXTERN_API( Boolean )
 BitTst(
-    const void *bytePtr,
-    long        bitNum ) ONEWORDINLINE( 0xA85D );
+  const void *  bytePtr,
+  long          bitNum)                                       ONEWORDINLINE(0xA85D);
+
 
 /*
  *  BitSet()
@@ -105,8 +108,9 @@ BitTst(
  */
 EXTERN_API( void )
 BitSet(
-    void *bytePtr,
-    long  bitNum ) ONEWORDINLINE( 0xA85E );
+  void *  bytePtr,
+  long    bitNum)                                             ONEWORDINLINE(0xA85E);
+
 
 /*
  *  BitClr()
@@ -118,8 +122,9 @@ BitSet(
  */
 EXTERN_API( void )
 BitClr(
-    void *bytePtr,
-    long  bitNum ) ONEWORDINLINE( 0xA85F );
+  void *  bytePtr,
+  long    bitNum)                                             ONEWORDINLINE(0xA85F);
+
 
 /*
  *  BitAnd()
@@ -131,8 +136,9 @@ BitClr(
  */
 EXTERN_API( long )
 BitAnd(
-    long value1,
-    long value2 ) ONEWORDINLINE( 0xA858 );
+  long   value1,
+  long   value2)                                              ONEWORDINLINE(0xA858);
+
 
 /*
  *  BitOr()
@@ -144,8 +150,9 @@ BitAnd(
  */
 EXTERN_API( long )
 BitOr(
-    long value1,
-    long value2 ) ONEWORDINLINE( 0xA85B );
+  long   value1,
+  long   value2)                                              ONEWORDINLINE(0xA85B);
+
 
 /*
  *  BitXor()
@@ -157,8 +164,9 @@ BitOr(
  */
 EXTERN_API( long )
 BitXor(
-    long value1,
-    long value2 ) ONEWORDINLINE( 0xA859 );
+  long   value1,
+  long   value2)                                              ONEWORDINLINE(0xA859);
+
 
 /*
  *  BitNot()
@@ -169,7 +177,8 @@ BitXor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-BitNot( long value ) ONEWORDINLINE( 0xA85A );
+BitNot(long value)                                            ONEWORDINLINE(0xA85A);
+
 
 /*
  *  BitShift()
@@ -181,15 +190,16 @@ BitNot( long value ) ONEWORDINLINE( 0xA85A );
  */
 EXTERN_API( long )
 BitShift(
-    long  value,
-    short count ) ONEWORDINLINE( 0xA85C );
+  long    value,
+  short   count)                                              ONEWORDINLINE(0xA85C);
+
 
 #if TARGET_CPU_68K
 struct Int64Bit {
-	SInt32 hiLong;
-	UInt32 loLong;
+  SInt32              hiLong;
+  UInt32              loLong;
 };
-typedef struct Int64Bit Int64Bit;
+typedef struct Int64Bit                 Int64Bit;
 #if CALL_NOT_IN_CARBON
 /*
  *  LongMul()
@@ -201,25 +211,27 @@ typedef struct Int64Bit Int64Bit;
  */
 EXTERN_API( void )
 LongMul(
-    long      a,
-    long      b,
-    Int64Bit *result ) ONEWORDINLINE( 0xA867 );
+  long        a,
+  long        b,
+  Int64Bit *  result)                                         ONEWORDINLINE(0xA867);
+
 
 #else
-#define LongMul( a, b, result ) ( (void)WideMultiply( ( a ), ( b ), (wide *)( result ) ) )
-#endif /* CALL_NOT_IN_CARBON */
+    #define LongMul(a, b, result) ((void) WideMultiply((a), (b), (wide*)(result)))
+#endif  /* CALL_NOT_IN_CARBON */
 
-#endif /* TARGET_CPU_68K */
+#endif  /* TARGET_CPU_68K */
 
-#define HiWord( x ) ( (short)( (long)( x ) >> 16 ) )
-#define LoWord( x ) ( (short)( x ) )
+#define HiWord(x) ((short)((long)(x) >> 16))
+#define LoWord(x) ((short)(x))
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -233,3 +245,4 @@ LongMul(
 #endif
 
 #endif /* __TOOLUTILS__ */
+

@@ -16,6 +16,8 @@
 #ifndef __CFBUNDLE__
 #define __CFBUNDLE__
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -26,8 +28,8 @@
 
 #include <CFBase.h>
 
-typedef struct __CFBundle *CFBundleRef;
-typedef struct __CFBundle *CFPlugInRef;
+typedef struct __CFBundle*              CFBundleRef;
+typedef struct __CFBundle*              CFPlugInRef;
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -35,4 +37,6 @@ typedef struct __CFBundle *CFPlugInRef;
 #pragma import reset
 #endif
 
+
 #endif /* __CFBUNDLE__ */
+

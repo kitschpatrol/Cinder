@@ -15,7 +15,7 @@ using namespace asio::ip;
 const uint16_t destinationPort = 10001;
 
 class BroadcastSenderApp : public App {
-  public:
+public:
 	BroadcastSenderApp();
 	void setup() override;
 	void mouseDown( MouseEvent event ) override;
@@ -23,18 +23,18 @@ class BroadcastSenderApp : public App {
 	void mouseUp( MouseEvent event ) override;
 	void mouseMove( MouseEvent event ) override;
 	void draw() override;
-
+	
 	ivec2 mCurrentMousePositon;
 
 	osc::UdpSocketRef mSocket;
-	osc::SenderUdp    mSender;
+	osc::SenderUdp mSender;
 };
 
 BroadcastSenderApp::BroadcastSenderApp()
-    : mSocket( new udp::socket( App::get()->io_service(), udp::endpoint( udp::v4(), 10000 ) ) ),
-      mSender( mSocket, udp::endpoint( address_v4::broadcast(), destinationPort ) )
+: mSocket( new udp::socket( App::get()->io_service(), udp::endpoint( udp::v4(), 10000 ) ) ),
+	mSender( mSocket, udp::endpoint( address_v4::broadcast(), destinationPort ) )
 {
-	mSocket->set_option( asio::socket_base::broadcast( true ) );
+	mSocket->set_option( asio::socket_base::broadcast(true) );
 }
 
 void BroadcastSenderApp::setup()
@@ -48,7 +48,7 @@ void BroadcastSenderApp::mouseMove( cinder::app::MouseEvent event )
 	osc::Message msg( "/mousemove/1" );
 	msg.append( mCurrentMousePositon.x );
 	msg.append( mCurrentMousePositon.y );
-
+	
 	mSender.send( msg );
 }
 
@@ -57,7 +57,7 @@ void BroadcastSenderApp::mouseDown( MouseEvent event )
 	osc::Message msg( "/mouseclick/1" );
 	msg.append( (float)event.getPos().x / getWindowWidth() );
 	msg.append( (float)event.getPos().y / getWindowHeight() );
-
+	
 	mSender.send( msg );
 }
 
@@ -71,7 +71,7 @@ void BroadcastSenderApp::mouseUp( MouseEvent event )
 	osc::Message msg( "/dev/1" );
 	msg.append( (float)event.getPos().x / getWindowWidth() );
 	msg.append( (float)event.getPos().y / getWindowHeight() );
-
+	
 	mSender.send( msg );
 }
 

@@ -15,11 +15,11 @@ using namespace ci;
 
 static const std::string kPre = "   ";
 
-std::string MakeIndentedBlock( const std::stringstream &src )
+std::string MakeIndentedBlock( const std::stringstream& src )
 {
 	std::stringstream ss;
-	std::string       data = src.str();
-	if( !data.empty() ) {
+	std::string data = src.str();	
+	if( ! data.empty() ) {
 		ss << kPre;
 		for( size_t i = 0; i < data.size(); ++i ) {
 			char c = data[i];
@@ -32,7 +32,7 @@ std::string MakeIndentedBlock( const std::stringstream &src )
 	return ss.str();
 }
 
-void DoTest( const std::string &name, void ( *testFunc )( std::ostream & ) );
+void DoTest( const std::string& name, void (*testFunc)(std::ostream&) );
 
 #define DO_TEST( _FUNC_ ) \
 	DoTest( #_FUNC_, &_FUNC_ );
@@ -70,19 +70,19 @@ int main( int argc, char **argv )
 	DO_TEST( TestMatrix22<float> );
 	DO_TEST( TestMatrix33<float> );
 	DO_TEST( TestMatrix44<float> );
-
+	
 	std::cout << std::endl;
 
 	return 0;
 }
 
-void DoTest( const std::string &name, void ( *testFunc )( std::ostream &os ) )
+void DoTest( const std::string& name, void (*testFunc)( std::ostream& os ) )
 {
 	std::cout << "Testing " << name << "\n";
 	std::stringstream ss;
 	testFunc( ss );
 	std::string output = MakeIndentedBlock( ss );
-	if( !output.empty() ) {
+	if( ! output.empty() ) {
 		std::cout << output << "\n";
 	}
 	std::cout << std::endl;

@@ -5,14 +5,14 @@
  *  Copyright (c) 2004 Apple Computer, Inc. All rights reserved.
  *
  */
-
-/*! @header CVHostTime.h
+ 
+ /*! @header CVHostTime.h
 	@copyright 2004 Apple Computer, Inc. All rights reserved.
 	@availability Mac OS X 10.4 or later
     @discussion Utility functions for retrieving and working with the host time.
 */
 
-#if !defined( __COREVIDEO_CVHOSTTIME_H__ )
+#if !defined(__COREVIDEO_CVHOSTTIME_H__)
 #define __COREVIDEO_CVHOSTTIME_H__ 1
 
 #include <TargetConditionals.h>
@@ -23,7 +23,7 @@
 #include <CVBase.h>
 #endif
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -43,7 +43,7 @@ extern uint64_t CVGetCurrentHostTime() AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER
                 may be used interchangeably.
     @result     The current host frequency.
 */
-extern double CVGetHostClockFrequency() AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+extern double   CVGetHostClockFrequency() AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
 /*!
     @function   CVGetHostClockMinimumTimeDelta
@@ -52,7 +52,7 @@ extern double CVGetHostClockFrequency() AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATE
 */
 extern uint32_t CVGetHostClockMinimumTimeDelta() AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif
 

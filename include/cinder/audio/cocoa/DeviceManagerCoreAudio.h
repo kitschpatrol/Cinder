@@ -29,28 +29,27 @@
 #include <CoreAudio/CoreAudio.h>
 #include <map>
 
-namespace cinder {
-namespace audio {
-namespace cocoa {
+namespace cinder { namespace audio { namespace cocoa {
 
 class DeviceManagerCoreAudio : public DeviceManager {
   public:
 	DeviceManagerCoreAudio();
 
-	const std::vector<DeviceRef> &getDevices() override;
-	DeviceRef                     getDefaultOutput() override;
-	DeviceRef                     getDefaultInput() override;
+	const std::vector<DeviceRef>& getDevices()									override;
+	DeviceRef getDefaultOutput()												override;
+	DeviceRef getDefaultInput()													override;
 
-	std::string getName( const DeviceRef &device ) override;
-	size_t getNumInputChannels( const DeviceRef &device ) override;
-	size_t getNumOutputChannels( const DeviceRef &device ) override;
-	size_t getSampleRate( const DeviceRef &device ) override;
-	size_t getFramesPerBlock( const DeviceRef &device ) override;
+	std::string getName( const DeviceRef &device )								override;
+	size_t getNumInputChannels( const DeviceRef &device )						override;
+	size_t getNumOutputChannels( const DeviceRef &device )						override;
+	size_t getSampleRate( const DeviceRef &device )								override;
+	size_t getFramesPerBlock( const DeviceRef &device )							override;
 
-	void setSampleRate( const DeviceRef &device, size_t sampleRate ) override;
-	void setFramesPerBlock( const DeviceRef &device, size_t framesPerBlock ) override;
+	void setSampleRate( const DeviceRef &device, size_t sampleRate )				override;
+	void setFramesPerBlock( const DeviceRef &device, size_t framesPerBlock )		override;
 
-	bool isFormatUpdatedAsync() const override { return true; }
+	bool			isFormatUpdatedAsync() const override		{ return true; }
+
 	//! Sets the device related to \a key and managed by \a componenetInstance as the current active audio device.
 	void setCurrentOutputDevice( const DeviceRef &device, ::AudioComponentInstance componentInstance );
 	void setCurrentInputDevice( const DeviceRef &device, ::AudioComponentInstance componentInstance );
@@ -61,19 +60,18 @@ class DeviceManagerCoreAudio : public DeviceManager {
 	void registerPropertyListeners( DeviceRef device, ::AudioDeviceID deviceId, bool isOutput );
 	void unregisterPropertyListeners( const DeviceRef &device, ::AudioDeviceID deviceId, bool isOutput );
 
-	std::vector<size_t> getAcceptableSampleRates(::AudioDeviceID deviceId );
-	std::pair<size_t, size_t> getAcceptableFramesPerBlockRange(::AudioDeviceID deviceId );
+	std::vector<size_t>			getAcceptableSampleRates( ::AudioDeviceID deviceId );
+	std::pair<size_t, size_t>	getAcceptableFramesPerBlockRange( ::AudioDeviceID deviceId );
 
-	static std::string keyForDeviceId(::AudioDeviceID deviceId );
+	static std::string keyForDeviceId( ::AudioDeviceID deviceId );
 
-	std::map<DeviceRef, ::AudioDeviceID> mDeviceIds;
-	DeviceRef                          mCurrentOutputDevice, mCurrentInputDevice;
-	::AudioObjectPropertyListenerBlock mOutputDeviceListenerBlock, mInputDeviceListenerBlock;
+	std::map<DeviceRef, ::AudioDeviceID>	mDeviceIds;
+	DeviceRef								mCurrentOutputDevice, mCurrentInputDevice;
+	::AudioObjectPropertyListenerBlock		mOutputDeviceListenerBlock, mInputDeviceListenerBlock;
 
-	bool mUserHasModifiedFormat; // flag that indicates the user has modified device format, rather than a system update.
+	bool									mUserHasModifiedFormat; // flag that indicates the user has modified device format, rather than a system update.
 
 	friend class Context;
 };
-}
-}
-} // namespace cinder::audio::cocoa
+
+} } } // namespace cinder::audio::cocoa

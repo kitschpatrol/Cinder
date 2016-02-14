@@ -20,6 +20,8 @@
 #include <ConditionalMacros.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -33,11 +35,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 #ifdef __VEC__
@@ -120,179 +122,180 @@ extern "C" {
 ************************************************************************************/
 
 union vU128 {
-	vector unsigned int v;
-	struct {
-		unsigned long MSW;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long LSW;
-	} s;
+  vector unsigned int  v;
+  struct {
+    unsigned long       MSW;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       LSW;
+  }                       s;
 };
-typedef union vU128 vU128;
+typedef union vU128                     vU128;
 union vS128 {
-	vector unsigned int v;
-	struct {
-		signed long   MSW;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long LSW;
-	} s;
+  vector unsigned int  v;
+  struct {
+    signed long         MSW;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       LSW;
+  }                       s;
 };
-typedef union vS128 vS128;
+typedef union vS128                     vS128;
 union vU256 {
-	vector unsigned int v[2];
-	struct {
-		unsigned long MSW;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long d4;
-		unsigned long d5;
-		unsigned long d6;
-		unsigned long d7;
-		unsigned long LSW;
-	} s;
+  vector unsigned int  v[2];
+  struct {
+    unsigned long       MSW;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       d4;
+    unsigned long       d5;
+    unsigned long       d6;
+    unsigned long       d7;
+    unsigned long       LSW;
+  }                       s;
 };
-typedef union vU256 vU256;
+typedef union vU256                     vU256;
 union vS256 {
-	vector unsigned int v[2];
-	struct {
-		signed long   MSW;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long d4;
-		unsigned long d5;
-		unsigned long d6;
-		unsigned long d7;
-		unsigned long LSW;
-	} s;
+  vector unsigned int  v[2];
+  struct {
+    signed long         MSW;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       d4;
+    unsigned long       d5;
+    unsigned long       d6;
+    unsigned long       d7;
+    unsigned long       LSW;
+  }                       s;
 };
-typedef union vS256 vS256;
+typedef union vS256                     vS256;
 union vU512 {
-	vector unsigned int v[4];
-	struct {
-		unsigned long MSB;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long d4;
-		unsigned long d5;
-		unsigned long d6;
-		unsigned long d7;
-		unsigned long d8;
-		unsigned long d9;
-		unsigned long d10;
-		unsigned long d11;
-		unsigned long d12;
-		unsigned long d13;
-		unsigned long d14;
-		unsigned long d15;
-		unsigned long LSB;
-	} s;
+  vector unsigned int  v[4];
+  struct {
+    unsigned long       MSB;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       d4;
+    unsigned long       d5;
+    unsigned long       d6;
+    unsigned long       d7;
+    unsigned long       d8;
+    unsigned long       d9;
+    unsigned long       d10;
+    unsigned long       d11;
+    unsigned long       d12;
+    unsigned long       d13;
+    unsigned long       d14;
+    unsigned long       d15;
+    unsigned long       LSB;
+  }                       s;
 };
-typedef union vU512 vU512;
+typedef union vU512                     vU512;
 union vS512 {
-	vector unsigned int v[4];
-	struct {
-		signed long   MSW;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long d4;
-		unsigned long d5;
-		unsigned long d6;
-		unsigned long d7;
-		unsigned long d8;
-		unsigned long d9;
-		unsigned long d10;
-		unsigned long d11;
-		unsigned long d12;
-		unsigned long d13;
-		unsigned long d14;
-		unsigned long d15;
-		unsigned long LSW;
-	} s;
+  vector unsigned int  v[4];
+  struct {
+    signed long         MSW;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       d4;
+    unsigned long       d5;
+    unsigned long       d6;
+    unsigned long       d7;
+    unsigned long       d8;
+    unsigned long       d9;
+    unsigned long       d10;
+    unsigned long       d11;
+    unsigned long       d12;
+    unsigned long       d13;
+    unsigned long       d14;
+    unsigned long       d15;
+    unsigned long       LSW;
+  }                       s;
 };
-typedef union vS512 vS512;
+typedef union vS512                     vS512;
 union vU1024 {
-	vector unsigned int v[8];
-	struct {
-		unsigned long MSW;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long d4;
-		unsigned long d5;
-		unsigned long d6;
-		unsigned long d7;
-		unsigned long d8;
-		unsigned long d9;
-		unsigned long d10;
-		unsigned long d11;
-		unsigned long d12;
-		unsigned long d13;
-		unsigned long d14;
-		unsigned long d15;
-		unsigned long d16;
-		unsigned long d17;
-		unsigned long d18;
-		unsigned long d19;
-		unsigned long d20;
-		unsigned long d21;
-		unsigned long d22;
-		unsigned long d23;
-		unsigned long d24;
-		unsigned long d25;
-		unsigned long d26;
-		unsigned long d27;
-		unsigned long d28;
-		unsigned long d29;
-		unsigned long d30;
-		unsigned long d31;
-		unsigned long LSW;
-	} s;
+  vector unsigned int  v[8];
+  struct {
+    unsigned long       MSW;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       d4;
+    unsigned long       d5;
+    unsigned long       d6;
+    unsigned long       d7;
+    unsigned long       d8;
+    unsigned long       d9;
+    unsigned long       d10;
+    unsigned long       d11;
+    unsigned long       d12;
+    unsigned long       d13;
+    unsigned long       d14;
+    unsigned long       d15;
+    unsigned long       d16;
+    unsigned long       d17;
+    unsigned long       d18;
+    unsigned long       d19;
+    unsigned long       d20;
+    unsigned long       d21;
+    unsigned long       d22;
+    unsigned long       d23;
+    unsigned long       d24;
+    unsigned long       d25;
+    unsigned long       d26;
+    unsigned long       d27;
+    unsigned long       d28;
+    unsigned long       d29;
+    unsigned long       d30;
+    unsigned long       d31;
+    unsigned long       LSW;
+  }                       s;
 };
-typedef union vU1024 vU1024;
+typedef union vU1024                    vU1024;
 union vS1024 {
-	vector unsigned int v[8];
-	struct {
-		signed long   MSW;
-		unsigned long d2;
-		unsigned long d3;
-		unsigned long d4;
-		unsigned long d5;
-		unsigned long d6;
-		unsigned long d7;
-		unsigned long d8;
-		unsigned long d9;
-		unsigned long d10;
-		unsigned long d11;
-		unsigned long d12;
-		unsigned long d13;
-		unsigned long d14;
-		unsigned long d15;
-		unsigned long d16;
-		unsigned long d17;
-		unsigned long d18;
-		unsigned long d19;
-		unsigned long d20;
-		unsigned long d21;
-		unsigned long d22;
-		unsigned long d23;
-		unsigned long d24;
-		unsigned long d25;
-		unsigned long d26;
-		unsigned long d27;
-		unsigned long d28;
-		unsigned long d29;
-		unsigned long d30;
-		unsigned long d31;
-		unsigned long LSW;
-	} s;
+  vector unsigned int  v[8];
+  struct {
+    signed long         MSW;
+    unsigned long       d2;
+    unsigned long       d3;
+    unsigned long       d4;
+    unsigned long       d5;
+    unsigned long       d6;
+    unsigned long       d7;
+    unsigned long       d8;
+    unsigned long       d9;
+    unsigned long       d10;
+    unsigned long       d11;
+    unsigned long       d12;
+    unsigned long       d13;
+    unsigned long       d14;
+    unsigned long       d15;
+    unsigned long       d16;
+    unsigned long       d17;
+    unsigned long       d18;
+    unsigned long       d19;
+    unsigned long       d20;
+    unsigned long       d21;
+    unsigned long       d22;
+    unsigned long       d23;
+    unsigned long       d24;
+    unsigned long       d25;
+    unsigned long       d26;
+    unsigned long       d27;
+    unsigned long       d28;
+    unsigned long       d29;
+    unsigned long       d30;
+    unsigned long       d31;
+    unsigned long       LSW;
+  }                       s;
 };
-typedef union vS1024 vS1024;
+typedef union vS1024                    vS1024;
 
 /************************************************************************************
 *                                                                                   *
 *                                Division operations                                *
 *                                                                                   *
 ************************************************************************************/
+
 
 /*
  *  vU256Divide()
@@ -304,10 +307,11 @@ typedef union vS1024 vS1024;
  */
 EXTERN_API_C( void )
 vU256Divide(
-    const vU256 *numerator,
-    const vU256 *divisor,
-    vU256 *      result,
-    vU256 *      remainder );
+  const vU256 *  numerator,
+  const vU256 *  divisor,
+  vU256 *        result,
+  vU256 *        remainder);
+
 
 /*
  *  vS256Divide()
@@ -319,10 +323,11 @@ vU256Divide(
  */
 EXTERN_API_C( void )
 vS256Divide(
-    const vS256 *numerator,
-    const vS256 *divisor,
-    vS256 *      result,
-    vS256 *      remainder );
+  const vS256 *  numerator,
+  const vS256 *  divisor,
+  vS256 *        result,
+  vS256 *        remainder);
+
 
 /*
  *  vU512Divide()
@@ -334,10 +339,11 @@ vS256Divide(
  */
 EXTERN_API_C( void )
 vU512Divide(
-    const vU512 *numerator,
-    const vU512 *divisor,
-    vU512 *      result,
-    vU512 *      remainder );
+  const vU512 *  numerator,
+  const vU512 *  divisor,
+  vU512 *        result,
+  vU512 *        remainder);
+
 
 /*
  *  vS512Divide()
@@ -349,10 +355,11 @@ vU512Divide(
  */
 EXTERN_API_C( void )
 vS512Divide(
-    const vS512 *numerator,
-    const vS512 *divisor,
-    vS512 *      result,
-    vS512 *      remainder );
+  const vS512 *  numerator,
+  const vS512 *  divisor,
+  vS512 *        result,
+  vS512 *        remainder);
+
 
 /*
  *  vU1024Divide()
@@ -364,10 +371,11 @@ vS512Divide(
  */
 EXTERN_API_C( void )
 vU1024Divide(
-    const vU1024 *numerator,
-    const vU1024 *divisor,
-    vU1024 *      result,
-    vU1024 *      remainder );
+  const vU1024 *  numerator,
+  const vU1024 *  divisor,
+  vU1024 *        result,
+  vU1024 *        remainder);
+
 
 /*
  *  vS1024Divide()
@@ -379,10 +387,12 @@ vU1024Divide(
  */
 EXTERN_API_C( void )
 vS1024Divide(
-    const vS1024 *numerator,
-    const vS1024 *divisor,
-    vS1024 *      result,
-    vS1024 *      remainder );
+  const vS1024 *  numerator,
+  const vS1024 *  divisor,
+  vS1024 *        result,
+  vS1024 *        remainder);
+
+
 
 /************************************************************************************
 *                                                                                   *
@@ -400,9 +410,10 @@ vS1024Divide(
  */
 EXTERN_API_C( void )
 vU128FullMultiply(
-    const vU128 *a,
-    const vU128 *b,
-    vU256 *      result );
+  const vU128 *  a,
+  const vU128 *  b,
+  vU256 *        result);
+
 
 /*
  *  vS128FullMultiply()
@@ -414,9 +425,10 @@ vU128FullMultiply(
  */
 EXTERN_API_C( void )
 vS128FullMultiply(
-    const vS128 *a,
-    const vS128 *b,
-    vS256 *      result );
+  const vS128 *  a,
+  const vS128 *  b,
+  vS256 *        result);
+
 
 /*
  *  vU256FullMultiply()
@@ -428,9 +440,10 @@ vS128FullMultiply(
  */
 EXTERN_API_C( void )
 vU256FullMultiply(
-    const vU256 *a,
-    const vU256 *b,
-    vU512 *      result );
+  const vU256 *  a,
+  const vU256 *  b,
+  vU512 *        result);
+
 
 /*
  *  vS256FullMultiply()
@@ -442,9 +455,10 @@ vU256FullMultiply(
  */
 EXTERN_API_C( void )
 vS256FullMultiply(
-    const vS256 *a,
-    const vS256 *b,
-    vS512 *      result );
+  const vS256 *  a,
+  const vS256 *  b,
+  vS512 *        result);
+
 
 /*
  *  vU512FullMultiply()
@@ -456,9 +470,10 @@ vS256FullMultiply(
  */
 EXTERN_API_C( void )
 vU512FullMultiply(
-    const vU512 *a,
-    const vU512 *b,
-    vU1024 *     result );
+  const vU512 *  a,
+  const vU512 *  b,
+  vU1024 *       result);
+
 
 /*
  *  vS512FullMultiply()
@@ -470,9 +485,10 @@ vU512FullMultiply(
  */
 EXTERN_API_C( void )
 vS512FullMultiply(
-    const vS512 *a,
-    const vS512 *b,
-    vS1024 *     result );
+  const vS512 *  a,
+  const vS512 *  b,
+  vS1024 *       result);
+
 
 /*
  *  vU256HalfMultiply()
@@ -484,9 +500,10 @@ vS512FullMultiply(
  */
 EXTERN_API_C( void )
 vU256HalfMultiply(
-    const vU256 *a,
-    const vU256 *b,
-    vU256 *      result );
+  const vU256 *  a,
+  const vU256 *  b,
+  vU256 *        result);
+
 
 /*
  *  vS256HalfMultiply()
@@ -498,9 +515,10 @@ vU256HalfMultiply(
  */
 EXTERN_API_C( void )
 vS256HalfMultiply(
-    const vS256 *a,
-    const vS256 *b,
-    vS256 *      result );
+  const vS256 *  a,
+  const vS256 *  b,
+  vS256 *        result);
+
 
 /*
  *  vU512HalfMultiply()
@@ -512,9 +530,10 @@ vS256HalfMultiply(
  */
 EXTERN_API_C( void )
 vU512HalfMultiply(
-    const vU512 *a,
-    const vU512 *b,
-    vU512 *      result );
+  const vU512 *  a,
+  const vU512 *  b,
+  vU512 *        result);
+
 
 /*
  *  vS512HalfMultiply()
@@ -526,9 +545,10 @@ vU512HalfMultiply(
  */
 EXTERN_API_C( void )
 vS512HalfMultiply(
-    const vS512 *a,
-    const vS512 *b,
-    vS512 *      result );
+  const vS512 *  a,
+  const vS512 *  b,
+  vS512 *        result);
+
 
 /*
  *  vU1024HalfMultiply()
@@ -540,9 +560,10 @@ vS512HalfMultiply(
  */
 EXTERN_API_C( void )
 vU1024HalfMultiply(
-    const vU1024 *a,
-    const vU1024 *b,
-    vU1024 *      result );
+  const vU1024 *  a,
+  const vU1024 *  b,
+  vU1024 *        result);
+
 
 /*
  *  vS1024HalfMultiply()
@@ -554,9 +575,11 @@ vU1024HalfMultiply(
  */
 EXTERN_API_C( void )
 vS1024HalfMultiply(
-    const vS1024 *a,
-    const vS1024 *b,
-    vS1024 *      result );
+  const vS1024 *  a,
+  const vS1024 *  b,
+  vS1024 *        result);
+
+
 
 /************************************************************************************
 *                                                                                   *
@@ -574,9 +597,10 @@ vS1024HalfMultiply(
  */
 EXTERN_API_C( void )
 vU256Sub(
-    const vU256 *a,
-    const vU256 *b,
-    vU256 *      result );
+  const vU256 *  a,
+  const vU256 *  b,
+  vU256 *        result);
+
 
 /*
  *  vS256Sub()
@@ -588,9 +612,10 @@ vU256Sub(
  */
 EXTERN_API_C( void )
 vS256Sub(
-    const vS256 *a,
-    const vS256 *b,
-    vS256 *      result );
+  const vS256 *  a,
+  const vS256 *  b,
+  vS256 *        result);
+
 
 /*
  *  vU256SubS()
@@ -602,9 +627,10 @@ vS256Sub(
  */
 EXTERN_API_C( void )
 vU256SubS(
-    const vU256 *a,
-    const vU256 *b,
-    vU256 *      result );
+  const vU256 *  a,
+  const vU256 *  b,
+  vU256 *        result);
+
 
 /*
  *  vS256SubS()
@@ -616,9 +642,10 @@ vU256SubS(
  */
 EXTERN_API_C( void )
 vS256SubS(
-    const vS256 *a,
-    const vS256 *b,
-    vS256 *      result );
+  const vS256 *  a,
+  const vS256 *  b,
+  vS256 *        result);
+
 
 /*
  *  vU512Sub()
@@ -630,9 +657,10 @@ vS256SubS(
  */
 EXTERN_API_C( void )
 vU512Sub(
-    const vU512 *a,
-    const vU512 *b,
-    vU512 *      result );
+  const vU512 *  a,
+  const vU512 *  b,
+  vU512 *        result);
+
 
 /*
  *  vS512Sub()
@@ -644,9 +672,10 @@ vU512Sub(
  */
 EXTERN_API_C( void )
 vS512Sub(
-    const vS512 *a,
-    const vS512 *b,
-    vS512 *      result );
+  const vS512 *  a,
+  const vS512 *  b,
+  vS512 *        result);
+
 
 /*
  *  vU512SubS()
@@ -658,9 +687,10 @@ vS512Sub(
  */
 EXTERN_API_C( void )
 vU512SubS(
-    const vU512 *a,
-    const vU512 *b,
-    vU512 *      result );
+  const vU512 *  a,
+  const vU512 *  b,
+  vU512 *        result);
+
 
 /*
  *  vS512SubS()
@@ -672,9 +702,10 @@ vU512SubS(
  */
 EXTERN_API_C( void )
 vS512SubS(
-    const vS512 *a,
-    const vS512 *b,
-    vS512 *      result );
+  const vS512 *  a,
+  const vS512 *  b,
+  vS512 *        result);
+
 
 /*
  *  vU1024Sub()
@@ -686,9 +717,10 @@ vS512SubS(
  */
 EXTERN_API_C( void )
 vU1024Sub(
-    const vU1024 *a,
-    const vU1024 *b,
-    vU1024 *      result );
+  const vU1024 *  a,
+  const vU1024 *  b,
+  vU1024 *        result);
+
 
 /*
  *  vS1024Sub()
@@ -700,9 +732,10 @@ vU1024Sub(
  */
 EXTERN_API_C( void )
 vS1024Sub(
-    const vS1024 *a,
-    const vS1024 *b,
-    vS1024 *      result );
+  const vS1024 *  a,
+  const vS1024 *  b,
+  vS1024 *        result);
+
 
 /*
  *  vU1024SubS()
@@ -714,9 +747,10 @@ vS1024Sub(
  */
 EXTERN_API_C( void )
 vU1024SubS(
-    const vU1024 *a,
-    const vU1024 *b,
-    vU1024 *      result );
+  const vU1024 *  a,
+  const vU1024 *  b,
+  vU1024 *        result);
+
 
 /*
  *  vS1024SubS()
@@ -728,9 +762,11 @@ vU1024SubS(
  */
 EXTERN_API_C( void )
 vS1024SubS(
-    const vS1024 *a,
-    const vS1024 *b,
-    vS1024 *      result );
+  const vS1024 *  a,
+  const vS1024 *  b,
+  vS1024 *        result);
+
+
 
 /************************************************************************************
 *                                                                                   *
@@ -748,8 +784,9 @@ vS1024SubS(
  */
 EXTERN_API_C( void )
 vU256Neg(
-    const vU256 *a,
-    vU256 *      result );
+  const vU256 *  a,
+  vU256 *        result);
+
 
 /*
  *  vS256Neg()
@@ -761,8 +798,9 @@ vU256Neg(
  */
 EXTERN_API_C( void )
 vS256Neg(
-    const vS256 *a,
-    vS256 *      result );
+  const vS256 *  a,
+  vS256 *        result);
+
 
 /*
  *  vU512Neg()
@@ -774,8 +812,9 @@ vS256Neg(
  */
 EXTERN_API_C( void )
 vU512Neg(
-    const vU512 *a,
-    vU512 *      result );
+  const vU512 *  a,
+  vU512 *        result);
+
 
 /*
  *  vS512Neg()
@@ -787,8 +826,9 @@ vU512Neg(
  */
 EXTERN_API_C( void )
 vS512Neg(
-    const vS512 *a,
-    vS512 *      result );
+  const vS512 *  a,
+  vS512 *        result);
+
 
 /*
  *  vU1024Neg()
@@ -800,8 +840,9 @@ vS512Neg(
  */
 EXTERN_API_C( void )
 vU1024Neg(
-    const vU1024 *a,
-    vU1024 *      result );
+  const vU1024 *  a,
+  vU1024 *        result);
+
 
 /*
  *  vS1024Neg()
@@ -813,8 +854,10 @@ vU1024Neg(
  */
 EXTERN_API_C( void )
 vS1024Neg(
-    const vS1024 *a,
-    vS1024 *      result );
+  const vS1024 *  a,
+  vS1024 *        result);
+
+
 
 /************************************************************************************
 *                                                                                   *
@@ -832,9 +875,10 @@ vS1024Neg(
  */
 EXTERN_API_C( void )
 vU256Add(
-    const vU256 *a,
-    const vU256 *b,
-    vU256 *      result );
+  const vU256 *  a,
+  const vU256 *  b,
+  vU256 *        result);
+
 
 /*
  *  vS256Add()
@@ -846,9 +890,10 @@ vU256Add(
  */
 EXTERN_API_C( void )
 vS256Add(
-    const vS256 *a,
-    const vS256 *b,
-    vS256 *      result );
+  const vS256 *  a,
+  const vS256 *  b,
+  vS256 *        result);
+
 
 /*
  *  vU256AddS()
@@ -860,9 +905,10 @@ vS256Add(
  */
 EXTERN_API_C( void )
 vU256AddS(
-    const vU256 *a,
-    const vU256 *b,
-    vU256 *      result );
+  const vU256 *  a,
+  const vU256 *  b,
+  vU256 *        result);
+
 
 /*
  *  vS256AddS()
@@ -874,9 +920,10 @@ vU256AddS(
  */
 EXTERN_API_C( void )
 vS256AddS(
-    const vS256 *a,
-    const vS256 *b,
-    vS256 *      result );
+  const vS256 *  a,
+  const vS256 *  b,
+  vS256 *        result);
+
 
 /*
  *  vU512Add()
@@ -888,9 +935,10 @@ vS256AddS(
  */
 EXTERN_API_C( void )
 vU512Add(
-    const vU512 *a,
-    const vU512 *b,
-    vU512 *      result );
+  const vU512 *  a,
+  const vU512 *  b,
+  vU512 *        result);
+
 
 /*
  *  vS512Add()
@@ -902,9 +950,10 @@ vU512Add(
  */
 EXTERN_API_C( void )
 vS512Add(
-    const vS512 *a,
-    const vS512 *b,
-    vS512 *      result );
+  const vS512 *  a,
+  const vS512 *  b,
+  vS512 *        result);
+
 
 /*
  *  vU512AddS()
@@ -916,9 +965,10 @@ vS512Add(
  */
 EXTERN_API_C( void )
 vU512AddS(
-    const vU512 *a,
-    const vU512 *b,
-    vU512 *      result );
+  const vU512 *  a,
+  const vU512 *  b,
+  vU512 *        result);
+
 
 /*
  *  vS512AddS()
@@ -930,9 +980,10 @@ vU512AddS(
  */
 EXTERN_API_C( void )
 vS512AddS(
-    const vS512 *a,
-    const vS512 *b,
-    vS512 *      result );
+  const vS512 *  a,
+  const vS512 *  b,
+  vS512 *        result);
+
 
 /*
  *  vU1024Add()
@@ -944,9 +995,10 @@ vS512AddS(
  */
 EXTERN_API_C( void )
 vU1024Add(
-    const vU1024 *a,
-    const vU1024 *b,
-    vU1024 *      result );
+  const vU1024 *  a,
+  const vU1024 *  b,
+  vU1024 *        result);
+
 
 /*
  *  vS1024Add()
@@ -958,9 +1010,10 @@ vU1024Add(
  */
 EXTERN_API_C( void )
 vS1024Add(
-    const vS1024 *a,
-    const vS1024 *b,
-    vS1024 *      result );
+  const vS1024 *  a,
+  const vS1024 *  b,
+  vS1024 *        result);
+
 
 /*
  *  vU1024AddS()
@@ -972,9 +1025,10 @@ vS1024Add(
  */
 EXTERN_API_C( void )
 vU1024AddS(
-    const vU1024 *a,
-    const vU1024 *b,
-    vU1024 *      result );
+  const vU1024 *  a,
+  const vU1024 *  b,
+  vU1024 *        result);
+
 
 /*
  *  vS1024AddS()
@@ -986,9 +1040,11 @@ vU1024AddS(
  */
 EXTERN_API_C( void )
 vS1024AddS(
-    const vS1024 *a,
-    const vS1024 *b,
-    vS1024 *      result );
+  const vS1024 *  a,
+  const vS1024 *  b,
+  vS1024 *        result);
+
+
 
 /************************************************************************************
 *                                                                                   *
@@ -1006,9 +1062,10 @@ vS1024AddS(
  */
 EXTERN_API_C( void )
 vU256Mod(
-    const vU256 *numerator,
-    const vU256 *divisor,
-    vU256 *      remainder );
+  const vU256 *  numerator,
+  const vU256 *  divisor,
+  vU256 *        remainder);
+
 
 /*
  *  vS256Mod()
@@ -1020,9 +1077,10 @@ vU256Mod(
  */
 EXTERN_API_C( void )
 vS256Mod(
-    const vS256 *numerator,
-    const vS256 *divisor,
-    vS256 *      remainder );
+  const vS256 *  numerator,
+  const vS256 *  divisor,
+  vS256 *        remainder);
+
 
 /*
  *  vU512Mod()
@@ -1034,9 +1092,10 @@ vS256Mod(
  */
 EXTERN_API_C( void )
 vU512Mod(
-    const vU512 *numerator,
-    const vU512 *divisor,
-    vU512 *      remainder );
+  const vU512 *  numerator,
+  const vU512 *  divisor,
+  vU512 *        remainder);
+
 
 /*
  *  vS512Mod()
@@ -1048,9 +1107,10 @@ vU512Mod(
  */
 EXTERN_API_C( void )
 vS512Mod(
-    const vS512 *numerator,
-    const vS512 *divisor,
-    vS512 *      remainder );
+  const vS512 *  numerator,
+  const vS512 *  divisor,
+  vS512 *        remainder);
+
 
 /*
  *  vU1024Mod()
@@ -1062,9 +1122,10 @@ vS512Mod(
  */
 EXTERN_API_C( void )
 vU1024Mod(
-    const vU1024 *numerator,
-    const vU1024 *divisor,
-    vU1024 *      remainder );
+  const vU1024 *  numerator,
+  const vU1024 *  divisor,
+  vU1024 *        remainder);
+
 
 /*
  *  vS1024Mod()
@@ -1076,9 +1137,11 @@ vU1024Mod(
  */
 EXTERN_API_C( void )
 vS1024Mod(
-    const vS1024 *numerator,
-    const vS1024 *divisor,
-    vS1024 *      remainder );
+  const vS1024 *  numerator,
+  const vS1024 *  divisor,
+  vS1024 *        remainder);
+
+
 
 /************************************************************************************
 *                                                                                   *
@@ -1096,9 +1159,10 @@ vS1024Mod(
  */
 EXTERN_API_C( void )
 vLL256Shift(
-    const vU256 * a,
-    unsigned long shiftAmount,
-    vU256 *       result );
+  const vU256 *   a,
+  unsigned long   shiftAmount,
+  vU256 *         result);
+
 
 /*
  *  vLL512Shift()
@@ -1110,9 +1174,10 @@ vLL256Shift(
  */
 EXTERN_API_C( void )
 vLL512Shift(
-    const vU512 * a,
-    unsigned long shiftAmount,
-    vU512 *       result );
+  const vU512 *   a,
+  unsigned long   shiftAmount,
+  vU512 *         result);
+
 
 /*
  *  vLL1024Shift()
@@ -1124,9 +1189,10 @@ vLL512Shift(
  */
 EXTERN_API_C( void )
 vLL1024Shift(
-    const vU1024 *a,
-    unsigned long shiftAmount,
-    vU1024 *      result );
+  const vU1024 *  a,
+  unsigned long   shiftAmount,
+  vU1024 *        result);
+
 
 /*
  *  vLR256Shift()
@@ -1138,9 +1204,10 @@ vLL1024Shift(
  */
 EXTERN_API_C( void )
 vLR256Shift(
-    const vU256 * a,
-    unsigned long shiftAmount,
-    vU256 *       result );
+  const vU256 *   a,
+  unsigned long   shiftAmount,
+  vU256 *         result);
+
 
 /*
  *  vLR512Shift()
@@ -1152,9 +1219,10 @@ vLR256Shift(
  */
 EXTERN_API_C( void )
 vLR512Shift(
-    const vU512 * a,
-    unsigned long shiftAmount,
-    vU512 *       result );
+  const vU512 *   a,
+  unsigned long   shiftAmount,
+  vU512 *         result);
+
 
 /*
  *  vLR1024Shift()
@@ -1166,9 +1234,10 @@ vLR512Shift(
  */
 EXTERN_API_C( void )
 vLR1024Shift(
-    const vU1024 *a,
-    unsigned long shiftAmount,
-    vU1024 *      result );
+  const vU1024 *  a,
+  unsigned long   shiftAmount,
+  vU1024 *        result);
+
 
 /*
  *  vA256Shift()
@@ -1180,9 +1249,10 @@ vLR1024Shift(
  */
 EXTERN_API_C( void )
 vA256Shift(
-    const vS256 * a,
-    unsigned long shiftAmount,
-    vS256 *       result );
+  const vS256 *   a,
+  unsigned long   shiftAmount,
+  vS256 *         result);
+
 
 /*
  *  vA512Shift()
@@ -1194,9 +1264,10 @@ vA256Shift(
  */
 EXTERN_API_C( void )
 vA512Shift(
-    const vS512 * a,
-    unsigned long shiftAmount,
-    vS512 *       result );
+  const vS512 *   a,
+  unsigned long   shiftAmount,
+  vS512 *         result);
+
 
 /*
  *  vA1024Shift()
@@ -1208,9 +1279,11 @@ vA512Shift(
  */
 EXTERN_API_C( void )
 vA1024Shift(
-    const vS1024 *a,
-    unsigned long shiftAmount,
-    vS1024 *      result );
+  const vS1024 *  a,
+  unsigned long   shiftAmount,
+  vS1024 *        result);
+
+
 
 /************************************************************************************
 *                                                                                   *
@@ -1228,9 +1301,10 @@ vA1024Shift(
  */
 EXTERN_API_C( void )
 vL256Rotate(
-    const vU256 * a,
-    unsigned long rotateAmount,
-    vU256 *       result );
+  const vU256 *   a,
+  unsigned long   rotateAmount,
+  vU256 *         result);
+
 
 /*
  *  vL512Rotate()
@@ -1242,9 +1316,10 @@ vL256Rotate(
  */
 EXTERN_API_C( void )
 vL512Rotate(
-    const vU512 * a,
-    unsigned long rotateAmount,
-    vU512 *       result );
+  const vU512 *   a,
+  unsigned long   rotateAmount,
+  vU512 *         result);
+
 
 /*
  *  vL1024Rotate()
@@ -1256,9 +1331,10 @@ vL512Rotate(
  */
 EXTERN_API_C( void )
 vL1024Rotate(
-    const vU1024 *a,
-    unsigned long rotateAmount,
-    vU1024 *      result );
+  const vU1024 *  a,
+  unsigned long   rotateAmount,
+  vU1024 *        result);
+
 
 /*
  *  vR256Rotate()
@@ -1270,9 +1346,10 @@ vL1024Rotate(
  */
 EXTERN_API_C( void )
 vR256Rotate(
-    const vU256 * a,
-    unsigned long rotateAmount,
-    vU256 *       result );
+  const vU256 *   a,
+  unsigned long   rotateAmount,
+  vU256 *         result);
+
 
 /*
  *  vR512Rotate()
@@ -1284,9 +1361,10 @@ vR256Rotate(
  */
 EXTERN_API_C( void )
 vR512Rotate(
-    const vU512 * a,
-    unsigned long rotateAmount,
-    vU512 *       result );
+  const vU512 *   a,
+  unsigned long   rotateAmount,
+  vU512 *         result);
+
 
 /*
  *  vR1024Rotate()
@@ -1298,18 +1376,21 @@ vR512Rotate(
  */
 EXTERN_API_C( void )
 vR1024Rotate(
-    const vU1024 *a,
-    unsigned long rotateAmount,
-    vU1024 *      result );
+  const vU1024 *  a,
+  unsigned long   rotateAmount,
+  vU1024 *        result);
 
-#endif /* defined(__VEC__) */
+
+
+#endif  /* defined(__VEC__) */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1323,3 +1404,4 @@ vR1024Rotate(
 #endif
 
 #endif /* __VBIGNUM__ */
+

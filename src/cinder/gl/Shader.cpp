@@ -27,54 +27,53 @@
 
 using namespace std;
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 ShaderDef::ShaderDef()
-    : mTextureMapping( false ), mTextureMappingRectangleArb( false ), mColor( false ), mLambert( false ), mUniformBasedPosAndTexCoord( false )
+	: mTextureMapping( false ), mTextureMappingRectangleArb( false ), mColor( false ), mLambert( false ), mUniformBasedPosAndTexCoord( false )
 {
 	mTextureSwizzleMask[0] = GL_RED;
-	mTextureSwizzleMask[1] = GL_GREEN;
-	mTextureSwizzleMask[2] = GL_BLUE;
+	mTextureSwizzleMask[1] = GL_GREEN; 
+	mTextureSwizzleMask[2] = GL_BLUE; 
 	mTextureSwizzleMask[3] = GL_ALPHA;
 }
 
-ShaderDef &ShaderDef::texture( const TextureRef &texture )
+ShaderDef& ShaderDef::texture( const TextureRef &texture )
 {
 	mTextureMapping = true;
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	if( texture && texture->getTarget() == GL_TEXTURE_RECTANGLE_ARB )
 		mTextureMappingRectangleArb = true;
 #endif
-	if( texture && ( !TextureBase::supportsHardwareSwizzle() ) )
+	if( texture && ( ! TextureBase::supportsHardwareSwizzle() ) )
 		mTextureSwizzleMask = texture->getSwizzleMask();
 
 	return *this;
 }
 
-ShaderDef &ShaderDef::texture( GLenum target )
+ShaderDef& ShaderDef::texture( GLenum target )
 {
 	mTextureMapping = true;
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	if( target == GL_TEXTURE_RECTANGLE_ARB )
 		mTextureMappingRectangleArb = true;
 #endif
 	return *this;
 }
 
-ShaderDef &ShaderDef::uniformBasedPosAndTexCoord()
+ShaderDef& ShaderDef::uniformBasedPosAndTexCoord()
 {
 	mUniformBasedPosAndTexCoord = true;
 	return *this;
 }
 
-ShaderDef &ShaderDef::color()
+ShaderDef& ShaderDef::color()
 {
 	mColor = true;
 	return *this;
 }
 
-ShaderDef &ShaderDef::lambert()
+ShaderDef& ShaderDef::lambert()
 {
 	mLambert = true;
 	return *this;
@@ -82,7 +81,10 @@ ShaderDef &ShaderDef::lambert()
 
 bool ShaderDef::isTextureSwizzleDefault() const
 {
-	return mTextureSwizzleMask[0] == GL_RED && mTextureSwizzleMask[1] == GL_GREEN && mTextureSwizzleMask[2] == GL_BLUE && mTextureSwizzleMask[3] == GL_ALPHA;
+	return mTextureSwizzleMask[0] == GL_RED &&
+			mTextureSwizzleMask[1] == GL_GREEN && 
+			mTextureSwizzleMask[2] == GL_BLUE && 
+			mTextureSwizzleMask[3] == GL_ALPHA;
 }
 
 // this only works with RGBA values
@@ -99,15 +101,16 @@ std::string ShaderDef::getTextureSwizzleString() const
 		else
 			result += "a";
 	}
-
+	
 	return result;
 }
+
 
 bool ShaderDef::operator<( const ShaderDef &rhs ) const
 {
 	if( rhs.mTextureMapping != mTextureMapping )
 		return rhs.mTextureMapping;
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	if( rhs.mTextureMappingRectangleArb != mTextureMappingRectangleArb )
 		return rhs.mTextureMappingRectangleArb;
 #endif
@@ -118,15 +121,15 @@ bool ShaderDef::operator<( const ShaderDef &rhs ) const
 	else if( rhs.mTextureSwizzleMask[0] != mTextureSwizzleMask[0] )
 		return mTextureSwizzleMask[0] < rhs.mTextureSwizzleMask[0];
 	else if( rhs.mTextureSwizzleMask[1] != mTextureSwizzleMask[1] )
-		return mTextureSwizzleMask[1] < rhs.mTextureSwizzleMask[1];
+		return mTextureSwizzleMask[1] < rhs.mTextureSwizzleMask[1];	
 	else if( rhs.mTextureSwizzleMask[2] != mTextureSwizzleMask[2] )
-		return mTextureSwizzleMask[2] < rhs.mTextureSwizzleMask[2];
+		return mTextureSwizzleMask[2] < rhs.mTextureSwizzleMask[2];	
 	else if( rhs.mTextureSwizzleMask[3] != mTextureSwizzleMask[3] )
-		return mTextureSwizzleMask[3] < rhs.mTextureSwizzleMask[3];
+		return mTextureSwizzleMask[3] < rhs.mTextureSwizzleMask[3];	
 	if( rhs.mLambert != mLambert )
 		return rhs.mLambert;
-
+	
 	return false;
 }
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

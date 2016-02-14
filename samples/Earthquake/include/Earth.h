@@ -6,7 +6,7 @@
 #include "cinder/gl/Texture.h"
 
 class Earth {
-  public:
+public:
 	Earth();
 
 	void update();
@@ -20,13 +20,9 @@ class Earth {
 
 	void addQuake( float aLat, float aLong, float aMag, const std::string &aTitle );
 
-	void setMinMagToRender( float amt )
-	{
-		mMinMagToRender = ci::math<float>::clamp( mMinMagToRender + amt, 2.0f, 8.0f );
-		mNumQuakes = 0;
-	}
+	void setMinMagToRender( float amt ) { mMinMagToRender = ci::math<float>::clamp( mMinMagToRender + amt, 2.0f, 8.0f ); mNumQuakes = 0; }
 
-  public:
+public:
 	static const int MAX_NUMBER_OF_QUAKES = 1024;
 
 	float mMinMagToRender;
@@ -39,11 +35,11 @@ class Earth {
 	ci::gl::Texture2dRef mTexNormal;
 	ci::gl::Texture2dRef mTexMask;
 
-	std::vector<Quake> mQuakes;
-	size_t             mNumQuakes;
+	std::vector<Quake>   mQuakes;
+	size_t               mNumQuakes;
 
-	ci::gl::BatchRef mEarth;
-	ci::gl::BatchRef mQuake;
+	ci::gl::BatchRef     mEarth;
+	ci::gl::BatchRef     mQuake;
 
-	ci::gl::VboRef mInstanceDataVbo;
+	ci::gl::VboRef       mInstanceDataVbo;
 };

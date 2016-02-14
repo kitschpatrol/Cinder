@@ -22,15 +22,14 @@
 */
 
 #include "cinder/gl/ShaderPreprocessor.h"
-#include "cinder/Log.h"
-#include "cinder/Utilities.h"
 #include "cinder/app/Platform.h"
 #include "cinder/gl/Platform.h"
+#include "cinder/Utilities.h"
+#include "cinder/Log.h"
 
 using namespace std;
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 namespace {
 // due to null or the rest of the line being a comment (//)
@@ -51,7 +50,7 @@ bool isWhiteSpace( const char *c )
 
 bool isInlineCommentStart( const char *c )
 {
-	if( ( *c == '\0' ) || ( *c != '/' ) )
+	if( (*c == '\0') || (*c != '/') )
 		return false;
 	const char *next = c + 1;
 	if( *next && *next == '*' )
@@ -61,7 +60,7 @@ bool isInlineCommentStart( const char *c )
 
 bool isInlineCommentEnd( const char *c )
 {
-	if( ( *c == '\0' ) || ( *c != '*' ) )
+	if( (*c == '\0') || (*c != '*') )
 		return false;
 	const char *next = c + 1;
 	if( *next && *next == '/' )
@@ -72,7 +71,7 @@ bool isInlineCommentEnd( const char *c )
 // consumes tabs, spaces, and inline comments; sets 'c' to first character that is none of these, or the terminus
 void consumeWhiteSpace( const char **c )
 {
-	while( ( !isTerminated( *c ) ) && isWhiteSpace( *c ) )
+	while( ( ! isTerminated( *c ) ) && isWhiteSpace( *c ) )
 		++*c;
 	if( isTerminated( *c ) )
 		return;
@@ -81,7 +80,7 @@ void consumeWhiteSpace( const char **c )
 		while( isWhiteSpace( *c ) )
 			++*c;
 		const char *startBeforeComment = *c;
-		while( !isTerminated( *c ) && !isInlineCommentEnd( *c ) )
+		while( ! isTerminated( *c ) && ! isInlineCommentEnd( *c ) )
 			++*c;
 		if( isTerminated( *c ) ) {
 			*c = startBeforeComment;
@@ -95,7 +94,7 @@ void consumeWhiteSpace( const char **c )
 
 bool findIncludeStatement( const std::string &line, std::string *out )
 {
-	const int   INCLUDE_KEYWORD_LEN = 7;
+	const int INCLUDE_KEYWORD_LEN = 7;
 	const char *resultStart = nullptr;
 	const char *c = line.c_str();
 	consumeWhiteSpace( &c );
@@ -116,7 +115,7 @@ bool findIncludeStatement( const std::string &line, std::string *out )
 		return false;
 	++c;
 	resultStart = c;
-	while( ( !isTerminated( c ) ) && *c != '\"' && *c != '>' )
+	while( ( ! isTerminated( c ) )  && *c != '\"' && *c != '>' )
 		++c;
 	if( isTerminated( c ) ) // we hit the terminus before the closing symbol
 		return false;
@@ -127,7 +126,7 @@ bool findIncludeStatement( const std::string &line, std::string *out )
 
 bool findVersionStatement( const std::string &line, std::string *out )
 {
-	const int   VERSION_KEYWORD_LEN = 7;
+	const int VERSION_KEYWORD_LEN = 7;
 	const char *resultStart = nullptr;
 	const char *c = line.c_str();
 	consumeWhiteSpace( &c );
@@ -144,10 +143,10 @@ bool findVersionStatement( const std::string &line, std::string *out )
 	c += VERSION_KEYWORD_LEN;
 	consumeWhiteSpace( &c );
 	// leading digit
-	if( isTerminated( c ) || ( !isdigit( *c ) ) )
+	if( isTerminated( c ) || (! isdigit( *c )) )
 		return false;
 	resultStart = c;
-	while( ( !isTerminated( c ) ) && isdigit( *c ) )
+	while( ( ! isTerminated( c ) ) && isdigit( *c ) )
 		++c;
 	if( out )
 		*out = std::string( resultStart, c );
@@ -159,7 +158,7 @@ ShaderPreprocessor::ShaderPreprocessor()
 {
 	mSearchDirectories.push_back( app::Platform::get()->getAssetPath( "" ) );
 
-// set the default version
+	// set the default version
 #if defined( CINDER_GL_ES_3 )
 	mVersion = 300;
 #elif defined( CINDER_GL_ES_2 )
@@ -172,7 +171,7 @@ ShaderPreprocessor::ShaderPreprocessor()
 string ShaderPreprocessor::parse( const fs::path &sourcePath, std::set<fs::path> *includedFiles )
 {
 	set<fs::path> localIncludeTree;
-	if( !includedFiles )
+	if( ! includedFiles )
 		includedFiles = &localIncludeTree;
 	else
 		includedFiles->clear();
@@ -182,24 +181,25 @@ string ShaderPreprocessor::parse( const fs::path &sourcePath, std::set<fs::path>
 
 string ShaderPreprocessor::parse( const std::string &source, const fs::path &sourcePath, set<fs::path> *includedFiles )
 {
-	CI_ASSERT( !fs::is_directory( sourcePath ) );
+	CI_ASSERT( ! fs::is_directory( sourcePath ) );
 
 	set<fs::path> localIncludeTree;
-	if( !includedFiles )
+	if( ! includedFiles )
 		includedFiles = &localIncludeTree;
 	else
 		includedFiles->clear();
+
 
 	return parseDirectives( parseTopLevel( source, sourcePath.parent_path(), *includedFiles ) );
 }
 
 std::string ShaderPreprocessor::parseDirectives( const std::string &source )
 {
-	stringstream  output;
+	stringstream output;
 	istringstream input( source );
-
+	
 	string versionLine;
-
+	
 	// go through each line and find the #version directive
 	string line;
 	while( getline( input, line ) ) {
@@ -209,7 +209,7 @@ std::string ShaderPreprocessor::parseDirectives( const std::string &source )
 			output << line;
 		output << endl;
 	}
-
+	
 	// if we don't have a version yet, add the default one
 	if( versionLine.empty() ) {
 #if defined( CINDER_GL_ES_3 )
@@ -218,7 +218,7 @@ std::string ShaderPreprocessor::parseDirectives( const std::string &source )
 		versionLine = "#version " + to_string( mVersion ) + "\n";
 #endif
 	}
-	else if( !mDefineDirectives.empty() ) {
+	else if( ! mDefineDirectives.empty() ) {
 		versionLine += "\n";
 	}
 
@@ -227,13 +227,13 @@ std::string ShaderPreprocessor::parseDirectives( const std::string &source )
 	for( auto define : mDefineDirectives ) {
 		directivesString += "#define " + define + "\n";
 	}
-
+	
 	return directivesString + output.str();
 }
 
 string ShaderPreprocessor::parseTopLevel( const string &source, const fs::path &currentDirectory, set<fs::path> &includedFiles )
 {
-	stringstream  output;
+	stringstream output;
 	istringstream input( source );
 
 	// go through each line and process includes
@@ -267,8 +267,8 @@ string ShaderPreprocessor::parseRecursive( const fs::path &path, const fs::path 
 	includeTree.insert( fullPath );
 
 	stringstream output;
-	ifstream     input( fullPath.string().c_str() );
-	if( !input.is_open() )
+	ifstream input( fullPath.string().c_str() );
+	if( ! input.is_open() )
 		throw ShaderPreprocessorExc( "Failed to open file at path: " + fullPath.string() );
 
 	// go through each line and process includes
@@ -293,15 +293,16 @@ string ShaderPreprocessor::parseRecursive( const fs::path &path, const fs::path 
 	return output.str();
 }
 
+
 void ShaderPreprocessor::addSearchDirectory( const fs::path &directory )
 {
-	if( !fs::is_directory( directory ) ) {
+	if( ! fs::is_directory( directory ) ) {
 		CI_LOG_E( "Not a directory: " << directory );
 		return;
 	}
 
 	fs::path dirCanonical = fs::canonical( directory );
-	auto     it = find( mSearchDirectories.begin(), mSearchDirectories.end(), dirCanonical );
+	auto it = find( mSearchDirectories.begin(), mSearchDirectories.end(), dirCanonical );
 	if( it == mSearchDirectories.end() )
 		mSearchDirectories.push_back( dirCanonical );
 }
@@ -311,6 +312,7 @@ void ShaderPreprocessor::removeSearchDirectory( const fs::path &directory )
 	fs::path dirCanonical = fs::canonical( directory );
 	mSearchDirectories.erase( remove( mSearchDirectories.begin(), mSearchDirectories.end(), dirCanonical ), mSearchDirectories.end() );
 }
+
 
 void ShaderPreprocessor::addDefine( const std::string &define )
 {
@@ -325,7 +327,7 @@ void ShaderPreprocessor::setDefineDirectives( const std::vector<std::string> &de
 {
 	mDefineDirectives = defines;
 }
-
+	
 fs::path ShaderPreprocessor::findFullPath( const fs::path &includePath, const fs::path &currentDirectory )
 {
 	auto fullPath = currentDirectory / includePath;
@@ -340,5 +342,5 @@ fs::path ShaderPreprocessor::findFullPath( const fs::path &includePath, const fs
 
 	throw ShaderPreprocessorExc( "could not find shader with include path: " + includePath.string() );
 }
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

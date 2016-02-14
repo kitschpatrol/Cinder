@@ -4,10 +4,10 @@
 */
 
 #include "cinder/Timeline.h"
-#include "cinder/Easing.h"
-#include "cinder/Rand.h"
 #include "cinder/gl/TextureFont.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Easing.h"
+#include "cinder/Rand.h"
 
 #include "Character.h"
 
@@ -20,11 +20,11 @@ Character::Character( gl::TextureFontRef textureFont, string character, mat4 mat
 	mChar = character;
 
 	mColorStart = ColorAf( 1.0f, 0.5f, 0.0f, 0.0f );
-	mColorCur = mColorStart;
+	mColorCur	= mColorStart;
 
 	float hue = Rand::randFloat( 0.55f, 0.6f );
 	float sat = Rand::randFloat( 0.5f, 1.0f );
-	mColorDest = ColorAf( CM_HSV, hue, sat, 1.0f, 1.0f );
+	mColorDest	= ColorAf( CM_HSV, hue, sat, 1.0f, 1.0f );
 	mMatrix = mDestMatrix = matrix;
 
 	mKernBounds = Rectf( 0.0f, 0.0f, mTextureFont->measureString( mChar ).x, mTextureFont->getAscent() );

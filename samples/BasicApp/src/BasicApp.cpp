@@ -34,7 +34,7 @@ void BasicApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'f' ) {
 		// Toggle full screen when the user presses the 'f' key.
-		setFullScreen( !isFullScreen() );
+		setFullScreen( ! isFullScreen() );
 	}
 	else if( event.getCode() == KeyEvent::KEY_SPACE ) {
 		// Clear the list of points when the user presses the space bar.
@@ -52,7 +52,7 @@ void BasicApp::keyDown( KeyEvent event )
 void BasicApp::draw()
 {
 	// Clear the contents of the window. This call will clear
-	// both the color and depth buffers.
+	// both the color and depth buffers. 
 	gl::clear( Color::gray( 0.1f ) );
 
 	// Set the current draw color to orange by setting values for

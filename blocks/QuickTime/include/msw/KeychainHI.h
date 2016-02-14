@@ -29,6 +29,8 @@
 #include <CFDate.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -52,14 +54,15 @@ extern "C" {
  */
 EXTERN_API( OSStatus )
 KCAddAppleSharePassword(
-    AFPServerSignature *serverSignature,
-    StringPtr           serverAddress,
-    StringPtr           serverName,
-    StringPtr           volumeName,
-    StringPtr           accountName,
-    UInt32              passwordLength,
-    const void *        passwordData,
-    KCItemRef *         item ); /* can be NULL */
+  AFPServerSignature *  serverSignature,
+  StringPtr             serverAddress,
+  StringPtr             serverName,
+  StringPtr             volumeName,
+  StringPtr             accountName,
+  UInt32                passwordLength,
+  const void *          passwordData,
+  KCItemRef *           item);                 /* can be NULL */
+
 
 /*
  *  KCAddInternetPassword()
@@ -71,15 +74,16 @@ KCAddAppleSharePassword(
  */
 EXTERN_API( OSStatus )
 KCAddInternetPassword(
-    StringPtr   serverName,
-    StringPtr   securityDomain,
-    StringPtr   accountName,
-    UInt16      port,
-    OSType      protocol,
-    OSType      authType,
-    UInt32      passwordLength,
-    const void *passwordData,
-    KCItemRef * item ); /* can be NULL */
+  StringPtr     serverName,
+  StringPtr     securityDomain,
+  StringPtr     accountName,
+  UInt16        port,
+  OSType        protocol,
+  OSType        authType,
+  UInt32        passwordLength,
+  const void *  passwordData,
+  KCItemRef *   item);                /* can be NULL */
+
 
 /*
  *  KCAddInternetPasswordWithPath()
@@ -91,16 +95,17 @@ KCAddInternetPassword(
  */
 EXTERN_API( OSStatus )
 KCAddInternetPasswordWithPath(
-    StringPtr   serverName,
-    StringPtr   securityDomain,
-    StringPtr   accountName,
-    StringPtr   path,
-    UInt16      port,
-    OSType      protocol,
-    OSType      authType,
-    UInt32      passwordLength,
-    const void *passwordData,
-    KCItemRef * item ); /* can be NULL */
+  StringPtr     serverName,
+  StringPtr     securityDomain,
+  StringPtr     accountName,
+  StringPtr     path,
+  UInt16        port,
+  OSType        protocol,
+  OSType        authType,
+  UInt32        passwordLength,
+  const void *  passwordData,
+  KCItemRef *   item);                /* can be NULL */
+
 
 /*
  *  KCAddGenericPassword()
@@ -112,11 +117,12 @@ KCAddInternetPasswordWithPath(
  */
 EXTERN_API( OSStatus )
 KCAddGenericPassword(
-    StringPtr   serviceName,
-    StringPtr   accountName,
-    UInt32      passwordLength,
-    const void *passwordData,
-    KCItemRef * item ); /* can be NULL */
+  StringPtr     serviceName,
+  StringPtr     accountName,
+  UInt32        passwordLength,
+  const void *  passwordData,
+  KCItemRef *   item);                /* can be NULL */
+
 
 /* Low-level interface for storing keychain items */
 /*
@@ -128,7 +134,8 @@ KCAddGenericPassword(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-KCAddItem( KCItemRef item );
+KCAddItem(KCItemRef item);
+
 
 /* Managing keychains */
 /*
@@ -141,8 +148,9 @@ KCAddItem( KCItemRef item );
  */
 EXTERN_API( OSStatus )
 KCUnlock(
-    KCRef     keychain, /* can be NULL */
-    StringPtr password ); /* can be NULL */
+  KCRef       keychain,       /* can be NULL */
+  StringPtr   password);      /* can be NULL */
+
 
 /*
  *  KCCreateKeychain()
@@ -154,8 +162,9 @@ KCUnlock(
  */
 EXTERN_API( OSStatus )
 KCCreateKeychain(
-    StringPtr password, /* can be NULL */
-    KCRef *   keychain ); /* can be NULL */
+  StringPtr   password,       /* can be NULL */
+  KCRef *     keychain);      /* can be NULL */
+
 
 /*
  *  KCChangeSettings()
@@ -166,7 +175,8 @@ KCCreateKeychain(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-KCChangeSettings( KCRef keychain );
+KCChangeSettings(KCRef keychain);
+
 
 /*
  *  kcunlock()
@@ -178,8 +188,9 @@ KCChangeSettings( KCRef keychain );
  */
 EXTERN_API_C( OSStatus )
 kcunlock(
-    KCRef       keychain, /* can be NULL */
-    const char *password ); /* can be NULL */
+  KCRef         keychain,       /* can be NULL */
+  const char *  password);      /* can be NULL */
+
 
 /*
  *  kccreatekeychain()
@@ -191,8 +202,9 @@ kcunlock(
  */
 EXTERN_API_C( OSStatus )
 kccreatekeychain(
-    const char *password, /* can be NULL */
-    KCRef *     keychain ); /* can be NULL */
+  const char *  password,       /* can be NULL */
+  KCRef *       keychain);      /* can be NULL */
+
 
 /*
  *  kcaddapplesharepassword()
@@ -204,14 +216,15 @@ kccreatekeychain(
  */
 EXTERN_API_C( OSStatus )
 kcaddapplesharepassword(
-    AFPServerSignature *serverSignature,
-    const char *        serverAddress,
-    const char *        serverName,
-    const char *        volumeName,
-    const char *        accountName,
-    UInt32              passwordLength,
-    const void *        passwordData,
-    KCItemRef *         item ); /* can be NULL */
+  AFPServerSignature *  serverSignature,
+  const char *          serverAddress,
+  const char *          serverName,
+  const char *          volumeName,
+  const char *          accountName,
+  UInt32                passwordLength,
+  const void *          passwordData,
+  KCItemRef *           item);                 /* can be NULL */
+
 
 /*
  *  kcaddinternetpassword()
@@ -223,15 +236,16 @@ kcaddapplesharepassword(
  */
 EXTERN_API_C( OSStatus )
 kcaddinternetpassword(
-    const char *serverName,
-    const char *securityDomain,
-    const char *accountName,
-    UInt16      port,
-    OSType      protocol,
-    OSType      authType,
-    UInt32      passwordLength,
-    const void *passwordData,
-    KCItemRef * item ); /* can be NULL */
+  const char *  serverName,
+  const char *  securityDomain,
+  const char *  accountName,
+  UInt16        port,
+  OSType        protocol,
+  OSType        authType,
+  UInt32        passwordLength,
+  const void *  passwordData,
+  KCItemRef *   item);                /* can be NULL */
+
 
 /*
  *  kcaddinternetpasswordwithpath()
@@ -243,16 +257,17 @@ kcaddinternetpassword(
  */
 EXTERN_API_C( OSStatus )
 kcaddinternetpasswordwithpath(
-    const char *serverName,
-    const char *securityDomain,
-    const char *accountName,
-    const char *path,
-    UInt16      port,
-    OSType      protocol,
-    OSType      authType,
-    UInt32      passwordLength,
-    const void *passwordData,
-    KCItemRef * item ); /* can be NULL */
+  const char *  serverName,
+  const char *  securityDomain,
+  const char *  accountName,
+  const char *  path,
+  UInt16        port,
+  OSType        protocol,
+  OSType        authType,
+  UInt32        passwordLength,
+  const void *  passwordData,
+  KCItemRef *   item);                /* can be NULL */
+
 
 /*
  *  kcaddgenericpassword()
@@ -264,11 +279,12 @@ kcaddinternetpasswordwithpath(
  */
 EXTERN_API_C( OSStatus )
 kcaddgenericpassword(
-    const char *serviceName,
-    const char *accountName,
-    UInt32      passwordLength,
-    const void *passwordData,
-    KCItemRef * item ); /* can be NULL */
+  const char *  serviceName,
+  const char *  accountName,
+  UInt32        passwordLength,
+  const void *  passwordData,
+  KCItemRef *   item);                /* can be NULL */
+
 
 /* Working with certificates */
 #if CALL_NOT_IN_CARBON
@@ -282,11 +298,12 @@ kcaddgenericpassword(
  */
 EXTERN_API( OSStatus )
 KCFindX509Certificates(
-    KCRef               keychain,
-    CFStringRef         name,
-    CFStringRef         emailAddress,
-    KCCertSearchOptions options,
-    CFMutableArrayRef * certificateItems ); /* can be NULL */
+  KCRef                 keychain,
+  CFStringRef           name,
+  CFStringRef           emailAddress,
+  KCCertSearchOptions   options,
+  CFMutableArrayRef *   certificateItems);      /* can be NULL */
+
 
 /*
  *  KCChooseCertificate()
@@ -298,12 +315,15 @@ KCFindX509Certificates(
  */
 EXTERN_API( OSStatus )
 KCChooseCertificate(
-    CFArrayRef     items,
-    KCItemRef *    certificate,
-    CFArrayRef     policyOIDs,
-    KCVerifyStopOn stopOn );
+  CFArrayRef       items,
+  KCItemRef *      certificate,
+  CFArrayRef       policyOIDs,
+  KCVerifyStopOn   stopOn);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+#endif  /* CALL_NOT_IN_CARBON */
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off

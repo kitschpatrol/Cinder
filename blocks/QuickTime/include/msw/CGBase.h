@@ -21,9 +21,10 @@
 #endif
 
 #include <stddef.h>
-#if __MWERKS__ > 0x2300
+#if __MWERKS__ > 0x2300 
 #include <stdint.h>
 #endif
+
 
 #if PRAGMA_ONCE
 #pragma once
@@ -37,30 +38,31 @@
 #if TARGET_OS_WIN32
 #ifndef _STDINT_H
 #if __MWERKS__ <= 0x2300
-typedef signed long int32_t;
+typedef signed long                     int32_t;
 #endif
 /* define some unix types used by CoreGraphics */
-typedef int            boolean_t;
-typedef unsigned char  u_int8_t;
-typedef unsigned short u_int16_t;
-typedef unsigned long  u_int32_t;
-typedef unsigned char  uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned long  uint32_t;
+typedef int                             boolean_t;
+typedef unsigned char                   u_int8_t;
+typedef unsigned short                  u_int16_t;
+typedef unsigned long                   u_int32_t;
+typedef unsigned char                   uint8_t;
+typedef unsigned short                  uint16_t;
+typedef unsigned long                   uint32_t;
 #endif
 #else
 #include <stdint.h>
 #endif
 
-#if !defined( CG_INLINE )
-#if defined( __GNUC__ )
-#define CG_INLINE static __inline__
-#elif defined( __MWERKS__ )
-#define CG_INLINE static inline
-#else
-#define CG_INLINE static
+#if !defined(CG_INLINE)
+#  if defined(__GNUC__)
+#    define CG_INLINE static __inline__
+#  elif defined(__MWERKS__)
+#    define CG_INLINE static inline
+#  else
+#    define CG_INLINE static    
+#  endif
 #endif
-#endif
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -68,4 +70,6 @@ typedef unsigned long  uint32_t;
 #pragma import reset
 #endif
 
+
 #endif /* CGBASE_H_ */
+

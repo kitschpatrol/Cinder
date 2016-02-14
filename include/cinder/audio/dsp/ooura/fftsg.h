@@ -188,29 +188,24 @@ Dec. 2006  : Fix a minor bug in "fftsg.f"
 
 #pragma once
 
-namespace cinder {
-namespace audio {
-namespace dsp {
-namespace ooura {
+namespace cinder { namespace audio { namespace dsp { namespace ooura {
 
-template <typename T>
-void cdft( int n, int isgn, T *a, int *ip, T *w );
+template <typename T> 
+void cdft(int n, int isgn, T *a, int *ip, T *w);
 
-template <typename T>
-void rdft( int n, int isgn, T *a, int *ip, T *w );
+template <typename T> 
+void rdft(int n, int isgn, T *a, int *ip, T *w);
 
-template <typename T>
-void ddct( int n, int isgn, T *a, int *ip, T *w );
+template <typename T> 
+void ddct(int n, int isgn, T *a, int *ip, T *w);
 
-template <typename T>
-void ddst( int n, int isgn, T *a, int *ip, T *w );
+template <typename T> 
+void ddst(int n, int isgn, T *a, int *ip, T *w);
 
-template <typename T>
-void dfct( int n, T *a, T *t, int *ip, T *w );
+template <typename T> 
+void dfct(int n, T *a, T *t, int *ip, T *w);
 
-template <typename T>
-void dfst( int n, T *a, T *t, int *ip, T *w );
-}
-}
-}
-} // namespace cinder::audio::dsp::ooura
+template <typename T> 
+void dfst(int n, T *a, T *t, int *ip, T *w);
+
+} } } } // namespace cinder::audio::dsp::ooura

@@ -36,6 +36,9 @@
 #include <QuickTimeComponents.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -49,11 +52,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /* QuickTime is not available to 64-bit clients */
@@ -61,282 +64,283 @@ extern "C" {
 #if !__LP64__
 
 enum {
-	kQTSInfiniteDuration = 0x7FFFFFFF,
-	kQTSUnknownDuration = 0x00000000,
-	kQTSNormalForwardRate = 0x00010000,
-	kQTSStoppedRate = 0x00000000
+  kQTSInfiniteDuration          = 0x7FFFFFFF,
+  kQTSUnknownDuration           = 0x00000000,
+  kQTSNormalForwardRate         = 0x00010000,
+  kQTSStoppedRate               = 0x00000000
 };
 
 struct QTSPresentationRecord {
-	long data[1];
+  long                data[1];
 };
-typedef struct QTSPresentationRecord QTSPresentationRecord;
-typedef QTSPresentationRecord *      QTSPresentation;
+typedef struct QTSPresentationRecord    QTSPresentationRecord;
+typedef QTSPresentationRecord *         QTSPresentation;
 struct QTSStreamRecord {
-	long data[1];
+  long                data[1];
 };
-typedef struct QTSStreamRecord QTSStreamRecord;
-typedef QTSStreamRecord *      QTSStream;
+typedef struct QTSStreamRecord          QTSStreamRecord;
+typedef QTSStreamRecord *               QTSStream;
 struct QTSEditEntry {
-	TimeValue64 presentationDuration;
-	TimeValue64 streamStartTime;
-	Fixed       streamRate;
+  TimeValue64         presentationDuration;
+  TimeValue64         streamStartTime;
+  Fixed               streamRate;
 };
-typedef struct QTSEditEntry QTSEditEntry;
+typedef struct QTSEditEntry             QTSEditEntry;
 struct QTSEditList {
-	SInt32       numEdits;
-	QTSEditEntry edits[1];
+  SInt32              numEdits;
+  QTSEditEntry        edits[1];
 };
-typedef struct QTSEditList QTSEditList;
-typedef QTSEditList *      QTSEditListPtr;
-typedef QTSEditListPtr *   QTSEditListHandle;
-#define kQTSInvalidPresentation (QTSPresentation)0L
-#define kQTSAllPresentations (QTSPresentation)0L
-#define kQTSInvalidStream (QTSStream)0L
-#define kQTSAllStreams (QTSStream)0L
-typedef CALLBACK_API( ComponentResult, QTSNotificationProcPtr )( ComponentResult inErr, OSType inNotificationType, void *inNotificationParams, void *inRefCon );
-typedef STACK_UPP_TYPE( QTSNotificationProcPtr ) QTSNotificationUPP;
+typedef struct QTSEditList              QTSEditList;
+typedef QTSEditList *                   QTSEditListPtr;
+typedef QTSEditListPtr *                QTSEditListHandle;
+#define kQTSInvalidPresentation     (QTSPresentation)0L
+#define kQTSAllPresentations        (QTSPresentation)0L
+#define kQTSInvalidStream           (QTSStream)0L
+#define kQTSAllStreams              (QTSStream)0L
+typedef CALLBACK_API( ComponentResult , QTSNotificationProcPtr )(ComponentResult inErr, OSType inNotificationType, void *inNotificationParams, void *inRefCon);
+typedef STACK_UPP_TYPE(QTSNotificationProcPtr)                  QTSNotificationUPP;
 /*-----------------------------------------
     Get / Set Info
 -----------------------------------------*/
 enum {
-	kQTSGetURLLink = FOUR_CHAR_CODE( 'gull' ) /* QTSGetURLLinkRecord* */
+  kQTSGetURLLink                = FOUR_CHAR_CODE('gull') /* QTSGetURLLinkRecord* */
 };
 
 /* get and set */
 enum {
-	kQTSTargetBufferDurationInfo = FOUR_CHAR_CODE( 'bufr' ), /* Fixed* in seconds; expected, not actual */
-	kQTSDurationInfo = FOUR_CHAR_CODE( 'dura' ), /* QTSDurationAtom* */
-	kQTSSoundLevelMeteringEnabledInfo = FOUR_CHAR_CODE( 'mtrn' ), /* Boolean* */
-	kQTSSoundLevelMeterInfo = FOUR_CHAR_CODE( 'levm' ), /* LevelMeterInfoPtr */
-	kQTSSourceTrackIDInfo = FOUR_CHAR_CODE( 'otid' ), /* UInt32* */
-	kQTSSourceLayerInfo = FOUR_CHAR_CODE( 'olyr' ), /* UInt16* */
-	kQTSSourceLanguageInfo = FOUR_CHAR_CODE( 'olng' ), /* UInt16* */
-	kQTSSourceTrackFlagsInfo = FOUR_CHAR_CODE( 'otfl' ), /* SInt32* */
-	kQTSSourceDimensionsInfo = FOUR_CHAR_CODE( 'odim' ), /* QTSDimensionParams* */
-	kQTSSourceVolumesInfo = FOUR_CHAR_CODE( 'ovol' ), /* QTSVolumesParams* */
-	kQTSSourceMatrixInfo = FOUR_CHAR_CODE( 'omat' ), /* MatrixRecord* */
-	kQTSSourceClipRectInfo = FOUR_CHAR_CODE( 'oclp' ), /* Rect* */
-	kQTSSourceGraphicsModeInfo = FOUR_CHAR_CODE( 'ogrm' ), /* QTSGraphicsModeParams* */
-	kQTSSourceScaleInfo = FOUR_CHAR_CODE( 'oscl' ), /* Point* */
-	kQTSSourceBoundingRectInfo = FOUR_CHAR_CODE( 'orct' ), /* Rect* */
-	kQTSSourceUserDataInfo = FOUR_CHAR_CODE( 'oudt' ), /* UserData */
-	kQTSSourceInputMapInfo = FOUR_CHAR_CODE( 'oimp' ), /* QTAtomContainer */
-	kQTSInfo_DataProc = FOUR_CHAR_CODE( 'datp' ), /* QTSDataProcParams* */
-	kQTSInfo_SendDataExtras = FOUR_CHAR_CODE( 'dext' ), /* QTSSendDataExtrasParams* */
-	kQTSInfo_HintTrackID = FOUR_CHAR_CODE( 'htid' ), /* long* */
-	kQTSInfo_URL = FOUR_CHAR_CODE( 'url ' ), /* Handle*, cstring in handle */
-	kQTSInfo_Authentication = FOUR_CHAR_CODE( 'auup' ), /* QTSAuthenticationParams */
-	kQTSInfo_MediaPacketizer = FOUR_CHAR_CODE( 'rmpk' ) /* ComponentInstance */
+  kQTSTargetBufferDurationInfo  = FOUR_CHAR_CODE('bufr'), /* Fixed* in seconds; expected, not actual */
+  kQTSDurationInfo              = FOUR_CHAR_CODE('dura'), /* QTSDurationAtom* */
+  kQTSSoundLevelMeteringEnabledInfo = FOUR_CHAR_CODE('mtrn'), /* Boolean* */
+  kQTSSoundLevelMeterInfo       = FOUR_CHAR_CODE('levm'), /* LevelMeterInfoPtr */
+  kQTSSourceTrackIDInfo         = FOUR_CHAR_CODE('otid'), /* UInt32* */
+  kQTSSourceLayerInfo           = FOUR_CHAR_CODE('olyr'), /* UInt16* */
+  kQTSSourceLanguageInfo        = FOUR_CHAR_CODE('olng'), /* UInt16* */
+  kQTSSourceTrackFlagsInfo      = FOUR_CHAR_CODE('otfl'), /* SInt32* */
+  kQTSSourceDimensionsInfo      = FOUR_CHAR_CODE('odim'), /* QTSDimensionParams* */
+  kQTSSourceVolumesInfo         = FOUR_CHAR_CODE('ovol'), /* QTSVolumesParams* */
+  kQTSSourceMatrixInfo          = FOUR_CHAR_CODE('omat'), /* MatrixRecord* */
+  kQTSSourceClipRectInfo        = FOUR_CHAR_CODE('oclp'), /* Rect* */
+  kQTSSourceGraphicsModeInfo    = FOUR_CHAR_CODE('ogrm'), /* QTSGraphicsModeParams* */
+  kQTSSourceScaleInfo           = FOUR_CHAR_CODE('oscl'), /* Point* */
+  kQTSSourceBoundingRectInfo    = FOUR_CHAR_CODE('orct'), /* Rect* */
+  kQTSSourceUserDataInfo        = FOUR_CHAR_CODE('oudt'), /* UserData */
+  kQTSSourceInputMapInfo        = FOUR_CHAR_CODE('oimp'), /* QTAtomContainer */
+  kQTSInfo_DataProc             = FOUR_CHAR_CODE('datp'), /* QTSDataProcParams* */
+  kQTSInfo_SendDataExtras       = FOUR_CHAR_CODE('dext'), /* QTSSendDataExtrasParams* */
+  kQTSInfo_HintTrackID          = FOUR_CHAR_CODE('htid'), /* long* */
+  kQTSInfo_URL                  = FOUR_CHAR_CODE('url '), /* Handle*, cstring in handle */
+  kQTSInfo_Authentication       = FOUR_CHAR_CODE('auup'), /* QTSAuthenticationParams */
+  kQTSInfo_MediaPacketizer      = FOUR_CHAR_CODE('rmpk') /* ComponentInstance */
 };
 
 /* get only */
 enum {
-	kQTSStatisticsInfo = FOUR_CHAR_CODE( 'stat' ), /* QTSStatisticsParams* */
-	kQTSMinStatusDimensionsInfo = FOUR_CHAR_CODE( 'mstd' ), /* QTSDimensionParams* */
-	kQTSNormalStatusDimensionsInfo = FOUR_CHAR_CODE( 'nstd' ), /* QTSDimensionParams* */
-	kQTSTotalDataRateInfo = FOUR_CHAR_CODE( 'drtt' ), /* UInt32*, add to what's there */
-	kQTSTotalDataRateInInfo = FOUR_CHAR_CODE( 'drti' ), /* UInt32*, add to what's there */
-	kQTSTotalDataRateOutInfo = FOUR_CHAR_CODE( 'drto' ), /* UInt32*, add to what's there */
-	kQTSLostPercentInfo = FOUR_CHAR_CODE( 'lpct' ), /* QTSLostPercentParams*, add to what's there */
-	kQTSNumViewersInfo = FOUR_CHAR_CODE( 'nviw' ), /* UInt32* */
-	kQTSMediaTypeInfo = FOUR_CHAR_CODE( 'mtyp' ), /* OSType* */
-	kQTSNameInfo = FOUR_CHAR_CODE( 'name' ), /* QTSNameParams* */
-	kQTSCanHandleSendDataType = FOUR_CHAR_CODE( 'chsd' ), /* QTSCanHandleSendDataTypeParams* */
-	kQTSAnnotationsInfo = FOUR_CHAR_CODE( 'meta' ), /* QTAtomContainer */
-	kQTSRemainingBufferTimeInfo = FOUR_CHAR_CODE( 'btms' ), /* UInt32* remaining buffer time before playback, in microseconds */
-	kQTSInfo_SettingsText = FOUR_CHAR_CODE( 'sttx' ), /* QTSSettingsTextParams* */
-	kQTSInfo_AverageFrameRate = FOUR_CHAR_CODE( 'fps ' ) /* UnsignedFixed* */
+  kQTSStatisticsInfo            = FOUR_CHAR_CODE('stat'), /* QTSStatisticsParams* */
+  kQTSMinStatusDimensionsInfo   = FOUR_CHAR_CODE('mstd'), /* QTSDimensionParams* */
+  kQTSNormalStatusDimensionsInfo = FOUR_CHAR_CODE('nstd'), /* QTSDimensionParams* */
+  kQTSTotalDataRateInfo         = FOUR_CHAR_CODE('drtt'), /* UInt32*, add to what's there */
+  kQTSTotalDataRateInInfo       = FOUR_CHAR_CODE('drti'), /* UInt32*, add to what's there */
+  kQTSTotalDataRateOutInfo      = FOUR_CHAR_CODE('drto'), /* UInt32*, add to what's there */
+  kQTSLostPercentInfo           = FOUR_CHAR_CODE('lpct'), /* QTSLostPercentParams*, add to what's there */
+  kQTSNumViewersInfo            = FOUR_CHAR_CODE('nviw'), /* UInt32* */
+  kQTSMediaTypeInfo             = FOUR_CHAR_CODE('mtyp'), /* OSType* */
+  kQTSNameInfo                  = FOUR_CHAR_CODE('name'), /* QTSNameParams* */
+  kQTSCanHandleSendDataType     = FOUR_CHAR_CODE('chsd'), /* QTSCanHandleSendDataTypeParams* */
+  kQTSAnnotationsInfo           = FOUR_CHAR_CODE('meta'), /* QTAtomContainer */
+  kQTSRemainingBufferTimeInfo   = FOUR_CHAR_CODE('btms'), /* UInt32* remaining buffer time before playback, in microseconds */
+  kQTSInfo_SettingsText         = FOUR_CHAR_CODE('sttx'), /* QTSSettingsTextParams* */
+  kQTSInfo_AverageFrameRate     = FOUR_CHAR_CODE('fps ') /* UnsignedFixed* */
 };
 
+
 struct QTSAuthenticationParams {
-	SInt32      flags;
-	const char *userID; /* caller disposes of pointer*/
-	const char *password; /* caller disposes of pointer*/
+  SInt32              flags;
+  const char *        userID;                 /* caller disposes of pointer*/
+  const char *        password;               /* caller disposes of pointer*/
 };
-typedef struct QTSAuthenticationParams QTSAuthenticationParams;
+typedef struct QTSAuthenticationParams  QTSAuthenticationParams;
 enum {
-	kQTSTargetBufferDurationTimeScale = 1000
+  kQTSTargetBufferDurationTimeScale = 1000
 };
 
 struct QTSPanelFilterParams {
-	SInt32     version;
-	QTSStream  inStream;
-	OSType     inPanelType;
-	OSType     inPanelSubType;
-	QTAtomSpec details;
+  SInt32              version;
+  QTSStream           inStream;
+  OSType              inPanelType;
+  OSType              inPanelSubType;
+  QTAtomSpec          details;
 };
-typedef struct QTSPanelFilterParams QTSPanelFilterParams;
+typedef struct QTSPanelFilterParams     QTSPanelFilterParams;
 /* return true to keep this panel*/
-typedef CALLBACK_API( Boolean, QTSPanelFilterProcPtr )( QTSPanelFilterParams *inParams, void *inRefCon );
-typedef STACK_UPP_TYPE( QTSPanelFilterProcPtr ) QTSPanelFilterUPP;
+typedef CALLBACK_API( Boolean , QTSPanelFilterProcPtr )(QTSPanelFilterParams *inParams, void *inRefCon);
+typedef STACK_UPP_TYPE(QTSPanelFilterProcPtr)                   QTSPanelFilterUPP;
 enum {
-	kQTSSettingsTextSummary = FOUR_CHAR_CODE( 'set1' ),
-	kQTSSettingsTextDetails = FOUR_CHAR_CODE( 'setd' )
+  kQTSSettingsTextSummary       = FOUR_CHAR_CODE('set1'),
+  kQTSSettingsTextDetails       = FOUR_CHAR_CODE('setd')
 };
 
 struct QTSSettingsTextParams {
-	SInt32            flags; /* None yet defined*/
-	OSType            inSettingsSelector; /* which kind of setting you want from enum above*/
-	Handle            outSettingsAsText; /* QTS allocates; Caller disposes*/
-	QTSPanelFilterUPP inPanelFilterProc; /* To get a subset filter with this   */
-	void *            inPanelFilterProcRefCon;
+  SInt32              flags;                  /* None yet defined*/
+  OSType              inSettingsSelector;     /* which kind of setting you want from enum above*/
+  Handle              outSettingsAsText;      /* QTS allocates; Caller disposes*/
+  QTSPanelFilterUPP   inPanelFilterProc;      /* To get a subset filter with this   */
+  void *              inPanelFilterProcRefCon;
 };
-typedef struct QTSSettingsTextParams QTSSettingsTextParams;
+typedef struct QTSSettingsTextParams    QTSSettingsTextParams;
 struct QTSCanHandleSendDataTypeParams {
-	SInt32  modifierTypeOrInputID;
-	Boolean isModifierType;
-	Boolean returnedCanHandleSendDataType; /* callee sets to true if it can handle it*/
+  SInt32              modifierTypeOrInputID;
+  Boolean             isModifierType;
+  Boolean             returnedCanHandleSendDataType; /* callee sets to true if it can handle it*/
 };
 typedef struct QTSCanHandleSendDataTypeParams QTSCanHandleSendDataTypeParams;
 struct QTSNameParams {
-	SInt32         maxNameLength;
-	SInt32         requestedLanguage;
-	SInt32         returnedActualLanguage;
-	unsigned char *returnedName; /* pascal string; caller supplies*/
+  SInt32              maxNameLength;
+  SInt32              requestedLanguage;
+  SInt32              returnedActualLanguage;
+  unsigned char *     returnedName;           /* pascal string; caller supplies*/
 };
-typedef struct QTSNameParams QTSNameParams;
+typedef struct QTSNameParams            QTSNameParams;
 struct QTSLostPercentParams {
-	UInt32 receivedPkts;
-	UInt32 lostPkts;
-	Fixed  percent;
+  UInt32              receivedPkts;
+  UInt32              lostPkts;
+  Fixed               percent;
 };
-typedef struct QTSLostPercentParams QTSLostPercentParams;
+typedef struct QTSLostPercentParams     QTSLostPercentParams;
 struct QTSDimensionParams {
-	Fixed width;
-	Fixed height;
+  Fixed               width;
+  Fixed               height;
 };
-typedef struct QTSDimensionParams QTSDimensionParams;
+typedef struct QTSDimensionParams       QTSDimensionParams;
 struct QTSVolumesParams {
-	SInt16 leftVolume;
-	SInt16 rightVolume;
+  SInt16              leftVolume;
+  SInt16              rightVolume;
 };
-typedef struct QTSVolumesParams QTSVolumesParams;
+typedef struct QTSVolumesParams         QTSVolumesParams;
 struct QTSGraphicsModeParams {
-	SInt16   graphicsMode;
-	RGBColor opColor;
+  SInt16              graphicsMode;
+  RGBColor            opColor;
 };
-typedef struct QTSGraphicsModeParams QTSGraphicsModeParams;
+typedef struct QTSGraphicsModeParams    QTSGraphicsModeParams;
 struct QTSGetURLLinkRecord {
-	Point  displayWhere;
-	Handle returnedURLLink;
+  Point               displayWhere;
+  Handle              returnedURLLink;
 };
-typedef struct QTSGetURLLinkRecord QTSGetURLLinkRecord;
+typedef struct QTSGetURLLinkRecord      QTSGetURLLinkRecord;
 enum {
-	kQTSDataProcParamsVersion1 = 1
+  kQTSDataProcParamsVersion1    = 1
 };
 
 enum {
-	kQTSDataProcType_MediaSample = FOUR_CHAR_CODE( 'mdia' ),
-	kQTSDataProcType_HintSample = FOUR_CHAR_CODE( 'hint' )
+  kQTSDataProcType_MediaSample  = FOUR_CHAR_CODE('mdia'),
+  kQTSDataProcType_HintSample   = FOUR_CHAR_CODE('hint')
 };
 
 struct QTSDataProcParams {
-	SInt32             version;
-	SInt32             flags;
-	QTSStream          stream;
-	OSType             procType;
-	QTSNotificationUPP proc;
-	void *             procRefCon;
+  SInt32              version;
+  SInt32              flags;
+  QTSStream           stream;
+  OSType              procType;
+  QTSNotificationUPP  proc;
+  void *              procRefCon;
 };
-typedef struct QTSDataProcParams QTSDataProcParams;
+typedef struct QTSDataProcParams        QTSDataProcParams;
 enum {
-	kQTSDataProcSelector_SampleData = FOUR_CHAR_CODE( 'samp' ),
-	kQTSDataProcSelector_UserData = FOUR_CHAR_CODE( 'user' )
+  kQTSDataProcSelector_SampleData = FOUR_CHAR_CODE('samp'),
+  kQTSDataProcSelector_UserData = FOUR_CHAR_CODE('user')
 };
 
 enum {
-	kQTSSampleDataCallbackParamsVersion1 = 1
+  kQTSSampleDataCallbackParamsVersion1 = 1
 };
 
 struct QTSSampleDataCallbackParams {
-	SInt32                  version;
-	SInt32                  flags;
-	QTSStream               stream;
-	OSType                  procType;
-	OSType                  mediaType;
-	TimeScale               mediaTimeScale;
-	SampleDescriptionHandle sampleDesc;
-	UInt32                  sampleDescSeed;
-	TimeValue64             sampleTime;
-	TimeValue64             duration; /* could be 0 */
-	SInt32                  sampleFlags;
-	UInt32                  dataLength;
-	const void *            data;
+  SInt32              version;
+  SInt32              flags;
+  QTSStream           stream;
+  OSType              procType;
+  OSType              mediaType;
+  TimeScale           mediaTimeScale;
+  SampleDescriptionHandle  sampleDesc;
+  UInt32              sampleDescSeed;
+  TimeValue64         sampleTime;
+  TimeValue64         duration;               /* could be 0 */
+  SInt32              sampleFlags;
+  UInt32              dataLength;
+  const void *        data;
 };
 typedef struct QTSSampleDataCallbackParams QTSSampleDataCallbackParams;
 enum {
-	kQTSUserDataCallbackParamsVersion1 = 1
+  kQTSUserDataCallbackParamsVersion1 = 1
 };
 
 struct QTSUserDataCallbackParams {
-	SInt32    version;
-	SInt32    flags;
-	QTSStream stream;
-	OSType    procType;
-	OSType    userDataType;
-	Handle    userDataHandle; /* caller must make copy if it wants to keep the data around*/
+  SInt32              version;
+  SInt32              flags;
+  QTSStream           stream;
+  OSType              procType;
+  OSType              userDataType;
+  Handle              userDataHandle;         /* caller must make copy if it wants to keep the data around*/
 };
 typedef struct QTSUserDataCallbackParams QTSUserDataCallbackParams;
 enum {
-	kQTSSendDataExtrasParamsVersion1 = 1
+  kQTSSendDataExtrasParamsVersion1 = 1
 };
 
 struct QTSSendDataExtrasParams {
-	SInt32 version;
-	SInt32 flags;
-	OSType procType;
+  SInt32              version;
+  SInt32              flags;
+  OSType              procType;
 };
-typedef struct QTSSendDataExtrasParams QTSSendDataExtrasParams;
-typedef CALLBACK_API( Boolean, QTSModalFilterProcPtr )( DialogPtr inDialog, const EventRecord *inEvent, SInt16 *ioItemHit, void *inRefCon );
-typedef STACK_UPP_TYPE( QTSModalFilterProcPtr ) QTSModalFilterUPP;
+typedef struct QTSSendDataExtrasParams  QTSSendDataExtrasParams;
+typedef CALLBACK_API( Boolean , QTSModalFilterProcPtr )(DialogPtr inDialog, const EventRecord *inEvent, SInt16 *ioItemHit, void *inRefCon);
+typedef STACK_UPP_TYPE(QTSModalFilterProcPtr)                   QTSModalFilterUPP;
 /*-----------------------------------------
     Characteristics
 -----------------------------------------*/
 /* characteristics in Movies.h work here too */
 enum {
-	kQTSSupportsPerStreamControlCharacteristic = FOUR_CHAR_CODE( 'psct' )
+  kQTSSupportsPerStreamControlCharacteristic = FOUR_CHAR_CODE('psct')
 };
 
 struct QTSVideoParams {
-	Fixed        width;
-	Fixed        height;
-	MatrixRecord matrix;
-	CGrafPtr     gWorld;
-	GDHandle     gdHandle;
-	RgnHandle    clip;
-	short        graphicsMode;
-	RGBColor     opColor;
+  Fixed               width;
+  Fixed               height;
+  MatrixRecord        matrix;
+  CGrafPtr            gWorld;
+  GDHandle            gdHandle;
+  RgnHandle           clip;
+  short               graphicsMode;
+  RGBColor            opColor;
 };
-typedef struct QTSVideoParams QTSVideoParams;
+typedef struct QTSVideoParams           QTSVideoParams;
 struct QTSAudioParams {
-	SInt16  leftVolume;
-	SInt16  rightVolume;
-	SInt16  bassLevel;
-	SInt16  trebleLevel;
-	short   frequencyBandsCount;
-	void *  frequencyBands;
-	Boolean levelMeteringEnabled;
+  SInt16              leftVolume;
+  SInt16              rightVolume;
+  SInt16              bassLevel;
+  SInt16              trebleLevel;
+  short               frequencyBandsCount;
+  void *              frequencyBands;
+  Boolean             levelMeteringEnabled;
 };
-typedef struct QTSAudioParams QTSAudioParams;
+typedef struct QTSAudioParams           QTSAudioParams;
 struct QTSMediaParams {
-	QTSVideoParams v;
-	QTSAudioParams a;
+  QTSVideoParams      v;
+  QTSAudioParams      a;
 };
-typedef struct QTSMediaParams QTSMediaParams;
+typedef struct QTSMediaParams           QTSMediaParams;
 enum {
-	kQTSMustDraw = 1 << 3,
-	kQTSAtEnd = 1 << 4,
-	kQTSPreflightDraw = 1 << 5,
-	kQTSSyncDrawing = 1 << 6
+  kQTSMustDraw                  = 1 << 3,
+  kQTSAtEnd                     = 1 << 4,
+  kQTSPreflightDraw             = 1 << 5,
+  kQTSSyncDrawing               = 1 << 6
 };
 
 /* media task result flags */
 enum {
-	kQTSDidDraw = 1 << 0,
-	kQTSNeedsToDraw = 1 << 2,
-	kQTSDrawAgain = 1 << 3,
-	kQTSPartialDraw = 1 << 4
+  kQTSDidDraw                   = 1 << 0,
+  kQTSNeedsToDraw               = 1 << 2,
+  kQTSDrawAgain                 = 1 << 3,
+  kQTSPartialDraw               = 1 << 4
 };
 
 /*============================================================================
@@ -344,86 +348,87 @@ enum {
 ============================================================================*/
 /* ------ notification types ------ */
 enum {
-	kQTSNullNotification = FOUR_CHAR_CODE( 'null' ), /* NULL */
-	kQTSErrorNotification = FOUR_CHAR_CODE( 'err ' ), /* QTSErrorParams*, optional */
-	kQTSNewPresDetectedNotification = FOUR_CHAR_CODE( 'newp' ), /* QTSNewPresDetectedParams* */
-	kQTSPresBeginChangingNotification = FOUR_CHAR_CODE( 'prcb' ), /* NULL */
-	kQTSPresDoneChangingNotification = FOUR_CHAR_CODE( 'prcd' ), /* NULL */
-	kQTSPresentationChangedNotification = FOUR_CHAR_CODE( 'prch' ), /* NULL */
-	kQTSNewStreamNotification = FOUR_CHAR_CODE( 'stnw' ), /* QTSNewStreamParams* */
-	kQTSStreamBeginChangingNotification = FOUR_CHAR_CODE( 'stcb' ), /* QTSStream */
-	kQTSStreamDoneChangingNotification = FOUR_CHAR_CODE( 'stcd' ), /* QTSStream */
-	kQTSStreamChangedNotification = FOUR_CHAR_CODE( 'stch' ), /* QTSStreamChangedParams* */
-	kQTSStreamGoneNotification = FOUR_CHAR_CODE( 'stgn' ), /* QTSStreamGoneParams* */
-	kQTSPreviewAckNotification = FOUR_CHAR_CODE( 'pvak' ), /* QTSStream */
-	kQTSPrerollAckNotification = FOUR_CHAR_CODE( 'pack' ), /* QTSStream */
-	kQTSStartAckNotification = FOUR_CHAR_CODE( 'sack' ), /* QTSStream */
-	kQTSStopAckNotification = FOUR_CHAR_CODE( 'xack' ), /* QTSStream */
-	kQTSStatusNotification = FOUR_CHAR_CODE( 'stat' ), /* QTSStatusParams* */
-	kQTSURLNotification = FOUR_CHAR_CODE( 'url ' ), /* QTSURLParams* */
-	kQTSDurationNotification = FOUR_CHAR_CODE( 'dura' ), /* QTSDurationAtom* */
-	kQTSNewPresentationNotification = FOUR_CHAR_CODE( 'nprs' ), /* QTSPresentation */
-	kQTSPresentationGoneNotification = FOUR_CHAR_CODE( 'xprs' ), /* QTSPresentation */
-	kQTSPresentationDoneNotification = FOUR_CHAR_CODE( 'pdon' ), /* NULL */
-	kQTSBandwidthAlertNotification = FOUR_CHAR_CODE( 'bwal' ), /* QTSBandwidthAlertParams* */
-	kQTSAnnotationsChangedNotification = FOUR_CHAR_CODE( 'meta' ) /* NULL */
+  kQTSNullNotification          = FOUR_CHAR_CODE('null'), /* NULL */
+  kQTSErrorNotification         = FOUR_CHAR_CODE('err '), /* QTSErrorParams*, optional */
+  kQTSNewPresDetectedNotification = FOUR_CHAR_CODE('newp'), /* QTSNewPresDetectedParams* */
+  kQTSPresBeginChangingNotification = FOUR_CHAR_CODE('prcb'), /* NULL */
+  kQTSPresDoneChangingNotification = FOUR_CHAR_CODE('prcd'), /* NULL */
+  kQTSPresentationChangedNotification = FOUR_CHAR_CODE('prch'), /* NULL */
+  kQTSNewStreamNotification     = FOUR_CHAR_CODE('stnw'), /* QTSNewStreamParams* */
+  kQTSStreamBeginChangingNotification = FOUR_CHAR_CODE('stcb'), /* QTSStream */
+  kQTSStreamDoneChangingNotification = FOUR_CHAR_CODE('stcd'), /* QTSStream */
+  kQTSStreamChangedNotification = FOUR_CHAR_CODE('stch'), /* QTSStreamChangedParams* */
+  kQTSStreamGoneNotification    = FOUR_CHAR_CODE('stgn'), /* QTSStreamGoneParams* */
+  kQTSPreviewAckNotification    = FOUR_CHAR_CODE('pvak'), /* QTSStream */
+  kQTSPrerollAckNotification    = FOUR_CHAR_CODE('pack'), /* QTSStream */
+  kQTSStartAckNotification      = FOUR_CHAR_CODE('sack'), /* QTSStream */
+  kQTSStopAckNotification       = FOUR_CHAR_CODE('xack'), /* QTSStream */
+  kQTSStatusNotification        = FOUR_CHAR_CODE('stat'), /* QTSStatusParams* */
+  kQTSURLNotification           = FOUR_CHAR_CODE('url '), /* QTSURLParams* */
+  kQTSDurationNotification      = FOUR_CHAR_CODE('dura'), /* QTSDurationAtom* */
+  kQTSNewPresentationNotification = FOUR_CHAR_CODE('nprs'), /* QTSPresentation */
+  kQTSPresentationGoneNotification = FOUR_CHAR_CODE('xprs'), /* QTSPresentation */
+  kQTSPresentationDoneNotification = FOUR_CHAR_CODE('pdon'), /* NULL */
+  kQTSBandwidthAlertNotification = FOUR_CHAR_CODE('bwal'), /* QTSBandwidthAlertParams* */
+  kQTSAnnotationsChangedNotification = FOUR_CHAR_CODE('meta') /* NULL */
 };
+
 
 /* flags for QTSErrorParams */
 enum {
-	kQTSFatalErrorFlag = 0x00000001
+  kQTSFatalErrorFlag            = 0x00000001
 };
 
 struct QTSErrorParams {
-	const char *errorString;
-	SInt32      flags;
+  const char *        errorString;
+  SInt32              flags;
 };
-typedef struct QTSErrorParams QTSErrorParams;
+typedef struct QTSErrorParams           QTSErrorParams;
 struct QTSNewPresDetectedParams {
-	void *data;
+  void *              data;
 };
 typedef struct QTSNewPresDetectedParams QTSNewPresDetectedParams;
 struct QTSNewStreamParams {
-	QTSStream stream;
+  QTSStream           stream;
 };
-typedef struct QTSNewStreamParams QTSNewStreamParams;
+typedef struct QTSNewStreamParams       QTSNewStreamParams;
 struct QTSStreamChangedParams {
-	QTSStream         stream;
-	ComponentInstance mediaComponent; /* could be NULL */
+  QTSStream           stream;
+  ComponentInstance   mediaComponent;         /* could be NULL */
 };
-typedef struct QTSStreamChangedParams QTSStreamChangedParams;
+typedef struct QTSStreamChangedParams   QTSStreamChangedParams;
 struct QTSStreamGoneParams {
-	QTSStream stream;
+  QTSStream           stream;
 };
-typedef struct QTSStreamGoneParams QTSStreamGoneParams;
+typedef struct QTSStreamGoneParams      QTSStreamGoneParams;
 struct QTSStatusParams {
-	UInt32      status;
-	const char *statusString;
-	UInt32      detailedStatus;
-	const char *detailedStatusString;
+  UInt32              status;
+  const char *        statusString;
+  UInt32              detailedStatus;
+  const char *        detailedStatusString;
 };
-typedef struct QTSStatusParams QTSStatusParams;
+typedef struct QTSStatusParams          QTSStatusParams;
 struct QTSInfoParams {
-	OSType infoType;
-	void * infoParams;
+  OSType              infoType;
+  void *              infoParams;
 };
-typedef struct QTSInfoParams QTSInfoParams;
+typedef struct QTSInfoParams            QTSInfoParams;
 struct QTSURLParams {
-	UInt32      urlLength;
-	const char *url;
+  UInt32              urlLength;
+  const char *        url;
 };
-typedef struct QTSURLParams QTSURLParams;
+typedef struct QTSURLParams             QTSURLParams;
 enum {
-	kQTSBandwidthAlertNeedToStop = 1 << 0,
-	kQTSBandwidthAlertRestartAt = 1 << 1
+  kQTSBandwidthAlertNeedToStop  = 1 << 0,
+  kQTSBandwidthAlertRestartAt   = 1 << 1
 };
 
 struct QTSBandwidthAlertParams {
-	SInt32    flags;
-	TimeValue restartAt; /* new field in QT 4.1*/
-	void *    reserved;
+  SInt32              flags;
+  TimeValue           restartAt;              /* new field in QT 4.1*/
+  void *              reserved;
 };
-typedef struct QTSBandwidthAlertParams QTSBandwidthAlertParams;
+typedef struct QTSBandwidthAlertParams  QTSBandwidthAlertParams;
 /*============================================================================
         Presentation
 ============================================================================*/
@@ -432,67 +437,67 @@ typedef struct QTSBandwidthAlertParams QTSBandwidthAlertParams;
 -----------------------------------------*/
 /* flags for NewPresentationFromData */
 enum {
-	kQTSAutoModeFlag = 0x00000001,
-	kQTSDontShowStatusFlag = 0x00000008,
-	kQTSSendMediaFlag = 0x00010000,
-	kQTSReceiveMediaFlag = 0x00020000
+  kQTSAutoModeFlag              = 0x00000001,
+  kQTSDontShowStatusFlag        = 0x00000008,
+  kQTSSendMediaFlag             = 0x00010000,
+  kQTSReceiveMediaFlag          = 0x00020000
 };
 
 struct QTSNewPresentationParams {
-	OSType             dataType;
-	const void *       data;
-	UInt32             dataLength;
-	QTSEditListHandle  editList;
-	SInt32             flags;
-	TimeScale          timeScale; /* set to 0 for default timescale */
-	QTSMediaParams *   mediaParams;
-	QTSNotificationUPP notificationProc;
-	void *             notificationRefCon;
+  OSType              dataType;
+  const void *        data;
+  UInt32              dataLength;
+  QTSEditListHandle   editList;
+  SInt32              flags;
+  TimeScale           timeScale;              /* set to 0 for default timescale */
+  QTSMediaParams *    mediaParams;
+  QTSNotificationUPP  notificationProc;
+  void *              notificationRefCon;
 };
 typedef struct QTSNewPresentationParams QTSNewPresentationParams;
 struct QTSPresParams {
-	UInt32             version;
-	QTSEditListHandle  editList;
-	SInt32             flags;
-	TimeScale          timeScale; /* set to 0 for default timescale */
-	QTSMediaParams *   mediaParams;
-	QTSNotificationUPP notificationProc;
-	void *             notificationRefCon;
+  UInt32              version;
+  QTSEditListHandle   editList;
+  SInt32              flags;
+  TimeScale           timeScale;              /* set to 0 for default timescale */
+  QTSMediaParams *    mediaParams;
+  QTSNotificationUPP  notificationProc;
+  void *              notificationRefCon;
 };
-typedef struct QTSPresParams QTSPresParams;
+typedef struct QTSPresParams            QTSPresParams;
 enum {
-	kQTSPresParamsVersion1 = 1
+  kQTSPresParamsVersion1        = 1
 };
 
 struct QTSPresIdleParams {
-	QTSStream   stream;
-	TimeValue64 movieTimeToDisplay;
-	SInt32      flagsIn;
-	SInt32      flagsOut;
+  QTSStream           stream;
+  TimeValue64         movieTimeToDisplay;
+  SInt32              flagsIn;
+  SInt32              flagsOut;
 };
-typedef struct QTSPresIdleParams QTSPresIdleParams;
+typedef struct QTSPresIdleParams        QTSPresIdleParams;
 enum {
-	kQTSExportFlag_ShowDialog = 0x00000001
+  kQTSExportFlag_ShowDialog     = 0x00000001
 };
 
 enum {
-	kQTSExportParamsVersion1 = 1
+  kQTSExportParamsVersion1      = 1
 };
 
 struct QTSExportParams {
-	SInt32            version;
-	OSType            exportType;
-	void *            exportExtraData;
-	OSType            destinationContainerType;
-	void *            destinationContainerData;
-	void *            destinationContainerExtras;
-	SInt32            flagsIn;
-	SInt32            flagsOut;
-	QTSModalFilterUPP filterProc;
-	void *            filterProcRefCon;
-	Component         exportComponent; /* NULL unless you want to override */
+  SInt32              version;
+  OSType              exportType;
+  void *              exportExtraData;
+  OSType              destinationContainerType;
+  void *              destinationContainerData;
+  void *              destinationContainerExtras;
+  SInt32              flagsIn;
+  SInt32              flagsOut;
+  QTSModalFilterUPP   filterProc;
+  void *              filterProcRefCon;
+  Component           exportComponent;        /* NULL unless you want to override */
 };
-typedef struct QTSExportParams QTSExportParams;
+typedef struct QTSExportParams          QTSExportParams;
 /*-----------------------------------------
     Toolbox Init/Close
 -----------------------------------------*/
@@ -507,7 +512,8 @@ typedef struct QTSExportParams QTSExportParams;
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( OSErr )
-InitializeQTS( void );
+InitializeQTS(void);
+
 
 /*
  *  TerminateQTS()
@@ -519,7 +525,8 @@ InitializeQTS( void );
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( OSErr )
-TerminateQTS( void );
+TerminateQTS(void);
+
 
 /*-----------------------------------------
     Presentation Functions
@@ -535,8 +542,9 @@ TerminateQTS( void );
  */
 EXTERN_API_C( OSErr )
 QTSNewPresentation(
-    const QTSNewPresentationParams *inParams,
-    QTSPresentation *               outPresentation );
+  const QTSNewPresentationParams *  inParams,
+  QTSPresentation *                 outPresentation);
+
 
 /*
  *  QTSNewPresentationFromData()
@@ -549,11 +557,12 @@ QTSNewPresentation(
  */
 EXTERN_API_C( OSErr )
 QTSNewPresentationFromData(
-    OSType               inDataType,
-    const void *         inData,
-    const SInt64 *       inDataLength,
-    const QTSPresParams *inPresParams,
-    QTSPresentation *    outPresentation );
+  OSType                 inDataType,
+  const void *           inData,
+  const SInt64 *         inDataLength,
+  const QTSPresParams *  inPresParams,
+  QTSPresentation *      outPresentation);
+
 
 /*
  *  QTSNewPresentationFromFile()
@@ -566,9 +575,10 @@ QTSNewPresentationFromData(
  */
 EXTERN_API_C( OSErr )
 QTSNewPresentationFromFile(
-    const FSSpec *       inFileSpec,
-    const QTSPresParams *inPresParams,
-    QTSPresentation *    outPresentation );
+  const FSSpec *         inFileSpec,
+  const QTSPresParams *  inPresParams,
+  QTSPresentation *      outPresentation);
+
 
 /*
  *  QTSNewPresentationFromDataRef()
@@ -581,10 +591,11 @@ QTSNewPresentationFromFile(
  */
 EXTERN_API_C( OSErr )
 QTSNewPresentationFromDataRef(
-    Handle               inDataRef,
-    OSType               inDataRefType,
-    const QTSPresParams *inPresParams,
-    QTSPresentation *    outPresentation );
+  Handle                 inDataRef,
+  OSType                 inDataRefType,
+  const QTSPresParams *  inPresParams,
+  QTSPresentation *      outPresentation);
+
 
 /*
  *  QTSDisposePresentation()
@@ -597,8 +608,9 @@ QTSNewPresentationFromDataRef(
  */
 EXTERN_API_C( OSErr )
 QTSDisposePresentation(
-    QTSPresentation inPresentation,
-    SInt32          inFlags );
+  QTSPresentation   inPresentation,
+  SInt32            inFlags);
+
 
 /*
  *  QTSPresExport()
@@ -611,9 +623,10 @@ QTSDisposePresentation(
  */
 EXTERN_API_C( OSErr )
 QTSPresExport(
-    QTSPresentation  inPresentation,
-    QTSStream        inStream,
-    QTSExportParams *inExportParams );
+  QTSPresentation    inPresentation,
+  QTSStream          inStream,
+  QTSExportParams *  inExportParams);
+
 
 /*
  *  QTSPresIdle()
@@ -626,8 +639,9 @@ QTSPresExport(
  */
 EXTERN_API_C( void )
 QTSPresIdle(
-    QTSPresentation    inPresentation,
-    QTSPresIdleParams *ioParams );
+  QTSPresentation      inPresentation,
+  QTSPresIdleParams *  ioParams);
+
 
 /*
  *  QTSPresInvalidateRegion()
@@ -640,8 +654,9 @@ QTSPresIdle(
  */
 EXTERN_API_C( OSErr )
 QTSPresInvalidateRegion(
-    QTSPresentation inPresentation,
-    RgnHandle       inRegion );
+  QTSPresentation   inPresentation,
+  RgnHandle         inRegion);
+
 
 /*-----------------------------------------
     Presentation Configuration
@@ -657,9 +672,10 @@ QTSPresInvalidateRegion(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetFlags(
-    QTSPresentation inPresentation,
-    SInt32          inFlags,
-    SInt32          inFlagsMask );
+  QTSPresentation   inPresentation,
+  SInt32            inFlags,
+  SInt32            inFlagsMask);
+
 
 /*
  *  QTSPresGetFlags()
@@ -672,8 +688,9 @@ QTSPresSetFlags(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetFlags(
-    QTSPresentation inPresentation,
-    SInt32 *        outFlags );
+  QTSPresentation   inPresentation,
+  SInt32 *          outFlags);
+
 
 /*
  *  QTSPresGetTimeBase()
@@ -686,8 +703,9 @@ QTSPresGetFlags(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetTimeBase(
-    QTSPresentation inPresentation,
-    TimeBase *      outTimeBase );
+  QTSPresentation   inPresentation,
+  TimeBase *        outTimeBase);
+
 
 /*
  *  QTSPresGetTimeScale()
@@ -700,8 +718,9 @@ QTSPresGetTimeBase(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetTimeScale(
-    QTSPresentation inPresentation,
-    TimeScale *     outTimeScale );
+  QTSPresentation   inPresentation,
+  TimeScale *       outTimeScale);
+
 
 /*
  *  QTSPresSetInfo()
@@ -714,10 +733,11 @@ QTSPresGetTimeScale(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetInfo(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    OSType          inSelector,
-    void *          ioParam );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  OSType            inSelector,
+  void *            ioParam);
+
 
 /*
  *  QTSPresGetInfo()
@@ -730,10 +750,11 @@ QTSPresSetInfo(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetInfo(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    OSType          inSelector,
-    void *          ioParam );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  OSType            inSelector,
+  void *            ioParam);
+
 
 /*
  *  QTSPresHasCharacteristic()
@@ -746,10 +767,11 @@ QTSPresGetInfo(
  */
 EXTERN_API_C( OSErr )
 QTSPresHasCharacteristic(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    OSType          inCharacteristic,
-    Boolean *       outHasIt );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  OSType            inCharacteristic,
+  Boolean *         outHasIt);
+
 
 /*
  *  QTSPresSetNotificationProc()
@@ -762,9 +784,10 @@ QTSPresHasCharacteristic(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetNotificationProc(
-    QTSPresentation    inPresentation,
-    QTSNotificationUPP inNotificationProc,
-    void *             inRefCon );
+  QTSPresentation      inPresentation,
+  QTSNotificationUPP   inNotificationProc,
+  void *               inRefCon);
+
 
 /*
  *  QTSPresGetNotificationProc()
@@ -777,9 +800,10 @@ QTSPresSetNotificationProc(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetNotificationProc(
-    QTSPresentation     inPresentation,
-    QTSNotificationUPP *outNotificationProc,
-    void **             outRefCon );
+  QTSPresentation       inPresentation,
+  QTSNotificationUPP *  outNotificationProc,
+  void **               outRefCon);
+
 
 /*-----------------------------------------
     Presentation Control
@@ -794,11 +818,12 @@ QTSPresGetNotificationProc(
  */
 EXTERN_API_C( OSErr )
 QTSPresPreview(
-    QTSPresentation    inPresentation,
-    QTSStream          inStream,
-    const TimeValue64 *inTimeValue,
-    Fixed              inRate,
-    SInt32             inFlags );
+  QTSPresentation      inPresentation,
+  QTSStream            inStream,
+  const TimeValue64 *  inTimeValue,
+  Fixed                inRate,
+  SInt32               inFlags);
+
 
 /*
  *  QTSPresPreroll()
@@ -811,11 +836,12 @@ QTSPresPreview(
  */
 EXTERN_API_C( OSErr )
 QTSPresPreroll(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    UInt32          inTimeValue,
-    Fixed           inRate,
-    SInt32          inFlags );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  UInt32            inTimeValue,
+  Fixed             inRate,
+  SInt32            inFlags);
+
 
 /*
  *  QTSPresPreroll64()
@@ -828,11 +854,12 @@ QTSPresPreroll(
  */
 EXTERN_API_C( OSErr )
 QTSPresPreroll64(
-    QTSPresentation    inPresentation,
-    QTSStream          inStream,
-    const TimeValue64 *inPrerollTime,
-    Fixed              inRate,
-    SInt32             inFlags );
+  QTSPresentation      inPresentation,
+  QTSStream            inStream,
+  const TimeValue64 *  inPrerollTime,
+  Fixed                inRate,
+  SInt32               inFlags);
+
 
 /*
  *  QTSPresStart()
@@ -845,9 +872,10 @@ QTSPresPreroll64(
  */
 EXTERN_API_C( OSErr )
 QTSPresStart(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    SInt32          inFlags );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  SInt32            inFlags);
+
 
 /*
  *  QTSPresSkipTo()
@@ -860,8 +888,9 @@ QTSPresStart(
  */
 EXTERN_API_C( OSErr )
 QTSPresSkipTo(
-    QTSPresentation inPresentation,
-    UInt32          inTimeValue );
+  QTSPresentation   inPresentation,
+  UInt32            inTimeValue);
+
 
 /*
  *  QTSPresSkipTo64()
@@ -874,8 +903,9 @@ QTSPresSkipTo(
  */
 EXTERN_API_C( OSErr )
 QTSPresSkipTo64(
-    QTSPresentation    inPresentation,
-    const TimeValue64 *inTimeValue );
+  QTSPresentation      inPresentation,
+  const TimeValue64 *  inTimeValue);
+
 
 /*
  *  QTSPresStop()
@@ -888,9 +918,10 @@ QTSPresSkipTo64(
  */
 EXTERN_API_C( OSErr )
 QTSPresStop(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    SInt32          inFlags );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  SInt32            inFlags);
+
 
 /*============================================================================
         Streams
@@ -909,12 +940,13 @@ QTSPresStop(
  */
 EXTERN_API_C( OSErr )
 QTSPresNewStream(
-    QTSPresentation inPresentation,
-    OSType          inDataType,
-    const void *    inData,
-    UInt32          inDataLength,
-    SInt32          inFlags,
-    QTSStream *     outStream );
+  QTSPresentation   inPresentation,
+  OSType            inDataType,
+  const void *      inData,
+  UInt32            inDataLength,
+  SInt32            inFlags,
+  QTSStream *       outStream);
+
 
 /*
  *  QTSDisposeStream()
@@ -927,8 +959,9 @@ QTSPresNewStream(
  */
 EXTERN_API_C( OSErr )
 QTSDisposeStream(
-    QTSStream inStream,
-    SInt32    inFlags );
+  QTSStream   inStream,
+  SInt32      inFlags);
+
 
 /*
  *  QTSPresGetNumStreams()
@@ -940,7 +973,8 @@ QTSDisposeStream(
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( UInt32 )
-QTSPresGetNumStreams( QTSPresentation inPresentation );
+QTSPresGetNumStreams(QTSPresentation inPresentation);
+
 
 /*
  *  QTSPresGetIndStream()
@@ -953,8 +987,9 @@ QTSPresGetNumStreams( QTSPresentation inPresentation );
  */
 EXTERN_API_C( QTSStream )
 QTSPresGetIndStream(
-    QTSPresentation inPresentation,
-    UInt32          inIndex );
+  QTSPresentation   inPresentation,
+  UInt32            inIndex);
+
 
 /*
  *  QTSGetStreamPresentation()
@@ -966,7 +1001,8 @@ QTSPresGetIndStream(
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( QTSPresentation )
-QTSGetStreamPresentation( QTSStream inStream );
+QTSGetStreamPresentation(QTSStream inStream);
+
 
 /*
  *  QTSPresSetPreferredRate()
@@ -979,9 +1015,10 @@ QTSGetStreamPresentation( QTSStream inStream );
  */
 EXTERN_API_C( OSErr )
 QTSPresSetPreferredRate(
-    QTSPresentation inPresentation,
-    Fixed           inRate,
-    SInt32          inFlags );
+  QTSPresentation   inPresentation,
+  Fixed             inRate,
+  SInt32            inFlags);
+
 
 /*
  *  QTSPresGetPreferredRate()
@@ -994,8 +1031,9 @@ QTSPresSetPreferredRate(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetPreferredRate(
-    QTSPresentation inPresentation,
-    Fixed *         outRate );
+  QTSPresentation   inPresentation,
+  Fixed *           outRate);
+
 
 /*
  *  QTSPresSetEnable()
@@ -1008,9 +1046,10 @@ QTSPresGetPreferredRate(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetEnable(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    Boolean         inEnableMode );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  Boolean           inEnableMode);
+
 
 /*
  *  QTSPresGetEnable()
@@ -1023,9 +1062,10 @@ QTSPresSetEnable(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetEnable(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    Boolean *       outEnableMode );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  Boolean *         outEnableMode);
+
 
 /*
  *  QTSPresSetPresenting()
@@ -1038,9 +1078,10 @@ QTSPresGetEnable(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetPresenting(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    Boolean         inPresentingMode );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  Boolean           inPresentingMode);
+
 
 /*
  *  QTSPresGetPresenting()
@@ -1053,9 +1094,10 @@ QTSPresSetPresenting(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetPresenting(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    Boolean *       outPresentingMode );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  Boolean *         outPresentingMode);
+
 
 /*
  *  QTSPresSetActiveSegment()
@@ -1068,10 +1110,11 @@ QTSPresGetPresenting(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetActiveSegment(
-    QTSPresentation    inPresentation,
-    QTSStream          inStream,
-    const TimeValue64 *inStartTime,
-    const TimeValue64 *inDuration );
+  QTSPresentation      inPresentation,
+  QTSStream            inStream,
+  const TimeValue64 *  inStartTime,
+  const TimeValue64 *  inDuration);
+
 
 /*
  *  QTSPresGetActiveSegment()
@@ -1084,10 +1127,11 @@ QTSPresSetActiveSegment(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetActiveSegment(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    TimeValue64 *   outStartTime,
-    TimeValue64 *   outDuration );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  TimeValue64 *     outStartTime,
+  TimeValue64 *     outDuration);
+
 
 /*
  *  QTSPresSetPlayHints()
@@ -1100,10 +1144,11 @@ QTSPresGetActiveSegment(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetPlayHints(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    SInt32          inFlags,
-    SInt32          inFlagsMask );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  SInt32            inFlags,
+  SInt32            inFlagsMask);
+
 
 /*
  *  QTSPresGetPlayHints()
@@ -1116,9 +1161,10 @@ QTSPresSetPlayHints(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetPlayHints(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    SInt32 *        outFlags );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  SInt32 *          outFlags);
+
 
 /*-----------------------------------------
     Stream Spatial Functions
@@ -1134,10 +1180,11 @@ QTSPresGetPlayHints(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetGWorld(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    CGrafPtr        inGWorld,
-    GDHandle        inGDHandle );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  CGrafPtr          inGWorld,
+  GDHandle          inGDHandle);
+
 
 /*
  *  QTSPresGetGWorld()
@@ -1150,10 +1197,11 @@ QTSPresSetGWorld(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetGWorld(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    CGrafPtr *      outGWorld,
-    GDHandle *      outGDHandle );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  CGrafPtr *        outGWorld,
+  GDHandle *        outGDHandle);
+
 
 /*
  *  QTSPresSetClip()
@@ -1166,9 +1214,10 @@ QTSPresGetGWorld(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetClip(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    RgnHandle       inClip );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  RgnHandle         inClip);
+
 
 /*
  *  QTSPresGetClip()
@@ -1181,9 +1230,10 @@ QTSPresSetClip(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetClip(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    RgnHandle *     outClip );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  RgnHandle *       outClip);
+
 
 /*
  *  QTSPresSetMatrix()
@@ -1196,9 +1246,10 @@ QTSPresGetClip(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetMatrix(
-    QTSPresentation     inPresentation,
-    QTSStream           inStream,
-    const MatrixRecord *inMatrix );
+  QTSPresentation       inPresentation,
+  QTSStream             inStream,
+  const MatrixRecord *  inMatrix);
+
 
 /*
  *  QTSPresGetMatrix()
@@ -1211,9 +1262,10 @@ QTSPresSetMatrix(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetMatrix(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    MatrixRecord *  outMatrix );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  MatrixRecord *    outMatrix);
+
 
 /*
  *  QTSPresSetDimensions()
@@ -1226,10 +1278,11 @@ QTSPresGetMatrix(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetDimensions(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    Fixed           inWidth,
-    Fixed           inHeight );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  Fixed             inWidth,
+  Fixed             inHeight);
+
 
 /*
  *  QTSPresGetDimensions()
@@ -1242,10 +1295,11 @@ QTSPresSetDimensions(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetDimensions(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    Fixed *         outWidth,
-    Fixed *         outHeight );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  Fixed *           outWidth,
+  Fixed *           outHeight);
+
 
 /*
  *  QTSPresSetGraphicsMode()
@@ -1258,10 +1312,11 @@ QTSPresGetDimensions(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetGraphicsMode(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    short           inMode,
-    const RGBColor *inOpColor );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  short             inMode,
+  const RGBColor *  inOpColor);
+
 
 /*
  *  QTSPresGetGraphicsMode()
@@ -1274,10 +1329,11 @@ QTSPresSetGraphicsMode(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetGraphicsMode(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    short *         outMode,
-    RGBColor *      outOpColor );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  short *           outMode,
+  RGBColor *        outOpColor);
+
 
 /*
  *  QTSPresGetPicture()
@@ -1290,9 +1346,10 @@ QTSPresGetGraphicsMode(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetPicture(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    PicHandle *     outPicture );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  PicHandle *       outPicture);
+
 
 /*-----------------------------------------
     Stream Sound Functions
@@ -1308,10 +1365,11 @@ QTSPresGetPicture(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetVolumes(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    short           inLeftVolume,
-    short           inRightVolume );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  short             inLeftVolume,
+  short             inRightVolume);
+
 
 /*
  *  QTSPresGetVolumes()
@@ -1324,10 +1382,11 @@ QTSPresSetVolumes(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetVolumes(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    short *         outLeftVolume,
-    short *         outRightVolume );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  short *           outLeftVolume,
+  short *           outRightVolume);
+
 
 /*-----------------------------------------
     Sourcing
@@ -1342,13 +1401,14 @@ QTSPresGetVolumes(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetSettingsAsText(
-    QTSPresentation   inPresentation,
-    QTSStream         inStream,
-    SInt32            inFlags,
-    OSType            inSettingsType,
-    Handle *          outText,
-    QTSPanelFilterUPP inPanelFilterProc,
-    void *            inPanelFilterProcRefCon );
+  QTSPresentation     inPresentation,
+  QTSStream           inStream,
+  SInt32              inFlags,
+  OSType              inSettingsType,
+  Handle *            outText,
+  QTSPanelFilterUPP   inPanelFilterProc,
+  void *              inPanelFilterProcRefCon);
+
 
 /*
  *  QTSPresSettingsDialog()
@@ -1360,11 +1420,12 @@ QTSPresGetSettingsAsText(
  */
 EXTERN_API_C( OSErr )
 QTSPresSettingsDialog(
-    QTSPresentation   inPresentation,
-    QTSStream         inStream,
-    SInt32            inFlags,
-    QTSModalFilterUPP inFilterProc,
-    void *            inFilterProcRefCon );
+  QTSPresentation     inPresentation,
+  QTSStream           inStream,
+  SInt32              inFlags,
+  QTSModalFilterUPP   inFilterProc,
+  void *              inFilterProcRefCon);
+
 
 /*
  *  QTSPresSettingsDialogWithFilters()
@@ -1376,13 +1437,14 @@ QTSPresSettingsDialog(
  */
 EXTERN_API_C( OSErr )
 QTSPresSettingsDialogWithFilters(
-    QTSPresentation   inPresentation,
-    QTSStream         inStream,
-    SInt32            inFlags,
-    QTSModalFilterUPP inFilterProc,
-    void *            inFilterProcRefCon,
-    QTSPanelFilterUPP inPanelFilterProc,
-    void *            inPanelFilterProcRefCon );
+  QTSPresentation     inPresentation,
+  QTSStream           inStream,
+  SInt32              inFlags,
+  QTSModalFilterUPP   inFilterProc,
+  void *              inFilterProcRefCon,
+  QTSPanelFilterUPP   inPanelFilterProc,
+  void *              inPanelFilterProcRefCon);
+
 
 /*
  *  QTSPresSetSettings()
@@ -1394,10 +1456,11 @@ QTSPresSettingsDialogWithFilters(
  */
 EXTERN_API_C( OSErr )
 QTSPresSetSettings(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    QTAtomSpecPtr   inSettings,
-    SInt32          inFlags );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  QTAtomSpecPtr     inSettings,
+  SInt32            inFlags);
+
 
 /*
  *  QTSPresGetSettings()
@@ -1409,10 +1472,11 @@ QTSPresSetSettings(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetSettings(
-    QTSPresentation  inPresentation,
-    QTSStream        inStream,
-    QTAtomContainer *outSettings,
-    SInt32           inFlags );
+  QTSPresentation    inPresentation,
+  QTSStream          inStream,
+  QTAtomContainer *  outSettings,
+  SInt32             inFlags);
+
 
 /*
  *  QTSPresAddSourcer()
@@ -1424,10 +1488,11 @@ QTSPresGetSettings(
  */
 EXTERN_API_C( OSErr )
 QTSPresAddSourcer(
-    QTSPresentation   inPresentation,
-    QTSStream         inStream,
-    ComponentInstance inSourcer,
-    SInt32            inFlags );
+  QTSPresentation     inPresentation,
+  QTSStream           inStream,
+  ComponentInstance   inSourcer,
+  SInt32              inFlags);
+
 
 /*
  *  QTSPresRemoveSourcer()
@@ -1439,10 +1504,11 @@ QTSPresAddSourcer(
  */
 EXTERN_API_C( OSErr )
 QTSPresRemoveSourcer(
-    QTSPresentation   inPresentation,
-    QTSStream         inStream,
-    ComponentInstance inSourcer,
-    SInt32            inFlags );
+  QTSPresentation     inPresentation,
+  QTSStream           inStream,
+  ComponentInstance   inSourcer,
+  SInt32              inFlags);
+
 
 /*
  *  QTSPresGetNumSourcers()
@@ -1454,8 +1520,9 @@ QTSPresRemoveSourcer(
  */
 EXTERN_API_C( UInt32 )
 QTSPresGetNumSourcers(
-    QTSPresentation inPresentation,
-    QTSStream       inStream );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream);
+
 
 /*
  *  QTSPresGetIndSourcer()
@@ -1467,17 +1534,18 @@ QTSPresGetNumSourcers(
  */
 EXTERN_API_C( OSErr )
 QTSPresGetIndSourcer(
-    QTSPresentation    inPresentation,
-    QTSStream          inStream,
-    UInt32             inIndex,
-    ComponentInstance *outSourcer );
+  QTSPresentation      inPresentation,
+  QTSStream            inStream,
+  UInt32               inIndex,
+  ComponentInstance *  outSourcer);
+
 
 /*============================================================================
         Misc
 ============================================================================*/
 /* flags for Get/SetNetworkAppName */
 enum {
-	kQTSNetworkAppNameIsFullNameFlag = 0x00000001
+  kQTSNetworkAppNameIsFullNameFlag = 0x00000001
 };
 
 /*
@@ -1491,8 +1559,9 @@ enum {
  */
 EXTERN_API_C( OSErr )
 QTSSetNetworkAppName(
-    const char *inAppName,
-    SInt32      inFlags );
+  const char *  inAppName,
+  SInt32        inFlags);
+
 
 /*
  *  QTSGetNetworkAppName()
@@ -1505,99 +1574,100 @@ QTSSetNetworkAppName(
  */
 EXTERN_API_C( OSErr )
 QTSGetNetworkAppName(
-    SInt32 inFlags,
-    char **outCStringPtr );
+  SInt32   inFlags,
+  char **  outCStringPtr);
+
 
 /*-----------------------------------------
     Statistics Utilities
 -----------------------------------------*/
 struct QTSStatHelperRecord {
-	long data[1];
+  long                data[1];
 };
-typedef struct QTSStatHelperRecord QTSStatHelperRecord;
-typedef QTSStatHelperRecord *      QTSStatHelper;
+typedef struct QTSStatHelperRecord      QTSStatHelperRecord;
+typedef QTSStatHelperRecord *           QTSStatHelper;
 enum {
-	kQTSInvalidStatHelper = 0L
+  kQTSInvalidStatHelper         = 0L
 };
 
 /* flags for QTSStatHelperNextParams */
 enum {
-	kQTSStatHelperReturnPascalStringsFlag = 0x00000001
+  kQTSStatHelperReturnPascalStringsFlag = 0x00000001
 };
 
 struct QTSStatHelperNextParams {
-	SInt32    flags;
-	OSType    returnedStatisticsType;
-	QTSStream returnedStream;
-	UInt32    maxStatNameLength;
-	char *    returnedStatName; /* NULL if you don't want it*/
-	UInt32    maxStatStringLength;
-	char *    returnedStatString; /* NULL if you don't want it*/
-	UInt32    maxStatUnitLength;
-	char *    returnedStatUnit; /* NULL if you don't want it*/
+  SInt32              flags;
+  OSType              returnedStatisticsType;
+  QTSStream           returnedStream;
+  UInt32              maxStatNameLength;
+  char *              returnedStatName;       /* NULL if you don't want it*/
+  UInt32              maxStatStringLength;
+  char *              returnedStatString;     /* NULL if you don't want it*/
+  UInt32              maxStatUnitLength;
+  char *              returnedStatUnit;       /* NULL if you don't want it*/
 };
-typedef struct QTSStatHelperNextParams QTSStatHelperNextParams;
+typedef struct QTSStatHelperNextParams  QTSStatHelperNextParams;
 struct QTSStatisticsParams {
-	OSType          statisticsType;
-	QTAtomContainer container;
-	QTAtom          parentAtom;
-	SInt32          flags;
+  OSType              statisticsType;
+  QTAtomContainer     container;
+  QTAtom              parentAtom;
+  SInt32              flags;
 };
-typedef struct QTSStatisticsParams QTSStatisticsParams;
+typedef struct QTSStatisticsParams      QTSStatisticsParams;
 /* general statistics types */
 enum {
-	kQTSAllStatisticsType = FOUR_CHAR_CODE( 'all ' ),
-	kQTSShortStatisticsType = FOUR_CHAR_CODE( 'shrt' ),
-	kQTSSummaryStatisticsType = FOUR_CHAR_CODE( 'summ' )
+  kQTSAllStatisticsType         = FOUR_CHAR_CODE('all '),
+  kQTSShortStatisticsType       = FOUR_CHAR_CODE('shrt'),
+  kQTSSummaryStatisticsType     = FOUR_CHAR_CODE('summ')
 };
 
 /* statistics flags */
 enum {
-	kQTSGetNameStatisticsFlag = 0x00000001,
-	kQTSDontGetDataStatisticsFlag = 0x00000002,
-	kQTSUpdateAtomsStatisticsFlag = 0x00000004,
-	kQTSGetUnitsStatisticsFlag = 0x00000008,
-	kQTSUpdateAllIfNecessaryStatisticsFlag = 0x00010000
+  kQTSGetNameStatisticsFlag     = 0x00000001,
+  kQTSDontGetDataStatisticsFlag = 0x00000002,
+  kQTSUpdateAtomsStatisticsFlag = 0x00000004,
+  kQTSGetUnitsStatisticsFlag    = 0x00000008,
+  kQTSUpdateAllIfNecessaryStatisticsFlag = 0x00010000
 };
 
 /* statistics atom types */
 enum {
-	kQTSStatisticsStreamAtomType = FOUR_CHAR_CODE( 'strm' ),
-	kQTSStatisticsNameAtomType = FOUR_CHAR_CODE( 'name' ), /* chars only, no length or terminator */
-	kQTSStatisticsDataFormatAtomType = FOUR_CHAR_CODE( 'frmt' ), /* OSType */
-	kQTSStatisticsDataAtomType = FOUR_CHAR_CODE( 'data' ),
-	kQTSStatisticsUnitsAtomType = FOUR_CHAR_CODE( 'unit' ), /* OSType */
-	kQTSStatisticsUnitsNameAtomType = FOUR_CHAR_CODE( 'unin' ) /* chars only, no length or terminator */
+  kQTSStatisticsStreamAtomType  = FOUR_CHAR_CODE('strm'),
+  kQTSStatisticsNameAtomType    = FOUR_CHAR_CODE('name'), /* chars only, no length or terminator */
+  kQTSStatisticsDataFormatAtomType = FOUR_CHAR_CODE('frmt'), /* OSType */
+  kQTSStatisticsDataAtomType    = FOUR_CHAR_CODE('data'),
+  kQTSStatisticsUnitsAtomType   = FOUR_CHAR_CODE('unit'), /* OSType */
+  kQTSStatisticsUnitsNameAtomType = FOUR_CHAR_CODE('unin') /* chars only, no length or terminator */
 };
 
 /* statistics data formats */
 enum {
-	kQTSStatisticsSInt32DataFormat = FOUR_CHAR_CODE( 'si32' ),
-	kQTSStatisticsUInt32DataFormat = FOUR_CHAR_CODE( 'ui32' ),
-	kQTSStatisticsSInt16DataFormat = FOUR_CHAR_CODE( 'si16' ),
-	kQTSStatisticsUInt16DataFormat = FOUR_CHAR_CODE( 'ui16' ),
-	kQTSStatisticsFixedDataFormat = FOUR_CHAR_CODE( 'fixd' ),
-	kQTSStatisticsUnsignedFixedDataFormat = FOUR_CHAR_CODE( 'ufix' ),
-	kQTSStatisticsStringDataFormat = FOUR_CHAR_CODE( 'strg' ),
-	kQTSStatisticsOSTypeDataFormat = FOUR_CHAR_CODE( 'ostp' ),
-	kQTSStatisticsRectDataFormat = FOUR_CHAR_CODE( 'rect' ),
-	kQTSStatisticsPointDataFormat = FOUR_CHAR_CODE( 'pont' )
+  kQTSStatisticsSInt32DataFormat = FOUR_CHAR_CODE('si32'),
+  kQTSStatisticsUInt32DataFormat = FOUR_CHAR_CODE('ui32'),
+  kQTSStatisticsSInt16DataFormat = FOUR_CHAR_CODE('si16'),
+  kQTSStatisticsUInt16DataFormat = FOUR_CHAR_CODE('ui16'),
+  kQTSStatisticsFixedDataFormat = FOUR_CHAR_CODE('fixd'),
+  kQTSStatisticsUnsignedFixedDataFormat = FOUR_CHAR_CODE('ufix'),
+  kQTSStatisticsStringDataFormat = FOUR_CHAR_CODE('strg'),
+  kQTSStatisticsOSTypeDataFormat = FOUR_CHAR_CODE('ostp'),
+  kQTSStatisticsRectDataFormat  = FOUR_CHAR_CODE('rect'),
+  kQTSStatisticsPointDataFormat = FOUR_CHAR_CODE('pont')
 };
 
 /* statistics units types */
 enum {
-	kQTSStatisticsNoUnitsType = 0,
-	kQTSStatisticsPercentUnitsType = FOUR_CHAR_CODE( 'pcnt' ),
-	kQTSStatisticsBitsPerSecUnitsType = FOUR_CHAR_CODE( 'bps ' ),
-	kQTSStatisticsFramesPerSecUnitsType = FOUR_CHAR_CODE( 'fps ' )
+  kQTSStatisticsNoUnitsType     = 0,
+  kQTSStatisticsPercentUnitsType = FOUR_CHAR_CODE('pcnt'),
+  kQTSStatisticsBitsPerSecUnitsType = FOUR_CHAR_CODE('bps '),
+  kQTSStatisticsFramesPerSecUnitsType = FOUR_CHAR_CODE('fps ')
 };
 
 /* specific statistics types */
 enum {
-	kQTSTotalDataRateStat = FOUR_CHAR_CODE( 'drtt' ),
-	kQTSTotalDataRateInStat = FOUR_CHAR_CODE( 'drti' ),
-	kQTSTotalDataRateOutStat = FOUR_CHAR_CODE( 'drto' ),
-	kQTSNetworkIDStringStat = FOUR_CHAR_CODE( 'nids' )
+  kQTSTotalDataRateStat         = FOUR_CHAR_CODE('drtt'),
+  kQTSTotalDataRateInStat       = FOUR_CHAR_CODE('drti'),
+  kQTSTotalDataRateOutStat      = FOUR_CHAR_CODE('drto'),
+  kQTSNetworkIDStringStat       = FOUR_CHAR_CODE('nids')
 };
 
 /*
@@ -1611,11 +1681,12 @@ enum {
  */
 EXTERN_API_C( OSErr )
 QTSNewStatHelper(
-    QTSPresentation inPresentation,
-    QTSStream       inStream,
-    OSType          inStatType,
-    SInt32          inFlags,
-    QTSStatHelper * outStatHelper );
+  QTSPresentation   inPresentation,
+  QTSStream         inStream,
+  OSType            inStatType,
+  SInt32            inFlags,
+  QTSStatHelper *   outStatHelper);
+
 
 /*
  *  QTSDisposeStatHelper()
@@ -1627,7 +1698,8 @@ QTSNewStatHelper(
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( OSErr )
-QTSDisposeStatHelper( QTSStatHelper inStatHelper );
+QTSDisposeStatHelper(QTSStatHelper inStatHelper);
+
 
 /*
  *  QTSStatHelperGetStats()
@@ -1639,7 +1711,8 @@ QTSDisposeStatHelper( QTSStatHelper inStatHelper );
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( OSErr )
-QTSStatHelperGetStats( QTSStatHelper inStatHelper );
+QTSStatHelperGetStats(QTSStatHelper inStatHelper);
+
 
 /*
  *  QTSStatHelperResetIter()
@@ -1651,7 +1724,8 @@ QTSStatHelperGetStats( QTSStatHelper inStatHelper );
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( OSErr )
-QTSStatHelperResetIter( QTSStatHelper inStatHelper );
+QTSStatHelperResetIter(QTSStatHelper inStatHelper);
+
 
 /*
  *  QTSStatHelperNext()
@@ -1664,8 +1738,9 @@ QTSStatHelperResetIter( QTSStatHelper inStatHelper );
  */
 EXTERN_API_C( Boolean )
 QTSStatHelperNext(
-    QTSStatHelper            inStatHelper,
-    QTSStatHelperNextParams *ioParams );
+  QTSStatHelper              inStatHelper,
+  QTSStatHelperNextParams *  ioParams);
+
 
 /*
  *  QTSStatHelperGetNumStats()
@@ -1677,7 +1752,8 @@ QTSStatHelperNext(
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( UInt32 )
-QTSStatHelperGetNumStats( QTSStatHelper inStatHelper );
+QTSStatHelperGetNumStats(QTSStatHelper inStatHelper);
+
 
 /* used by components to put statistics into the atom container */
 /*
@@ -1691,9 +1767,10 @@ QTSStatHelperGetNumStats( QTSStatHelper inStatHelper );
  */
 EXTERN_API_C( OSErr )
 QTSGetOrMakeStatAtomForStream(
-    QTAtomContainer inContainer,
-    QTSStream       inStream,
-    QTAtom *        outParentAtom );
+  QTAtomContainer   inContainer,
+  QTSStream         inStream,
+  QTAtom *          outParentAtom);
+
 
 /*
  *  QTSInsertStatistic()
@@ -1706,13 +1783,14 @@ QTSGetOrMakeStatAtomForStream(
  */
 EXTERN_API_C( OSErr )
 QTSInsertStatistic(
-    QTAtomContainer inContainer,
-    QTAtom          inParentAtom,
-    OSType          inStatType,
-    void *          inStatData,
-    UInt32          inStatDataLength,
-    OSType          inStatDataFormat,
-    SInt32          inFlags );
+  QTAtomContainer   inContainer,
+  QTAtom            inParentAtom,
+  OSType            inStatType,
+  void *            inStatData,
+  UInt32            inStatDataLength,
+  OSType            inStatDataFormat,
+  SInt32            inFlags);
+
 
 /*
  *  QTSInsertStatisticName()
@@ -1725,11 +1803,12 @@ QTSInsertStatistic(
  */
 EXTERN_API_C( OSErr )
 QTSInsertStatisticName(
-    QTAtomContainer inContainer,
-    QTAtom          inParentAtom,
-    OSType          inStatType,
-    const char *    inStatName,
-    UInt32          inStatNameLength );
+  QTAtomContainer   inContainer,
+  QTAtom            inParentAtom,
+  OSType            inStatType,
+  const char *      inStatName,
+  UInt32            inStatNameLength);
+
 
 /*
  *  QTSInsertStatisticUnits()
@@ -1742,12 +1821,13 @@ QTSInsertStatisticName(
  */
 EXTERN_API_C( OSErr )
 QTSInsertStatisticUnits(
-    QTAtomContainer inContainer,
-    QTAtom          inParentAtom,
-    OSType          inStatType,
-    OSType          inUnitsType,
-    const char *    inUnitsName,
-    UInt32          inUnitsNameLength );
+  QTAtomContainer   inContainer,
+  QTAtom            inParentAtom,
+  OSType            inStatType,
+  OSType            inUnitsType,
+  const char *      inUnitsName,
+  UInt32            inUnitsNameLength);
+
 
 /*============================================================================
         Data Formats
@@ -1757,191 +1837,193 @@ QTSInsertStatisticUnits(
 -----------------------------------------*/
 /* universal data types */
 enum {
-	kQTSNullDataType = FOUR_CHAR_CODE( 'NULL' ),
-	kQTSUnknownDataType = FOUR_CHAR_CODE( 'huh?' ),
-	kQTSAtomContainerDataType = FOUR_CHAR_CODE( 'qtac' ), /* QTAtomContainer */
-	kQTSAtomDataType = FOUR_CHAR_CODE( 'qtat' ), /* QTSAtomContainerDataStruct* */
-	kQTSAliasDataType = FOUR_CHAR_CODE( 'alis' ),
-	kQTSFileDataType = FOUR_CHAR_CODE( 'fspc' ), /* FSSpec* */
-	kQTSFileSpecDataType = FOUR_CHAR_CODE( 'fspc' ), /* FSSpec* */
-	kQTSHandleDataType = FOUR_CHAR_CODE( 'hndl' ), /* Handle* */
-	kQTSDataRefDataType = FOUR_CHAR_CODE( 'dref' ) /* DataReferencePtr */
+  kQTSNullDataType              = FOUR_CHAR_CODE('NULL'),
+  kQTSUnknownDataType           = FOUR_CHAR_CODE('huh?'),
+  kQTSAtomContainerDataType     = FOUR_CHAR_CODE('qtac'), /* QTAtomContainer */
+  kQTSAtomDataType              = FOUR_CHAR_CODE('qtat'), /* QTSAtomContainerDataStruct* */
+  kQTSAliasDataType             = FOUR_CHAR_CODE('alis'),
+  kQTSFileDataType              = FOUR_CHAR_CODE('fspc'), /* FSSpec* */
+  kQTSFileSpecDataType          = FOUR_CHAR_CODE('fspc'), /* FSSpec* */
+  kQTSHandleDataType            = FOUR_CHAR_CODE('hndl'), /* Handle* */
+  kQTSDataRefDataType           = FOUR_CHAR_CODE('dref') /* DataReferencePtr */
 };
 
 /* these data types are specific to presentations */
 enum {
-	kQTSRTSPDataType = FOUR_CHAR_CODE( 'rtsp' ),
-	kQTSSDPDataType = FOUR_CHAR_CODE( 'sdp ' )
+  kQTSRTSPDataType              = FOUR_CHAR_CODE('rtsp'),
+  kQTSSDPDataType               = FOUR_CHAR_CODE('sdp ')
 };
 
 /*-----------------------------------------
     Atom IDs
 -----------------------------------------*/
 enum {
-	kQTSAtomType_Presentation = FOUR_CHAR_CODE( 'pres' ),
-	kQTSAtomType_PresentationHeader = FOUR_CHAR_CODE( 'phdr' ), /* QTSPresentationHeaderAtom */
-	kQTSAtomType_MediaStream = FOUR_CHAR_CODE( 'mstr' ),
-	kQTSAtomType_MediaStreamHeader = FOUR_CHAR_CODE( 'mshd' ), /* QTSMediaStreamHeaderAtom */
-	kQTSAtomType_MediaDescriptionText = FOUR_CHAR_CODE( 'mdes' ), /* chars, no length */
-	kQTSAtomType_ClipRect = FOUR_CHAR_CODE( 'clip' ), /* QTSClipRectAtom */
-	kQTSAtomType_Duration = FOUR_CHAR_CODE( 'dura' ), /* QTSDurationAtom */
-	kQTSAtomType_BufferTime = FOUR_CHAR_CODE( 'bufr' ) /* QTSBufferTimeAtom */
+  kQTSAtomType_Presentation     = FOUR_CHAR_CODE('pres'),
+  kQTSAtomType_PresentationHeader = FOUR_CHAR_CODE('phdr'), /* QTSPresentationHeaderAtom */
+  kQTSAtomType_MediaStream      = FOUR_CHAR_CODE('mstr'),
+  kQTSAtomType_MediaStreamHeader = FOUR_CHAR_CODE('mshd'), /* QTSMediaStreamHeaderAtom */
+  kQTSAtomType_MediaDescriptionText = FOUR_CHAR_CODE('mdes'), /* chars, no length */
+  kQTSAtomType_ClipRect         = FOUR_CHAR_CODE('clip'), /* QTSClipRectAtom */
+  kQTSAtomType_Duration         = FOUR_CHAR_CODE('dura'), /* QTSDurationAtom */
+  kQTSAtomType_BufferTime       = FOUR_CHAR_CODE('bufr') /* QTSBufferTimeAtom */
 };
 
 struct QTSAtomContainerDataStruct {
-	QTAtomContainer container;
-	QTAtom          parentAtom;
+  QTAtomContainer     container;
+  QTAtom              parentAtom;
 };
 typedef struct QTSAtomContainerDataStruct QTSAtomContainerDataStruct;
 /* flags for QTSPresentationHeaderAtom */
 enum {
-	kQTSPresHeaderTypeIsData = 0x00000100,
-	kQTSPresHeaderDataIsHandle = 0x00000200
+  kQTSPresHeaderTypeIsData      = 0x00000100,
+  kQTSPresHeaderDataIsHandle    = 0x00000200
 };
 
 struct QTSPresentationHeaderAtom {
-	SInt32 versionAndFlags;
-	OSType conductorOrDataType;
-	OSType dataAtomType; /* where the data really is*/
+  SInt32              versionAndFlags;
+  OSType              conductorOrDataType;
+  OSType              dataAtomType;           /* where the data really is*/
 };
 typedef struct QTSPresentationHeaderAtom QTSPresentationHeaderAtom;
 struct QTSMediaStreamHeaderAtom {
-	SInt32 versionAndFlags;
-	OSType mediaTransportType;
-	OSType mediaTransportDataAID; /* where the data really is*/
+  SInt32              versionAndFlags;
+  OSType              mediaTransportType;
+  OSType              mediaTransportDataAID;  /* where the data really is*/
 };
 typedef struct QTSMediaStreamHeaderAtom QTSMediaStreamHeaderAtom;
 struct QTSBufferTimeAtom {
-	SInt32 versionAndFlags;
-	Fixed  bufferTime;
+  SInt32              versionAndFlags;
+  Fixed               bufferTime;
 };
-typedef struct QTSBufferTimeAtom QTSBufferTimeAtom;
+typedef struct QTSBufferTimeAtom        QTSBufferTimeAtom;
 struct QTSDurationAtom {
-	SInt32      versionAndFlags;
-	TimeScale   timeScale;
-	TimeValue64 duration;
+  SInt32              versionAndFlags;
+  TimeScale           timeScale;
+  TimeValue64         duration;
 };
-typedef struct QTSDurationAtom QTSDurationAtom;
+typedef struct QTSDurationAtom          QTSDurationAtom;
 struct QTSClipRectAtom {
-	SInt32 versionAndFlags;
-	Rect   clipRect;
+  SInt32              versionAndFlags;
+  Rect                clipRect;
 };
-typedef struct QTSClipRectAtom QTSClipRectAtom;
+typedef struct QTSClipRectAtom          QTSClipRectAtom;
 enum {
-	kQTSEmptyEditStreamStartTime = -1
+  kQTSEmptyEditStreamStartTime  = -1
 };
 
-typedef UInt32 QTSStatus;
+
+typedef UInt32                          QTSStatus;
 enum {
-	kQTSNullStatus = 0,
-	kQTSUninitializedStatus = 1,
-	kQTSConnectingStatus = 2,
-	kQTSOpeningConnectionDetailedStatus = 3,
-	kQTSMadeConnectionDetailedStatus = 4,
-	kQTSNegotiatingStatus = 5,
-	kQTSGettingDescriptionDetailedStatus = 6,
-	kQTSGotDescriptionDetailedStatus = 7,
-	kQTSSentSetupCmdDetailedStatus = 8,
-	kQTSReceivedSetupResponseDetailedStatus = 9,
-	kQTSSentPlayCmdDetailedStatus = 10,
-	kQTSReceivedPlayResponseDetailedStatus = 11,
-	kQTSBufferingStatus = 12,
-	kQTSPlayingStatus = 13,
-	kQTSPausedStatus = 14,
-	kQTSAutoConfiguringStatus = 15,
-	kQTSDownloadingStatus = 16,
-	kQTSBufferingWithTimeStatus = 17,
-	kQTSWaitingDisconnectStatus = 100
+  kQTSNullStatus                = 0,
+  kQTSUninitializedStatus       = 1,
+  kQTSConnectingStatus          = 2,
+  kQTSOpeningConnectionDetailedStatus = 3,
+  kQTSMadeConnectionDetailedStatus = 4,
+  kQTSNegotiatingStatus         = 5,
+  kQTSGettingDescriptionDetailedStatus = 6,
+  kQTSGotDescriptionDetailedStatus = 7,
+  kQTSSentSetupCmdDetailedStatus = 8,
+  kQTSReceivedSetupResponseDetailedStatus = 9,
+  kQTSSentPlayCmdDetailedStatus = 10,
+  kQTSReceivedPlayResponseDetailedStatus = 11,
+  kQTSBufferingStatus           = 12,
+  kQTSPlayingStatus             = 13,
+  kQTSPausedStatus              = 14,
+  kQTSAutoConfiguringStatus     = 15,
+  kQTSDownloadingStatus         = 16,
+  kQTSBufferingWithTimeStatus   = 17,
+  kQTSWaitingDisconnectStatus   = 100
 };
 
 /*-----------------------------------------
     QuickTime Preferences Types
 -----------------------------------------*/
 enum {
-	kQTSConnectionPrefsType = FOUR_CHAR_CODE( 'stcm' ), /* root atom that all other atoms are contained in*/
-	/*    kQTSNotUsedForProxyPrefsType = 'nopr',     //        comma-delimited list of URLs that are never used for proxies*/
-	kQTSConnectionMethodPrefsType = FOUR_CHAR_CODE( 'mthd' ), /*      connection method (OSType that matches one of the following three)*/
-	kQTSDirectConnectPrefsType = FOUR_CHAR_CODE( 'drct' ), /*       used if direct connect (QTSDirectConnectPrefsRecord)*/
-	/*    kQTSRTSPProxyPrefsType =     'rtsp',   //   used if RTSP Proxy (QTSProxyPrefsRecord)*/
-	kQTSSOCKSPrefsType = FOUR_CHAR_CODE( 'sock' ) /*       used if SOCKS Proxy (QTSProxyPrefsRecord)*/
+  kQTSConnectionPrefsType       = FOUR_CHAR_CODE('stcm'), /* root atom that all other atoms are contained in*/
+                                        /*    kQTSNotUsedForProxyPrefsType = 'nopr',     //        comma-delimited list of URLs that are never used for proxies*/
+  kQTSConnectionMethodPrefsType = FOUR_CHAR_CODE('mthd'), /*      connection method (OSType that matches one of the following three)*/
+  kQTSDirectConnectPrefsType    = FOUR_CHAR_CODE('drct'), /*       used if direct connect (QTSDirectConnectPrefsRecord)*/
+                                        /*    kQTSRTSPProxyPrefsType =     'rtsp',   //   used if RTSP Proxy (QTSProxyPrefsRecord)*/
+  kQTSSOCKSPrefsType            = FOUR_CHAR_CODE('sock') /*       used if SOCKS Proxy (QTSProxyPrefsRecord)*/
 };
 
 enum {
-	kQTSDirectConnectHTTPProtocol = FOUR_CHAR_CODE( 'http' ),
-	kQTSDirectConnectRTSPProtocol = FOUR_CHAR_CODE( 'rtsp' )
+  kQTSDirectConnectHTTPProtocol = FOUR_CHAR_CODE('http'),
+  kQTSDirectConnectRTSPProtocol = FOUR_CHAR_CODE('rtsp')
 };
 
 struct QTSDirectConnectPrefsRecord {
-	UInt32 tcpPortID;
-	OSType protocol;
+  UInt32              tcpPortID;
+  OSType              protocol;
 };
 typedef struct QTSDirectConnectPrefsRecord QTSDirectConnectPrefsRecord;
 struct QTSProxyPrefsRecord {
-	Str255 serverNameStr;
-	UInt32 portID;
+  Str255              serverNameStr;
+  UInt32              portID;
 };
-typedef struct QTSProxyPrefsRecord QTSProxyPrefsRecord;
-#define kQTSTransAndProxyPrefsVersNum 2 /* prefs atom format version */
+typedef struct QTSProxyPrefsRecord      QTSProxyPrefsRecord;
+#define kQTSTransAndProxyPrefsVersNum       2       /* prefs atom format version */
 enum {
-	kConnectionActive = ( 1L << 0 ),
-	kConnectionUseSystemPref = ( 1L << 1 )
+  kConnectionActive             = (1L << 0),
+  kConnectionUseSystemPref      = (1L << 1)
 };
 
 struct QTSTransportPref {
-	OSType protocol; /* udp, http, tcp, etc*/
-	SInt32 portID; /* port to use for this connection type*/
-	UInt32 flags; /* connection flags*/
-	UInt32 seed; /* seed value last time this setting was read from system prefs*/
+  OSType              protocol;               /* udp, http, tcp, etc*/
+  SInt32              portID;                 /* port to use for this connection type*/
+  UInt32              flags;                  /* connection flags*/
+  UInt32              seed;                   /* seed value last time this setting was read from system prefs*/
 };
-typedef struct QTSTransportPref QTSTransportPref;
+typedef struct QTSTransportPref         QTSTransportPref;
 enum {
-	kProxyActive = ( 1L << 0 ),
-	kProxyUseSystemPref = ( 1L << 1 )
+  kProxyActive                  = (1L << 0),
+  kProxyUseSystemPref           = (1L << 1)
 };
 
 struct QTSProxyPref {
-	UInt32 flags; /* proxy flags*/
-	SInt32 portID; /* port to use for this connection type*/
-	UInt32 seed; /* seed value last time this setting was read from system prefs*/
-	Str255 serverNameStr; /* proxy server url*/
+  UInt32              flags;                  /* proxy flags*/
+  SInt32              portID;                 /* port to use for this connection type*/
+  UInt32              seed;                   /* seed value last time this setting was read from system prefs*/
+  Str255              serverNameStr;          /* proxy server url*/
 };
-typedef struct QTSProxyPref QTSProxyPref;
+typedef struct QTSProxyPref             QTSProxyPref;
 enum {
-	kNoProxyUseSystemPref = ( 1L << 0 )
+  kNoProxyUseSystemPref         = (1L << 0)
 };
 
 struct QTSNoProxyPref {
-	UInt32 flags; /* no-proxy flags*/
-	UInt32 seed; /* seed value last time this setting was read from system prefs*/
-	char   urlList[1]; /* NULL terminated, comma delimited list of urls*/
+  UInt32              flags;                  /* no-proxy flags*/
+  UInt32              seed;                   /* seed value last time this setting was read from system prefs*/
+  char                urlList[1];             /* NULL terminated, comma delimited list of urls*/
 };
-typedef struct QTSNoProxyPref QTSNoProxyPref;
+typedef struct QTSNoProxyPref           QTSNoProxyPref;
 enum {
-	kQTSInstantOnFlag_Enable = ( 1L << 0 ), /* instant on is enabled (read/write)*/
-	kQTSInstantOnFlag_Permitted = ( 1L << 1 ) /* instant on is possible (read only)*/
+  kQTSInstantOnFlag_Enable      = (1L << 0), /* instant on is enabled (read/write)*/
+  kQTSInstantOnFlag_Permitted   = (1L << 1) /* instant on is possible (read only)*/
 };
 
+
 struct QTSInstantOnPref {
-	SInt32 flags; /* flags*/
-	SInt32 factor; /*    0-100; default is 50*/
+  SInt32              flags;                  /* flags*/
+  SInt32              factor;                 /*    0-100; default is 50*/
 };
-typedef struct QTSInstantOnPref QTSInstantOnPref;
+typedef struct QTSInstantOnPref         QTSInstantOnPref;
 enum {
-	kQTSTransAndProxyAtomType = FOUR_CHAR_CODE( 'strp' ), /* transport/proxy prefs root atom*/
-	kQTSConnectionPrefsVersion = FOUR_CHAR_CODE( 'vers' ), /*   prefs format version*/
-	kQTSTransportPrefsAtomType = FOUR_CHAR_CODE( 'trns' ), /*   tranport prefs root atom*/
-	kQTSConnectionAtomType = FOUR_CHAR_CODE( 'conn' ), /*     connection prefs atom type, one for each transport type*/
-	kQTSUDPTransportType = FOUR_CHAR_CODE( 'udp ' ), /*     udp transport prefs*/
-	kQTSHTTPTransportType = FOUR_CHAR_CODE( 'http' ), /*     http transport prefs*/
-	kQTSTCPTransportType = FOUR_CHAR_CODE( 'tcp ' ), /*     tcp transport prefs    */
-	kQTSProxyPrefsAtomType = FOUR_CHAR_CODE( 'prxy' ), /*   proxy prefs root atom*/
-	kQTSHTTPProxyPrefsType = FOUR_CHAR_CODE( 'http' ), /*     http proxy settings*/
-	kQTSRTSPProxyPrefsType = FOUR_CHAR_CODE( 'rtsp' ), /*     rtsp proxy settings*/
-	kQTSSOCKSProxyPrefsType = FOUR_CHAR_CODE( 'sock' ), /*     socks proxy settings*/
-	kQTSProxyUserInfoPrefsType = FOUR_CHAR_CODE( 'user' ), /*   proxy username/password root atom*/
-	kQTSDontProxyPrefsAtomType = FOUR_CHAR_CODE( 'nopr' ), /*   no-proxy prefs root atom*/
-	kQTSDontProxyDataType = FOUR_CHAR_CODE( 'data' ), /*     no proxy settings*/
-	kQTSInstantOnPrefsAtomType = FOUR_CHAR_CODE( 'inon' ) /* instant on prefs*/
+  kQTSTransAndProxyAtomType     = FOUR_CHAR_CODE('strp'), /* transport/proxy prefs root atom*/
+  kQTSConnectionPrefsVersion    = FOUR_CHAR_CODE('vers'), /*   prefs format version*/
+  kQTSTransportPrefsAtomType    = FOUR_CHAR_CODE('trns'), /*   tranport prefs root atom*/
+  kQTSConnectionAtomType        = FOUR_CHAR_CODE('conn'), /*     connection prefs atom type, one for each transport type*/
+  kQTSUDPTransportType          = FOUR_CHAR_CODE('udp '), /*     udp transport prefs*/
+  kQTSHTTPTransportType         = FOUR_CHAR_CODE('http'), /*     http transport prefs*/
+  kQTSTCPTransportType          = FOUR_CHAR_CODE('tcp '), /*     tcp transport prefs    */
+  kQTSProxyPrefsAtomType        = FOUR_CHAR_CODE('prxy'), /*   proxy prefs root atom*/
+  kQTSHTTPProxyPrefsType        = FOUR_CHAR_CODE('http'), /*     http proxy settings*/
+  kQTSRTSPProxyPrefsType        = FOUR_CHAR_CODE('rtsp'), /*     rtsp proxy settings*/
+  kQTSSOCKSProxyPrefsType       = FOUR_CHAR_CODE('sock'), /*     socks proxy settings*/
+  kQTSProxyUserInfoPrefsType    = FOUR_CHAR_CODE('user'), /*   proxy username/password root atom*/
+  kQTSDontProxyPrefsAtomType    = FOUR_CHAR_CODE('nopr'), /*   no-proxy prefs root atom*/
+  kQTSDontProxyDataType         = FOUR_CHAR_CODE('data'), /*     no proxy settings*/
+  kQTSInstantOnPrefsAtomType    = FOUR_CHAR_CODE('inon') /* instant on prefs*/
 };
 
 /*
@@ -1955,11 +2037,12 @@ enum {
  */
 EXTERN_API_C( OSErr )
 QTSPrefsAddProxySetting(
-    OSType proxyType,
-    SInt32 portID,
-    UInt32 flags,
-    UInt32 seed,
-    Str255 srvrURL );
+  OSType   proxyType,
+  SInt32   portID,
+  UInt32   flags,
+  UInt32   seed,
+  Str255   srvrURL);
+
 
 /*
  *  QTSPrefsFindProxyByType()
@@ -1972,11 +2055,12 @@ QTSPrefsAddProxySetting(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsFindProxyByType(
-    OSType         proxyType,
-    UInt32         flags,
-    UInt32         flagsMask,
-    QTSProxyPref **proxyHndl,
-    SInt16 *       count );
+  OSType           proxyType,
+  UInt32           flags,
+  UInt32           flagsMask,
+  QTSProxyPref **  proxyHndl,
+  SInt16 *         count);
+
 
 /*
  *  QTSPrefsAddConnectionSetting()
@@ -1989,10 +2073,11 @@ QTSPrefsFindProxyByType(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsAddConnectionSetting(
-    OSType protocol,
-    SInt32 portID,
-    UInt32 flags,
-    UInt32 seed );
+  OSType   protocol,
+  SInt32   portID,
+  UInt32   flags,
+  UInt32   seed);
+
 
 /*
  *  QTSPrefsFindConnectionByType()
@@ -2005,11 +2090,12 @@ QTSPrefsAddConnectionSetting(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsFindConnectionByType(
-    OSType             protocol,
-    UInt32             flags,
-    UInt32             flagsMask,
-    QTSTransportPref **connectionHndl,
-    SInt16 *           count );
+  OSType               protocol,
+  UInt32               flags,
+  UInt32               flagsMask,
+  QTSTransportPref **  connectionHndl,
+  SInt16 *             count);
+
 
 /*
  *  QTSPrefsGetActiveConnection()
@@ -2022,8 +2108,9 @@ QTSPrefsFindConnectionByType(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsGetActiveConnection(
-    OSType            protocol,
-    QTSTransportPref *connectInfo );
+  OSType              protocol,
+  QTSTransportPref *  connectInfo);
+
 
 /*
  *  QTSPrefsGetNoProxyURLs()
@@ -2035,7 +2122,8 @@ QTSPrefsGetActiveConnection(
  *    Windows:          in QTSClient.lib 4.1 and later
  */
 EXTERN_API_C( OSErr )
-QTSPrefsGetNoProxyURLs( QTSNoProxyPref **noProxyHndl );
+QTSPrefsGetNoProxyURLs(QTSNoProxyPref ** noProxyHndl);
+
 
 /*
  *  QTSPrefsSetNoProxyURLs()
@@ -2048,9 +2136,10 @@ QTSPrefsGetNoProxyURLs( QTSNoProxyPref **noProxyHndl );
  */
 EXTERN_API_C( OSErr )
 QTSPrefsSetNoProxyURLs(
-    char * urls,
-    UInt32 flags,
-    UInt32 seed );
+  char *   urls,
+  UInt32   flags,
+  UInt32   seed);
+
 
 /*
  *  QTSPrefsAddProxyUserInfo()
@@ -2063,11 +2152,12 @@ QTSPrefsSetNoProxyURLs(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsAddProxyUserInfo(
-    OSType    proxyType,
-    SInt32    flags,
-    SInt32    flagsMask,
-    StringPtr username,
-    StringPtr password );
+  OSType      proxyType,
+  SInt32      flags,
+  SInt32      flagsMask,
+  StringPtr   username,
+  StringPtr   password);
+
 
 /*
  *  QTSPrefsFindProxyUserInfoByType()
@@ -2080,11 +2170,12 @@ QTSPrefsAddProxyUserInfo(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsFindProxyUserInfoByType(
-    OSType    proxyType,
-    SInt32    flags,
-    SInt32    flagsMask,
-    StringPtr username,
-    StringPtr password );
+  OSType      proxyType,
+  SInt32      flags,
+  SInt32      flagsMask,
+  StringPtr   username,
+  StringPtr   password);
+
 
 /*
  *  QTSPrefsGetInstantOnSettings()
@@ -2097,8 +2188,9 @@ QTSPrefsFindProxyUserInfoByType(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsGetInstantOnSettings(
-    QTSInstantOnPref *outPref,
-    SInt32            inFlags );
+  QTSInstantOnPref *  outPref,
+  SInt32              inFlags);
+
 
 /*
  *  QTSPrefsSetInstantOnSettings()
@@ -2111,8 +2203,10 @@ QTSPrefsGetInstantOnSettings(
  */
 EXTERN_API_C( OSErr )
 QTSPrefsSetInstantOnSettings(
-    QTSInstantOnPref *inPref,
-    SInt32            inFlags );
+  QTSInstantOnPref *  inPref,
+  SInt32              inFlags);
+
+
 
 /*============================================================================
         Memory Management Services
@@ -2136,9 +2230,10 @@ QTSPrefsSetInstantOnSettings(
  */
 EXTERN_API_C( Ptr )
 QTSNewPtr(
-    UInt32  inByteCount,
-    SInt32  inFlags,
-    SInt32 *outFlags );
+  UInt32    inByteCount,
+  SInt32    inFlags,
+  SInt32 *  outFlags);
+
 
 /*
  *  QTSNewHandle()
@@ -2151,30 +2246,31 @@ QTSNewPtr(
  */
 EXTERN_API_C( Handle )
 QTSNewHandle(
-    UInt32  inByteCount,
-    SInt32  inFlags,
-    SInt32 *outFlags );
+  UInt32    inByteCount,
+  SInt32    inFlags,
+  SInt32 *  outFlags);
 
-#define QTSNewPtrClear( _s ) QTSNewPtr( ( _s ), kQTSMemAllocClearMem, NULL )
-#define QTSNewHandleClear( _s ) QTSNewHandle( ( _s ), kQTSMemAllocClearMem, NULL )
+
+#define QTSNewPtrClear(_s)      QTSNewPtr((_s), kQTSMemAllocClearMem, NULL)
+#define QTSNewHandleClear(_s)   QTSNewHandle((_s), kQTSMemAllocClearMem, NULL)
 /* flags in*/
 enum {
-	kQTSMemAllocClearMem = 0x00000001,
-	kQTSMemAllocDontUseTempMem = 0x00000002,
-	kQTSMemAllocTryTempMemFirst = 0x00000004,
-	kQTSMemAllocDontUseSystemMem = 0x00000008,
-	kQTSMemAllocTrySystemMemFirst = 0x00000010,
-	kQTSMemAllocHoldMemory = 0x00001000,
-	kQTSMemAllocIsInterruptTime = 0x01010000 /* currently not supported for alloc*/
+  kQTSMemAllocClearMem          = 0x00000001,
+  kQTSMemAllocDontUseTempMem    = 0x00000002,
+  kQTSMemAllocTryTempMemFirst   = 0x00000004,
+  kQTSMemAllocDontUseSystemMem  = 0x00000008,
+  kQTSMemAllocTrySystemMemFirst = 0x00000010,
+  kQTSMemAllocHoldMemory        = 0x00001000,
+  kQTSMemAllocIsInterruptTime   = 0x01010000 /* currently not supported for alloc*/
 };
 
 /* flags out*/
 enum {
-	kQTSMemAllocAllocatedInTempMem = 0x00000001,
-	kQTSMemAllocAllocatedInSystemMem = 0x00000002
+  kQTSMemAllocAllocatedInTempMem = 0x00000001,
+  kQTSMemAllocAllocatedInSystemMem = 0x00000002
 };
 
-typedef struct OpaqueQTSMemPtr *QTSMemPtr;
+typedef struct OpaqueQTSMemPtr*         QTSMemPtr;
 /*
    These routines are for buffers that will be recirculated
    you must use QTReleaseMemPtr instead of DisposePtr
@@ -2192,8 +2288,9 @@ typedef struct OpaqueQTSMemPtr *QTSMemPtr;
  */
 EXTERN_API_C( QTSMemPtr )
 QTSAllocMemPtr(
-    UInt32 inByteCount,
-    SInt32 inFlags );
+  UInt32   inByteCount,
+  SInt32   inFlags);
+
 
 /*
  *  QTSReleaseMemPtr()
@@ -2206,38 +2303,41 @@ QTSAllocMemPtr(
  */
 EXTERN_API_C( void )
 QTSReleaseMemPtr(
-    QTSMemPtr inMemPtr,
-    SInt32    inFlags );
+  QTSMemPtr   inMemPtr,
+  SInt32      inFlags);
+
+
 
 /*============================================================================
         Buffer Management Services
 ============================================================================*/
 
 enum {
-	kQTSStreamBufferVersion1 = 1
+  kQTSStreamBufferVersion1      = 1
 };
 
 struct QTSStreamBuffer {
-	struct QTSStreamBuffer *reserved1;
-	struct QTSStreamBuffer *reserved2;
-	struct QTSStreamBuffer *next; /* next message block in a message */
-	unsigned char *         rptr; /* first byte with real data in the DataBuffer */
-	unsigned char *         wptr; /* last+1 byte with real data in the DataBuffer */
-	SInt32                  version;
-	UInt32                  metadata[4]; /* usage defined by message sender */
-	SInt32                  flags; /* reserved */
-	long                    reserved3;
-	long                    reserved4;
-	long                    reserved5;
+  struct QTSStreamBuffer * reserved1;
+  struct QTSStreamBuffer * reserved2;
+  struct QTSStreamBuffer * next;              /* next message block in a message */
+  unsigned char *     rptr;                   /* first byte with real data in the DataBuffer */
+  unsigned char *     wptr;                   /* last+1 byte with real data in the DataBuffer */
+  SInt32              version;
+  UInt32              metadata[4];            /* usage defined by message sender */
+  SInt32              flags;                  /* reserved */
+  long                reserved3;
+  long                reserved4;
+  long                reserved5;
 
-	UInt32 moreMeta[8];
+  UInt32              moreMeta[8];
 };
-typedef struct QTSStreamBuffer QTSStreamBuffer;
+typedef struct QTSStreamBuffer          QTSStreamBuffer;
 /* flags for QTSDuplicateMessage*/
 enum {
-	kQTSDuplicateBufferFlag_CopyData = 0x00000001,
-	kQTSDuplicateBufferFlag_FlattenMessage = 0x00000002
+  kQTSDuplicateBufferFlag_CopyData = 0x00000001,
+  kQTSDuplicateBufferFlag_FlattenMessage = 0x00000002
 };
+
 
 /*
  *  QTSNewStreamBuffer()
@@ -2250,9 +2350,10 @@ enum {
  */
 EXTERN_API_C( OSErr )
 QTSNewStreamBuffer(
-    UInt32            inDataSize,
-    SInt32            inFlags,
-    QTSStreamBuffer **outStreamBuffer );
+  UInt32              inDataSize,
+  SInt32              inFlags,
+  QTSStreamBuffer **  outStreamBuffer);
+
 
 /*
  *  QTSFreeMessage()
@@ -2264,7 +2365,8 @@ QTSNewStreamBuffer(
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( void )
-QTSFreeMessage( QTSStreamBuffer *inMessage );
+QTSFreeMessage(QTSStreamBuffer * inMessage);
+
 
 /*
     kQTSDuplicateBufferFlag_CopyData - forces a copy of the data itself
@@ -2282,9 +2384,10 @@ QTSFreeMessage( QTSStreamBuffer *inMessage );
  */
 EXTERN_API_C( OSErr )
 QTSDuplicateMessage(
-    QTSStreamBuffer * inMessage,
-    SInt32            inFlags,
-    QTSStreamBuffer **outDuplicatedMessage );
+  QTSStreamBuffer *   inMessage,
+  SInt32              inFlags,
+  QTSStreamBuffer **  outDuplicatedMessage);
+
 
 /*
  *  QTSMessageLength()
@@ -2296,7 +2399,8 @@ QTSDuplicateMessage(
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( UInt32 )
-QTSMessageLength( QTSStreamBuffer *inMessage );
+QTSMessageLength(QTSStreamBuffer * inMessage);
+
 
 /*
  *  QTSStreamBufferDataInfo()
@@ -2309,9 +2413,10 @@ QTSMessageLength( QTSStreamBuffer *inMessage );
  */
 EXTERN_API_C( void )
 QTSStreamBufferDataInfo(
-    QTSStreamBuffer *inStreamBuffer,
-    unsigned char ** outDataStart,
-    UInt32 *         outDataMaxLength );
+  QTSStreamBuffer *  inStreamBuffer,
+  unsigned char **   outDataStart,
+  UInt32 *           outDataMaxLength);
+
 
 /* ---- old calls (don't use these)*/
 
@@ -2325,7 +2430,8 @@ QTSStreamBufferDataInfo(
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( QTSStreamBuffer * )
-QTSAllocBuffer( SInt32 inSize );
+QTSAllocBuffer(SInt32 inSize);
+
 
 /*
  *  QTSDupMessage()
@@ -2337,7 +2443,8 @@ QTSAllocBuffer( SInt32 inSize );
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( QTSStreamBuffer * )
-QTSDupMessage( QTSStreamBuffer *inMessage );
+QTSDupMessage(QTSStreamBuffer * inMessage);
+
 
 /*
  *  QTSCopyMessage()
@@ -2349,7 +2456,8 @@ QTSDupMessage( QTSStreamBuffer *inMessage );
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( QTSStreamBuffer * )
-QTSCopyMessage( QTSStreamBuffer *inMessage );
+QTSCopyMessage(QTSStreamBuffer * inMessage);
+
 
 /*
  *  QTSFlattenMessage()
@@ -2361,7 +2469,10 @@ QTSCopyMessage( QTSStreamBuffer *inMessage );
  *    Windows:          in QTSClient.lib 4.0 and later
  */
 EXTERN_API_C( QTSStreamBuffer * )
-QTSFlattenMessage( QTSStreamBuffer *inMessage );
+QTSFlattenMessage(QTSStreamBuffer * inMessage);
+
+
+
 
 /*============================================================================
         Misc
@@ -2377,10 +2488,11 @@ QTSFlattenMessage( QTSStreamBuffer *inMessage );
  */
 EXTERN_API_C( Boolean )
 QTSGetErrorString(
-    SInt32 inErrorCode,
-    UInt32 inMaxErrorStringLength,
-    char * outErrorString,
-    SInt32 inFlags );
+  SInt32   inErrorCode,
+  UInt32   inMaxErrorStringLength,
+  char *   outErrorString,
+  SInt32   inFlags);
+
 
 /*
  *  QTSInitializeMediaParams()
@@ -2392,7 +2504,10 @@ QTSGetErrorString(
  *    Windows:          in QTSClient.lib 5.0.1 and later
  */
 EXTERN_API_C( OSErr )
-QTSInitializeMediaParams( QTSMediaParams *inMediaParams );
+QTSInitializeMediaParams(QTSMediaParams * inMediaParams);
+
+
+
 
 /* UPP call backs */
 /*
@@ -2404,17 +2519,14 @@ QTSInitializeMediaParams( QTSMediaParams *inMediaParams );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTSNotificationUPP )
-NewQTSNotificationUPP( QTSNotificationProcPtr userRoutine );
+NewQTSNotificationUPP(QTSNotificationProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTSNotificationProcInfo = 0x00003FF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTSNotificationUPP ) NewQTSNotificationUPP( QTSNotificationProcPtr userRoutine )
-{
-	return (QTSNotificationUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTSNotificationProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTSNotificationUPP( userRoutine ) ( QTSNotificationUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTSNotificationProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTSNotificationProcInfo = 0x00003FF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTSNotificationUPP) NewQTSNotificationUPP(QTSNotificationProcPtr userRoutine) { return (QTSNotificationUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTSNotificationProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTSNotificationUPP(userRoutine) (QTSNotificationUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTSNotificationProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -2426,17 +2538,14 @@ inline DEFINE_API_C( QTSNotificationUPP ) NewQTSNotificationUPP( QTSNotification
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( QTSPanelFilterUPP )
-NewQTSPanelFilterUPP( QTSPanelFilterProcPtr userRoutine );
+NewQTSPanelFilterUPP(QTSPanelFilterProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTSPanelFilterProcInfo = 0x000003D0 }; /* pascal 1_byte Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTSPanelFilterUPP ) NewQTSPanelFilterUPP( QTSPanelFilterProcPtr userRoutine )
-{
-	return (QTSPanelFilterUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTSPanelFilterProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTSPanelFilterUPP( userRoutine ) ( QTSPanelFilterUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTSPanelFilterProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTSPanelFilterProcInfo = 0x000003D0 };  /* pascal 1_byte Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTSPanelFilterUPP) NewQTSPanelFilterUPP(QTSPanelFilterProcPtr userRoutine) { return (QTSPanelFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTSPanelFilterProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTSPanelFilterUPP(userRoutine) (QTSPanelFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTSPanelFilterProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -2448,17 +2557,14 @@ inline DEFINE_API_C( QTSPanelFilterUPP ) NewQTSPanelFilterUPP( QTSPanelFilterPro
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTSModalFilterUPP )
-NewQTSModalFilterUPP( QTSModalFilterProcPtr userRoutine );
+NewQTSModalFilterUPP(QTSModalFilterProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTSModalFilterProcInfo = 0x00003FD0 }; /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTSModalFilterUPP ) NewQTSModalFilterUPP( QTSModalFilterProcPtr userRoutine )
-{
-	return (QTSModalFilterUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTSModalFilterProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTSModalFilterUPP( userRoutine ) ( QTSModalFilterUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTSModalFilterProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTSModalFilterProcInfo = 0x00003FD0 };  /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTSModalFilterUPP) NewQTSModalFilterUPP(QTSModalFilterProcPtr userRoutine) { return (QTSModalFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTSModalFilterProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTSModalFilterUPP(userRoutine) (QTSModalFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTSModalFilterProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -2470,16 +2576,13 @@ inline DEFINE_API_C( QTSModalFilterUPP ) NewQTSModalFilterUPP( QTSModalFilterPro
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTSNotificationUPP( QTSNotificationUPP userUPP );
+DisposeQTSNotificationUPP(QTSNotificationUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTSNotificationUPP( QTSNotificationUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTSNotificationUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTSNotificationUPP(QTSNotificationUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTSNotificationUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -2491,16 +2594,13 @@ inline DEFINE_API_C( void ) DisposeQTSNotificationUPP( QTSNotificationUPP userUP
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeQTSPanelFilterUPP( QTSPanelFilterUPP userUPP );
+DisposeQTSPanelFilterUPP(QTSPanelFilterUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTSPanelFilterUPP( QTSPanelFilterUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTSPanelFilterUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTSPanelFilterUPP(QTSPanelFilterUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTSPanelFilterUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -2512,16 +2612,13 @@ inline DEFINE_API_C( void ) DisposeQTSPanelFilterUPP( QTSPanelFilterUPP userUPP 
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTSModalFilterUPP( QTSModalFilterUPP userUPP );
+DisposeQTSModalFilterUPP(QTSModalFilterUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTSModalFilterUPP( QTSModalFilterUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTSModalFilterUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTSModalFilterUPP(QTSModalFilterUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTSModalFilterUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -2534,20 +2631,17 @@ inline DEFINE_API_C( void ) DisposeQTSModalFilterUPP( QTSModalFilterUPP userUPP 
  */
 EXTERN_API_C( ComponentResult )
 InvokeQTSNotificationUPP(
-    ComponentResult    inErr,
-    OSType             inNotificationType,
-    void *             inNotificationParams,
-    void *             inRefCon,
-    QTSNotificationUPP userUPP );
+  ComponentResult     inErr,
+  OSType              inNotificationType,
+  void *              inNotificationParams,
+  void *              inRefCon,
+  QTSNotificationUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( ComponentResult ) InvokeQTSNotificationUPP( ComponentResult inErr, OSType inNotificationType, void *inNotificationParams, void *inRefCon, QTSNotificationUPP userUPP )
-{
-	return (ComponentResult)CALL_FOUR_PARAMETER_UPP( userUPP, uppQTSNotificationProcInfo, inErr, inNotificationType, inNotificationParams, inRefCon );
-}
-#else
-#define InvokeQTSNotificationUPP( inErr, inNotificationType, inNotificationParams, inRefCon, userUPP ) ( ComponentResult ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppQTSNotificationProcInfo, ( inErr ), ( inNotificationType ), ( inNotificationParams ), ( inRefCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(ComponentResult) InvokeQTSNotificationUPP(ComponentResult inErr, OSType inNotificationType, void * inNotificationParams, void * inRefCon, QTSNotificationUPP userUPP) { return (ComponentResult)CALL_FOUR_PARAMETER_UPP(userUPP, uppQTSNotificationProcInfo, inErr, inNotificationType, inNotificationParams, inRefCon); }
+  #else
+    #define InvokeQTSNotificationUPP(inErr, inNotificationType, inNotificationParams, inRefCon, userUPP) (ComponentResult)CALL_FOUR_PARAMETER_UPP((userUPP), uppQTSNotificationProcInfo, (inErr), (inNotificationType), (inNotificationParams), (inRefCon))
+  #endif
 #endif
 
 /*
@@ -2560,18 +2654,15 @@ inline DEFINE_API_C( ComponentResult ) InvokeQTSNotificationUPP( ComponentResult
  */
 EXTERN_API_C( Boolean )
 InvokeQTSPanelFilterUPP(
-    QTSPanelFilterParams *inParams,
-    void *                inRefCon,
-    QTSPanelFilterUPP     userUPP );
+  QTSPanelFilterParams *  inParams,
+  void *                  inRefCon,
+  QTSPanelFilterUPP       userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeQTSPanelFilterUPP( QTSPanelFilterParams *inParams, void *inRefCon, QTSPanelFilterUPP userUPP )
-{
-	return (Boolean)CALL_TWO_PARAMETER_UPP( userUPP, uppQTSPanelFilterProcInfo, inParams, inRefCon );
-}
-#else
-#define InvokeQTSPanelFilterUPP( inParams, inRefCon, userUPP ) ( Boolean ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppQTSPanelFilterProcInfo, ( inParams ), ( inRefCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeQTSPanelFilterUPP(QTSPanelFilterParams * inParams, void * inRefCon, QTSPanelFilterUPP userUPP) { return (Boolean)CALL_TWO_PARAMETER_UPP(userUPP, uppQTSPanelFilterProcInfo, inParams, inRefCon); }
+  #else
+    #define InvokeQTSPanelFilterUPP(inParams, inRefCon, userUPP) (Boolean)CALL_TWO_PARAMETER_UPP((userUPP), uppQTSPanelFilterProcInfo, (inParams), (inRefCon))
+  #endif
 #endif
 
 /*
@@ -2584,40 +2675,40 @@ inline DEFINE_API_C( Boolean ) InvokeQTSPanelFilterUPP( QTSPanelFilterParams *in
  */
 EXTERN_API_C( Boolean )
 InvokeQTSModalFilterUPP(
-    DialogPtr          inDialog,
-    const EventRecord *inEvent,
-    SInt16 *           ioItemHit,
-    void *             inRefCon,
-    QTSModalFilterUPP  userUPP );
+  DialogPtr            inDialog,
+  const EventRecord *  inEvent,
+  SInt16 *             ioItemHit,
+  void *               inRefCon,
+  QTSModalFilterUPP    userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeQTSModalFilterUPP( DialogPtr inDialog, const EventRecord *inEvent, SInt16 *ioItemHit, void *inRefCon, QTSModalFilterUPP userUPP )
-{
-	return (Boolean)CALL_FOUR_PARAMETER_UPP( userUPP, uppQTSModalFilterProcInfo, inDialog, inEvent, ioItemHit, inRefCon );
-}
-#else
-#define InvokeQTSModalFilterUPP( inDialog, inEvent, ioItemHit, inRefCon, userUPP ) ( Boolean ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppQTSModalFilterProcInfo, ( inDialog ), ( inEvent ), ( ioItemHit ), ( inRefCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeQTSModalFilterUPP(DialogPtr inDialog, const EventRecord * inEvent, SInt16 * ioItemHit, void * inRefCon, QTSModalFilterUPP userUPP) { return (Boolean)CALL_FOUR_PARAMETER_UPP(userUPP, uppQTSModalFilterProcInfo, inDialog, inEvent, ioItemHit, inRefCon); }
+  #else
+    #define InvokeQTSModalFilterUPP(inDialog, inEvent, ioItemHit, inRefCon, userUPP) (Boolean)CALL_FOUR_PARAMETER_UPP((userUPP), uppQTSModalFilterProcInfo, (inDialog), (inEvent), (ioItemHit), (inRefCon))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewQTSNotificationProc( userRoutine ) NewQTSNotificationUPP( userRoutine )
-#define NewQTSPanelFilterProc( userRoutine ) NewQTSPanelFilterUPP( userRoutine )
-#define NewQTSModalFilterProc( userRoutine ) NewQTSModalFilterUPP( userRoutine )
-#define CallQTSNotificationProc( userRoutine, inErr, inNotificationType, inNotificationParams, inRefCon ) InvokeQTSNotificationUPP( inErr, inNotificationType, inNotificationParams, inRefCon, userRoutine )
-#define CallQTSPanelFilterProc( userRoutine, inParams, inRefCon ) InvokeQTSPanelFilterUPP( inParams, inRefCon, userRoutine )
-#define CallQTSModalFilterProc( userRoutine, inDialog, inEvent, ioItemHit, inRefCon ) InvokeQTSModalFilterUPP( inDialog, inEvent, ioItemHit, inRefCon, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewQTSNotificationProc(userRoutine)                 NewQTSNotificationUPP(userRoutine)
+    #define NewQTSPanelFilterProc(userRoutine)                  NewQTSPanelFilterUPP(userRoutine)
+    #define NewQTSModalFilterProc(userRoutine)                  NewQTSModalFilterUPP(userRoutine)
+    #define CallQTSNotificationProc(userRoutine, inErr, inNotificationType, inNotificationParams, inRefCon) InvokeQTSNotificationUPP(inErr, inNotificationType, inNotificationParams, inRefCon, userRoutine)
+    #define CallQTSPanelFilterProc(userRoutine, inParams, inRefCon) InvokeQTSPanelFilterUPP(inParams, inRefCon, userRoutine)
+    #define CallQTSModalFilterProc(userRoutine, inDialog, inEvent, ioItemHit, inRefCon) InvokeQTSModalFilterUPP(inDialog, inEvent, ioItemHit, inRefCon, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
+
 
 #endif // !__LP64__
 
+
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2631,3 +2722,4 @@ inline DEFINE_API_C( Boolean ) InvokeQTSModalFilterUPP( DialogPtr inDialog, cons
 #endif
 
 #endif /* __QUICKTIMESTREAMING__ */
+

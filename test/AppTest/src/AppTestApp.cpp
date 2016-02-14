@@ -1,12 +1,12 @@
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/Log.h"
 #include "cinder/CinderAssert.h"
 #include "cinder/ImageIo.h"
-#include "cinder/Log.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/gl/gl.h"
 
 #include "Resources.h"
 
@@ -21,7 +21,7 @@ void prepareSettings( App::Settings *settings )
 	CI_LOG_I( "entering prepareSettings()" );
 
 	const auto &args = settings->getCommandLineArgs();
-	if( !args.empty() ) {
+	if( ! args.empty() ) {
 		CI_LOG_I( "command line args: " );
 		for( size_t i = 0; i < args.size(); i++ )
 			console() << "\t[" << i << "] " << args[i] << endl;
@@ -30,7 +30,7 @@ void prepareSettings( App::Settings *settings )
 	CI_LOG_I( "environment vars: " );
 	const auto &envVars = getEnvironmentVariables();
 	for( auto &env : envVars )
-		CI_LOG_I( "{" << env.first << "} = {" << env.second << "}" );
+		CI_LOG_I( "{" << env.first  << "} = {" << env.second << "}" );
 
 	settings->setWindowPos( 50, 50 );
 	settings->setWindowSize( 900, 500 );
@@ -93,23 +93,24 @@ class AppTestApp : public App {
 	SomeMemberObj mSomeMemberObj;
 
 	gl::TextureRef mTexStartup, mTexAsset, mTexResource;
+
 };
 
 AppTestApp::AppTestApp()
 {
 	CI_LOG_I( "bang" );
 
-	//	Surface8u surface( 140, 140, false );
-	//	Surface8u::Iter iter = surface.getIter();
-	//	while( iter.line() ) {
-	//		while( iter.pixel() ) {
-	//			iter.r() = 0;
-	//			iter.g() = iter.x();
-	//			iter.b() = iter.y();
-	//		}
-	//	}
+//	Surface8u surface( 140, 140, false );
+//	Surface8u::Iter iter = surface.getIter();
+//	while( iter.line() ) {
+//		while( iter.pixel() ) {
+//			iter.r() = 0;
+//			iter.g() = iter.x();
+//			iter.b() = iter.y();
+//		}
+//	}
 
-	//	mTexStartup = gl::Texture::create( surface );
+//	mTexStartup = gl::Texture::create( surface );
 
 	auto asset = loadAsset( "mustache-green.png" );
 	mTexStartup = gl::Texture::create( loadImage( asset ) );
@@ -149,7 +150,7 @@ void AppTestApp::setup()
 void AppTestApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'f' ) {
-		setFullScreen( !isFullScreen() );
+		setFullScreen( ! isFullScreen() );
 	}
 	else if( event.getChar() == 'o' ) {
 		auto filePath = getOpenFilePath();
@@ -166,7 +167,7 @@ void AppTestApp::keyDown( KeyEvent event )
 	else if( event.getChar() == 'r' ) {
 		// iterate through some framerate settings
 		int targetFrameRate = (int)lround( getFrameRate() );
-		if( !isFrameRateEnabled() ) {
+		if( ! isFrameRateEnabled() ) {
 			CI_LOG_I( "setting framerate to 60" );
 			setFrameRate( 60 );
 		}
@@ -183,7 +184,7 @@ void AppTestApp::keyDown( KeyEvent event )
 		}
 	}
 	else if( event.getChar() == 'v' ) {
-		gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
+		gl::enableVerticalSync( ! gl::isVerticalSyncEnabled() );
 	}
 }
 
@@ -234,7 +235,7 @@ void AppTestApp::draw()
 
 	// draw something animated
 	{
-		gl::ScopedColor       colorScope( ColorA( 0, 0, 1, 0.5f ) );
+		gl::ScopedColor colorScope( ColorA( 0, 0, 1, 0.5f ) );
 		gl::ScopedModelMatrix modelScope;
 		gl::translate( getWindowCenter() );
 		gl::rotate( getElapsedSeconds() * 0.5f, vec3( 0, 0, 1 ) );
@@ -244,7 +245,7 @@ void AppTestApp::draw()
 	}
 
 	// draw test textures
-
+	
 	auto offset = vec2( 0 );
 
 	if( mTexAsset ) {

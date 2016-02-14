@@ -20,6 +20,10 @@
 #include <ConditionalMacros.h>
 #endif
 
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -33,11 +37,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /********************************************************************************
@@ -49,17 +53,17 @@ extern "C" {
 
 *********************************************************************************/
 #ifndef NULL
-#if !defined( __cplusplus ) && ( defined( __SC__ ) || defined( THINK_C ) )
-/* Symantec C compilers (but not C++) want NULL and nil to be (void*)0  */
-#define NULL ( (void *)0 )
-#else
-/* in case int is 16-bits, make sure NULL is 32-bits */
-#define NULL 0L
-#endif
+    #if !defined(__cplusplus) && (defined(__SC__) || defined(THINK_C))
+        /* Symantec C compilers (but not C++) want NULL and nil to be (void*)0  */
+        #define NULL ((void *) 0)
+    #else
+        /* in case int is 16-bits, make sure NULL is 32-bits */
+        #define NULL 0L
+    #endif
 #endif
 
 #ifndef nil
-#define nil NULL
+    #define nil NULL
 #endif
 
 /********************************************************************************
@@ -76,35 +80,36 @@ extern "C" {
         SInt64          64-bit signed integer   
 
 *********************************************************************************/
-typedef unsigned char  UInt8;
-typedef signed char    SInt8;
-typedef unsigned short UInt16;
-typedef signed short   SInt16;
-typedef unsigned long  UInt32;
-typedef signed long    SInt32;
+typedef unsigned char                   UInt8;
+typedef signed char                     SInt8;
+typedef unsigned short                  UInt16;
+typedef signed short                    SInt16;
+typedef unsigned long                   UInt32;
+typedef signed long                     SInt32;
 #if TARGET_RT_BIG_ENDIAN
 struct wide {
-	SInt32 hi;
-	UInt32 lo;
+  SInt32              hi;
+  UInt32              lo;
 };
-typedef struct wide wide;
+typedef struct wide                     wide;
 struct UnsignedWide {
-	UInt32 hi;
-	UInt32 lo;
+  UInt32              hi;
+  UInt32              lo;
 };
-typedef struct UnsignedWide UnsignedWide;
+typedef struct UnsignedWide             UnsignedWide;
 #else
 struct wide {
-	UInt32 lo;
-	SInt32 hi;
+  UInt32              lo;
+  SInt32              hi;
 };
-typedef struct wide wide;
+typedef struct wide                     wide;
 struct UnsignedWide {
-	UInt32 lo;
-	UInt32 hi;
+  UInt32              lo;
+  UInt32              hi;
 };
-typedef struct UnsignedWide UnsignedWide;
-#endif /* TARGET_RT_BIG_ENDIAN */
+typedef struct UnsignedWide             UnsignedWide;
+#endif  /* TARGET_RT_BIG_ENDIAN */
+
 
 #if TYPE_LONGLONG
 /*
@@ -119,18 +124,19 @@ typedef struct UnsignedWide UnsignedWide;
             
            The MS Visual C/C++ compiler uses __int64 instead of long long. 
 */
-#if defined( _MSC_VER ) && !defined( __MWERKS__ ) && defined( _M_IX86 )
-typedef signed __int64   SInt64;
-typedef unsigned __int64 UInt64;
-#else
-typedef signed long long   SInt64;
-typedef unsigned long long UInt64;
-#endif
+    #if defined(_MSC_VER) && !defined(__MWERKS__) && defined(_M_IX86)
+      typedef   signed __int64                SInt64;
+        typedef unsigned __int64                UInt64;
+    #else
+      typedef   signed long long              SInt64;
+        typedef unsigned long long              UInt64;
+    #endif
 #else
 
-typedef wide             SInt64;
-typedef UnsignedWide     UInt64;
-#endif /* TYPE_LONGLONG */
+
+typedef wide                            SInt64;
+typedef UnsignedWide                    UInt64;
+#endif  /* TYPE_LONGLONG */
 
 /********************************************************************************
 
@@ -142,14 +148,15 @@ typedef UnsignedWide     UInt64;
         ShortFixed      8-bit signed integer plus 8-bit fraction
         
 *********************************************************************************/
-typedef long           Fixed;
-typedef Fixed *        FixedPtr;
-typedef long           Fract;
-typedef Fract *        FractPtr;
-typedef unsigned long  UnsignedFixed;
-typedef UnsignedFixed *UnsignedFixedPtr;
-typedef short          ShortFixed;
-typedef ShortFixed *   ShortFixedPtr;
+typedef long                            Fixed;
+typedef Fixed *                         FixedPtr;
+typedef long                            Fract;
+typedef Fract *                         FractPtr;
+typedef unsigned long                   UnsignedFixed;
+typedef UnsignedFixed *                 UnsignedFixedPtr;
+typedef short                           ShortFixed;
+typedef ShortFixed *                    ShortFixedPtr;
+
 
 /********************************************************************************
 
@@ -168,22 +175,22 @@ typedef ShortFixed *   ShortFixedPtr;
           compiler, but might be a different size on different compilers.
 
 *********************************************************************************/
-typedef float  Float32;
-typedef double Float64;
+typedef float               Float32;
+typedef double              Float64;
 struct Float80 {
-	SInt16 exp;
-	UInt16 man[4];
+    SInt16  exp;
+    UInt16  man[4];
 };
 typedef struct Float80 Float80;
 
 struct Float96 {
-	SInt16 exp[2]; /* the second 16-bits are undefined */
-	UInt16 man[4];
+    SInt16  exp[2];     /* the second 16-bits are undefined */
+    UInt16  man[4];
 };
 typedef struct Float96 Float96;
 struct Float32Point {
-	Float32 x;
-	Float32 y;
+    Float32             x;
+    Float32             y;
 };
 typedef struct Float32Point Float32Point;
 
@@ -196,9 +203,9 @@ typedef struct Float32Point Float32Point;
         Size            The number of bytes in a block (signed for historical reasons)
         
 *********************************************************************************/
-typedef char *Ptr;
-typedef Ptr * Handle;
-typedef long  Size;
+typedef char *                          Ptr;
+typedef Ptr *                           Handle;
+typedef long                            Size;
 
 /********************************************************************************
 
@@ -226,27 +233,27 @@ typedef long  Size;
         ResType                 A FourCharCode used to tag resources (e.g. 'DLOG')
         
 *********************************************************************************/
-typedef SInt16        OSErr;
-typedef SInt32        OSStatus;
-typedef void *        LogicalAddress;
-typedef const void *  ConstLogicalAddress;
-typedef void *        PhysicalAddress;
-typedef UInt8 *       BytePtr;
-typedef UInt32        ByteCount;
-typedef UInt32        ByteOffset;
-typedef SInt32        Duration;
-typedef UnsignedWide  AbsoluteTime;
-typedef UInt32        OptionBits;
-typedef UInt32        ItemCount;
-typedef UInt32        PBVersion;
-typedef SInt16        ScriptCode;
-typedef SInt16        LangCode;
-typedef SInt16        RegionCode;
-typedef unsigned long FourCharCode;
-typedef FourCharCode  OSType;
-typedef FourCharCode  ResType;
-typedef OSType *      OSTypePtr;
-typedef ResType *     ResTypePtr;
+typedef SInt16                          OSErr;
+typedef SInt32                          OSStatus;
+typedef void *                          LogicalAddress;
+typedef const void *                    ConstLogicalAddress;
+typedef void *                          PhysicalAddress;
+typedef UInt8 *                         BytePtr;
+typedef UInt32                          ByteCount;
+typedef UInt32                          ByteOffset;
+typedef SInt32                          Duration;
+typedef UnsignedWide                    AbsoluteTime;
+typedef UInt32                          OptionBits;
+typedef UInt32                          ItemCount;
+typedef UInt32                          PBVersion;
+typedef SInt16                          ScriptCode;
+typedef SInt16                          LangCode;
+typedef SInt16                          RegionCode;
+typedef unsigned long                   FourCharCode;
+typedef FourCharCode                    OSType;
+typedef FourCharCode                    ResType;
+typedef OSType *                        OSTypePtr;
+typedef ResType *                       ResTypePtr;
 /********************************************************************************
 
     Boolean types and values
@@ -263,21 +270,21 @@ typedef ResType *     ResTypePtr;
         code written before "bool" existed.
     */
 #if !TYPE_BOOL
-#if TARGET_OS_WIN32
-/* MS VC normally warns if true or false is defined */
-#pragma warning( disable : 4237 )
-#endif
+    #if TARGET_OS_WIN32
+        /* MS VC normally warns if true or false is defined */
+        #pragma warning (disable: 4237)
+    #endif
 enum {
-	false = 0,
-	true = 1
+  false                         = 0,
+  true                          = 1
 };
 
-#if TARGET_OS_WIN32
-#pragma warning( default : 4237 )
-#endif
-#endif /* !TYPE_BOOL */
+    #if TARGET_OS_WIN32
+        #pragma warning (default: 4237)
+    #endif
+#endif  /* !TYPE_BOOL */
 
-typedef unsigned char Boolean;
+typedef unsigned char                   Boolean;
 /********************************************************************************
 
     Function Pointer Types
@@ -290,17 +297,18 @@ typedef unsigned char Boolean;
         UniversalProcHandle     Pointer to a UniversalProcPtr
         
 *********************************************************************************/
-typedef CALLBACK_API_C( long, ProcPtr )();
-typedef CALLBACK_API( void, Register68kProcPtr )();
+typedef CALLBACK_API_C( long , ProcPtr )();
+typedef CALLBACK_API( void , Register68kProcPtr )();
 #if TARGET_OS_MAC && TARGET_RT_MAC_CFM
 /*  The RoutineDescriptor structure is defined in MixedMode.h */
 typedef struct RoutineDescriptor *UniversalProcPtr;
 #else
-typedef ProcPtr          UniversalProcPtr;
-#endif /* TARGET_OS_MAC && TARGET_RT_MAC_CFM */
+typedef ProcPtr                         UniversalProcPtr;
+#endif  /* TARGET_OS_MAC && TARGET_RT_MAC_CFM */
 
-typedef ProcPtr *         ProcHandle;
-typedef UniversalProcPtr *UniversalProcHandle;
+typedef ProcPtr *                       ProcHandle;
+typedef UniversalProcPtr *              UniversalProcHandle;
+
 
 /********************************************************************************
 
@@ -324,21 +332,23 @@ typedef UniversalProcPtr *UniversalProcHandle;
         
 *********************************************************************************/
 enum {
-	noErr = 0
+  noErr                         = 0
 };
 
 enum {
-	kNilOptions = 0
+  kNilOptions                   = 0
 };
 
-#define kInvalidID 0
+#define kInvalidID   0
 enum {
-	kVariableLengthArray = 1
+  kVariableLengthArray          = 1
 };
 
 enum {
-	kUnknownType = 0x3F3F3F3F /* "????" QuickTime 3.0: default unknown ResType or OSType */
+  kUnknownType                  = 0x3F3F3F3F /* "????" QuickTime 3.0: default unknown ResType or OSType */
 };
+
+
 
 /********************************************************************************
 
@@ -390,20 +400,20 @@ enum {
           
         
 *********************************************************************************/
-typedef UInt32        UnicodeScalarValue;
-typedef UInt32        UTF32Char;
-typedef UInt16        UniChar;
-typedef UInt16        UTF16Char;
-typedef UInt8         UTF8Char;
-typedef UniChar *     UniCharPtr;
-typedef UInt32        UniCharCount;
-typedef UniCharCount *UniCharCountPtr;
-typedef unsigned char Str255[256];
-typedef unsigned char Str63[64];
-typedef unsigned char Str32[33];
-typedef unsigned char Str31[32];
-typedef unsigned char Str27[28];
-typedef unsigned char Str15[16];
+typedef UInt32                          UnicodeScalarValue;
+typedef UInt32                          UTF32Char;
+typedef UInt16                          UniChar;
+typedef UInt16                          UTF16Char;
+typedef UInt8                           UTF8Char;
+typedef UniChar *                       UniCharPtr;
+typedef UInt32                          UniCharCount;
+typedef UniCharCount *                  UniCharCountPtr;
+typedef unsigned char                   Str255[256];
+typedef unsigned char                   Str63[64];
+typedef unsigned char                   Str32[33];
+typedef unsigned char                   Str31[32];
+typedef unsigned char                   Str27[28];
+typedef unsigned char                   Str15[16];
 /*
     The type Str32 is used in many AppleTalk based data structures.
     It holds up to 32 one byte chars.  The problem is that with the
@@ -412,7 +422,7 @@ typedef unsigned char Str15[16];
     been created.  It should only be used to hold 32 chars, but
     it is 34 bytes long so that there are no alignment problems.
 */
-typedef unsigned char Str32Field[34];
+typedef unsigned char                   Str32Field[34];
 /*
     QuickTime 3.0:
     The type StrFileName is used to make MacOS structs work 
@@ -423,38 +433,35 @@ typedef unsigned char Str32Field[34];
     contain long file names.
 */
 #if TARGET_OS_MAC
-typedef Str63 StrFileName;
+typedef Str63                           StrFileName;
 #else
-typedef Str255           StrFileName;
-#endif /* TARGET_OS_MAC */
+typedef Str255                          StrFileName;
+#endif  /* TARGET_OS_MAC */
 
-typedef unsigned char *      StringPtr;
-typedef StringPtr *          StringHandle;
-typedef const unsigned char *ConstStringPtr;
-typedef const unsigned char *ConstStr255Param;
-typedef const unsigned char *ConstStr63Param;
-typedef const unsigned char *ConstStr32Param;
-typedef const unsigned char *ConstStr31Param;
-typedef const unsigned char *ConstStr27Param;
-typedef const unsigned char *ConstStr15Param;
+typedef unsigned char *                 StringPtr;
+typedef StringPtr *                     StringHandle;
+typedef const unsigned char *           ConstStringPtr;
+typedef const unsigned char *           ConstStr255Param;
+typedef const unsigned char *           ConstStr63Param;
+typedef const unsigned char *           ConstStr32Param;
+typedef const unsigned char *           ConstStr31Param;
+typedef const unsigned char *           ConstStr27Param;
+typedef const unsigned char *           ConstStr15Param;
 #if TARGET_OS_MAC
-typedef ConstStr63Param ConstStrFileNameParam;
+typedef ConstStr63Param                 ConstStrFileNameParam;
 #else
-typedef ConstStr255Param ConstStrFileNameParam;
-#endif /* TARGET_OS_MAC */
+typedef ConstStr255Param                ConstStrFileNameParam;
+#endif  /* TARGET_OS_MAC */
 
 #ifdef __cplusplus
-inline unsigned char StrLength( ConstStr255Param string )
-{
-	return ( *string );
-}
+inline unsigned char StrLength(ConstStr255Param string) { return (*string); }
 #else
-#define StrLength( string ) ( *(unsigned char *)( string ) )
-#endif /* defined(__cplusplus) */
+#define StrLength(string) (*(unsigned char *)(string))
+#endif  /* defined(__cplusplus) */
 
 #if OLDROUTINENAMES
-#define Length( string ) StrLength( string )
-#endif /* OLDROUTINENAMES */
+#define Length(string) StrLength(string)
+#endif  /* OLDROUTINENAMES */
 
 /********************************************************************************
 
@@ -473,47 +480,48 @@ inline unsigned char StrLength( ConstStr255Param string )
         
 *********************************************************************************/
 struct Point {
-	short v;
-	short h;
+  short               v;
+  short               h;
 };
-typedef struct Point Point;
-typedef Point *      PointPtr;
+typedef struct Point                    Point;
+typedef Point *                         PointPtr;
 struct Rect {
-	short top;
-	short left;
-	short bottom;
-	short right;
+  short               top;
+  short               left;
+  short               bottom;
+  short               right;
 };
-typedef struct Rect Rect;
-typedef Rect *      RectPtr;
+typedef struct Rect                     Rect;
+typedef Rect *                          RectPtr;
 struct FixedPoint {
-	Fixed x;
-	Fixed y;
+  Fixed               x;
+  Fixed               y;
 };
-typedef struct FixedPoint FixedPoint;
+typedef struct FixedPoint               FixedPoint;
 struct FixedRect {
-	Fixed left;
-	Fixed top;
-	Fixed right;
-	Fixed bottom;
+  Fixed               left;
+  Fixed               top;
+  Fixed               right;
+  Fixed               bottom;
 };
-typedef struct FixedRect FixedRect;
+typedef struct FixedRect                FixedRect;
 
-typedef short CharParameter;
+typedef short                           CharParameter;
 enum {
-	normal = 0,
-	bold = 1,
-	italic = 2,
-	underline = 4,
-	outline = 8,
-	shadow = 0x10,
-	condense = 0x20,
-	extend = 0x40
+  normal                        = 0,
+  bold                          = 1,
+  italic                        = 2,
+  underline                     = 4,
+  outline                       = 8,
+  shadow                        = 0x10,
+  condense                      = 0x20,
+  extend                        = 0x40
 };
 
-typedef unsigned char Style;
-typedef short         StyleParameter;
-typedef Style         StyleField;
+typedef unsigned char                   Style;
+typedef short                           StyleParameter;
+typedef Style                           StyleField;
+
 
 /********************************************************************************
 
@@ -527,17 +535,17 @@ typedef Style         StyleField;
         TimeRecord          Package of TimeBase, duration, and scale
         
 *********************************************************************************/
-typedef long                   TimeValue;
-typedef long                   TimeScale;
-typedef wide                   CompTimeValue;
-typedef SInt64                 TimeValue64;
-typedef struct TimeBaseRecord *TimeBase;
+typedef long                            TimeValue;
+typedef long                            TimeScale;
+typedef wide                            CompTimeValue;
+typedef SInt64                          TimeValue64;
+typedef struct TimeBaseRecord*          TimeBase;
 struct TimeRecord {
-	CompTimeValue value; /* units (duration or absolute) */
-	TimeScale     scale; /* units per second */
-	TimeBase      base; /* refernce to the time base */
+  CompTimeValue       value;                  /* units (duration or absolute) */
+  TimeScale           scale;                  /* units per second */
+  TimeBase            base;                   /* refernce to the time base */
 };
-typedef struct TimeRecord TimeRecord;
+typedef struct TimeRecord               TimeRecord;
 
 /********************************************************************************
 
@@ -547,14 +555,13 @@ typedef struct TimeRecord TimeRecord;
         PascalObject        Root class for pascal style objects in THINK C++ 
 
 *********************************************************************************/
-#if defined( __SC__ ) && !defined( __STDC__ ) && defined( __cplusplus )
-class __machdl HandleObject {
-};
-#if TARGET_CPU_68K
-class __pasobj PascalObject {
-};
+#if defined(__SC__) && !defined(__STDC__) && defined(__cplusplus)
+        class __machdl HandleObject {};
+        #if TARGET_CPU_68K
+            class __pasobj PascalObject {};
+        #endif
 #endif
-#endif
+
 
 /********************************************************************************
 
@@ -572,62 +579,62 @@ class __pasobj PascalObject {
 *********************************************************************************/
 #if TARGET_RT_BIG_ENDIAN
 struct NumVersion {
-	/* Numeric version part of 'vers' resource */
-	UInt8 majorRev; /*1st part of version number in BCD*/
-	UInt8 minorAndBugRev; /*2nd & 3rd part of version number share a byte*/
-	UInt8 stage; /*stage code: dev, alpha, beta, final*/
-	UInt8 nonRelRev; /*revision level of non-released version*/
+                                              /* Numeric version part of 'vers' resource */
+  UInt8               majorRev;               /*1st part of version number in BCD*/
+  UInt8               minorAndBugRev;         /*2nd & 3rd part of version number share a byte*/
+  UInt8               stage;                  /*stage code: dev, alpha, beta, final*/
+  UInt8               nonRelRev;              /*revision level of non-released version*/
 };
-typedef struct NumVersion NumVersion;
+typedef struct NumVersion               NumVersion;
 #else
 struct NumVersion {
-	/* Numeric version part of 'vers' resource accessable in little endian format */
-	UInt8 nonRelRev; /*revision level of non-released version*/
-	UInt8 stage; /*stage code: dev, alpha, beta, final*/
-	UInt8 minorAndBugRev; /*2nd & 3rd part of version number share a byte*/
-	UInt8 majorRev; /*1st part of version number in BCD*/
+                                              /* Numeric version part of 'vers' resource accessable in little endian format */
+  UInt8               nonRelRev;              /*revision level of non-released version*/
+  UInt8               stage;                  /*stage code: dev, alpha, beta, final*/
+  UInt8               minorAndBugRev;         /*2nd & 3rd part of version number share a byte*/
+  UInt8               majorRev;               /*1st part of version number in BCD*/
 };
-typedef struct NumVersion NumVersion;
-#endif /* TARGET_RT_BIG_ENDIAN */
+typedef struct NumVersion               NumVersion;
+#endif  /* TARGET_RT_BIG_ENDIAN */
 
 enum {
-	/* Version Release Stage Codes */
-	developStage = 0x20,
-	alphaStage = 0x40,
-	betaStage = 0x60,
-	finalStage = 0x80
+                                        /* Version Release Stage Codes */
+  developStage                  = 0x20,
+  alphaStage                    = 0x40,
+  betaStage                     = 0x60,
+  finalStage                    = 0x80
 };
 
 union NumVersionVariant {
-	/* NumVersionVariant is a wrapper so NumVersion can be accessed as a 32-bit value */
-	NumVersion    parts;
-	unsigned long whole;
+                                              /* NumVersionVariant is a wrapper so NumVersion can be accessed as a 32-bit value */
+  NumVersion          parts;
+  unsigned long       whole;
 };
-typedef union NumVersionVariant NumVersionVariant;
-typedef NumVersionVariant *     NumVersionVariantPtr;
-typedef NumVersionVariantPtr *  NumVersionVariantHandle;
+typedef union NumVersionVariant         NumVersionVariant;
+typedef NumVersionVariant *             NumVersionVariantPtr;
+typedef NumVersionVariantPtr *          NumVersionVariantHandle;
 struct VersRec {
-	/* 'vers' resource format */
-	NumVersion numericVersion; /*encoded version number*/
-	short      countryCode; /*country code from intl utilities*/
-	Str255     shortVersion; /*version number string - worst case*/
-	Str255     reserved; /*longMessage string packed after shortVersion*/
+                                              /* 'vers' resource format */
+  NumVersion          numericVersion;         /*encoded version number*/
+  short               countryCode;            /*country code from intl utilities*/
+  Str255              shortVersion;           /*version number string - worst case*/
+  Str255              reserved;               /*longMessage string packed after shortVersion*/
 };
-typedef struct VersRec VersRec;
-typedef VersRec *      VersRecPtr;
-typedef VersRecPtr *   VersRecHndl;
+typedef struct VersRec                  VersRec;
+typedef VersRec *                       VersRecPtr;
+typedef VersRecPtr *                    VersRecHndl;
 /*********************************************************************************
 
     Old names for types
         
 *********************************************************************************/
-typedef UInt8         Byte;
-typedef SInt8         SignedByte;
-typedef wide *        WidePtr;
-typedef UnsignedWide *UnsignedWidePtr;
-typedef Float80       extended80;
-typedef Float96       extended96;
-typedef SInt8         VHSelect;
+typedef UInt8                           Byte;
+typedef SInt8                           SignedByte;
+typedef wide *                          WidePtr;
+typedef UnsignedWide *                  UnsignedWidePtr;
+typedef Float80                         extended80;
+typedef Float96                         extended96;
+typedef SInt8                           VHSelect;
 /*********************************************************************************
 
     Debugger functions
@@ -642,7 +649,8 @@ typedef SInt8         VHSelect;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-Debugger( void ) ONEWORDINLINE( 0xA9FF );
+Debugger(void)                                                ONEWORDINLINE(0xA9FF);
+
 
 /*
  *  DebugStr()
@@ -653,7 +661,8 @@ Debugger( void ) ONEWORDINLINE( 0xA9FF );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DebugStr( ConstStr255Param debuggerMsg ) ONEWORDINLINE( 0xABFF );
+DebugStr(ConstStr255Param debuggerMsg)                        ONEWORDINLINE(0xABFF);
+
 
 #if TARGET_OS_MAC
 #if CALL_NOT_IN_CARBON
@@ -666,9 +675,10 @@ DebugStr( ConstStr255Param debuggerMsg ) ONEWORDINLINE( 0xABFF );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-debugstr( const char *debuggerMsg );
+debugstr(const char * debuggerMsg);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if TARGET_CPU_PPC
 /* Only for Mac OS native drivers */
@@ -682,7 +692,8 @@ debugstr( const char *debuggerMsg );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-SysDebug( void );
+SysDebug(void);
+
 
 /*
  *  SysDebugStr()
@@ -693,11 +704,12 @@ SysDebug( void );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-SysDebugStr( ConstStr255Param str );
+SysDebugStr(ConstStr255Param str);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* TARGET_CPU_PPC */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* TARGET_CPU_PPC */
 
 /* SADE break points */
 /*
@@ -709,7 +721,8 @@ SysDebugStr( ConstStr255Param str );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SysBreak( void ) THREEWORDINLINE( 0x303C, 0xFE16, 0xA9C9 );
+SysBreak(void)                                                THREEWORDINLINE(0x303C, 0xFE16, 0xA9C9);
+
 
 /*
  *  SysBreakStr()
@@ -720,7 +733,8 @@ SysBreak( void ) THREEWORDINLINE( 0x303C, 0xFE16, 0xA9C9 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SysBreakStr( ConstStr255Param debuggerMsg ) THREEWORDINLINE( 0x303C, 0xFE15, 0xA9C9 );
+SysBreakStr(ConstStr255Param debuggerMsg)                     THREEWORDINLINE(0x303C, 0xFE15, 0xA9C9);
+
 
 /*
  *  SysBreakFunc()
@@ -731,21 +745,24 @@ SysBreakStr( ConstStr255Param debuggerMsg ) THREEWORDINLINE( 0x303C, 0xFE15, 0xA
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SysBreakFunc( ConstStr255Param debuggerMsg ) THREEWORDINLINE( 0x303C, 0xFE14, 0xA9C9 );
+SysBreakFunc(ConstStr255Param debuggerMsg)                    THREEWORDINLINE(0x303C, 0xFE14, 0xA9C9);
+
 
 /* old names for Debugger and DebugStr */
 #if OLDROUTINENAMES && TARGET_CPU_68K
-#define Debugger68k() Debugger()
-#define DebugStr68k( s ) DebugStr( s )
+    #define Debugger68k()   Debugger()
+    #define DebugStr68k(s)  DebugStr(s)
 #endif
-#endif /* TARGET_OS_MAC */
+#endif  /* TARGET_OS_MAC */
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -759,3 +776,4 @@ SysBreakFunc( ConstStr255Param debuggerMsg ) THREEWORDINLINE( 0x303C, 0xFE14, 0x
 #endif
 
 #endif /* __MACTYPES__ */
+

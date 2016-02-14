@@ -24,20 +24,19 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/CurrentFunction.h"
 #include "cinder/Filesystem.h"
+#include "cinder/CurrentFunction.h"
+#include "cinder/CinderAssert.h"
 #include "cinder/Noncopyable.h"
 #include "cinder/System.h"
 
+#include <sstream>
 #include <fstream>
+#include <vector>
 #include <memory>
 #include <mutex>
-#include <sstream>
-#include <vector>
 
-namespace cinder {
-namespace log {
+namespace cinder { namespace log {
 
 typedef enum {
 	LEVEL_VERBOSE,
@@ -50,49 +49,53 @@ typedef enum {
 
 struct Location {
 	Location() {}
-	Location( const std::string &functionName, const std::string &fileName, const size_t &lineNumber )
-	    : mFunctionName( functionName ), mFileName( fileName ), mLineNumber( lineNumber )
-	{
-	}
 
-	const std::string &getFileName() const { return mFileName; }
-	const std::string &getFunctionName() const { return mFunctionName; }
-	size_t             getLineNumber() const { return mLineNumber; }
-  private:
+	Location( const std::string &functionName, const std::string &fileName, const size_t &lineNumber )
+		: mFunctionName( functionName ), mFileName( fileName ), mLineNumber( lineNumber )
+	{}
+
+	const std::string&	getFileName() const				{ return mFileName; }
+	const std::string&	getFunctionName() const			{ return mFunctionName; }
+	size_t				getLineNumber() const			{ return mLineNumber; }
+
+private:
 	std::string mFunctionName, mFileName;
-	size_t      mLineNumber;
+	size_t		mLineNumber;
 };
 
 struct Metadata {
+
 	std::string toString() const;
 
-	Level    mLevel;
-	Location mLocation;
+	Level		mLevel;
+	Location	mLocation;
 };
 
-extern std::ostream &operator<<( std::ostream &os, const Location &rhs );
-extern std::ostream &operator<<( std::ostream &lhs, const Level &rhs );
+extern std::ostream& operator<<( std::ostream &os, const Location &rhs );
+extern std::ostream& operator<<( std::ostream &lhs, const Level &rhs );
 
 //! Logger is the base class all logging objects are derived from.
 //!
 //! \see LoggerConsole, LoggerFile, LoggerFileRotating
 class Logger : private Noncopyable {
   public:
-	virtual ~Logger() {}
+	virtual ~Logger()	{}
+
 	virtual void write( const Metadata &meta, const std::string &text ) = 0;
 
-	void setTimestampEnabled( bool enable = true ) { mTimeStampEnabled = enable; }
-	bool                           isTimestampEnabled() const { return mTimeStampEnabled; }
+	void setTimestampEnabled( bool enable = true )	{ mTimeStampEnabled = enable; }
+	bool isTimestampEnabled() const					{ return mTimeStampEnabled; }
+	
   protected:
-	Logger()
-	    : mTimeStampEnabled( false ) {}
+	Logger() : mTimeStampEnabled( false ) {}
+
 	void writeDefault( std::ostream &stream, const Metadata &meta, const std::string &text );
 
   private:
 	bool mTimeStampEnabled;
 };
-
-typedef std::shared_ptr<Logger> LoggerRef;
+	
+typedef std::shared_ptr<Logger>	LoggerRef;
 
 //! LoggerConsole prints log messages in the application console window.
 class LoggerConsole : public Logger {
@@ -114,60 +117,64 @@ class LoggerFile : public Logger {
 	void write( const Metadata &meta, const std::string &text ) override;
 
 	//! Returns the file path targeted by this logger.
-	const fs::path &getFilePath() const { return mFilePath; }
-  protected:
-	fs::path getDefaultLogFilePath() const;
-	void     ensureDirectoryExists();
+	const fs::path&		getFilePath() const		{ return mFilePath; }
 
-	fs::path      mFilePath;
-	bool          mAppend;
-	std::ofstream mStream;
+  protected:
+	fs::path	getDefaultLogFilePath() const;
+	void		ensureDirectoryExists();
+
+	fs::path		mFilePath;
+	bool			mAppend;
+	std::ofstream	mStream;
 };
 
 //! LoggerFileRotating will write log messages to a file that is rotated at midnight.
 class LoggerFileRotating : public LoggerFile {
-  public:
+public:
+	
 	//! Creates a rotating log file that will rotate when the first logging event occurs after midnight.
 	//! \p formatStr will be passed to strftime to determine the file name.
 	LoggerFileRotating( const fs::path &folder, const std::string &formatStr, bool appendToExisting = true );
-
-	virtual ~LoggerFileRotating() {}
+	
+	virtual ~LoggerFileRotating() { }
+	
 	void write( const Metadata &meta, const std::string &text ) override;
-
-  protected:
-	fs::path    mFolderPath;
-	std::string mDailyFormatStr;
-	int         mYearDay;
+	
+protected:
+	fs::path		mFolderPath;
+	std::string		mDailyFormatStr;
+	int				mYearDay;
 };
-
+	
 //! LoggerBreakpoint doesn't actually print anything, but triggers a breakpoint on log events above a specified threshold.
 class LoggerBreakpoint : public Logger {
   public:
 	LoggerBreakpoint( Level triggerLevel = LEVEL_ERROR )
-	    : mTriggerLevel( triggerLevel )
-	{
-	}
+		: mTriggerLevel( triggerLevel )
+	{}
 
 	void write( const Metadata &meta, const std::string &text ) override;
 
-	void setTriggerLevel( Level triggerLevel ) { mTriggerLevel = triggerLevel; }
-	Level                       getTriggerLevel() const { return mTriggerLevel; }
+	void	setTriggerLevel( Level triggerLevel )	{ mTriggerLevel = triggerLevel; }
+	Level	getTriggerLevel() const					{ return mTriggerLevel; }
+	
   private:
-	Level mTriggerLevel;
+	Level	mTriggerLevel;
 };
 
 //! LoggerSystem rovides 'system' logging support. Uses syslog on platforms that have it, on MSW uses Windows Event Logging.
 //! \note Does nothing on WinRT.
 class LoggerSystem : public Logger {
-  public:
+public:
 	LoggerSystem();
 	virtual ~LoggerSystem();
-
+	
 	void write( const Metadata &meta, const std::string &text ) override;
 	//! Sets the minimum logging level that will trigger a system log.
 	//! \note Setting \p minLevel below CI_MIN_LOG_LEVEL is pointless; minLevel will act like CI_MIN_LOG_LEVEL.
 	void setLoggingLevel( Level minLevel ) { mMinLevel = minLevel; }
-  protected:
+	
+protected:
 	Level mMinLevel;
 #if defined( CINDER_COCOA )
 	class ImplSysLog;
@@ -182,85 +189,88 @@ class LoggerSystem : public Logger {
 //!
 //! LogManager's default state contains a single LoggerConsole.  LogManager allows for adding and removing Loggers via their pointer values.
 class LogManager {
-  public:
+public:
 	// Returns a pointer to the shared instance. To enable logging during shutdown, this instance is leaked at shutdown.
-	static LogManager *instance() { return sInstance; }
+	static LogManager* instance()	{ return sInstance; }
 	//! Destroys the shared instance. Useful to remove false positives with leak detectors like valgrind.
-	static void destroyInstance() { delete sInstance; }
+	static void destroyInstance()	{ delete sInstance; }
 	//! Restores LogManager to its default state - a single LoggerConsole.
 	void restoreToDefault();
 
 	//! Removes all loggers from the stack.
 	void clearLoggers();
 	//! Resets the current Logger stack so only \p logger exists.
-	void resetLogger( const LoggerRef &logger );
+	void resetLogger( const LoggerRef& logger );
 	//! Adds \a logger to the current stack of loggers.
-	void addLogger( const LoggerRef &logger );
+	void addLogger( const LoggerRef& logger );
 	//! Remove \a logger to the current stack of loggers.
-	void removeLogger( const LoggerRef &logger );
+	void removeLogger( const LoggerRef& logger );
 	//! Returns a vector of Loggers of a specifc type.
-	template <typename LoggerT>
+	template<typename LoggerT>
 	std::vector<std::shared_ptr<LoggerT>> getLoggers();
 	//! Returns a vector of LoggerRef that contains all active loggers
 	std::vector<LoggerRef> getAllLoggers();
 	//! Returns the mutex used for thread safe logging.
-	std::mutex &getMutex() const { return mMutex; }
+	std::mutex& getMutex() const			{ return mMutex; }
+	
 	void write( const Metadata &meta, const std::string &text );
+	
+	template<typename LoggerT, typename... Args>
+	std::shared_ptr<LoggerT> makeLogger( Args&&... args );
 
-	template <typename LoggerT, typename... Args>
-	std::shared_ptr<LoggerT> makeLogger( Args &&... args );
-
-	template <typename LoggerT, typename... Args>
-	std::shared_ptr<LoggerT> makeOrGetLogger( Args &&... args );
-
-  protected:
+	template<typename LoggerT, typename... Args>
+	std::shared_ptr<LoggerT> makeOrGetLogger( Args&&... args );
+	
+protected:
 	LogManager();
 
-	std::vector<LoggerRef> mLoggers;
-
-	mutable std::mutex mMutex;
-
-	static LogManager *sInstance;
+	std::vector<LoggerRef>			mLoggers;
+	
+	mutable std::mutex				mMutex;
+	
+	static LogManager 				*sInstance;
 };
-
+	
 struct Entry {
 	// TODO: move &&location
 	Entry( Level level, const Location &location );
 	~Entry();
 
 	template <typename T>
-	Entry &operator<<( const T &rhs )
+	Entry& operator<<( const T &rhs )
 	{
 		mHasContent = true;
 		mStream << rhs;
 		return *this;
 	}
 
-	void            writeToLog();
-	const Metadata &getMetaData() const { return mMetaData; }
-  private:
-	Metadata          mMetaData;
-	bool              mHasContent;
-	std::stringstream mStream;
+	void writeToLog();
+	const Metadata&	getMetaData() const	{ return mMetaData; }
+
+private:
+
+	Metadata			mMetaData;
+	bool				mHasContent;
+	std::stringstream	mStream;
 };
 
 // ----------------------------------------------------------------------------------
 // Freestanding functions
 
 //! The global manager for logging, used to manipulate the Logger stack. Provides thread safety amongst the Loggers.
-LogManager *manager();
+LogManager* manager();
 
 //! Creates and returns a new logger of type LoggerT, adding it to the current Logger stack.
-template <typename LoggerT, typename... Args>
-std::shared_ptr<LoggerT> makeLogger( Args &&... args )
+template<typename LoggerT, typename... Args>
+std::shared_ptr<LoggerT> makeLogger( Args&&... args )
 {
 	return manager()->makeLogger<LoggerT>( std::forward<Args>( args )... );
 }
 
 //! If a logger of type LoggerT exists, it will return that logger.  Otherwise creates and
 //! returns a new logger of type LoggerT, adding it to the current Logger stack.
-template <typename LoggerT, typename... Args>
-std::shared_ptr<LoggerT> makeOrGetLogger( Args &&... args )
+template<typename LoggerT, typename... Args>
+std::shared_ptr<LoggerT> makeOrGetLogger( Args&&... args )
 {
 	return manager()->makeOrGetLogger<LoggerT>( std::forward<Args>( args )... );
 }
@@ -268,32 +278,32 @@ std::shared_ptr<LoggerT> makeOrGetLogger( Args &&... args )
 // ----------------------------------------------------------------------------------
 // Template method implementations
 
-template <typename LoggerT, typename... Args>
-std::shared_ptr<LoggerT> LogManager::makeLogger( Args &&... args )
+template<typename LoggerT, typename... Args>
+std::shared_ptr<LoggerT> LogManager::makeLogger( Args&&... args )
 {
 	static_assert( std::is_base_of<Logger, LoggerT>::value, "LoggerT must inherit from log::Logger" );
-
+	
 	std::shared_ptr<LoggerT> result = std::make_shared<LoggerT>( std::forward<Args>( args )... );
 	addLogger( result );
 	return result;
 }
 
-template <typename LoggerT, typename... Args>
-std::shared_ptr<LoggerT> LogManager::makeOrGetLogger( Args &&... args )
+template<typename LoggerT, typename... Args>
+std::shared_ptr<LoggerT> LogManager::makeOrGetLogger( Args&&... args )
 {
 	static_assert( std::is_base_of<Logger, LoggerT>::value, "LoggerT must inherit from log::Logger" );
-
+	
 	auto vector = getLoggers<LoggerT>();
-	if( !vector.empty() ) {
+	if( ! vector.empty() ) {
 		return vector.front();
 	}
-
+	
 	std::shared_ptr<LoggerT> result = std::make_shared<LoggerT>( std::forward<Args>( args )... );
 	addLogger( result );
 	return result;
 }
-
-template <typename LoggerT>
+	
+template<typename LoggerT>
 std::vector<std::shared_ptr<LoggerT>> LogManager::getLoggers()
 {
 	std::vector<std::shared_ptr<LoggerT>> result;
@@ -308,8 +318,8 @@ std::vector<std::shared_ptr<LoggerT>> LogManager::getLoggers()
 
 	return result;
 }
-}
-} // namespace cinder::log
+	
+} } // namespace cinder::log
 
 // ----------------------------------------------------------------------------------
 // Logging macros
@@ -318,52 +328,53 @@ std::vector<std::shared_ptr<LoggerT>> LogManager::getLoggers()
 
 // CI_MIN_LOG_LEVEL is designed so that if you set it to 7 : nothing logs, 6 : only fatal, 5 : fatal + error, ..., 1 : everything
 
-#if !defined( CI_MIN_LOG_LEVEL )
-#if !defined( NDEBUG )
-#define CI_MIN_LOG_LEVEL 0 // debug mode default is LEVEL_VERBOSE
-#else
-#define CI_MIN_LOG_LEVEL 2 // release mode default is LEVEL_INFO
-#endif
+#if ! defined( CI_MIN_LOG_LEVEL )
+	#if ! defined( NDEBUG )
+		#define CI_MIN_LOG_LEVEL 0	// debug mode default is LEVEL_VERBOSE
+	#else
+		#define CI_MIN_LOG_LEVEL 2	// release mode default is LEVEL_INFO
+	#endif
 #endif
 
 #if( CI_MIN_LOG_LEVEL <= 0 )
-#define CI_LOG_V( stream ) CINDER_LOG_STREAM(::cinder::log::LEVEL_VERBOSE, stream )
+	#define CI_LOG_V( stream )	CINDER_LOG_STREAM( ::cinder::log::LEVEL_VERBOSE, stream )
 #else
-#define CI_LOG_V( stream ) ( (void)0 )
+	#define CI_LOG_V( stream )	((void)0)
 #endif
 
 #if( CI_MIN_LOG_LEVEL <= 1 )
-#define CI_LOG_D( stream ) CINDER_LOG_STREAM(::cinder::log::LEVEL_DEBUG, stream )
+#define CI_LOG_D( stream )	CINDER_LOG_STREAM( ::cinder::log::LEVEL_DEBUG, stream )
 #else
-#define CI_LOG_D( stream ) ( (void)0 )
+#define CI_LOG_D( stream )	((void)0)
 #endif
 
 #if( CI_MIN_LOG_LEVEL <= 2 )
-#define CI_LOG_I( stream ) CINDER_LOG_STREAM(::cinder::log::LEVEL_INFO, stream )
+	#define CI_LOG_I( stream )	CINDER_LOG_STREAM( ::cinder::log::LEVEL_INFO, stream )
 #else
-#define CI_LOG_I( stream ) ( (void)0 )
+	#define CI_LOG_I( stream )	((void)0)
 #endif
 
 #if( CI_MIN_LOG_LEVEL <= 3 )
-#define CI_LOG_W( stream ) CINDER_LOG_STREAM(::cinder::log::LEVEL_WARNING, stream )
+	#define CI_LOG_W( stream )	CINDER_LOG_STREAM( ::cinder::log::LEVEL_WARNING, stream )
 #else
-#define CI_LOG_W( stream ) ( (void)0 )
+	#define CI_LOG_W( stream )	((void)0)
 #endif
 
 #if( CI_MIN_LOG_LEVEL <= 4 )
-#define CI_LOG_E( stream ) CINDER_LOG_STREAM(::cinder::log::LEVEL_ERROR, stream )
+	#define CI_LOG_E( stream )	CINDER_LOG_STREAM( ::cinder::log::LEVEL_ERROR, stream )
 #else
-#define CI_LOG_E( stream ) ( (void)0 )
+	#define CI_LOG_E( stream )	((void)0)
 #endif
 
 #if( CI_MIN_LOG_LEVEL <= 5 )
-#define CI_LOG_F( stream ) CINDER_LOG_STREAM(::cinder::log::LEVEL_FATAL, stream )
+	#define CI_LOG_F( stream )	CINDER_LOG_STREAM( ::cinder::log::LEVEL_FATAL, stream )
 #else
-#define CI_LOG_F( stream ) ( (void)0 )
+	#define CI_LOG_F( stream )	((void)0)
 #endif
 
 //! Debug macro to simplify logging an exception, which also prints the exception type
-#define CI_LOG_EXCEPTION( str, exc )                                                                                                     \
-	{                                                                                                                                    \
-		CI_LOG_E( str << ", exception type: " << cinder::System::demangleTypeName( typeid( exc ).name() ) << ", what: " << exc.what() ); \
-	}
+#define CI_LOG_EXCEPTION( str, exc )	\
+{										\
+	CI_LOG_E( str << ", exception type: " << cinder::System::demangleTypeName( typeid( exc ).name() ) << ", what: " << exc.what() );	\
+}
+

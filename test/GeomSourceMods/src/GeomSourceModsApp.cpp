@@ -1,7 +1,7 @@
 #include "cinder/app/App.h"
-#include "cinder/Rand.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Rand.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -13,13 +13,13 @@ class GeomSourceModsApp : public App {
 	void update() override;
 	void mouseDown( MouseEvent ) override;
 	void draw() override;
-
-	size_t                           mVisualTestIndex;
-	vector<function<gl::BatchRef()>> mVisualTestSetups;
-
-	CameraPersp  mCam;
-	gl::BatchRef mBatch;
-	mat4         mRotation;
+	
+	size_t								mVisualTestIndex;
+	vector<function<gl::BatchRef()>>	mVisualTestSetups;
+	
+	CameraPersp				mCam;
+	gl::BatchRef			mBatch;
+	mat4					mRotation;
 };
 
 geom::Cube makeCube()
@@ -27,13 +27,13 @@ geom::Cube makeCube()
 	return geom::Cube().size( 1, 2, 3 );
 }
 
-geom::Cube &makeCubeRef()
+geom::Cube& makeCubeRef()
 {
 	static geom::Cube sCube = geom::Cube().size( 1, 2, 3 );
 	return sCube;
 }
 
-geom::Cube *makeCubePtr()
+geom::Cube* makeCubePtr()
 {
 	static geom::Cube sCube = geom::Cube().size( 1, 2, 3 );
 	return &sCube;
@@ -56,7 +56,7 @@ void test( const geom::SourceMods &sourceMods )
 {
 	if( sourceMods.getSource() == sourceMods.getSourceStorage().get() )
 		std::cout << "Cloned ";
-
+	
 	TriMesh tm( sourceMods );
 	std::cout << tm.calcBoundingBox().getMax().x - tm.calcBoundingBox().getExtents().x;
 	std::cout << std::endl;
@@ -66,24 +66,21 @@ gl::BatchRef visualTest1()
 {
 	std::cout << "non-indexed LINE_STRIP + non-indexed LINE_STRIP" << std::endl;
 	return gl::Batch::create( geom::WireCircle().center( vec2( -1 ) ).subdivisions( 21 )
-	        & geom::WireCircle().center( vec2( 1 ) ).subdivisions( 3 ),
-	    gl::getStockShader( gl::ShaderDef().color() ) );
+		& geom::WireCircle().center( vec2( 1 ) ).subdivisions( 3 ), gl::getStockShader( gl::ShaderDef().color() ) );
 }
 
 gl::BatchRef visualTest2()
 {
 	std::cout << "non-indexed LINES + non-indexed LINE_STRIP" << std::endl;
 	return gl::Batch::create( geom::WireCube()
-	        & geom::WireCircle().center( vec2( 1 ) ).subdivisions( 3 ),
-	    gl::getStockShader( gl::ShaderDef().color() ) );
+		& geom::WireCircle().center( vec2( 1 ) ).subdivisions( 3 ), gl::getStockShader( gl::ShaderDef().color() ) );
 }
 
 gl::BatchRef visualTest3()
 {
 	std::cout << "indexed LINES + non-indexed LINE_STRIP" << std::endl;
 	return gl::Batch::create( geom::Sphere() >> geom::Lines()
-	        & geom::WireCircle().center( vec2( 1 ) ).subdivisions( 3 ),
-	    gl::getStockShader( gl::ShaderDef().color() ) );
+		& geom::WireCircle().center( vec2( 1 ) ).subdivisions( 3 ), gl::getStockShader( gl::ShaderDef().color() ) );
 }
 
 gl::BatchRef visualTest4()
@@ -99,8 +96,7 @@ gl::BatchRef visualTest5()
 {
 	std::cout << "non-indexed TRIANGLE_STRIP + non-indexed TRIANGLE_FAN" << std::endl;
 	return gl::Batch::create( geom::Rect()
-	        & geom::Circle().center( vec2( 1 ) ).subdivisions( 3 ),
-	    gl::getStockShader( gl::ShaderDef().color() ) );
+		& geom::Circle().center( vec2( 1 ) ).subdivisions( 3 ), gl::getStockShader( gl::ShaderDef().color() ) );
 }
 
 gl::BatchRef visualTest6()
@@ -117,21 +113,21 @@ gl::BatchRef visualTest7()
 	std::cout << "indexed TRIANGLES + indexed TRIANGLES + indexed TRIANGLES" << std::endl;
 	auto cube1 = geom::Cube() >> geom::Constant( geom::COLOR, vec3( 0.22, 0.33f, 0.77f ) );
 	auto cube2 = geom::Cube() >> geom::Translate( 0, 1.5f, 0 ) >> geom::Constant( geom::COLOR, vec4( 1, 0.5f, 0.25f, 0.5f ) );
-	return gl::Batch::create( ( cube1 >> geom::Translate( 0, 0, 3 ) & cube2 ) >> geom::Translate( 0, 1.5, 0 ), gl::getStockShader( gl::ShaderDef().lambert().color() ) );
+	return gl::Batch::create( (cube1 >> geom::Translate( 0, 0, 3 ) & cube2) >> geom::Translate( 0, 1.5, 0 ), gl::getStockShader( gl::ShaderDef().lambert().color() ) );
 }
 
 gl::BatchRef visualTest8()
 {
-	geom::Circle     circle2( geom::Circle().center( vec2( 1 ) ) );
+	geom::Circle circle2( geom::Circle().center( vec2( 1 ) ) );
 	geom::SourceMods result = geom::Circle().center( vec2( 0 ) ).subdivisions( 50 ) >> geom::Constant( geom::COLOR, vec3( Color( CM_HSV, randFloat(), 1, 1 ) ) );
-
+	
 	for( float a = 0; a < 1.0f; a += 0.05f ) {
 		vec3 color = vec3( Color( CM_HSV, randFloat(), 1, 1 ) );
 		result.append(
-		    geom::Circle().center( vec2( cos( a * M_PI * 2 ), sin( a * M_PI * 2 ) ) * 2.5f ).radius( 0.3f ).subdivisions( int( 3 + a * 20 ) )
-		    >> geom::Constant( geom::COLOR, color ) );
+			geom::Circle().center( vec2( cos(a * M_PI*2), sin(a * M_PI*2) ) * 2.5f ).radius( 0.3f ).subdivisions( int( 3 + a * 20 ) )
+			>> geom::Constant( geom::COLOR, color ) );
 	}
-
+	
 	return gl::Batch::create( result, gl::getStockShader( gl::ShaderDef().color() ) );
 }
 
@@ -139,7 +135,7 @@ gl::BatchRef visualTest8()
 gl::BatchRef visualTest9()
 {
 	TriMesh tm = geom::Sphere();
-
+	
 	return gl::Batch::create( &tm & &tm >> geom::Translate( 0, 1, 0 ), gl::getStockShader( gl::ShaderDef().lambert().color() ) );
 }
 
@@ -147,13 +143,13 @@ gl::BatchRef visualTest9()
 gl::BatchRef visualTest10()
 {
 	geom::SourceMods combination;
-
+	
 	for( float a = 0; a < 1.0f; a += 0.025f ) {
 		vec3 color = vec3( Color( CM_HSV, a, 1, 1 ) );
-		combination &= geom::Circle().center( vec2( cos( a * M_PI * 2 ), sin( a * M_PI * 2 ) ) * 2.5f ).radius( 0.17f ).subdivisions( 7 )
-		    >> geom::Constant( geom::COLOR, color );
+		combination &= geom::Circle().center( vec2( cos(a * M_PI*2), sin(a * M_PI*2) ) * 2.5f ).radius( 0.17f ).subdivisions( 7 )
+						>> geom::Constant( geom::COLOR, color );
 	}
-
+	
 	return gl::Batch::create( combination, gl::getStockShader( gl::ShaderDef().color() ) );
 }
 
@@ -183,18 +179,18 @@ void GeomSourceModsApp::setup()
 	test( makeCubeRef() >> translate1 ); // 1
 	// this should not create a clone since the result of makeCubeRef() is a pointer
 	test( makeCubePtr() >> translate1 ); // 1
-
+	
 	auto chain0 = makeCube() >> translate1; // 1
 	// this should create a clone
 	test( chain0 >> translate1 >> translate2 ); // 1+1+2=4
 	test( chain0 >> translate1 >> translate2 >> translate3 ); // 1+1+2+3=7
-
+	
 	test( makeChain() ); // 1
 	test( makeChain() >> translate1 ); // 2
 
 	test( makeChain2() ); // 1
 	test( makeChain2() >> translate1 ); // 2
-
+	
 	mCam.lookAt( vec3( 3, 2, 4 ), vec3( 0 ) );
 	mCam.setPerspective( 60, getWindowAspectRatio(), 1, 1000 );
 	gl::enableDepthWrite();

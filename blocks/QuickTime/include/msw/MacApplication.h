@@ -32,6 +32,9 @@
 #include <HIObject.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,6 +46,7 @@ extern "C" {
 #if PRAGMA_IMPORT
 #pragma import on
 #endif
+
 
 /*
  *  Summary:
@@ -58,12 +62,12 @@ extern "C" {
  */
 enum {
 
-	/*
+  /*
    * In this mode, all standard system UI elements are visible.
    */
-	kUIModeNormal = 0,
+  kUIModeNormal                 = 0,
 
-	/*
+  /*
    * In this mode, system UI elements which cover the "content area" of
    * the screen (the area other than the menubar) are hidden. However,
    * these elements may automatically show themselves in response to
@@ -71,27 +75,27 @@ enum {
    * will still show itself automatically when the mouse moves into the
    * Dock's auto-show region.
    */
-	kUIModeContentSuppressed = 1,
+  kUIModeContentSuppressed      = 1,
 
-	/*
+  /*
    * In this mode, system UI elements which cover the "content area" of
    * the screen (the area other than the menubar) are hidden. Unlike
    * kUIModeContentSuppressed, most UI elements will not automatically
    * show themselves in this mode.
    */
-	kUIModeContentHidden = 2,
+  kUIModeContentHidden          = 2,
 
-	/*
+  /*
    * In this mode, all system UI elements, including the menubar, are
    * hidden. Most system UI elements will not automatically show
    * themselves in this mode. The application may request that the
    * menubar automatically show itself while in this mode by passing
    * the kUIOptionAutoShowMenuBar flag to SetSystemUIMode.
    */
-	kUIModeAllHidden = 3
+  kUIModeAllHidden              = 3
 };
 
-typedef UInt32 SystemUIMode;
+typedef UInt32                          SystemUIMode;
 
 /*
  *  Summary:
@@ -100,19 +104,19 @@ typedef UInt32 SystemUIMode;
  */
 enum {
 
-	/*
+  /*
    * Requests that the menubar automatically show itself when the user
    * moves the mouse into the screen area that would ordinarily be
    * occupied by the menubar. Only valid with kUIModeAllHidden.
    */
-	kUIOptionAutoShowMenuBar = 1 << 0,
+  kUIOptionAutoShowMenuBar      = 1 << 0,
 
-	/*
+  /*
    * Disables all items in the Apple menu. Valid for all modes.
    */
-	kUIOptionDisableAppleMenu = 1 << 2,
+  kUIOptionDisableAppleMenu     = 1 << 2,
 
-	/*
+  /*
    * The active application may not be changed while this process is
    * active. Currently disables the Command-Tab and Command-Shift-Tab
    * key sequences to switch the active process, and the global window
@@ -121,26 +125,26 @@ enum {
    * switch the active process. Only valid with modes other than
    * kUIModeNormal.
    */
-	kUIOptionDisableProcessSwitch = 1 << 3,
+  kUIOptionDisableProcessSwitch = 1 << 3,
 
-	/*
+  /*
    * The Force Quit window may not be displayed while this process is
    * active. Currently disables the Command-Option-Escape key sequence
    * to open the Force Quit window and the Force Quit menu item in the
    * Apple menu. Only valid with modes other than kUIModeNormal.
    */
-	kUIOptionDisableForceQuit = 1 << 4,
+  kUIOptionDisableForceQuit     = 1 << 4,
 
-	/*
+  /*
    * The current login session may not be terminated while this process
    * is active. Currently disables the Power key and the Restart, Shut
    * Down, and Log Out menu items in the Apple menu. Only valid with
    * modes other than kUIModeNormal.
    */
-	kUIOptionDisableSessionTerminate = 1 << 5
+  kUIOptionDisableSessionTerminate = 1 << 5
 };
 
-typedef OptionBits SystemUIOptions;
+typedef OptionBits                      SystemUIOptions;
 /*
  *  SetSystemUIMode()
  *  
@@ -175,8 +179,9 @@ typedef OptionBits SystemUIOptions;
  */
 EXTERN_API_C( OSStatus )
 SetSystemUIMode(
-    SystemUIMode    inMode,
-    SystemUIOptions inOptions );
+  SystemUIMode      inMode,
+  SystemUIOptions   inOptions);
+
 
 /*
  *  GetSystemUIMode()
@@ -201,8 +206,9 @@ SetSystemUIMode(
  */
 EXTERN_API_C( void )
 GetSystemUIMode(
-    SystemUIMode *   outMode, /* can be NULL */
-    SystemUIOptions *outOptions ); /* can be NULL */
+  SystemUIMode *     outMode,          /* can be NULL */
+  SystemUIOptions *  outOptions);      /* can be NULL */
+
 
 /*
  *  HIApplicationGetCurrent()
@@ -221,7 +227,8 @@ GetSystemUIMode(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIObjectRef )
-HIApplicationGetCurrent( void );
+HIApplicationGetCurrent(void);
+
 
 /*
  *  SetApplicationDockTileImage()
@@ -246,7 +253,8 @@ HIApplicationGetCurrent( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-SetApplicationDockTileImage( CGImageRef inImage );
+SetApplicationDockTileImage(CGImageRef inImage);
+
 
 /*
  *  OverlayApplicationDockTileImage()
@@ -271,7 +279,8 @@ SetApplicationDockTileImage( CGImageRef inImage );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-OverlayApplicationDockTileImage( CGImageRef inImage );
+OverlayApplicationDockTileImage(CGImageRef inImage);
+
 
 /*
  *  RestoreApplicationDockTileImage()
@@ -290,7 +299,8 @@ OverlayApplicationDockTileImage( CGImageRef inImage );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-RestoreApplicationDockTileImage( void );
+RestoreApplicationDockTileImage(void);
+
 
 /*
  *  BeginCGContextForApplicationDockTile()
@@ -312,7 +322,8 @@ RestoreApplicationDockTileImage( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGContextRef )
-BeginCGContextForApplicationDockTile( void );
+BeginCGContextForApplicationDockTile(void);
+
 
 /*
  *  EndCGContextForApplicationDockTile()
@@ -336,7 +347,10 @@ BeginCGContextForApplicationDockTile( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-EndCGContextForApplicationDockTile( CGContextRef inContext );
+EndCGContextForApplicationDockTile(CGContextRef inContext);
+
+
+
 
 /*
  *  BeginQDContextForApplicationDockTile()
@@ -359,7 +373,8 @@ EndCGContextForApplicationDockTile( CGContextRef inContext );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGrafPtr )
-BeginQDContextForApplicationDockTile( void );
+BeginQDContextForApplicationDockTile(void);
+
 
 /*
  *  EndQDContextForApplicationDockTile()
@@ -383,7 +398,9 @@ BeginQDContextForApplicationDockTile( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-EndQDContextForApplicationDockTile( CGrafPtr inContext );
+EndQDContextForApplicationDockTile(CGrafPtr inContext);
+
+
 
 /*
  *  SetApplicationDockTileMenu()
@@ -419,7 +436,8 @@ EndQDContextForApplicationDockTile( CGrafPtr inContext );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( OSStatus )
-SetApplicationDockTileMenu( MenuRef inMenu );
+SetApplicationDockTileMenu(MenuRef inMenu);
+
 
 /*
  *  GetApplicationDockTileMenu()
@@ -436,7 +454,9 @@ SetApplicationDockTileMenu( MenuRef inMenu );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( MenuRef )
-GetApplicationDockTileMenu( void );
+GetApplicationDockTileMenu(void);
+
+
 
 /*
  *  CreateCGImageFromPixMaps()
@@ -448,9 +468,10 @@ GetApplicationDockTileMenu( void );
  */
 EXTERN_API_C( OSStatus )
 CreateCGImageFromPixMaps(
-    PixMapHandle inImage,
-    PixMapHandle inMask,
-    CGImageRef * outImage );
+  PixMapHandle   inImage,
+  PixMapHandle   inMask,
+  CGImageRef *   outImage);
+
 
 /*
  *  GetApplicationTextEncoding()
@@ -475,7 +496,8 @@ CreateCGImageFromPixMaps(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( TextEncoding )
-GetApplicationTextEncoding( void );
+GetApplicationTextEncoding(void);
+
 
 /*
  *  GetApplicationScript()
@@ -493,7 +515,10 @@ GetApplicationTextEncoding( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ScriptCode )
-GetApplicationScript( void );
+GetApplicationScript(void);
+
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -506,3 +531,4 @@ GetApplicationScript( void );
 #endif
 
 #endif /* __MACAPPLICATION__ */
+

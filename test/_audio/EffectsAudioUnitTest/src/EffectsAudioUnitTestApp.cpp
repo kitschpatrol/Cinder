@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/Log.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/Log.h"
 #include "cinder/audio/GenNode.h"
+#include "cinder/CinderAssert.h"
 
 #include "cinder/audio/cocoa/ContextAudioUnit.h"
 
@@ -34,8 +34,8 @@ class EffectsAudioUnitTestApp : public App {
 	shared_ptr<EffectAudioUnitNode> mEffect, mEffect2;
 
 	VSelector mTestSelector;
-	Button    mPlayButton;
-	HSlider   mGenFreqSlider, mLowpassCutoffSlider, mBandpassSlider;
+	Button mPlayButton;
+	HSlider mGenFreqSlider, mLowpassCutoffSlider, mBandpassSlider;
 };
 
 void EffectsAudioUnitTestApp::setup()
@@ -72,7 +72,7 @@ void EffectsAudioUnitTestApp::setupTwo()
 	mEffect = ctx->makeNode( new audio::cocoa::EffectAudioUnitNode( kAudioUnitSubType_LowPassFilter ) );
 	mEffect2 = ctx->makeNode( new audio::cocoa::EffectAudioUnitNode( kAudioUnitSubType_BandPassFilter ) );
 
-	//	mEffect->getFormat().setNumChannels( 2 ); // force stereo
+//	mEffect->getFormat().setNumChannels( 2 ); // force stereo
 
 	mGen >> mEffect >> mEffect2 >> ctx->getOutput();
 
@@ -86,6 +86,7 @@ void EffectsAudioUnitTestApp::setupNativeThenGeneric()
 
 void EffectsAudioUnitTestApp::initParams()
 {
+
 	if( mEffect ) {
 		mEffect->setParameter( kLowPassParam_CutoffFrequency, 500 );
 		mLowpassCutoffSlider.set( 500 );
@@ -101,22 +102,22 @@ void EffectsAudioUnitTestApp::initParams()
 void EffectsAudioUnitTestApp::setupUI()
 {
 	mPlayButton = Button( true, "stopped", "playing" );
-	//	mPlayButton.bounds = Rectf( 0, 0, 200, 60 );
+//	mPlayButton.bounds = Rectf( 0, 0, 200, 60 );
 
 	mTestSelector.mSegments = { "one", "two", "native -> generic" };
-	//	mTestSelector.bounds = Rectf( getWindowCenter().x + 100, 0.0f, getWindowWidth(), 160.0f );
+//	mTestSelector.bounds = Rectf( getWindowCenter().x + 100, 0.0f, getWindowWidth(), 160.0f );
 
-	//#if defined( CINDER_COCOA_TOUCH )
-	//	mPlayButton.bounds = Rectf( 0, 0, 120, 60 );
-	//	mPlayButton.textIsCentered = false;
-	//	mTestSelector.bounds = Rectf( getWindowWidth() - 190, 0.0f, getWindowWidth(), 160.0f );
-	//	mTestSelector.textIsCentered = false;
-	//#else
+//#if defined( CINDER_COCOA_TOUCH )
+//	mPlayButton.bounds = Rectf( 0, 0, 120, 60 );
+//	mPlayButton.textIsCentered = false;
+//	mTestSelector.bounds = Rectf( getWindowWidth() - 190, 0.0f, getWindowWidth(), 160.0f );
+//	mTestSelector.textIsCentered = false;
+//#else
 	mPlayButton.mBounds = Rectf( 0, 0, 200, 60 );
 	mTestSelector.mBounds = Rectf( getWindowCenter().x + 100, 0.0f, getWindowWidth(), 160.0f );
-	//#endif
+//#endif
 
-	float width = std::min( (float)getWindowWidth() - 20.0f, 440.0f );
+	float width = std::min( (float)getWindowWidth() - 20.0f,  440.0f );
 	Rectf sliderRect( getWindowCenter().x - width / 2.0f, 200, getWindowCenter().x + width / 2.0f, 250 );
 
 	mGenFreqSlider.mTitle = "Gen Freq";
@@ -136,10 +137,10 @@ void EffectsAudioUnitTestApp::setupUI()
 	mBandpassSlider.mMin = 100.0f;
 	mBandpassSlider.mMax = 2000.0f;
 
-	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -164,7 +165,7 @@ void EffectsAudioUnitTestApp::processTap( ivec2 pos )
 	auto ctx = audio::master();
 
 	if( mPlayButton.hitTest( pos ) )
-		ctx->setEnabled( !ctx->isEnabled() );
+		ctx->setEnabled( ! ctx->isEnabled() );
 
 	size_t currentIndex = mTestSelector.mCurrentSectionIndex;
 	if( mTestSelector.hitTest( pos ) && currentIndex != mTestSelector.mCurrentSectionIndex ) {

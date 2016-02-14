@@ -24,6 +24,9 @@
 #include <Movies.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,340 +40,343 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /* QuickTime is not available to 64-bit clients */
 
 #if !__LP64__
 
-typedef struct OpaqueQTVRInstance *QTVRInstance;
+typedef struct OpaqueQTVRInstance*      QTVRInstance;
 
 /* Released API Version numbers */
-#define kQTVRAPIMajorVersion05 ( 0x05 )
-#define kQTVRAPIMajorVersion02 ( 0x02 )
-#define kQTVRAPIMinorVersion00 ( 0x00 )
-#define kQTVRAPIMinorVersion01 ( 0x01 )
-#define kQTVRAPIMinorVersion10 ( 0x10 )
-#define kQTVRAPIMinorVersion20 ( 0x20 )
+#define kQTVRAPIMajorVersion05  (0x05)
+#define kQTVRAPIMajorVersion02  (0x02)
+#define kQTVRAPIMinorVersion00  (0x00)
+#define kQTVRAPIMinorVersion01  (0x01)
+#define kQTVRAPIMinorVersion10  (0x10)
+#define kQTVRAPIMinorVersion20  (0x20)
 
 /* Version numbers for the API described in this header */
 #define kQTVRAPIMajorVersion kQTVRAPIMajorVersion05
 #define kQTVRAPIMinorVersion kQTVRAPIMinorVersion00
 
+
 enum {
-	kQTVRControllerSubType = FOUR_CHAR_CODE( 'ctyp' ),
-	kQTVRQTVRType = FOUR_CHAR_CODE( 'qtvr' ),
-	kQTVRPanoramaType = FOUR_CHAR_CODE( 'pano' ),
-	kQTVRObjectType = FOUR_CHAR_CODE( 'obje' ),
-	kQTVROldPanoType = FOUR_CHAR_CODE( 'STpn' ), /* Used in QTVR 1.0 release*/
-	kQTVROldObjectType = FOUR_CHAR_CODE( 'stna' ) /* Used in QTVR 1.0 release*/
+  kQTVRControllerSubType        = FOUR_CHAR_CODE('ctyp'),
+  kQTVRQTVRType                 = FOUR_CHAR_CODE('qtvr'),
+  kQTVRPanoramaType             = FOUR_CHAR_CODE('pano'),
+  kQTVRObjectType               = FOUR_CHAR_CODE('obje'),
+  kQTVROldPanoType              = FOUR_CHAR_CODE('STpn'), /* Used in QTVR 1.0 release*/
+  kQTVROldObjectType            = FOUR_CHAR_CODE('stna') /* Used in QTVR 1.0 release*/
 };
 
 #define kQTVRUnknownType '\?\?\?\?' /* Unknown node type */
 /* QTVR hot spot types*/
 enum {
-	kQTVRHotSpotLinkType = FOUR_CHAR_CODE( 'link' ),
-	kQTVRHotSpotURLType = FOUR_CHAR_CODE( 'url ' ),
-	kQTVRHotSpotUndefinedType = FOUR_CHAR_CODE( 'undf' )
+  kQTVRHotSpotLinkType          = FOUR_CHAR_CODE('link'),
+  kQTVRHotSpotURLType           = FOUR_CHAR_CODE('url '),
+  kQTVRHotSpotUndefinedType     = FOUR_CHAR_CODE('undf')
 };
 
 /* Special Values for nodeID in QTVRGoToNodeID*/
 enum {
-	kQTVRCurrentNode = 0,
-	kQTVRPreviousNode = (long)0x80000000,
-	kQTVRDefaultNode = (long)0x80000001
+  kQTVRCurrentNode              = 0,
+  kQTVRPreviousNode             = (long)0x80000000,
+  kQTVRDefaultNode              = (long)0x80000001
 };
 
 /* Panorama correction modes used for the kQTVRImagingCorrection imaging property*/
 enum {
-	kQTVRNoCorrection = 0,
-	kQTVRPartialCorrection = 1,
-	kQTVRFullCorrection = 2
+  kQTVRNoCorrection             = 0,
+  kQTVRPartialCorrection        = 1,
+  kQTVRFullCorrection           = 2
 };
 
 /* Imaging Modes used by QTVRSetImagingProperty, QTVRGetImagingProperty, QTVRUpdate, QTVRBeginUpdate*/
 typedef UInt32 QTVRImagingMode;
 enum {
-	kQTVRStatic = 1,
-	kQTVRMotion = 2,
-	kQTVRCurrentMode = 0, /* Special Value for QTVRUpdate*/
-	kQTVRAllModes = 100 /* Special value for QTVRSetProperty*/
+  kQTVRStatic                   = 1,
+  kQTVRMotion                   = 2,
+  kQTVRCurrentMode              = 0,    /* Special Value for QTVRUpdate*/
+  kQTVRAllModes                 = 100   /* Special value for QTVRSetProperty*/
 };
 
 /* Imaging Properties used by QTVRSetImagingProperty, QTVRGetImagingProperty*/
 enum {
-	kQTVRImagingCorrection = 1,
-	kQTVRImagingQuality = 2,
-	kQTVRImagingDirectDraw = 3,
-	kQTVRImagingCurrentMode = 100 /* Get Only*/
+  kQTVRImagingCorrection        = 1,
+  kQTVRImagingQuality           = 2,
+  kQTVRImagingDirectDraw        = 3,
+  kQTVRImagingCurrentMode       = 100   /* Get Only*/
 };
 
 /* OR the above with kImagingDefaultValue to get/set the default value*/
 enum {
-	kImagingDefaultValue = (long)0x80000000
+  kImagingDefaultValue          = (long)0x80000000
 };
 
 /* Transition Types used by QTVRSetTransitionProperty, QTVREnableTransition*/
 enum {
-	kQTVRTransitionSwing = 1
+  kQTVRTransitionSwing          = 1
 };
 
 /* Transition Properties QTVRSetTransitionProperty*/
 enum {
-	kQTVRTransitionSpeed = 1,
-	kQTVRTransitionDirection = 2
+  kQTVRTransitionSpeed          = 1,
+  kQTVRTransitionDirection      = 2
 };
 
 /* Constraint values used to construct value returned by GetConstraintStatus*/
 enum {
-	kQTVRUnconstrained = 0L,
-	kQTVRCantPanLeft = 1L << 0,
-	kQTVRCantPanRight = 1L << 1,
-	kQTVRCantPanUp = 1L << 2,
-	kQTVRCantPanDown = 1L << 3,
-	kQTVRCantZoomIn = 1L << 4,
-	kQTVRCantZoomOut = 1L << 5,
-	kQTVRCantTranslateLeft = 1L << 6,
-	kQTVRCantTranslateRight = 1L << 7,
-	kQTVRCantTranslateUp = 1L << 8,
-	kQTVRCantTranslateDown = 1L << 9
+  kQTVRUnconstrained            = 0L,
+  kQTVRCantPanLeft              = 1L << 0,
+  kQTVRCantPanRight             = 1L << 1,
+  kQTVRCantPanUp                = 1L << 2,
+  kQTVRCantPanDown              = 1L << 3,
+  kQTVRCantZoomIn               = 1L << 4,
+  kQTVRCantZoomOut              = 1L << 5,
+  kQTVRCantTranslateLeft        = 1L << 6,
+  kQTVRCantTranslateRight       = 1L << 7,
+  kQTVRCantTranslateUp          = 1L << 8,
+  kQTVRCantTranslateDown        = 1L << 9
 };
 
 /* Object-only mouse mode values used to construct value returned by QTVRGetCurrentMouseMode*/
 enum {
-	kQTVRPanning = 1L << 0, /* standard objects, "object only" controllers*/
-	kQTVRTranslating = 1L << 1, /* all objects*/
-	kQTVRZooming = 1L << 2, /* all objects*/
-	kQTVRScrolling = 1L << 3, /* standard object arrow scrollers and joystick object*/
-	kQTVRSelecting = 1L << 4 /* object absolute controller*/
+  kQTVRPanning                  = 1L << 0, /* standard objects, "object only" controllers*/
+  kQTVRTranslating              = 1L << 1, /* all objects*/
+  kQTVRZooming                  = 1L << 2, /* all objects*/
+  kQTVRScrolling                = 1L << 3, /* standard object arrow scrollers and joystick object*/
+  kQTVRSelecting                = 1L << 4 /* object absolute controller*/
 };
 
 /* Properties for use with QTVRSetInteractionProperty/GetInteractionProperty*/
 enum {
-	kQTVRInteractionMouseClickHysteresis = 1, /* pixels within which the mouse is considered not to have moved (UInt16)*/
-	kQTVRInteractionMouseClickTimeout = 2, /* ticks after which a mouse click times out and turns into panning (UInt32)*/
-	kQTVRInteractionPanTiltSpeed = 3, /* control the relative pan/tilt speed from 1 (slowest) to 10 (fastest). (UInt32) Default is 5;*/
-	kQTVRInteractionZoomSpeed = 4, /* control the relative zooming speed from 1 (slowest) to 10 (fastest). (UInt32) Default is 5;*/
-	kQTVRInteractionTranslateOnMouseDown = 101, /* Holding MouseDown with this setting translates zoomed object movies (Boolean)*/
-	kQTVRInteractionMouseMotionScale = 102, /* The maximum angle of rotation caused by dragging across the display window. (* float)*/
-	kQTVRInteractionNudgeMode = 103 /* A QTVRNudgeMode: rotate, translate, or the same as the current mouse mode. Requires QTVR 2.1*/
+  kQTVRInteractionMouseClickHysteresis = 1, /* pixels within which the mouse is considered not to have moved (UInt16)*/
+  kQTVRInteractionMouseClickTimeout = 2, /* ticks after which a mouse click times out and turns into panning (UInt32)*/
+  kQTVRInteractionPanTiltSpeed  = 3,    /* control the relative pan/tilt speed from 1 (slowest) to 10 (fastest). (UInt32) Default is 5;*/
+  kQTVRInteractionZoomSpeed     = 4,    /* control the relative zooming speed from 1 (slowest) to 10 (fastest). (UInt32) Default is 5;*/
+  kQTVRInteractionTranslateOnMouseDown = 101, /* Holding MouseDown with this setting translates zoomed object movies (Boolean)*/
+  kQTVRInteractionMouseMotionScale = 102, /* The maximum angle of rotation caused by dragging across the display window. (* float)*/
+  kQTVRInteractionNudgeMode     = 103   /* A QTVRNudgeMode: rotate, translate, or the same as the current mouse mode. Requires QTVR 2.1*/
 };
 
 /* OR the above with kQTVRInteractionDefaultValue to get/set the default value*/
 enum {
-	kQTVRInteractionDefaultValue = (long)0x80000000
+  kQTVRInteractionDefaultValue  = (long)0x80000000
 };
+
 
 /* Geometry constants used in QTVRSetBackBufferPrefs, QTVRGetBackBufferSettings, QTVRGetBackBufferMemInfo*/
 enum {
-	kQTVRUseMovieGeometry = 0,
-	kQTVRVerticalCylinder = FOUR_CHAR_CODE( 'vcyl' ),
-	kQTVRHorizontalCylinder = FOUR_CHAR_CODE( 'hcyl' ),
-	kQTVRCube = FOUR_CHAR_CODE( 'cube' )
+  kQTVRUseMovieGeometry         = 0,
+  kQTVRVerticalCylinder         = FOUR_CHAR_CODE('vcyl'),
+  kQTVRHorizontalCylinder       = FOUR_CHAR_CODE('hcyl'),
+  kQTVRCube                     = FOUR_CHAR_CODE('cube')
 };
 
 /* Resolution constants used in QTVRSetBackBufferPrefs, QTVRGetBackBufferSettings, QTVRGetBackBufferMemInfo*/
 enum {
-	kQTVRDefaultRes = 0,
-	kQTVRFullRes = 1L << 0,
-	kQTVRHalfRes = 1L << 1,
-	kQTVRQuarterRes = 1L << 2
+  kQTVRDefaultRes               = 0,
+  kQTVRFullRes                  = 1L << 0,
+  kQTVRHalfRes                  = 1L << 1,
+  kQTVRQuarterRes               = 1L << 2
 };
 
 /* QTVR-specific pixelFormat constants used in QTVRSetBackBufferPrefs, QTVRGetBackBufferSettings, QTVRGetBackBufferMemInfo*/
 enum {
-	kQTVRUseMovieDepth = 0
+  kQTVRUseMovieDepth            = 0
 };
 
 /* Cache Size Pref constants used in QTVRSetBackBufferPrefs, QTVRGetBackBufferSettings*/
 enum {
-	kQTVRMinimumCache = -1,
-	kQTVRSuggestedCache = 0,
-	kQTVRFullCache = 1
+  kQTVRMinimumCache             = -1,
+  kQTVRSuggestedCache           = 0,
+  kQTVRFullCache                = 1
 };
 
 /* Angular units used by QTVRSetAngularUnits*/
 typedef UInt32 QTVRAngularUnits;
 enum {
-	kQTVRDegrees = 0,
-	kQTVRRadians = 1
+  kQTVRDegrees                  = 0,
+  kQTVRRadians                  = 1
 };
 
 /* Values for enableFlag parameter in QTVREnableHotSpot*/
 enum {
-	kQTVRHotSpotID = 0,
-	kQTVRHotSpotType = 1,
-	kQTVRAllHotSpots = 2
+  kQTVRHotSpotID                = 0,
+  kQTVRHotSpotType              = 1,
+  kQTVRAllHotSpots              = 2
 };
 
 /* Values for viewParameter for QTVRSet/GetViewParameter*/
 enum {
-	kQTVRPanAngle = 0x0100, /* default units; &float, &float*/
-	kQTVRTiltAngle = 0x0101, /* default units; &float, &float*/
-	kQTVRFieldOfViewAngle = 0x0103, /* default units; &float, &float*/
-	kQTVRViewCenter = 0x0104, /* pixels (per object movies); &QTVRFloatPoint, &QTVRFloatPoint*/
-	kQTVRHotSpotsVisible = 0x0200 /* Boolean, &Boolean*/
+  kQTVRPanAngle                 = 0x0100, /* default units; &float, &float*/
+  kQTVRTiltAngle                = 0x0101, /* default units; &float, &float*/
+  kQTVRFieldOfViewAngle         = 0x0103, /* default units; &float, &float*/
+  kQTVRViewCenter               = 0x0104, /* pixels (per object movies); &QTVRFloatPoint, &QTVRFloatPoint*/
+  kQTVRHotSpotsVisible          = 0x0200 /* Boolean, &Boolean*/
 };
 
 /* Values for flagsIn for QTVRSet/GetViewParameter*/
 enum {
-	kQTVRValueIsRelative = 1L << 0, /* Is the value absolute or relative to the current value?*/
-	kQTVRValueIsRate = 1L << 1, /* Is the value absolute or a rate of change to be applied?*/
-	kQTVRValueIsUserPrefRelative = 1L << 2 /* Is the value a percentage of the user rate pref?*/
+  kQTVRValueIsRelative          = 1L << 0, /* Is the value absolute or relative to the current value?*/
+  kQTVRValueIsRate              = 1L << 1, /* Is the value absolute or a rate of change to be applied?*/
+  kQTVRValueIsUserPrefRelative  = 1L << 2 /* Is the value a percentage of the user rate pref?*/
 };
 
 /* Values for kind parameter in QTVRGet/SetConstraints, QTVRGetViewingLimits*/
 enum {
-	kQTVRPan = 0,
-	kQTVRTilt = 1,
-	kQTVRFieldOfView = 2,
-	kQTVRViewCenterH = 4, /* WrapAndConstrain only*/
-	kQTVRViewCenterV = 5 /* WrapAndConstrain only*/
+  kQTVRPan                      = 0,
+  kQTVRTilt                     = 1,
+  kQTVRFieldOfView              = 2,
+  kQTVRViewCenterH              = 4,    /* WrapAndConstrain only*/
+  kQTVRViewCenterV              = 5     /* WrapAndConstrain only*/
 };
 
 /* Values for setting parameter in QTVRSetAnimationSetting, QTVRGetAnimationSetting*/
 typedef UInt32 QTVRObjectAnimationSetting;
 enum {
-	/* View Frame Animation Settings*/
-	kQTVRPalindromeViewFrames = 1,
-	kQTVRStartFirstViewFrame = 2,
-	kQTVRDontLoopViewFrames = 3,
-	kQTVRPlayEveryViewFrame = 4, /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
-	/* View Animation Settings*/
-	kQTVRSyncViewToFrameRate = 16,
-	kQTVRPalindromeViews = 17,
-	kQTVRPlayStreamingViews = 18 /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
+                                        /* View Frame Animation Settings*/
+  kQTVRPalindromeViewFrames     = 1,
+  kQTVRStartFirstViewFrame      = 2,
+  kQTVRDontLoopViewFrames       = 3,
+  kQTVRPlayEveryViewFrame       = 4,    /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
+                                        /* View Animation Settings*/
+  kQTVRSyncViewToFrameRate      = 16,
+  kQTVRPalindromeViews          = 17,
+  kQTVRPlayStreamingViews       = 18    /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
 };
 
 typedef UInt32 QTVRControlSetting;
 enum {
-	kQTVRWrapPan = 1,
-	kQTVRWrapTilt = 2,
-	kQTVRCanZoom = 3,
-	kQTVRReverseHControl = 4,
-	kQTVRReverseVControl = 5,
-	kQTVRSwapHVControl = 6,
-	kQTVRTranslation = 7
+  kQTVRWrapPan                  = 1,
+  kQTVRWrapTilt                 = 2,
+  kQTVRCanZoom                  = 3,
+  kQTVRReverseHControl          = 4,
+  kQTVRReverseVControl          = 5,
+  kQTVRSwapHVControl            = 6,
+  kQTVRTranslation              = 7
 };
 
 typedef UInt32 QTVRViewStateType;
 enum {
-	kQTVRDefault = 0,
-	kQTVRCurrent = 2,
-	kQTVRMouseDown = 3
+  kQTVRDefault                  = 0,
+  kQTVRCurrent                  = 2,
+  kQTVRMouseDown                = 3
 };
 
 typedef UInt32 QTVRNudgeControl;
 enum {
-	kQTVRRight = 0,
-	kQTVRUpRight = 45,
-	kQTVRUp = 90,
-	kQTVRUpLeft = 135,
-	kQTVRLeft = 180,
-	kQTVRDownLeft = 225,
-	kQTVRDown = 270,
-	kQTVRDownRight = 315
+  kQTVRRight                    = 0,
+  kQTVRUpRight                  = 45,
+  kQTVRUp                       = 90,
+  kQTVRUpLeft                   = 135,
+  kQTVRLeft                     = 180,
+  kQTVRDownLeft                 = 225,
+  kQTVRDown                     = 270,
+  kQTVRDownRight                = 315
 };
 
 typedef UInt32 QTVRNudgeMode;
 enum {
-	kQTVRNudgeRotate = 0,
-	kQTVRNudgeTranslate = 1,
-	kQTVRNudgeSameAsMouse = 2
+  kQTVRNudgeRotate              = 0,
+  kQTVRNudgeTranslate           = 1,
+  kQTVRNudgeSameAsMouse         = 2
 };
+
 
 /* Flags to control elements of the QTVR control bar (set via mcActionSetFlags) */
 enum {
-	mcFlagQTVRSuppressBackBtn = 1L << 16,
-	mcFlagQTVRSuppressZoomBtns = 1L << 17,
-	mcFlagQTVRSuppressHotSpotBtn = 1L << 18,
-	mcFlagQTVRSuppressTranslateBtn = 1L << 19,
-	mcFlagQTVRSuppressHelpText = 1L << 20,
-	mcFlagQTVRSuppressHotSpotNames = 1L << 21,
-	mcFlagQTVRExplicitFlagSet = 1L << 31 /* bits 0->30 should be interpreted as "explicit on" for the corresponding suppression bits*/
+  mcFlagQTVRSuppressBackBtn     = 1L << 16,
+  mcFlagQTVRSuppressZoomBtns    = 1L << 17,
+  mcFlagQTVRSuppressHotSpotBtn  = 1L << 18,
+  mcFlagQTVRSuppressTranslateBtn = 1L << 19,
+  mcFlagQTVRSuppressHelpText    = 1L << 20,
+  mcFlagQTVRSuppressHotSpotNames = 1L << 21,
+  mcFlagQTVRExplicitFlagSet     = 1L << 31 /* bits 0->30 should be interpreted as "explicit on" for the corresponding suppression bits*/
 };
 
 /* Cursor types used in type field of QTVRCursorRecord*/
 enum {
-	kQTVRUseDefaultCursor = 0,
-	kQTVRStdCursorType = 1,
-	kQTVRColorCursorType = 2
+  kQTVRUseDefaultCursor         = 0,
+  kQTVRStdCursorType            = 1,
+  kQTVRColorCursorType          = 2
 };
 
 /* Values for flags parameter in QTVRMouseOverHotSpot callback*/
 enum {
-	kQTVRHotSpotEnter = 0,
-	kQTVRHotSpotWithin = 1,
-	kQTVRHotSpotLeave = 2
+  kQTVRHotSpotEnter             = 0,
+  kQTVRHotSpotWithin            = 1,
+  kQTVRHotSpotLeave             = 2
 };
 
 /* Values for flags parameter in QTVRSetPrescreenImagingCompleteProc*/
 enum {
-	kQTVRPreScreenEveryIdle = 1L << 0 /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
+  kQTVRPreScreenEveryIdle       = 1L << 0 /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
 };
 
 /* Values for flags field of areasOfInterest in QTVRSetBackBufferImagingProc*/
 enum {
-	kQTVRBackBufferEveryUpdate = 1L << 0,
-	kQTVRBackBufferEveryIdle = 1L << 1,
-	kQTVRBackBufferAlwaysRefresh = 1L << 2,
-	kQTVRBackBufferHorizontal = 1L << 3 /* Requires that backbuffer proc be long-rowBytes aware (gestaltQDHasLongRowBytes)*/
+  kQTVRBackBufferEveryUpdate    = 1L << 0,
+  kQTVRBackBufferEveryIdle      = 1L << 1,
+  kQTVRBackBufferAlwaysRefresh  = 1L << 2,
+  kQTVRBackBufferHorizontal     = 1L << 3 /* Requires that backbuffer proc be long-rowBytes aware (gestaltQDHasLongRowBytes)*/
 };
 
 /* Values for flagsIn parameter in QTVRBackBufferImaging callback*/
 enum {
-	kQTVRBackBufferRectVisible = 1L << 0,
-	kQTVRBackBufferWasRefreshed = 1L << 1
+  kQTVRBackBufferRectVisible    = 1L << 0,
+  kQTVRBackBufferWasRefreshed   = 1L << 1
 };
 
 /* Values for flagsOut parameter in QTVRBackBufferImaging callback*/
 enum {
-	kQTVRBackBufferFlagDidDraw = 1L << 0,
-	kQTVRBackBufferFlagLastFlag = 1L << 31
+  kQTVRBackBufferFlagDidDraw    = 1L << 0,
+  kQTVRBackBufferFlagLastFlag   = 1L << 31
 };
 
 /* QTVRCursorRecord used in QTVRReplaceCursor*/
 struct QTVRCursorRecord {
-	UInt16 theType; /* field was previously named "type"*/
-	SInt16 rsrcID;
-	Handle handle;
+  UInt16              theType;                /* field was previously named "type"*/
+  SInt16              rsrcID;
+  Handle              handle;
 };
-typedef struct QTVRCursorRecord QTVRCursorRecord;
+typedef struct QTVRCursorRecord         QTVRCursorRecord;
 struct QTVRFloatPoint {
-	float x;
-	float y;
+  float               x;
+  float               y;
 };
-typedef struct QTVRFloatPoint QTVRFloatPoint;
+typedef struct QTVRFloatPoint           QTVRFloatPoint;
 /* Struct used for areasOfInterest parameter in QTVRSetBackBufferImagingProc*/
 struct QTVRAreaOfInterest {
-	float  panAngle;
-	float  tiltAngle;
-	float  width;
-	float  height;
-	UInt32 flags;
+  float               panAngle;
+  float               tiltAngle;
+  float               width;
+  float               height;
+  UInt32              flags;
 };
-typedef struct QTVRAreaOfInterest QTVRAreaOfInterest;
+typedef struct QTVRAreaOfInterest       QTVRAreaOfInterest;
 /*
   =================================================================================================
    Callback routines 
   -------------------------------------------------------------------------------------------------
 */
 
-typedef CALLBACK_API( OSErr, QTVRLeavingNodeProcPtr )( QTVRInstance qtvr, UInt32 fromNodeID, UInt32 toNodeID, Boolean *cancel, SInt32 refCon );
-typedef CALLBACK_API( OSErr, QTVREnteringNodeProcPtr )( QTVRInstance qtvr, UInt32 nodeID, SInt32 refCon );
-typedef CALLBACK_API( OSErr, QTVRMouseOverHotSpotProcPtr )( QTVRInstance qtvr, UInt32 hotSpotID, UInt32 flags, SInt32 refCon );
-typedef CALLBACK_API( OSErr, QTVRImagingCompleteProcPtr )( QTVRInstance qtvr, SInt32 refCon );
-typedef CALLBACK_API( OSErr, QTVRBackBufferImagingProcPtr )( QTVRInstance qtvr, Rect *drawRect, UInt16 areaIndex, UInt32 flagsIn, UInt32 *flagsOut, SInt32 refCon );
-typedef STACK_UPP_TYPE( QTVRLeavingNodeProcPtr ) QTVRLeavingNodeUPP;
-typedef STACK_UPP_TYPE( QTVREnteringNodeProcPtr ) QTVREnteringNodeUPP;
-typedef STACK_UPP_TYPE( QTVRMouseOverHotSpotProcPtr ) QTVRMouseOverHotSpotUPP;
-typedef STACK_UPP_TYPE( QTVRImagingCompleteProcPtr ) QTVRImagingCompleteUPP;
-typedef STACK_UPP_TYPE( QTVRBackBufferImagingProcPtr ) QTVRBackBufferImagingUPP;
+typedef CALLBACK_API( OSErr , QTVRLeavingNodeProcPtr )(QTVRInstance qtvr, UInt32 fromNodeID, UInt32 toNodeID, Boolean *cancel, SInt32 refCon);
+typedef CALLBACK_API( OSErr , QTVREnteringNodeProcPtr )(QTVRInstance qtvr, UInt32 nodeID, SInt32 refCon);
+typedef CALLBACK_API( OSErr , QTVRMouseOverHotSpotProcPtr )(QTVRInstance qtvr, UInt32 hotSpotID, UInt32 flags, SInt32 refCon);
+typedef CALLBACK_API( OSErr , QTVRImagingCompleteProcPtr )(QTVRInstance qtvr, SInt32 refCon);
+typedef CALLBACK_API( OSErr , QTVRBackBufferImagingProcPtr )(QTVRInstance qtvr, Rect *drawRect, UInt16 areaIndex, UInt32 flagsIn, UInt32 *flagsOut, SInt32 refCon);
+typedef STACK_UPP_TYPE(QTVRLeavingNodeProcPtr)                  QTVRLeavingNodeUPP;
+typedef STACK_UPP_TYPE(QTVREnteringNodeProcPtr)                 QTVREnteringNodeUPP;
+typedef STACK_UPP_TYPE(QTVRMouseOverHotSpotProcPtr)             QTVRMouseOverHotSpotUPP;
+typedef STACK_UPP_TYPE(QTVRImagingCompleteProcPtr)              QTVRImagingCompleteUPP;
+typedef STACK_UPP_TYPE(QTVRBackBufferImagingProcPtr)            QTVRBackBufferImagingUPP;
 /*
  *  NewQTVRLeavingNodeUPP()
  *  
@@ -380,17 +386,14 @@ typedef STACK_UPP_TYPE( QTVRBackBufferImagingProcPtr ) QTVRBackBufferImagingUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTVRLeavingNodeUPP )
-NewQTVRLeavingNodeUPP( QTVRLeavingNodeProcPtr userRoutine );
+NewQTVRLeavingNodeUPP(QTVRLeavingNodeProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTVRLeavingNodeProcInfo = 0x0000FFE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTVRLeavingNodeUPP ) NewQTVRLeavingNodeUPP( QTVRLeavingNodeProcPtr userRoutine )
-{
-	return (QTVRLeavingNodeUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRLeavingNodeProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTVRLeavingNodeUPP( userRoutine ) ( QTVRLeavingNodeUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRLeavingNodeProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTVRLeavingNodeProcInfo = 0x0000FFE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTVRLeavingNodeUPP) NewQTVRLeavingNodeUPP(QTVRLeavingNodeProcPtr userRoutine) { return (QTVRLeavingNodeUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRLeavingNodeProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTVRLeavingNodeUPP(userRoutine) (QTVRLeavingNodeUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRLeavingNodeProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -402,17 +405,14 @@ inline DEFINE_API_C( QTVRLeavingNodeUPP ) NewQTVRLeavingNodeUPP( QTVRLeavingNode
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTVREnteringNodeUPP )
-NewQTVREnteringNodeUPP( QTVREnteringNodeProcPtr userRoutine );
+NewQTVREnteringNodeUPP(QTVREnteringNodeProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTVREnteringNodeProcInfo = 0x00000FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTVREnteringNodeUPP ) NewQTVREnteringNodeUPP( QTVREnteringNodeProcPtr userRoutine )
-{
-	return (QTVREnteringNodeUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVREnteringNodeProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTVREnteringNodeUPP( userRoutine ) ( QTVREnteringNodeUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVREnteringNodeProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTVREnteringNodeProcInfo = 0x00000FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTVREnteringNodeUPP) NewQTVREnteringNodeUPP(QTVREnteringNodeProcPtr userRoutine) { return (QTVREnteringNodeUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVREnteringNodeProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTVREnteringNodeUPP(userRoutine) (QTVREnteringNodeUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVREnteringNodeProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -424,17 +424,14 @@ inline DEFINE_API_C( QTVREnteringNodeUPP ) NewQTVREnteringNodeUPP( QTVREnteringN
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTVRMouseOverHotSpotUPP )
-NewQTVRMouseOverHotSpotUPP( QTVRMouseOverHotSpotProcPtr userRoutine );
+NewQTVRMouseOverHotSpotUPP(QTVRMouseOverHotSpotProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTVRMouseOverHotSpotProcInfo = 0x00003FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTVRMouseOverHotSpotUPP ) NewQTVRMouseOverHotSpotUPP( QTVRMouseOverHotSpotProcPtr userRoutine )
-{
-	return (QTVRMouseOverHotSpotUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRMouseOverHotSpotProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTVRMouseOverHotSpotUPP( userRoutine ) ( QTVRMouseOverHotSpotUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRMouseOverHotSpotProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTVRMouseOverHotSpotProcInfo = 0x00003FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTVRMouseOverHotSpotUPP) NewQTVRMouseOverHotSpotUPP(QTVRMouseOverHotSpotProcPtr userRoutine) { return (QTVRMouseOverHotSpotUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRMouseOverHotSpotProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTVRMouseOverHotSpotUPP(userRoutine) (QTVRMouseOverHotSpotUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRMouseOverHotSpotProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -446,17 +443,14 @@ inline DEFINE_API_C( QTVRMouseOverHotSpotUPP ) NewQTVRMouseOverHotSpotUPP( QTVRM
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTVRImagingCompleteUPP )
-NewQTVRImagingCompleteUPP( QTVRImagingCompleteProcPtr userRoutine );
+NewQTVRImagingCompleteUPP(QTVRImagingCompleteProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTVRImagingCompleteProcInfo = 0x000003E0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTVRImagingCompleteUPP ) NewQTVRImagingCompleteUPP( QTVRImagingCompleteProcPtr userRoutine )
-{
-	return (QTVRImagingCompleteUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRImagingCompleteProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTVRImagingCompleteUPP( userRoutine ) ( QTVRImagingCompleteUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRImagingCompleteProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTVRImagingCompleteProcInfo = 0x000003E0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTVRImagingCompleteUPP) NewQTVRImagingCompleteUPP(QTVRImagingCompleteProcPtr userRoutine) { return (QTVRImagingCompleteUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRImagingCompleteProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTVRImagingCompleteUPP(userRoutine) (QTVRImagingCompleteUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRImagingCompleteProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -468,17 +462,14 @@ inline DEFINE_API_C( QTVRImagingCompleteUPP ) NewQTVRImagingCompleteUPP( QTVRIma
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTVRBackBufferImagingUPP )
-NewQTVRBackBufferImagingUPP( QTVRBackBufferImagingProcPtr userRoutine );
+NewQTVRBackBufferImagingUPP(QTVRBackBufferImagingProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTVRBackBufferImagingProcInfo = 0x0003FBE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTVRBackBufferImagingUPP ) NewQTVRBackBufferImagingUPP( QTVRBackBufferImagingProcPtr userRoutine )
-{
-	return (QTVRBackBufferImagingUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRBackBufferImagingProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTVRBackBufferImagingUPP( userRoutine ) ( QTVRBackBufferImagingUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRBackBufferImagingProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTVRBackBufferImagingProcInfo = 0x0003FBE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTVRBackBufferImagingUPP) NewQTVRBackBufferImagingUPP(QTVRBackBufferImagingProcPtr userRoutine) { return (QTVRBackBufferImagingUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRBackBufferImagingProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTVRBackBufferImagingUPP(userRoutine) (QTVRBackBufferImagingUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRBackBufferImagingProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -490,16 +481,13 @@ inline DEFINE_API_C( QTVRBackBufferImagingUPP ) NewQTVRBackBufferImagingUPP( QTV
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTVRLeavingNodeUPP( QTVRLeavingNodeUPP userUPP );
+DisposeQTVRLeavingNodeUPP(QTVRLeavingNodeUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTVRLeavingNodeUPP( QTVRLeavingNodeUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTVRLeavingNodeUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTVRLeavingNodeUPP(QTVRLeavingNodeUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTVRLeavingNodeUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -511,16 +499,13 @@ inline DEFINE_API_C( void ) DisposeQTVRLeavingNodeUPP( QTVRLeavingNodeUPP userUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTVREnteringNodeUPP( QTVREnteringNodeUPP userUPP );
+DisposeQTVREnteringNodeUPP(QTVREnteringNodeUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTVREnteringNodeUPP( QTVREnteringNodeUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTVREnteringNodeUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTVREnteringNodeUPP(QTVREnteringNodeUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTVREnteringNodeUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -532,16 +517,13 @@ inline DEFINE_API_C( void ) DisposeQTVREnteringNodeUPP( QTVREnteringNodeUPP user
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTVRMouseOverHotSpotUPP( QTVRMouseOverHotSpotUPP userUPP );
+DisposeQTVRMouseOverHotSpotUPP(QTVRMouseOverHotSpotUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTVRMouseOverHotSpotUPP( QTVRMouseOverHotSpotUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTVRMouseOverHotSpotUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTVRMouseOverHotSpotUPP(QTVRMouseOverHotSpotUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTVRMouseOverHotSpotUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -553,16 +535,13 @@ inline DEFINE_API_C( void ) DisposeQTVRMouseOverHotSpotUPP( QTVRMouseOverHotSpot
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTVRImagingCompleteUPP( QTVRImagingCompleteUPP userUPP );
+DisposeQTVRImagingCompleteUPP(QTVRImagingCompleteUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTVRImagingCompleteUPP( QTVRImagingCompleteUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTVRImagingCompleteUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTVRImagingCompleteUPP(QTVRImagingCompleteUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTVRImagingCompleteUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -574,16 +553,13 @@ inline DEFINE_API_C( void ) DisposeQTVRImagingCompleteUPP( QTVRImagingCompleteUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTVRBackBufferImagingUPP( QTVRBackBufferImagingUPP userUPP );
+DisposeQTVRBackBufferImagingUPP(QTVRBackBufferImagingUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTVRBackBufferImagingUPP( QTVRBackBufferImagingUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTVRBackBufferImagingUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTVRBackBufferImagingUPP(QTVRBackBufferImagingUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTVRBackBufferImagingUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -596,21 +572,18 @@ inline DEFINE_API_C( void ) DisposeQTVRBackBufferImagingUPP( QTVRBackBufferImagi
  */
 EXTERN_API_C( OSErr )
 InvokeQTVRLeavingNodeUPP(
-    QTVRInstance       qtvr,
-    UInt32             fromNodeID,
-    UInt32             toNodeID,
-    Boolean *          cancel,
-    SInt32             refCon,
-    QTVRLeavingNodeUPP userUPP );
+  QTVRInstance        qtvr,
+  UInt32              fromNodeID,
+  UInt32              toNodeID,
+  Boolean *           cancel,
+  SInt32              refCon,
+  QTVRLeavingNodeUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeQTVRLeavingNodeUPP( QTVRInstance qtvr, UInt32 fromNodeID, UInt32 toNodeID, Boolean *cancel, SInt32 refCon, QTVRLeavingNodeUPP userUPP )
-{
-	return (OSErr)CALL_FIVE_PARAMETER_UPP( userUPP, uppQTVRLeavingNodeProcInfo, qtvr, fromNodeID, toNodeID, cancel, refCon );
-}
-#else
-#define InvokeQTVRLeavingNodeUPP( qtvr, fromNodeID, toNodeID, cancel, refCon, userUPP ) ( OSErr ) CALL_FIVE_PARAMETER_UPP( ( userUPP ), uppQTVRLeavingNodeProcInfo, ( qtvr ), ( fromNodeID ), ( toNodeID ), ( cancel ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeQTVRLeavingNodeUPP(QTVRInstance qtvr, UInt32 fromNodeID, UInt32 toNodeID, Boolean * cancel, SInt32 refCon, QTVRLeavingNodeUPP userUPP) { return (OSErr)CALL_FIVE_PARAMETER_UPP(userUPP, uppQTVRLeavingNodeProcInfo, qtvr, fromNodeID, toNodeID, cancel, refCon); }
+  #else
+    #define InvokeQTVRLeavingNodeUPP(qtvr, fromNodeID, toNodeID, cancel, refCon, userUPP) (OSErr)CALL_FIVE_PARAMETER_UPP((userUPP), uppQTVRLeavingNodeProcInfo, (qtvr), (fromNodeID), (toNodeID), (cancel), (refCon))
+  #endif
 #endif
 
 /*
@@ -623,19 +596,16 @@ inline DEFINE_API_C( OSErr ) InvokeQTVRLeavingNodeUPP( QTVRInstance qtvr, UInt32
  */
 EXTERN_API_C( OSErr )
 InvokeQTVREnteringNodeUPP(
-    QTVRInstance        qtvr,
-    UInt32              nodeID,
-    SInt32              refCon,
-    QTVREnteringNodeUPP userUPP );
+  QTVRInstance         qtvr,
+  UInt32               nodeID,
+  SInt32               refCon,
+  QTVREnteringNodeUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeQTVREnteringNodeUPP( QTVRInstance qtvr, UInt32 nodeID, SInt32 refCon, QTVREnteringNodeUPP userUPP )
-{
-	return (OSErr)CALL_THREE_PARAMETER_UPP( userUPP, uppQTVREnteringNodeProcInfo, qtvr, nodeID, refCon );
-}
-#else
-#define InvokeQTVREnteringNodeUPP( qtvr, nodeID, refCon, userUPP ) ( OSErr ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppQTVREnteringNodeProcInfo, ( qtvr ), ( nodeID ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeQTVREnteringNodeUPP(QTVRInstance qtvr, UInt32 nodeID, SInt32 refCon, QTVREnteringNodeUPP userUPP) { return (OSErr)CALL_THREE_PARAMETER_UPP(userUPP, uppQTVREnteringNodeProcInfo, qtvr, nodeID, refCon); }
+  #else
+    #define InvokeQTVREnteringNodeUPP(qtvr, nodeID, refCon, userUPP) (OSErr)CALL_THREE_PARAMETER_UPP((userUPP), uppQTVREnteringNodeProcInfo, (qtvr), (nodeID), (refCon))
+  #endif
 #endif
 
 /*
@@ -648,20 +618,17 @@ inline DEFINE_API_C( OSErr ) InvokeQTVREnteringNodeUPP( QTVRInstance qtvr, UInt3
  */
 EXTERN_API_C( OSErr )
 InvokeQTVRMouseOverHotSpotUPP(
-    QTVRInstance            qtvr,
-    UInt32                  hotSpotID,
-    UInt32                  flags,
-    SInt32                  refCon,
-    QTVRMouseOverHotSpotUPP userUPP );
+  QTVRInstance             qtvr,
+  UInt32                   hotSpotID,
+  UInt32                   flags,
+  SInt32                   refCon,
+  QTVRMouseOverHotSpotUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeQTVRMouseOverHotSpotUPP( QTVRInstance qtvr, UInt32 hotSpotID, UInt32 flags, SInt32 refCon, QTVRMouseOverHotSpotUPP userUPP )
-{
-	return (OSErr)CALL_FOUR_PARAMETER_UPP( userUPP, uppQTVRMouseOverHotSpotProcInfo, qtvr, hotSpotID, flags, refCon );
-}
-#else
-#define InvokeQTVRMouseOverHotSpotUPP( qtvr, hotSpotID, flags, refCon, userUPP ) ( OSErr ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppQTVRMouseOverHotSpotProcInfo, ( qtvr ), ( hotSpotID ), ( flags ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeQTVRMouseOverHotSpotUPP(QTVRInstance qtvr, UInt32 hotSpotID, UInt32 flags, SInt32 refCon, QTVRMouseOverHotSpotUPP userUPP) { return (OSErr)CALL_FOUR_PARAMETER_UPP(userUPP, uppQTVRMouseOverHotSpotProcInfo, qtvr, hotSpotID, flags, refCon); }
+  #else
+    #define InvokeQTVRMouseOverHotSpotUPP(qtvr, hotSpotID, flags, refCon, userUPP) (OSErr)CALL_FOUR_PARAMETER_UPP((userUPP), uppQTVRMouseOverHotSpotProcInfo, (qtvr), (hotSpotID), (flags), (refCon))
+  #endif
 #endif
 
 /*
@@ -674,18 +641,15 @@ inline DEFINE_API_C( OSErr ) InvokeQTVRMouseOverHotSpotUPP( QTVRInstance qtvr, U
  */
 EXTERN_API_C( OSErr )
 InvokeQTVRImagingCompleteUPP(
-    QTVRInstance           qtvr,
-    SInt32                 refCon,
-    QTVRImagingCompleteUPP userUPP );
+  QTVRInstance            qtvr,
+  SInt32                  refCon,
+  QTVRImagingCompleteUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeQTVRImagingCompleteUPP( QTVRInstance qtvr, SInt32 refCon, QTVRImagingCompleteUPP userUPP )
-{
-	return (OSErr)CALL_TWO_PARAMETER_UPP( userUPP, uppQTVRImagingCompleteProcInfo, qtvr, refCon );
-}
-#else
-#define InvokeQTVRImagingCompleteUPP( qtvr, refCon, userUPP ) ( OSErr ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppQTVRImagingCompleteProcInfo, ( qtvr ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeQTVRImagingCompleteUPP(QTVRInstance qtvr, SInt32 refCon, QTVRImagingCompleteUPP userUPP) { return (OSErr)CALL_TWO_PARAMETER_UPP(userUPP, uppQTVRImagingCompleteProcInfo, qtvr, refCon); }
+  #else
+    #define InvokeQTVRImagingCompleteUPP(qtvr, refCon, userUPP) (OSErr)CALL_TWO_PARAMETER_UPP((userUPP), uppQTVRImagingCompleteProcInfo, (qtvr), (refCon))
+  #endif
 #endif
 
 /*
@@ -698,36 +662,33 @@ inline DEFINE_API_C( OSErr ) InvokeQTVRImagingCompleteUPP( QTVRInstance qtvr, SI
  */
 EXTERN_API_C( OSErr )
 InvokeQTVRBackBufferImagingUPP(
-    QTVRInstance             qtvr,
-    Rect *                   drawRect,
-    UInt16                   areaIndex,
-    UInt32                   flagsIn,
-    UInt32 *                 flagsOut,
-    SInt32                   refCon,
-    QTVRBackBufferImagingUPP userUPP );
+  QTVRInstance              qtvr,
+  Rect *                    drawRect,
+  UInt16                    areaIndex,
+  UInt32                    flagsIn,
+  UInt32 *                  flagsOut,
+  SInt32                    refCon,
+  QTVRBackBufferImagingUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeQTVRBackBufferImagingUPP( QTVRInstance qtvr, Rect *drawRect, UInt16 areaIndex, UInt32 flagsIn, UInt32 *flagsOut, SInt32 refCon, QTVRBackBufferImagingUPP userUPP )
-{
-	return (OSErr)CALL_SIX_PARAMETER_UPP( userUPP, uppQTVRBackBufferImagingProcInfo, qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon );
-}
-#else
-#define InvokeQTVRBackBufferImagingUPP( qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon, userUPP ) ( OSErr ) CALL_SIX_PARAMETER_UPP( ( userUPP ), uppQTVRBackBufferImagingProcInfo, ( qtvr ), ( drawRect ), ( areaIndex ), ( flagsIn ), ( flagsOut ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeQTVRBackBufferImagingUPP(QTVRInstance qtvr, Rect * drawRect, UInt16 areaIndex, UInt32 flagsIn, UInt32 * flagsOut, SInt32 refCon, QTVRBackBufferImagingUPP userUPP) { return (OSErr)CALL_SIX_PARAMETER_UPP(userUPP, uppQTVRBackBufferImagingProcInfo, qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon); }
+  #else
+    #define InvokeQTVRBackBufferImagingUPP(qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon, userUPP) (OSErr)CALL_SIX_PARAMETER_UPP((userUPP), uppQTVRBackBufferImagingProcInfo, (qtvr), (drawRect), (areaIndex), (flagsIn), (flagsOut), (refCon))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewQTVRLeavingNodeProc( userRoutine ) NewQTVRLeavingNodeUPP( userRoutine )
-#define NewQTVREnteringNodeProc( userRoutine ) NewQTVREnteringNodeUPP( userRoutine )
-#define NewQTVRMouseOverHotSpotProc( userRoutine ) NewQTVRMouseOverHotSpotUPP( userRoutine )
-#define NewQTVRImagingCompleteProc( userRoutine ) NewQTVRImagingCompleteUPP( userRoutine )
-#define NewQTVRBackBufferImagingProc( userRoutine ) NewQTVRBackBufferImagingUPP( userRoutine )
-#define CallQTVRLeavingNodeProc( userRoutine, qtvr, fromNodeID, toNodeID, cancel, refCon ) InvokeQTVRLeavingNodeUPP( qtvr, fromNodeID, toNodeID, cancel, refCon, userRoutine )
-#define CallQTVREnteringNodeProc( userRoutine, qtvr, nodeID, refCon ) InvokeQTVREnteringNodeUPP( qtvr, nodeID, refCon, userRoutine )
-#define CallQTVRMouseOverHotSpotProc( userRoutine, qtvr, hotSpotID, flags, refCon ) InvokeQTVRMouseOverHotSpotUPP( qtvr, hotSpotID, flags, refCon, userRoutine )
-#define CallQTVRImagingCompleteProc( userRoutine, qtvr, refCon ) InvokeQTVRImagingCompleteUPP( qtvr, refCon, userRoutine )
-#define CallQTVRBackBufferImagingProc( userRoutine, qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon ) InvokeQTVRBackBufferImagingUPP( qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewQTVRLeavingNodeProc(userRoutine)                 NewQTVRLeavingNodeUPP(userRoutine)
+    #define NewQTVREnteringNodeProc(userRoutine)                NewQTVREnteringNodeUPP(userRoutine)
+    #define NewQTVRMouseOverHotSpotProc(userRoutine)            NewQTVRMouseOverHotSpotUPP(userRoutine)
+    #define NewQTVRImagingCompleteProc(userRoutine)             NewQTVRImagingCompleteUPP(userRoutine)
+    #define NewQTVRBackBufferImagingProc(userRoutine)           NewQTVRBackBufferImagingUPP(userRoutine)
+    #define CallQTVRLeavingNodeProc(userRoutine, qtvr, fromNodeID, toNodeID, cancel, refCon) InvokeQTVRLeavingNodeUPP(qtvr, fromNodeID, toNodeID, cancel, refCon, userRoutine)
+    #define CallQTVREnteringNodeProc(userRoutine, qtvr, nodeID, refCon) InvokeQTVREnteringNodeUPP(qtvr, nodeID, refCon, userRoutine)
+    #define CallQTVRMouseOverHotSpotProc(userRoutine, qtvr, hotSpotID, flags, refCon) InvokeQTVRMouseOverHotSpotUPP(qtvr, hotSpotID, flags, refCon, userRoutine)
+    #define CallQTVRImagingCompleteProc(userRoutine, qtvr, refCon) InvokeQTVRImagingCompleteUPP(qtvr, refCon, userRoutine)
+    #define CallQTVRBackBufferImagingProc(userRoutine, qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon) InvokeQTVRBackBufferImagingUPP(qtvr, drawRect, areaIndex, flagsIn, flagsOut, refCon, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -738,37 +699,37 @@ inline DEFINE_API_C( OSErr ) InvokeQTVRBackBufferImagingUPP( QTVRInstance qtvr, 
 
 typedef UInt32 QTVRProcSelector;
 enum {
-	kQTVRSetPanAngleSelector = 0x2000,
-	kQTVRSetTiltAngleSelector = 0x2001,
-	kQTVRSetFieldOfViewSelector = 0x2002,
-	kQTVRSetViewCenterSelector = 0x2003,
-	kQTVRMouseEnterSelector = 0x2004,
-	kQTVRMouseWithinSelector = 0x2005,
-	kQTVRMouseLeaveSelector = 0x2006,
-	kQTVRMouseDownSelector = 0x2007,
-	kQTVRMouseStillDownSelector = 0x2008,
-	kQTVRMouseUpSelector = 0x2009,
-	kQTVRTriggerHotSpotSelector = 0x200A,
-	kQTVRGetHotSpotTypeSelector = 0x200B, /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
-	kQTVRSetViewParameterSelector = 0x200C, /* Requires QTVR 5.0 (kQTVRAPIMajorVersion05 + kQTVRAPIMinorVersion00)*/
-	kQTVRGetViewParameterSelector = 0x200D /* Requires QTVR 5.0 (kQTVRAPIMajorVersion05 + kQTVRAPIMinorVersion00)*/
+  kQTVRSetPanAngleSelector      = 0x2000,
+  kQTVRSetTiltAngleSelector     = 0x2001,
+  kQTVRSetFieldOfViewSelector   = 0x2002,
+  kQTVRSetViewCenterSelector    = 0x2003,
+  kQTVRMouseEnterSelector       = 0x2004,
+  kQTVRMouseWithinSelector      = 0x2005,
+  kQTVRMouseLeaveSelector       = 0x2006,
+  kQTVRMouseDownSelector        = 0x2007,
+  kQTVRMouseStillDownSelector   = 0x2008,
+  kQTVRMouseUpSelector          = 0x2009,
+  kQTVRTriggerHotSpotSelector   = 0x200A,
+  kQTVRGetHotSpotTypeSelector   = 0x200B, /* Requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
+  kQTVRSetViewParameterSelector = 0x200C, /* Requires QTVR 5.0 (kQTVRAPIMajorVersion05 + kQTVRAPIMinorVersion00)*/
+  kQTVRGetViewParameterSelector = 0x200D /* Requires QTVR 5.0 (kQTVRAPIMajorVersion05 + kQTVRAPIMinorVersion00)*/
 };
 
 struct QTVRInterceptRecord {
-	SInt32 reserved1;
-	SInt32 selector;
+  SInt32              reserved1;
+  SInt32              selector;
 
-	SInt32 reserved2;
-	SInt32 reserved3;
+  SInt32              reserved2;
+  SInt32              reserved3;
 
-	SInt32 paramCount;
-	void * parameter[6];
+  SInt32              paramCount;
+  void *              parameter[6];
 };
-typedef struct QTVRInterceptRecord QTVRInterceptRecord;
-typedef QTVRInterceptRecord *      QTVRInterceptPtr;
+typedef struct QTVRInterceptRecord      QTVRInterceptRecord;
+typedef QTVRInterceptRecord *           QTVRInterceptPtr;
 /* Prototype for Intercept Proc callback*/
-typedef CALLBACK_API( void, QTVRInterceptProcPtr )( QTVRInstance qtvr, QTVRInterceptPtr qtvrMsg, SInt32 refCon, Boolean *cancel );
-typedef STACK_UPP_TYPE( QTVRInterceptProcPtr ) QTVRInterceptUPP;
+typedef CALLBACK_API( void , QTVRInterceptProcPtr )(QTVRInstance qtvr, QTVRInterceptPtr qtvrMsg, SInt32 refCon, Boolean *cancel);
+typedef STACK_UPP_TYPE(QTVRInterceptProcPtr)                    QTVRInterceptUPP;
 /*
  *  NewQTVRInterceptUPP()
  *  
@@ -778,17 +739,14 @@ typedef STACK_UPP_TYPE( QTVRInterceptProcPtr ) QTVRInterceptUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( QTVRInterceptUPP )
-NewQTVRInterceptUPP( QTVRInterceptProcPtr userRoutine );
+NewQTVRInterceptUPP(QTVRInterceptProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppQTVRInterceptProcInfo = 0x00003FC0 }; /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( QTVRInterceptUPP ) NewQTVRInterceptUPP( QTVRInterceptProcPtr userRoutine )
-{
-	return (QTVRInterceptUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRInterceptProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewQTVRInterceptUPP( userRoutine ) ( QTVRInterceptUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppQTVRInterceptProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppQTVRInterceptProcInfo = 0x00003FC0 };  /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(QTVRInterceptUPP) NewQTVRInterceptUPP(QTVRInterceptProcPtr userRoutine) { return (QTVRInterceptUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRInterceptProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewQTVRInterceptUPP(userRoutine) (QTVRInterceptUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppQTVRInterceptProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -800,16 +758,13 @@ inline DEFINE_API_C( QTVRInterceptUPP ) NewQTVRInterceptUPP( QTVRInterceptProcPt
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeQTVRInterceptUPP( QTVRInterceptUPP userUPP );
+DisposeQTVRInterceptUPP(QTVRInterceptUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeQTVRInterceptUPP( QTVRInterceptUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeQTVRInterceptUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeQTVRInterceptUPP(QTVRInterceptUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeQTVRInterceptUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -822,26 +777,23 @@ inline DEFINE_API_C( void ) DisposeQTVRInterceptUPP( QTVRInterceptUPP userUPP )
  */
 EXTERN_API_C( void )
 InvokeQTVRInterceptUPP(
-    QTVRInstance     qtvr,
-    QTVRInterceptPtr qtvrMsg,
-    SInt32           refCon,
-    Boolean *        cancel,
-    QTVRInterceptUPP userUPP );
+  QTVRInstance      qtvr,
+  QTVRInterceptPtr  qtvrMsg,
+  SInt32            refCon,
+  Boolean *         cancel,
+  QTVRInterceptUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeQTVRInterceptUPP( QTVRInstance qtvr, QTVRInterceptPtr qtvrMsg, SInt32 refCon, Boolean *cancel, QTVRInterceptUPP userUPP )
-{
-	CALL_FOUR_PARAMETER_UPP( userUPP, uppQTVRInterceptProcInfo, qtvr, qtvrMsg, refCon, cancel );
-}
-#else
-#define InvokeQTVRInterceptUPP( qtvr, qtvrMsg, refCon, cancel, userUPP ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppQTVRInterceptProcInfo, ( qtvr ), ( qtvrMsg ), ( refCon ), ( cancel ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeQTVRInterceptUPP(QTVRInstance qtvr, QTVRInterceptPtr qtvrMsg, SInt32 refCon, Boolean * cancel, QTVRInterceptUPP userUPP) { CALL_FOUR_PARAMETER_UPP(userUPP, uppQTVRInterceptProcInfo, qtvr, qtvrMsg, refCon, cancel); }
+  #else
+    #define InvokeQTVRInterceptUPP(qtvr, qtvrMsg, refCon, cancel, userUPP) CALL_FOUR_PARAMETER_UPP((userUPP), uppQTVRInterceptProcInfo, (qtvr), (qtvrMsg), (refCon), (cancel))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewQTVRInterceptProc( userRoutine ) NewQTVRInterceptUPP( userRoutine )
-#define CallQTVRInterceptProc( userRoutine, qtvr, qtvrMsg, refCon, cancel ) InvokeQTVRInterceptUPP( qtvr, qtvrMsg, refCon, cancel, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewQTVRInterceptProc(userRoutine)                   NewQTVRInterceptUPP(userRoutine)
+    #define CallQTVRInterceptProc(userRoutine, qtvr, qtvrMsg, refCon, cancel) InvokeQTVRInterceptUPP(qtvr, qtvrMsg, refCon, cancel, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -862,7 +814,8 @@ inline DEFINE_API_C( void ) InvokeQTVRInterceptUPP( QTVRInstance qtvr, QTVRInter
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( OSErr )
-InitializeQTVR( void );
+InitializeQTVR(void);
+
 
 /*
  *  TerminateQTVR()
@@ -874,11 +827,12 @@ InitializeQTVR( void );
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( OSErr )
-TerminateQTVR( void );
+TerminateQTVR(void);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* !TARGET_OS_MAC */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* !TARGET_OS_MAC */
 
 /*
   =================================================================================================
@@ -896,8 +850,9 @@ TerminateQTVR( void );
  */
 EXTERN_API_C( Track )
 QTVRGetQTVRTrack(
-    Movie  theMovie,
-    SInt32 index );
+  Movie    theMovie,
+  SInt32   index);
+
 
 /*
  *  QTVRGetQTVRInstance()
@@ -910,9 +865,10 @@ QTVRGetQTVRTrack(
  */
 EXTERN_API_C( OSErr )
 QTVRGetQTVRInstance(
-    QTVRInstance *  qtvr,
-    Track           qtvrTrack,
-    MovieController mc );
+  QTVRInstance *    qtvr,
+  Track             qtvrTrack,
+  MovieController   mc);
+
 
 /*
   =================================================================================================
@@ -932,10 +888,11 @@ QTVRGetQTVRInstance(
  */
 EXTERN_API_C( OSErr )
 QTVRSetViewParameter(
-    QTVRInstance qtvr,
-    UInt32       viewParameter,
-    void *       value,
-    UInt32       flagsIn );
+  QTVRInstance   qtvr,
+  UInt32         viewParameter,
+  void *         value,
+  UInt32         flagsIn);
+
 
 /* QTVRGetViewParameter requires QTVR 5.0 (kQTVRAPIMajorVersion05 + kQTVRAPIMinorVersion00)*/
 /*
@@ -949,11 +906,12 @@ QTVRSetViewParameter(
  */
 EXTERN_API_C( OSErr )
 QTVRGetViewParameter(
-    QTVRInstance qtvr,
-    UInt32       viewParameter,
-    void *       value,
-    UInt32       flagsIn,
-    UInt32 *     flagsOut );
+  QTVRInstance   qtvr,
+  UInt32         viewParameter,
+  void *         value,
+  UInt32         flagsIn,
+  UInt32 *       flagsOut);
+
 
 /*
  *  QTVRSetPanAngle()
@@ -966,8 +924,9 @@ QTVRGetViewParameter(
  */
 EXTERN_API_C( OSErr )
 QTVRSetPanAngle(
-    QTVRInstance qtvr,
-    float        panAngle );
+  QTVRInstance   qtvr,
+  float          panAngle);
+
 
 /*
  *  QTVRGetPanAngle()
@@ -979,7 +938,8 @@ QTVRSetPanAngle(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( float )
-QTVRGetPanAngle( QTVRInstance qtvr );
+QTVRGetPanAngle(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetTiltAngle()
@@ -992,8 +952,9 @@ QTVRGetPanAngle( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetTiltAngle(
-    QTVRInstance qtvr,
-    float        tiltAngle );
+  QTVRInstance   qtvr,
+  float          tiltAngle);
+
 
 /*
  *  QTVRGetTiltAngle()
@@ -1005,7 +966,8 @@ QTVRSetTiltAngle(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( float )
-QTVRGetTiltAngle( QTVRInstance qtvr );
+QTVRGetTiltAngle(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetFieldOfView()
@@ -1018,8 +980,9 @@ QTVRGetTiltAngle( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetFieldOfView(
-    QTVRInstance qtvr,
-    float        fieldOfView );
+  QTVRInstance   qtvr,
+  float          fieldOfView);
+
 
 /*
  *  QTVRGetFieldOfView()
@@ -1031,7 +994,8 @@ QTVRSetFieldOfView(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( float )
-QTVRGetFieldOfView( QTVRInstance qtvr );
+QTVRGetFieldOfView(QTVRInstance qtvr);
+
 
 /*
  *  QTVRShowDefaultView()
@@ -1043,7 +1007,8 @@ QTVRGetFieldOfView( QTVRInstance qtvr );
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( OSErr )
-QTVRShowDefaultView( QTVRInstance qtvr );
+QTVRShowDefaultView(QTVRInstance qtvr);
+
 
 /* Object Specific*/
 /*
@@ -1057,8 +1022,9 @@ QTVRShowDefaultView( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetViewCenter(
-    QTVRInstance          qtvr,
-    const QTVRFloatPoint *viewCenter );
+  QTVRInstance            qtvr,
+  const QTVRFloatPoint *  viewCenter);
+
 
 /*
  *  QTVRGetViewCenter()
@@ -1071,8 +1037,9 @@ QTVRSetViewCenter(
  */
 EXTERN_API_C( OSErr )
 QTVRGetViewCenter(
-    QTVRInstance    qtvr,
-    QTVRFloatPoint *viewCenter );
+  QTVRInstance      qtvr,
+  QTVRFloatPoint *  viewCenter);
+
 
 /*
  *  QTVRNudge()
@@ -1085,8 +1052,9 @@ QTVRGetViewCenter(
  */
 EXTERN_API_C( OSErr )
 QTVRNudge(
-    QTVRInstance     qtvr,
-    QTVRNudgeControl direction );
+  QTVRInstance       qtvr,
+  QTVRNudgeControl   direction);
+
 
 /* QTVRInteractionNudge requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
 /*
@@ -1100,8 +1068,9 @@ QTVRNudge(
  */
 EXTERN_API_C( OSErr )
 QTVRInteractionNudge(
-    QTVRInstance     qtvr,
-    QTVRNudgeControl direction );
+  QTVRInstance       qtvr,
+  QTVRNudgeControl   direction);
+
 
 /*
   =================================================================================================
@@ -1120,8 +1089,9 @@ QTVRInteractionNudge(
  */
 EXTERN_API_C( OSErr )
 QTVRGetVRWorld(
-    QTVRInstance     qtvr,
-    QTAtomContainer *VRWorld );
+  QTVRInstance       qtvr,
+  QTAtomContainer *  VRWorld);
+
 
 /*
  *  QTVRGetNodeInfo()
@@ -1134,9 +1104,10 @@ QTVRGetVRWorld(
  */
 EXTERN_API_C( OSErr )
 QTVRGetNodeInfo(
-    QTVRInstance     qtvr,
-    UInt32           nodeID,
-    QTAtomContainer *nodeInfo );
+  QTVRInstance       qtvr,
+  UInt32             nodeID,
+  QTAtomContainer *  nodeInfo);
+
 
 /*
  *  QTVRGoToNodeID()
@@ -1149,8 +1120,9 @@ QTVRGetNodeInfo(
  */
 EXTERN_API_C( OSErr )
 QTVRGoToNodeID(
-    QTVRInstance qtvr,
-    UInt32       nodeID );
+  QTVRInstance   qtvr,
+  UInt32         nodeID);
+
 
 /*
  *  QTVRGetCurrentNodeID()
@@ -1162,7 +1134,8 @@ QTVRGoToNodeID(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( UInt32 )
-QTVRGetCurrentNodeID( QTVRInstance qtvr );
+QTVRGetCurrentNodeID(QTVRInstance qtvr);
+
 
 /*
  *  QTVRGetNodeType()
@@ -1175,8 +1148,9 @@ QTVRGetCurrentNodeID( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSType )
 QTVRGetNodeType(
-    QTVRInstance qtvr,
-    UInt32       nodeID );
+  QTVRInstance   qtvr,
+  UInt32         nodeID);
+
 
 /*
   =================================================================================================
@@ -1195,9 +1169,10 @@ QTVRGetNodeType(
  */
 EXTERN_API_C( OSErr )
 QTVRPtToHotSpotID(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32 *     hotSpotID );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32 *       hotSpotID);
+
 
 /* QTVRGetHotSpotType requires QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
 /*
@@ -1211,9 +1186,10 @@ QTVRPtToHotSpotID(
  */
 EXTERN_API_C( OSErr )
 QTVRGetHotSpotType(
-    QTVRInstance qtvr,
-    UInt32       hotSpotID,
-    OSType *     hotSpotType );
+  QTVRInstance   qtvr,
+  UInt32         hotSpotID,
+  OSType *       hotSpotType);
+
 
 /*
  *  QTVRTriggerHotSpot()
@@ -1226,10 +1202,11 @@ QTVRGetHotSpotType(
  */
 EXTERN_API_C( OSErr )
 QTVRTriggerHotSpot(
-    QTVRInstance    qtvr,
-    UInt32          hotSpotID,
-    QTAtomContainer nodeInfo,
-    QTAtom          selectedAtom );
+  QTVRInstance      qtvr,
+  UInt32            hotSpotID,
+  QTAtomContainer   nodeInfo,
+  QTAtom            selectedAtom);
+
 
 /*
  *  QTVRSetMouseOverHotSpotProc()
@@ -1242,10 +1219,11 @@ QTVRTriggerHotSpot(
  */
 EXTERN_API_C( OSErr )
 QTVRSetMouseOverHotSpotProc(
-    QTVRInstance            qtvr,
-    QTVRMouseOverHotSpotUPP mouseOverHotSpotProc,
-    SInt32                  refCon,
-    UInt32                  flags );
+  QTVRInstance              qtvr,
+  QTVRMouseOverHotSpotUPP   mouseOverHotSpotProc,
+  SInt32                    refCon,
+  UInt32                    flags);
+
 
 /*
  *  QTVREnableHotSpot()
@@ -1258,10 +1236,11 @@ QTVRSetMouseOverHotSpotProc(
  */
 EXTERN_API_C( OSErr )
 QTVREnableHotSpot(
-    QTVRInstance qtvr,
-    UInt32       enableFlag,
-    UInt32       hotSpotValue,
-    Boolean      enable );
+  QTVRInstance   qtvr,
+  UInt32         enableFlag,
+  UInt32         hotSpotValue,
+  Boolean        enable);
+
 
 /*
  *  QTVRGetVisibleHotSpots()
@@ -1274,8 +1253,9 @@ QTVREnableHotSpot(
  */
 EXTERN_API_C( UInt32 )
 QTVRGetVisibleHotSpots(
-    QTVRInstance qtvr,
-    Handle       hotSpots );
+  QTVRInstance   qtvr,
+  Handle         hotSpots);
+
 
 /*
  *  QTVRGetHotSpotRegion()
@@ -1288,9 +1268,10 @@ QTVRGetVisibleHotSpots(
  */
 EXTERN_API_C( OSErr )
 QTVRGetHotSpotRegion(
-    QTVRInstance qtvr,
-    UInt32       hotSpotID,
-    RgnHandle    hotSpotRegion );
+  QTVRInstance   qtvr,
+  UInt32         hotSpotID,
+  RgnHandle      hotSpotRegion);
+
 
 /*
   =================================================================================================
@@ -1309,8 +1290,9 @@ QTVRGetHotSpotRegion(
  */
 EXTERN_API_C( OSErr )
 QTVRSetMouseOverTracking(
-    QTVRInstance qtvr,
-    Boolean      enable );
+  QTVRInstance   qtvr,
+  Boolean        enable);
+
 
 /*
  *  QTVRGetMouseOverTracking()
@@ -1322,7 +1304,8 @@ QTVRSetMouseOverTracking(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( Boolean )
-QTVRGetMouseOverTracking( QTVRInstance qtvr );
+QTVRGetMouseOverTracking(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetMouseDownTracking()
@@ -1335,8 +1318,9 @@ QTVRGetMouseOverTracking( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetMouseDownTracking(
-    QTVRInstance qtvr,
-    Boolean      enable );
+  QTVRInstance   qtvr,
+  Boolean        enable);
+
 
 /*
  *  QTVRGetMouseDownTracking()
@@ -1348,7 +1332,8 @@ QTVRSetMouseDownTracking(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( Boolean )
-QTVRGetMouseDownTracking( QTVRInstance qtvr );
+QTVRGetMouseDownTracking(QTVRInstance qtvr);
+
 
 /*
  *  QTVRMouseEnter()
@@ -1361,10 +1346,11 @@ QTVRGetMouseDownTracking( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRMouseEnter(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32 *     hotSpotID,
-    WindowRef    w );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32 *       hotSpotID,
+  WindowRef      w);
+
 
 /*
  *  QTVRMouseWithin()
@@ -1377,10 +1363,11 @@ QTVRMouseEnter(
  */
 EXTERN_API_C( OSErr )
 QTVRMouseWithin(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32 *     hotSpotID,
-    WindowRef    w );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32 *       hotSpotID,
+  WindowRef      w);
+
 
 /*
  *  QTVRMouseLeave()
@@ -1393,9 +1380,10 @@ QTVRMouseWithin(
  */
 EXTERN_API_C( OSErr )
 QTVRMouseLeave(
-    QTVRInstance qtvr,
-    Point        pt,
-    WindowRef    w );
+  QTVRInstance   qtvr,
+  Point          pt,
+  WindowRef      w);
+
 
 /*
  *  QTVRMouseDown()
@@ -1408,12 +1396,13 @@ QTVRMouseLeave(
  */
 EXTERN_API_C( OSErr )
 QTVRMouseDown(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32       when,
-    UInt16       modifiers,
-    UInt32 *     hotSpotID,
-    WindowRef    w );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32         when,
+  UInt16         modifiers,
+  UInt32 *       hotSpotID,
+  WindowRef      w);
+
 
 /*
  *  QTVRMouseStillDown()
@@ -1426,10 +1415,11 @@ QTVRMouseDown(
  */
 EXTERN_API_C( OSErr )
 QTVRMouseStillDown(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32 *     hotSpotID,
-    WindowRef    w );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32 *       hotSpotID,
+  WindowRef      w);
+
 
 /*
  *  QTVRMouseUp()
@@ -1442,10 +1432,11 @@ QTVRMouseStillDown(
  */
 EXTERN_API_C( OSErr )
 QTVRMouseUp(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32 *     hotSpotID,
-    WindowRef    w );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32 *       hotSpotID,
+  WindowRef      w);
+
 
 /* These require QTVR 2.01 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion01)*/
 /*
@@ -1459,12 +1450,13 @@ QTVRMouseUp(
  */
 EXTERN_API_C( OSErr )
 QTVRMouseStillDownExtended(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32 *     hotSpotID,
-    WindowRef    w,
-    UInt32       when,
-    UInt16       modifiers );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32 *       hotSpotID,
+  WindowRef      w,
+  UInt32         when,
+  UInt16         modifiers);
+
 
 /*
  *  QTVRMouseUpExtended()
@@ -1477,12 +1469,13 @@ QTVRMouseStillDownExtended(
  */
 EXTERN_API_C( OSErr )
 QTVRMouseUpExtended(
-    QTVRInstance qtvr,
-    Point        pt,
-    UInt32 *     hotSpotID,
-    WindowRef    w,
-    UInt32       when,
-    UInt16       modifiers );
+  QTVRInstance   qtvr,
+  Point          pt,
+  UInt32 *       hotSpotID,
+  WindowRef      w,
+  UInt32         when,
+  UInt16         modifiers);
+
 
 /*
   =================================================================================================
@@ -1501,11 +1494,12 @@ QTVRMouseUpExtended(
  */
 EXTERN_API_C( OSErr )
 QTVRInstallInterceptProc(
-    QTVRInstance     qtvr,
-    QTVRProcSelector selector,
-    QTVRInterceptUPP interceptProc,
-    SInt32           refCon,
-    UInt32           flags );
+  QTVRInstance       qtvr,
+  QTVRProcSelector   selector,
+  QTVRInterceptUPP   interceptProc,
+  SInt32             refCon,
+  UInt32             flags);
+
 
 /*
  *  QTVRCallInterceptedProc()
@@ -1518,8 +1512,9 @@ QTVRInstallInterceptProc(
  */
 EXTERN_API_C( OSErr )
 QTVRCallInterceptedProc(
-    QTVRInstance         qtvr,
-    QTVRInterceptRecord *qtvrMsg );
+  QTVRInstance           qtvr,
+  QTVRInterceptRecord *  qtvrMsg);
+
 
 /*
   =================================================================================================
@@ -1537,7 +1532,8 @@ QTVRCallInterceptedProc(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( UInt32 )
-QTVRGetCurrentMouseMode( QTVRInstance qtvr );
+QTVRGetCurrentMouseMode(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetFrameRate()
@@ -1550,8 +1546,9 @@ QTVRGetCurrentMouseMode( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetFrameRate(
-    QTVRInstance qtvr,
-    float        rate );
+  QTVRInstance   qtvr,
+  float          rate);
+
 
 /*
  *  QTVRGetFrameRate()
@@ -1563,7 +1560,8 @@ QTVRSetFrameRate(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( float )
-QTVRGetFrameRate( QTVRInstance qtvr );
+QTVRGetFrameRate(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetViewRate()
@@ -1576,8 +1574,9 @@ QTVRGetFrameRate( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetViewRate(
-    QTVRInstance qtvr,
-    float        rate );
+  QTVRInstance   qtvr,
+  float          rate);
+
 
 /*
  *  QTVRGetViewRate()
@@ -1589,7 +1588,8 @@ QTVRSetViewRate(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( float )
-QTVRGetViewRate( QTVRInstance qtvr );
+QTVRGetViewRate(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetViewCurrentTime()
@@ -1602,8 +1602,9 @@ QTVRGetViewRate( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetViewCurrentTime(
-    QTVRInstance qtvr,
-    TimeValue    time );
+  QTVRInstance   qtvr,
+  TimeValue      time);
+
 
 /*
  *  QTVRGetViewCurrentTime()
@@ -1615,7 +1616,8 @@ QTVRSetViewCurrentTime(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( TimeValue )
-QTVRGetViewCurrentTime( QTVRInstance qtvr );
+QTVRGetViewCurrentTime(QTVRInstance qtvr);
+
 
 /*
  *  QTVRGetCurrentViewDuration()
@@ -1627,7 +1629,8 @@ QTVRGetViewCurrentTime( QTVRInstance qtvr );
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( TimeValue )
-QTVRGetCurrentViewDuration( QTVRInstance qtvr );
+QTVRGetCurrentViewDuration(QTVRInstance qtvr);
+
 
 /*
   =================================================================================================
@@ -1646,9 +1649,10 @@ QTVRGetCurrentViewDuration( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetViewState(
-    QTVRInstance      qtvr,
-    QTVRViewStateType viewStateType,
-    UInt16            state );
+  QTVRInstance        qtvr,
+  QTVRViewStateType   viewStateType,
+  UInt16              state);
+
 
 /*
  *  QTVRGetViewState()
@@ -1661,9 +1665,10 @@ QTVRSetViewState(
  */
 EXTERN_API_C( OSErr )
 QTVRGetViewState(
-    QTVRInstance      qtvr,
-    QTVRViewStateType viewStateType,
-    UInt16 *          state );
+  QTVRInstance        qtvr,
+  QTVRViewStateType   viewStateType,
+  UInt16 *            state);
+
 
 /*
  *  QTVRGetViewStateCount()
@@ -1675,7 +1680,8 @@ QTVRGetViewState(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( UInt16 )
-QTVRGetViewStateCount( QTVRInstance qtvr );
+QTVRGetViewStateCount(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetAnimationSetting()
@@ -1688,9 +1694,10 @@ QTVRGetViewStateCount( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetAnimationSetting(
-    QTVRInstance               qtvr,
-    QTVRObjectAnimationSetting setting,
-    Boolean                    enable );
+  QTVRInstance                 qtvr,
+  QTVRObjectAnimationSetting   setting,
+  Boolean                      enable);
+
 
 /*
  *  QTVRGetAnimationSetting()
@@ -1703,9 +1710,10 @@ QTVRSetAnimationSetting(
  */
 EXTERN_API_C( OSErr )
 QTVRGetAnimationSetting(
-    QTVRInstance               qtvr,
-    QTVRObjectAnimationSetting setting,
-    Boolean *                  enable );
+  QTVRInstance                 qtvr,
+  QTVRObjectAnimationSetting   setting,
+  Boolean *                    enable);
+
 
 /*
  *  QTVRSetControlSetting()
@@ -1718,9 +1726,10 @@ QTVRGetAnimationSetting(
  */
 EXTERN_API_C( OSErr )
 QTVRSetControlSetting(
-    QTVRInstance       qtvr,
-    QTVRControlSetting setting,
-    Boolean            enable );
+  QTVRInstance         qtvr,
+  QTVRControlSetting   setting,
+  Boolean              enable);
+
 
 /*
  *  QTVRGetControlSetting()
@@ -1733,9 +1742,10 @@ QTVRSetControlSetting(
  */
 EXTERN_API_C( OSErr )
 QTVRGetControlSetting(
-    QTVRInstance       qtvr,
-    QTVRControlSetting setting,
-    Boolean *          enable );
+  QTVRInstance         qtvr,
+  QTVRControlSetting   setting,
+  Boolean *            enable);
+
 
 /*
  *  QTVREnableFrameAnimation()
@@ -1748,8 +1758,9 @@ QTVRGetControlSetting(
  */
 EXTERN_API_C( OSErr )
 QTVREnableFrameAnimation(
-    QTVRInstance qtvr,
-    Boolean      enable );
+  QTVRInstance   qtvr,
+  Boolean        enable);
+
 
 /*
  *  QTVRGetFrameAnimation()
@@ -1761,7 +1772,8 @@ QTVREnableFrameAnimation(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( Boolean )
-QTVRGetFrameAnimation( QTVRInstance qtvr );
+QTVRGetFrameAnimation(QTVRInstance qtvr);
+
 
 /*
  *  QTVREnableViewAnimation()
@@ -1774,8 +1786,9 @@ QTVRGetFrameAnimation( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVREnableViewAnimation(
-    QTVRInstance qtvr,
-    Boolean      enable );
+  QTVRInstance   qtvr,
+  Boolean        enable);
+
 
 /*
  *  QTVRGetViewAnimation()
@@ -1787,7 +1800,9 @@ QTVREnableViewAnimation(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( Boolean )
-QTVRGetViewAnimation( QTVRInstance qtvr );
+QTVRGetViewAnimation(QTVRInstance qtvr);
+
+
 
 /*
   =================================================================================================
@@ -1806,8 +1821,9 @@ QTVRGetViewAnimation( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetVisible(
-    QTVRInstance qtvr,
-    Boolean      visible );
+  QTVRInstance   qtvr,
+  Boolean        visible);
+
 
 /*
  *  QTVRGetVisible()
@@ -1819,7 +1835,8 @@ QTVRSetVisible(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( Boolean )
-QTVRGetVisible( QTVRInstance qtvr );
+QTVRGetVisible(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetImagingProperty()
@@ -1832,10 +1849,11 @@ QTVRGetVisible( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetImagingProperty(
-    QTVRInstance    qtvr,
-    QTVRImagingMode imagingMode,
-    UInt32          imagingProperty,
-    SInt32          propertyValue );
+  QTVRInstance      qtvr,
+  QTVRImagingMode   imagingMode,
+  UInt32            imagingProperty,
+  SInt32            propertyValue);
+
 
 /*
  *  QTVRGetImagingProperty()
@@ -1848,10 +1866,11 @@ QTVRSetImagingProperty(
  */
 EXTERN_API_C( OSErr )
 QTVRGetImagingProperty(
-    QTVRInstance    qtvr,
-    QTVRImagingMode imagingMode,
-    UInt32          imagingProperty,
-    SInt32 *        propertyValue );
+  QTVRInstance      qtvr,
+  QTVRImagingMode   imagingMode,
+  UInt32            imagingProperty,
+  SInt32 *          propertyValue);
+
 
 /*
  *  QTVRUpdate()
@@ -1864,8 +1883,9 @@ QTVRGetImagingProperty(
  */
 EXTERN_API_C( OSErr )
 QTVRUpdate(
-    QTVRInstance    qtvr,
-    QTVRImagingMode imagingMode );
+  QTVRInstance      qtvr,
+  QTVRImagingMode   imagingMode);
+
 
 /*
  *  QTVRBeginUpdateStream()
@@ -1878,8 +1898,9 @@ QTVRUpdate(
  */
 EXTERN_API_C( OSErr )
 QTVRBeginUpdateStream(
-    QTVRInstance    qtvr,
-    QTVRImagingMode imagingMode );
+  QTVRInstance      qtvr,
+  QTVRImagingMode   imagingMode);
+
 
 /*
  *  QTVREndUpdateStream()
@@ -1891,7 +1912,8 @@ QTVRBeginUpdateStream(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( OSErr )
-QTVREndUpdateStream( QTVRInstance qtvr );
+QTVREndUpdateStream(QTVRInstance qtvr);
+
 
 /*
  *  QTVRSetTransitionProperty()
@@ -1904,10 +1926,11 @@ QTVREndUpdateStream( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRSetTransitionProperty(
-    QTVRInstance qtvr,
-    UInt32       transitionType,
-    UInt32       transitionProperty,
-    SInt32       transitionValue );
+  QTVRInstance   qtvr,
+  UInt32         transitionType,
+  UInt32         transitionProperty,
+  SInt32         transitionValue);
+
 
 /*
  *  QTVREnableTransition()
@@ -1920,9 +1943,10 @@ QTVRSetTransitionProperty(
  */
 EXTERN_API_C( OSErr )
 QTVREnableTransition(
-    QTVRInstance qtvr,
-    UInt32       transitionType,
-    Boolean      enable );
+  QTVRInstance   qtvr,
+  UInt32         transitionType,
+  Boolean        enable);
+
 
 /*
   =================================================================================================
@@ -1941,8 +1965,9 @@ QTVREnableTransition(
  */
 EXTERN_API_C( OSErr )
 QTVRSetAngularUnits(
-    QTVRInstance     qtvr,
-    QTVRAngularUnits units );
+  QTVRInstance       qtvr,
+  QTVRAngularUnits   units);
+
 
 /*
  *  QTVRGetAngularUnits()
@@ -1954,7 +1979,8 @@ QTVRSetAngularUnits(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( QTVRAngularUnits )
-QTVRGetAngularUnits( QTVRInstance qtvr );
+QTVRGetAngularUnits(QTVRInstance qtvr);
+
 
 /* Pano specific routines*/
 /*
@@ -1968,10 +1994,11 @@ QTVRGetAngularUnits( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRPtToAngles(
-    QTVRInstance qtvr,
-    Point        pt,
-    float *      panAngle,
-    float *      tiltAngle );
+  QTVRInstance   qtvr,
+  Point          pt,
+  float *        panAngle,
+  float *        tiltAngle);
+
 
 /*
  *  QTVRCoordToAngles()
@@ -1984,10 +2011,11 @@ QTVRPtToAngles(
  */
 EXTERN_API_C( OSErr )
 QTVRCoordToAngles(
-    QTVRInstance    qtvr,
-    QTVRFloatPoint *coord,
-    float *         panAngle,
-    float *         tiltAngle );
+  QTVRInstance      qtvr,
+  QTVRFloatPoint *  coord,
+  float *           panAngle,
+  float *           tiltAngle);
+
 
 /*
  *  QTVRAnglesToCoord()
@@ -2000,10 +2028,11 @@ QTVRCoordToAngles(
  */
 EXTERN_API_C( OSErr )
 QTVRAnglesToCoord(
-    QTVRInstance    qtvr,
-    float           panAngle,
-    float           tiltAngle,
-    QTVRFloatPoint *coord );
+  QTVRInstance      qtvr,
+  float             panAngle,
+  float             tiltAngle,
+  QTVRFloatPoint *  coord);
+
 
 /* Object specific routines*/
 /*
@@ -2017,8 +2046,9 @@ QTVRAnglesToCoord(
  */
 EXTERN_API_C( short )
 QTVRPanToColumn(
-    QTVRInstance qtvr,
-    float        panAngle );
+  QTVRInstance   qtvr,
+  float          panAngle);
+
 
 /* zero based   */
 /*
@@ -2032,8 +2062,9 @@ QTVRPanToColumn(
  */
 EXTERN_API_C( float )
 QTVRColumnToPan(
-    QTVRInstance qtvr,
-    short        column );
+  QTVRInstance   qtvr,
+  short          column);
+
 
 /* zero based   */
 /*
@@ -2047,8 +2078,9 @@ QTVRColumnToPan(
  */
 EXTERN_API_C( short )
 QTVRTiltToRow(
-    QTVRInstance qtvr,
-    float        tiltAngle );
+  QTVRInstance   qtvr,
+  float          tiltAngle);
+
 
 /* zero based   */
 /*
@@ -2062,8 +2094,9 @@ QTVRTiltToRow(
  */
 EXTERN_API_C( float )
 QTVRRowToTilt(
-    QTVRInstance qtvr,
-    short        row );
+  QTVRInstance   qtvr,
+  short          row);
+
 
 /* zero based               */
 /*
@@ -2077,10 +2110,12 @@ QTVRRowToTilt(
  */
 EXTERN_API_C( OSErr )
 QTVRWrapAndConstrain(
-    QTVRInstance qtvr,
-    short        kind,
-    float        value,
-    float *      result );
+  QTVRInstance   qtvr,
+  short          kind,
+  float          value,
+  float *        result);
+
+
 
 /*
   =================================================================================================
@@ -2099,10 +2134,11 @@ QTVRWrapAndConstrain(
  */
 EXTERN_API_C( OSErr )
 QTVRSetEnteringNodeProc(
-    QTVRInstance        qtvr,
-    QTVREnteringNodeUPP enteringNodeProc,
-    SInt32              refCon,
-    UInt32              flags );
+  QTVRInstance          qtvr,
+  QTVREnteringNodeUPP   enteringNodeProc,
+  SInt32                refCon,
+  UInt32                flags);
+
 
 /*
  *  QTVRSetLeavingNodeProc()
@@ -2115,10 +2151,11 @@ QTVRSetEnteringNodeProc(
  */
 EXTERN_API_C( OSErr )
 QTVRSetLeavingNodeProc(
-    QTVRInstance       qtvr,
-    QTVRLeavingNodeUPP leavingNodeProc,
-    SInt32             refCon,
-    UInt32             flags );
+  QTVRInstance         qtvr,
+  QTVRLeavingNodeUPP   leavingNodeProc,
+  SInt32               refCon,
+  UInt32               flags);
+
 
 /*
  *  QTVRSetInteractionProperty()
@@ -2131,9 +2168,10 @@ QTVRSetLeavingNodeProc(
  */
 EXTERN_API_C( OSErr )
 QTVRSetInteractionProperty(
-    QTVRInstance qtvr,
-    UInt32       property,
-    void *       value );
+  QTVRInstance   qtvr,
+  UInt32         property,
+  void *         value);
+
 
 /*
  *  QTVRGetInteractionProperty()
@@ -2146,9 +2184,10 @@ QTVRSetInteractionProperty(
  */
 EXTERN_API_C( OSErr )
 QTVRGetInteractionProperty(
-    QTVRInstance qtvr,
-    UInt32       property,
-    void *       value );
+  QTVRInstance   qtvr,
+  UInt32         property,
+  void *         value);
+
 
 /*
  *  QTVRReplaceCursor()
@@ -2161,8 +2200,9 @@ QTVRGetInteractionProperty(
  */
 EXTERN_API_C( OSErr )
 QTVRReplaceCursor(
-    QTVRInstance      qtvr,
-    QTVRCursorRecord *cursRecord );
+  QTVRInstance        qtvr,
+  QTVRCursorRecord *  cursRecord);
+
 
 /*
   =================================================================================================
@@ -2181,10 +2221,11 @@ QTVRReplaceCursor(
  */
 EXTERN_API_C( OSErr )
 QTVRGetViewingLimits(
-    QTVRInstance qtvr,
-    UInt16       kind,
-    float *      minValue,
-    float *      maxValue );
+  QTVRInstance   qtvr,
+  UInt16         kind,
+  float *        minValue,
+  float *        maxValue);
+
 
 /*
  *  QTVRGetConstraintStatus()
@@ -2196,7 +2237,8 @@ QTVRGetViewingLimits(
  *    Windows:          in QTVR.lib 2.1 and later
  */
 EXTERN_API_C( UInt32 )
-QTVRGetConstraintStatus( QTVRInstance qtvr );
+QTVRGetConstraintStatus(QTVRInstance qtvr);
+
 
 /*
  *  QTVRGetConstraints()
@@ -2209,10 +2251,11 @@ QTVRGetConstraintStatus( QTVRInstance qtvr );
  */
 EXTERN_API_C( OSErr )
 QTVRGetConstraints(
-    QTVRInstance qtvr,
-    UInt16       kind,
-    float *      minValue,
-    float *      maxValue );
+  QTVRInstance   qtvr,
+  UInt16         kind,
+  float *        minValue,
+  float *        maxValue);
+
 
 /*
  *  QTVRSetConstraints()
@@ -2225,10 +2268,12 @@ QTVRGetConstraints(
  */
 EXTERN_API_C( OSErr )
 QTVRSetConstraints(
-    QTVRInstance qtvr,
-    UInt16       kind,
-    float        minValue,
-    float        maxValue );
+  QTVRInstance   qtvr,
+  UInt16         kind,
+  float          minValue,
+  float          maxValue);
+
+
 
 /*
   =================================================================================================
@@ -2247,8 +2292,9 @@ QTVRSetConstraints(
  */
 EXTERN_API_C( OSErr )
 QTVRGetAvailableResolutions(
-    QTVRInstance qtvr,
-    UInt16 *     resolutionsMask );
+  QTVRInstance   qtvr,
+  UInt16 *       resolutionsMask);
+
 
 /* These require QTVR 2.1 (kQTVRAPIMajorVersion02 + kQTVRAPIMinorVersion10)*/
 /*
@@ -2262,13 +2308,14 @@ QTVRGetAvailableResolutions(
  */
 EXTERN_API_C( OSErr )
 QTVRGetBackBufferMemInfo(
-    QTVRInstance qtvr,
-    UInt32       geometry,
-    UInt16       resolution,
-    UInt32       cachePixelFormat,
-    SInt32 *     minCacheBytes,
-    SInt32 *     suggestedCacheBytes,
-    SInt32 *     fullCacheBytes );
+  QTVRInstance   qtvr,
+  UInt32         geometry,
+  UInt16         resolution,
+  UInt32         cachePixelFormat,
+  SInt32 *       minCacheBytes,
+  SInt32 *       suggestedCacheBytes,
+  SInt32 *       fullCacheBytes);
+
 
 /*
  *  QTVRGetBackBufferSettings()
@@ -2281,11 +2328,12 @@ QTVRGetBackBufferMemInfo(
  */
 EXTERN_API_C( OSErr )
 QTVRGetBackBufferSettings(
-    QTVRInstance qtvr,
-    UInt32 *     geometry,
-    UInt16 *     resolution,
-    UInt32 *     cachePixelFormat,
-    SInt16 *     cacheSize );
+  QTVRInstance   qtvr,
+  UInt32 *       geometry,
+  UInt16 *       resolution,
+  UInt32 *       cachePixelFormat,
+  SInt16 *       cacheSize);
+
 
 /*
  *  QTVRSetBackBufferPrefs()
@@ -2298,11 +2346,12 @@ QTVRGetBackBufferSettings(
  */
 EXTERN_API_C( OSErr )
 QTVRSetBackBufferPrefs(
-    QTVRInstance qtvr,
-    UInt32       geometry,
-    UInt16       resolution,
-    UInt32       cachePixelFormat,
-    SInt16       cacheSize );
+  QTVRInstance   qtvr,
+  UInt32         geometry,
+  UInt16         resolution,
+  UInt32         cachePixelFormat,
+  SInt16         cacheSize);
+
 
 /*
   =================================================================================================
@@ -2321,10 +2370,11 @@ QTVRSetBackBufferPrefs(
  */
 EXTERN_API_C( OSErr )
 QTVRSetPrescreenImagingCompleteProc(
-    QTVRInstance           qtvr,
-    QTVRImagingCompleteUPP imagingCompleteProc,
-    SInt32                 refCon,
-    UInt32                 flags );
+  QTVRInstance             qtvr,
+  QTVRImagingCompleteUPP   imagingCompleteProc,
+  SInt32                   refCon,
+  UInt32                   flags);
+
 
 /*
  *  QTVRSetBackBufferImagingProc()
@@ -2337,11 +2387,12 @@ QTVRSetPrescreenImagingCompleteProc(
  */
 EXTERN_API_C( OSErr )
 QTVRSetBackBufferImagingProc(
-    QTVRInstance             qtvr,
-    QTVRBackBufferImagingUPP backBufferImagingProc,
-    UInt16                   numAreas,
-    QTVRAreaOfInterest       areasOfInterest[],
-    SInt32                   refCon );
+  QTVRInstance               qtvr,
+  QTVRBackBufferImagingUPP   backBufferImagingProc,
+  UInt16                     numAreas,
+  QTVRAreaOfInterest         areasOfInterest[],
+  SInt32                     refCon);
+
 
 /*
  *  QTVRRefreshBackBuffer()
@@ -2354,8 +2405,11 @@ QTVRSetBackBufferImagingProc(
  */
 EXTERN_API_C( OSErr )
 QTVRRefreshBackBuffer(
-    QTVRInstance qtvr,
-    UInt32       flags );
+  QTVRInstance   qtvr,
+  UInt32         flags);
+
+
+
 
 /*
   =================================================================================================
@@ -2363,29 +2417,32 @@ QTVRRefreshBackBuffer(
   -------------------------------------------------------------------------------------------------
 */
 #if OLDROUTINENAMES
-typedef QTVRCursorRecord             CursorRecord;
-typedef QTVRAreaOfInterest           AreaOfInterest;
-typedef QTVRFloatPoint               FloatPoint;
-typedef QTVRLeavingNodeProcPtr       LeavingNodeProcPtr;
-typedef QTVRLeavingNodeUPP           LeavingNodeUPP;
-typedef QTVREnteringNodeProcPtr      EnteringNodeProcPtr;
-typedef QTVREnteringNodeUPP          EnteringNodeUPP;
-typedef QTVRMouseOverHotSpotProcPtr  MouseOverHotSpotProcPtr;
-typedef QTVRMouseOverHotSpotUPP      MouseOverHotSpotUPP;
-typedef QTVRImagingCompleteProcPtr   ImagingCompleteProcPtr;
-typedef QTVRImagingCompleteUPP       ImagingCompleteUPP;
-typedef QTVRBackBufferImagingProcPtr BackBufferImagingProcPtr;
-typedef QTVRBackBufferImagingUPP     BackBufferImagingUPP;
-#endif /* OLDROUTINENAMES */
+typedef QTVRCursorRecord                CursorRecord;
+typedef QTVRAreaOfInterest              AreaOfInterest;
+typedef QTVRFloatPoint                  FloatPoint;
+typedef QTVRLeavingNodeProcPtr          LeavingNodeProcPtr;
+typedef QTVRLeavingNodeUPP              LeavingNodeUPP;
+typedef QTVREnteringNodeProcPtr         EnteringNodeProcPtr;
+typedef QTVREnteringNodeUPP             EnteringNodeUPP;
+typedef QTVRMouseOverHotSpotProcPtr     MouseOverHotSpotProcPtr;
+typedef QTVRMouseOverHotSpotUPP         MouseOverHotSpotUPP;
+typedef QTVRImagingCompleteProcPtr      ImagingCompleteProcPtr;
+typedef QTVRImagingCompleteUPP          ImagingCompleteUPP;
+typedef QTVRBackBufferImagingProcPtr    BackBufferImagingProcPtr;
+typedef QTVRBackBufferImagingUPP        BackBufferImagingUPP;
+#endif  /* OLDROUTINENAMES */
+
+
 
 #endif // !__LP64__
 
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2399,3 +2456,4 @@ typedef QTVRBackBufferImagingUPP     BackBufferImagingUPP;
 #endif
 
 #endif /* __QUICKTIMEVR__ */
+

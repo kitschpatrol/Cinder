@@ -23,24 +23,23 @@
 */
 
 #include "cinder/Cinder.h"
-#include "cinder/app/AppBase.h"
 #include "cinder/app/Window.h"
+#include "cinder/app/AppBase.h"
 
 #if defined( CINDER_MSW )
-#include "cinder/app/msw/AppImplMsw.h"
+	#include "cinder/app/msw/AppImplMsw.h"
 #elif defined( CINDER_WINRT )
-#include "cinder/app/winrt/WindowImplWinRt.h"
+	#include "cinder/app/winrt/WindowImplWinRt.h"
 #elif defined( CINDER_COCOA )
-#include <Foundation/Foundation.h>
+	#include <Foundation/Foundation.h>
 #endif
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 bool Window::isFullScreen() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl isFullScreen];
 #else
@@ -51,7 +50,7 @@ bool Window::isFullScreen() const
 void Window::setFullScreen( bool fullScreen, const FullScreenOptions &options )
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl setFullScreen:fullScreen options:&options];
 #else
@@ -62,7 +61,7 @@ void Window::setFullScreen( bool fullScreen, const FullScreenOptions &options )
 ivec2 Window::getSize() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl getSize];
 #else
@@ -73,7 +72,7 @@ ivec2 Window::getSize() const
 void Window::setSize( const ivec2 &size )
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl setSize:size];
 #else
@@ -84,7 +83,7 @@ void Window::setSize( const ivec2 &size )
 ivec2 Window::getPos() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl getPos];
 #else
@@ -95,7 +94,7 @@ ivec2 Window::getPos() const
 void Window::setPos( const ivec2 &pos ) const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl setPos:pos];
 #else
@@ -106,15 +105,15 @@ void Window::setPos( const ivec2 &pos ) const
 void Window::spanAllDisplays()
 {
 	Area spanning = Display::getSpanningArea();
-
-	setSize( ivec2( spanning.getWidth(), spanning.getHeight() ) );
+	
+	setSize( ivec2( spanning.getWidth(), spanning.getHeight() ) );	
 	setPos( spanning.getUL() );
 }
 
 float Window::getContentScale() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl getContentScale];
 #else
@@ -125,7 +124,7 @@ float Window::getContentScale() const
 void Window::close()
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl close];
 #else
@@ -133,10 +132,10 @@ void Window::close()
 #endif
 }
 
-std::string Window::getTitle() const
+std::string	Window::getTitle() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	NSString *title = [mImpl getTitle];
 	return title ? std::string( [title cStringUsingEncoding:NSUTF8StringEncoding] ) : std::string();
@@ -148,7 +147,7 @@ std::string Window::getTitle() const
 void Window::setTitle( const std::string &title )
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl setTitle:[NSString stringWithUTF8String:title.c_str()]];
 #else
@@ -159,7 +158,7 @@ void Window::setTitle( const std::string &title )
 bool Window::isBorderless() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl isBorderless];
 #else
@@ -170,7 +169,7 @@ bool Window::isBorderless() const
 void Window::setBorderless( bool borderless )
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl setBorderless:borderless];
 #else
@@ -181,7 +180,7 @@ void Window::setBorderless( bool borderless )
 bool Window::isAlwaysOnTop() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl isAlwaysOnTop];
 #else
@@ -192,7 +191,7 @@ bool Window::isAlwaysOnTop() const
 void Window::setAlwaysOnTop( bool alwaysOnTop )
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl setAlwaysOnTop:alwaysOnTop];
 #else
@@ -203,7 +202,7 @@ void Window::setAlwaysOnTop( bool alwaysOnTop )
 void Window::hide()
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl hide];
 #else
@@ -214,7 +213,7 @@ void Window::hide()
 void Window::show()
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	[mImpl show];
 #else
@@ -225,12 +224,12 @@ void Window::show()
 bool Window::isHidden() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl isHidden];
 #else
 	return mImpl->isHidden();
-#endif
+#endif	
 }
 
 DisplayRef Window::getDisplay() const
@@ -241,13 +240,13 @@ DisplayRef Window::getDisplay() const
 	return [mImpl getDisplay];
 #else
 	return mImpl->getDisplay();
-#endif
+#endif	
 }
 
 RendererRef Window::getRenderer() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl getRenderer];
 #else
@@ -255,7 +254,7 @@ RendererRef Window::getRenderer() const
 #endif
 }
 
-void *Window::getNative() const
+void* Window::getNative() const
 {
 	testValid();
 
@@ -267,13 +266,14 @@ void *Window::getNative() const
 }
 
 #if defined( CINDER_COCOA_TOUCH )
-UIViewController *Window::getNativeViewController()
+UIViewController* Window::getNativeViewController()
 {
 	testValid();
 
 	return [mImpl getNativeViewController];
 }
 #endif
+
 
 // Signal Emitters
 void Window::emitClose()
@@ -307,7 +307,7 @@ void Window::emitMouseDown( MouseEvent *event )
 
 	CollectorEvent<MouseEvent> collector( event );
 	mSignalMouseDown.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->mouseDown( *event );
 }
 
@@ -317,7 +317,7 @@ void Window::emitMouseDrag( MouseEvent *event )
 
 	CollectorEvent<MouseEvent> collector( event );
 	mSignalMouseDrag.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->mouseDrag( *event );
 }
 
@@ -327,7 +327,7 @@ void Window::emitMouseUp( MouseEvent *event )
 
 	CollectorEvent<MouseEvent> collector( event );
 	mSignalMouseUp.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->mouseUp( *event );
 }
 
@@ -337,7 +337,7 @@ void Window::emitMouseWheel( MouseEvent *event )
 
 	CollectorEvent<MouseEvent> collector( event );
 	mSignalMouseWheel.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->mouseWheel( *event );
 }
 
@@ -347,7 +347,7 @@ void Window::emitMouseMove( MouseEvent *event )
 
 	CollectorEvent<MouseEvent> collector( event );
 	mSignalMouseMove.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->mouseMove( *event );
 }
 
@@ -357,7 +357,7 @@ void Window::emitTouchesBegan( TouchEvent *event )
 
 	CollectorEvent<TouchEvent> collector( event );
 	mSignalTouchesBegan.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->touchesBegan( *event );
 }
 
@@ -367,7 +367,7 @@ void Window::emitTouchesMoved( TouchEvent *event )
 
 	CollectorEvent<TouchEvent> collector( event );
 	mSignalTouchesMoved.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->touchesMoved( *event );
 }
 
@@ -377,14 +377,15 @@ void Window::emitTouchesEnded( TouchEvent *event )
 
 	CollectorEvent<TouchEvent> collector( event );
 	mSignalTouchesEnded.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->touchesEnded( *event );
 }
 
-const std::vector<TouchEvent::Touch> &Window::getActiveTouches() const
+
+const std::vector<TouchEvent::Touch>& Window::getActiveTouches() const
 {
 	testValid();
-
+	
 #if defined( CINDER_COCOA )
 	return [mImpl getActiveTouches];
 #elif defined( CINDER_MSW )
@@ -400,7 +401,7 @@ void Window::emitKeyDown( KeyEvent *event )
 
 	CollectorEvent<KeyEvent> collector( event );
 	mSignalKeyDown.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->keyDown( *event );
 }
 
@@ -410,19 +411,19 @@ void Window::emitKeyUp( KeyEvent *event )
 
 	CollectorEvent<KeyEvent> collector( event );
 	mSignalKeyUp.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->keyUp( *event );
 }
 
 void Window::emitDraw()
 {
-// On the Mac the active GL Context can change behind our back in some scenarios; forcing the context switch on other platforms is expensive though
+	// On the Mac the active GL Context can change behind our back in some scenarios; forcing the context switch on other platforms is expensive though
 #if defined( CINDER_MAC )
 	getRenderer()->makeCurrentContext( true );
 #else
 	getRenderer()->makeCurrentContext( false );
-#endif
-
+#endif	
+	
 	mSignalDraw.emit();
 	getApp()->draw();
 	mSignalPostDraw.emit();
@@ -434,8 +435,9 @@ void Window::emitFileDrop( FileDropEvent *event )
 
 	CollectorEvent<FileDropEvent> collector( event );
 	mSignalFileDrop.emit( collector, *event );
-	if( !event->isHandled() )
+	if( ! event->isHandled() )
 		getApp()->fileDrop( *event );
 }
-}
-} // namespace cinder::app
+
+
+} } // namespace cinder::app

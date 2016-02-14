@@ -21,6 +21,7 @@
 #include <QD3D.h>
 #endif
 
+
 #ifndef __QD3DSTYLE__
 #include <QD3DStyle.h>
 #endif
@@ -28,6 +29,9 @@
 #ifndef __QD3DGEOMETRY__
 #include <QD3DGeometry.h>
 #endif
+
+
+
 
 #if PRAGMA_ONCE
 #pragma once
@@ -42,26 +46,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = power
+    #pragma options align=power
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-#if defined( __fourbyteints__ ) && !__fourbyteints__
-#define __QD3DPICK__RESTORE_TWOBYTEINTS
-#pragma fourbyteints on
-#endif
-#pragma enumsalwaysint on
+    #if defined(__fourbyteints__) && !__fourbyteints__ 
+        #define __QD3DPICK__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints on
+    #endif
+    #pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =int
+    #pragma option enum=int
 #elif PRAGMA_ENUM_PACK
-#if __option( pack_enums )
-#define __QD3DPICK__RESTORE_PACKED_ENUMS
-#pragma options( !pack_enums )
-#endif
+    #if __option(pack_enums)
+        #define __QD3DPICK__RESTORE_PACKED_ENUMS
+        #pragma options(!pack_enums)
+    #endif
 #endif
 
 /*****************************************************************************
@@ -70,64 +74,65 @@ extern "C" {
  **                                                                         **
  *****************************************************************************/
 enum TQ3PickDetailMasks {
-	kQ3PickDetailNone = 0,
-	kQ3PickDetailMaskPickID = 1 << 0,
-	kQ3PickDetailMaskPath = 1 << 1,
-	kQ3PickDetailMaskObject = 1 << 2,
-	kQ3PickDetailMaskLocalToWorldMatrix = 1 << 3,
-	kQ3PickDetailMaskXYZ = 1 << 4,
-	kQ3PickDetailMaskDistance = 1 << 5,
-	kQ3PickDetailMaskNormal = 1 << 6,
-	kQ3PickDetailMaskShapePart = 1 << 7,
-	kQ3PickDetailMaskPickPart = 1 << 8,
-	kQ3PickDetailMaskUV = 1 << 9
+  kQ3PickDetailNone             = 0,
+  kQ3PickDetailMaskPickID       = 1 << 0,
+  kQ3PickDetailMaskPath         = 1 << 1,
+  kQ3PickDetailMaskObject       = 1 << 2,
+  kQ3PickDetailMaskLocalToWorldMatrix = 1 << 3,
+  kQ3PickDetailMaskXYZ          = 1 << 4,
+  kQ3PickDetailMaskDistance     = 1 << 5,
+  kQ3PickDetailMaskNormal       = 1 << 6,
+  kQ3PickDetailMaskShapePart    = 1 << 7,
+  kQ3PickDetailMaskPickPart     = 1 << 8,
+  kQ3PickDetailMaskUV           = 1 << 9
 };
 typedef enum TQ3PickDetailMasks TQ3PickDetailMasks;
 
-typedef unsigned long TQ3PickDetail;
+typedef unsigned long                   TQ3PickDetail;
 /******************************************************************************
  **                                                                          **
  **                             Hitlist sorting                              **
  **                                                                          **
  *****************************************************************************/
 enum TQ3PickSort {
-	kQ3PickSortNone = 0,
-	kQ3PickSortNearToFar = 1,
-	kQ3PickSortFarToNear = 2
+  kQ3PickSortNone               = 0,
+  kQ3PickSortNearToFar          = 1,
+  kQ3PickSortFarToNear          = 2
 };
 typedef enum TQ3PickSort TQ3PickSort;
+
 
 /******************************************************************************
  **                                                                          **
  **                 Data structures to set up the pick object                **
  **                                                                          **
  *****************************************************************************/
-#define kQ3ReturnAllHits 0
+#define kQ3ReturnAllHits        0
 struct TQ3PickData {
-	TQ3PickSort   sort;
-	TQ3PickDetail mask;
-	unsigned long numHitsToReturn;
+  TQ3PickSort         sort;
+  TQ3PickDetail       mask;
+  unsigned long       numHitsToReturn;
 };
-typedef struct TQ3PickData TQ3PickData;
+typedef struct TQ3PickData              TQ3PickData;
 struct TQ3WindowPointPickData {
-	TQ3PickData data;
-	TQ3Point2D  point;
-	float       vertexTolerance;
-	float       edgeTolerance;
+  TQ3PickData         data;
+  TQ3Point2D          point;
+  float               vertexTolerance;
+  float               edgeTolerance;
 };
-typedef struct TQ3WindowPointPickData TQ3WindowPointPickData;
+typedef struct TQ3WindowPointPickData   TQ3WindowPointPickData;
 struct TQ3WindowRectPickData {
-	TQ3PickData data;
-	TQ3Area     rect;
+  TQ3PickData         data;
+  TQ3Area             rect;
 };
-typedef struct TQ3WindowRectPickData TQ3WindowRectPickData;
+typedef struct TQ3WindowRectPickData    TQ3WindowRectPickData;
 struct TQ3WorldRayPickData {
-	TQ3PickData data;
-	TQ3Ray3D    ray;
-	float       vertexTolerance;
-	float       edgeTolerance;
+  TQ3PickData         data;
+  TQ3Ray3D            ray;
+  float               vertexTolerance;
+  float               edgeTolerance;
 };
-typedef struct TQ3WorldRayPickData TQ3WorldRayPickData;
+typedef struct TQ3WorldRayPickData      TQ3WorldRayPickData;
 
 /******************************************************************************
  **                                                                          **
@@ -135,11 +140,11 @@ typedef struct TQ3WorldRayPickData TQ3WorldRayPickData;
  **                                                                          **
  *****************************************************************************/
 struct TQ3HitPath {
-	TQ3GroupObject    rootGroup;
-	unsigned long     depth;
-	TQ3GroupPosition *positions;
+  TQ3GroupObject      rootGroup;
+  unsigned long       depth;
+  TQ3GroupPosition *  positions;
 };
-typedef struct TQ3HitPath TQ3HitPath;
+typedef struct TQ3HitPath               TQ3HitPath;
 /******************************************************************************
  **                                                                          **
  **                             Pick class methods                           **
@@ -155,7 +160,8 @@ typedef struct TQ3HitPath TQ3HitPath;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3Pick_GetType( TQ3PickObject pick );
+Q3Pick_GetType(TQ3PickObject pick);
+
 
 /*
  *  Q3Pick_GetData()
@@ -167,8 +173,9 @@ Q3Pick_GetType( TQ3PickObject pick );
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_GetData(
-    TQ3PickObject pick,
-    TQ3PickData * data );
+  TQ3PickObject   pick,
+  TQ3PickData *   data);
+
 
 /*
  *  Q3Pick_SetData()
@@ -180,8 +187,9 @@ Q3Pick_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_SetData(
-    TQ3PickObject      pick,
-    const TQ3PickData *data );
+  TQ3PickObject        pick,
+  const TQ3PickData *  data);
+
 
 /*
  *  Q3Pick_GetVertexTolerance()
@@ -193,8 +201,9 @@ Q3Pick_SetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_GetVertexTolerance(
-    TQ3PickObject pick,
-    float *       vertexTolerance );
+  TQ3PickObject   pick,
+  float *         vertexTolerance);
+
 
 /*
  *  Q3Pick_GetEdgeTolerance()
@@ -206,8 +215,9 @@ Q3Pick_GetVertexTolerance(
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_GetEdgeTolerance(
-    TQ3PickObject pick,
-    float *       edgeTolerance );
+  TQ3PickObject   pick,
+  float *         edgeTolerance);
+
 
 /*
  *  Q3Pick_SetVertexTolerance()
@@ -219,8 +229,9 @@ Q3Pick_GetEdgeTolerance(
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_SetVertexTolerance(
-    TQ3PickObject pick,
-    float         vertexTolerance );
+  TQ3PickObject   pick,
+  float           vertexTolerance);
+
 
 /*
  *  Q3Pick_SetEdgeTolerance()
@@ -232,8 +243,9 @@ Q3Pick_SetVertexTolerance(
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_SetEdgeTolerance(
-    TQ3PickObject pick,
-    float         edgeTolerance );
+  TQ3PickObject   pick,
+  float           edgeTolerance);
+
 
 /*
  *  Q3Pick_GetNumHits()
@@ -245,8 +257,9 @@ Q3Pick_SetEdgeTolerance(
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_GetNumHits(
-    TQ3PickObject  pick,
-    unsigned long *numHits );
+  TQ3PickObject    pick,
+  unsigned long *  numHits);
+
 
 /*
  *  Q3Pick_EmptyHitList()
@@ -257,7 +270,8 @@ Q3Pick_GetNumHits(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3Pick_EmptyHitList( TQ3PickObject pick );
+Q3Pick_EmptyHitList(TQ3PickObject pick);
+
 
 /*
  *  Q3Pick_GetPickDetailValidMask()
@@ -269,9 +283,10 @@ Q3Pick_EmptyHitList( TQ3PickObject pick );
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_GetPickDetailValidMask(
-    TQ3PickObject  pick,
-    unsigned long  index,
-    TQ3PickDetail *pickDetailValidMask );
+  TQ3PickObject    pick,
+  unsigned long    index,
+  TQ3PickDetail *  pickDetailValidMask);
+
 
 /*
  *  Q3Pick_GetPickDetailData()
@@ -283,10 +298,11 @@ Q3Pick_GetPickDetailValidMask(
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_GetPickDetailData(
-    TQ3PickObject pick,
-    unsigned long index,
-    TQ3PickDetail pickDetailValue,
-    void *        detailData );
+  TQ3PickObject   pick,
+  unsigned long   index,
+  TQ3PickDetail   pickDetailValue,
+  void *          detailData);
+
 
 /*
  *  Q3HitPath_EmptyData()
@@ -297,9 +313,10 @@ Q3Pick_GetPickDetailData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3HitPath_EmptyData( TQ3HitPath *hitPath );
+Q3HitPath_EmptyData(TQ3HitPath * hitPath);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /******************************************************************************
  **                                                                          **
@@ -316,7 +333,8 @@ Q3HitPath_EmptyData( TQ3HitPath *hitPath );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3PickObject )
-Q3WindowPointPick_New( const TQ3WindowPointPickData *data );
+Q3WindowPointPick_New(const TQ3WindowPointPickData * data);
+
 
 /*
  *  Q3WindowPointPick_GetPoint()
@@ -328,8 +346,9 @@ Q3WindowPointPick_New( const TQ3WindowPointPickData *data );
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowPointPick_GetPoint(
-    TQ3PickObject pick,
-    TQ3Point2D *  point );
+  TQ3PickObject   pick,
+  TQ3Point2D *    point);
+
 
 /*
  *  Q3WindowPointPick_SetPoint()
@@ -341,8 +360,9 @@ Q3WindowPointPick_GetPoint(
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowPointPick_SetPoint(
-    TQ3PickObject     pick,
-    const TQ3Point2D *point );
+  TQ3PickObject       pick,
+  const TQ3Point2D *  point);
+
 
 /*
  *  Q3WindowPointPick_GetData()
@@ -354,8 +374,9 @@ Q3WindowPointPick_SetPoint(
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowPointPick_GetData(
-    TQ3PickObject           pick,
-    TQ3WindowPointPickData *data );
+  TQ3PickObject             pick,
+  TQ3WindowPointPickData *  data);
+
 
 /*
  *  Q3WindowPointPick_SetData()
@@ -367,8 +388,10 @@ Q3WindowPointPick_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowPointPick_SetData(
-    TQ3PickObject                 pick,
-    const TQ3WindowPointPickData *data );
+  TQ3PickObject                   pick,
+  const TQ3WindowPointPickData *  data);
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -384,7 +407,8 @@ Q3WindowPointPick_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3PickObject )
-Q3WindowRectPick_New( const TQ3WindowRectPickData *data );
+Q3WindowRectPick_New(const TQ3WindowRectPickData * data);
+
 
 /*
  *  Q3WindowRectPick_GetRect()
@@ -396,8 +420,9 @@ Q3WindowRectPick_New( const TQ3WindowRectPickData *data );
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowRectPick_GetRect(
-    TQ3PickObject pick,
-    TQ3Area *     rect );
+  TQ3PickObject   pick,
+  TQ3Area *       rect);
+
 
 /*
  *  Q3WindowRectPick_SetRect()
@@ -409,8 +434,9 @@ Q3WindowRectPick_GetRect(
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowRectPick_SetRect(
-    TQ3PickObject  pick,
-    const TQ3Area *rect );
+  TQ3PickObject    pick,
+  const TQ3Area *  rect);
+
 
 /*
  *  Q3WindowRectPick_GetData()
@@ -422,8 +448,9 @@ Q3WindowRectPick_SetRect(
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowRectPick_GetData(
-    TQ3PickObject          pick,
-    TQ3WindowRectPickData *data );
+  TQ3PickObject            pick,
+  TQ3WindowRectPickData *  data);
+
 
 /*
  *  Q3WindowRectPick_SetData()
@@ -435,8 +462,10 @@ Q3WindowRectPick_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3WindowRectPick_SetData(
-    TQ3PickObject                pick,
-    const TQ3WindowRectPickData *data );
+  TQ3PickObject                  pick,
+  const TQ3WindowRectPickData *  data);
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -452,7 +481,8 @@ Q3WindowRectPick_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3PickObject )
-Q3WorldRayPick_New( const TQ3WorldRayPickData *data );
+Q3WorldRayPick_New(const TQ3WorldRayPickData * data);
+
 
 /*
  *  Q3WorldRayPick_GetRay()
@@ -464,8 +494,9 @@ Q3WorldRayPick_New( const TQ3WorldRayPickData *data );
  */
 EXTERN_API_C( TQ3Status )
 Q3WorldRayPick_GetRay(
-    TQ3PickObject pick,
-    TQ3Ray3D *    ray );
+  TQ3PickObject   pick,
+  TQ3Ray3D *      ray);
+
 
 /*
  *  Q3WorldRayPick_SetRay()
@@ -477,8 +508,9 @@ Q3WorldRayPick_GetRay(
  */
 EXTERN_API_C( TQ3Status )
 Q3WorldRayPick_SetRay(
-    TQ3PickObject   pick,
-    const TQ3Ray3D *ray );
+  TQ3PickObject     pick,
+  const TQ3Ray3D *  ray);
+
 
 /*
  *  Q3WorldRayPick_GetData()
@@ -490,8 +522,9 @@ Q3WorldRayPick_SetRay(
  */
 EXTERN_API_C( TQ3Status )
 Q3WorldRayPick_GetData(
-    TQ3PickObject        pick,
-    TQ3WorldRayPickData *data );
+  TQ3PickObject          pick,
+  TQ3WorldRayPickData *  data);
+
 
 /*
  *  Q3WorldRayPick_SetData()
@@ -503,8 +536,11 @@ Q3WorldRayPick_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3WorldRayPick_SetData(
-    TQ3PickObject              pick,
-    const TQ3WorldRayPickData *data );
+  TQ3PickObject                pick,
+  const TQ3WorldRayPickData *  data);
+
+
+
 
 /******************************************************************************
  **                                                                          **
@@ -520,7 +556,8 @@ Q3WorldRayPick_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3ShapePart_GetType( TQ3ShapePartObject shapePartObject );
+Q3ShapePart_GetType(TQ3ShapePartObject shapePartObject);
+
 
 /*
  *  Q3MeshPart_GetType()
@@ -531,7 +568,8 @@ Q3ShapePart_GetType( TQ3ShapePartObject shapePartObject );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3MeshPart_GetType( TQ3MeshPartObject meshPartObject );
+Q3MeshPart_GetType(TQ3MeshPartObject meshPartObject);
+
 
 /*
  *  Q3ShapePart_GetShape()
@@ -543,8 +581,9 @@ Q3MeshPart_GetType( TQ3MeshPartObject meshPartObject );
  */
 EXTERN_API_C( TQ3Status )
 Q3ShapePart_GetShape(
-    TQ3ShapePartObject shapePartObject,
-    TQ3ShapeObject *   shapeObject );
+  TQ3ShapePartObject   shapePartObject,
+  TQ3ShapeObject *     shapeObject);
+
 
 /*
  *  Q3MeshPart_GetComponent()
@@ -556,8 +595,9 @@ Q3ShapePart_GetShape(
  */
 EXTERN_API_C( TQ3Status )
 Q3MeshPart_GetComponent(
-    TQ3MeshPartObject meshPartObject,
-    TQ3MeshComponent *component );
+  TQ3MeshPartObject   meshPartObject,
+  TQ3MeshComponent *  component);
+
 
 /*
  *  Q3MeshFacePart_GetFace()
@@ -569,8 +609,9 @@ Q3MeshPart_GetComponent(
  */
 EXTERN_API_C( TQ3Status )
 Q3MeshFacePart_GetFace(
-    TQ3MeshFacePartObject meshFacePartObject,
-    TQ3MeshFace *         face );
+  TQ3MeshFacePartObject   meshFacePartObject,
+  TQ3MeshFace *           face);
+
 
 /*
  *  Q3MeshEdgePart_GetEdge()
@@ -582,8 +623,9 @@ Q3MeshFacePart_GetFace(
  */
 EXTERN_API_C( TQ3Status )
 Q3MeshEdgePart_GetEdge(
-    TQ3MeshEdgePartObject meshEdgePartObject,
-    TQ3MeshEdge *         edge );
+  TQ3MeshEdgePartObject   meshEdgePartObject,
+  TQ3MeshEdge *           edge);
+
 
 /*
  *  Q3MeshVertexPart_GetVertex()
@@ -595,28 +637,32 @@ Q3MeshEdgePart_GetEdge(
  */
 EXTERN_API_C( TQ3Status )
 Q3MeshVertexPart_GetVertex(
-    TQ3MeshVertexPartObject meshVertexPartObject,
-    TQ3MeshVertex *         vertex );
+  TQ3MeshVertexPartObject   meshVertexPartObject,
+  TQ3MeshVertex *           vertex);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+
+#endif  /* CALL_NOT_IN_CARBON */
+
 
 #if PRAGMA_ENUM_ALWAYSINT
-#pragma enumsalwaysint reset
-#ifdef __QD3DPICK__RESTORE_TWOBYTEINTS
-#pragma fourbyteints off
-#endif
+    #pragma enumsalwaysint reset
+    #ifdef __QD3DPICK__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints off
+    #endif
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =reset
-#elif defined( __QD3DPICK__RESTORE_PACKED_ENUMS )
-#pragma options( pack_enums )
+    #pragma option enum=reset
+#elif defined(__QD3DPICK__RESTORE_PACKED_ENUMS)
+    #pragma options(pack_enums)
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -630,3 +676,4 @@ Q3MeshVertexPart_GetVertex(
 #endif
 
 #endif /* __QD3DPICK__ */
+

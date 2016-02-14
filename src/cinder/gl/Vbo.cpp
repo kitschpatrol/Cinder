@@ -22,9 +22,8 @@
 
 #include "cinder/gl/Vbo.h"
 
-namespace cinder {
-namespace gl {
-
+namespace cinder { namespace gl {
+	
 VboRef Vbo::create( GLenum target )
 {
 	return VboRef( new Vbo( target ) );
@@ -34,15 +33,15 @@ VboRef Vbo::create( GLenum target, GLsizeiptr allocationSize, const void *data, 
 {
 	return VboRef( new Vbo( target, allocationSize, data, usage ) );
 }
-
+	
 Vbo::Vbo( GLenum target )
-    : BufferObj( target )
+	: BufferObj( target )
 {
 }
 
 Vbo::Vbo( GLenum target, GLsizeiptr allocationSize, const void *data, GLenum usage )
-    : BufferObj( target, allocationSize, data, usage )
+	: BufferObj( target, allocationSize, data, usage )
 {
 }
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

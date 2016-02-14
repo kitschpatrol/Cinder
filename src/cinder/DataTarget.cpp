@@ -32,17 +32,17 @@ void DataTarget::setFilePathHint( const fs::path &aFilePathHint )
 	mFilePathHint = aFilePathHint;
 }
 
-const fs::path &DataTarget::getFilePath() const
+const fs::path& DataTarget::getFilePath() const
 {
 	return mFilePath;
 }
 
-const Url &DataTarget::getUrl() const
+const Url& DataTarget::getUrl() const
 {
 	return mUrl;
 }
 
-const fs::path &DataTarget::getFilePathHint() const
+const fs::path& DataTarget::getFilePathHint() const
 {
 	return mFilePathHint;
 }
@@ -55,16 +55,16 @@ DataTargetPathRef DataTargetPath::createRef( const fs::path &path )
 }
 
 DataTargetPath::DataTargetPath( const fs::path &path )
-    : DataTarget( path, Url() )
+	: DataTarget( path, Url() )
 {
 	setFilePathHint( path );
 }
 
 OStreamRef DataTargetPath::getStream()
 {
-	if( !mStream )
+	if( ! mStream )
 		mStream = writeFileStream( mFilePath );
-
+		
 	return mStream;
 }
 
@@ -76,7 +76,7 @@ DataTargetStreamRef DataTargetStream::createRef( OStreamRef stream )
 }
 
 DataTargetStream::DataTargetStream( OStreamRef stream )
-    : DataTarget( "", Url() ), mStream( stream )
+	: DataTarget( "", Url() ), mStream( stream )
 {
 	setFilePathHint( mStream->getFileName() );
 }
@@ -86,11 +86,11 @@ DataTargetStream::DataTargetStream( OStreamRef stream )
 DataTargetPathRef writeFile( const fs::path &path, bool createParents )
 {
 	if( createParents ) {
-		if( !path.parent_path().empty() )
+		if( ! path.parent_path().empty() )
 			fs::create_directories( path.parent_path() );
 	}
-
-	return DataTargetPath::createRef( path );
+	
+ 	return DataTargetPath::createRef( path );
 }
 
 } // namespace cinder

@@ -25,8 +25,7 @@
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
 
-namespace cinder {
-namespace ip {
+namespace cinder { namespace ip {
 
 /** Normalizes \a surface by scaling the maximum and minimum values to lie in the range \c [0,1] **/
 void hdrNormalize( Surface32f *surface );
@@ -34,5 +33,5 @@ void hdrNormalize( Surface32f *surface );
 void hdrNormalize( Channel32f *channel );
 /** Determines the minimum and maximum values of \a channel **/
 void getMinMax( const Channel32f &channel, float *resultMin, float *resultMax );
-}
-} // namespace cinder::ip
+
+} } // namespace cinder::ip

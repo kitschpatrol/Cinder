@@ -26,44 +26,41 @@
 #include "cinder/gl/GlslProg.h"
 
 // forward declarations
-namespace cinder {
-namespace gl {
-typedef std::shared_ptr<class Texture2d> Texture2dRef;
-typedef Texture2dRef                     TextureRef;
-}
-}
+namespace cinder { namespace gl {
+	typedef std::shared_ptr<class Texture2d>		Texture2dRef;
+	typedef Texture2dRef							TextureRef;
+} }
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 class ShaderDef {
   public:
 	ShaderDef();
 
-	ShaderDef &color();
-	ShaderDef &texture( const TextureRef &tex = TextureRef() );
-	ShaderDef &texture( GLenum target );
-	ShaderDef &lambert();
+	ShaderDef&		color();	
+	ShaderDef&		texture( const TextureRef &tex = TextureRef() );
+	ShaderDef&		texture( GLenum target );
+	ShaderDef&		lambert();
 	// Used by draw(TextureRef&) stock shader; scales ciPosition and ciTexCoord according to
 	// uniform "uPositionScale", "uPositionOffset", "uTexCoord0Scale", "uTexCoord0Offset"
-	ShaderDef &uniformBasedPosAndTexCoord();
+	ShaderDef&		uniformBasedPosAndTexCoord();
 
-	bool        isTextureSwizzleDefault() const;
-	std::string getTextureSwizzleString() const;
+	bool			isTextureSwizzleDefault() const;
+	std::string		getTextureSwizzleString() const;	
 
 	bool operator<( const ShaderDef &rhs ) const;
-
+	
   protected:
-	bool mTextureMapping;
-	bool mTextureMappingRectangleArb;
-	std::array<GLint, 4> mTextureSwizzleMask;
-	bool mUniformBasedPosAndTexCoord;
+	bool					mTextureMapping;
+	bool					mTextureMappingRectangleArb;
+	std::array<GLint,4>		mTextureSwizzleMask;
+	bool					mUniformBasedPosAndTexCoord;
 
-	bool mColor;
-	bool mLambert;
-
+	bool					mColor;
+	bool					mLambert;
+	
 	friend class EnvironmentCore;
 	friend class EnvironmentEs;
 };
-}
-} // namespace cinder::gl
+	
+} } // namespace cinder::gl

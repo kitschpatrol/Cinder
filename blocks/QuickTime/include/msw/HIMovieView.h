@@ -24,6 +24,9 @@
 #include <Movies.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,11 +40,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /* QuickTime is not available to 64-bit clients */
@@ -56,7 +59,7 @@ extern "C" {
  *  Summary:
  *    Class ID for HIMovieView
  */
-#define kHIMovieViewClassID CFSTR( "com.apple.quicktime.HIMovieView" )
+#define kHIMovieViewClassID             CFSTR("com.apple.quicktime.HIMovieView")
 
 /*
  *  Summary:
@@ -64,11 +67,12 @@ extern "C" {
  */
 enum {
 
-	/*
+  /*
    * Events related to movie views.
    */
-	kEventClassMovieView = FOUR_CHAR_CODE( 'moov' )
+  kEventClassMovieView          = FOUR_CHAR_CODE('moov')
 };
+
 
 /*
  *  kEventClassMovieView / kEventMovieViewOptimalBoundsChanged
@@ -89,8 +93,10 @@ enum {
  *    CarbonLib:        not available
  */
 enum {
-	kEventMovieViewOptimalBoundsChanged = 1
+  kEventMovieViewOptimalBoundsChanged = 1
 };
+
+
 
 /*
  *  Summary:
@@ -98,42 +104,42 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * No attributes
    */
-	kHIMovieViewNoAttributes = 0L,
+  kHIMovieViewNoAttributes      = 0L,
 
-	/*
+  /*
    * Movie controller bar is visible below visual content
    */
-	kHIMovieViewControllerVisibleAttribute = ( 1L << 0 ),
+  kHIMovieViewControllerVisibleAttribute = (1L << 0),
 
-	/*
+  /*
    * Automatically call MCIdle() at appropriate times
    */
-	kHIMovieViewAutoIdlingAttribute = ( 1L << 1 ),
+  kHIMovieViewAutoIdlingAttribute = (1L << 1),
 
-	/*
+  /*
    * Accepts keyboard focus
    */
-	kHIMovieViewAcceptsFocusAttribute = ( 1L << 2 ),
+  kHIMovieViewAcceptsFocusAttribute = (1L << 2),
 
-	/*
+  /*
    * Movie editing enabled
    */
-	kHIMovieViewEditableAttribute = ( 1L << 3 ),
+  kHIMovieViewEditableAttribute = (1L << 3),
 
-	/*
+  /*
    * Handles editing HI commands such as cut, copy and paste
    */
-	kHIMovieViewHandleEditingHIAttribute = ( 1L << 4 ),
+  kHIMovieViewHandleEditingHIAttribute = (1L << 4),
 
-	/*
+  /*
    * Combination of kHIMovieViewControllerVisibleAttribute,
    * kHIMovieViewAutoIdlingAttribute, and
    * kHIMovieViewAcceptsFocusAttribute
    */
-	kHIMovieViewStandardAttributes = ( kHIMovieViewControllerVisibleAttribute | kHIMovieViewAutoIdlingAttribute | kHIMovieViewAcceptsFocusAttribute )
+  kHIMovieViewStandardAttributes = (kHIMovieViewControllerVisibleAttribute | kHIMovieViewAutoIdlingAttribute | kHIMovieViewAcceptsFocusAttribute)
 };
 
 /*
@@ -163,9 +169,10 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 HIMovieViewCreate(
-    Movie      inMovie,
-    OptionBits inAttributes,
-    HIViewRef *outMovieView );
+  Movie        inMovie,
+  OptionBits   inAttributes,
+  HIViewRef *  outMovieView);
+
 
 /*
  *  HIMovieViewGetMovie()
@@ -184,7 +191,8 @@ HIMovieViewCreate(
  *    Mac OS X:         in version 10.4 (or QuickTime 7.0) and later
  */
 EXTERN_API_C( Movie )
-HIMovieViewGetMovie( HIViewRef inView );
+HIMovieViewGetMovie(HIViewRef inView);
+
 
 /*
  *  HIMovieViewSetMovie()
@@ -207,8 +215,9 @@ HIMovieViewGetMovie( HIViewRef inView );
  */
 EXTERN_API_C( OSStatus )
 HIMovieViewSetMovie(
-    HIViewRef inView,
-    Movie     inMovie );
+  HIViewRef   inView,
+  Movie       inMovie);
+
 
 /*
  *  HIMovieViewGetAttributes()
@@ -227,7 +236,8 @@ HIMovieViewSetMovie(
  *    Mac OS X:         in version 10.4 (or QuickTime 7.0) and later
  */
 EXTERN_API_C( OptionBits )
-HIMovieViewGetAttributes( HIViewRef inView );
+HIMovieViewGetAttributes(HIViewRef inView);
+
 
 /*
  *  HIMovieViewChangeAttributes()
@@ -256,9 +266,10 @@ HIMovieViewGetAttributes( HIViewRef inView );
  */
 EXTERN_API_C( OSStatus )
 HIMovieViewChangeAttributes(
-    HIViewRef  inView,
-    OptionBits inAttributesToSet,
-    OptionBits inAttributesToClear );
+  HIViewRef    inView,
+  OptionBits   inAttributesToSet,
+  OptionBits   inAttributesToClear);
+
 
 /*
  *  HIMovieViewGetMovieController()
@@ -277,7 +288,8 @@ HIMovieViewChangeAttributes(
  *    Mac OS X:         in version 10.4 (or QuickTime 7.0) and later
  */
 EXTERN_API_C( MovieController )
-HIMovieViewGetMovieController( HIViewRef inView );
+HIMovieViewGetMovieController(HIViewRef inView);
+
 
 /*
  *  HIMovieViewGetControllerBarSize()
@@ -296,7 +308,8 @@ HIMovieViewGetMovieController( HIViewRef inView );
  *    Mac OS X:         in version 10.4 (or QuickTime 7.0) and later
  */
 EXTERN_API_C( HISize )
-HIMovieViewGetControllerBarSize( HIViewRef inView );
+HIMovieViewGetControllerBarSize(HIViewRef inView);
+
 
 /*
  *  HIMovieViewPlay()
@@ -318,7 +331,8 @@ HIMovieViewGetControllerBarSize( HIViewRef inView );
  *    Mac OS X:         in version 10.4 (or QuickTime 7.0) and later
  */
 EXTERN_API_C( OSStatus )
-HIMovieViewPlay( HIViewRef movieView );
+HIMovieViewPlay(HIViewRef movieView);
+
 
 /*
  *  HIMovieViewPause()
@@ -340,18 +354,21 @@ HIMovieViewPlay( HIViewRef movieView );
  *    Mac OS X:         in version 10.4 (or QuickTime 7.0) and later
  */
 EXTERN_API_C( OSStatus )
-HIMovieViewPause( HIViewRef movieView );
+HIMovieViewPause(HIViewRef movieView);
 
-#endif /* TARGET_OS_MAC */
+
+#endif  /* TARGET_OS_MAC */
+
 
 #endif // !__LP64__
 
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -365,3 +382,4 @@ HIMovieViewPause( HIViewRef movieView );
 #endif
 
 #endif /* __HIMOVIEVIEW__ */
+

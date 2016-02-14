@@ -20,6 +20,9 @@
 #include <MacTypes.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -33,11 +36,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = power
+    #pragma options align=power
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /*******************************************************************************
@@ -46,19 +49,19 @@ extern "C" {
  *
  */
 /* Value of a property */
-typedef void *RegPropertyValue;
+typedef void *                          RegPropertyValue;
 /* Length of property value */
-typedef UInt32 RegPropertyValueSize;
+typedef UInt32                          RegPropertyValueSize;
 /*******************************************************************************
  * 
  * RegEntryID   :   The Global x-Namespace Entry Identifier
  *
  */
 struct RegEntryID {
-	UInt32 contents[4];
+  UInt32              contents[4];
 };
-typedef struct RegEntryID RegEntryID;
-typedef RegEntryID *      RegEntryIDPtr;
+typedef struct RegEntryID               RegEntryID;
+typedef RegEntryID *                    RegEntryIDPtr;
 /*******************************************************************************
  *
  * Root Entry Name Definitions  (Applies to all Names in the RootNameSpace)
@@ -72,20 +75,20 @@ typedef RegEntryID *      RegEntryIDPtr;
  */
 /* Max length of Entry Name */
 enum {
-	kRegCStrMaxEntryNameLength = 47
+  kRegCStrMaxEntryNameLength    = 47
 };
 
 /* Entry Names are single byte ASCII */
-typedef char  RegCStrEntryName;
-typedef char *RegCStrEntryNamePtr;
+typedef char                            RegCStrEntryName;
+typedef char *                          RegCStrEntryNamePtr;
 /* length of RegCStrEntryNameBuf =  kRegCStrMaxEntryNameLength+1*/
-typedef char   RegCStrEntryNameBuf[48];
-typedef char   RegCStrPathName;
-typedef UInt32 RegPathNameSize;
+typedef char                            RegCStrEntryNameBuf[48];
+typedef char                            RegCStrPathName;
+typedef UInt32                          RegPathNameSize;
 enum {
-	kRegPathNameSeparator = ':', /* 0x3A */
-	kRegEntryNameTerminator = 0x00, /* '\0' */
-	kRegPathNameTerminator = 0x00 /* '\0' */
+  kRegPathNameSeparator         = ':',  /* 0x3A */
+  kRegEntryNameTerminator       = 0x00, /* '\0' */
+  kRegPathNameTerminator        = 0x00  /* '\0' */
 };
 
 /*******************************************************************************
@@ -94,33 +97,33 @@ enum {
  *  (Applies to all Properties Regardless of NameSpace)
  */
 enum {
-	kRegMaximumPropertyNameLength = 31, /* Max length of Property Name */
-	kRegPropertyNameTerminator = 0x00 /* '\0' */
+  kRegMaximumPropertyNameLength = 31,   /* Max length of Property Name */
+  kRegPropertyNameTerminator    = 0x00  /* '\0' */
 };
 
-typedef char  RegPropertyNameBuf[32];
-typedef char  RegPropertyName;
-typedef char *RegPropertyNamePtr;
+typedef char                            RegPropertyNameBuf[32];
+typedef char                            RegPropertyName;
+typedef char *                          RegPropertyNamePtr;
 /*******************************************************************************
  *
  * Iteration Operations
  *
  *  These specify direction when traversing the name relationships
  */
-typedef UInt32         RegIterationOp;
-typedef RegIterationOp RegEntryIterationOp;
+typedef UInt32                          RegIterationOp;
+typedef RegIterationOp                  RegEntryIterationOp;
 enum {
-	/* Absolute locations*/
-	kRegIterRoot = 0x00000002, /* "Upward" Relationships */
-	kRegIterParents = 0x00000003, /* include all  parent(s) of entry */
-	/* "Downward" Relationships*/
-	kRegIterChildren = 0x00000004, /* include all children */
-	kRegIterSubTrees = 0x00000005, /* include all sub trees of entry */
-	kRegIterDescendants = 0x00000005, /* include all descendants of entry */
-	/* "Horizontal" Relationships */
-	kRegIterSibling = 0x00000006, /* include all siblings */
-	/* Keep doing the same thing*/
-	kRegIterContinue = 0x00000001
+                                        /* Absolute locations*/
+  kRegIterRoot                  = 0x00000002, /* "Upward" Relationships */
+  kRegIterParents               = 0x00000003, /* include all  parent(s) of entry */
+                                        /* "Downward" Relationships*/
+  kRegIterChildren              = 0x00000004, /* include all children */
+  kRegIterSubTrees              = 0x00000005, /* include all sub trees of entry */
+  kRegIterDescendants           = 0x00000005, /* include all descendants of entry */
+                                        /* "Horizontal" Relationships */
+  kRegIterSibling               = 0x00000006, /* include all siblings */
+                                        /* Keep doing the same thing*/
+  kRegIterContinue              = 0x00000001
 };
 
 /*******************************************************************************
@@ -136,25 +139,25 @@ enum {
  * Device Drivers should not rely on functionality
  * specified as a modifier.
  */
-typedef UInt32       RegModifiers;
-typedef RegModifiers RegEntryModifiers;
-typedef RegModifiers RegPropertyModifiers;
+typedef UInt32                          RegModifiers;
+typedef RegModifiers                    RegEntryModifiers;
+typedef RegModifiers                    RegPropertyModifiers;
 enum {
-	kRegNoModifiers = 0x00000000, /* no entry modifiers in place */
-	kRegUniversalModifierMask = 0x0000FFFF, /* mods to all entries */
-	kRegNameSpaceModifierMask = 0x00FF0000, /* mods to all entries within namespace */
-	kRegModifierMask = (long)0xFF000000 /* mods to just this entry */
+  kRegNoModifiers               = 0x00000000, /* no entry modifiers in place */
+  kRegUniversalModifierMask     = 0x0000FFFF, /* mods to all entries */
+  kRegNameSpaceModifierMask     = 0x00FF0000, /* mods to all entries within namespace */
+  kRegModifierMask              = (long)0xFF000000 /* mods to just this entry */
 };
 
 /* Universal Property Modifiers */
 enum {
-	kRegPropertyValueIsSavedToNVRAM = 0x00000020, /* property is non-volatile (saved in NVRAM) */
-	kRegPropertyValueIsSavedToDisk = 0x00000040 /* property is non-volatile (saved on disk) */
+  kRegPropertyValueIsSavedToNVRAM = 0x00000020, /* property is non-volatile (saved in NVRAM) */
+  kRegPropertyValueIsSavedToDisk = 0x00000040 /* property is non-volatile (saved on disk) */
 };
 
 /* NameRegistry version, Gestalt/PEF-style -- MUST BE KEPT IN SYNC WITH MAKEFILE !! */
 enum {
-	LatestNR_PEFVersion = 0x01030000 /* latest NameRegistryLib version (Gestalt/PEF-style) */
+  LatestNR_PEFVersion           = 0x01030000 /* latest NameRegistryLib version (Gestalt/PEF-style) */
 };
 
 /* ///////////////////////
@@ -164,39 +167,40 @@ enum {
 /////////////////////// */
 /* NameRegistry dispatch indexes */
 enum {
-	kSelectRegistryEntryIDInit = 0,
-	kSelectRegistryEntryIDCompare = 1,
-	kSelectRegistryEntryIDCopy = 2,
-	kSelectRegistryEntryIDDispose = 3,
-	kSelectRegistryCStrEntryCreate = 4,
-	kSelectRegistryEntryDelete = 5,
-	kSelectRegistryEntryCopy = 6,
-	kSelectRegistryEntryIterateCreate = 7,
-	kSelectRegistryEntryIterateDispose = 8,
-	kSelectRegistryEntryIterateSet = 9,
-	kSelectRegistryEntryIterate = 10,
-	kSelectRegistryEntrySearch = 11,
-	kSelectRegistryCStrEntryLookup = 12,
-	kSelectRegistryEntryToPathSize = 13,
-	kSelectRegistryCStrEntryToPath = 14,
-	kSelectRegistryCStrEntryToName = 15,
-	kSelectRegistryPropertyCreate = 16,
-	kSelectRegistryPropertyDelete = 17,
-	kSelectRegistryPropertyRename = 18,
-	kSelectRegistryPropertyIterateCreate = 19,
-	kSelectRegistryPropertyIterateDispose = 20,
-	kSelectRegistryPropertyIterate = 21,
-	kSelectRegistryPropertyGetSize = 22,
-	kSelectRegistryPropertyGet = 23,
-	kSelectRegistryPropertySet = 24,
-	kSelectRegistryEntryGetMod = 25,
-	kSelectRegistryEntrySetMod = 26,
-	kSelectRegistryPropertyGetMod = 27,
-	kSelectRegistryPropertySetMod = 28,
-	kSelectRegistryEntryMod = 29,
-	kSelectRegistryEntryPropertyMod = 30, /* if you add more selectors here, remember to change 'kSelectRegistryHighestSelector' below*/
-	kSelectRegistryHighestSelector = kSelectRegistryEntryPropertyMod
+  kSelectRegistryEntryIDInit    = 0,
+  kSelectRegistryEntryIDCompare = 1,
+  kSelectRegistryEntryIDCopy    = 2,
+  kSelectRegistryEntryIDDispose = 3,
+  kSelectRegistryCStrEntryCreate = 4,
+  kSelectRegistryEntryDelete    = 5,
+  kSelectRegistryEntryCopy      = 6,
+  kSelectRegistryEntryIterateCreate = 7,
+  kSelectRegistryEntryIterateDispose = 8,
+  kSelectRegistryEntryIterateSet = 9,
+  kSelectRegistryEntryIterate   = 10,
+  kSelectRegistryEntrySearch    = 11,
+  kSelectRegistryCStrEntryLookup = 12,
+  kSelectRegistryEntryToPathSize = 13,
+  kSelectRegistryCStrEntryToPath = 14,
+  kSelectRegistryCStrEntryToName = 15,
+  kSelectRegistryPropertyCreate = 16,
+  kSelectRegistryPropertyDelete = 17,
+  kSelectRegistryPropertyRename = 18,
+  kSelectRegistryPropertyIterateCreate = 19,
+  kSelectRegistryPropertyIterateDispose = 20,
+  kSelectRegistryPropertyIterate = 21,
+  kSelectRegistryPropertyGetSize = 22,
+  kSelectRegistryPropertyGet    = 23,
+  kSelectRegistryPropertySet    = 24,
+  kSelectRegistryEntryGetMod    = 25,
+  kSelectRegistryEntrySetMod    = 26,
+  kSelectRegistryPropertyGetMod = 27,
+  kSelectRegistryPropertySetMod = 28,
+  kSelectRegistryEntryMod       = 29,
+  kSelectRegistryEntryPropertyMod = 30, /* if you add more selectors here, remember to change 'kSelectRegistryHighestSelector' below*/
+  kSelectRegistryHighestSelector = kSelectRegistryEntryPropertyMod
 };
+
 
 /* ///////////////////////
 //
@@ -221,7 +225,8 @@ enum {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-RegistryEntryIDInit( RegEntryID *id ) TWOWORDINLINE( 0x7000, 0xABE9 );
+RegistryEntryIDInit(RegEntryID * id)                          TWOWORDINLINE(0x7000, 0xABE9);
+
 
 /*
  * Compare EntryID's for equality or if invalid
@@ -240,8 +245,9 @@ RegistryEntryIDInit( RegEntryID *id ) TWOWORDINLINE( 0x7000, 0xABE9 );
  */
 EXTERN_API_C( Boolean )
 RegistryEntryIDCompare(
-    const RegEntryID *id1,
-    const RegEntryID *id2 ) TWOWORDINLINE( 0x7001, 0xABE9 );
+  const RegEntryID *  id1,
+  const RegEntryID *  id2)                                    TWOWORDINLINE(0x7001, 0xABE9);
+
 
 /*
  * Copy an EntryID
@@ -256,8 +262,9 @@ RegistryEntryIDCompare(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryIDCopy(
-    const RegEntryID *src,
-    RegEntryID *      dst ) TWOWORDINLINE( 0x7002, 0xABE9 );
+  const RegEntryID *  src,
+  RegEntryID *        dst)                                    TWOWORDINLINE(0x7002, 0xABE9);
+
 
 /*
  * Free an ID so it can be reused.
@@ -271,7 +278,8 @@ RegistryEntryIDCopy(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-RegistryEntryIDDispose( RegEntryID *id ) TWOWORDINLINE( 0x7003, 0xABE9 );
+RegistryEntryIDDispose(RegEntryID * id)                       TWOWORDINLINE(0x7003, 0xABE9);
+
 
 /*-------------------------------
  * Adding and removing entries
@@ -289,9 +297,10 @@ RegistryEntryIDDispose( RegEntryID *id ) TWOWORDINLINE( 0x7003, 0xABE9 );
  */
 EXTERN_API_C( OSStatus )
 RegistryCStrEntryCreate(
-    const RegEntryID *     parentEntry,
-    const RegCStrPathName *name,
-    RegEntryID *           newEntry ) TWOWORDINLINE( 0x7004, 0xABE9 );
+  const RegEntryID *       parentEntry,
+  const RegCStrPathName *  name,
+  RegEntryID *             newEntry)                          TWOWORDINLINE(0x7004, 0xABE9);
+
 
 /*
  *  RegistryEntryDelete()
@@ -302,7 +311,8 @@ RegistryCStrEntryCreate(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-RegistryEntryDelete( const RegEntryID *id ) TWOWORDINLINE( 0x7005, 0xABE9 );
+RegistryEntryDelete(const RegEntryID * id)                    TWOWORDINLINE(0x7005, 0xABE9);
+
 
 /*
  *  RegistryEntryCopy()
@@ -314,9 +324,10 @@ RegistryEntryDelete( const RegEntryID *id ) TWOWORDINLINE( 0x7005, 0xABE9 );
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryCopy(
-    RegEntryID *parentEntryID,
-    RegEntryID *sourceDevice,
-    RegEntryID *destDevice ) TWOWORDINLINE( 0x7006, 0xABE9 );
+  RegEntryID *  parentEntryID,
+  RegEntryID *  sourceDevice,
+  RegEntryID *  destDevice)                                   TWOWORDINLINE(0x7006, 0xABE9);
+
 
 /*---------------------------
  * Traversing the namespace
@@ -348,9 +359,9 @@ RegistryEntryCopy(
  * This is the basic code structure for callers of the iteration
  * interface.
  */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
-typedef struct OpaqueRegEntryIter *RegEntryIter;
+typedef struct OpaqueRegEntryIter*      RegEntryIter;
 /* 
  * create/dispose the iterator structure
  *   defaults to root with relationship = kRegIterDescendants
@@ -365,7 +376,8 @@ typedef struct OpaqueRegEntryIter *RegEntryIter;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-RegistryEntryIterateCreate( RegEntryIter *cookie ) TWOWORDINLINE( 0x7007, 0xABE9 );
+RegistryEntryIterateCreate(RegEntryIter * cookie)             TWOWORDINLINE(0x7007, 0xABE9);
+
 
 /*
  *  RegistryEntryIterateDispose()
@@ -376,7 +388,8 @@ RegistryEntryIterateCreate( RegEntryIter *cookie ) TWOWORDINLINE( 0x7007, 0xABE9
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-RegistryEntryIterateDispose( RegEntryIter *cookie ) TWOWORDINLINE( 0x7008, 0xABE9 );
+RegistryEntryIterateDispose(RegEntryIter * cookie)            TWOWORDINLINE(0x7008, 0xABE9);
+
 
 /* 
  * set Entry Iterator to specified entry
@@ -391,8 +404,9 @@ RegistryEntryIterateDispose( RegEntryIter *cookie ) TWOWORDINLINE( 0x7008, 0xABE
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryIterateSet(
-    RegEntryIter *    cookie,
-    const RegEntryID *startEntryID ) TWOWORDINLINE( 0x7009, 0xABE9 );
+  RegEntryIter *      cookie,
+  const RegEntryID *  startEntryID)                           TWOWORDINLINE(0x7009, 0xABE9);
+
 
 /*
  * Return each value of the iteration
@@ -410,10 +424,11 @@ RegistryEntryIterateSet(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryIterate(
-    RegEntryIter *      cookie,
-    RegEntryIterationOp relationship,
-    RegEntryID *        foundEntry,
-    Boolean *           done ) TWOWORDINLINE( 0x700A, 0xABE9 );
+  RegEntryIter *        cookie,
+  RegEntryIterationOp   relationship,
+  RegEntryID *          foundEntry,
+  Boolean *             done)                                 TWOWORDINLINE(0x700A, 0xABE9);
+
 
 /*
  * return entries with the specified property
@@ -431,13 +446,14 @@ RegistryEntryIterate(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntrySearch(
-    RegEntryIter *         cookie,
-    RegEntryIterationOp    relationship,
-    RegEntryID *           foundEntry,
-    Boolean *              done,
-    const RegPropertyName *propertyName,
-    const void *           propertyValue,
-    RegPropertyValueSize   propertySize ) TWOWORDINLINE( 0x700B, 0xABE9 );
+  RegEntryIter *           cookie,
+  RegEntryIterationOp      relationship,
+  RegEntryID *             foundEntry,
+  Boolean *                done,
+  const RegPropertyName *  propertyName,
+  const void *             propertyValue,
+  RegPropertyValueSize     propertySize)                      TWOWORDINLINE(0x700B, 0xABE9);
+
 
 /*--------------------------------
  * Find a name in the namespace
@@ -459,9 +475,10 @@ RegistryEntrySearch(
  */
 EXTERN_API_C( OSStatus )
 RegistryCStrEntryLookup(
-    const RegEntryID *     searchPointID,
-    const RegCStrPathName *pathName,
-    RegEntryID *           foundEntry ) TWOWORDINLINE( 0x700C, 0xABE9 );
+  const RegEntryID *       searchPointID,
+  const RegCStrPathName *  pathName,
+  RegEntryID *             foundEntry)                        TWOWORDINLINE(0x700C, 0xABE9);
+
 
 /*---------------------------------------------
  * Convert an entry to a rooted name string
@@ -479,8 +496,9 @@ RegistryCStrEntryLookup(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryToPathSize(
-    const RegEntryID *entryID,
-    RegPathNameSize * pathSize ) TWOWORDINLINE( 0x700D, 0xABE9 );
+  const RegEntryID *  entryID,
+  RegPathNameSize *   pathSize)                               TWOWORDINLINE(0x700D, 0xABE9);
+
 
 /*
  *  RegistryCStrEntryToPath()
@@ -492,9 +510,10 @@ RegistryEntryToPathSize(
  */
 EXTERN_API_C( OSStatus )
 RegistryCStrEntryToPath(
-    const RegEntryID *entryID,
-    RegCStrPathName * pathName,
-    RegPathNameSize   pathSize ) TWOWORDINLINE( 0x700E, 0xABE9 );
+  const RegEntryID *  entryID,
+  RegCStrPathName *   pathName,
+  RegPathNameSize     pathSize)                               TWOWORDINLINE(0x700E, 0xABE9);
+
 
 /*
  * Parse a path name.
@@ -512,10 +531,11 @@ RegistryCStrEntryToPath(
  */
 EXTERN_API_C( OSStatus )
 RegistryCStrEntryToName(
-    const RegEntryID *entryID,
-    RegEntryID *      parentEntry,
-    RegCStrEntryName *nameComponent,
-    Boolean *         done ) TWOWORDINLINE( 0x700F, 0xABE9 );
+  const RegEntryID *  entryID,
+  RegEntryID *        parentEntry,
+  RegCStrEntryName *  nameComponent,
+  Boolean *           done)                                   TWOWORDINLINE(0x700F, 0xABE9);
+
 
 /* //////////////////////////////////////////////////////
 //
@@ -535,10 +555,11 @@ RegistryCStrEntryToName(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyCreate(
-    const RegEntryID *     entryID,
-    const RegPropertyName *propertyName,
-    const void *           propertyValue,
-    RegPropertyValueSize   propertySize ) TWOWORDINLINE( 0x7010, 0xABE9 );
+  const RegEntryID *       entryID,
+  const RegPropertyName *  propertyName,
+  const void *             propertyValue,
+  RegPropertyValueSize     propertySize)                      TWOWORDINLINE(0x7010, 0xABE9);
+
 
 /*
  *  RegistryPropertyDelete()
@@ -550,8 +571,9 @@ RegistryPropertyCreate(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyDelete(
-    const RegEntryID *     entryID,
-    const RegPropertyName *propertyName ) TWOWORDINLINE( 0x7011, 0xABE9 );
+  const RegEntryID *       entryID,
+  const RegPropertyName *  propertyName)                      TWOWORDINLINE(0x7011, 0xABE9);
+
 
 /*
  *  RegistryPropertyRename()
@@ -563,17 +585,18 @@ RegistryPropertyDelete(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyRename(
-    const RegEntryID *     entry,
-    const RegPropertyName *oldName,
-    const RegPropertyName *newName ) TWOWORDINLINE( 0x7012, 0xABE9 );
+  const RegEntryID *       entry,
+  const RegPropertyName *  oldName,
+  const RegPropertyName *  newName)                           TWOWORDINLINE(0x7012, 0xABE9);
+
 
 /*---------------------------
  * Traversing the Properties of a name
  *
  */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
-typedef struct OpaqueRegPropertyIter *RegPropertyIter;
+typedef struct OpaqueRegPropertyIter*   RegPropertyIter;
 #if CALL_NOT_IN_CARBON
 /*
  *  RegistryPropertyIterateCreate()
@@ -585,8 +608,9 @@ typedef struct OpaqueRegPropertyIter *RegPropertyIter;
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyIterateCreate(
-    const RegEntryID *entry,
-    RegPropertyIter * cookie ) TWOWORDINLINE( 0x7013, 0xABE9 );
+  const RegEntryID *  entry,
+  RegPropertyIter *   cookie)                                 TWOWORDINLINE(0x7013, 0xABE9);
+
 
 /*
  *  RegistryPropertyIterateDispose()
@@ -597,7 +621,8 @@ RegistryPropertyIterateCreate(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-RegistryPropertyIterateDispose( RegPropertyIter *cookie ) TWOWORDINLINE( 0x7014, 0xABE9 );
+RegistryPropertyIterateDispose(RegPropertyIter * cookie)      TWOWORDINLINE(0x7014, 0xABE9);
+
 
 /*
  *  RegistryPropertyIterate()
@@ -609,9 +634,10 @@ RegistryPropertyIterateDispose( RegPropertyIter *cookie ) TWOWORDINLINE( 0x7014,
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyIterate(
-    RegPropertyIter *cookie,
-    RegPropertyName *foundProperty,
-    Boolean *        done ) TWOWORDINLINE( 0x7015, 0xABE9 );
+  RegPropertyIter *  cookie,
+  RegPropertyName *  foundProperty,
+  Boolean *          done)                                    TWOWORDINLINE(0x7015, 0xABE9);
+
 
 /*
  * Get the value of the specified property for the specified entry.
@@ -627,9 +653,10 @@ RegistryPropertyIterate(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyGetSize(
-    const RegEntryID *     entryID,
-    const RegPropertyName *propertyName,
-    RegPropertyValueSize * propertySize ) TWOWORDINLINE( 0x7016, 0xABE9 );
+  const RegEntryID *       entryID,
+  const RegPropertyName *  propertyName,
+  RegPropertyValueSize *   propertySize)                      TWOWORDINLINE(0x7016, 0xABE9);
+
 
 /*
  * (*propertySize) is the maximum size of the value returned in the buffer
@@ -646,10 +673,11 @@ RegistryPropertyGetSize(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyGet(
-    const RegEntryID *     entryID,
-    const RegPropertyName *propertyName,
-    void *                 propertyValue,
-    RegPropertyValueSize * propertySize ) TWOWORDINLINE( 0x7017, 0xABE9 );
+  const RegEntryID *       entryID,
+  const RegPropertyName *  propertyName,
+  void *                   propertyValue,
+  RegPropertyValueSize *   propertySize)                      TWOWORDINLINE(0x7017, 0xABE9);
+
 
 /*
  *  RegistryPropertySet()
@@ -661,10 +689,11 @@ RegistryPropertyGet(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertySet(
-    const RegEntryID *     entryID,
-    const RegPropertyName *propertyName,
-    const void *           propertyValue,
-    RegPropertyValueSize   propertySize ) TWOWORDINLINE( 0x7018, 0xABE9 );
+  const RegEntryID *       entryID,
+  const RegPropertyName *  propertyName,
+  const void *             propertyValue,
+  RegPropertyValueSize     propertySize)                      TWOWORDINLINE(0x7018, 0xABE9);
+
 
 /* //////////////////////////////////////////////////////
 //
@@ -693,8 +722,9 @@ RegistryPropertySet(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryGetMod(
-    const RegEntryID * entry,
-    RegEntryModifiers *modifiers ) TWOWORDINLINE( 0x7019, 0xABE9 );
+  const RegEntryID *   entry,
+  RegEntryModifiers *  modifiers)                             TWOWORDINLINE(0x7019, 0xABE9);
+
 
 /*
  *  RegistryEntrySetMod()
@@ -706,8 +736,9 @@ RegistryEntryGetMod(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntrySetMod(
-    const RegEntryID *entry,
-    RegEntryModifiers modifiers ) TWOWORDINLINE( 0x701A, 0xABE9 );
+  const RegEntryID *  entry,
+  RegEntryModifiers   modifiers)                              TWOWORDINLINE(0x701A, 0xABE9);
+
 
 /*
  * Get and Set operators for property modifiers
@@ -722,9 +753,10 @@ RegistryEntrySetMod(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertyGetMod(
-    const RegEntryID *     entry,
-    const RegPropertyName *name,
-    RegPropertyModifiers * modifiers ) TWOWORDINLINE( 0x701B, 0xABE9 );
+  const RegEntryID *       entry,
+  const RegPropertyName *  name,
+  RegPropertyModifiers *   modifiers)                         TWOWORDINLINE(0x701B, 0xABE9);
+
 
 /*
  *  RegistryPropertySetMod()
@@ -736,9 +768,10 @@ RegistryPropertyGetMod(
  */
 EXTERN_API_C( OSStatus )
 RegistryPropertySetMod(
-    const RegEntryID *     entry,
-    const RegPropertyName *name,
-    RegPropertyModifiers   modifiers ) TWOWORDINLINE( 0x701C, 0xABE9 );
+  const RegEntryID *       entry,
+  const RegPropertyName *  name,
+  RegPropertyModifiers     modifiers)                         TWOWORDINLINE(0x701C, 0xABE9);
+
 
 /*
  * Iterator operator for entry modifier search
@@ -753,11 +786,12 @@ RegistryPropertySetMod(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryMod(
-    RegEntryIter *      cookie,
-    RegEntryIterationOp relationship,
-    RegEntryID *        foundEntry,
-    Boolean *           done,
-    RegEntryModifiers   matchingModifiers ) TWOWORDINLINE( 0x701D, 0xABE9 );
+  RegEntryIter *        cookie,
+  RegEntryIterationOp   relationship,
+  RegEntryID *          foundEntry,
+  Boolean *             done,
+  RegEntryModifiers     matchingModifiers)                    TWOWORDINLINE(0x701D, 0xABE9);
+
 
 /*
  * Iterator operator for entries with matching 
@@ -773,20 +807,23 @@ RegistryEntryMod(
  */
 EXTERN_API_C( OSStatus )
 RegistryEntryPropertyMod(
-    RegEntryIter *       cookie,
-    RegEntryIterationOp  relationship,
-    RegEntryID *         foundEntry,
-    Boolean *            done,
-    RegPropertyModifiers matchingModifiers ) TWOWORDINLINE( 0x701E, 0xABE9 );
+  RegEntryIter *         cookie,
+  RegEntryIterationOp    relationship,
+  RegEntryID *           foundEntry,
+  Boolean *              done,
+  RegPropertyModifiers   matchingModifiers)                   TWOWORDINLINE(0x701E, 0xABE9);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+#endif  /* CALL_NOT_IN_CARBON */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -800,3 +837,4 @@ RegistryEntryPropertyMod(
 #endif
 
 #endif /* __NAMEREGISTRY__ */
+

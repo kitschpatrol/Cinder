@@ -63,11 +63,11 @@ ImageSourceFileTinyExr::ImageSourceFileTinyExr( DataSourceRef dataSource, ImageS
 	}
 	else {
 		BufferRef buffer = dataSource->getBuffer();
-
-		status = ParseMultiChannelEXRHeaderFromMemory( mExrImage.get(), (const unsigned char *)buffer->getData(), &error );
+		
+		status = ParseMultiChannelEXRHeaderFromMemory( mExrImage.get(), (const unsigned char*)buffer->getData(), &error );
 		if( status != 0 )
 			throw ImageIoExceptionFailedLoadTinyExr( string( "Failed to parse OpenEXR header; Error message: " ) + error );
-		status = LoadMultiChannelEXRFromMemory( mExrImage.get(), (const unsigned char *)buffer->getData(), &error );
+		status = LoadMultiChannelEXRFromMemory( mExrImage.get(), (const unsigned char*)buffer->getData(), &error );
 		if( status != 0 )
 			throw ImageIoExceptionFailedLoadTinyExr( string( "Failed to parse OpenEXR file; Error message: " ) + error );
 	}
@@ -80,30 +80,30 @@ ImageSourceFileTinyExr::ImageSourceFileTinyExr( DataSourceRef dataSource, ImageS
 	}
 
 	switch( pixelType ) {
-	case TINYEXR_PIXELTYPE_HALF:
-		setDataType( ImageIo::FLOAT16 );
+		case TINYEXR_PIXELTYPE_HALF:
+			setDataType( ImageIo::FLOAT16 );
 		break;
-	case TINYEXR_PIXELTYPE_FLOAT:
-		setDataType( ImageIo::FLOAT32 );
+		case TINYEXR_PIXELTYPE_FLOAT:
+			setDataType( ImageIo::FLOAT32 );
 		break;
-	default:
-		throw ImageIoExceptionFailedLoadTinyExr( "TinyExr: Unknown data type" );
+		default:
+			throw ImageIoExceptionFailedLoadTinyExr( "TinyExr: Unknown data type" );
 		break;
 	}
 
 	setSize( mExrImage->width, mExrImage->height );
 
 	switch( mExrImage->num_channels ) {
-	case 3:
-		setColorModel( ImageIo::CM_RGB );
-		setChannelOrder( ImageIo::ChannelOrder::RGB );
+		case 3:
+			setColorModel( ImageIo::CM_RGB );
+			setChannelOrder( ImageIo::ChannelOrder::RGB );
 		break;
-	case 4:
-		setColorModel( ImageIo::CM_RGB );
-		setChannelOrder( ImageIo::ChannelOrder::RGBA );
+		case 4:
+			setColorModel( ImageIo::CM_RGB );
+			setChannelOrder( ImageIo::ChannelOrder::RGBA );
 		break;
-	default:
-		throw ImageIoExceptionFailedLoadTinyExr( "TinyExr: Unsupported number of channels (" + to_string( mExrImage->num_channels ) + ")" );
+		default:
+			throw ImageIoExceptionFailedLoadTinyExr( "TinyExr: Unsupported number of channels (" + to_string( mExrImage->num_channels ) + ")" );
 	}
 }
 
@@ -112,8 +112,8 @@ void ImageSourceFileTinyExr::load( ImageTargetRef target )
 	ImageSource::RowFunc rowFunc = setupRowFunc( target );
 
 	const size_t numChannels = mExrImage->num_channels;
-	const void * red = nullptr, *green = nullptr, *blue = nullptr, *alpha = nullptr;
-
+	const void *red = nullptr, *green = nullptr, *blue = nullptr, *alpha = nullptr;
+	
 	for( size_t c = 0; c < numChannels; ++c ) {
 		if( strcmp( mExrImage->channel_names[c], "R" ) == 0 )
 			red = mExrImage->images[c];
@@ -125,39 +125,39 @@ void ImageSourceFileTinyExr::load( ImageTargetRef target )
 			alpha = mExrImage->images[c];
 	}
 
-	if( ( !red ) || ( !green ) || ( !blue ) )
+	if( ( ! red ) || ( ! green ) || ( ! blue ) )
 		throw ImageIoExceptionFailedLoadTinyExr( "Unable to locate channels for RGB" );
-
+	
 	// load one interleaved row at a time
 	if( getDataType() == ImageIo::FLOAT32 ) {
 		vector<float> rowData( mWidth * mExrImage->num_channels, 0 );
 		for( int32_t row = 0; row < mHeight; row++ ) {
 			for( int32_t col = 0; col < mWidth; col++ ) {
-				rowData.at( col * numChannels + 0 ) = ( (float *)red )[row * mWidth + col];
-				rowData.at( col * numChannels + 1 ) = ( (float *)green )[row * mWidth + col];
-				rowData.at( col * numChannels + 2 ) = ( (float *)blue )[row * mWidth + col];
+				rowData.at( col * numChannels + 0 ) = ((float*)red)[row * mWidth + col];
+				rowData.at( col * numChannels + 1 ) = ((float*)green)[row * mWidth + col];
+				rowData.at( col * numChannels + 2 ) = ((float*)blue)[row * mWidth + col];
 				if( alpha )
-					rowData.at( col * numChannels + 3 ) = ( (float *)alpha )[row * mWidth + col];
+					rowData.at( col * numChannels + 3 ) = ((float*)alpha)[row * mWidth + col];
 			}
 
-			( ( *this ).*rowFunc )( target, row, rowData.data() );
+			((*this).*rowFunc)( target, row, rowData.data() );
 		}
 	}
 	else { // float16
 		vector<uint16_t> rowData( mWidth * mExrImage->num_channels, 0 );
 		for( int32_t row = 0; row < mHeight; row++ ) {
 			for( int32_t col = 0; col < mWidth; col++ ) {
-				rowData.at( col * numChannels + 0 ) = ( (uint16_t *)red )[row * mWidth + col];
-				rowData.at( col * numChannels + 1 ) = ( (uint16_t *)green )[row * mWidth + col];
-				rowData.at( col * numChannels + 2 ) = ( (uint16_t *)blue )[row * mWidth + col];
+				rowData.at( col * numChannels + 0 ) = ((uint16_t*)red)[row * mWidth + col];
+				rowData.at( col * numChannels + 1 ) = ((uint16_t*)green)[row * mWidth + col];
+				rowData.at( col * numChannels + 2 ) = ((uint16_t*)blue)[row * mWidth + col];
 				if( alpha )
-					rowData.at( col * numChannels + 3 ) = ( (uint16_t *)alpha )[row * mWidth + col];
+					rowData.at( col * numChannels + 3 ) = ((uint16_t*)alpha)[row * mWidth + col];
 			}
 
-			( ( *this ).*rowFunc )( target, row, rowData.data() );
+			((*this).*rowFunc)( target, row, rowData.data() );
 		}
 	}
-
+	
 	FreeEXRImage( mExrImage.get() );
 }
 
@@ -167,9 +167,9 @@ void ImageSourceFileTinyExr::load( ImageTargetRef target )
 
 void ImageTargetFileTinyExr::registerSelf()
 {
-	static bool   sRegistered = false;
+	static bool sRegistered = false;
 	const int32_t PRIORITY = 1;
-
+	
 	if( sRegistered )
 		return;
 
@@ -186,7 +186,7 @@ ImageTargetRef ImageTargetFileTinyExr::create( DataTargetRef dataTarget, ImageSo
 
 ImageTargetFileTinyExr::ImageTargetFileTinyExr( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData )
 {
-	if( !dataTarget->providesFilePath() ) {
+	if( ! dataTarget->providesFilePath() ) {
 		throw ImageIoExceptionFailedWrite( "ImageTargetFileTinyExr only supports writing to files." );
 	}
 
@@ -194,28 +194,28 @@ ImageTargetFileTinyExr::ImageTargetFileTinyExr( DataTargetRef dataTarget, ImageS
 
 	setSize( imageSource->getWidth(), imageSource->getHeight() );
 	ImageIo::ColorModel cm = options.isColorModelDefault() ? imageSource->getColorModel() : options.getColorModel();
-
+	
 	switch( cm ) {
-	case ImageIo::ColorModel::CM_RGB:
-		mNumComponents = ( imageSource->hasAlpha() ) ? 4 : 3;
-		setColorModel( ImageIo::ColorModel::CM_RGB );
-		setChannelOrder( ( mNumComponents == 3 ) ? ImageIo::ChannelOrder::BGR : ImageIo::ChannelOrder::ABGR );
-		if( mNumComponents == 3 )
-			mChannelNames = { "G", "B", "R" };
-		else
-			mChannelNames = { "A", "G", "B", "R" };
+		case ImageIo::ColorModel::CM_RGB:
+			mNumComponents = ( imageSource->hasAlpha() ) ? 4 : 3;
+			setColorModel( ImageIo::ColorModel::CM_RGB );
+			setChannelOrder( ( mNumComponents == 3 ) ? ImageIo::ChannelOrder::BGR : ImageIo::ChannelOrder::ABGR );
+			if( mNumComponents == 3 )
+				mChannelNames = { "G", "B", "R" };
+			else
+				mChannelNames = { "A", "G", "B", "R" };
 		break;
-	case ImageIo::ColorModel::CM_GRAY:
-		mNumComponents = ( imageSource->hasAlpha() ) ? 2 : 1;
-		setColorModel( ImageIo::ColorModel::CM_GRAY );
-		setChannelOrder( ( mNumComponents == 2 ) ? ImageIo::ChannelOrder::YA : ImageIo::ChannelOrder::Y );
-		if( mNumComponents == 2 )
-			mChannelNames = { "Y", "A" };
-		else
-			mChannelNames = { "Y" };
+		case ImageIo::ColorModel::CM_GRAY:
+			mNumComponents = ( imageSource->hasAlpha() ) ? 2 : 1;
+			setColorModel( ImageIo::ColorModel::CM_GRAY );
+			setChannelOrder( ( mNumComponents == 2 ) ? ImageIo::ChannelOrder::YA : ImageIo::ChannelOrder::Y );
+			if( mNumComponents == 2 )
+				mChannelNames = { "Y", "A" };
+			else
+				mChannelNames = { "Y" };
 		break;
-	default:
-		throw ImageIoExceptionIllegalColorModel();
+		default:
+			throw ImageIoExceptionIllegalColorModel();
 	}
 
 	// TODO: consider supporting half float and uint types as well
@@ -223,7 +223,7 @@ ImageTargetFileTinyExr::ImageTargetFileTinyExr( DataTargetRef dataTarget, ImageS
 	mData.resize( mHeight * imageSource->getWidth() * mNumComponents );
 }
 
-void *ImageTargetFileTinyExr::getRowPointer( int32_t row )
+void* ImageTargetFileTinyExr::getRowPointer( int32_t row )
 {
 	return &mData[row * getWidth() * mNumComponents];
 }
@@ -234,13 +234,13 @@ void ImageTargetFileTinyExr::finalize()
 	InitEXRImage( exrImage.get() ); // we intentionally do not call FreeEXRImage on this
 
 	const char *channelNames[4];
-
+	
 	// turn interleaved data into a series of planar channels
 	std::vector<Channel32f> channels;
-	float *                 srcData = mData.data();
+	float *srcData = mData.data();
 	for( int c = 0; c < mNumComponents; ++c ) {
 		channels.emplace_back( getWidth(), getHeight() );
-		Channel32f srcChannel( getWidth(), getHeight(), mNumComponents * getWidth() * sizeof( float ), mNumComponents, srcData + c );
+		Channel32f srcChannel( getWidth(), getHeight(), mNumComponents * getWidth() * sizeof(float), mNumComponents, srcData + c );
 		channels.back().copyFrom( srcChannel, srcChannel.getBounds() );
 	}
 
@@ -248,8 +248,8 @@ void ImageTargetFileTinyExr::finalize()
 	exrImage->width = mWidth;
 	exrImage->height = mHeight;
 
-	float *imagePtr[4];
-	int    pixelTypes[4], requested_pixel_types[4];
+	float* imagePtr[4];
+	int pixelTypes[4], requested_pixel_types[4];
 	for( int i = 0; i < exrImage->num_channels; i++ ) {
 		pixelTypes[i] = TINYEXR_PIXELTYPE_FLOAT;
 		requested_pixel_types[i] = pixelTypes[i];
@@ -264,7 +264,7 @@ void ImageTargetFileTinyExr::finalize()
 	exrImage->requested_pixel_types = requested_pixel_types;
 
 	const char *error;
-	int         status = SaveMultiChannelEXRToFile( exrImage.get(), mFilePath.string().c_str(), &error );
+	int status = SaveMultiChannelEXRToFile( exrImage.get(), mFilePath.string().c_str(), &error );
 	if( status != 0 )
 		throw ImageIoExceptionFailedWriteTinyExr( string( "TinyExr: failed to write. Error: " ) + error );
 }

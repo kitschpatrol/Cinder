@@ -47,6 +47,8 @@
 #include <AEDataModel.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -60,11 +62,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /************************************************************************************************
@@ -72,18 +74,18 @@ extern "C" {
  ************************************************************************************************/
 
 enum {
-	icPrefNotFoundErr = -666, /* preference not found (duh!)  */
-	icPermErr = -667, /* cannot set preference  */
-	icPrefDataErr = -668, /* problem with preference data  */
-	icInternalErr = -669, /* hmm, this is not good  */
-	icTruncatedErr = -670, /* more data was present than was returned  */
-	icNoMoreWritersErr = -671, /* you cannot begin a write session because someone else is already doing it  */
-	icNothingToOverrideErr = -672, /* no component for the override component to capture  */
-	icNoURLErr = -673, /* no URL found  */
-	icConfigNotFoundErr = -674, /* no configuration was found  */
-	icConfigInappropriateErr = -675, /* incorrect manufacturer code  */
-	icProfileNotFoundErr = -676, /* profile not found  */
-	icTooManyProfilesErr = -677 /* too many profiles in database  */
+  icPrefNotFoundErr             = -666, /* preference not found (duh!)  */
+  icPermErr                     = -667, /* cannot set preference  */
+  icPrefDataErr                 = -668, /* problem with preference data  */
+  icInternalErr                 = -669, /* hmm, this is not good  */
+  icTruncatedErr                = -670, /* more data was present than was returned  */
+  icNoMoreWritersErr            = -671, /* you cannot begin a write session because someone else is already doing it  */
+  icNothingToOverrideErr        = -672, /* no component for the override component to capture  */
+  icNoURLErr                    = -673, /* no URL found  */
+  icConfigNotFoundErr           = -674, /* no configuration was found  */
+  icConfigInappropriateErr      = -675, /* incorrect manufacturer code  */
+  icProfileNotFoundErr          = -676, /* profile not found  */
+  icTooManyProfilesErr          = -677  /* too many profiles in database  */
 };
 
 /************************************************************************************************
@@ -91,57 +93,57 @@ enum {
  ************************************************************************************************/
 
 enum {
-	kICComponentInterfaceVersion0 = 0x00000000, /* IC >= 1.0  */
-	kICComponentInterfaceVersion1 = 0x00010000, /* IC >= 1.1  */
-	kICComponentInterfaceVersion2 = 0x00020000, /* IC >= 1.2  */
-	kICComponentInterfaceVersion3 = 0x00030000, /* IC >= 2.0  */
-	kICComponentInterfaceVersion4 = 0x00040000, /* IC >= 2.5  */
-	kICComponentInterfaceVersion = kICComponentInterfaceVersion4 /* current version number is 4  */
+  kICComponentInterfaceVersion0 = 0x00000000, /* IC >= 1.0  */
+  kICComponentInterfaceVersion1 = 0x00010000, /* IC >= 1.1  */
+  kICComponentInterfaceVersion2 = 0x00020000, /* IC >= 1.2  */
+  kICComponentInterfaceVersion3 = 0x00030000, /* IC >= 2.0  */
+  kICComponentInterfaceVersion4 = 0x00040000, /* IC >= 2.5  */
+  kICComponentInterfaceVersion  = kICComponentInterfaceVersion4 /* current version number is 4  */
 };
 
 /************************************************************************************************
   opaque type for preference reference
  ************************************************************************************************/
 
-typedef struct OpaqueICInstance *ICInstance;
+typedef struct OpaqueICInstance*        ICInstance;
 
 /************************************************************************************************
   a record that specifies a folder, an array of such records, and a pointer to such an array
  ************************************************************************************************/
 struct ICDirSpec {
-	short vRefNum;
-	long  dirID;
+  short               vRefNum;
+  long                dirID;
 };
-typedef struct ICDirSpec ICDirSpec;
-typedef ICDirSpec        ICDirSpecArray[4];
-typedef ICDirSpecArray * ICDirSpecArrayPtr;
+typedef struct ICDirSpec                ICDirSpec;
+typedef ICDirSpec                       ICDirSpecArray[4];
+typedef ICDirSpecArray *                ICDirSpecArrayPtr;
 
 /************************************************************************************************
   preference attributes type, bit number constants, and mask constants
  ************************************************************************************************/
-typedef UInt32 ICAttr;
+typedef UInt32                          ICAttr;
 
 enum {
-	kICAttrLockedBit = 0,
-	kICAttrVolatileBit = 1
+  kICAttrLockedBit              = 0,
+  kICAttrVolatileBit            = 1
 };
 
 enum {
-	kICAttrNoChange = (unsigned long)0xFFFFFFFF, /* pass this to ICSetPref to tell it not to change the attributes  */
-	kICAttrLockedMask = 0x00000001,
-	kICAttrVolatileMask = 0x00000002
+  kICAttrNoChange               = (unsigned long)0xFFFFFFFF, /* pass this to ICSetPref to tell it not to change the attributes  */
+  kICAttrLockedMask             = 0x00000001,
+  kICAttrVolatileMask           = 0x00000002
 };
 
 /************************************************************************************************
   permissions for use with ICBegin
  ************************************************************************************************/
 
-typedef UInt8 ICPerm;
+typedef UInt8                           ICPerm;
 
 enum {
-	icNoPerm = 0,
-	icReadOnlyPerm = 1,
-	icReadWritePerm = 2
+  icNoPerm                      = 0,
+  icReadOnlyPerm                = 1,
+  icReadWritePerm               = 2
 };
 
 /************************************************************************************************
@@ -150,23 +152,23 @@ enum {
 
 #if CALL_NOT_IN_CARBON
 struct ICConfigRef {
-	OSType manufacturer;
-	/* other private data follows  */
+  OSType              manufacturer;
+                                              /* other private data follows  */
 };
-typedef struct ICConfigRef ICConfigRef;
-typedef ICConfigRef *      ICConfigRefPtr;
-typedef ICConfigRefPtr *   ICConfigRefHandle;
+typedef struct ICConfigRef              ICConfigRef;
+typedef ICConfigRef *                   ICConfigRefPtr;
+typedef ICConfigRefPtr *                ICConfigRefHandle;
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /************************************************************************************************
   profile IDs
  ************************************************************************************************/
-typedef long         ICProfileID;
-typedef ICProfileID *ICProfileIDPtr;
+typedef long                            ICProfileID;
+typedef ICProfileID *                   ICProfileIDPtr;
 
 enum {
-	kICNilProfileID = 0
+  kICNilProfileID               = 0
 };
 
 /************************************************************************************************
@@ -174,16 +176,16 @@ enum {
  ************************************************************************************************/
 
 enum {
-	kICNoUserInteractionBit = 0
+  kICNoUserInteractionBit       = 0
 };
 
 enum {
-	kICNoUserInteractionMask = 0x00000001
+  kICNoUserInteractionMask      = 0x00000001
 };
 
 enum {
-	kICFileType = FOUR_CHAR_CODE( 'ICAp' ),
-	kICCreator = FOUR_CHAR_CODE( 'ICAp' )
+  kICFileType                   = FOUR_CHAR_CODE('ICAp'),
+  kICCreator                    = FOUR_CHAR_CODE('ICAp')
 };
 
 /************************************************************************************************
@@ -191,18 +193,18 @@ enum {
  ************************************************************************************************/
 
 enum {
-	kInternetEventClass = FOUR_CHAR_CODE( 'GURL' ),
-	kAEGetURL = FOUR_CHAR_CODE( 'GURL' ),
-	kAEFetchURL = FOUR_CHAR_CODE( 'FURL' ),
-	keyAEAttaching = FOUR_CHAR_CODE( 'Atch' )
+  kInternetEventClass           = FOUR_CHAR_CODE('GURL'),
+  kAEGetURL                     = FOUR_CHAR_CODE('GURL'),
+  kAEFetchURL                   = FOUR_CHAR_CODE('FURL'),
+  keyAEAttaching                = FOUR_CHAR_CODE('Atch')
 };
 
 /* AERegistry.i defines a compatible keyAEDestination */
 
 enum {
-	kICEditPreferenceEventClass = FOUR_CHAR_CODE( 'ICAp' ),
-	kICEditPreferenceEvent = FOUR_CHAR_CODE( 'ICAp' ),
-	keyICEditPreferenceDestination = FOUR_CHAR_CODE( 'dest' )
+  kICEditPreferenceEventClass   = FOUR_CHAR_CODE('ICAp'),
+  kICEditPreferenceEvent        = FOUR_CHAR_CODE('ICAp'),
+  keyICEditPreferenceDestination = FOUR_CHAR_CODE('dest')
 };
 
 /************************************************************************************************
@@ -210,51 +212,51 @@ enum {
  ************************************************************************************************/
 
 enum {
-	kICComponentVersion = 0, /* Return a component version, comparable to kICComponentInterfaceVersion  */
-	kICNumVersion = 1 /* Return a NumVersion structure  */
+  kICComponentVersion           = 0,    /* Return a component version, comparable to kICComponentInterfaceVersion  */
+  kICNumVersion                 = 1     /* Return a NumVersion structure  */
 };
 
 /************************************************************************************************
   types and constants for use with kICDocumentFont, et. al.
  ************************************************************************************************/
 struct ICFontRecord {
-	short  size;
-	Style  face;
-	char   pad;
-	Str255 font;
+  short               size;
+  Style               face;
+  char                pad;
+  Str255              font;
 };
-typedef struct ICFontRecord ICFontRecord;
-typedef ICFontRecord *      ICFontRecordPtr;
-typedef ICFontRecordPtr *   ICFontRecordHandle;
+typedef struct ICFontRecord             ICFontRecord;
+typedef ICFontRecord *                  ICFontRecordPtr;
+typedef ICFontRecordPtr *               ICFontRecordHandle;
 
 /************************************************************************************************
   types and constants for use with kICCharacterSet, et. al.
  ************************************************************************************************/
 struct ICCharTable {
-	unsigned char netToMac[256];
-	unsigned char macToNet[256];
+  unsigned char       netToMac[256];
+  unsigned char       macToNet[256];
 };
-typedef struct ICCharTable ICCharTable;
-typedef ICCharTable *      ICCharTablePtr;
-typedef ICCharTablePtr *   ICCharTableHandle;
+typedef struct ICCharTable              ICCharTable;
+typedef ICCharTable *                   ICCharTablePtr;
+typedef ICCharTablePtr *                ICCharTableHandle;
 
 /************************************************************************************************
   types and constants for use with kICHelper, et. al.
  ************************************************************************************************/
 struct ICAppSpec {
-	OSType fCreator;
-	Str63  name;
+  OSType              fCreator;
+  Str63               name;
 };
-typedef struct ICAppSpec ICAppSpec;
-typedef ICAppSpec *      ICAppSpecPtr;
-typedef ICAppSpecPtr *   ICAppSpecHandle;
+typedef struct ICAppSpec                ICAppSpec;
+typedef ICAppSpec *                     ICAppSpecPtr;
+typedef ICAppSpecPtr *                  ICAppSpecHandle;
 struct ICAppSpecList {
-	short     numberOfItems;
-	ICAppSpec appSpecs[1];
+  short               numberOfItems;
+  ICAppSpec           appSpecs[1];
 };
-typedef struct ICAppSpecList ICAppSpecList;
-typedef ICAppSpecList *      ICAppSpecListPtr;
-typedef ICAppSpecListPtr *   ICAppSpecListHandle;
+typedef struct ICAppSpecList            ICAppSpecList;
+typedef ICAppSpecList *                 ICAppSpecListPtr;
+typedef ICAppSpecListPtr *              ICAppSpecListHandle;
 
 /************************************************************************************************
   types and constants for use with kICDownloadFolder, et. al.
@@ -262,138 +264,138 @@ typedef ICAppSpecListPtr *   ICAppSpecListHandle;
 
 #if !OLDROUTINENAMES
 struct ICFileSpec {
-	Str31       volName;
-	long        volCreationDate;
-	FSSpec      fss;
-	AliasRecord alias;
-	/* plus extra data, aliasSize 0 means no alias manager present when*/
-	/* ICFileSpecification was created*/
+  Str31               volName;
+  long                volCreationDate;
+  FSSpec              fss;
+  AliasRecord         alias;
+                                              /* plus extra data, aliasSize 0 means no alias manager present when*/
+                                              /* ICFileSpecification was created*/
 };
-typedef struct ICFileSpec ICFileSpec;
-typedef ICFileSpec *      ICFileSpecPtr;
-typedef ICFileSpecPtr *   ICFileSpecHandle;
+typedef struct ICFileSpec               ICFileSpec;
+typedef ICFileSpec *                    ICFileSpecPtr;
+typedef ICFileSpecPtr *                 ICFileSpecHandle;
 #else
 struct ICFileSpec {
-	Str31       vol_name;
-	long        vol_creation_date;
-	FSSpec      fss;
-	AliasRecord alias;
+  Str31               vol_name;
+  long                vol_creation_date;
+  FSSpec              fss;
+  AliasRecord         alias;
 };
-typedef struct ICFileSpec ICFileSpec;
-typedef ICFileSpec *      ICFileSpecPtr;
-typedef ICFileSpecPtr *   ICFileSpecHandle;
-#endif /* !OLDROUTINENAMES */
+typedef struct ICFileSpec               ICFileSpec;
+typedef ICFileSpec *                    ICFileSpecPtr;
+typedef ICFileSpecPtr *                 ICFileSpecHandle;
+#endif  /* !OLDROUTINENAMES */
 
 enum {
-	kICFileSpecHeaderSize = sizeof( ICFileSpec ) - sizeof( AliasRecord )
+  kICFileSpecHeaderSize         = sizeof(ICFileSpec) - sizeof(AliasRecord)
 };
 
 /************************************************************************************************
   types and constants for use with ICMapFilename, et. al.
  ************************************************************************************************/
-typedef long  ICMapEntryFlags;
-typedef short ICFixedLength;
+typedef long                            ICMapEntryFlags;
+typedef short                           ICFixedLength;
 
 #if !OLDROUTINENAMES
 struct ICMapEntry {
-	short           totalLength;
-	ICFixedLength   fixedLength;
-	short           version;
-	OSType          fileType;
-	OSType          fileCreator;
-	OSType          postCreator;
-	ICMapEntryFlags flags;
-	/* variable part starts here*/
-	Str255 extension;
-	Str255 creatorAppName;
-	Str255 postAppName;
-	Str255 MIMEType;
-	Str255 entryName;
+  short               totalLength;
+  ICFixedLength       fixedLength;
+  short               version;
+  OSType              fileType;
+  OSType              fileCreator;
+  OSType              postCreator;
+  ICMapEntryFlags     flags;
+                                              /* variable part starts here*/
+  Str255              extension;
+  Str255              creatorAppName;
+  Str255              postAppName;
+  Str255              MIMEType;
+  Str255              entryName;
 };
-typedef struct ICMapEntry ICMapEntry;
-typedef ICMapEntry *      ICMapEntryPtr;
-typedef ICMapEntryPtr *   ICMapEntryHandle;
+typedef struct ICMapEntry               ICMapEntry;
+typedef ICMapEntry *                    ICMapEntryPtr;
+typedef ICMapEntryPtr *                 ICMapEntryHandle;
 
 #else
 struct ICMapEntry {
-	short           total_length;
-	ICFixedLength   fixed_length;
-	short           version;
-	OSType          file_type;
-	OSType          file_creator;
-	OSType          post_creator;
-	ICMapEntryFlags flags;
-	Str255          extension;
-	Str255          creator_app_name;
-	Str255          post_app_name;
-	Str255          MIME_type;
-	Str255          entry_name;
+  short               total_length;
+  ICFixedLength       fixed_length;
+  short               version;
+  OSType              file_type;
+  OSType              file_creator;
+  OSType              post_creator;
+  ICMapEntryFlags     flags;
+  Str255              extension;
+  Str255              creator_app_name;
+  Str255              post_app_name;
+  Str255              MIME_type;
+  Str255              entry_name;
 };
-typedef struct ICMapEntry ICMapEntry;
-typedef ICMapEntry *      ICMapEntryPtr;
-typedef ICMapEntryPtr *   ICMapEntryHandle;
-#endif /* !OLDROUTINENAMES */
+typedef struct ICMapEntry               ICMapEntry;
+typedef ICMapEntry *                    ICMapEntryPtr;
+typedef ICMapEntryPtr *                 ICMapEntryHandle;
+#endif  /* !OLDROUTINENAMES */
 
 enum {
-	kICMapFixedLength = 22 /* number in fixedLength field*/
-};
-
-enum {
-	kICMapBinaryBit = 0, /* file should be transfered in binary as opposed to text mode*/
-	kICMapResourceForkBit = 1, /* the resource fork of the file is significant*/
-	kICMapDataForkBit = 2, /* the data fork of the file is significant*/
-	kICMapPostBit = 3, /* post process using post fields*/
-	kICMapNotIncomingBit = 4, /* ignore this mapping for incoming files*/
-	kICMapNotOutgoingBit = 5 /* ignore this mapping for outgoing files*/
+  kICMapFixedLength             = 22    /* number in fixedLength field*/
 };
 
 enum {
-	kICMapBinaryMask = 0x00000001, /* file should be transfered in binary as opposed to text mode*/
-	kICMapResourceForkMask = 0x00000002, /* the resource fork of the file is significant*/
-	kICMapDataForkMask = 0x00000004, /* the data fork of the file is significant*/
-	kICMapPostMask = 0x00000008, /* post process using post fields*/
-	kICMapNotIncomingMask = 0x00000010, /* ignore this mapping for incoming files*/
-	kICMapNotOutgoingMask = 0x00000020 /* ignore this mapping for outgoing files*/
+  kICMapBinaryBit               = 0,    /* file should be transfered in binary as opposed to text mode*/
+  kICMapResourceForkBit         = 1,    /* the resource fork of the file is significant*/
+  kICMapDataForkBit             = 2,    /* the data fork of the file is significant*/
+  kICMapPostBit                 = 3,    /* post process using post fields*/
+  kICMapNotIncomingBit          = 4,    /* ignore this mapping for incoming files*/
+  kICMapNotOutgoingBit          = 5     /* ignore this mapping for outgoing files*/
+};
+
+enum {
+  kICMapBinaryMask              = 0x00000001, /* file should be transfered in binary as opposed to text mode*/
+  kICMapResourceForkMask        = 0x00000002, /* the resource fork of the file is significant*/
+  kICMapDataForkMask            = 0x00000004, /* the data fork of the file is significant*/
+  kICMapPostMask                = 0x00000008, /* post process using post fields*/
+  kICMapNotIncomingMask         = 0x00000010, /* ignore this mapping for incoming files*/
+  kICMapNotOutgoingMask         = 0x00000020 /* ignore this mapping for outgoing files*/
 };
 
 /************************************************************************************************
   types and constants for use with kICServices, et. al.
  ************************************************************************************************/
-typedef short ICServiceEntryFlags;
+typedef short                           ICServiceEntryFlags;
 struct ICServiceEntry {
-	Str255              name;
-	short               port;
-	ICServiceEntryFlags flags;
+  Str255              name;
+  short               port;
+  ICServiceEntryFlags  flags;
 };
-typedef struct ICServiceEntry ICServiceEntry;
-typedef ICServiceEntry *      ICServiceEntryPtr;
-typedef ICServiceEntryPtr *   ICServiceEntryHandle;
+typedef struct ICServiceEntry           ICServiceEntry;
+typedef ICServiceEntry *                ICServiceEntryPtr;
+typedef ICServiceEntryPtr *             ICServiceEntryHandle;
 
 enum {
-	kICServicesTCPBit = 0,
-	kICServicesUDPBit = 1 /* both bits can be set, which means the service is both TCP and UDP, eg daytime*/
+  kICServicesTCPBit             = 0,
+  kICServicesUDPBit             = 1     /* both bits can be set, which means the service is both TCP and UDP, eg daytime*/
 };
 
 enum {
-	kICServicesTCPMask = 0x00000001,
-	kICServicesUDPMask = 0x00000002 /* both bits can be set, which means the service is both TCP and UDP, eg daytime*/
+  kICServicesTCPMask            = 0x00000001,
+  kICServicesUDPMask            = 0x00000002 /* both bits can be set, which means the service is both TCP and UDP, eg daytime*/
 };
 
 struct ICServices {
-	short          count;
-	ICServiceEntry services[1];
+  short               count;
+  ICServiceEntry      services[1];
 };
-typedef struct ICServices ICServices;
-typedef ICServices *      ICServicesPtr;
-typedef ICServicesPtr *   ICServicesHandle;
+typedef struct ICServices               ICServices;
+typedef ICServices *                    ICServicesPtr;
+typedef ICServicesPtr *                 ICServicesHandle;
 
 /************************************************************************************************
   default file name, for internal use, overridden by a component resource
  ************************************************************************************************/
 
 #if CALL_NOT_IN_CARBON
-#define kICDefaultFileName "\pInternet Preferences"
-#endif /* CALL_NOT_IN_CARBON */
+#define kICDefaultFileName              "\pInternet Preferences"
+#endif  /* CALL_NOT_IN_CARBON */
 
 /************************************************************************************************
   keys
@@ -401,287 +403,287 @@ typedef ICServicesPtr *   ICServicesHandle;
 /* 
     key reserved for use by Internet Config 
 */
-#define kICReservedKey "\pkICReservedKey"
+#define kICReservedKey                  "\pkICReservedKey"
 /*
     STR# -- formatted, list of Archie servers  
 */
-#define kICArchieAll "\pArchieAll"
+#define kICArchieAll                    "\pArchieAll"
 /*
     PString -- formatted, preferred Archie server   
 */
-#define kICArchiePreferred "\pArchiePreferred"
+#define kICArchiePreferred              "\pArchiePreferred"
 /*
     ICCharTable -- Mac-to-Net and Net-to-Mac character translation   
 */
-#define kICCharacterSet "\pCharacterSet"
+#define kICCharacterSet                 "\pCharacterSet"
 /*
     ICFontRecord -- font used for proportional text   
 */
-#define kICDocumentFont "\pDocumentFont"
+#define kICDocumentFont                 "\pDocumentFont"
 /*
     ICFileSpec -- where to put newly downloaded files   
 */
-#define kICDownloadFolder "\pDownloadFolder"
+#define kICDownloadFolder               "\pDownloadFolder"
 /*
     PString -- user@host.domain, email address of user, ie return address   
 */
-#define kICEmail "\pEmail"
+#define kICEmail                        "\pEmail"
 /*
     PString -- host.domain, default FTP server   
 */
-#define kICFTPHost "\pFTPHost"
+#define kICFTPHost                      "\pFTPHost"
 /*
     PString -- second level FTP proxy authorisation   
 */
-#define kICFTPProxyAccount "\pFTPProxyAccount"
+#define kICFTPProxyAccount              "\pFTPProxyAccount"
 /*
     PString -- host.domain   
 */
-#define kICFTPProxyHost "\pFTPProxyHost"
+#define kICFTPProxyHost                 "\pFTPProxyHost"
 /*
     PString -- scrambled, password for FTPProxyUser   
 */
-#define kICFTPProxyPassword "\pFTPProxyPassword"
+#define kICFTPProxyPassword             "\pFTPProxyPassword"
 /*
     PString -- first level FTP proxy authorisation   
 */
-#define kICFTPProxyUser "\pFTPProxyUser"
+#define kICFTPProxyUser                 "\pFTPProxyUser"
 /*
     PString -- host.domain, default finger server   
 */
-#define kICFingerHost "\pFingerHost"
+#define kICFingerHost                   "\pFingerHost"
 /*
     PString -- host.domain, default Gopher server   
 */
-#define kICGopherHost "\pGopherHost"
+#define kICGopherHost                   "\pGopherHost"
 /*
     PString -- host.domain, see note in Prog Docs   
 */
-#define kICGopherProxy "\pGopherProxy"
+#define kICGopherProxy                  "\pGopherProxy"
 /*
     PString -- host.domain   
 */
-#define kICHTTPProxyHost "\pHTTPProxyHost"
+#define kICHTTPProxyHost                "\pHTTPProxyHost"
 /*
     ICAppSpec -- helpers for URL schemes   
 */
-#define kICHelper "\pHelper¥"
+#define kICHelper                       "\pHelper¥"
 /*
     PString -- description for URL scheme   
 */
-#define kICHelperDesc "\pHelperDesc¥"
+#define kICHelperDesc                   "\pHelperDesc¥"
 /*
     ICAppSpecList -- list of common helpers for URL schemes   
 */
-#define kICHelperList "\pHelperList¥"
+#define kICHelperList                   "\pHelperList¥"
 /*
     PString -- host.domain, Internet Relay Chat server   
 */
-#define kICIRCHost "\pIRCHost"
+#define kICIRCHost                      "\pIRCHost"
 /*
     STR# -- formatted, list of Info-Mac servers   
 */
-#define kICInfoMacAll "\pInfoMacAll"
+#define kICInfoMacAll                   "\pInfoMacAll"
 /*
     PString -- formatted, preferred Info-Mac server   
 */
-#define kICInfoMacPreferred "\pInfoMacPreferred"
+#define kICInfoMacPreferred             "\pInfoMacPreferred"
 /*
     PString -- string LDAP thing   
 */
-#define kICLDAPSearchbase "\pLDAPSearchbase"
+#define kICLDAPSearchbase               "\pLDAPSearchbase"
 /*
     PString -- host.domain   
 */
-#define kICLDAPServer "\pLDAPServer"
+#define kICLDAPServer                   "\pLDAPServer"
 /*
     ICFontRecord -- font used for lists of items (eg news article lists)   
 */
-#define kICListFont "\pListFont"
+#define kICListFont                     "\pListFont"
 /*
     PString -- host for MacSearch queries   
 */
-#define kICMacSearchHost "\pMacSearchHost"
+#define kICMacSearchHost                "\pMacSearchHost"
 /*
     PString -- user@host.domain, account from which to fetch mail   
 */
-#define kICMailAccount "\pMailAccount"
+#define kICMailAccount                  "\pMailAccount"
 /*
     TEXT -- extra headers for mail messages   
 */
-#define kICMailHeaders "\pMailHeaders"
+#define kICMailHeaders                  "\pMailHeaders"
 /*
     PString -- scrambled, password for MailAccount   
 */
-#define kICMailPassword "\pMailPassword"
+#define kICMailPassword                 "\pMailPassword"
 /*
     ICMapEntries -- file type mapping, see documentation   
 */
-#define kICMapping "\pMapping"
+#define kICMapping                      "\pMapping"
 /*
     PString -- host.domain, NNTP server   
 */
-#define kICNNTPHost "\pNNTPHost"
+#define kICNNTPHost                     "\pNNTPHost"
 /*
     PString -- host.domain, Network Time Protocol (NTP)   
 */
-#define kICNTPHost "\pNTPHost"
+#define kICNTPHost                      "\pNTPHost"
 /*
     Boolean   
 */
-#define kICNewMailDialog "\pNewMailDialog"
+#define kICNewMailDialog                "\pNewMailDialog"
 /*
     Boolean -- how to announce new mail   
 */
-#define kICNewMailFlashIcon "\pNewMailFlashIcon"
+#define kICNewMailFlashIcon             "\pNewMailFlashIcon"
 /*
     Boolean   
 */
-#define kICNewMailPlaySound "\pNewMailPlaySound"
+#define kICNewMailPlaySound             "\pNewMailPlaySound"
 /*
     PString   
 */
-#define kICNewMailSoundName "\pNewMailSoundName"
+#define kICNewMailSoundName             "\pNewMailSoundName"
 /*
     PString -- scrambled, password for NewsAuthUsername   
 */
-#define kICNewsAuthPassword "\pNewsAuthPassword"
+#define kICNewsAuthPassword             "\pNewsAuthPassword"
 /*
     PString -- user name for authorised news servers   
 */
-#define kICNewsAuthUsername "\pNewsAuthUsername"
+#define kICNewsAuthUsername             "\pNewsAuthUsername"
 /*
     TEXT -- extra headers for news messages   
 */
-#define kICNewsHeaders "\pNewsHeaders"
+#define kICNewsHeaders                  "\pNewsHeaders"
 /*
     STR# -- list of domains not to be proxied   
 */
-#define kICNoProxyDomains "\pNoProxyDomains"
+#define kICNoProxyDomains               "\pNoProxyDomains"
 /*
     PString -- for X-Organization string   
 */
-#define kICOrganization "\pOrganization"
+#define kICOrganization                 "\pOrganization"
 /*
     PString -- host.domain, default Ph server   
 */
-#define kICPhHost "\pPhHost"
+#define kICPhHost                       "\pPhHost"
 /*
     TEXT -- default response for finger servers   
 */
-#define kICPlan "\pPlan"
+#define kICPlan                         "\pPlan"
 /*
     ICFontRecord -- font used to print ScreenFont   
 */
-#define kICPrinterFont "\pPrinterFont"
+#define kICPrinterFont                  "\pPrinterFont"
 /*
     PString -- used to quote responses in news and mail   
 */
-#define kICQuotingString "\pQuotingString"
+#define kICQuotingString                "\pQuotingString"
 /*
     PString -- real name of user   
 */
-#define kICRealName "\pRealName"
+#define kICRealName                     "\pRealName"
 /*
     PString -- RTSP Proxy Host
 */
-#define kICRTSPProxyHost "\pRTSPProxyHost"
+#define kICRTSPProxyHost                "\pRTSPProxyHost"
 /*
     PString -- host.domain, SMTP server   
 */
-#define kICSMTPHost "\pSMTPHost"
+#define kICSMTPHost                     "\pSMTPHost"
 /*
     ICFontRecord -- font used for monospaced text (eg news articles)   
 */
-#define kICScreenFont "\pScreenFont"
+#define kICScreenFont                   "\pScreenFont"
 /*
     ICServices -- TCP and IP port-to-name mapping   
 */
-#define kICServices "\pServices"
+#define kICServices                     "\pServices"
 /*
     TEXT -- append to news and mail messages   
 */
-#define kICSignature "\pSignature"
+#define kICSignature                    "\pSignature"
 /*
     TEXT -- preferred mailing address   
 */
-#define kICSnailMailAddress "\pSnailMailAddress"
+#define kICSnailMailAddress             "\pSnailMailAddress"
 /*
     PString -- host.domain, remember that host.domain format allows ":port" and " port"  
 */
-#define kICSocksHost "\pSocksHost"
+#define kICSocksHost                    "\pSocksHost"
 /*
     PString -- host.domain, default Telnet address   
 */
-#define kICTelnetHost "\pTelnetHost"
+#define kICTelnetHost                   "\pTelnetHost"
 /*
     STR# -- formatted, list of UMich servers   
 */
-#define kICUMichAll "\pUMichAll"
+#define kICUMichAll                     "\pUMichAll"
 /*
     PString -- formatted, preferred UMich server   
 */
-#define kICUMichPreferred "\pUMichPreferred"
+#define kICUMichPreferred               "\pUMichPreferred"
 /*
     Boolean   
 */
-#define kICUseFTPProxy "\pUseFTPProxy"
+#define kICUseFTPProxy                  "\pUseFTPProxy"
 /*
     Boolean   
 */
-#define kICUseGopherProxy "\pUseGopherProxy"
+#define kICUseGopherProxy               "\pUseGopherProxy"
 /*
     Boolean   
 */
-#define kICUseHTTPProxy "\pUseHTTPProxy"
+#define kICUseHTTPProxy                 "\pUseHTTPProxy"
 /*
     Boolean -- use PASV command for FTP transfers   
 */
-#define kICUsePassiveFTP "\pUsePassiveFTP"
+#define kICUsePassiveFTP                "\pUsePassiveFTP"
 /*
     Boolean
 */
-#define kICUseRTSPProxy "\pUseRTSPProxy"
+#define kICUseRTSPProxy                 "\pUseRTSPProxy"
 /*
     Boolean   
 */
-#define kICUseSocks "\pUseSocks"
+#define kICUseSocks                     "\pUseSocks"
 /*
     PString -- no idea   
 */
-#define kICWAISGateway "\pWAISGateway"
+#define kICWAISGateway                  "\pWAISGateway"
 /*
     PString -- URL, users default WWW page   
 */
-#define kICWWWHomePage "\pWWWHomePage"
+#define kICWWWHomePage                  "\pWWWHomePage"
 /*
     RGBColor -- background colour for web pages   
 */
-#define kICWebBackgroundColour "\pWebBackgroundColour"
+#define kICWebBackgroundColour          "\pWebBackgroundColour"
 /*
     RGBColor -- colour for read links   
 */
-#define kICWebReadColor "\p646F6777¥WebReadColor"
+#define kICWebReadColor                 "\p646F6777¥WebReadColor"
 /*
     PString -- URL, users default search page   
 */
-#define kICWebSearchPagePrefs "\pWebSearchPagePrefs"
+#define kICWebSearchPagePrefs           "\pWebSearchPagePrefs"
 /*
     RGBColor -- colour for normal text   
 */
-#define kICWebTextColor "\pWebTextColor"
+#define kICWebTextColor                 "\pWebTextColor"
 /*
     Boolean -- whether to underline links   
 */
-#define kICWebUnderlineLinks "\p646F6777¥WebUnderlineLinks"
+#define kICWebUnderlineLinks            "\p646F6777¥WebUnderlineLinks"
 /*
     RGBColor -- colour for unread links   
 */
-#define kICWebUnreadColor "\p646F6777¥WebUnreadColor"
+#define kICWebUnreadColor               "\p646F6777¥WebUnreadColor"
 /*
     PString -- host.domain, default whois server   
 */
-#define kICWhoisHost "\pWhoisHost"
+#define kICWhoisHost                    "\pWhoisHost"
 
 /************************************************************************************************
 
@@ -734,8 +736,9 @@ typedef ICServicesPtr *   ICServicesHandle;
  */
 EXTERN_API( OSStatus )
 ICStart(
-    ICInstance *inst,
-    OSType      signature );
+  ICInstance *  inst,
+  OSType        signature);
+
 
 /* Call this at application initialisation. Set signature to a value
    * which has been regsitered with DTS to allow for future expansion
@@ -750,7 +753,8 @@ ICStart(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ICStop( ICInstance inst );
+ICStop(ICInstance inst);
+
 
 /* [b5] 
    * Call this at application initialisation, after which inst
@@ -766,9 +770,10 @@ ICStop( ICInstance inst );
  */
 EXTERN_API( OSStatus )
 ICGetVersion(
-    ICInstance inst,
-    long       whichVersion,
-    UInt32 *   version ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0032, 0x7000, 0xA82A );
+  ICInstance   inst,
+  long         whichVersion,
+  UInt32 *     version)                                       FIVEWORDINLINE(0x2F3C, 0x0008, 0x0032, 0x7000, 0xA82A);
+
 
 /* [r4] [c3] [b3] 
    * Returns the version of Internet Config.  Pass kICComponentVersion
@@ -787,9 +792,10 @@ ICGetVersion(
  */
 EXTERN_API( OSStatus )
 ICFindConfigFile(
-    ICInstance        inst,
-    short             count,
-    ICDirSpecArrayPtr folders ) FIVEWORDINLINE( 0x2F3C, 0x0006, 0x0002, 0x7000, 0xA82A );
+  ICInstance          inst,
+  short               count,
+  ICDirSpecArrayPtr   folders)                                FIVEWORDINLINE(0x2F3C, 0x0006, 0x0002, 0x7000, 0xA82A);
+
 
 /* [b5] 
    * Call to configure this connection to IC.
@@ -809,8 +815,9 @@ ICFindConfigFile(
  */
 EXTERN_API( OSStatus )
 ICFindUserConfigFile(
-    ICInstance inst,
-    ICDirSpec *where ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000E, 0x7000, 0xA82A );
+  ICInstance   inst,
+  ICDirSpec *  where)                                         FIVEWORDINLINE(0x2F3C, 0x0004, 0x000E, 0x7000, 0xA82A);
+
 
 /* [r1] [b5] 
    * Similar to ICFindConfigFile except that it only searches the folder
@@ -829,11 +836,12 @@ ICFindUserConfigFile(
  */
 EXTERN_API( OSStatus )
 ICGeneralFindConfigFile(
-    ICInstance        inst,
-    Boolean           searchPrefs,
-    Boolean           canCreate,
-    short             count,
-    ICDirSpecArrayPtr folders ) FIVEWORDINLINE( 0x2F3C, 0x000A, 0x001E, 0x7000, 0xA82A );
+  ICInstance          inst,
+  Boolean             searchPrefs,
+  Boolean             canCreate,
+  short               count,
+  ICDirSpecArrayPtr   folders)                                FIVEWORDINLINE(0x2F3C, 0x000A, 0x001E, 0x7000, 0xA82A);
+
 
 /* [r2] [b5] 
    * Call to configure this connection to IC.
@@ -856,7 +864,8 @@ ICGeneralFindConfigFile(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICChooseConfig( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0021, 0x7000, 0xA82A );
+ICChooseConfig(ICInstance inst)                               FIVEWORDINLINE(0x2F3C, 0x0000, 0x0021, 0x7000, 0xA82A);
+
 
 /* [r2] [b5] 
    * Requests the user to choose a configuration, typically using some
@@ -872,14 +881,15 @@ ICChooseConfig( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0021, 0x7000
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICChooseNewConfig( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0022, 0x7000, 0xA82A );
+ICChooseNewConfig(ICInstance inst)                            FIVEWORDINLINE(0x2F3C, 0x0000, 0x0022, 0x7000, 0xA82A);
+
 
 /* [r2] [b5] 
    * Requests the user to create a new configuration, typically using some
    * sort of modal dialog. If the user cancels the dialog the configuration
    * state will be unaffected.
    */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  ICGetConfigName()
@@ -891,9 +901,10 @@ ICChooseNewConfig( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0022, 0x7
  */
 EXTERN_API( OSStatus )
 ICGetConfigName(
-    ICInstance inst,
-    Boolean    longname,
-    Str255     name ) FIVEWORDINLINE( 0x2F3C, 0x0006, 0x0023, 0x7000, 0xA82A );
+  ICInstance   inst,
+  Boolean      longname,
+  Str255       name)                                          FIVEWORDINLINE(0x2F3C, 0x0006, 0x0023, 0x7000, 0xA82A);
+
 
 /* [r2] [c1] [b3] 
    * Returns a string that describes the current configuration at a user
@@ -915,8 +926,9 @@ ICGetConfigName(
  */
 EXTERN_API( OSStatus )
 ICGetConfigReference(
-    ICInstance        inst,
-    ICConfigRefHandle ref ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x001F, 0x7000, 0xA82A );
+  ICInstance          inst,
+  ICConfigRefHandle   ref)                                    FIVEWORDINLINE(0x2F3C, 0x0004, 0x001F, 0x7000, 0xA82A);
+
 
 /* [r2] [c1] [b3] 
    * Returns a self-contained reference to the instance's current
@@ -934,9 +946,10 @@ ICGetConfigReference(
  */
 EXTERN_API( OSStatus )
 ICSetConfigReference(
-    ICInstance        inst,
-    ICConfigRefHandle ref,
-    long              flags ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0020, 0x7000, 0xA82A );
+  ICInstance          inst,
+  ICConfigRefHandle   ref,
+  long                flags)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x0020, 0x7000, 0xA82A);
+
 
 /* [r2] [b5] 
    * Reconfigures the instance using a configuration reference that was
@@ -961,8 +974,9 @@ ICSetConfigReference(
  */
 EXTERN_API( OSStatus )
 ICSpecifyConfigFile(
-    ICInstance inst,
-    FSSpec *   config ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0003, 0x7000, 0xA82A );
+  ICInstance   inst,
+  FSSpec *     config)                                        FIVEWORDINLINE(0x2F3C, 0x0004, 0x0003, 0x7000, 0xA82A);
+
 
 /* [b5] 
    * For use only by the IC application.
@@ -978,7 +992,8 @@ ICSpecifyConfigFile(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICRefreshCaches( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002F, 0x7000, 0xA82A );
+ICRefreshCaches(ICInstance inst)                              FIVEWORDINLINE(0x2F3C, 0x0000, 0x002F, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b3] 
    * For use only by the IC application.
@@ -986,7 +1001,7 @@ ICRefreshCaches( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002F, 0x700
    * future IC implementation that doesn't use explicit preference files.
    */
 /* ***** Getting Information *****  */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  ICGetSeed()
@@ -998,8 +1013,9 @@ ICRefreshCaches( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002F, 0x700
  */
 EXTERN_API( OSStatus )
 ICGetSeed(
-    ICInstance inst,
-    long *     seed ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0004, 0x7000, 0xA82A );
+  ICInstance   inst,
+  long *       seed)                                          FIVEWORDINLINE(0x2F3C, 0x0004, 0x0004, 0x7000, 0xA82A);
+
 
 /* [c3] [b3] 
    * Returns the current seed for the IC prefs database.
@@ -1016,8 +1032,9 @@ ICGetSeed(
  */
 EXTERN_API( OSStatus )
 ICGetPerm(
-    ICInstance inst,
-    ICPerm *   perm ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000D, 0x7000, 0xA82A );
+  ICInstance   inst,
+  ICPerm *     perm)                                          FIVEWORDINLINE(0x2F3C, 0x0004, 0x000D, 0x7000, 0xA82A);
+
 
 /* [c3] [b3] 
    * Returns the access permissions currently associated with this instance.
@@ -1035,8 +1052,9 @@ ICGetPerm(
  */
 EXTERN_API( OSStatus )
 ICDefaultFileName(
-    ICInstance inst,
-    Str63      name ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000B, 0x7000, 0xA82A );
+  ICInstance   inst,
+  Str63        name)                                          FIVEWORDINLINE(0x2F3C, 0x0004, 0x000B, 0x7000, 0xA82A);
+
 
 /* [c3] [b3] 
    * Returns the default file name for IC preference files.
@@ -1059,8 +1077,9 @@ ICDefaultFileName(
  */
 EXTERN_API( OSStatus )
 ICGetComponentInstance(
-    ICInstance         inst,
-    ComponentInstance *componentInst );
+  ICInstance           inst,
+  ComponentInstance *  componentInst);
+
 
 /* [c3] [b3] 
    * Returns noErr and the connection to the IC component,
@@ -1068,7 +1087,7 @@ ICGetComponentInstance(
    * Returns badComponenInstance and nil if we're operating with glue.
    */
 /* ***** Reading and Writing Preferences *****  */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  ICBegin()
@@ -1080,8 +1099,9 @@ ICGetComponentInstance(
  */
 EXTERN_API( OSStatus )
 ICBegin(
-    ICInstance inst,
-    ICPerm     perm ) FIVEWORDINLINE( 0x2F3C, 0x0002, 0x0005, 0x7000, 0xA82A );
+  ICInstance   inst,
+  ICPerm       perm)                                          FIVEWORDINLINE(0x2F3C, 0x0002, 0x0005, 0x7000, 0xA82A);
+
 
 /* [c1] [b5] 
    * Starting reading or writing multiple preferences.
@@ -1102,11 +1122,12 @@ ICBegin(
  */
 EXTERN_API( OSStatus )
 ICGetPref(
-    ICInstance       inst,
-    ConstStr255Param key,
-    ICAttr *         attr,
-    void *           buf,
-    long *           size ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0006, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key,
+  ICAttr *           attr,
+  void *             buf,
+  long *             size)                                    FIVEWORDINLINE(0x2F3C, 0x0010, 0x0006, 0x7000, 0xA82A);
+
 
 /* [c1] [b4] 
    * Reads the preference specified by key from the IC database to the
@@ -1133,11 +1154,12 @@ ICGetPref(
  */
 EXTERN_API( OSStatus )
 ICSetPref(
-    ICInstance       inst,
-    ConstStr255Param key,
-    ICAttr           attr,
-    const void *     buf,
-    long             size ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0007, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key,
+  ICAttr             attr,
+  const void *       buf,
+  long               size)                                    FIVEWORDINLINE(0x2F3C, 0x0010, 0x0007, 0x7000, 0xA82A);
+
 
 /* [c1] [b4] 
    * Sets the preference specified by key from the IC database to the
@@ -1162,10 +1184,11 @@ ICSetPref(
  */
 EXTERN_API( OSStatus )
 ICFindPrefHandle(
-    ICInstance       inst,
-    ConstStr255Param key,
-    ICAttr *         attr,
-    Handle           prefh ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0024, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key,
+  ICAttr *           attr,
+  Handle             prefh)                                   FIVEWORDINLINE(0x2F3C, 0x000C, 0x0024, 0x7000, 0xA82A);
+
 
 /* [r2] [c1] [b4] 
    * This routine effectively replaces ICGetPrefHandle.
@@ -1186,10 +1209,11 @@ ICFindPrefHandle(
  */
 EXTERN_API( OSStatus )
 ICGetPrefHandle(
-    ICInstance       inst,
-    ConstStr255Param key,
-    ICAttr *         attr,
-    Handle *         prefh ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x001A, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key,
+  ICAttr *           attr,
+  Handle *           prefh)                                   FIVEWORDINLINE(0x2F3C, 0x000C, 0x001A, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b4] 
    * This routine is now obsolete. Use ICFindPrefHandle instead.
@@ -1213,10 +1237,11 @@ ICGetPrefHandle(
  */
 EXTERN_API( OSStatus )
 ICSetPrefHandle(
-    ICInstance       inst,
-    ConstStr255Param key,
-    ICAttr           attr,
-    Handle           prefh ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x001B, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key,
+  ICAttr             attr,
+  Handle             prefh)                                   FIVEWORDINLINE(0x2F3C, 0x000C, 0x001B, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b4] 
    * Sets the preference specified by key from the IC database to the
@@ -1240,8 +1265,9 @@ ICSetPrefHandle(
  */
 EXTERN_API( OSStatus )
 ICCountPref(
-    ICInstance inst,
-    long *     count ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0008, 0x7000, 0xA82A );
+  ICInstance   inst,
+  long *       count)                                         FIVEWORDINLINE(0x2F3C, 0x0004, 0x0008, 0x7000, 0xA82A);
+
 
 /* [c1] [b1] 
    * Counts the total number of preferences.
@@ -1257,9 +1283,10 @@ ICCountPref(
  */
 EXTERN_API( OSStatus )
 ICGetIndPref(
-    ICInstance inst,
-    long       index,
-    Str255     key ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0009, 0x7000, 0xA82A );
+  ICInstance   inst,
+  long         index,
+  Str255       key)                                           FIVEWORDINLINE(0x2F3C, 0x0008, 0x0009, 0x7000, 0xA82A);
+
 
 /* [c1] [b1] 
    * Returns the key of the index'th preference.
@@ -1277,8 +1304,9 @@ ICGetIndPref(
  */
 EXTERN_API( OSStatus )
 ICDeletePref(
-    ICInstance       inst,
-    ConstStr255Param key ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000C, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key)                                     FIVEWORDINLINE(0x2F3C, 0x0004, 0x000C, 0x7000, 0xA82A);
+
 
 /* [c1] [b2] 
    * Deletes the preference specified by key.
@@ -1294,7 +1322,8 @@ ICDeletePref(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ICEnd( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x000A, 0x7000, 0xA82A );
+ICEnd(ICInstance inst)                                        FIVEWORDINLINE(0x2F3C, 0x0000, 0x000A, 0x7000, 0xA82A);
+
 
 /* [c1] [b1] 
    * Terminates a preference session, as started by ICBegin.
@@ -1310,9 +1339,10 @@ ICEnd( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x000A, 0x7000, 0xA82A 
  */
 EXTERN_API( OSStatus )
 ICGetDefaultPref(
-    ICInstance       inst,
-    ConstStr255Param key,
-    Handle           prefH ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0031, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key,
+  Handle             prefH)                                   FIVEWORDINLINE(0x2F3C, 0x0008, 0x0031, 0x7000, 0xA82A);
+
 
 /* [r4] [c3] [b5] 
    * Returns a default preference value for the specified key.  You
@@ -1329,8 +1359,9 @@ ICGetDefaultPref(
  */
 EXTERN_API( OSStatus )
 ICEditPreferences(
-    ICInstance       inst,
-    ConstStr255Param key ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000F, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   key)                                     FIVEWORDINLINE(0x2F3C, 0x0004, 0x000F, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Instructs IC to display the user interface associated with editing
@@ -1355,12 +1386,13 @@ ICEditPreferences(
  */
 EXTERN_API( OSStatus )
 ICLaunchURL(
-    ICInstance       inst,
-    ConstStr255Param hint,
-    const void *     data,
-    long             len,
-    long *           selStart,
-    long *           selEnd ) FIVEWORDINLINE( 0x2F3C, 0x0014, 0x0011, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   hint,
+  const void *       data,
+  long               len,
+  long *             selStart,
+  long *             selEnd)                                  FIVEWORDINLINE(0x2F3C, 0x0014, 0x0011, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Parses a URL out of the specified text and feeds it off to the
@@ -1389,13 +1421,14 @@ ICLaunchURL(
  */
 EXTERN_API( OSStatus )
 ICParseURL(
-    ICInstance       inst,
-    ConstStr255Param hint,
-    const void *     data,
-    long             len,
-    long *           selStart,
-    long *           selEnd,
-    Handle           url ) FIVEWORDINLINE( 0x2F3C, 0x0018, 0x0010, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   hint,
+  const void *       data,
+  long               len,
+  long *             selStart,
+  long *             selEnd,
+  Handle             url)                                     FIVEWORDINLINE(0x2F3C, 0x0018, 0x0010, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Parses a URL out of the specified text and returns it in a canonical form
@@ -1424,10 +1457,11 @@ ICParseURL(
  */
 EXTERN_API( OSStatus )
 ICCreateGURLEvent(
-    ICInstance  inst,
-    OSType      helperCreator,
-    Handle      urlH,
-    AppleEvent *theEvent ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0033, 0x7000, 0xA82A );
+  ICInstance    inst,
+  OSType        helperCreator,
+  Handle        urlH,
+  AppleEvent *  theEvent)                                     FIVEWORDINLINE(0x2F3C, 0x000C, 0x0033, 0x7000, 0xA82A);
+
 
 /* [r4] [c1] [b3] 
    * Creates a GURL Apple event, targetted at the application whose creator
@@ -1443,8 +1477,9 @@ ICCreateGURLEvent(
  */
 EXTERN_API( OSStatus )
 ICSendGURLEvent(
-    ICInstance  inst,
-    AppleEvent *theEvent ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0034, 0x7000, 0xA82A );
+  ICInstance    inst,
+  AppleEvent *  theEvent)                                     FIVEWORDINLINE(0x2F3C, 0x0004, 0x0034, 0x7000, 0xA82A);
+
 
 /* [r4] [c1] [b3] 
    * Sends theEvent to the target application.
@@ -1465,9 +1500,10 @@ ICSendGURLEvent(
  */
 EXTERN_API( OSStatus )
 ICMapFilename(
-    ICInstance       inst,
-    ConstStr255Param filename,
-    ICMapEntry *     entry ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0018, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ConstStr255Param   filename,
+  ICMapEntry *       entry)                                   FIVEWORDINLINE(0x2F3C, 0x0008, 0x0018, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b4] 
    * Takes the name of an incoming file and returns the most appropriate
@@ -1485,11 +1521,12 @@ ICMapFilename(
  */
 EXTERN_API( OSStatus )
 ICMapTypeCreator(
-    ICInstance       inst,
-    OSType           fType,
-    OSType           fCreator,
-    ConstStr255Param filename,
-    ICMapEntry *     entry ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0019, 0x7000, 0xA82A );
+  ICInstance         inst,
+  OSType             fType,
+  OSType             fCreator,
+  ConstStr255Param   filename,
+  ICMapEntry *       entry)                                   FIVEWORDINLINE(0x2F3C, 0x0010, 0x0019, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b4] 
    * Takes the type and creator (and optionally the name) of an outgoing
@@ -1509,10 +1546,11 @@ ICMapTypeCreator(
  */
 EXTERN_API( OSStatus )
 ICMapEntriesFilename(
-    ICInstance       inst,
-    Handle           entries,
-    ConstStr255Param filename,
-    ICMapEntry *     entry ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x001C, 0x7000, 0xA82A );
+  ICInstance         inst,
+  Handle             entries,
+  ConstStr255Param   filename,
+  ICMapEntry *       entry)                                   FIVEWORDINLINE(0x2F3C, 0x000C, 0x001C, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Takes the name of an incoming file and returns the most appropriate
@@ -1531,12 +1569,13 @@ ICMapEntriesFilename(
  */
 EXTERN_API( OSStatus )
 ICMapEntriesTypeCreator(
-    ICInstance       inst,
-    Handle           entries,
-    OSType           fType,
-    OSType           fCreator,
-    ConstStr255Param filename,
-    ICMapEntry *     entry ) FIVEWORDINLINE( 0x2F3C, 0x0014, 0x001D, 0x7000, 0xA82A );
+  ICInstance         inst,
+  Handle             entries,
+  OSType             fType,
+  OSType             fCreator,
+  ConstStr255Param   filename,
+  ICMapEntry *       entry)                                   FIVEWORDINLINE(0x2F3C, 0x0014, 0x001D, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Takes the type and creator (and optionally the name) of an outgoing
@@ -1557,9 +1596,10 @@ ICMapEntriesTypeCreator(
  */
 EXTERN_API( OSStatus )
 ICCountMapEntries(
-    ICInstance inst,
-    Handle     entries,
-    long *     count ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0012, 0x7000, 0xA82A );
+  ICInstance   inst,
+  Handle       entries,
+  long *       count)                                         FIVEWORDINLINE(0x2F3C, 0x0008, 0x0012, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Counts the number of entries in the mappings database.
@@ -1576,11 +1616,12 @@ ICCountMapEntries(
  */
 EXTERN_API( OSStatus )
 ICGetIndMapEntry(
-    ICInstance  inst,
-    Handle      entries,
-    long        index,
-    long *      pos,
-    ICMapEntry *entry ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0013, 0x7000, 0xA82A );
+  ICInstance    inst,
+  Handle        entries,
+  long          index,
+  long *        pos,
+  ICMapEntry *  entry)                                        FIVEWORDINLINE(0x2F3C, 0x0010, 0x0013, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Gets the index'th entry in the mappings database.
@@ -1601,10 +1642,11 @@ ICGetIndMapEntry(
  */
 EXTERN_API( OSStatus )
 ICGetMapEntry(
-    ICInstance  inst,
-    Handle      entries,
-    long        pos,
-    ICMapEntry *entry ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0014, 0x7000, 0xA82A );
+  ICInstance    inst,
+  Handle        entries,
+  long          pos,
+  ICMapEntry *  entry)                                        FIVEWORDINLINE(0x2F3C, 0x000C, 0x0014, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Returns the entry located at position pos in the mappings database.
@@ -1623,10 +1665,11 @@ ICGetMapEntry(
  */
 EXTERN_API( OSStatus )
 ICSetMapEntry(
-    ICInstance        inst,
-    Handle            entries,
-    long              pos,
-    const ICMapEntry *entry ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0015, 0x7000, 0xA82A );
+  ICInstance          inst,
+  Handle              entries,
+  long                pos,
+  const ICMapEntry *  entry)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x0015, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Sets the entry located at position pos in the mappings database.
@@ -1647,9 +1690,10 @@ ICSetMapEntry(
  */
 EXTERN_API( OSStatus )
 ICDeleteMapEntry(
-    ICInstance inst,
-    Handle     entries,
-    long       pos ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0016, 0x7000, 0xA82A );
+  ICInstance   inst,
+  Handle       entries,
+  long         pos)                                           FIVEWORDINLINE(0x2F3C, 0x0008, 0x0016, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Deletes the mappings database entry at pos.
@@ -1668,9 +1712,10 @@ ICDeleteMapEntry(
  */
 EXTERN_API( OSStatus )
 ICAddMapEntry(
-    ICInstance        inst,
-    Handle            entries,
-    const ICMapEntry *entry ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0017, 0x7000, 0xA82A );
+  ICInstance          inst,
+  Handle              entries,
+  const ICMapEntry *  entry)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x0017, 0x7000, 0xA82A);
+
 
 /* [r1] [c1] [b3] 
    * Adds an entry to the mappings database.
@@ -1689,8 +1734,9 @@ ICAddMapEntry(
  */
 EXTERN_API( OSStatus )
 ICGetCurrentProfile(
-    ICInstance   inst,
-    ICProfileID *currentID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0025, 0x7000, 0xA82A );
+  ICInstance     inst,
+  ICProfileID *  currentID)                                   FIVEWORDINLINE(0x2F3C, 0x0004, 0x0025, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b3] 
    * Returns the profile ID of the current profile.
@@ -1705,8 +1751,9 @@ ICGetCurrentProfile(
  */
 EXTERN_API( OSStatus )
 ICSetCurrentProfile(
-    ICInstance  inst,
-    ICProfileID newID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0026, 0x7000, 0xA82A );
+  ICInstance    inst,
+  ICProfileID   newID)                                        FIVEWORDINLINE(0x2F3C, 0x0004, 0x0026, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b3] 
    * Sets the current profile to the profile specified in newProfile.
@@ -1721,8 +1768,9 @@ ICSetCurrentProfile(
  */
 EXTERN_API( OSStatus )
 ICCountProfiles(
-    ICInstance inst,
-    long *     count ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0027, 0x7000, 0xA82A );
+  ICInstance   inst,
+  long *       count)                                         FIVEWORDINLINE(0x2F3C, 0x0004, 0x0027, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b1] 
    * Returns the total number of profiles.
@@ -1737,9 +1785,10 @@ ICCountProfiles(
  */
 EXTERN_API( OSStatus )
 ICGetIndProfile(
-    ICInstance   inst,
-    long         index,
-    ICProfileID *thisID ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0028, 0x7000, 0xA82A );
+  ICInstance     inst,
+  long           index,
+  ICProfileID *  thisID)                                      FIVEWORDINLINE(0x2F3C, 0x0008, 0x0028, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b1] 
    * Returns the profile ID of the index'th profile.  index must be positive.
@@ -1756,9 +1805,10 @@ ICGetIndProfile(
  */
 EXTERN_API( OSStatus )
 ICGetProfileName(
-    ICInstance  inst,
-    ICProfileID thisID,
-    Str255      name ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0029, 0x7000, 0xA82A );
+  ICInstance    inst,
+  ICProfileID   thisID,
+  Str255        name)                                         FIVEWORDINLINE(0x2F3C, 0x0008, 0x0029, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b3] 
    * Returns the name of a profile given its ID.  The name may not uniquely
@@ -1775,9 +1825,10 @@ ICGetProfileName(
  */
 EXTERN_API( OSStatus )
 ICSetProfileName(
-    ICInstance       inst,
-    ICProfileID      thisID,
-    ConstStr255Param name ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x002A, 0x7000, 0xA82A );
+  ICInstance         inst,
+  ICProfileID        thisID,
+  ConstStr255Param   name)                                    FIVEWORDINLINE(0x2F3C, 0x0008, 0x002A, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b3] 
    * This routine sets the name of the specified profile.  Profile names
@@ -1793,9 +1844,10 @@ ICSetProfileName(
  */
 EXTERN_API( OSStatus )
 ICAddProfile(
-    ICInstance   inst,
-    ICProfileID  prototypeID,
-    ICProfileID *newID ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x002B, 0x7000, 0xA82A );
+  ICInstance     inst,
+  ICProfileID    prototypeID,
+  ICProfileID *  newID)                                       FIVEWORDINLINE(0x2F3C, 0x0008, 0x002B, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b2] 
    * If prototypeID = kICNilProfileID, this routine
@@ -1815,8 +1867,9 @@ ICAddProfile(
  */
 EXTERN_API( OSStatus )
 ICDeleteProfile(
-    ICInstance  inst,
-    ICProfileID thisID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x002C, 0x7000, 0xA82A );
+  ICInstance    inst,
+  ICProfileID   thisID)                                       FIVEWORDINLINE(0x2F3C, 0x0004, 0x002C, 0x7000, 0xA82A);
+
 
 /* [r3] [c1] [b2] 
    * This routine deletes the profile specified by
@@ -1837,7 +1890,8 @@ ICDeleteProfile(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICRequiresInterruptSafe( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002D, 0x7000, 0xA82A );
+ICRequiresInterruptSafe(ICInstance inst)                      FIVEWORDINLINE(0x2F3C, 0x0000, 0x002D, 0x7000, 0xA82A);
+
 
 /* [r3] [c2] [b3] 
    * You must call this routine before calling GetMapEntryInterruptSafe
@@ -1855,9 +1909,10 @@ ICRequiresInterruptSafe( ICInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002
  */
 EXTERN_API( OSStatus )
 ICGetMappingInterruptSafe(
-    ICInstance inst,
-    Ptr *      mappingPref,
-    long *     mappingPrefSize ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x002E, 0x7000, 0xA82A );
+  ICInstance   inst,
+  Ptr *        mappingPref,
+  long *       mappingPrefSize)                               FIVEWORDINLINE(0x2F3C, 0x0008, 0x002E, 0x7000, 0xA82A);
+
 
 /* [r3] [c2] [b3] 
    * Returns the "Mapping" preference in an interrupt safe fashion.
@@ -1876,8 +1931,9 @@ ICGetMappingInterruptSafe(
  */
 EXTERN_API( OSStatus )
 ICGetSeedInterruptSafe(
-    ICInstance inst,
-    long *     seed ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0030, 0x7000, 0xA82A );
+  ICInstance   inst,
+  long *       seed)                                          FIVEWORDINLINE(0x2F3C, 0x0004, 0x0030, 0x7000, 0xA82A);
+
 
 /* [r3] [c2] [b3] 
    * An interrupt safe version of ICGetSeed.
@@ -1893,8 +1949,9 @@ ICGetSeedInterruptSafe(
  */
 EXTERN_API( OSStatus )
 ICCStart(
-    ComponentInstance *inst,
-    OSType             creator );
+  ComponentInstance *  inst,
+  OSType               creator);
+
 
 /* See comment for ICCStart.  */
 /*
@@ -1906,7 +1963,8 @@ ICCStart(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICCStop( ComponentInstance inst );
+ICCStop(ComponentInstance inst);
+
 
 /* See comment for ICCStop.  */
 /*
@@ -1919,9 +1977,10 @@ ICCStop( ComponentInstance inst );
  */
 EXTERN_API( OSStatus )
 ICCGetVersion(
-    ComponentInstance inst,
-    long              whichVersion,
-    UInt32 *          version ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0032, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  long                whichVersion,
+  UInt32 *            version)                                FIVEWORDINLINE(0x2F3C, 0x0008, 0x0032, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetVersion.  */
 /* ***** Specifying a Configuration *****  */
@@ -1935,9 +1994,10 @@ ICCGetVersion(
  */
 EXTERN_API( OSStatus )
 ICCFindConfigFile(
-    ComponentInstance inst,
-    short             count,
-    ICDirSpecArrayPtr folders ) FIVEWORDINLINE( 0x2F3C, 0x0006, 0x0002, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  short               count,
+  ICDirSpecArrayPtr   folders)                                FIVEWORDINLINE(0x2F3C, 0x0006, 0x0002, 0x7000, 0xA82A);
+
 
 /* See comment for ICCFindConfigFile.  */
 /*
@@ -1950,8 +2010,9 @@ ICCFindConfigFile(
  */
 EXTERN_API( OSStatus )
 ICCFindUserConfigFile(
-    ComponentInstance inst,
-    ICDirSpec *       where ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000E, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICDirSpec *         where)                                  FIVEWORDINLINE(0x2F3C, 0x0004, 0x000E, 0x7000, 0xA82A);
+
 
 /* See comment for ICCFindUserConfigFile.  */
 /*
@@ -1964,11 +2025,12 @@ ICCFindUserConfigFile(
  */
 EXTERN_API( OSStatus )
 ICCGeneralFindConfigFile(
-    ComponentInstance inst,
-    Boolean           searchPrefs,
-    Boolean           canCreate,
-    short             count,
-    ICDirSpecArrayPtr folders ) FIVEWORDINLINE( 0x2F3C, 0x000A, 0x001E, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Boolean             searchPrefs,
+  Boolean             canCreate,
+  short               count,
+  ICDirSpecArrayPtr   folders)                                FIVEWORDINLINE(0x2F3C, 0x000A, 0x001E, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGeneralFindConfigFile.  */
 /*
@@ -1980,7 +2042,8 @@ ICCGeneralFindConfigFile(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICCChooseConfig( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0021, 0x7000, 0xA82A );
+ICCChooseConfig(ComponentInstance inst)                       FIVEWORDINLINE(0x2F3C, 0x0000, 0x0021, 0x7000, 0xA82A);
+
 
 /* See comment for ICCChooseConfig.  */
 /*
@@ -1992,7 +2055,8 @@ ICCChooseConfig( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0021
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICCChooseNewConfig( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0022, 0x7000, 0xA82A );
+ICCChooseNewConfig(ComponentInstance inst)                    FIVEWORDINLINE(0x2F3C, 0x0000, 0x0022, 0x7000, 0xA82A);
+
 
 /* See comment for ICCChooseNewConfig.  */
 /*
@@ -2005,9 +2069,10 @@ ICCChooseNewConfig( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0
  */
 EXTERN_API( OSStatus )
 ICCGetConfigName(
-    ComponentInstance inst,
-    Boolean           longname,
-    Str255            name ) FIVEWORDINLINE( 0x2F3C, 0x0006, 0x0023, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Boolean             longname,
+  Str255              name)                                   FIVEWORDINLINE(0x2F3C, 0x0006, 0x0023, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetConfigName.  */
 /*
@@ -2020,8 +2085,9 @@ ICCGetConfigName(
  */
 EXTERN_API( OSStatus )
 ICCGetConfigReference(
-    ComponentInstance inst,
-    ICConfigRefHandle ref ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x001F, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICConfigRefHandle   ref)                                    FIVEWORDINLINE(0x2F3C, 0x0004, 0x001F, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetConfigReference.  */
 /*
@@ -2034,9 +2100,10 @@ ICCGetConfigReference(
  */
 EXTERN_API( OSStatus )
 ICCSetConfigReference(
-    ComponentInstance inst,
-    ICConfigRefHandle ref,
-    long              flags ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0020, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICConfigRefHandle   ref,
+  long                flags)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x0020, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSetConfigReference.  */
 /* ***** Private Routines *****
@@ -2054,8 +2121,9 @@ ICCSetConfigReference(
  */
 EXTERN_API( OSStatus )
 ICCSpecifyConfigFile(
-    ComponentInstance inst,
-    FSSpec *          config ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0003, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  FSSpec *            config)                                 FIVEWORDINLINE(0x2F3C, 0x0004, 0x0003, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSpecifyConfigFile.  */
 /*
@@ -2067,7 +2135,8 @@ ICCSpecifyConfigFile(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICCRefreshCaches( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002F, 0x7000, 0xA82A );
+ICCRefreshCaches(ComponentInstance inst)                      FIVEWORDINLINE(0x2F3C, 0x0000, 0x002F, 0x7000, 0xA82A);
+
 
 /* See comment for ICCRefreshCaches.  */
 /* ***** Getting Information *****  */
@@ -2081,8 +2150,9 @@ ICCRefreshCaches( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002
  */
 EXTERN_API( OSStatus )
 ICCGetSeed(
-    ComponentInstance inst,
-    long *            seed ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0004, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  long *              seed)                                   FIVEWORDINLINE(0x2F3C, 0x0004, 0x0004, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetSeed.  */
 /*
@@ -2095,8 +2165,9 @@ ICCGetSeed(
  */
 EXTERN_API( OSStatus )
 ICCGetPerm(
-    ComponentInstance inst,
-    ICPerm *          perm ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000D, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICPerm *            perm)                                   FIVEWORDINLINE(0x2F3C, 0x0004, 0x000D, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetPerm.  */
 /*
@@ -2109,8 +2180,9 @@ ICCGetPerm(
  */
 EXTERN_API( OSStatus )
 ICCDefaultFileName(
-    ComponentInstance inst,
-    Str63             name ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000B, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Str63               name)                                   FIVEWORDINLINE(0x2F3C, 0x0004, 0x000B, 0x7000, 0xA82A);
+
 
 /* See comment for ICCDefaultFileName.  */
 /*
@@ -2123,8 +2195,9 @@ ICCDefaultFileName(
  */
 EXTERN_API( OSStatus )
 ICCGetComponentInstance(
-    ComponentInstance  inst,
-    ComponentInstance *componentInst );
+  ComponentInstance    inst,
+  ComponentInstance *  componentInst);
+
 
 /* See comment for ICCGetComponentInstance.  */
 /* ***** Reading and Writing Preferences *****  */
@@ -2138,8 +2211,9 @@ ICCGetComponentInstance(
  */
 EXTERN_API( OSStatus )
 ICCBegin(
-    ComponentInstance inst,
-    ICPerm            perm ) FIVEWORDINLINE( 0x2F3C, 0x0002, 0x0005, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICPerm              perm)                                   FIVEWORDINLINE(0x2F3C, 0x0002, 0x0005, 0x7000, 0xA82A);
+
 
 /* See comment for ICCBegin.  */
 /*
@@ -2152,11 +2226,12 @@ ICCBegin(
  */
 EXTERN_API( OSStatus )
 ICCGetPref(
-    ComponentInstance inst,
-    ConstStr255Param  key,
-    ICAttr *          attr,
-    Ptr               buf,
-    long *            size ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0006, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key,
+  ICAttr *            attr,
+  Ptr                 buf,
+  long *              size)                                   FIVEWORDINLINE(0x2F3C, 0x0010, 0x0006, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetPref.  */
 /*
@@ -2169,11 +2244,12 @@ ICCGetPref(
  */
 EXTERN_API( OSStatus )
 ICCSetPref(
-    ComponentInstance inst,
-    ConstStr255Param  key,
-    ICAttr            attr,
-    Ptr               buf,
-    long              size ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0007, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key,
+  ICAttr              attr,
+  Ptr                 buf,
+  long                size)                                   FIVEWORDINLINE(0x2F3C, 0x0010, 0x0007, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSetPref.  */
 /*
@@ -2186,10 +2262,11 @@ ICCSetPref(
  */
 EXTERN_API( OSStatus )
 ICCFindPrefHandle(
-    ComponentInstance inst,
-    ConstStr255Param  key,
-    ICAttr *          attr,
-    Handle            prefh ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0024, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key,
+  ICAttr *            attr,
+  Handle              prefh)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x0024, 0x7000, 0xA82A);
+
 
 /* See comment for ICCFindPrefHandle.  */
 /*
@@ -2202,10 +2279,11 @@ ICCFindPrefHandle(
  */
 EXTERN_API( OSStatus )
 ICCGetPrefHandle(
-    ComponentInstance inst,
-    ConstStr255Param  key,
-    ICAttr *          attr,
-    Handle *          prefh ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x001A, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key,
+  ICAttr *            attr,
+  Handle *            prefh)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x001A, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetPrefHandle.  */
 /*
@@ -2218,10 +2296,11 @@ ICCGetPrefHandle(
  */
 EXTERN_API( OSStatus )
 ICCSetPrefHandle(
-    ComponentInstance inst,
-    ConstStr255Param  key,
-    ICAttr            attr,
-    Handle            prefh ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x001B, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key,
+  ICAttr              attr,
+  Handle              prefh)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x001B, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSetPrefHandle.  */
 /*
@@ -2234,8 +2313,9 @@ ICCSetPrefHandle(
  */
 EXTERN_API( OSStatus )
 ICCCountPref(
-    ComponentInstance inst,
-    long *            count ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0008, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  long *              count)                                  FIVEWORDINLINE(0x2F3C, 0x0004, 0x0008, 0x7000, 0xA82A);
+
 
 /* See comment for ICCCountPref.  */
 /*
@@ -2248,9 +2328,10 @@ ICCCountPref(
  */
 EXTERN_API( OSStatus )
 ICCGetIndPref(
-    ComponentInstance inst,
-    long              index,
-    Str255            key ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0009, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  long                index,
+  Str255              key)                                    FIVEWORDINLINE(0x2F3C, 0x0008, 0x0009, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetIndPref.  */
 /*
@@ -2263,8 +2344,9 @@ ICCGetIndPref(
  */
 EXTERN_API( OSStatus )
 ICCDeletePref(
-    ComponentInstance inst,
-    ConstStr255Param  key ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000C, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key)                                    FIVEWORDINLINE(0x2F3C, 0x0004, 0x000C, 0x7000, 0xA82A);
+
 
 /* See comment for ICCDeletePref.  */
 /*
@@ -2276,7 +2358,8 @@ ICCDeletePref(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICCEnd( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x000A, 0x7000, 0xA82A );
+ICCEnd(ComponentInstance inst)                                FIVEWORDINLINE(0x2F3C, 0x0000, 0x000A, 0x7000, 0xA82A);
+
 
 /* See comment for ICCEnd.  */
 /*
@@ -2289,9 +2372,10 @@ ICCEnd( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x000A, 0x7000,
  */
 EXTERN_API( OSStatus )
 ICCGetDefaultPref(
-    ComponentInstance inst,
-    ConstStr255Param  key,
-    Handle            prefH ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0031, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key,
+  Handle              prefH)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x0031, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetDefaultPref.  */
 /* ***** User Interface Stuff *****  */
@@ -2305,8 +2389,9 @@ ICCGetDefaultPref(
  */
 EXTERN_API( OSStatus )
 ICCEditPreferences(
-    ComponentInstance inst,
-    ConstStr255Param  key ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000F, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    key)                                    FIVEWORDINLINE(0x2F3C, 0x0004, 0x000F, 0x7000, 0xA82A);
+
 
 /* See comment for ICCEditPreferences.  */
 /* ***** URL Handling *****  */
@@ -2320,12 +2405,13 @@ ICCEditPreferences(
  */
 EXTERN_API( OSStatus )
 ICCLaunchURL(
-    ComponentInstance inst,
-    ConstStr255Param  hint,
-    Ptr               data,
-    long              len,
-    long *            selStart,
-    long *            selEnd ) FIVEWORDINLINE( 0x2F3C, 0x0014, 0x0011, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    hint,
+  Ptr                 data,
+  long                len,
+  long *              selStart,
+  long *              selEnd)                                 FIVEWORDINLINE(0x2F3C, 0x0014, 0x0011, 0x7000, 0xA82A);
+
 
 /* See comment for ICCLaunchURL.  */
 /*
@@ -2338,13 +2424,14 @@ ICCLaunchURL(
  */
 EXTERN_API( OSStatus )
 ICCParseURL(
-    ComponentInstance inst,
-    ConstStr255Param  hint,
-    Ptr               data,
-    long              len,
-    long *            selStart,
-    long *            selEnd,
-    Handle            url ) FIVEWORDINLINE( 0x2F3C, 0x0018, 0x0010, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    hint,
+  Ptr                 data,
+  long                len,
+  long *              selStart,
+  long *              selEnd,
+  Handle              url)                                    FIVEWORDINLINE(0x2F3C, 0x0018, 0x0010, 0x7000, 0xA82A);
+
 
 /* See comment for ICCParseURL.  */
 /*
@@ -2357,10 +2444,11 @@ ICCParseURL(
  */
 EXTERN_API( OSStatus )
 ICCCreateGURLEvent(
-    ComponentInstance inst,
-    OSType            helperCreator,
-    Handle            urlH,
-    AppleEvent *      theEvent ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0033, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  OSType              helperCreator,
+  Handle              urlH,
+  AppleEvent *        theEvent)                               FIVEWORDINLINE(0x2F3C, 0x000C, 0x0033, 0x7000, 0xA82A);
+
 
 /* See comment for ICCCreateGURLEvent.  */
 /*
@@ -2373,8 +2461,9 @@ ICCCreateGURLEvent(
  */
 EXTERN_API( OSStatus )
 ICCSendGURLEvent(
-    ComponentInstance inst,
-    AppleEvent *      theEvent ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0034, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  AppleEvent *        theEvent)                               FIVEWORDINLINE(0x2F3C, 0x0004, 0x0034, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSendGURLEvent.  */
 /* ***** Mappings Routines *****
@@ -2393,9 +2482,10 @@ ICCSendGURLEvent(
  */
 EXTERN_API( OSStatus )
 ICCMapFilename(
-    ComponentInstance inst,
-    ConstStr255Param  filename,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0018, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ConstStr255Param    filename,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x0018, 0x7000, 0xA82A);
+
 
 /* See comment for ICCMapFilename.  */
 /*
@@ -2408,11 +2498,12 @@ ICCMapFilename(
  */
 EXTERN_API( OSStatus )
 ICCMapTypeCreator(
-    ComponentInstance inst,
-    OSType            fType,
-    OSType            fCreator,
-    ConstStr255Param  filename,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0019, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  OSType              fType,
+  OSType              fCreator,
+  ConstStr255Param    filename,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x0010, 0x0019, 0x7000, 0xA82A);
+
 
 /* See comment for ICCMapTypeCreator.  */
 /* ----- Mid Level Routines -----  */
@@ -2426,10 +2517,11 @@ ICCMapTypeCreator(
  */
 EXTERN_API( OSStatus )
 ICCMapEntriesFilename(
-    ComponentInstance inst,
-    Handle            entries,
-    ConstStr255Param  filename,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x001C, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  ConstStr255Param    filename,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x001C, 0x7000, 0xA82A);
+
 
 /* See comment for ICCMapEntriesFilename.  */
 /*
@@ -2442,12 +2534,13 @@ ICCMapEntriesFilename(
  */
 EXTERN_API( OSStatus )
 ICCMapEntriesTypeCreator(
-    ComponentInstance inst,
-    Handle            entries,
-    OSType            fType,
-    OSType            fCreator,
-    ConstStr255Param  filename,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x0014, 0x001D, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  OSType              fType,
+  OSType              fCreator,
+  ConstStr255Param    filename,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x0014, 0x001D, 0x7000, 0xA82A);
+
 
 /* See comment for ICCMapEntriesTypeCreator.  */
 /* ----- Low Level Routines -----  */
@@ -2461,9 +2554,10 @@ ICCMapEntriesTypeCreator(
  */
 EXTERN_API( OSStatus )
 ICCCountMapEntries(
-    ComponentInstance inst,
-    Handle            entries,
-    long *            count ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0012, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  long *              count)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x0012, 0x7000, 0xA82A);
+
 
 /* See comment for ICCCountMapEntries.  */
 /*
@@ -2476,11 +2570,12 @@ ICCCountMapEntries(
  */
 EXTERN_API( OSStatus )
 ICCGetIndMapEntry(
-    ComponentInstance inst,
-    Handle            entries,
-    long              index,
-    long *            pos,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0013, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  long                index,
+  long *              pos,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x0010, 0x0013, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetIndMapEntry.  */
 /*
@@ -2493,10 +2588,11 @@ ICCGetIndMapEntry(
  */
 EXTERN_API( OSStatus )
 ICCGetMapEntry(
-    ComponentInstance inst,
-    Handle            entries,
-    long              pos,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0014, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  long                pos,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x0014, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetMapEntry.  */
 /*
@@ -2509,10 +2605,11 @@ ICCGetMapEntry(
  */
 EXTERN_API( OSStatus )
 ICCSetMapEntry(
-    ComponentInstance inst,
-    Handle            entries,
-    long              pos,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0015, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  long                pos,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x0015, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSetMapEntry.  */
 /*
@@ -2525,9 +2622,10 @@ ICCSetMapEntry(
  */
 EXTERN_API( OSStatus )
 ICCDeleteMapEntry(
-    ComponentInstance inst,
-    Handle            entries,
-    long              pos ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0016, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  long                pos)                                    FIVEWORDINLINE(0x2F3C, 0x0008, 0x0016, 0x7000, 0xA82A);
+
 
 /* See comment for ICCDeleteMapEntry.  */
 /*
@@ -2540,9 +2638,10 @@ ICCDeleteMapEntry(
  */
 EXTERN_API( OSStatus )
 ICCAddMapEntry(
-    ComponentInstance inst,
-    Handle            entries,
-    ICMapEntry *      entry ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0017, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Handle              entries,
+  ICMapEntry *        entry)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x0017, 0x7000, 0xA82A);
+
 
 /* See comment for ICCAddMapEntry.  */
 /* ***** Profile Management Routines *****  */
@@ -2556,8 +2655,9 @@ ICCAddMapEntry(
  */
 EXTERN_API( OSStatus )
 ICCGetCurrentProfile(
-    ComponentInstance inst,
-    ICProfileID *     currentID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0025, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICProfileID *       currentID)                              FIVEWORDINLINE(0x2F3C, 0x0004, 0x0025, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetCurrentProfile.  */
 /*
@@ -2570,8 +2670,9 @@ ICCGetCurrentProfile(
  */
 EXTERN_API( OSStatus )
 ICCSetCurrentProfile(
-    ComponentInstance inst,
-    ICProfileID       newID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0026, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICProfileID         newID)                                  FIVEWORDINLINE(0x2F3C, 0x0004, 0x0026, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSetCurrentProfile.  */
 /*
@@ -2584,8 +2685,9 @@ ICCSetCurrentProfile(
  */
 EXTERN_API( OSStatus )
 ICCCountProfiles(
-    ComponentInstance inst,
-    long *            count ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0027, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  long *              count)                                  FIVEWORDINLINE(0x2F3C, 0x0004, 0x0027, 0x7000, 0xA82A);
+
 
 /* See comment for ICCCountProfiles.  */
 /*
@@ -2598,9 +2700,10 @@ ICCCountProfiles(
  */
 EXTERN_API( OSStatus )
 ICCGetIndProfile(
-    ComponentInstance inst,
-    long              index,
-    ICProfileID *     thisID ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0028, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  long                index,
+  ICProfileID *       thisID)                                 FIVEWORDINLINE(0x2F3C, 0x0008, 0x0028, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetIndProfile.  */
 /*
@@ -2613,9 +2716,10 @@ ICCGetIndProfile(
  */
 EXTERN_API( OSStatus )
 ICCGetProfileName(
-    ComponentInstance inst,
-    ICProfileID       thisID,
-    Str255            name ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0029, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICProfileID         thisID,
+  Str255              name)                                   FIVEWORDINLINE(0x2F3C, 0x0008, 0x0029, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetProfileName.  */
 /*
@@ -2628,9 +2732,10 @@ ICCGetProfileName(
  */
 EXTERN_API( OSStatus )
 ICCSetProfileName(
-    ComponentInstance inst,
-    ICProfileID       thisID,
-    ConstStr255Param  name ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x002A, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICProfileID         thisID,
+  ConstStr255Param    name)                                   FIVEWORDINLINE(0x2F3C, 0x0008, 0x002A, 0x7000, 0xA82A);
+
 
 /* See comment for ICCSetProfileName.  */
 /*
@@ -2643,9 +2748,10 @@ ICCSetProfileName(
  */
 EXTERN_API( OSStatus )
 ICCAddProfile(
-    ComponentInstance inst,
-    ICProfileID       prototypeID,
-    ICProfileID *     newID ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x002B, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICProfileID         prototypeID,
+  ICProfileID *       newID)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x002B, 0x7000, 0xA82A);
+
 
 /* See comment for ICCAddProfile.  */
 /*
@@ -2658,8 +2764,9 @@ ICCAddProfile(
  */
 EXTERN_API( OSStatus )
 ICCDeleteProfile(
-    ComponentInstance inst,
-    ICProfileID       thisID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x002C, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  ICProfileID         thisID)                                 FIVEWORDINLINE(0x2F3C, 0x0004, 0x002C, 0x7000, 0xA82A);
+
 
 /* See comment for ICCDeleteProfile.  */
 /* ***** Interrupt Safe Routines *****  */
@@ -2672,7 +2779,8 @@ ICCDeleteProfile(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ICCRequiresInterruptSafe( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x002D, 0x7000, 0xA82A );
+ICCRequiresInterruptSafe(ComponentInstance inst)              FIVEWORDINLINE(0x2F3C, 0x0000, 0x002D, 0x7000, 0xA82A);
+
 
 /* See comment for ICCRequiresInterruptSafe.  */
 /*
@@ -2685,9 +2793,10 @@ ICCRequiresInterruptSafe( ComponentInstance inst ) FIVEWORDINLINE( 0x2F3C, 0x000
  */
 EXTERN_API( OSStatus )
 ICCGetMappingInterruptSafe(
-    ComponentInstance inst,
-    Ptr *             mappingPref,
-    long *            mappingPrefSize ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x002E, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  Ptr *               mappingPref,
+  long *              mappingPrefSize)                        FIVEWORDINLINE(0x2F3C, 0x0008, 0x002E, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetMappingInterruptSafe.  */
 /*
@@ -2700,11 +2809,12 @@ ICCGetMappingInterruptSafe(
  */
 EXTERN_API( OSStatus )
 ICCGetSeedInterruptSafe(
-    ComponentInstance inst,
-    long *            seed ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0030, 0x7000, 0xA82A );
+  ComponentInstance   inst,
+  long *              seed)                                   FIVEWORDINLINE(0x2F3C, 0x0004, 0x0030, 0x7000, 0xA82A);
+
 
 /* See comment for ICCGetSeedInterruptSafe.  */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 
@@ -2713,61 +2823,61 @@ ICCGetSeedInterruptSafe(
  ************************************************************************************************/
 
 enum {
-	kICCStart = 0,
-	kICCStop = 1,
-	kICCGetVersion = 50,
-	kICCFindConfigFile = 2,
-	kICCFindUserConfigFile = 14,
-	kICCGeneralFindConfigFile = 30,
-	kICCChooseConfig = 33,
-	kICCChooseNewConfig = 34,
-	kICCGetConfigName = 35,
-	kICCGetConfigReference = 31,
-	kICCSetConfigReference = 32,
-	kICCSpecifyConfigFile = 3,
-	kICCRefreshCaches = 47,
-	kICCGetSeed = 4,
-	kICCGetPerm = 13,
-	kICCDefaultFileName = 11,
-	kICCBegin = 5,
-	kICCGetPref = 6,
-	kICCSetPref = 7,
-	kICCFindPrefHandle = 36,
-	kICCGetPrefHandle = 26,
-	kICCSetPrefHandle = 27,
-	kICCCountPref = 8,
-	kICCGetIndPref = 9,
-	kICCDeletePref = 12,
-	kICCEnd = 10,
-	kICCGetDefaultPref = 49,
-	kICCEditPreferences = 15,
-	kICCLaunchURL = 17,
-	kICCParseURL = 16,
-	kICCCreateGURLEvent = 51,
-	kICCSendGURLEvent = 52,
-	kICCMapFilename = 24,
-	kICCMapTypeCreator = 25,
-	kICCMapEntriesFilename = 28,
-	kICCMapEntriesTypeCreator = 29,
-	kICCCountMapEntries = 18,
-	kICCGetIndMapEntry = 19,
-	kICCGetMapEntry = 20,
-	kICCSetMapEntry = 21,
-	kICCDeleteMapEntry = 22,
-	kICCAddMapEntry = 23,
-	kICCGetCurrentProfile = 37,
-	kICCSetCurrentProfile = 38,
-	kICCCountProfiles = 39,
-	kICCGetIndProfile = 40,
-	kICCGetProfileName = 41,
-	kICCSetProfileName = 42,
-	kICCAddProfile = 43,
-	kICCDeleteProfile = 44,
-	kICCRequiresInterruptSafe = 45,
-	kICCGetMappingInterruptSafe = 46,
-	kICCGetSeedInterruptSafe = 48,
-	kICCFirstSelector = kICCStart,
-	kICCLastSelector = 52
+  kICCStart                     = 0,
+  kICCStop                      = 1,
+  kICCGetVersion                = 50,
+  kICCFindConfigFile            = 2,
+  kICCFindUserConfigFile        = 14,
+  kICCGeneralFindConfigFile     = 30,
+  kICCChooseConfig              = 33,
+  kICCChooseNewConfig           = 34,
+  kICCGetConfigName             = 35,
+  kICCGetConfigReference        = 31,
+  kICCSetConfigReference        = 32,
+  kICCSpecifyConfigFile         = 3,
+  kICCRefreshCaches             = 47,
+  kICCGetSeed                   = 4,
+  kICCGetPerm                   = 13,
+  kICCDefaultFileName           = 11,
+  kICCBegin                     = 5,
+  kICCGetPref                   = 6,
+  kICCSetPref                   = 7,
+  kICCFindPrefHandle            = 36,
+  kICCGetPrefHandle             = 26,
+  kICCSetPrefHandle             = 27,
+  kICCCountPref                 = 8,
+  kICCGetIndPref                = 9,
+  kICCDeletePref                = 12,
+  kICCEnd                       = 10,
+  kICCGetDefaultPref            = 49,
+  kICCEditPreferences           = 15,
+  kICCLaunchURL                 = 17,
+  kICCParseURL                  = 16,
+  kICCCreateGURLEvent           = 51,
+  kICCSendGURLEvent             = 52,
+  kICCMapFilename               = 24,
+  kICCMapTypeCreator            = 25,
+  kICCMapEntriesFilename        = 28,
+  kICCMapEntriesTypeCreator     = 29,
+  kICCCountMapEntries           = 18,
+  kICCGetIndMapEntry            = 19,
+  kICCGetMapEntry               = 20,
+  kICCSetMapEntry               = 21,
+  kICCDeleteMapEntry            = 22,
+  kICCAddMapEntry               = 23,
+  kICCGetCurrentProfile         = 37,
+  kICCSetCurrentProfile         = 38,
+  kICCCountProfiles             = 39,
+  kICCGetIndProfile             = 40,
+  kICCGetProfileName            = 41,
+  kICCSetProfileName            = 42,
+  kICCAddProfile                = 43,
+  kICCDeleteProfile             = 44,
+  kICCRequiresInterruptSafe     = 45,
+  kICCGetMappingInterruptSafe   = 46,
+  kICCGetSeedInterruptSafe      = 48,
+  kICCFirstSelector             = kICCStart,
+  kICCLastSelector              = 52
 };
 
 /************************************************************************************************
@@ -2775,60 +2885,60 @@ enum {
  ************************************************************************************************/
 
 enum {
-	kICCStartProcInfo = 1008,
-	kICCStopProcInfo = 240,
-	kICCGetVersionProcInfo = 4080,
-	kICCFindConfigFileProcInfo = 3824,
-	kICCFindUserConfigFileProcInfo = 1008,
-	kICCGeneralFindConfigFileProcInfo = 58864L,
-	kICCChooseConfigProcInfo = 240,
-	kICCChooseNewConfigProcInfo = 240,
-	kICCGetConfigNameProcInfo = 3568,
-	kICCGetConfigReferenceProcInfo = 1008,
-	kICCSetConfigReferenceProcInfo = 4080,
-	kICCSpecifyConfigFileProcInfo = 1008,
-	kICCRefreshCachesProcInfo = 240,
-	kICCGetSeedProcInfo = 1008,
-	kICCGetPermProcInfo = 1008,
-	kICCDefaultFileNameProcInfo = 1008,
-	kICCGetComponentInstanceProcInfo = 1008,
-	kICCBeginProcInfo = 496,
-	kICCGetPrefProcInfo = 65520L,
-	kICCSetPrefProcInfo = 65520L,
-	kICCFindPrefHandleProcInfo = 16368,
-	kICCGetPrefHandleProcInfo = 16368,
-	kICCSetPrefHandleProcInfo = 16368,
-	kICCCountPrefProcInfo = 1008,
-	kICCGetIndPrefProcInfo = 4080,
-	kICCDeletePrefProcInfo = 1008,
-	kICCEndProcInfo = 240,
-	kICCGetDefaultPrefProcInfo = 4080,
-	kICCEditPreferencesProcInfo = 1008,
-	kICCLaunchURLProcInfo = 262128L,
-	kICCParseURLProcInfo = 1048560L,
-	kICCCreateGURLEventProcInfo = 16368,
-	kICCSendGURLEventProcInfo = 1008,
-	kICCMapFilenameProcInfo = 4080,
-	kICCMapTypeCreatorProcInfo = 65520L,
-	kICCMapEntriesFilenameProcInfo = 16368,
-	kICCMapEntriesTypeCreatorProcInfo = 262128L,
-	kICCCountMapEntriesProcInfo = 4080,
-	kICCGetIndMapEntryProcInfo = 65520L,
-	kICCGetMapEntryProcInfo = 16368,
-	kICCSetMapEntryProcInfo = 16368,
-	kICCDeleteMapEntryProcInfo = 4080,
-	kICCAddMapEntryProcInfo = 4080,
-	kICCGetCurrentProfileProcInfo = 1008,
-	kICCSetCurrentProfileProcInfo = 1008,
-	kICCCountProfilesProcInfo = 1008,
-	kICCGetIndProfileProcInfo = 4080,
-	kICCGetProfileNameProcInfo = 4080,
-	kICCSetProfileNameProcInfo = 4080,
-	kICCAddProfileProcInfo = 4080,
-	kICCDeleteProfileProcInfo = 1008,
-	kICCRequiresInterruptSafeProcInfo = 240,
-	kICCGetMappingInterruptSafeProcInfo = 4080,
-	kICCGetSeedInterruptSafeProcInfo = 1008
+  kICCStartProcInfo             = 1008,
+  kICCStopProcInfo              = 240,
+  kICCGetVersionProcInfo        = 4080,
+  kICCFindConfigFileProcInfo    = 3824,
+  kICCFindUserConfigFileProcInfo = 1008,
+  kICCGeneralFindConfigFileProcInfo = 58864L,
+  kICCChooseConfigProcInfo      = 240,
+  kICCChooseNewConfigProcInfo   = 240,
+  kICCGetConfigNameProcInfo     = 3568,
+  kICCGetConfigReferenceProcInfo = 1008,
+  kICCSetConfigReferenceProcInfo = 4080,
+  kICCSpecifyConfigFileProcInfo = 1008,
+  kICCRefreshCachesProcInfo     = 240,
+  kICCGetSeedProcInfo           = 1008,
+  kICCGetPermProcInfo           = 1008,
+  kICCDefaultFileNameProcInfo   = 1008,
+  kICCGetComponentInstanceProcInfo = 1008,
+  kICCBeginProcInfo             = 496,
+  kICCGetPrefProcInfo           = 65520L,
+  kICCSetPrefProcInfo           = 65520L,
+  kICCFindPrefHandleProcInfo    = 16368,
+  kICCGetPrefHandleProcInfo     = 16368,
+  kICCSetPrefHandleProcInfo     = 16368,
+  kICCCountPrefProcInfo         = 1008,
+  kICCGetIndPrefProcInfo        = 4080,
+  kICCDeletePrefProcInfo        = 1008,
+  kICCEndProcInfo               = 240,
+  kICCGetDefaultPrefProcInfo    = 4080,
+  kICCEditPreferencesProcInfo   = 1008,
+  kICCLaunchURLProcInfo         = 262128L,
+  kICCParseURLProcInfo          = 1048560L,
+  kICCCreateGURLEventProcInfo   = 16368,
+  kICCSendGURLEventProcInfo     = 1008,
+  kICCMapFilenameProcInfo       = 4080,
+  kICCMapTypeCreatorProcInfo    = 65520L,
+  kICCMapEntriesFilenameProcInfo = 16368,
+  kICCMapEntriesTypeCreatorProcInfo = 262128L,
+  kICCCountMapEntriesProcInfo   = 4080,
+  kICCGetIndMapEntryProcInfo    = 65520L,
+  kICCGetMapEntryProcInfo       = 16368,
+  kICCSetMapEntryProcInfo       = 16368,
+  kICCDeleteMapEntryProcInfo    = 4080,
+  kICCAddMapEntryProcInfo       = 4080,
+  kICCGetCurrentProfileProcInfo = 1008,
+  kICCSetCurrentProfileProcInfo = 1008,
+  kICCCountProfilesProcInfo     = 1008,
+  kICCGetIndProfileProcInfo     = 4080,
+  kICCGetProfileNameProcInfo    = 4080,
+  kICCSetProfileNameProcInfo    = 4080,
+  kICCAddProfileProcInfo        = 4080,
+  kICCDeleteProfileProcInfo     = 1008,
+  kICCRequiresInterruptSafeProcInfo = 240,
+  kICCGetMappingInterruptSafeProcInfo = 4080,
+  kICCGetSeedInterruptSafeProcInfo = 1008
 };
 
 /************************************************************************************************
@@ -2836,9 +2946,9 @@ enum {
  ************************************************************************************************/
 
 enum {
-	kICComponentType = FOUR_CHAR_CODE( 'PREF' ),
-	kICComponentSubType = FOUR_CHAR_CODE( 'ICAp' ),
-	kICComponentManufacturer = FOUR_CHAR_CODE( 'JPQE' )
+  kICComponentType              = FOUR_CHAR_CODE('PREF'),
+  kICComponentSubType           = FOUR_CHAR_CODE('ICAp'),
+  kICComponentManufacturer      = FOUR_CHAR_CODE('JPQE')
 };
 
 /************************************************************************************************
@@ -2847,11 +2957,11 @@ enum {
  ************************************************************************************************/
 
 #if OLDROUTINENAMES
-typedef ComponentInstance internetConfigurationComponent;
+typedef ComponentInstance               internetConfigurationComponent;
 
-#endif /* OLDROUTINENAMES */
+#endif  /* OLDROUTINENAMES */
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /************************************************************************************************
   old names for stuff declared above
@@ -2859,18 +2969,18 @@ typedef ComponentInstance internetConfigurationComponent;
 
 #if OLDROUTINENAMES
 
-typedef long ICError;
+typedef long                            ICError;
 
 enum {
-	ICattr_no_change = (unsigned long)( kICAttrNoChange ),
-	ICattr_locked_bit = kICAttrLockedBit,
-	ICattr_locked_mask = kICAttrLockedMask,
-	ICattr_volatile_bit = kICAttrVolatileBit,
-	ICattr_volatile_mask = kICAttrVolatileMask,
-	icNoUserInteraction_bit = kICNoUserInteractionBit,
-	icNoUserInteraction_mask = kICNoUserInteractionMask,
-	ICfiletype = kICFileType,
-	ICcreator = kICCreator
+  ICattr_no_change              = (unsigned long)(kICAttrNoChange),
+  ICattr_locked_bit             = kICAttrLockedBit,
+  ICattr_locked_mask            = kICAttrLockedMask,
+  ICattr_volatile_bit           = kICAttrVolatileBit,
+  ICattr_volatile_mask          = kICAttrVolatileMask,
+  icNoUserInteraction_bit       = kICNoUserInteractionBit,
+  icNoUserInteraction_mask      = kICNoUserInteractionMask,
+  ICfiletype                    = kICFileType,
+  ICcreator                     = kICCreator
 };
 
 /*
@@ -2880,39 +2990,39 @@ enum {
     if you define OLDROUTINENAMES.
 */
 struct ICFileInfo {
-	OSType fType;
-	OSType fCreator;
-	Str63  name;
+  OSType              fType;
+  OSType              fCreator;
+  Str63               name;
 };
-typedef struct ICFileInfo ICFileInfo;
-typedef ICFileInfo *      ICFileInfoPtr;
-typedef ICFileInfoPtr *   ICFileInfoHandle;
+typedef struct ICFileInfo               ICFileInfo;
+typedef ICFileInfo *                    ICFileInfoPtr;
+typedef ICFileInfoPtr *                 ICFileInfoHandle;
 
 enum {
-	ICfile_spec_header_size = kICFileSpecHeaderSize
-};
-
-enum {
-	ICmap_binary_bit = kICMapBinaryBit,
-	ICmap_binary_mask = kICMapBinaryMask,
-	ICmap_resource_fork_bit = kICMapResourceForkBit,
-	ICmap_resource_fork_mask = kICMapResourceForkMask,
-	ICmap_data_fork_bit = kICMapDataForkBit,
-	ICmap_data_fork_mask = kICMapDataForkMask,
-	ICmap_post_bit = kICMapPostBit,
-	ICmap_post_mask = kICMapPostMask,
-	ICmap_not_incoming_bit = kICMapNotIncomingBit,
-	ICmap_not_incoming_mask = kICMapNotIncomingMask,
-	ICmap_not_outgoing_bit = kICMapNotOutgoingBit,
-	ICmap_not_outgoing_mask = kICMapNotOutgoingMask,
-	ICmap_fixed_length = kICMapFixedLength
+  ICfile_spec_header_size       = kICFileSpecHeaderSize
 };
 
 enum {
-	ICservices_tcp_bit = kICServicesTCPBit,
-	ICservices_tcp_mask = kICServicesTCPMask,
-	ICservices_udp_bit = kICServicesUDPBit,
-	ICservices_udp_mask = kICServicesUDPMask
+  ICmap_binary_bit              = kICMapBinaryBit,
+  ICmap_binary_mask             = kICMapBinaryMask,
+  ICmap_resource_fork_bit       = kICMapResourceForkBit,
+  ICmap_resource_fork_mask      = kICMapResourceForkMask,
+  ICmap_data_fork_bit           = kICMapDataForkBit,
+  ICmap_data_fork_mask          = kICMapDataForkMask,
+  ICmap_post_bit                = kICMapPostBit,
+  ICmap_post_mask               = kICMapPostMask,
+  ICmap_not_incoming_bit        = kICMapNotIncomingBit,
+  ICmap_not_incoming_mask       = kICMapNotIncomingMask,
+  ICmap_not_outgoing_bit        = kICMapNotOutgoingBit,
+  ICmap_not_outgoing_mask       = kICMapNotOutgoingMask,
+  ICmap_fixed_length            = kICMapFixedLength
+};
+
+enum {
+  ICservices_tcp_bit            = kICServicesTCPBit,
+  ICservices_tcp_mask           = kICServicesTCPMask,
+  ICservices_udp_bit            = kICServicesUDPBit,
+  ICservices_udp_mask           = kICServicesUDPMask
 };
 
 /*    This definitions are a) very long, and b) don't conform
@@ -2921,24 +3031,25 @@ enum {
     to the new names given above.
 */
 enum {
-	internetConfigurationComponentType = FOUR_CHAR_CODE( 'PREF' ), /* the component type */
-	internetConfigurationComponentSubType = FOUR_CHAR_CODE( 'ICAp' ), /* the component subtype */
-	internetConfigurationComponentInterfaceVersion0 = 0x00000000, /* IC >= 1.0 */
-	internetConfigurationComponentInterfaceVersion1 = 0x00010000, /* IC >= 1.1 */
-	internetConfigurationComponentInterfaceVersion2 = 0x00020000, /* IC >= 1.2 */
-	internetConfigurationComponentInterfaceVersion3 = 0x00030000, /* IC >= 2.0 */
-	/* current version number is version 3 */
-	internetConfigurationComponentInterfaceVersion = internetConfigurationComponentInterfaceVersion3
+  internetConfigurationComponentType = FOUR_CHAR_CODE('PREF'), /* the component type */
+  internetConfigurationComponentSubType = FOUR_CHAR_CODE('ICAp'), /* the component subtype */
+  internetConfigurationComponentInterfaceVersion0 = 0x00000000, /* IC >= 1.0 */
+  internetConfigurationComponentInterfaceVersion1 = 0x00010000, /* IC >= 1.1 */
+  internetConfigurationComponentInterfaceVersion2 = 0x00020000, /* IC >= 1.2 */
+  internetConfigurationComponentInterfaceVersion3 = 0x00030000, /* IC >= 2.0 */
+                                        /* current version number is version 3 */
+  internetConfigurationComponentInterfaceVersion = internetConfigurationComponentInterfaceVersion3
 };
 
-#endif /* OLDROUTINENAMES */
+#endif  /* OLDROUTINENAMES */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2952,3 +3063,4 @@ enum {
 #endif
 
 #endif /* __INTERNETCONFIG__ */
+

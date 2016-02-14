@@ -5,15 +5,15 @@
  *  Copyright (c) 2004 Apple Computer, Inc. All rights reserved.
  *
  */
-
-/*! @header CVReturn.h
+ 
+ /*! @header CVReturn.h
 	@copyright 2004 Apple Computer, Inc. All rights reserved.
 	@availability Mac OS X 10.4 or later
     @discussion Here you can find all the CoreVideo specific error codes. 
 		   
 */
 
-#if !defined( __COREVIDEO_CVRETURN_H__ )
+#if !defined(__COREVIDEO_CVRETURN_H__)
 #define __COREVIDEO_CVRETURN_H__ 1
 
 #include <TargetConditionals.h>
@@ -24,7 +24,7 @@
 #include <CVBase.h>
 #endif
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 extern "C" {
 #endif
 /*!
@@ -52,37 +52,38 @@ extern "C" {
     @constant   kCVReturnInvalidPoolAttributes A CVBufferPool cannot be created with the given attributes.
 */
 
-enum _CVReturn {
-	kCVReturnSuccess = 0,
-
-	kCVReturnFirst = -6660,
-
-	kCVReturnError = kCVReturnFirst,
-	kCVReturnInvalidArgument = -6661,
-	kCVReturnAllocationFailed = -6662,
-
-	// DisplayLink related errors
-	kCVReturnInvalidDisplay = -6670,
-	kCVReturnDisplayLinkAlreadyRunning = -6671,
-	kCVReturnDisplayLinkNotRunning = -6672,
-	kCVReturnDisplayLinkCallbacksNotSet = -6673,
-
-	// Buffer related errors
-	kCVReturnInvalidPixelFormat = -6680,
-	kCVReturnInvalidSize = -6681,
-	kCVReturnInvalidPixelBufferAttributes = -6682,
-	kCVReturnPixelBufferNotOpenGLCompatible = -6683,
-
-	// Buffer Pool related errors
-	kCVReturnPoolAllocationFailed = -6690,
-	kCVReturnInvalidPoolAttributes = -6691,
-
-	kCVReturnLast = -6699
-
+enum _CVReturn
+{
+    kCVReturnSuccess                         = 0,
+    
+    kCVReturnFirst                           = -6660,
+    
+    kCVReturnError                           = kCVReturnFirst,
+    kCVReturnInvalidArgument                 = -6661,
+    kCVReturnAllocationFailed                = -6662,
+    
+    // DisplayLink related errors
+    kCVReturnInvalidDisplay                  = -6670,
+    kCVReturnDisplayLinkAlreadyRunning       = -6671,
+    kCVReturnDisplayLinkNotRunning           = -6672,
+    kCVReturnDisplayLinkCallbacksNotSet      = -6673,
+    
+    // Buffer related errors
+    kCVReturnInvalidPixelFormat		     = -6680,
+    kCVReturnInvalidSize                     = -6681,
+    kCVReturnInvalidPixelBufferAttributes    = -6682,    
+    kCVReturnPixelBufferNotOpenGLCompatible  = -6683,
+    
+    // Buffer Pool related errors
+    kCVReturnPoolAllocationFailed            = -6690,
+    kCVReturnInvalidPoolAttributes           = -6691,
+    
+    kCVReturnLast			     = -6699
+    
 };
 typedef int32_t CVReturn;
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif
 

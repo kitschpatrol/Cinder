@@ -1,10 +1,10 @@
 #include "cinder/app/App.h"
-#include "cinder/ConvexHull.h"
-#include "cinder/Font.h"
-#include "cinder/Rand.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/ConvexHull.h"
+#include "cinder/Rand.h"
 #include "cinder/params/Params.h"
+#include "cinder/Font.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -14,18 +14,18 @@ class ConvexHullApp : public App {
   public:
 	void setup();
 	void makeNewLetter();
-	void mouseDown( MouseEvent event );
+	void mouseDown( MouseEvent event );	
 	void mouseDrag( MouseEvent event );
 	void update();
 	void draw();
 
-	bool         mUsingShape;
-	vector<vec2> mPoints;
-	Shape2d      mShape;
+	bool				mUsingShape;
+	vector<vec2>		mPoints;
+	Shape2d				mShape;
 
-	PolyLine2f mConvexHull;
-
-	params::InterfaceGlRef mParams;
+	PolyLine2f			mConvexHull;
+	
+	params::InterfaceGlRef	mParams;
 };
 
 void ConvexHullApp::setup()
@@ -34,7 +34,7 @@ void ConvexHullApp::setup()
 	mParams = params::InterfaceGl::create( "App parameters", ivec2( 180, 100 ) );
 	mParams->addParam( "Use Glyph", &mUsingShape );
 	mParams->addButton( "Clear Points", [&] { mPoints.clear(); } );
-
+	
 	if( mUsingShape )
 		makeNewLetter();
 }
@@ -43,7 +43,7 @@ void ConvexHullApp::makeNewLetter()
 {
 	Font arial( "Times", 512 );
 	mShape = arial.getGlyphShape( arial.getGlyphChar( '!' + randInt( 92 ) ) );
-	//	mat2 transform = MatrixAffine2f::makeTranslate( vec2( 100, getWindowHeight() - 100 ) );
+//	mat2 transform = MatrixAffine2f::makeTranslate( vec2( 100, getWindowHeight() - 100 ) );
 	mShape.transform( translate( mat3(), vec2( 100, getWindowHeight() - 100 ) ) );
 }
 
@@ -83,13 +83,13 @@ void ConvexHullApp::draw()
 	gl::drawSolid( mConvexHull );
 	gl::color( ColorA( 0.8f, 0, 1.0f, 0.8f ) );
 	gl::draw( mConvexHull );
-
+	
 	// draw convex hull points
 	gl::color( Color( 0.0f, 0, 1.0f ) );
 	for( auto ptIt = mConvexHull.begin(); ptIt != mConvexHull.end(); ++ptIt ) {
 		gl::drawSolidCircle( *ptIt, 4 );
 	}
-
+	
 	gl::color( ColorA( 1.0f, 0.8f, 0, 0.6f ) );
 	if( mUsingShape ) {
 		gl::draw( mShape );
@@ -99,7 +99,7 @@ void ConvexHullApp::draw()
 			gl::drawSolidCircle( *ptIt, 3 );
 		}
 	}
-
+		
 	mParams->draw();
 }
 

@@ -26,33 +26,33 @@
 
 #include "cinder/gl/platform.h"
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl { 
 
-#if !defined( CINDER_GL_ES ) || defined( CINDER_GL_ES_3 )
+#if ! defined( CINDER_GL_ES ) || defined( CINDER_GL_ES_3 )
 
-typedef std::shared_ptr<class Sync> SyncRef;
+typedef std::shared_ptr<class Sync>		SyncRef;
 
 class Sync {
   public:
 	//! Analogous to glFenceSync().
-	static SyncRef create( GLenum condition = GL_SYNC_GPU_COMMANDS_COMPLETE, GLbitfield flags = 0 );
+	static SyncRef	create( GLenum condition = GL_SYNC_GPU_COMMANDS_COMPLETE, GLbitfield flags = 0 );
 	~Sync();
 
 	//! Analogous to glClientWaitSync(). Returns \c GL_ALREADY_SIGNALED, \c GL_TIMEOUT_EXPIRED, \c GL_CONDITION_SATISFIED, or \c GL_WAIT_FAILED
-	GLenum clientWaitSync( GLbitfield flags = GL_SYNC_FLUSH_COMMANDS_BIT, GLuint64 timeoutNanoseconds = 0 );
+	GLenum	clientWaitSync( GLbitfield flags = GL_SYNC_FLUSH_COMMANDS_BIT, GLuint64 timeoutNanoseconds = 0 );
 
 	//! Analogous to glWaitSync(). As of this writing \a flags and \a timeout must be their default values, \c 0 and \c GL_TIMEOUT_IGNORED
-	void waitSync( GLbitfield flags = 0, GLuint64 timeout = GL_TIMEOUT_IGNORED );
+	void	waitSync( GLbitfield flags = 0, GLuint64 timeout = GL_TIMEOUT_IGNORED );
 
 	//! Returns the raw OpenGL Sync Object
-	GLsync getObject() { return mSync; }
-  protected:
-	Sync( GLenum condition, GLbitfield flags );
+	GLsync	getObject() { return mSync; }
 
-	GLsync mSync;
+  protected:
+  	Sync( GLenum condition, GLbitfield flags );
+
+	GLsync		mSync;
 };
 
 #endif // ! defined( CINDER_GL_ES )
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

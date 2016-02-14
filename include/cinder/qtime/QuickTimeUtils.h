@@ -23,39 +23,38 @@
 #pragma once
 
 // This path is not used on 64-bit Mac or Windows. On the Mac we only use this path for <=Mac OS 10.7
-#if( defined( CINDER_MAC ) && ( !defined( __LP64__ ) ) && ( MAC_OS_X_VERSION_MIN_REQUIRED < 1080 ) ) || ( defined( CINDER_MSW ) && ( !defined( _WIN64 ) ) )
+#if ( defined( CINDER_MAC ) && ( ! defined( __LP64__ ) ) && ( MAC_OS_X_VERSION_MIN_REQUIRED < 1080 ) ) || ( defined( CINDER_MSW ) && ( ! defined( _WIN64 ) ) )
 
 #include "cinder/Cinder.h"
-#include "cinder/ImageIo.h"
-#include "cinder/Surface.h"
 #include "cinder/Url.h"
+#include "cinder/Surface.h"
+#include "cinder/ImageIo.h"
 
 #include <string>
 
 #if defined( CINDER_MAC )
-#if !defined( __LP64__ )
-#include <QuickTime/QuickTime.h>
+	#if ! defined( __LP64__ )
+		#include <QuickTime/QuickTime.h>
+	#else
+		#include <CoreVideo/CoreVideo.h>
+	#endif
 #else
-#include <CoreVideo/CoreVideo.h>
-#endif
-#else
-#pragma push_macro( "__STDC_CONSTANT_MACROS" )
-#pragma push_macro( "_STDINT_H" )
-#undef __STDC_CONSTANT_MACROS
-#if _MSC_VER >= 1600 // VC10 or greater
-#define _STDINT_H
-#define __FP__
-#endif
-#include <QTML.h>
-#include <Movies.h>
-#pragma pop_macro( "_STDINT_H" )
-#pragma pop_macro( "__STDC_CONSTANT_MACROS" )
+	#pragma push_macro( "__STDC_CONSTANT_MACROS" )
+	#pragma push_macro( "_STDINT_H" )
+		#undef __STDC_CONSTANT_MACROS
+		#if _MSC_VER >= 1600 // VC10 or greater
+			#define _STDINT_H
+			#define __FP__
+		#endif
+		#include <QTML.h>
+		#include <Movies.h>
+	#pragma pop_macro( "_STDINT_H" )
+	#pragma pop_macro( "__STDC_CONSTANT_MACROS" )
 #endif
 
-namespace cinder {
-namespace qtime {
+namespace cinder { namespace qtime {
 
-#if !defined( __LP64__ )
+#if ! defined( __LP64__ )
 //! \cond
 bool dictionarySetValue( CFMutableDictionaryRef dict, CFStringRef key, SInt32 value );
 bool dictionarySetPixelBufferPixelFormatType( bool alpha, CFMutableDictionaryRef dict );
@@ -83,20 +82,21 @@ class ImageTargetCvPixelBuffer : public cinder::ImageTarget {
 	static ImageTargetCvPixelBufferRef createRef( ImageSourceRef imageSource, bool convertToYpCbCr = false );
 	~ImageTargetCvPixelBuffer();
 
-	virtual void *getRowPointer( int32_t row );
-	virtual void finalize();
+	virtual void*		getRowPointer( int32_t row );
+	virtual void		finalize();
 
-	::CVPixelBufferRef getCvPixelBuffer() const { return mPixelBufferRef; }
+	::CVPixelBufferRef	getCvPixelBuffer() const { return mPixelBufferRef; }
+
   protected:
 	ImageTargetCvPixelBuffer( ImageSourceRef imageSource, bool convertToYpCbCr );
+	
+	void		convertDataToYpCbCr();
+	void		convertDataToAYpCbCr();
 
-	void convertDataToYpCbCr();
-	void convertDataToAYpCbCr();
-
-	::CVPixelBufferRef mPixelBufferRef;
-	size_t             mRowBytes;
-	uint8_t *          mData;
-	bool               mConvertToYpCbCr;
+	::CVPixelBufferRef	mPixelBufferRef;
+	size_t				mRowBytes;
+	uint8_t				*mData;
+	bool				mConvertToYpCbCr;
 };
 
 //! Creates a CVPixelBufferRef from an ImageSource. Release the result with CVPixelBufferRelease(). If \a convertToYpCbCr the resulting CVPixelBuffer will be in either \c k444YpCbCr8CodecType or \c k4444YpCbCrA8PixelFormat
@@ -109,23 +109,24 @@ class ImageTargetGWorld : public cinder::ImageTarget {
   public:
 	static ImageTargetGWorldRef createRef( ImageSourceRef imageSource );
 
-	virtual void *getRowPointer( int32_t row );
-	virtual void finalize();
+	virtual void*		getRowPointer( int32_t row );
+	virtual void		finalize();
 
-	::GWorldPtr getGWorld() const { return mGWorld; }
+	::GWorldPtr			getGWorld() const { return mGWorld; }
+
   protected:
 	ImageTargetGWorld( ImageSourceRef imageSource );
-
-	::GWorldPtr    mGWorld;
-	::PixMapHandle mPixMap;
-	size_t         mRowBytes;
-	uint8_t *      mData;
+	
+	::GWorldPtr			mGWorld;
+	::PixMapHandle		mPixMap;
+	size_t				mRowBytes;
+	uint8_t				*mData;
 };
 
 //! Creates a GWorld from an ImageSource. Currently always creates a 32-bit RGBA GWorld. Dispose of the results using DisposeGWorld().
 GWorldPtr createGWorld( ImageSourceRef imageSource );
 #endif // defined( CINDER_MSW )
-}
-} // namespace cinder::qtime
+
+} } // namespace cinder::qtime
 
 #endif // end of 64-bit / 10.8+ test

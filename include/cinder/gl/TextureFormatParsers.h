@@ -23,15 +23,16 @@
 
 #pragma once
 
-#include "cinder/DataSource.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/DataSource.h"
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 void parseKtx( const DataSourceRef &dataSource, TextureData *resultData );
-#if !defined( CINDER_GL_ES ) || defined( CINDER_GL_ANGLE )
+#if ! defined( CINDER_GL_ES ) || defined( CINDER_GL_ANGLE )
 void parseDds( const DataSourceRef &dataSource, TextureData *resultData );
 #endif
-}
-} // namespace cinder::gl
+
+
+
+} } // namespace cinder::gl

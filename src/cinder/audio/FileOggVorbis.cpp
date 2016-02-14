@@ -22,23 +22,21 @@
  */
 
 #include "cinder/audio/FileOggVorbis.h"
-#include "cinder/audio/Exception.h"
 #include "cinder/audio/dsp/Converter.h"
+#include "cinder/audio/Exception.h"
 
 #include <sstream>
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 SourceFileOggVorbis::SourceFileOggVorbis()
-    : SourceFile( 0 )
-{
-}
+	: SourceFile( 0 )
+{}
 
 SourceFileOggVorbis::SourceFileOggVorbis( const DataSourceRef &dataSource, size_t sampleRate )
-    : SourceFile( sampleRate )
+	: SourceFile( sampleRate )
 {
 	mDataSource = dataSource;
 	init();
@@ -79,11 +77,11 @@ void SourceFileOggVorbis::init()
 	}
 
 	vorbis_info *info = ov_info( &mOggVorbisFile, -1 );
-	mNumChannels = info->channels;
-	mSampleRate = info->rate;
+    mNumChannels = info->channels;
+    mSampleRate = info->rate;
 
 	ogg_int64_t totalFrames = ov_pcm_total( &mOggVorbisFile, -1 );
-	mNumFrames = mFileNumFrames = static_cast<uint32_t>( totalFrames );
+    mNumFrames = mFileNumFrames = static_cast<uint32_t>( totalFrames );
 }
 
 size_t SourceFileOggVorbis::performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded )
@@ -93,7 +91,7 @@ size_t SourceFileOggVorbis::performRead( Buffer *buffer, size_t bufferFrameOffse
 	size_t readCount = 0;
 	while( readCount < numFramesNeeded ) {
 		float **outChannels;
-		int     section;
+		int section;
 
 		long outNumFrames = ov_read_float( &mOggVorbisFile, &outChannels, int( numFramesNeeded - readCount ), &section );
 		if( outNumFrames <= 0 ) {
@@ -122,7 +120,7 @@ void SourceFileOggVorbis::performSeek( size_t readPositionFrames )
 string SourceFileOggVorbis::getMetaData() const
 {
 	ostringstream str;
-	const auto    vf = const_cast<OggVorbis_File *>( &mOggVorbisFile );
+	const auto vf = const_cast<OggVorbis_File *>( &mOggVorbisFile );
 
 	str << "encoded by: " << ov_comment( vf, -1 )->vendor << endl;
 	str << "comments: " << endl;
@@ -138,28 +136,28 @@ size_t SourceFileOggVorbis::readFn( void *ptr, size_t size, size_t nmemb, void *
 {
 	auto sourceFile = (SourceFileOggVorbis *)datasource;
 
-	size_t bytesRead = sourceFile->mStream->readDataAvailable( ptr, size * nmemb );
+	size_t bytesRead = sourceFile->mStream->readDataAvailable( ptr, size * nmemb);
 	return bytesRead / size;
 }
 
-// static
+// static 
 int SourceFileOggVorbis::seekFn( void *datasource, ogg_int64_t offset, int whence )
 {
 	auto sourceFile = (SourceFileOggVorbis *)datasource;
 
 	switch( whence ) {
-	case SEEK_SET:
-		sourceFile->mStream->seekAbsolute( (off_t)offset );
-		break;
-	case SEEK_CUR:
-		sourceFile->mStream->seekRelative( (off_t)offset );
-		break;
-	case SEEK_END:
-		sourceFile->mStream->seekAbsolute( sourceFile->mStream->size() );
-		break;
-	default:
-		CI_ASSERT_NOT_REACHABLE();
-		return -1;
+		case SEEK_SET:
+			sourceFile->mStream->seekAbsolute( (off_t)offset );
+			break;
+		case SEEK_CUR:
+			sourceFile->mStream->seekRelative( (off_t)offset );
+			break;
+		case SEEK_END:
+			sourceFile->mStream->seekAbsolute( sourceFile->mStream->size() );
+			break;
+		default:
+			CI_ASSERT_NOT_REACHABLE();
+			return -1;
 	}
 
 	return 0;
@@ -175,8 +173,8 @@ int SourceFileOggVorbis::closeFn( void *datasource )
 long SourceFileOggVorbis::tellFn( void *datasource )
 {
 	auto sourceFile = (SourceFileOggVorbis *)datasource;
-
+	
 	return static_cast<long>( sourceFile->mStream->tell() );
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

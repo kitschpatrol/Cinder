@@ -20,6 +20,7 @@
 #include <CarbonCore.h>
 #endif
 
+
 #ifndef __APPLEDISKPARTITIONS__
 #include <AppleDiskPartitions.h>
 #endif
@@ -40,10 +41,12 @@
 #include <IconStorage.h>
 #endif
 
-#include <OSServices/NSLCore.h>
+
 #include <OSServices/OpenTransport.h>
-#include <OSServices/OpenTransportProtocol.h>
 #include <OSServices/OpenTransportProviders.h>
+#include <OSServices/OpenTransportProtocol.h>
+#include <OSServices/NSLCore.h>
 #include <OSServices/SecurityCore.h>
 
 #endif /* __OSSERVICES__ */
+

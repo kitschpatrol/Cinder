@@ -22,9 +22,9 @@
 */
 
 #include "cinder/app/msw/AppImplMswBasic.h"
-#include "cinder/Utilities.h"
-#include "cinder/app/msw/PlatformMsw.h"
 #include "cinder/app/msw/RendererImplMsw.h"
+#include "cinder/app/msw/PlatformMsw.h"
+#include "cinder/Utilities.h"
 
 #include <windowsx.h>
 #include <winuser.h>
@@ -32,11 +32,10 @@
 using std::vector;
 using std::string;
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 AppImplMswBasic::AppImplMswBasic( AppMsw *app, const AppMsw::Settings &settings )
-    : AppImplMsw( app ), mApp( app )
+	: AppImplMsw( app ), mApp( app )
 {
 	mShouldQuit = false;
 
@@ -49,7 +48,7 @@ AppImplMswBasic::AppImplMswBasic( AppMsw *app, const AppMsw::Settings &settings 
 		formats.push_back( settings.getDefaultWindowFormat() );
 
 	for( auto &format : formats ) {
-		if( !format.isTitleSpecified() )
+		if( ! format.isTitleSpecified() )
 			format.setTitle( settings.getTitle() );
 
 		createWindow( format );
@@ -71,7 +70,7 @@ void AppImplMswBasic::run()
 	mNextFrameTime = getElapsedSeconds();
 
 	// inner loop
-	while( !mShouldQuit ) {
+	while( ! mShouldQuit ) {
 		// all of our Windows will have marked this as true if the user has unplugged, plugged or modified a Monitor
 		if( mNeedsToRefreshDisplays ) {
 			mNeedsToRefreshDisplays = false;
@@ -92,8 +91,8 @@ void AppImplMswBasic::run()
 		// determine if application was frozen for a while and adjust next frame time
 		double elapsedSeconds = currentSeconds - mNextFrameTime;
 		if( elapsedSeconds > 1.0 ) {
-			int numSkipFrames = (int)( elapsedSeconds / secondsPerFrame );
-			mNextFrameTime += ( numSkipFrames * secondsPerFrame );
+			int numSkipFrames = (int)(elapsedSeconds / secondsPerFrame);
+			mNextFrameTime += (numSkipFrames * secondsPerFrame);
 		}
 
 		// determine when next frame should be drawn
@@ -101,17 +100,17 @@ void AppImplMswBasic::run()
 
 		// sleep and process messages until next frame
 		if( ( mFrameRateEnabled ) && ( mNextFrameTime > currentSeconds ) )
-			sleep( mNextFrameTime - currentSeconds );
+			sleep(mNextFrameTime - currentSeconds);
 		else {
 			MSG msg;
-			while(::PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
+			while( ::PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
 				::TranslateMessage( &msg );
 				::DispatchMessage( &msg );
 			}
 		}
 	}
 
-	//	killWindow( mFullScreen );
+//	killWindow( mFullScreen );
 	mApp->emitCleanup();
 	delete mApp;
 }
@@ -123,39 +122,38 @@ void AppImplMswBasic::sleep( double seconds )
 
 	// specify relative wait time in units of 100 nanoseconds
 	LARGE_INTEGER waitTime;
-	waitTime.QuadPart = ( LONGLONG )( seconds * -10000000 );
-	if( waitTime.QuadPart >= 0 ) return;
+	waitTime.QuadPart = (LONGLONG)(seconds * -10000000);
+	if(waitTime.QuadPart >= 0) return;
 
 	// activate waitable timer
-	if( !::SetWaitableTimer( timer, &waitTime, 0, NULL, NULL, FALSE ) )
+	if ( !::SetWaitableTimer( timer, &waitTime, 0, NULL, NULL, FALSE ) )
 		return;
 
 	// handle events until specified time has elapsed
 	DWORD result;
-	MSG   msg;
-	while( !mShouldQuit ) {
+	MSG msg;
+	while( ! mShouldQuit ) {
 		result = ::MsgWaitForMultipleObjects( 1, &timer, false, INFINITE, QS_ALLINPUT );
-		if( result == ( WAIT_OBJECT_0 + 1 ) ) {
+		if( result == (WAIT_OBJECT_0 + 1) ) {
 			// execute messages as soon as they arrive
-			while(::PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
+			while( ::PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
 				::TranslateMessage( &msg );
 				::DispatchMessage( &msg );
 			}
 			// resume waiting
 		}
-		else
-			return; // time has elapsed
+		else return; // time has elapsed
 	}
 }
 
 RendererRef AppImplMswBasic::findSharedRenderer( const RendererRef &searchRenderer )
 {
-	if( !searchRenderer )
+	if( ! searchRenderer )
 		return RendererRef();
 
 	for( const auto &win : mWindows ) {
 		RendererRef renderer = win->getRenderer();
-		if( renderer && ( typeid( *renderer ) == typeid( *searchRenderer ) ) )
+		if( renderer && ( typeid(*renderer) == typeid(*searchRenderer) ) )
 			return renderer;
 	}
 
@@ -164,7 +162,7 @@ RendererRef AppImplMswBasic::findSharedRenderer( const RendererRef &searchRender
 
 WindowRef AppImplMswBasic::createWindow( Window::Format format )
 {
-	if( !format.getRenderer() )
+	if( ! format.getRenderer() )
 		format.setRenderer( mApp->getDefaultRenderer()->clone() );
 
 	mWindows.push_back( new WindowImplMswBasic( format, findSharedRenderer( format.getRenderer() ), this ) );
@@ -199,10 +197,10 @@ WindowRef AppImplMswBasic::getWindowIndex( size_t index )
 {
 	if( index >= mWindows.size() )
 		return cinder::app::WindowRef();
-
+	
 	auto winIt = mWindows.begin();
 	std::advance( winIt, index );
-	return ( *winIt )->mWindowRef;
+	return (*winIt)->mWindowRef;
 }
 
 WindowRef AppImplMswBasic::getForegroundWindow() const
@@ -238,7 +236,7 @@ void AppImplMswBasic::destroyBlankingWindows()
 
 void AppImplMswBasic::quit()
 {
-	if( !mApp->privateEmitShouldQuit() )
+	if( ! mApp->privateEmitShouldQuit() )
 		return;
 
 	// Always quit, even if ! isQuitOnLastWindowCloseEnabled()
@@ -276,5 +274,5 @@ void WindowImplMswBasic::toggleFullScreen( const app::FullScreenOptions &options
 	if( options.isSecondaryDisplayBlankingEnabled() && mFullScreen )
 		mAppImplBasic->setupBlankingWindows( getDisplay() );
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

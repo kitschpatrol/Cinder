@@ -20,6 +20,9 @@
 #include <ATSUnicode.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -47,7 +50,7 @@ extern "C" {
 typedef UInt32 ATSUDirectDataSelector;
 enum {
 
-	/*
+  /*
    * Returns the parallel advance delta (delta X) array. (Array Type):
    * Fixed (Return Time): Constant, unless creation is necessary, or
    * unless requested by ATSUDirectGetLayoutDataArrayPtrFromTextLayout.
@@ -56,9 +59,9 @@ enum {
    * had not been previously allocated it will be allocated and
    * zero-filled when iCreate is set to true.
    */
-	kATSUDirectDataAdvanceDeltaFixedArray = 0L,
+  kATSUDirectDataAdvanceDeltaFixedArray = 0L,
 
-	/*
+  /*
    * Returns the parallel baseline delta (delta Y) array. (Array Type):
    * Fixed (Return Time): Constant, unless creation is necessary, or
    * unless requested by ATSUDirectGetLayoutDataArrayPtrFromTextLayout.
@@ -67,9 +70,9 @@ enum {
    * had not been previously allocated it will be allocated and
    * zero-filled when iCreate is set to true.
    */
-	kATSUDirectDataBaselineDeltaFixedArray = 1L,
+  kATSUDirectDataBaselineDeltaFixedArray = 1L,
 
-	/*
+  /*
    * Returns the parallel device delta array for device- specific
    * tweaking. This is an array of values which are used to adjust
    * truncated fractional values for devices that do not accept
@@ -82,9 +85,9 @@ enum {
    * previously allocated it will be allocated and zero-filled when
    * iCreate is set to true.
    */
-	kATSUDirectDataDeviceDeltaSInt16Array = 2L,
+  kATSUDirectDataDeviceDeltaSInt16Array = 2L,
 
-	/*
+  /*
    * Returns the parallel style index array. The indexes setting in the
    * array are indexes into the the StyleSetting array, which can be
    * obtained using the
@@ -97,18 +100,18 @@ enum {
    * previously allocated it will be allocated and zero-filled when
    * iCreate is set to true.
    */
-	kATSUDirectDataStyleIndexUInt16Array = 3L,
+  kATSUDirectDataStyleIndexUInt16Array = 3L,
 
-	/*
+  /*
    * Returns the style setting ref array. (Array Type):
    * ATSUStyleSettingRef (Return Time): Linear, based on the number of
    * styles applied to the given line. (Creation): This array is always
    * present if the layout has any text assigned to it at all. Setting
    * iCreate has no effect.
    */
-	kATSUDirectDataStyleSettingATSUStyleSettingRefArray = 4L,
+  kATSUDirectDataStyleSettingATSUStyleSettingRefArray = 4L,
 
-	/*
+  /*
    * Returns the ATSLayoutRecord, version 1 array. This should not be
    * used directly at all. Rather, use the
    * kATSUDirectDataLayoutRecordATSLayoutRecordCurrent selector below.
@@ -122,9 +125,9 @@ enum {
    * array is always present if the layout has any text assigned to it
    * at all. Setting iCreate has no effect
    */
-	kATSUDirectDataLayoutRecordATSLayoutRecordVersion1 = 100L,
+  kATSUDirectDataLayoutRecordATSLayoutRecordVersion1 = 100L,
 
-	/*
+  /*
    * Returns the ATSLayoutRecord. This will return the most current
    * version of the ATSLayoutRecord, and the one that's defined in this
    * file. Always use kATSUDirectDataLayoutRecordATSLayoutRecordCurrent
@@ -135,7 +138,7 @@ enum {
    * array is always present if the layout has any text assigned to it
    * at all. Setting iCreate has no effect.
    */
-	kATSUDirectDataLayoutRecordATSLayoutRecordCurrent = kATSUDirectDataLayoutRecordATSLayoutRecordVersion1
+  kATSUDirectDataLayoutRecordATSLayoutRecordCurrent = kATSUDirectDataLayoutRecordATSLayoutRecordVersion1
 };
 
 /* ---------------------------------------------------------------------------- */
@@ -149,7 +152,7 @@ enum {
  *    A reference to a style setting object that represents an
  *    ATSUStyle plus any cached/set information about that style.
  */
-typedef struct ATSStyleSetting *ATSUStyleSettingRef;
+typedef struct ATSStyleSetting*         ATSUStyleSettingRef;
 /* ---------------------------------------------------------------------------- */
 /* Direct Accessors                                                             */
 /* ---------------------------------------------------------------------------- */
@@ -224,11 +227,12 @@ typedef struct ATSStyleSetting *ATSUStyleSettingRef;
  */
 EXTERN_API_C( OSStatus )
 ATSUDirectGetLayoutDataArrayPtrFromLineRef(
-    ATSULineRef            iLineRef,
-    ATSUDirectDataSelector iDataSelector,
-    Boolean                iCreate,
-    void *                 oLayoutDataArrayPtr[], /* can be NULL */
-    ItemCount *            oLayoutDataCount );
+  ATSULineRef              iLineRef,
+  ATSUDirectDataSelector   iDataSelector,
+  Boolean                  iCreate,
+  void *                   oLayoutDataArrayPtr[],     /* can be NULL */
+  ItemCount *              oLayoutDataCount);
+
 
 /* ---------------------------------------------------------------------------- */
 /*
@@ -303,11 +307,12 @@ ATSUDirectGetLayoutDataArrayPtrFromLineRef(
  */
 EXTERN_API_C( OSStatus )
 ATSUDirectGetLayoutDataArrayPtrFromTextLayout(
-    ATSUTextLayout         iTextLayout,
-    UniCharArrayOffset     iLineOffset,
-    ATSUDirectDataSelector iDataSelector,
-    void *                 oLayoutDataArrayPtr[], /* can be NULL */
-    ItemCount *            oLayoutDataCount );
+  ATSUTextLayout           iTextLayout,
+  UniCharArrayOffset       iLineOffset,
+  ATSUDirectDataSelector   iDataSelector,
+  void *                   oLayoutDataArrayPtr[],     /* can be NULL */
+  ItemCount *              oLayoutDataCount);
+
 
 /* ---------------------------------------------------------------------------- */
 /*
@@ -346,9 +351,10 @@ ATSUDirectGetLayoutDataArrayPtrFromTextLayout(
  */
 EXTERN_API_C( OSStatus )
 ATSUDirectReleaseLayoutDataArrayPtr(
-    ATSULineRef            iLineRef, /* can be NULL */
-    ATSUDirectDataSelector iDataSelector,
-    void *                 iLayoutDataArrayPtr[] );
+  ATSULineRef              iLineRef,                  /* can be NULL */
+  ATSUDirectDataSelector   iDataSelector,
+  void *                   iLayoutDataArrayPtr[]);
+
 
 /* ---------------------------------------------------------------------------- */
 /*
@@ -396,9 +402,12 @@ ATSUDirectReleaseLayoutDataArrayPtr(
  */
 EXTERN_API_C( OSStatus )
 ATSUDirectAddStyleSettingRef(
-    ATSULineRef         iLineRef,
-    ATSUStyleSettingRef iStyleSettingRef,
-    UInt16 *            oStyleIndex );
+  ATSULineRef           iLineRef,
+  ATSUStyleSettingRef   iStyleSettingRef,
+  UInt16 *              oStyleIndex);
+
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -411,3 +420,4 @@ ATSUDirectAddStyleSettingRef(
 #endif
 
 #endif /* __ATSUNICODEDIRECTACCESS__ */
+

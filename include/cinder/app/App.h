@@ -26,35 +26,27 @@
 #include "cinder/Cinder.h"
 
 #if defined( CINDER_MAC )
-#include "cinder/app/cocoa/AppMac.h"
-namespace cinder {
-namespace app {
-typedef AppMac App;
-}
-} // namespace cinder::app
-#define CINDER_APP( APP, RENDERER, ... ) CINDER_APP_MAC( APP, RENDERER, ##__VA_ARGS__ )
+	#include "cinder/app/cocoa/AppMac.h"
+	namespace cinder { namespace app {
+		typedef AppMac			App;
+	} } // namespace cinder::app
+	#define CINDER_APP( APP, RENDERER, ... )	CINDER_APP_MAC( APP, RENDERER, ##__VA_ARGS__ )
 #elif defined( CINDER_COCOA_TOUCH )
-#include "cinder/app/cocoa/AppCocoaTouch.h"
-namespace cinder {
-namespace app {
-typedef AppCocoaTouch App;
-}
-}
-#define CINDER_APP( APP, RENDERER, ... ) CINDER_APP_COCOA_TOUCH( APP, RENDERER, ##__VA_ARGS__ )
+	#include "cinder/app/cocoa/AppCocoaTouch.h"
+	namespace cinder { namespace app {
+		typedef AppCocoaTouch	App;
+	} }
+	#define CINDER_APP( APP, RENDERER, ... )	CINDER_APP_COCOA_TOUCH( APP, RENDERER, ##__VA_ARGS__ )
 #elif defined( CINDER_MSW )
-#include "cinder/app/msw/AppMsw.h"
-namespace cinder {
-namespace app {
-typedef AppMsw App;
-}
-} // namespace cinder::app
-#define CINDER_APP( APP, RENDERER, ... ) CINDER_APP_MSW( APP, RENDERER, ##__VA_ARGS__ )
+	#include "cinder/app/msw/AppMsw.h"
+	namespace cinder { namespace app {
+		typedef AppMsw		App;
+	} } // namespace cinder::app		
+	#define CINDER_APP( APP, RENDERER, ... )	CINDER_APP_MSW( APP, RENDERER, ##__VA_ARGS__ )
 #elif defined( CINDER_WINRT )
-#include "cinder/app/winrt/AppWinRt.h"
-namespace cinder {
-namespace app {
-typedef AppWinRt App;
-}
-} // namespace cinder::app
-#define CINDER_APP( APP, RENDERER, ... ) CINDER_APP_WINRT( APP, RENDERER, ##__VA_ARGS__ )
+	#include "cinder/app/winrt/AppWinRt.h"
+	namespace cinder { namespace app {
+		typedef AppWinRt	App;
+	} } // namespace cinder::app
+	#define CINDER_APP( APP, RENDERER, ... )	CINDER_APP_WINRT( APP, RENDERER, ##__VA_ARGS__ )
 #endif

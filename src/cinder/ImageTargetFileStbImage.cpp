@@ -30,9 +30,9 @@ namespace cinder {
 
 void ImageTargetFileStbImage::registerSelf()
 {
-	static bool   alreadyRegistered = false;
+	static bool alreadyRegistered = false;
 	const int32_t PRIORITY = 3;
-
+	
 	if( alreadyRegistered )
 		return;
 	alreadyRegistered = true;
@@ -51,7 +51,7 @@ ImageTargetRef ImageTargetFileStbImage::create( DataTargetRef dataTarget, ImageS
 
 ImageTargetFileStbImage::ImageTargetFileStbImage( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData )
 {
-	if( !dataTarget->providesFilePath() ) {
+	if( ! dataTarget->providesFilePath() ) {
 		throw ImageIoExceptionFailedWrite( "ImageTargetFileStbImage only supports writing to files." );
 	}
 
@@ -59,36 +59,36 @@ ImageTargetFileStbImage::ImageTargetFileStbImage( DataTargetRef dataTarget, Imag
 
 	setSize( imageSource->getWidth(), imageSource->getHeight() );
 	ImageIo::ColorModel cm = options.isColorModelDefault() ? imageSource->getColorModel() : options.getColorModel();
-
+	
 	switch( cm ) {
-	case ImageIo::ColorModel::CM_RGB:
-		mNumComponents = ( imageSource->hasAlpha() ) ? 4 : 3;
-		setColorModel( ImageIo::ColorModel::CM_RGB );
-		setChannelOrder( ( mNumComponents == 4 ) ? ImageIo::ChannelOrder::RGBA : ImageIo::ChannelOrder::RGB );
+		case ImageIo::ColorModel::CM_RGB:
+			mNumComponents = ( imageSource->hasAlpha() ) ? 4 : 3;
+			setColorModel( ImageIo::ColorModel::CM_RGB );
+			setChannelOrder( ( mNumComponents == 4 ) ? ImageIo::ChannelOrder::RGBA : ImageIo::ChannelOrder::RGB );
 		break;
-	case ImageIo::ColorModel::CM_GRAY:
-		mNumComponents = ( imageSource->hasAlpha() ) ? 2 : 1;
-		setColorModel( ImageIo::ColorModel::CM_GRAY );
-		setChannelOrder( ( mNumComponents == 2 ) ? ImageIo::ChannelOrder::YA : ImageIo::ChannelOrder::Y );
+		case ImageIo::ColorModel::CM_GRAY:
+			mNumComponents = ( imageSource->hasAlpha() ) ? 2 : 1;
+			setColorModel( ImageIo::ColorModel::CM_GRAY );
+			setChannelOrder( ( mNumComponents == 2 ) ? ImageIo::ChannelOrder::YA : ImageIo::ChannelOrder::Y );
 		break;
-	default:
-		throw ImageIoExceptionIllegalColorModel();
+		default:
+			throw ImageIoExceptionIllegalColorModel();
 	}
 
 	mExtension = extensionData;
 	if( mExtension == "hdr" ) { // Radiance files are always float*
 		setDataType( ImageIo::DataType::FLOAT32 );
-		mRowBytes = mNumComponents * imageSource->getWidth() * sizeof( float );
+		mRowBytes = mNumComponents * imageSource->getWidth() * sizeof(float);
 	}
 	else {
 		setDataType( ImageIo::DataType::UINT8 );
-		mRowBytes = mNumComponents * imageSource->getWidth() * sizeof( float );
+		mRowBytes = mNumComponents * imageSource->getWidth() * sizeof(float);
 	}
-
+	
 	mData = std::unique_ptr<uint8_t[]>( new uint8_t[mHeight * mRowBytes] );
 }
 
-void *ImageTargetFileStbImage::getRowPointer( int32_t row )
+void* ImageTargetFileStbImage::getRowPointer( int32_t row )
 {
 	return &mData.get()[row * mRowBytes];
 }
@@ -96,19 +96,19 @@ void *ImageTargetFileStbImage::getRowPointer( int32_t row )
 void ImageTargetFileStbImage::finalize()
 {
 	if( mExtension == "png" ) {
-		if( !stbi_write_png( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, mData.get(), (int)mRowBytes ) )
+		if( ! stbi_write_png( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, mData.get(), (int)mRowBytes ) )
 			throw ImageIoExceptionFailedWrite();
 	}
 	else if( mExtension == "bmp" ) {
-		if( !stbi_write_bmp( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, mData.get() ) )
+		if( ! stbi_write_bmp( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, mData.get() ) )
 			throw ImageIoExceptionFailedWrite();
 	}
 	else if( mExtension == "tga" ) {
-		if( !stbi_write_tga( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, mData.get() ) )
+		if( ! stbi_write_tga( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, mData.get() ) )
 			throw ImageIoExceptionFailedWrite();
 	}
 	else if( mExtension == "hdr" ) {
-		if( !stbi_write_hdr( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, (const float *)mData.get() ) )
+		if( ! stbi_write_hdr( mFilePath.string().c_str(), (int)mWidth, (int)mHeight, mNumComponents, (const float*)mData.get() ) )
 			throw ImageIoExceptionFailedWrite();
 	}
 }

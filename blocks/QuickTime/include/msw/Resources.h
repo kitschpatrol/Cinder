@@ -28,6 +28,9 @@
 #include <Files.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,38 +43,40 @@ extern "C" {
 #pragma import on
 #endif
 
+
 enum {
-	resSysHeap = 64, /*System or application heap?*/
-	resPurgeable = 32, /*Purgeable resource?*/
-	resLocked = 16, /*Load it in locked?*/
-	resProtected = 8, /*Protected?*/
-	resPreload = 4, /*Load in on OpenResFile?*/
-	resChanged = 2, /*Resource changed?*/
-	mapReadOnly = 128, /*Resource file read-only*/
-	mapCompact = 64, /*Compact resource file*/
-	mapChanged = 32 /*Write map out at update*/
+  resSysHeap                    = 64,   /*System or application heap?*/
+  resPurgeable                  = 32,   /*Purgeable resource?*/
+  resLocked                     = 16,   /*Load it in locked?*/
+  resProtected                  = 8,    /*Protected?*/
+  resPreload                    = 4,    /*Load in on OpenResFile?*/
+  resChanged                    = 2,    /*Resource changed?*/
+  mapReadOnly                   = 128,  /*Resource file read-only*/
+  mapCompact                    = 64,   /*Compact resource file*/
+  mapChanged                    = 32    /*Write map out at update*/
 };
 
 enum {
-	resSysRefBit = 7, /*reference to system/local reference*/
-	resSysHeapBit = 6, /*In system/in application heap*/
-	resPurgeableBit = 5, /*Purgeable/not purgeable*/
-	resLockedBit = 4, /*Locked/not locked*/
-	resProtectedBit = 3, /*Protected/not protected*/
-	resPreloadBit = 2, /*Read in at OpenResource?*/
-	resChangedBit = 1, /*Existing resource changed since last update*/
-	mapReadOnlyBit = 7, /*is this file read-only?*/
-	mapCompactBit = 6, /*Is a compact necessary?*/
-	mapChangedBit = 5 /*Is it necessary to write map?*/
+  resSysRefBit                  = 7,    /*reference to system/local reference*/
+  resSysHeapBit                 = 6,    /*In system/in application heap*/
+  resPurgeableBit               = 5,    /*Purgeable/not purgeable*/
+  resLockedBit                  = 4,    /*Locked/not locked*/
+  resProtectedBit               = 3,    /*Protected/not protected*/
+  resPreloadBit                 = 2,    /*Read in at OpenResource?*/
+  resChangedBit                 = 1,    /*Existing resource changed since last update*/
+  mapReadOnlyBit                = 7,    /*is this file read-only?*/
+  mapCompactBit                 = 6,    /*Is a compact necessary?*/
+  mapChangedBit                 = 5     /*Is it necessary to write map?*/
 };
 
 enum {
-	kResFileNotOpened = -1, /*ref num return as error when opening a resource file*/
-	kSystemResFile = 0 /*this is the default ref num to the system file*/
+  kResFileNotOpened             = -1,   /*ref num return as error when opening a resource file*/
+  kSystemResFile                = 0     /*this is the default ref num to the system file*/
 };
 
-typedef CALLBACK_API_REGISTER68K( void, ResErrProcPtr, ( OSErr thErr ) );
-typedef REGISTER_UPP_TYPE( ResErrProcPtr ) ResErrUPP;
+
+typedef CALLBACK_API_REGISTER68K( void , ResErrProcPtr, (OSErr thErr) );
+typedef REGISTER_UPP_TYPE(ResErrProcPtr)                        ResErrUPP;
 /*
  *  NewResErrUPP()
  *  
@@ -81,17 +86,14 @@ typedef REGISTER_UPP_TYPE( ResErrProcPtr ) ResErrUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ResErrUPP )
-NewResErrUPP( ResErrProcPtr userRoutine );
+NewResErrUPP(ResErrProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppResErrProcInfo = 0x00001002 }; /* register no_return_value Func(2_bytes:D0) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ResErrUPP ) NewResErrUPP( ResErrProcPtr userRoutine )
-{
-	return (ResErrUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppResErrProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewResErrUPP( userRoutine ) ( ResErrUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppResErrProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppResErrProcInfo = 0x00001002 };  /* register no_return_value Func(2_bytes:D0) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ResErrUPP) NewResErrUPP(ResErrProcPtr userRoutine) { return (ResErrUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppResErrProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewResErrUPP(userRoutine) (ResErrUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppResErrProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -103,16 +105,13 @@ inline DEFINE_API_C( ResErrUPP ) NewResErrUPP( ResErrProcPtr userRoutine )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeResErrUPP( ResErrUPP userUPP );
+DisposeResErrUPP(ResErrUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeResErrUPP( ResErrUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeResErrUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeResErrUPP(ResErrUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeResErrUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -124,31 +123,28 @@ inline DEFINE_API_C( void ) DisposeResErrUPP( ResErrUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter InvokeResErrUPP( __D0, __A0 )
+#pragma parameter InvokeResErrUPP(__D0, __A0)
 #endif
 EXTERN_API_C( void )
 InvokeResErrUPP(
-    OSErr     thErr,
-    ResErrUPP userUPP ) ONEWORDINLINE( 0x4E90 );
-#if !OPAQUE_UPP_TYPES && ( !TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM )
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeResErrUPP( OSErr thErr, ResErrUPP userUPP )
-{
-	CALL_ONE_PARAMETER_UPP( userUPP, uppResErrProcInfo, thErr );
-}
-#else
-#define InvokeResErrUPP( thErr, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppResErrProcInfo, ( thErr ) )
-#endif
+  OSErr      thErr,
+  ResErrUPP  userUPP)                                         ONEWORDINLINE(0x4E90);
+#if !OPAQUE_UPP_TYPES && (!TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM)
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeResErrUPP(OSErr thErr, ResErrUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppResErrProcInfo, thErr); }
+  #else
+    #define InvokeResErrUPP(thErr, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppResErrProcInfo, (thErr))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewResErrProc( userRoutine ) NewResErrUPP( userRoutine )
-#define CallResErrProc( userRoutine, thErr ) InvokeResErrUPP( thErr, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewResErrProc(userRoutine)                          NewResErrUPP(userRoutine)
+    #define CallResErrProc(userRoutine, thErr)                  InvokeResErrUPP(thErr, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /* QuickTime 3.0*/
-typedef CALLBACK_API( OSErr, ResourceEndianFilterPtr )( Handle theResource, Boolean currentlyNativeEndian );
+typedef CALLBACK_API( OSErr , ResourceEndianFilterPtr )(Handle theResource, Boolean currentlyNativeEndian);
 #if CALL_NOT_IN_CARBON
 /*
  *  InitResources()
@@ -159,7 +155,8 @@ typedef CALLBACK_API( OSErr, ResourceEndianFilterPtr )( Handle theResource, Bool
  *    Mac OS X:         not available
  */
 EXTERN_API( short )
-InitResources( void ) ONEWORDINLINE( 0xA995 );
+InitResources(void)                                           ONEWORDINLINE(0xA995);
+
 
 /*
  *  RsrcZoneInit()
@@ -170,9 +167,10 @@ InitResources( void ) ONEWORDINLINE( 0xA995 );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-RsrcZoneInit( void ) ONEWORDINLINE( 0xA996 );
+RsrcZoneInit(void)                                            ONEWORDINLINE(0xA996);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  CloseResFile()
@@ -183,7 +181,8 @@ RsrcZoneInit( void ) ONEWORDINLINE( 0xA996 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-CloseResFile( short refNum ) ONEWORDINLINE( 0xA99A );
+CloseResFile(short refNum)                                    ONEWORDINLINE(0xA99A);
+
 
 /*
  *  ResError()
@@ -194,7 +193,8 @@ CloseResFile( short refNum ) ONEWORDINLINE( 0xA99A );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-ResError( void ) ONEWORDINLINE( 0xA9AF );
+ResError(void)                                                ONEWORDINLINE(0xA9AF);
+
 
 /*
  *  CurResFile()
@@ -205,7 +205,8 @@ ResError( void ) ONEWORDINLINE( 0xA9AF );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-CurResFile( void ) ONEWORDINLINE( 0xA994 );
+CurResFile(void)                                              ONEWORDINLINE(0xA994);
+
 
 /*
  *  HomeResFile()
@@ -216,7 +217,8 @@ CurResFile( void ) ONEWORDINLINE( 0xA994 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-HomeResFile( Handle theResource ) ONEWORDINLINE( 0xA9A4 );
+HomeResFile(Handle theResource)                               ONEWORDINLINE(0xA9A4);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -228,7 +230,8 @@ HomeResFile( Handle theResource ) ONEWORDINLINE( 0xA9A4 );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-CreateResFile( ConstStr255Param fileName ) ONEWORDINLINE( 0xA9B1 );
+CreateResFile(ConstStr255Param fileName)                      ONEWORDINLINE(0xA9B1);
+
 
 /*
  *  OpenResFile()
@@ -239,9 +242,10 @@ CreateResFile( ConstStr255Param fileName ) ONEWORDINLINE( 0xA9B1 );
  *    Mac OS X:         not available
  */
 EXTERN_API( short )
-OpenResFile( ConstStr255Param fileName ) ONEWORDINLINE( 0xA997 );
+OpenResFile(ConstStr255Param fileName)                        ONEWORDINLINE(0xA997);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  UseResFile()
@@ -252,7 +256,8 @@ OpenResFile( ConstStr255Param fileName ) ONEWORDINLINE( 0xA997 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-UseResFile( short refNum ) ONEWORDINLINE( 0xA998 );
+UseResFile(short refNum)                                      ONEWORDINLINE(0xA998);
+
 
 /*
  *  CountTypes()
@@ -263,7 +268,8 @@ UseResFile( short refNum ) ONEWORDINLINE( 0xA998 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-CountTypes( void ) ONEWORDINLINE( 0xA99E );
+CountTypes(void)                                              ONEWORDINLINE(0xA99E);
+
 
 /*
  *  Count1Types()
@@ -274,7 +280,8 @@ CountTypes( void ) ONEWORDINLINE( 0xA99E );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-Count1Types( void ) ONEWORDINLINE( 0xA81C );
+Count1Types(void)                                             ONEWORDINLINE(0xA81C);
+
 
 /*
  *  GetIndType()
@@ -286,8 +293,9 @@ Count1Types( void ) ONEWORDINLINE( 0xA81C );
  */
 EXTERN_API( void )
 GetIndType(
-    ResType *theType,
-    short    index ) ONEWORDINLINE( 0xA99F );
+  ResType *  theType,
+  short      index)                                           ONEWORDINLINE(0xA99F);
+
 
 /*
  *  Get1IndType()
@@ -299,8 +307,9 @@ GetIndType(
  */
 EXTERN_API( void )
 Get1IndType(
-    ResType *theType,
-    short    index ) ONEWORDINLINE( 0xA80F );
+  ResType *  theType,
+  short      index)                                           ONEWORDINLINE(0xA80F);
+
 
 /*
  *  SetResLoad()
@@ -311,7 +320,8 @@ Get1IndType(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetResLoad( Boolean load ) ONEWORDINLINE( 0xA99B );
+SetResLoad(Boolean load)                                      ONEWORDINLINE(0xA99B);
+
 
 /*
  *  CountResources()
@@ -322,7 +332,8 @@ SetResLoad( Boolean load ) ONEWORDINLINE( 0xA99B );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-CountResources( ResType theType ) ONEWORDINLINE( 0xA99C );
+CountResources(ResType theType)                               ONEWORDINLINE(0xA99C);
+
 
 /*
  *  Count1Resources()
@@ -333,7 +344,8 @@ CountResources( ResType theType ) ONEWORDINLINE( 0xA99C );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-Count1Resources( ResType theType ) ONEWORDINLINE( 0xA80D );
+Count1Resources(ResType theType)                              ONEWORDINLINE(0xA80D);
+
 
 /*
  *  GetIndResource()
@@ -345,8 +357,9 @@ Count1Resources( ResType theType ) ONEWORDINLINE( 0xA80D );
  */
 EXTERN_API( Handle )
 GetIndResource(
-    ResType theType,
-    short   index ) ONEWORDINLINE( 0xA99D );
+  ResType   theType,
+  short     index)                                            ONEWORDINLINE(0xA99D);
+
 
 /*
  *  Get1IndResource()
@@ -358,8 +371,9 @@ GetIndResource(
  */
 EXTERN_API( Handle )
 Get1IndResource(
-    ResType theType,
-    short   index ) ONEWORDINLINE( 0xA80E );
+  ResType   theType,
+  short     index)                                            ONEWORDINLINE(0xA80E);
+
 
 /*
  *  GetResource()
@@ -371,8 +385,9 @@ Get1IndResource(
  */
 EXTERN_API( Handle )
 GetResource(
-    ResType theType,
-    short   theID ) ONEWORDINLINE( 0xA9A0 );
+  ResType   theType,
+  short     theID)                                            ONEWORDINLINE(0xA9A0);
+
 
 /*
  *  Get1Resource()
@@ -384,8 +399,9 @@ GetResource(
  */
 EXTERN_API( Handle )
 Get1Resource(
-    ResType theType,
-    short   theID ) ONEWORDINLINE( 0xA81F );
+  ResType   theType,
+  short     theID)                                            ONEWORDINLINE(0xA81F);
+
 
 /*
  *  GetNamedResource()
@@ -397,8 +413,9 @@ Get1Resource(
  */
 EXTERN_API( Handle )
 GetNamedResource(
-    ResType          theType,
-    ConstStr255Param name ) ONEWORDINLINE( 0xA9A1 );
+  ResType            theType,
+  ConstStr255Param   name)                                    ONEWORDINLINE(0xA9A1);
+
 
 /*
  *  Get1NamedResource()
@@ -410,8 +427,9 @@ GetNamedResource(
  */
 EXTERN_API( Handle )
 Get1NamedResource(
-    ResType          theType,
-    ConstStr255Param name ) ONEWORDINLINE( 0xA820 );
+  ResType            theType,
+  ConstStr255Param   name)                                    ONEWORDINLINE(0xA820);
+
 
 /*
  *  [Mac]LoadResource()
@@ -422,10 +440,11 @@ Get1NamedResource(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-#define MacLoadResource LoadResource
+    #define MacLoadResource LoadResource
 #endif
 EXTERN_API( void )
-MacLoadResource( Handle theResource ) ONEWORDINLINE( 0xA9A2 );
+MacLoadResource(Handle theResource)                           ONEWORDINLINE(0xA9A2);
+
 
 /*
  *  ReleaseResource()
@@ -436,7 +455,8 @@ MacLoadResource( Handle theResource ) ONEWORDINLINE( 0xA9A2 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-ReleaseResource( Handle theResource ) ONEWORDINLINE( 0xA9A3 );
+ReleaseResource(Handle theResource)                           ONEWORDINLINE(0xA9A3);
+
 
 /*
  *  DetachResource()
@@ -447,7 +467,8 @@ ReleaseResource( Handle theResource ) ONEWORDINLINE( 0xA9A3 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DetachResource( Handle theResource ) ONEWORDINLINE( 0xA992 );
+DetachResource(Handle theResource)                            ONEWORDINLINE(0xA992);
+
 
 /*
  *  UniqueID()
@@ -458,7 +479,8 @@ DetachResource( Handle theResource ) ONEWORDINLINE( 0xA992 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-UniqueID( ResType theType ) ONEWORDINLINE( 0xA9C1 );
+UniqueID(ResType theType)                                     ONEWORDINLINE(0xA9C1);
+
 
 /*
  *  Unique1ID()
@@ -469,7 +491,8 @@ UniqueID( ResType theType ) ONEWORDINLINE( 0xA9C1 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-Unique1ID( ResType theType ) ONEWORDINLINE( 0xA810 );
+Unique1ID(ResType theType)                                    ONEWORDINLINE(0xA810);
+
 
 /*
  *  GetResAttrs()
@@ -480,7 +503,8 @@ Unique1ID( ResType theType ) ONEWORDINLINE( 0xA810 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-GetResAttrs( Handle theResource ) ONEWORDINLINE( 0xA9A6 );
+GetResAttrs(Handle theResource)                               ONEWORDINLINE(0xA9A6);
+
 
 /*
  *  GetResInfo()
@@ -492,10 +516,11 @@ GetResAttrs( Handle theResource ) ONEWORDINLINE( 0xA9A6 );
  */
 EXTERN_API( void )
 GetResInfo(
-    Handle   theResource,
-    short *  theID,
-    ResType *theType,
-    Str255   name ) ONEWORDINLINE( 0xA9A8 );
+  Handle     theResource,
+  short *    theID,
+  ResType *  theType,
+  Str255     name)                                            ONEWORDINLINE(0xA9A8);
+
 
 /*
  *  SetResInfo()
@@ -507,9 +532,10 @@ GetResInfo(
  */
 EXTERN_API( void )
 SetResInfo(
-    Handle           theResource,
-    short            theID,
-    ConstStr255Param name ) ONEWORDINLINE( 0xA9A9 );
+  Handle             theResource,
+  short              theID,
+  ConstStr255Param   name)                                    ONEWORDINLINE(0xA9A9);
+
 
 /*
  *  AddResource()
@@ -521,10 +547,11 @@ SetResInfo(
  */
 EXTERN_API( void )
 AddResource(
-    Handle           theData,
-    ResType          theType,
-    short            theID,
-    ConstStr255Param name ) ONEWORDINLINE( 0xA9AB );
+  Handle             theData,
+  ResType            theType,
+  short              theID,
+  ConstStr255Param   name)                                    ONEWORDINLINE(0xA9AB);
+
 
 /*
  *  GetResourceSizeOnDisk()
@@ -535,7 +562,8 @@ AddResource(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-GetResourceSizeOnDisk( Handle theResource ) ONEWORDINLINE( 0xA9A5 );
+GetResourceSizeOnDisk(Handle theResource)                     ONEWORDINLINE(0xA9A5);
+
 
 /*
  *  GetMaxResourceSize()
@@ -546,7 +574,8 @@ GetResourceSizeOnDisk( Handle theResource ) ONEWORDINLINE( 0xA9A5 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-GetMaxResourceSize( Handle theResource ) ONEWORDINLINE( 0xA821 );
+GetMaxResourceSize(Handle theResource)                        ONEWORDINLINE(0xA821);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -558,9 +587,10 @@ GetMaxResourceSize( Handle theResource ) ONEWORDINLINE( 0xA821 );
  *    Mac OS X:         not available
  */
 EXTERN_API( long )
-RsrcMapEntry( Handle theResource ) ONEWORDINLINE( 0xA9C5 );
+RsrcMapEntry(Handle theResource)                              ONEWORDINLINE(0xA9C5);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  SetResAttrs()
@@ -572,8 +602,9 @@ RsrcMapEntry( Handle theResource ) ONEWORDINLINE( 0xA9C5 );
  */
 EXTERN_API( void )
 SetResAttrs(
-    Handle theResource,
-    short  attrs ) ONEWORDINLINE( 0xA9A7 );
+  Handle   theResource,
+  short    attrs)                                             ONEWORDINLINE(0xA9A7);
+
 
 /*
  *  ChangedResource()
@@ -584,7 +615,8 @@ SetResAttrs(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-ChangedResource( Handle theResource ) ONEWORDINLINE( 0xA9AA );
+ChangedResource(Handle theResource)                           ONEWORDINLINE(0xA9AA);
+
 
 /*
  *  RemoveResource()
@@ -595,7 +627,8 @@ ChangedResource( Handle theResource ) ONEWORDINLINE( 0xA9AA );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-RemoveResource( Handle theResource ) ONEWORDINLINE( 0xA9AD );
+RemoveResource(Handle theResource)                            ONEWORDINLINE(0xA9AD);
+
 
 /*
  *  UpdateResFile()
@@ -606,7 +639,8 @@ RemoveResource( Handle theResource ) ONEWORDINLINE( 0xA9AD );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-UpdateResFile( short refNum ) ONEWORDINLINE( 0xA999 );
+UpdateResFile(short refNum)                                   ONEWORDINLINE(0xA999);
+
 
 /*
  *  WriteResource()
@@ -617,7 +651,8 @@ UpdateResFile( short refNum ) ONEWORDINLINE( 0xA999 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-WriteResource( Handle theResource ) ONEWORDINLINE( 0xA9B0 );
+WriteResource(Handle theResource)                             ONEWORDINLINE(0xA9B0);
+
 
 /*
  *  SetResPurge()
@@ -628,7 +663,8 @@ WriteResource( Handle theResource ) ONEWORDINLINE( 0xA9B0 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetResPurge( Boolean install ) ONEWORDINLINE( 0xA993 );
+SetResPurge(Boolean install)                                  ONEWORDINLINE(0xA993);
+
 
 /*
  *  GetResFileAttrs()
@@ -639,7 +675,8 @@ SetResPurge( Boolean install ) ONEWORDINLINE( 0xA993 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-GetResFileAttrs( short refNum ) ONEWORDINLINE( 0xA9F6 );
+GetResFileAttrs(short refNum)                                 ONEWORDINLINE(0xA9F6);
+
 
 /*
  *  SetResFileAttrs()
@@ -651,8 +688,9 @@ GetResFileAttrs( short refNum ) ONEWORDINLINE( 0xA9F6 );
  */
 EXTERN_API( void )
 SetResFileAttrs(
-    short refNum,
-    short attrs ) ONEWORDINLINE( 0xA9F7 );
+  short   refNum,
+  short   attrs)                                              ONEWORDINLINE(0xA9F7);
+
 
 /*
  *  OpenRFPerm()
@@ -664,9 +702,10 @@ SetResFileAttrs(
  */
 EXTERN_API( short )
 OpenRFPerm(
-    ConstStr255Param fileName,
-    short            vRefNum,
-    SInt8            permission ) ONEWORDINLINE( 0xA9C4 );
+  ConstStr255Param   fileName,
+  short              vRefNum,
+  SInt8              permission)                              ONEWORDINLINE(0xA9C4);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -679,10 +718,11 @@ OpenRFPerm(
  */
 EXTERN_API( Handle )
 RGetResource(
-    ResType theType,
-    short   theID ) ONEWORDINLINE( 0xA80C );
+  ResType   theType,
+  short     theID)                                            ONEWORDINLINE(0xA80C);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  HOpenResFile()
@@ -694,10 +734,11 @@ RGetResource(
  */
 EXTERN_API( short )
 HOpenResFile(
-    short            vRefNum,
-    long             dirID,
-    ConstStr255Param fileName,
-    SInt8            permission ) ONEWORDINLINE( 0xA81A );
+  short              vRefNum,
+  long               dirID,
+  ConstStr255Param   fileName,
+  SInt8              permission)                              ONEWORDINLINE(0xA81A);
+
 
 /*
  *  HCreateResFile()
@@ -709,9 +750,10 @@ HOpenResFile(
  */
 EXTERN_API( void )
 HCreateResFile(
-    short            vRefNum,
-    long             dirID,
-    ConstStr255Param fileName ) ONEWORDINLINE( 0xA81B );
+  short              vRefNum,
+  long               dirID,
+  ConstStr255Param   fileName)                                ONEWORDINLINE(0xA81B);
+
 
 /*
  *  FSpOpenResFile()
@@ -723,8 +765,9 @@ HCreateResFile(
  */
 EXTERN_API( short )
 FSpOpenResFile(
-    const FSSpec *spec,
-    SignedByte    permission ) TWOWORDINLINE( 0x700D, 0xAA52 );
+  const FSSpec *  spec,
+  SignedByte      permission)                                 TWOWORDINLINE(0x700D, 0xAA52);
+
 
 /*
  *  FSpCreateResFile()
@@ -736,10 +779,11 @@ FSpOpenResFile(
  */
 EXTERN_API( void )
 FSpCreateResFile(
-    const FSSpec *spec,
-    OSType        creator,
-    OSType        fileType,
-    ScriptCode    scriptTag ) TWOWORDINLINE( 0x700E, 0xAA52 );
+  const FSSpec *  spec,
+  OSType          creator,
+  OSType          fileType,
+  ScriptCode      scriptTag)                                  TWOWORDINLINE(0x700E, 0xAA52);
+
 
 /*
  *  ReadPartialResource()
@@ -751,10 +795,11 @@ FSpCreateResFile(
  */
 EXTERN_API( void )
 ReadPartialResource(
-    Handle theResource,
-    long   offset,
-    void * buffer,
-    long   count ) TWOWORDINLINE( 0x7001, 0xA822 );
+  Handle   theResource,
+  long     offset,
+  void *   buffer,
+  long     count)                                             TWOWORDINLINE(0x7001, 0xA822);
+
 
 /*
  *  WritePartialResource()
@@ -766,10 +811,11 @@ ReadPartialResource(
  */
 EXTERN_API( void )
 WritePartialResource(
-    Handle      theResource,
-    long        offset,
-    const void *buffer,
-    long        count ) TWOWORDINLINE( 0x7002, 0xA822 );
+  Handle        theResource,
+  long          offset,
+  const void *  buffer,
+  long          count)                                        TWOWORDINLINE(0x7002, 0xA822);
+
 
 /*
  *  SetResourceSize()
@@ -781,8 +827,9 @@ WritePartialResource(
  */
 EXTERN_API( void )
 SetResourceSize(
-    Handle theResource,
-    long   newSize ) TWOWORDINLINE( 0x7003, 0xA822 );
+  Handle   theResource,
+  long     newSize)                                           TWOWORDINLINE(0x7003, 0xA822);
+
 
 /*
  *  GetNextFOND()
@@ -793,7 +840,8 @@ SetResourceSize(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Handle )
-GetNextFOND( Handle fondHandle ) TWOWORDINLINE( 0x700A, 0xA822 );
+GetNextFOND(Handle fondHandle)                                TWOWORDINLINE(0x700A, 0xA822);
+
 
 /* QuickTime 3.0*/
 #if CALL_NOT_IN_CARBON
@@ -807,8 +855,9 @@ GetNextFOND( Handle fondHandle ) TWOWORDINLINE( 0x700A, 0xA822 );
  */
 EXTERN_API_C( OSErr )
 RegisterResourceEndianFilter(
-    ResType                 theType,
-    ResourceEndianFilterPtr theFilterProc );
+  ResType                   theType,
+  ResourceEndianFilterPtr   theFilterProc);
+
 
 /* Use TempInsertROMMap to force the ROM resource map to be
    inserted into the chain in front of the system. Note that
@@ -825,7 +874,8 @@ RegisterResourceEndianFilter(
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-TempInsertROMMap( Boolean tempResLoad ) FIVEWORDINLINE( 0x70FF, 0x4A1F, 0x56C0, 0x31C0, 0x0B9E );
+TempInsertROMMap(Boolean tempResLoad)                         FIVEWORDINLINE(0x70FF, 0x4A1F, 0x56C0, 0x31C0, 0x0B9E);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -834,14 +884,14 @@ TempInsertROMMap( Boolean tempResLoad ) FIVEWORDINLINE( 0x70FF, 0x4A1F, 0x56C0, 
   _________________________________________________________________________________________________________
 */
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
-typedef SInt16 RsrcChainLocation;
+typedef SInt16                          RsrcChainLocation;
 enum {
-	kRsrcChainBelowSystemMap = 0, /* Below the system's resource map*/
-	kRsrcChainBelowApplicationMap = 1, /* Below the application's resource map*/
-	kRsrcChainAboveApplicationMap = 2, /* Above the application's resource map*/
-	kRsrcChainAboveAllMaps = 4 /* Above all resource maps*/
+  kRsrcChainBelowSystemMap      = 0,    /* Below the system's resource map*/
+  kRsrcChainBelowApplicationMap = 1,    /* Below the application's resource map*/
+  kRsrcChainAboveApplicationMap = 2,    /* Above the application's resource map*/
+  kRsrcChainAboveAllMaps        = 4     /* Above all resource maps*/
 };
 
 /*
@@ -859,8 +909,9 @@ enum {
  */
 EXTERN_API( OSErr )
 InsertResourceFile(
-    SInt16            refNum,
-    RsrcChainLocation where );
+  SInt16              refNum,
+  RsrcChainLocation   where);
+
 
 /*
    If the file is not currently in the resource chain, this returns resNotFound
@@ -875,7 +926,8 @@ InsertResourceFile(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-DetachResourceFile( SInt16 refNum );
+DetachResourceFile(SInt16 refNum);
+
 
 /*
    Returns true if the resource file is already open and known by the Resource Manager (i.e., it is
@@ -894,9 +946,10 @@ DetachResourceFile( SInt16 refNum );
  */
 EXTERN_API( Boolean )
 FSpResourceFileAlreadyOpen(
-    const FSSpec *resourceFile,
-    Boolean *     inChain,
-    SInt16 *      refNum ) TWOWORDINLINE( 0x7010, 0xA822 );
+  const FSSpec *  resourceFile,
+  Boolean *       inChain,
+  SInt16 *        refNum)                                     TWOWORDINLINE(0x7010, 0xA822);
+
 
 /*
    FSpOpenOrphanResFile should be used to open a resource file that is persistent across all contexts,
@@ -917,9 +970,10 @@ FSpResourceFileAlreadyOpen(
  */
 EXTERN_API( OSErr )
 FSpOpenOrphanResFile(
-    const FSSpec *spec,
-    SignedByte    permission,
-    SInt16 *      refNum );
+  const FSSpec *  spec,
+  SignedByte      permission,
+  SInt16 *        refNum);
+
 
 /*
    GetTopResourceFile returns the refNum of the top most resource map in the current resource chain. If
@@ -934,7 +988,8 @@ FSpOpenOrphanResFile(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-GetTopResourceFile( SInt16 *refNum );
+GetTopResourceFile(SInt16 * refNum);
+
 
 /*
    GetNextResourceFile can be used to iterate over resource files in the resource chain. By passing a
@@ -952,8 +1007,10 @@ GetTopResourceFile( SInt16 *refNum );
  */
 EXTERN_API( OSErr )
 GetNextResourceFile(
-    SInt16  curRefNum,
-    SInt16 *nextRefNum );
+  SInt16    curRefNum,
+  SInt16 *  nextRefNum);
+
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -966,8 +1023,9 @@ GetNextResourceFile(
  */
 EXTERN_API_C( Handle )
 getnamedresource(
-    ResType     theType,
-    const char *name );
+  ResType       theType,
+  const char *  name);
+
 
 /*
  *  get1namedresource()
@@ -979,8 +1037,9 @@ getnamedresource(
  */
 EXTERN_API_C( Handle )
 get1namedresource(
-    ResType     theType,
-    const char *name );
+  ResType       theType,
+  const char *  name);
+
 
 /*
  *  openrfperm()
@@ -992,9 +1051,10 @@ get1namedresource(
  */
 EXTERN_API_C( short )
 openrfperm(
-    const char *fileName,
-    short       vRefNum,
-    char        permission );
+  const char *  fileName,
+  short         vRefNum,
+  char          permission);
+
 
 /*
  *  openresfile()
@@ -1005,7 +1065,8 @@ openrfperm(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( short )
-openresfile( const char *fileName );
+openresfile(const char * fileName);
+
 
 /*
  *  createresfile()
@@ -1016,7 +1077,8 @@ openresfile( const char *fileName );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-createresfile( const char *fileName );
+createresfile(const char * fileName);
+
 
 /*
  *  getresinfo()
@@ -1028,10 +1090,11 @@ createresfile( const char *fileName );
  */
 EXTERN_API_C( void )
 getresinfo(
-    Handle   theResource,
-    short *  theID,
-    ResType *theType,
-    char *   name );
+  Handle     theResource,
+  short *    theID,
+  ResType *  theType,
+  char *     name);
+
 
 /*
  *  setresinfo()
@@ -1043,9 +1106,10 @@ getresinfo(
  */
 EXTERN_API_C( void )
 setresinfo(
-    Handle      theResource,
-    short       theID,
-    const char *name );
+  Handle        theResource,
+  short         theID,
+  const char *  name);
+
 
 /*
  *  addresource()
@@ -1057,18 +1121,19 @@ setresinfo(
  */
 EXTERN_API_C( void )
 addresource(
-    Handle      theResource,
-    ResType     theType,
-    short       theID,
-    const char *name );
+  Handle        theResource,
+  ResType       theType,
+  short         theID,
+  const char *  name);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if OLDROUTINENAMES
-#define SizeResource( theResource ) GetResourceSizeOnDisk( theResource )
-#define MaxSizeRsrc( theResource ) GetMaxResourceSize( theResource )
-#define RmveResource( theResource ) RemoveResource( theResource )
-#endif /* OLDROUTINENAMES */
+#define SizeResource(theResource) GetResourceSizeOnDisk(theResource)
+#define MaxSizeRsrc(theResource) GetMaxResourceSize(theResource)
+#define RmveResource(theResource) RemoveResource(theResource)
+#endif  /* OLDROUTINENAMES */
 
 /*
  *  FSCreateResourceFile()
@@ -1119,15 +1184,17 @@ addresource(
  */
 EXTERN_API( OSErr )
 FSCreateResourceFile(
-    const FSRef *        parentRef,
-    UniCharCount         nameLength,
-    const UniChar *      name,
-    FSCatalogInfoBitmap  whichInfo,
-    const FSCatalogInfo *catalogInfo, /* can be NULL */
-    UniCharCount         forkNameLength,
-    const UniChar *      forkName, /* can be NULL */
-    FSRef *              newRef, /* can be NULL */
-    FSSpec *             newSpec ); /* can be NULL */
+  const FSRef *          parentRef,
+  UniCharCount           nameLength,
+  const UniChar *        name,
+  FSCatalogInfoBitmap    whichInfo,
+  const FSCatalogInfo *  catalogInfo,          /* can be NULL */
+  UniCharCount           forkNameLength,
+  const UniChar *        forkName,             /* can be NULL */
+  FSRef *                newRef,               /* can be NULL */
+  FSSpec *               newSpec);             /* can be NULL */
+
+
 
 /*
  *  FSCreateResourceFork()
@@ -1163,10 +1230,11 @@ FSCreateResourceFile(
  */
 EXTERN_API_C( OSErr )
 FSCreateResourceFork(
-    const FSRef *  ref,
-    UniCharCount   forkNameLength,
-    const UniChar *forkName, /* can be NULL */
-    UInt32         flags );
+  const FSRef *    ref,
+  UniCharCount     forkNameLength,
+  const UniChar *  forkName,             /* can be NULL */
+  UInt32           flags);
+
 
 /*
  *  FSOpenResourceFile()
@@ -1203,19 +1271,20 @@ FSCreateResourceFork(
  */
 EXTERN_API( OSErr )
 FSOpenResourceFile(
-    const FSRef *  ref,
-    UniCharCount   forkNameLength,
-    const UniChar *forkName, /* can be NULL */
-    SInt8          permissions,
-    SInt16 *       refNum );
+  const FSRef *    ref,
+  UniCharCount     forkNameLength,
+  const UniChar *  forkName,             /* can be NULL */
+  SInt8            permissions,
+  SInt16 *         refNum);
+
 
 /*
     These typedefs were originally created for the Copland Resource Mangager
 */
-typedef short ResFileRefNum;
-typedef short ResID;
-typedef short ResAttributes;
-typedef short ResFileAttributes;
+typedef short                           ResFileRefNum;
+typedef short                           ResID;
+typedef short                           ResAttributes;
+typedef short                           ResFileAttributes;
 #if CALL_NOT_IN_CARBON
 /*
  *  SortResourceFile()
@@ -1226,9 +1295,13 @@ typedef short ResFileAttributes;
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-SortResourceFile( short resFileRefNum ) TWOWORDINLINE( 0x7016, 0xA822 );
+SortResourceFile(short resFileRefNum)                         TWOWORDINLINE(0x7016, 0xA822);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+
+#endif  /* CALL_NOT_IN_CARBON */
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -1241,3 +1314,4 @@ SortResourceFile( short resFileRefNum ) TWOWORDINLINE( 0x7016, 0xA822 );
 #endif
 
 #endif /* __RESOURCES__ */
+

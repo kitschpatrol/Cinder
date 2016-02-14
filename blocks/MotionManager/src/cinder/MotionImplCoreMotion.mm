@@ -28,21 +28,21 @@
 namespace cinder {
 
 MotionImplCoreMotion::MotionImplCoreMotion()
-    : mSensorMode( MotionManager::SensorMode::Gyroscope ), mLastAccel( 0, 0, 0 ), mAccelFilter( 0.3f ), mLastAccelValid( false )
+	: mSensorMode( MotionManager::SensorMode::Gyroscope ), mLastAccel( 0, 0, 0 ), mAccelFilter( 0.3f ), mLastAccelValid( false )
 {
 	mMotionManager = [[CMMotionManager alloc] init];
 }
 
 MotionImplCoreMotion::~MotionImplCoreMotion()
 {
-	stopMotionUpdates();
+    stopMotionUpdates();
 	[mMotionManager release];
 	mMotionManager = nil;
 }
 
 bool MotionImplCoreMotion::isMotionUpdatesActive()
 {
-	return mMotionManager.isDeviceMotionActive;
+    return mMotionManager.isDeviceMotionActive;
 }
 
 bool MotionImplCoreMotion::isMotionDataAvailable()
@@ -63,15 +63,15 @@ bool MotionImplCoreMotion::isAccelAvailable()
 bool MotionImplCoreMotion::isNorthReliable()
 {
 	NSUInteger available = [CMMotionManager availableAttitudeReferenceFrames];
-	return ( available & CMAttitudeReferenceFrameXTrueNorthZVertical ) || ( available & CMAttitudeReferenceFrameXMagneticNorthZVertical ) ? true : false;
+	return (available & CMAttitudeReferenceFrameXTrueNorthZVertical) || (available & CMAttitudeReferenceFrameXMagneticNorthZVertical) ? true : false;
 }
 
 void MotionImplCoreMotion::setSensorMode( MotionManager::SensorMode mode )
 {
-	if( mode == MotionManager::SensorMode::Gyroscope && !isGyroAvailable() ) {
+	if( mode == MotionManager::SensorMode::Gyroscope && ! isGyroAvailable() ) {
 		mSensorMode = MotionManager::SensorMode::Accelerometer;
 	}
-	if( mode == MotionManager::SensorMode::Accelerometer && !isAccelAvailable() )
+	if( mode == MotionManager::SensorMode::Accelerometer && ! isAccelAvailable() )
 		throw ExcNoSensors();
 
 	mSensorMode = mode;
@@ -83,11 +83,11 @@ void MotionImplCoreMotion::startMotionUpdates()
 		if( mMotionManager.deviceMotionAvailable ) {
 			NSUInteger availableReferenceFrames = [CMMotionManager availableAttitudeReferenceFrames];
 			CMAttitudeReferenceFrame referenceFrame;
-			if( availableReferenceFrames & CMAttitudeReferenceFrameXTrueNorthZVertical )
+			if (availableReferenceFrames & CMAttitudeReferenceFrameXTrueNorthZVertical)
 				referenceFrame = CMAttitudeReferenceFrameXTrueNorthZVertical;
-			else if( availableReferenceFrames & CMAttitudeReferenceFrameXMagneticNorthZVertical )
+			else if (availableReferenceFrames & CMAttitudeReferenceFrameXMagneticNorthZVertical)
 				referenceFrame = CMAttitudeReferenceFrameXMagneticNorthZVertical;
-			else if( availableReferenceFrames & CMAttitudeReferenceFrameXArbitraryCorrectedZVertical )
+			else if (availableReferenceFrames & CMAttitudeReferenceFrameXArbitraryCorrectedZVertical)
 				referenceFrame = CMAttitudeReferenceFrameXArbitraryCorrectedZVertical;
 			else
 				referenceFrame = CMAttitudeReferenceFrameXArbitraryZVertical;
@@ -105,10 +105,10 @@ void MotionImplCoreMotion::startMotionUpdates()
 
 void MotionImplCoreMotion::stopMotionUpdates()
 {
-	if( !mMotionManager.isDeviceMotionActive )
-		return;
+    if( ! mMotionManager.isDeviceMotionActive )
+        return;
 
-	[mMotionManager stopDeviceMotionUpdates];
+    [mMotionManager stopDeviceMotionUpdates];
 }
 
 void MotionImplCoreMotion::setUpdateFrequency( float updateFrequency )
@@ -122,36 +122,32 @@ void MotionImplCoreMotion::setShowsCalibrationView( bool shouldShow )
 }
 
 namespace {
-vec3 vecOrientationCorrected( const vec3 &vec, app::InterfaceOrientation orientation )
-{
-	switch( orientation ) {
-	case app::PortraitUpsideDown:
-		return vec3( -vec.x, -vec.y, vec.z );
-	case app::LandscapeLeft:
-		return vec3( vec.y, -vec.x, vec.z );
-	case app::LandscapeRight:
-		return vec3( -vec.y, vec.x, vec.z );
-	default:
-		return vec3( vec.x, vec.y, vec.z );
+	vec3 vecOrientationCorrected( const vec3 &vec, app::InterfaceOrientation orientation )
+	{
+		switch ( orientation ) {
+			case app::PortraitUpsideDown:	return vec3( -vec.x, -vec.y, vec.z );
+			case app::LandscapeLeft:		return vec3(  vec.y, -vec.x, vec.z );
+			case app::LandscapeRight:		return vec3( -vec.y,  vec.x, vec.z );
+			default:						return vec3(  vec.x,  vec.y, vec.z );
+		}
 	}
-}
 }
 
 vec3 MotionImplCoreMotion::getGravityDirection( app::InterfaceOrientation orientation )
 {
-	if( !isMotionDataAvailable() )
-		return vec3( 0.0f, -1.0f, 0.0f );
+    if( ! isMotionDataAvailable() )
+        return vec3( 0.0f, -1.0f, 0.0f );
 
-	::CMAcceleration g = mMotionManager.deviceMotion.gravity;
+    ::CMAcceleration g = mMotionManager.deviceMotion.gravity;
 	return vecOrientationCorrected( vec3( g.x, g.y, g.z ), orientation );
 }
 
 quat MotionImplCoreMotion::getRotation( app::InterfaceOrientation orientation )
 {
 	static const float kPiOverTwo = M_PI / 2.0f;
-	static const quat  kCorrectionRotation = angleAxis( kPiOverTwo, vec3( 0, 1, 0 ) ) * angleAxis( kPiOverTwo, vec3( -1, 0, 0 ) );
+	static const quat kCorrectionRotation = angleAxis( kPiOverTwo, vec3( 0, 1, 0 ) ) * angleAxis( kPiOverTwo, vec3( -1, 0, 0 ) );
 
-	if( !isMotionDataAvailable() ) {
+	if( ! isMotionDataAvailable() ) {
 		if( mLastAccelValid )
 			return glm::rotation( vec3( 0, -1, 0 ), normalize( mLastAccel ) );
 		else
@@ -159,18 +155,18 @@ quat MotionImplCoreMotion::getRotation( app::InterfaceOrientation orientation )
 	}
 
 	::CMQuaternion cq = mMotionManager.deviceMotion.attitude.quaternion;
-	quat           q = kCorrectionRotation * quat( cq.w, cq.x, cq.y, cq.z );
+	quat q = kCorrectionRotation * quat( cq.w, cq.x, cq.y, cq.z );
 	switch( orientation ) {
-	case app::PortraitUpsideDown:
-		q = angleAxis( (float)M_PI, vec3( 0, 0, 1 ) ) * quat( q.w, -q.x, -q.y, q.z );
+		case app::PortraitUpsideDown:
+			q = angleAxis( (float)M_PI, vec3( 0, 0, 1 ) ) * quat( q.w, -q.x, -q.y, q.z );
 		break;
-	case app::LandscapeLeft:
-		q = angleAxis( kPiOverTwo, vec3( 0, 0, 1 ) ) * quat( q.w, q.y, -q.x, q.z );
+		case app::LandscapeLeft:
+			q = angleAxis( kPiOverTwo, vec3( 0, 0, 1 ) ) * quat( q.w, q.y, -q.x, q.z );
 		break;
-	case app::LandscapeRight:
-		q = angleAxis( kPiOverTwo, vec3( 0, 0, -1 ) ) * quat( q.w, -q.y, q.x, q.z );
+		case app::LandscapeRight:
+			q = angleAxis( kPiOverTwo, vec3( 0, 0, -1 ) ) * quat( q.w, -q.y,  q.x, q.z );
 		break;
-	default:
+		default:
 		break;
 	}
 
@@ -179,7 +175,7 @@ quat MotionImplCoreMotion::getRotation( app::InterfaceOrientation orientation )
 
 vec3 MotionImplCoreMotion::getRotationRate( app::InterfaceOrientation orientation )
 {
-	if( !isMotionDataAvailable() )
+	if( ! isMotionDataAvailable() )
 		return vec3( 0 );
 
 	::CMRotationRate rot = mMotionManager.deviceMotion.rotationRate;
@@ -189,7 +185,7 @@ vec3 MotionImplCoreMotion::getRotationRate( app::InterfaceOrientation orientatio
 vec3 MotionImplCoreMotion::getAcceleration( app::InterfaceOrientation orientation )
 {
 	if( mSensorMode == MotionManager::SensorMode::Gyroscope ) {
-		if( !isMotionDataAvailable() )
+		if( ! isMotionDataAvailable() )
 			return vec3( 0 );
 
 		::CMAcceleration accel = mMotionManager.deviceMotion.userAcceleration;
@@ -197,15 +193,15 @@ vec3 MotionImplCoreMotion::getAcceleration( app::InterfaceOrientation orientatio
 	}
 
 	// accelerometer mode
-	if( !mMotionManager.accelerometerData )
+	if( ! mMotionManager.accelerometerData )
 		return vec3( 0 );
 
 	::CMAcceleration accelCM = mMotionManager.accelerometerData.acceleration;
-	vec3             accel( accelCM.x, accelCM.y, accelCM.z );
-	vec3             accelFiltered = mLastAccel * mAccelFilter + accel * ( 1.0f - mAccelFilter );
+	vec3 accel( accelCM.x, accelCM.y, accelCM.z );
+	vec3 accelFiltered = mLastAccel * mAccelFilter + accel * (1.0f - mAccelFilter);
 	mLastAccel = accelFiltered;
 	mLastAccelValid = true;
-
+	
 	return vecOrientationCorrected( accelFiltered, orientation );
 }
 

@@ -22,61 +22,63 @@
 
 #pragma once
 
-#include "cinder/Capture.h"
 #include "cinder/Cinder.h"
+#include "cinder/Capture.h"
 #include "cinder/Surface.h"
 #include "msw/videoInput/videoInput.h"
 
 namespace cinder {
 
 class CaptureImplDirectShow {
-  public:
+ public:
 	class Device;
 
 	CaptureImplDirectShow( int32_t width, int32_t height, const Capture::DeviceRef device );
 	CaptureImplDirectShow( int32_t width, int32_t height );
 	~CaptureImplDirectShow();
-
+	
 	void start();
 	void stop();
+	
+	bool		isCapturing();
+	bool		checkNewFrame() const;
 
-	bool isCapturing();
-	bool checkNewFrame() const;
-
-	int32_t      getWidth() const { return mWidth; }
-	int32_t      getHeight() const { return mHeight; }
-	Surface8uRef getSurface() const;
-
-	const Capture::DeviceRef                      getDevice() const { return mDevice; }
-	static const std::vector<Capture::DeviceRef> &getDevices( bool forceRefresh = false );
+	int32_t		getWidth() const { return mWidth; }
+	int32_t		getHeight() const { return mHeight; }
+	
+	Surface8uRef	getSurface() const;
+	
+	const Capture::DeviceRef getDevice() const { return mDevice; }
+	
+	static const std::vector<Capture::DeviceRef>&	getDevices( bool forceRefresh = false );
 
 	class Device : public Capture::Device {
-	  public:
-		bool                      checkAvailable() const;
-		bool                      isConnected() const;
-		Capture::DeviceIdentifier getUniqueId() const { return mUniqueId; }
-		Device( const std::string &name, int uniqueId )
-		    : Capture::Device(), mUniqueId( uniqueId ) { mName = name; }
-	  protected:
-		int mUniqueId;
+ 	  public:
+		bool						checkAvailable() const;
+		bool						isConnected() const;
+		Capture::DeviceIdentifier	getUniqueId() const { return mUniqueId; }
+
+		Device( const std::string &name, int uniqueId ) : Capture::Device(), mUniqueId( uniqueId ) { mName = name; }
+	 protected:
+		int				mUniqueId;
 	};
+ protected:
+	void	init( int32_t width, int32_t height, const Capture::Device &device );
 
-  protected:
-	void init( int32_t width, int32_t height, const Capture::Device &device );
-
-	int mDeviceID;
+	int								mDeviceID;
 	// this maintains a reference to the mgr so that we don't destroy it before
 	// the last Capture is destroyed
-	std::shared_ptr<class CaptureMgr>   mMgrPtr;
-	bool                                mIsCapturing;
-	std::shared_ptr<class SurfaceCache> mSurfaceCache;
+	std::shared_ptr<class CaptureMgr>	mMgrPtr;
+	bool								mIsCapturing;
+	std::shared_ptr<class SurfaceCache>	mSurfaceCache;
 
-	int32_t              mWidth, mHeight;
-	mutable Surface8uRef mCurrentFrame;
-	Capture::DeviceRef   mDevice;
+	int32_t					mWidth, mHeight;
+	mutable Surface8uRef	mCurrentFrame;
+	Capture::DeviceRef		mDevice;
 
-	static bool                            sDevicesEnumerated;
-	static std::vector<Capture::DeviceRef> sDevices;
+	static bool							sDevicesEnumerated;
+	static std::vector<Capture::DeviceRef>	sDevices;
 };
 
 } //namespace
+

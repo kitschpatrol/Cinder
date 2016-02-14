@@ -23,36 +23,36 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/DataSource.h"
-#include "cinder/Exception.h"
 #include "cinder/Shape2d.h"
+#include "cinder/Exception.h"
+#include "cinder/DataSource.h"
 #if defined( CINDER_WINRT )
-#include <ft2build.h>
+	#include <ft2build.h>
 
-// Note: generic is a reserved word in winrt c++/cx
-// need to redefine it for freetype.h
-#define generic GenericFromFreeTypeLibrary
-#include FT_FREETYPE_H
-#include FT_OUTLINE_H
-#undef generic
+	// Note: generic is a reserved word in winrt c++/cx
+	// need to redefine it for freetype.h
+	#define generic GenericFromFreeTypeLibrary
+	#include FT_FREETYPE_H
+	#include FT_OUTLINE_H
+	#undef generic
 
-#include FT_GLYPH_H
+	#include FT_GLYPH_H
 #endif
 
 #include <string>
 #include <vector>
 
 #if defined( CINDER_COCOA )
-typedef struct CGFont *CGFontRef;
-#if defined( CINDER_COCOA )
-typedef const struct __CTFont *CTFontRef;
-#endif
+	typedef struct CGFont *CGFontRef;
+	#if defined( CINDER_COCOA )
+		typedef const struct __CTFont * CTFontRef;
+	#endif
 #elif defined( CINDER_MSW )
-#include "cinder/msw/CinderWindowsFwd.h"
+	#include "cinder/msw/CinderWindowsFwd.h"
 
-namespace Gdiplus {
-class Font;
-}
+	namespace Gdiplus {
+		class Font;
+	}
 #endif
 
 namespace cinder {
@@ -61,8 +61,8 @@ class FontObj;
 
 //! Represents an instance of a font at a point size. \ImplShared
 class Font {
-  public:
-	typedef uint16_t Glyph;
+ public:
+	typedef uint16_t		Glyph;		
 
 	/** \brief constructs a null Font **/
 	Font() {}
@@ -73,46 +73,46 @@ class Font {
 		\note Assumes a point size relative to 72dpi on Cocoa but 96dpi on Windows. This creates rough parity between the platforms on type size, but in Windows this renders fonts smaller than normal. **/
 	Font( DataSourceRef dataSource, float size );
 
-	const std::string &getName() const;
-	std::string        getFullName() const;
-	float              getSize() const;
+	const std::string&		getName() const;
+	std::string				getFullName() const;
+	float					getSize() const;
 
-	float  getLeading() const;
-	float  getAscent() const;
-	float  getDescent() const;
-	size_t getNumGlyphs() const;
+	float					getLeading() const;
+	float					getAscent() const;
+	float					getDescent() const;
+	size_t					getNumGlyphs() const;
 
-	Glyph getGlyphIndex( size_t idx ) const;
-	Glyph getGlyphChar( char utf8Char ) const;
-	std::vector<Glyph> getGlyphs( const std::string &utf8String ) const;
+	Glyph					getGlyphIndex( size_t idx ) const;
+	Glyph					getGlyphChar( char utf8Char ) const;
+	std::vector<Glyph>		getGlyphs( const std::string &utf8String ) const;
 	//! Returns a cinder::Shape2d representing the shape of the glyph at \a glyphIndex
-	Shape2d getGlyphShape( Glyph glyphIndex ) const;
+	Shape2d					getGlyphShape( Glyph glyphIndex ) const;
 	//! Returns the bounding box of a Glyph, relative to the baseline as the origin
-	Rectf getGlyphBoundingBox( Glyph glyph ) const;
+	Rectf					getGlyphBoundingBox( Glyph glyph ) const;
 
 #if defined( CINDER_WINRT )
-	FT_Face getFreetypeFace() const;
+	FT_Face					getFreetypeFace() const;
 #endif
-
-	static const std::vector<std::string> &getNames( bool forceRefresh = false );
-	static Font getDefault();
+	
+	static const std::vector<std::string>&		getNames( bool forceRefresh = false );
+	static Font				getDefault();
 
 #if defined( CINDER_COCOA )
-	CGFontRef getCgFontRef() const;
-	CTFontRef getCtFontRef() const;
+	CGFontRef				getCgFontRef() const;
+	CTFontRef				getCtFontRef() const;
 #elif defined( CINDER_MSW )
 	//! Returns the underlying LOGFONTW on MSW
-	const void *         getLogfont() const;
-	::HFONT              getHfont() const;
-	const Gdiplus::Font *getGdiplusFont() const;
-	static HDC           getGlobalDc();
+	const void*				getLogfont() const;
+	::HFONT					getHfont() const;
+	const Gdiplus::Font*	getGdiplusFont() const;
+	static HDC				getGlobalDc();
 #endif
 
-  private:
-	std::shared_ptr<FontObj> mObj;
-
+ private:
+	std::shared_ptr<FontObj>			mObj;
+	
   public:
-	//@{
+ 	//@{
 	//! Emulates shared_ptr-like behavior
 	typedef std::shared_ptr<FontObj> Font::*unspecified_bool_type;
 	operator unspecified_bool_type() const { return ( mObj.get() == 0 ) ? 0 : &Font::mObj; }
@@ -124,9 +124,9 @@ class FontInvalidNameExc : public cinder::Exception {
   public:
 	FontInvalidNameExc() throw() {}
 	FontInvalidNameExc( const std::string &fontName ) throw();
-	virtual const char *                   what() const throw() { return mMessage; }
+	virtual const char* what() const throw() { return mMessage; }	
   private:
-	char mMessage[2048];
+	char mMessage[2048];	
 };
 
 class FontGlyphFailureExc : public cinder::Exception {

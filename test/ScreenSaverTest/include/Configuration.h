@@ -4,5 +4,5 @@
 #pragma once
 
 struct Configuration {
-	bool mDrawCinderLogo;
+	bool		mDrawCinderLogo;
 };

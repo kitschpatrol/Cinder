@@ -22,23 +22,22 @@
 
 #pragma once
 
+#include "cinder/Surface.h"
 #include "cinder/Filter.h"
 #include "cinder/Rect.h"
-#include "cinder/Surface.h"
 
-namespace cinder {
-namespace ip {
+namespace cinder { namespace ip {
 
-template <typename T>
+template<typename T>
 void resize( const SurfaceT<T> &srcSurface, SurfaceT<T> *dstSurface, const FilterBase &filter = FilterTriangle() );
-template <typename T>
+template<typename T>
 void resize( const ChannelT<T> &srcChannel, ChannelT<T> *dstChannel, const FilterBase &filter = FilterTriangle() );
-template <typename T>
+template<typename T>
 void resize( const SurfaceT<T> &srcSurface, const Area &srcArea, SurfaceT<T> *dstSurface, const Area &dstArea, const FilterBase &filter = FilterTriangle() );
 //! Returns a new Surface which is a copy of \a srcSurface's area \a srcArea scaled to size \a dstSize using filter \a filter
-template <typename T>
+template<typename T>
 SurfaceT<T> resizeCopy( const SurfaceT<T> &srcSurface, const Area &srcArea, const ivec2 &dstSize, const FilterBase &filter = FilterTriangle() );
-template <typename T>
+template<typename T>
 void resize( const ChannelT<T> &srcChannel, const Area &srcArea, ChannelT<T> *dstChannel, const Area &dstArea, const FilterBase &filter = FilterTriangle() );
-}
-} // namespace cinder::ip
+
+} } // namespace cinder::ip

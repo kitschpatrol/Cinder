@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------
 // File:        ComputeParticles/ParticleSystem.cpp
 // Url:         https://github.com/NVIDIAGameWorks/OpenGLSamples/tree/master/samples/es3aep-kepler/ComputeParticles
-// SDK Version: v1.2
+// SDK Version: v1.2 
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -34,36 +34,37 @@
 //----------------------------------------------------------------------------------
 
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 #include "cinder/Camera.h"
 #include "cinder/CameraUi.h"
-#include "cinder/Rand.h"
 #include "cinder/Utilities.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/Ssbo.h"
-#include "cinder/gl/gl.h"
+#include "cinder/Rand.h"
 #include "cinder/params/Params.h"
+#include "cinder/gl/Ssbo.h"
 
 using namespace ci;
 using namespace ci::app;
 
-#define LIGHT_RADIUS 1.5f // Must be at least 1
+#define LIGHT_RADIUS	1.5f // Must be at least 1
 
 float sfrand()
 {
 	return randPosNegFloat( -1.0f, 1.0f );
 }
 
-struct ParticleParams {
+struct ParticleParams
+{
 	ParticleParams( float noiseSize )
-	    : attractor( 0.0f, 0.0f, 0.0f, 0.0f ),
-	      damping( 0.95f ),
-	      noiseFreq( 10.0f ),
-	      noiseStrength( 0.001f ),
-	      invNoiseSize( 1.0f / noiseSize )
+		: attractor( 0.0f, 0.0f, 0.0f, 0.0f ),
+		damping( 0.95f ),
+		noiseFreq( 10.0f ),
+		noiseStrength( 0.001f ),
+		invNoiseSize( 1.0f / noiseSize )
 	{
 	}
 
-	vec4  attractor;
+	vec4 attractor;
 	float numParticles;
 	float damping;
 	float noiseFreq;
@@ -78,7 +79,7 @@ class NVidiaComputeParticlesApp : public App {
 
 	void update() override;
 	void draw() override;
-
+	
 	void renderScene( gl::GlslProgRef effect );
 	void setupShaders();
 	void setupTextures();
@@ -88,42 +89,41 @@ class NVidiaComputeParticlesApp : public App {
 	void updateParticleSystem();
 	void setupNoiseTexture3D();
 
-	enum { WORK_GROUP_SIZE = 128,
-		NUM_PARTICLES = 1 << 18 };
-
-	gl::VboRef      mVBO;
-	gl::VboMeshRef  teapot;
+	enum { WORK_GROUP_SIZE = 128, NUM_PARTICLES = 1 << 18 };
+	
+	gl::VboRef mVBO;
+	gl::VboMeshRef teapot;
 	gl::GlslProgRef mRenderProg;
 	gl::GlslProgRef mUpdateProg;
-	gl::SsboRef     mPos;
-	gl::SsboRef     mVel;
-	gl::VboRef      mIndicesVbo;
-	gl::UboRef      mParticleUpdateUbo;
+	gl::SsboRef mPos;
+	gl::SsboRef mVel;
+	gl::VboRef mIndicesVbo;
+	gl::UboRef mParticleUpdateUbo;
 
-	gl::Texture3dRef       mNoiseTex;
+	gl::Texture3dRef mNoiseTex;
 	params::InterfaceGlRef mParams;
-	CameraPersp            mCam;
-	CameraUi               mCamUi;
-	int                    mNoiseSize;
-	ParticleParams         mParticleParams;
-	float                  mSpriteSize;
-	bool                   mEnableAttractor;
-	bool                   mAnimate;
-	bool                   mReset;
-	float                  mTime;
-	float                  mPrevElapsedSeconds;
+	CameraPersp	mCam;
+	CameraUi mCamUi;
+	int mNoiseSize;
+	ParticleParams mParticleParams;
+	float mSpriteSize;
+	bool mEnableAttractor;
+	bool mAnimate;
+	bool mReset;
+	float mTime;
+	float mPrevElapsedSeconds;
 };
 
 NVidiaComputeParticlesApp::NVidiaComputeParticlesApp()
-    : mCam( getWindowWidth(), getWindowHeight(), 45.0f, 0.1f, 10.0f ),
-      mNoiseSize( 16 ),
-      mParticleParams( mNoiseSize ),
-      mSpriteSize( 0.015f ),
-      mEnableAttractor( false ),
-      mAnimate( true ),
-      mReset( false ),
-      mTime( 0.0f ),
-      mPrevElapsedSeconds( 0.0f )
+	: mCam( getWindowWidth(), getWindowHeight(), 45.0f, 0.1f, 10.0f ),
+	  mNoiseSize( 16 ),
+	  mParticleParams( mNoiseSize ),
+	  mSpriteSize( 0.015f ),
+	  mEnableAttractor( false ),
+	  mAnimate( true ),
+	  mReset( false ),
+	  mTime( 0.0f ),
+	  mPrevElapsedSeconds( 0.0f )
 {
 	mEnableAttractor = false;
 	mAnimate = true;
@@ -158,7 +158,8 @@ NVidiaComputeParticlesApp::NVidiaComputeParticlesApp()
 void NVidiaComputeParticlesApp::setupShaders()
 {
 	try {
-		mRenderProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "render.vert" ) ).fragment( loadAsset( "render.frag" ) ) );
+		mRenderProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "render.vert" ) )
+			.fragment( loadAsset( "render.frag" ) ) );
 	}
 	catch( gl::GlslProgCompileExc e ) {
 		ci::app::console() << e.what() << std::endl;
@@ -183,8 +184,8 @@ void NVidiaComputeParticlesApp::setupShaders()
 
 void NVidiaComputeParticlesApp::setupBuffers()
 {
-	mPos = gl::Ssbo::create( sizeof( vec4 ) * NUM_PARTICLES, nullptr, GL_STATIC_DRAW );
-	mVel = gl::Ssbo::create( sizeof( vec4 ) * NUM_PARTICLES, nullptr, GL_STATIC_DRAW );
+	mPos = gl::Ssbo::create( sizeof(vec4) * NUM_PARTICLES, nullptr, GL_STATIC_DRAW );
+	mVel = gl::Ssbo::create( sizeof(vec4) * NUM_PARTICLES, nullptr, GL_STATIC_DRAW );
 
 	std::vector<uint32_t> indices( NUM_PARTICLES * 6 );
 	// the index buffer is a classic "two-tri quad" array.
@@ -241,7 +242,7 @@ void NVidiaComputeParticlesApp::draw()
 		gl::ScopedBuffer scopedIndicex( mIndicesVbo );
 		gl::drawElements( GL_TRIANGLES, NUM_PARTICLES * 6, GL_UNSIGNED_INT, 0 );
 	}
-
+	
 	gl::disableAlphaBlending();
 
 	mParams->draw();
@@ -249,13 +250,13 @@ void NVidiaComputeParticlesApp::draw()
 
 void NVidiaComputeParticlesApp::resetParticleSystem( float size )
 {
-	vec4 *pos = reinterpret_cast<vec4 *>( mPos->map( GL_WRITE_ONLY ) );
+	vec4 *pos = reinterpret_cast<vec4*>( mPos->map( GL_WRITE_ONLY ) );
 	for( size_t i = 0; i < NUM_PARTICLES; ++i ) {
 		pos[i] = vec4( sfrand() * size, sfrand() * size, sfrand() * size, 1.0f );
 	}
 	mPos->unmap();
 
-	vec4 *vel = reinterpret_cast<vec4 *>( mVel->map( GL_WRITE_ONLY ) );
+	vec4 *vel = reinterpret_cast<vec4*>( mVel->map( GL_WRITE_ONLY ) );
 	for( size_t i = 0; i < NUM_PARTICLES; ++i ) {
 		vel[i] = vec4( 0.0f, 0.0f, 0.0f, 1.0f );
 	}
@@ -313,7 +314,7 @@ void NVidiaComputeParticlesApp::setupNoiseTexture3D()
 	const int depth = mNoiseSize;
 
 	std::vector<float> data( width * height * depth * 4 );
-	int                i = 0;
+	int i = 0;
 	for( int z = 0; z < depth; ++z ) {
 		for( int y = 0; y < height; ++y ) {
 			for( int x = 0; x < width; ++x ) {
@@ -326,9 +327,12 @@ void NVidiaComputeParticlesApp::setupNoiseTexture3D()
 	}
 
 	mNoiseTex = gl::Texture3d::create( mNoiseSize, mNoiseSize, mNoiseSize, tex3dFmt );
-	mNoiseTex->update( data.data(), GL_RGBA, tex3dFmt.getDataType(), 0, mNoiseTex->getWidth(), mNoiseTex->getHeight(), mNoiseTex->getDepth() );
+	mNoiseTex->update( data.data(), GL_RGBA, tex3dFmt.getDataType(), 0, mNoiseTex->getWidth(),
+		mNoiseTex->getHeight(), mNoiseTex->getDepth() );
 }
 
-CINDER_APP( NVidiaComputeParticlesApp, RendererGl(), [&]( App::Settings *settings ) {
+CINDER_APP( NVidiaComputeParticlesApp, RendererGl(),
+	[&]( App::Settings *settings )
+{
 	settings->setWindowSize( 1280, 720 );
 } )

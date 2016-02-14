@@ -28,6 +28,9 @@
 #include <TextEdit.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,11 +44,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /**************************************************************************
@@ -56,9 +59,9 @@ extern "C" {
     Open Scripting Architecture type.
 */
 enum {
-	typeAppleScript = FOUR_CHAR_CODE( 'ascr' ),
-	kAppleScriptSubtype = typeAppleScript,
-	typeASStorage = typeAppleScript
+  typeAppleScript               = FOUR_CHAR_CODE('ascr'),
+  kAppleScriptSubtype           = typeAppleScript,
+  typeASStorage                 = typeAppleScript
 };
 
 /**************************************************************************
@@ -66,17 +69,18 @@ enum {
 **************************************************************************/
 
 enum {
-	kASSelectInit = 0x1001,
-	kASSelectSetSourceStyles = 0x1002,
-	kASSelectGetSourceStyles = 0x1003,
-	kASSelectGetSourceStyleNames = 0x1004
+  kASSelectInit                 = 0x1001,
+  kASSelectSetSourceStyles      = 0x1002,
+  kASSelectGetSourceStyles      = 0x1003,
+  kASSelectGetSourceStyleNames  = 0x1004
 };
+
 
 /**************************************************************************
     OSAGetScriptInfo Selectors
 **************************************************************************/
 enum {
-	kASHasOpenHandler = FOUR_CHAR_CODE( 'hsod' )
+  kASHasOpenHandler             = FOUR_CHAR_CODE('hsod')
 };
 
 /*
@@ -99,14 +103,15 @@ enum {
  */
 EXTERN_API( OSAError )
 ASInit(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    long              minStackSize,
-    long              preferredStackSize,
-    long              maxStackSize,
-    long              minHeapSize,
-    long              preferredHeapSize,
-    long              maxHeapSize ) FIVEWORDINLINE( 0x2F3C, 0x001C, 0x1001, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  long                minStackSize,
+  long                preferredStackSize,
+  long                maxStackSize,
+  long                minHeapSize,
+  long                preferredHeapSize,
+  long                maxHeapSize)                            FIVEWORDINLINE(0x2F3C, 0x001C, 0x1001, 0x7000, 0xA82A);
+
 
 /*
         ComponentCallNow(kASSelectInit, 28);
@@ -124,12 +129,12 @@ ASInit(
     of ASInit's parameters are zero:
 */
 enum {
-	kASDefaultMinStackSize = 4 * 1024,
-	kASDefaultPreferredStackSize = 16 * 1024,
-	kASDefaultMaxStackSize = 16 * 1024,
-	kASDefaultMinHeapSize = 4 * 1024,
-	kASDefaultPreferredHeapSize = 16 * 1024,
-	kASDefaultMaxHeapSize = 32L * 1024 * 1024
+  kASDefaultMinStackSize        = 4 * 1024,
+  kASDefaultPreferredStackSize  = 16 * 1024,
+  kASDefaultMaxStackSize        = 16 * 1024,
+  kASDefaultMinHeapSize         = 4 * 1024,
+  kASDefaultPreferredHeapSize   = 16 * 1024,
+  kASDefaultMaxHeapSize         = 32L * 1024 * 1024
 };
 
 /**************************************************************************
@@ -145,8 +150,9 @@ enum {
  */
 EXTERN_API( OSAError )
 ASSetSourceStyles(
-    ComponentInstance scriptingComponent,
-    STHandle          sourceStyles ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x1002, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  STHandle            sourceStyles)                           FIVEWORDINLINE(0x2F3C, 0x0004, 0x1002, 0x7000, 0xA82A);
+
 
 /*
         ComponentCallNow(kASSelectSetSourceStyles, 4);
@@ -163,8 +169,9 @@ ASSetSourceStyles(
  */
 EXTERN_API( OSAError )
 ASGetSourceStyles(
-    ComponentInstance scriptingComponent,
-    STHandle *        resultingSourceStyles ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x1003, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  STHandle *          resultingSourceStyles)                  FIVEWORDINLINE(0x2F3C, 0x0004, 0x1003, 0x7000, 0xA82A);
+
 
 /*
         ComponentCallNow(kASSelectGetSourceStyles, 4);
@@ -181,9 +188,10 @@ ASGetSourceStyles(
  */
 EXTERN_API( OSAError )
 ASGetSourceStyleNames(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    AEDescList *      resultingSourceStyleNamesList ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x1004, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  AEDescList *        resultingSourceStyleNamesList)          FIVEWORDINLINE(0x2F3C, 0x0008, 0x1004, 0x7000, 0xA82A);
+
 
 /*
         ComponentCallNow(kASSelectGetSourceStyleNames, 8);
@@ -200,23 +208,25 @@ ASGetSourceStyleNames(
     accessed through following index constants:
 */
 enum {
-	kASSourceStyleUncompiledText = 0,
-	kASSourceStyleNormalText = 1,
-	kASSourceStyleLanguageKeyword = 2,
-	kASSourceStyleApplicationKeyword = 3,
-	kASSourceStyleComment = 4,
-	kASSourceStyleLiteral = 5,
-	kASSourceStyleUserSymbol = 6,
-	kASSourceStyleObjectSpecifier = 7,
-	kASNumberOfSourceStyles = 8
+  kASSourceStyleUncompiledText  = 0,
+  kASSourceStyleNormalText      = 1,
+  kASSourceStyleLanguageKeyword = 2,
+  kASSourceStyleApplicationKeyword = 3,
+  kASSourceStyleComment         = 4,
+  kASSourceStyleLiteral         = 5,
+  kASSourceStyleUserSymbol      = 6,
+  kASSourceStyleObjectSpecifier = 7,
+  kASNumberOfSourceStyles       = 8
 };
 
+
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -230,3 +240,4 @@ enum {
 #endif
 
 #endif /* __APPLESCRIPT__ */
+

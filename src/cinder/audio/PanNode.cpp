@@ -22,17 +22,16 @@
  */
 
 #include "cinder/audio/PanNode.h"
-#include "cinder/CinderMath.h"
 #include "cinder/audio/dsp/Dsp.h"
+#include "cinder/CinderMath.h"
 
 using namespace ci;
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 Pan2dNode::Pan2dNode( const Format &format )
-    : Node( format ), mPos( this, 0.5f ), mStereoInputMode( false )
+	: Node( format ), mPos( this, 0.5f ), mStereoInputMode( false )
 {
 	setChannelMode( ChannelMode::SPECIFIED );
 	setNumChannels( 2 );
@@ -111,8 +110,8 @@ void Pan2dNode::process( Buffer *buffer )
 void Pan2dNode::processRegularMode( Buffer *buffer )
 {
 	const size_t numFrames = buffer->getNumFrames();
-	float *      channel0 = buffer->getChannel( 0 );
-	float *      channel1 = buffer->getChannel( 1 );
+	float *channel0 = buffer->getChannel( 0 );
+	float *channel1 = buffer->getChannel( 1 );
 
 	if( mPos.eval() ) {
 		const float *posArray = mPos.getValueArray();
@@ -141,8 +140,8 @@ void Pan2dNode::processStereoInputMode( Buffer *buffer )
 	static const float centerGain = math<float>::cos( float( M_PI / 4.0 ) );
 
 	const size_t numFrames = buffer->getNumFrames();
-	float *      channel0 = buffer->getChannel( 0 );
-	float *      channel1 = buffer->getChannel( 1 );
+	float *channel0 = buffer->getChannel( 0 );
+	float *channel1 = buffer->getChannel( 1 );
 
 	if( mPos.eval() ) {
 		const float *posArray = mPos.getValueArray();
@@ -173,8 +172,7 @@ void Pan2dNode::processStereoInputMode( Buffer *buffer )
 				channel0[i] = channel0[i] * leftGain + channel1[i] * ( leftGain - centerGain );
 				channel1[i] *= rightGain;
 			}
-		}
-		else {
+		} else {
 			for( size_t i = 0; i < numFrames; i++ ) {
 				channel1[i] = channel1[i] * rightGain + channel0[i] * ( rightGain - centerGain );
 				channel0[i] *= leftGain;
@@ -187,5 +185,5 @@ void Pan2dNode::setPos( float pos )
 {
 	mPos.setValue( math<float>::clamp( pos ) );
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

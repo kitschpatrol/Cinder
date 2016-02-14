@@ -1,14 +1,14 @@
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/CinderAssert.h"
 #include "cinder/Log.h"
-#include "cinder/app/RendererGl.h"
 
-#include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/Voice.h"
+#include "cinder/audio/MonitorNode.h"
 
-#include "../../../../samples/_audio/common/AudioDrawUtils.h"
-#include "../../common/AudioTestGui.h"
 #include "Resources.h"
+#include "../../common/AudioTestGui.h"
+#include "../../../../samples/_audio/common/AudioDrawUtils.h"
 
 #include "cinder/audio/Utilities.h"
 
@@ -19,7 +19,7 @@ using namespace ci::app;
 using namespace std;
 
 class VoiceTestApp : public App {
-  public:
+public:
 	void setup() override;
 	void fileDrop( FileDropEvent event ) override;
 	void resize() override;
@@ -34,16 +34,15 @@ class VoiceTestApp : public App {
 	void processDrag( ivec2 pos );
 	void processTap( ivec2 pos );
 
-	audio::VoiceRef       mVoice;
-	audio::MonitorNodeRef mMonitor;
+	audio::VoiceRef		mVoice;
+	audio::MonitorNodeRef	mMonitor;
 
-	vector<TestWidget *> mWidgets;
-	Button               mPlayButton, mEnableNoiseButton, mEnableSineButton;
-	VSelector            mTestSelector;
-	HSlider              mVolumeSlider;
+	vector<TestWidget *>	mWidgets;
+	Button					mPlayButton, mEnableNoiseButton, mEnableSineButton;
+	VSelector				mTestSelector;
+	HSlider					mVolumeSlider;
 
-	enum InputBus { SINE,
-		NOISE };
+	enum InputBus { SINE, NOISE };
 };
 
 void VoiceTestApp::setup()
@@ -82,6 +81,7 @@ void VoiceTestApp::setupDifferentFile()
 {
 	mVoice = audio::Voice::create( audio::load( loadResource( RES_TONE_440L220R ) ) );
 	mVoice->setVolume( mVolumeSlider.mValueScaled );
+
 }
 void VoiceTestApp::setupScope()
 {
@@ -112,16 +112,17 @@ void VoiceTestApp::setupUI()
 	mVolumeSlider.set( mVoice->getVolume() );
 	mWidgets.push_back( &mVolumeSlider );
 
-	//	mEnableSineButton.mIsToggle = true;
-	//	mEnableSineButton.mTitleNormal = "sine disabled";
-	//	mEnableSineButton.mTitleEnabled = "sine enabled";
-	//	mEnableSineButton.mBounds = Rectf( 0, 70, 200, 120 );
-	//	mWidgets.push_back( &mEnableSineButton );
+//	mEnableSineButton.mIsToggle = true;
+//	mEnableSineButton.mTitleNormal = "sine disabled";
+//	mEnableSineButton.mTitleEnabled = "sine enabled";
+//	mEnableSineButton.mBounds = Rectf( 0, 70, 200, 120 );
+//	mWidgets.push_back( &mEnableSineButton );
 
-	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
+
+	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -164,7 +165,7 @@ void VoiceTestApp::resize()
 
 	const float padding = 10;
 	const float sliderHeght = 50;
-	Rectf       sliderRect( padding, getWindowHeight() - sliderHeght - padding, getWindowCenter().x, getWindowHeight() - padding );
+	Rectf sliderRect( padding, getWindowHeight() - sliderHeght - padding, getWindowCenter().x, getWindowHeight() - padding );
 	mVolumeSlider.mBounds = sliderRect;
 }
 

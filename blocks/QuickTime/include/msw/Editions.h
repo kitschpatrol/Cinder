@@ -37,6 +37,9 @@
 #include <Dialogs.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -50,150 +53,152 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 enum {
-	/* resource types  */
-	rSectionType = FOUR_CHAR_CODE( 'sect' ), /* ResType of saved SectionRecords */
-	/* Finder types for edition files */
-	kPICTEditionFileType = FOUR_CHAR_CODE( 'edtp' ),
-	kTEXTEditionFileType = FOUR_CHAR_CODE( 'edtt' ),
-	ksndEditionFileType = FOUR_CHAR_CODE( 'edts' ),
-	kUnknownEditionFileType = FOUR_CHAR_CODE( 'edtu' ),
-	kPublisherDocAliasFormat = FOUR_CHAR_CODE( 'alis' ),
-	kPreviewFormat = FOUR_CHAR_CODE( 'prvw' ),
-	kFormatListFormat = FOUR_CHAR_CODE( 'fmts' )
+                                        /* resource types  */
+  rSectionType                  = FOUR_CHAR_CODE('sect'), /* ResType of saved SectionRecords */
+                                        /* Finder types for edition files */
+  kPICTEditionFileType          = FOUR_CHAR_CODE('edtp'),
+  kTEXTEditionFileType          = FOUR_CHAR_CODE('edtt'),
+  ksndEditionFileType           = FOUR_CHAR_CODE('edts'),
+  kUnknownEditionFileType       = FOUR_CHAR_CODE('edtu'),
+  kPublisherDocAliasFormat      = FOUR_CHAR_CODE('alis'),
+  kPreviewFormat                = FOUR_CHAR_CODE('prvw'),
+  kFormatListFormat             = FOUR_CHAR_CODE('fmts')
 };
 
 enum {
-	/* section types */
-	stSubscriber = 0x01,
-	stPublisher = 0x0A
+                                        /* section types */
+  stSubscriber                  = 0x01,
+  stPublisher                   = 0x0A
 };
 
 enum {
-	sumAutomatic = 0, /* subscriber update mode - Automatically     */
-	sumManual = 1, /* subscriber update mode - Manually */
-	pumOnSave = 0, /* publisher update mode - OnSave            */
-	pumManual = 1 /* publisher update mode - Manually */
+  sumAutomatic                  = 0,    /* subscriber update mode - Automatically     */
+  sumManual                     = 1,    /* subscriber update mode - Manually */
+  pumOnSave                     = 0,    /* publisher update mode - OnSave            */
+  pumManual                     = 1     /* publisher update mode - Manually */
 };
 
 enum {
-	kPartsNotUsed = 0,
-	kPartNumberUnknown = -1
+  kPartsNotUsed                 = 0,
+  kPartNumberUnknown            = -1
 };
 
 enum {
-	kPreviewWidth = 120,
-	kPreviewHeight = 120
+  kPreviewWidth                 = 120,
+  kPreviewHeight                = 120
 };
 
 enum {
-	/* bits for formatsMask */
-	kPICTformatMask = 1,
-	kTEXTformatMask = 2,
-	ksndFormatMask = 4
+                                        /* bits for formatsMask */
+  kPICTformatMask               = 1,
+  kTEXTformatMask               = 2,
+  ksndFormatMask                = 4
+};
+
+
+enum {
+                                        /* pseudo-item hits for dialogHooks the first is for NewPublisher or NewSubscriber Dialogs */
+  emHookRedrawPreview           = 150,  /* the following are for SectionOptions Dialog */
+  emHookCancelSection           = 160,
+  emHookGoToPublisher           = 161,
+  emHookGetEditionNow           = 162,
+  emHookSendEditionNow          = 162,
+  emHookManualUpdateMode        = 163,
+  emHookAutoUpdateMode          = 164
+};
+
+
+enum {
+                                        /* the refcon field of the dialog record during a modalfilter or dialoghook contains one the following */
+  emOptionsDialogRefCon         = FOUR_CHAR_CODE('optn'),
+  emCancelSectionDialogRefCon   = FOUR_CHAR_CODE('cncl'),
+  emGoToPubErrDialogRefCon      = FOUR_CHAR_CODE('gerr')
 };
 
 enum {
-	/* pseudo-item hits for dialogHooks the first is for NewPublisher or NewSubscriber Dialogs */
-	emHookRedrawPreview = 150, /* the following are for SectionOptions Dialog */
-	emHookCancelSection = 160,
-	emHookGoToPublisher = 161,
-	emHookGetEditionNow = 162,
-	emHookSendEditionNow = 162,
-	emHookManualUpdateMode = 163,
-	emHookAutoUpdateMode = 164
-};
-
-enum {
-	/* the refcon field of the dialog record during a modalfilter or dialoghook contains one the following */
-	emOptionsDialogRefCon = FOUR_CHAR_CODE( 'optn' ),
-	emCancelSectionDialogRefCon = FOUR_CHAR_CODE( 'cncl' ),
-	emGoToPubErrDialogRefCon = FOUR_CHAR_CODE( 'gerr' )
-};
-
-enum {
-	kFormatLengthUnknown = -1
+  kFormatLengthUnknown          = -1
 };
 
 /* one byte, stSubscriber or stPublisher */
-typedef SignedByte SectionType;
+typedef SignedByte                      SectionType;
 /* seconds since 1904 */
-typedef unsigned long TimeStamp;
+typedef unsigned long                   TimeStamp;
 /* similar to ResType */
-typedef FourCharCode FormatType;
+typedef FourCharCode                    FormatType;
 /* used in Edition I/O */
-typedef Handle EditionRefNum;
+typedef Handle                          EditionRefNum;
 /* update modes */
 /* sumAutomatic, pumSuspend, etc */
-typedef short                UpdateMode;
-typedef struct SectionRecord SectionRecord;
-typedef SectionRecord *      SectionPtr;
-typedef SectionPtr *         SectionHandle;
+typedef short                           UpdateMode;
+typedef struct SectionRecord            SectionRecord;
+typedef SectionRecord *                 SectionPtr;
+typedef SectionPtr *                    SectionHandle;
 struct SectionRecord {
-	SignedByte    version; /* always 0x01 in system 7.0 */
-	SectionType   kind; /* stSubscriber or stPublisher */
-	UpdateMode    mode; /* auto or manual */
-	TimeStamp     mdDate; /* last change in document */
-	long          sectionID; /* app. specific, unique per document */
-	long          refCon; /* application specific */
-	AliasHandle   alias; /* handle to Alias Record */
-	long          subPart; /* which part of container file */
-	SectionHandle nextSection; /* for linked list of app's Sections */
-	Handle        controlBlock; /* used internally */
-	EditionRefNum refNum; /* used internally */
+  SignedByte          version;                /* always 0x01 in system 7.0 */
+  SectionType         kind;                   /* stSubscriber or stPublisher */
+  UpdateMode          mode;                   /* auto or manual */
+  TimeStamp           mdDate;                 /* last change in document */
+  long                sectionID;              /* app. specific, unique per document */
+  long                refCon;                 /* application specific */
+  AliasHandle         alias;                  /* handle to Alias Record */
+  long                subPart;                /* which part of container file */
+  SectionHandle       nextSection;            /* for linked list of app's Sections */
+  Handle              controlBlock;           /* used internally */
+  EditionRefNum       refNum;                 /* used internally */
 };
 
 struct EditionContainerSpec {
-	FSSpec     theFile;
-	ScriptCode theFileScript;
-	long       thePart;
-	Str31      thePartName;
-	ScriptCode thePartScript;
+  FSSpec              theFile;
+  ScriptCode          theFileScript;
+  long                thePart;
+  Str31               thePartName;
+  ScriptCode          thePartScript;
 };
-typedef struct EditionContainerSpec EditionContainerSpec;
-typedef EditionContainerSpec *      EditionContainerSpecPtr;
+typedef struct EditionContainerSpec     EditionContainerSpec;
+typedef EditionContainerSpec *          EditionContainerSpecPtr;
 struct EditionInfoRecord {
-	TimeStamp            crDate; /* date EditionContainer was created */
-	TimeStamp            mdDate; /* date of last change */
-	OSType               fdCreator; /* file creator */
-	OSType               fdType; /* file type */
-	EditionContainerSpec container; /* the Edition */
+  TimeStamp           crDate;                 /* date EditionContainer was created */
+  TimeStamp           mdDate;                 /* date of last change */
+  OSType              fdCreator;              /* file creator */
+  OSType              fdType;                 /* file type */
+  EditionContainerSpec  container;            /* the Edition */
 };
-typedef struct EditionInfoRecord EditionInfoRecord;
+typedef struct EditionInfoRecord        EditionInfoRecord;
 struct NewPublisherReply {
-	Boolean              canceled; /* O */
-	Boolean              replacing;
-	Boolean              usePart; /* I */
-	SInt8                filler;
-	Handle               preview; /* I */
-	FormatType           previewFormat; /* I */
-	EditionContainerSpec container; /* I/O */
+  Boolean             canceled;               /* O */
+  Boolean             replacing;
+  Boolean             usePart;                /* I */
+  SInt8               filler;
+  Handle              preview;                /* I */
+  FormatType          previewFormat;          /* I */
+  EditionContainerSpec  container;            /* I/O */
 };
-typedef struct NewPublisherReply NewPublisherReply;
+typedef struct NewPublisherReply        NewPublisherReply;
 struct NewSubscriberReply {
-	Boolean              canceled; /* O */
-	SignedByte           formatsMask;
-	EditionContainerSpec container; /*I/O*/
+  Boolean             canceled;               /* O */
+  SignedByte          formatsMask;
+  EditionContainerSpec  container;            /*I/O*/
 };
-typedef struct NewSubscriberReply NewSubscriberReply;
+typedef struct NewSubscriberReply       NewSubscriberReply;
 struct SectionOptionsReply {
-	Boolean       canceled; /* O */
-	Boolean       changed; /* O */
-	SectionHandle sectionH; /* I */
-	ResType       action; /* O */
+  Boolean             canceled;               /* O */
+  Boolean             changed;                /* O */
+  SectionHandle       sectionH;               /* I */
+  ResType             action;                 /* O */
 };
-typedef struct SectionOptionsReply SectionOptionsReply;
-typedef CALLBACK_API( Boolean, ExpModalFilterProcPtr )( DialogPtr theDialog, EventRecord *theEvent, short itemOffset, short *itemHit, Ptr yourDataPtr );
-typedef CALLBACK_API( short, ExpDlgHookProcPtr )( short itemOffset, short itemHit, DialogPtr theDialog, Ptr yourDataPtr );
-typedef STACK_UPP_TYPE( ExpModalFilterProcPtr ) ExpModalFilterUPP;
-typedef STACK_UPP_TYPE( ExpDlgHookProcPtr ) ExpDlgHookUPP;
+typedef struct SectionOptionsReply      SectionOptionsReply;
+typedef CALLBACK_API( Boolean , ExpModalFilterProcPtr )(DialogPtr theDialog, EventRecord *theEvent, short itemOffset, short *itemHit, Ptr yourDataPtr);
+typedef CALLBACK_API( short , ExpDlgHookProcPtr )(short itemOffset, short itemHit, DialogPtr theDialog, Ptr yourDataPtr);
+typedef STACK_UPP_TYPE(ExpModalFilterProcPtr)                   ExpModalFilterUPP;
+typedef STACK_UPP_TYPE(ExpDlgHookProcPtr)                       ExpDlgHookUPP;
 #if CALL_NOT_IN_CARBON
 /*
  *  NewExpModalFilterUPP()
@@ -204,17 +209,14 @@ typedef STACK_UPP_TYPE( ExpDlgHookProcPtr ) ExpDlgHookUPP;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( ExpModalFilterUPP )
-NewExpModalFilterUPP( ExpModalFilterProcPtr userRoutine );
+NewExpModalFilterUPP(ExpModalFilterProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppExpModalFilterProcInfo = 0x0000FBD0 }; /* pascal 1_byte Func(4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ExpModalFilterUPP ) NewExpModalFilterUPP( ExpModalFilterProcPtr userRoutine )
-{
-	return (ExpModalFilterUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppExpModalFilterProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewExpModalFilterUPP( userRoutine ) ( ExpModalFilterUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppExpModalFilterProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppExpModalFilterProcInfo = 0x0000FBD0 };  /* pascal 1_byte Func(4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ExpModalFilterUPP) NewExpModalFilterUPP(ExpModalFilterProcPtr userRoutine) { return (ExpModalFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppExpModalFilterProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewExpModalFilterUPP(userRoutine) (ExpModalFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppExpModalFilterProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -226,17 +228,14 @@ inline DEFINE_API_C( ExpModalFilterUPP ) NewExpModalFilterUPP( ExpModalFilterPro
  *    Mac OS X:         not available
  */
 EXTERN_API_C( ExpDlgHookUPP )
-NewExpDlgHookUPP( ExpDlgHookProcPtr userRoutine );
+NewExpDlgHookUPP(ExpDlgHookProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppExpDlgHookProcInfo = 0x00003EA0 }; /* pascal 2_bytes Func(2_bytes, 2_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ExpDlgHookUPP ) NewExpDlgHookUPP( ExpDlgHookProcPtr userRoutine )
-{
-	return (ExpDlgHookUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppExpDlgHookProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewExpDlgHookUPP( userRoutine ) ( ExpDlgHookUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppExpDlgHookProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppExpDlgHookProcInfo = 0x00003EA0 };  /* pascal 2_bytes Func(2_bytes, 2_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ExpDlgHookUPP) NewExpDlgHookUPP(ExpDlgHookProcPtr userRoutine) { return (ExpDlgHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppExpDlgHookProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewExpDlgHookUPP(userRoutine) (ExpDlgHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppExpDlgHookProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -248,16 +247,13 @@ inline DEFINE_API_C( ExpDlgHookUPP ) NewExpDlgHookUPP( ExpDlgHookProcPtr userRou
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeExpModalFilterUPP( ExpModalFilterUPP userUPP );
+DisposeExpModalFilterUPP(ExpModalFilterUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeExpModalFilterUPP( ExpModalFilterUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeExpModalFilterUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeExpModalFilterUPP(ExpModalFilterUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeExpModalFilterUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -269,16 +265,13 @@ inline DEFINE_API_C( void ) DisposeExpModalFilterUPP( ExpModalFilterUPP userUPP 
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeExpDlgHookUPP( ExpDlgHookUPP userUPP );
+DisposeExpDlgHookUPP(ExpDlgHookUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeExpDlgHookUPP( ExpDlgHookUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeExpDlgHookUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeExpDlgHookUPP(ExpDlgHookUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeExpDlgHookUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -291,21 +284,18 @@ inline DEFINE_API_C( void ) DisposeExpDlgHookUPP( ExpDlgHookUPP userUPP )
  */
 EXTERN_API_C( Boolean )
 InvokeExpModalFilterUPP(
-    DialogPtr         theDialog,
-    EventRecord *     theEvent,
-    short             itemOffset,
-    short *           itemHit,
-    Ptr               yourDataPtr,
-    ExpModalFilterUPP userUPP );
+  DialogPtr          theDialog,
+  EventRecord *      theEvent,
+  short              itemOffset,
+  short *            itemHit,
+  Ptr                yourDataPtr,
+  ExpModalFilterUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeExpModalFilterUPP( DialogPtr theDialog, EventRecord *theEvent, short itemOffset, short *itemHit, Ptr yourDataPtr, ExpModalFilterUPP userUPP )
-{
-	return (Boolean)CALL_FIVE_PARAMETER_UPP( userUPP, uppExpModalFilterProcInfo, theDialog, theEvent, itemOffset, itemHit, yourDataPtr );
-}
-#else
-#define InvokeExpModalFilterUPP( theDialog, theEvent, itemOffset, itemHit, yourDataPtr, userUPP ) ( Boolean ) CALL_FIVE_PARAMETER_UPP( ( userUPP ), uppExpModalFilterProcInfo, ( theDialog ), ( theEvent ), ( itemOffset ), ( itemHit ), ( yourDataPtr ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeExpModalFilterUPP(DialogPtr theDialog, EventRecord * theEvent, short itemOffset, short * itemHit, Ptr yourDataPtr, ExpModalFilterUPP userUPP) { return (Boolean)CALL_FIVE_PARAMETER_UPP(userUPP, uppExpModalFilterProcInfo, theDialog, theEvent, itemOffset, itemHit, yourDataPtr); }
+  #else
+    #define InvokeExpModalFilterUPP(theDialog, theEvent, itemOffset, itemHit, yourDataPtr, userUPP) (Boolean)CALL_FIVE_PARAMETER_UPP((userUPP), uppExpModalFilterProcInfo, (theDialog), (theEvent), (itemOffset), (itemHit), (yourDataPtr))
+  #endif
 #endif
 
 /*
@@ -318,72 +308,70 @@ inline DEFINE_API_C( Boolean ) InvokeExpModalFilterUPP( DialogPtr theDialog, Eve
  */
 EXTERN_API_C( short )
 InvokeExpDlgHookUPP(
-    short         itemOffset,
-    short         itemHit,
-    DialogPtr     theDialog,
-    Ptr           yourDataPtr,
-    ExpDlgHookUPP userUPP );
+  short          itemOffset,
+  short          itemHit,
+  DialogPtr      theDialog,
+  Ptr            yourDataPtr,
+  ExpDlgHookUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( short ) InvokeExpDlgHookUPP( short itemOffset, short itemHit, DialogPtr theDialog, Ptr yourDataPtr, ExpDlgHookUPP userUPP )
-{
-	return (short)CALL_FOUR_PARAMETER_UPP( userUPP, uppExpDlgHookProcInfo, itemOffset, itemHit, theDialog, yourDataPtr );
-}
-#else
-#define InvokeExpDlgHookUPP( itemOffset, itemHit, theDialog, yourDataPtr, userUPP ) ( short ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppExpDlgHookProcInfo, ( itemOffset ), ( itemHit ), ( theDialog ), ( yourDataPtr ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(short) InvokeExpDlgHookUPP(short itemOffset, short itemHit, DialogPtr theDialog, Ptr yourDataPtr, ExpDlgHookUPP userUPP) { return (short)CALL_FOUR_PARAMETER_UPP(userUPP, uppExpDlgHookProcInfo, itemOffset, itemHit, theDialog, yourDataPtr); }
+  #else
+    #define InvokeExpDlgHookUPP(itemOffset, itemHit, theDialog, yourDataPtr, userUPP) (short)CALL_FOUR_PARAMETER_UPP((userUPP), uppExpDlgHookProcInfo, (itemOffset), (itemHit), (theDialog), (yourDataPtr))
+  #endif
 #endif
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewExpModalFilterProc( userRoutine ) NewExpModalFilterUPP( userRoutine )
-#define NewExpDlgHookProc( userRoutine ) NewExpDlgHookUPP( userRoutine )
-#define CallExpModalFilterProc( userRoutine, theDialog, theEvent, itemOffset, itemHit, yourDataPtr ) InvokeExpModalFilterUPP( theDialog, theEvent, itemOffset, itemHit, yourDataPtr, userRoutine )
-#define CallExpDlgHookProc( userRoutine, itemOffset, itemHit, theDialog, yourDataPtr ) InvokeExpDlgHookUPP( itemOffset, itemHit, theDialog, yourDataPtr, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewExpModalFilterProc(userRoutine)                  NewExpModalFilterUPP(userRoutine)
+    #define NewExpDlgHookProc(userRoutine)                      NewExpDlgHookUPP(userRoutine)
+    #define CallExpModalFilterProc(userRoutine, theDialog, theEvent, itemOffset, itemHit, yourDataPtr) InvokeExpModalFilterUPP(theDialog, theEvent, itemOffset, itemHit, yourDataPtr, userRoutine)
+    #define CallExpDlgHookProc(userRoutine, itemOffset, itemHit, theDialog, yourDataPtr) InvokeExpDlgHookUPP(itemOffset, itemHit, theDialog, yourDataPtr, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 typedef SInt8 FormatIOVerb;
 enum {
-	ioHasFormat = 0,
-	ioReadFormat = 1,
-	ioNewFormat = 2,
-	ioWriteFormat = 3
+  ioHasFormat                   = 0,
+  ioReadFormat                  = 1,
+  ioNewFormat                   = 2,
+  ioWriteFormat                 = 3
 };
 
 typedef SInt8 EditionOpenerVerb;
 enum {
-	eoOpen = 0,
-	eoClose = 1,
-	eoOpenNew = 2,
-	eoCloseNew = 3,
-	eoCanSubscribe = 4
+  eoOpen                        = 0,
+  eoClose                       = 1,
+  eoOpenNew                     = 2,
+  eoCloseNew                    = 3,
+  eoCanSubscribe                = 4
 };
 
+
 struct FormatIOParamBlock {
-	long          ioRefNum;
-	FormatType    format;
-	long          formatIndex;
-	unsigned long offset;
-	Ptr           buffPtr;
-	unsigned long buffLen;
+  long                ioRefNum;
+  FormatType          format;
+  long                formatIndex;
+  unsigned long       offset;
+  Ptr                 buffPtr;
+  unsigned long       buffLen;
 };
-typedef struct FormatIOParamBlock      FormatIOParamBlock;
-typedef struct EditionOpenerParamBlock EditionOpenerParamBlock;
-typedef CALLBACK_API( short, FormatIOProcPtr )( FormatIOVerb selector, FormatIOParamBlock *PB );
-typedef CALLBACK_API( short, EditionOpenerProcPtr )( EditionOpenerVerb selector, EditionOpenerParamBlock *PB );
-typedef STACK_UPP_TYPE( FormatIOProcPtr ) FormatIOUPP;
-typedef STACK_UPP_TYPE( EditionOpenerProcPtr ) EditionOpenerUPP;
+typedef struct FormatIOParamBlock       FormatIOParamBlock;
+typedef struct EditionOpenerParamBlock  EditionOpenerParamBlock;
+typedef CALLBACK_API( short , FormatIOProcPtr )(FormatIOVerb selector, FormatIOParamBlock *PB);
+typedef CALLBACK_API( short , EditionOpenerProcPtr )(EditionOpenerVerb selector, EditionOpenerParamBlock *PB);
+typedef STACK_UPP_TYPE(FormatIOProcPtr)                         FormatIOUPP;
+typedef STACK_UPP_TYPE(EditionOpenerProcPtr)                    EditionOpenerUPP;
 struct EditionOpenerParamBlock {
-	EditionInfoRecord info;
-	SectionHandle     sectionH;
-	const FSSpec *    document;
-	OSType            fdCreator;
-	long              ioRefNum;
-	FormatIOUPP       ioProc;
-	Boolean           success;
-	SignedByte        formatsMask;
+  EditionInfoRecord   info;
+  SectionHandle       sectionH;
+  const FSSpec *      document;
+  OSType              fdCreator;
+  long                ioRefNum;
+  FormatIOUPP         ioProc;
+  Boolean             success;
+  SignedByte          formatsMask;
 };
 
 #if CALL_NOT_IN_CARBON
@@ -396,17 +384,14 @@ struct EditionOpenerParamBlock {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( FormatIOUPP )
-NewFormatIOUPP( FormatIOProcPtr userRoutine );
+NewFormatIOUPP(FormatIOProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppFormatIOProcInfo = 0x00000360 }; /* pascal 2_bytes Func(1_byte, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( FormatIOUPP ) NewFormatIOUPP( FormatIOProcPtr userRoutine )
-{
-	return (FormatIOUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppFormatIOProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewFormatIOUPP( userRoutine ) ( FormatIOUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppFormatIOProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppFormatIOProcInfo = 0x00000360 };  /* pascal 2_bytes Func(1_byte, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(FormatIOUPP) NewFormatIOUPP(FormatIOProcPtr userRoutine) { return (FormatIOUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppFormatIOProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewFormatIOUPP(userRoutine) (FormatIOUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppFormatIOProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -418,25 +403,22 @@ inline DEFINE_API_C( FormatIOUPP ) NewFormatIOUPP( FormatIOProcPtr userRoutine )
  *    Mac OS X:         not available
  */
 EXTERN_API_C( EditionOpenerUPP )
-NewEditionOpenerUPP( EditionOpenerProcPtr userRoutine );
+NewEditionOpenerUPP(EditionOpenerProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppEditionOpenerProcInfo = 0x00000360 }; /* pascal 2_bytes Func(1_byte, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( EditionOpenerUPP ) NewEditionOpenerUPP( EditionOpenerProcPtr userRoutine )
-{
-	return (EditionOpenerUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEditionOpenerProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewEditionOpenerUPP( userRoutine ) ( EditionOpenerUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEditionOpenerProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppEditionOpenerProcInfo = 0x00000360 };  /* pascal 2_bytes Func(1_byte, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(EditionOpenerUPP) NewEditionOpenerUPP(EditionOpenerProcPtr userRoutine) { return (EditionOpenerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEditionOpenerProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewEditionOpenerUPP(userRoutine) (EditionOpenerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEditionOpenerProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewFormatIOProc( userRoutine ) NewFormatIOUPP( userRoutine )
-#define NewEditionOpenerProc( userRoutine ) NewEditionOpenerUPP( userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewFormatIOProc(userRoutine)                        NewFormatIOUPP(userRoutine)
+    #define NewEditionOpenerProc(userRoutine)                   NewEditionOpenerUPP(userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /* 
@@ -459,19 +441,20 @@ inline DEFINE_API_C( EditionOpenerUPP ) NewEditionOpenerUPP( EditionOpenerProcPt
 */
 
 enum {
-	sectionEventMsgClass = FOUR_CHAR_CODE( 'sect' ),
-	sectionReadMsgID = FOUR_CHAR_CODE( 'read' ),
-	sectionWriteMsgID = FOUR_CHAR_CODE( 'writ' ),
-	sectionScrollMsgID = FOUR_CHAR_CODE( 'scrl' ),
-	sectionCancelMsgID = FOUR_CHAR_CODE( 'cncl' )
+  sectionEventMsgClass          = FOUR_CHAR_CODE('sect'),
+  sectionReadMsgID              = FOUR_CHAR_CODE('read'),
+  sectionWriteMsgID             = FOUR_CHAR_CODE('writ'),
+  sectionScrollMsgID            = FOUR_CHAR_CODE('scrl'),
+  sectionCancelMsgID            = FOUR_CHAR_CODE('cncl')
 };
 
 enum {
-	currentEditionMgrVers = 0x0011
+  currentEditionMgrVers         = 0x0011
 };
 
+
 #if TARGET_RT_MAC_CFM
-#define InitEditionPack() InitEditionPackVersion( currentEditionMgrVers )
+#define InitEditionPack() InitEditionPackVersion(currentEditionMgrVers)
 #else
 #if CALL_NOT_IN_CARBON
 /*
@@ -483,11 +466,12 @@ enum {
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-InitEditionPack( void ) FIVEWORDINLINE( 0x3F3C, 0x0011, 0x303C, 0x0100, 0xA82D );
+InitEditionPack(void)                                         FIVEWORDINLINE(0x3F3C, 0x0011, 0x303C, 0x0100, 0xA82D);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* TARGET_RT_MAC_CFM */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* TARGET_RT_MAC_CFM */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -499,7 +483,8 @@ InitEditionPack( void ) FIVEWORDINLINE( 0x3F3C, 0x0011, 0x303C, 0x0100, 0xA82D )
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-InitEditionPackVersion( short curEditionMgrVers ) THREEWORDINLINE( 0x303C, 0x0100, 0xA82D );
+InitEditionPackVersion(short curEditionMgrVers)               THREEWORDINLINE(0x303C, 0x0100, 0xA82D);
+
 
 /*
  *  NewSection()
@@ -511,12 +496,13 @@ InitEditionPackVersion( short curEditionMgrVers ) THREEWORDINLINE( 0x303C, 0x010
  */
 EXTERN_API( OSErr )
 NewSection(
-    const EditionContainerSpec *container,
-    const FSSpec *              sectionDocument, /* can be NULL */
-    SectionType                 kind,
-    long                        sectionID,
-    UpdateMode                  initalMode,
-    SectionHandle *             sectionH ) THREEWORDINLINE( 0x303C, 0x0A02, 0xA82D );
+  const EditionContainerSpec *  container,
+  const FSSpec *                sectionDocument,       /* can be NULL */
+  SectionType                   kind,
+  long                          sectionID,
+  UpdateMode                    initalMode,
+  SectionHandle *               sectionH)                     THREEWORDINLINE(0x303C, 0x0A02, 0xA82D);
+
 
 /*
  *  RegisterSection()
@@ -528,9 +514,10 @@ NewSection(
  */
 EXTERN_API( OSErr )
 RegisterSection(
-    const FSSpec *sectionDocument,
-    SectionHandle sectionH,
-    Boolean *     aliasWasUpdated ) THREEWORDINLINE( 0x303C, 0x0604, 0xA82D );
+  const FSSpec *  sectionDocument,
+  SectionHandle   sectionH,
+  Boolean *       aliasWasUpdated)                            THREEWORDINLINE(0x303C, 0x0604, 0xA82D);
+
 
 /*
  *  UnRegisterSection()
@@ -541,7 +528,8 @@ RegisterSection(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-UnRegisterSection( SectionHandle sectionH ) THREEWORDINLINE( 0x303C, 0x0206, 0xA82D );
+UnRegisterSection(SectionHandle sectionH)                     THREEWORDINLINE(0x303C, 0x0206, 0xA82D);
+
 
 /*
  *  IsRegisteredSection()
@@ -552,7 +540,8 @@ UnRegisterSection( SectionHandle sectionH ) THREEWORDINLINE( 0x303C, 0x0206, 0xA
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-IsRegisteredSection( SectionHandle sectionH ) THREEWORDINLINE( 0x303C, 0x0208, 0xA82D );
+IsRegisteredSection(SectionHandle sectionH)                   THREEWORDINLINE(0x303C, 0x0208, 0xA82D);
+
 
 /*
  *  AssociateSection()
@@ -564,8 +553,9 @@ IsRegisteredSection( SectionHandle sectionH ) THREEWORDINLINE( 0x303C, 0x0208, 0
  */
 EXTERN_API( OSErr )
 AssociateSection(
-    SectionHandle sectionH,
-    const FSSpec *newSectionDocument ) THREEWORDINLINE( 0x303C, 0x040C, 0xA82D );
+  SectionHandle   sectionH,
+  const FSSpec *  newSectionDocument)                         THREEWORDINLINE(0x303C, 0x040C, 0xA82D);
+
 
 /*
  *  CreateEditionContainerFile()
@@ -577,9 +567,10 @@ AssociateSection(
  */
 EXTERN_API( OSErr )
 CreateEditionContainerFile(
-    const FSSpec *editionFile,
-    OSType        fdCreator,
-    ScriptCode    editionFileNameScript ) THREEWORDINLINE( 0x303C, 0x050E, 0xA82D );
+  const FSSpec *  editionFile,
+  OSType          fdCreator,
+  ScriptCode      editionFileNameScript)                      THREEWORDINLINE(0x303C, 0x050E, 0xA82D);
+
 
 /*
  *  DeleteEditionContainerFile()
@@ -590,7 +581,8 @@ CreateEditionContainerFile(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-DeleteEditionContainerFile( const FSSpec *editionFile ) THREEWORDINLINE( 0x303C, 0x0210, 0xA82D );
+DeleteEditionContainerFile(const FSSpec * editionFile)        THREEWORDINLINE(0x303C, 0x0210, 0xA82D);
+
 
 /*
  *  OpenEdition()
@@ -602,8 +594,9 @@ DeleteEditionContainerFile( const FSSpec *editionFile ) THREEWORDINLINE( 0x303C,
  */
 EXTERN_API( OSErr )
 OpenEdition(
-    SectionHandle  subscriberSectionH,
-    EditionRefNum *refNum ) THREEWORDINLINE( 0x303C, 0x0412, 0xA82D );
+  SectionHandle    subscriberSectionH,
+  EditionRefNum *  refNum)                                    THREEWORDINLINE(0x303C, 0x0412, 0xA82D);
+
 
 /*
  *  OpenNewEdition()
@@ -615,10 +608,11 @@ OpenEdition(
  */
 EXTERN_API( OSErr )
 OpenNewEdition(
-    SectionHandle  publisherSectionH,
-    OSType         fdCreator,
-    const FSSpec * publisherSectionDocument, /* can be NULL */
-    EditionRefNum *refNum ) THREEWORDINLINE( 0x303C, 0x0814, 0xA82D );
+  SectionHandle    publisherSectionH,
+  OSType           fdCreator,
+  const FSSpec *   publisherSectionDocument,       /* can be NULL */
+  EditionRefNum *  refNum)                                    THREEWORDINLINE(0x303C, 0x0814, 0xA82D);
+
 
 /*
  *  CloseEdition()
@@ -630,8 +624,9 @@ OpenNewEdition(
  */
 EXTERN_API( OSErr )
 CloseEdition(
-    EditionRefNum whichEdition,
-    Boolean       successful ) THREEWORDINLINE( 0x303C, 0x0316, 0xA82D );
+  EditionRefNum   whichEdition,
+  Boolean         successful)                                 THREEWORDINLINE(0x303C, 0x0316, 0xA82D);
+
 
 /*
  *  EditionHasFormat()
@@ -643,9 +638,10 @@ CloseEdition(
  */
 EXTERN_API( OSErr )
 EditionHasFormat(
-    EditionRefNum whichEdition,
-    FormatType    whichFormat,
-    Size *        formatSize ) THREEWORDINLINE( 0x303C, 0x0618, 0xA82D );
+  EditionRefNum   whichEdition,
+  FormatType      whichFormat,
+  Size *          formatSize)                                 THREEWORDINLINE(0x303C, 0x0618, 0xA82D);
+
 
 /*
  *  ReadEdition()
@@ -657,10 +653,11 @@ EditionHasFormat(
  */
 EXTERN_API( OSErr )
 ReadEdition(
-    EditionRefNum whichEdition,
-    FormatType    whichFormat,
-    void *        buffPtr,
-    Size *        buffLen ) THREEWORDINLINE( 0x303C, 0x081A, 0xA82D );
+  EditionRefNum   whichEdition,
+  FormatType      whichFormat,
+  void *          buffPtr,
+  Size *          buffLen)                                    THREEWORDINLINE(0x303C, 0x081A, 0xA82D);
+
 
 /*
  *  WriteEdition()
@@ -672,10 +669,11 @@ ReadEdition(
  */
 EXTERN_API( OSErr )
 WriteEdition(
-    EditionRefNum whichEdition,
-    FormatType    whichFormat,
-    const void *  buffPtr,
-    Size          buffLen ) THREEWORDINLINE( 0x303C, 0x081C, 0xA82D );
+  EditionRefNum   whichEdition,
+  FormatType      whichFormat,
+  const void *    buffPtr,
+  Size            buffLen)                                    THREEWORDINLINE(0x303C, 0x081C, 0xA82D);
+
 
 /*
  *  GetEditionFormatMark()
@@ -687,9 +685,10 @@ WriteEdition(
  */
 EXTERN_API( OSErr )
 GetEditionFormatMark(
-    EditionRefNum  whichEdition,
-    FormatType     whichFormat,
-    unsigned long *currentMark ) THREEWORDINLINE( 0x303C, 0x061E, 0xA82D );
+  EditionRefNum    whichEdition,
+  FormatType       whichFormat,
+  unsigned long *  currentMark)                               THREEWORDINLINE(0x303C, 0x061E, 0xA82D);
+
 
 /*
  *  SetEditionFormatMark()
@@ -701,9 +700,10 @@ GetEditionFormatMark(
  */
 EXTERN_API( OSErr )
 SetEditionFormatMark(
-    EditionRefNum whichEdition,
-    FormatType    whichFormat,
-    unsigned long setMarkTo ) THREEWORDINLINE( 0x303C, 0x0620, 0xA82D );
+  EditionRefNum   whichEdition,
+  FormatType      whichFormat,
+  unsigned long   setMarkTo)                                  THREEWORDINLINE(0x303C, 0x0620, 0xA82D);
+
 
 /*
  *  GetEditionInfo()
@@ -715,8 +715,9 @@ SetEditionFormatMark(
  */
 EXTERN_API( OSErr )
 GetEditionInfo(
-    SectionHandle      sectionH,
-    EditionInfoRecord *editionInfo ) THREEWORDINLINE( 0x303C, 0x0422, 0xA82D );
+  SectionHandle        sectionH,
+  EditionInfoRecord *  editionInfo)                           THREEWORDINLINE(0x303C, 0x0422, 0xA82D);
+
 
 /*
  *  GoToPublisherSection()
@@ -727,7 +728,8 @@ GetEditionInfo(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-GoToPublisherSection( const EditionContainerSpec *container ) THREEWORDINLINE( 0x303C, 0x0224, 0xA82D );
+GoToPublisherSection(const EditionContainerSpec * container)  THREEWORDINLINE(0x303C, 0x0224, 0xA82D);
+
 
 /*
  *  GetLastEditionContainerUsed()
@@ -738,7 +740,8 @@ GoToPublisherSection( const EditionContainerSpec *container ) THREEWORDINLINE( 0
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-GetLastEditionContainerUsed( EditionContainerSpec *container ) THREEWORDINLINE( 0x303C, 0x0226, 0xA82D );
+GetLastEditionContainerUsed(EditionContainerSpec * container) THREEWORDINLINE(0x303C, 0x0226, 0xA82D);
+
 
 /*
  *  GetStandardFormats()
@@ -750,11 +753,12 @@ GetLastEditionContainerUsed( EditionContainerSpec *container ) THREEWORDINLINE( 
  */
 EXTERN_API( OSErr )
 GetStandardFormats(
-    const EditionContainerSpec *container,
-    FormatType *                previewFormat,
-    Handle                      preview,
-    Handle                      publisherAlias,
-    Handle                      formats ) THREEWORDINLINE( 0x303C, 0x0A28, 0xA82D );
+  const EditionContainerSpec *  container,
+  FormatType *                  previewFormat,
+  Handle                        preview,
+  Handle                        publisherAlias,
+  Handle                        formats)                      THREEWORDINLINE(0x303C, 0x0A28, 0xA82D);
+
 
 /*
  *  GetEditionOpenerProc()
@@ -765,7 +769,8 @@ GetStandardFormats(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-GetEditionOpenerProc( EditionOpenerUPP *opener ) THREEWORDINLINE( 0x303C, 0x022A, 0xA82D );
+GetEditionOpenerProc(EditionOpenerUPP * opener)               THREEWORDINLINE(0x303C, 0x022A, 0xA82D);
+
 
 /*
  *  SetEditionOpenerProc()
@@ -776,7 +781,8 @@ GetEditionOpenerProc( EditionOpenerUPP *opener ) THREEWORDINLINE( 0x303C, 0x022A
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-SetEditionOpenerProc( EditionOpenerUPP opener ) THREEWORDINLINE( 0x303C, 0x022C, 0xA82D );
+SetEditionOpenerProc(EditionOpenerUPP opener)                 THREEWORDINLINE(0x303C, 0x022C, 0xA82D);
+
 
 /*
  *  CallEditionOpenerProc()
@@ -788,9 +794,10 @@ SetEditionOpenerProc( EditionOpenerUPP opener ) THREEWORDINLINE( 0x303C, 0x022C,
  */
 EXTERN_API( OSErr )
 CallEditionOpenerProc(
-    EditionOpenerVerb        selector,
-    EditionOpenerParamBlock *PB,
-    EditionOpenerUPP         routine ) THREEWORDINLINE( 0x303C, 0x052E, 0xA82D );
+  EditionOpenerVerb          selector,
+  EditionOpenerParamBlock *  PB,
+  EditionOpenerUPP           routine)                         THREEWORDINLINE(0x303C, 0x052E, 0xA82D);
+
 
 /*
  *  CallFormatIOProc()
@@ -802,9 +809,10 @@ CallEditionOpenerProc(
  */
 EXTERN_API( OSErr )
 CallFormatIOProc(
-    FormatIOVerb        selector,
-    FormatIOParamBlock *PB,
-    FormatIOUPP         routine ) THREEWORDINLINE( 0x303C, 0x0530, 0xA82D );
+  FormatIOVerb          selector,
+  FormatIOParamBlock *  PB,
+  FormatIOUPP           routine)                              THREEWORDINLINE(0x303C, 0x0530, 0xA82D);
+
 
 /*
  *  NewSubscriberDialog()
@@ -815,7 +823,8 @@ CallFormatIOProc(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-NewSubscriberDialog( NewSubscriberReply *reply ) THREEWORDINLINE( 0x303C, 0x0232, 0xA82D );
+NewSubscriberDialog(NewSubscriberReply * reply)               THREEWORDINLINE(0x303C, 0x0232, 0xA82D);
+
 
 /*
  *  NewSubscriberExpDialog()
@@ -827,12 +836,13 @@ NewSubscriberDialog( NewSubscriberReply *reply ) THREEWORDINLINE( 0x303C, 0x0232
  */
 EXTERN_API( OSErr )
 NewSubscriberExpDialog(
-    NewSubscriberReply *reply,
-    Point               where,
-    short               expansionDITLresID,
-    ExpDlgHookUPP       dlgHook,
-    ExpModalFilterUPP   filter,
-    void *              yourDataPtr ) THREEWORDINLINE( 0x303C, 0x0B34, 0xA82D );
+  NewSubscriberReply *  reply,
+  Point                 where,
+  short                 expansionDITLresID,
+  ExpDlgHookUPP         dlgHook,
+  ExpModalFilterUPP     filter,
+  void *                yourDataPtr)                          THREEWORDINLINE(0x303C, 0x0B34, 0xA82D);
+
 
 /*
  *  NewPublisherDialog()
@@ -843,7 +853,8 @@ NewSubscriberExpDialog(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-NewPublisherDialog( NewPublisherReply *reply ) THREEWORDINLINE( 0x303C, 0x0236, 0xA82D );
+NewPublisherDialog(NewPublisherReply * reply)                 THREEWORDINLINE(0x303C, 0x0236, 0xA82D);
+
 
 /*
  *  NewPublisherExpDialog()
@@ -855,12 +866,13 @@ NewPublisherDialog( NewPublisherReply *reply ) THREEWORDINLINE( 0x303C, 0x0236, 
  */
 EXTERN_API( OSErr )
 NewPublisherExpDialog(
-    NewPublisherReply *reply,
-    Point              where,
-    short              expansionDITLresID,
-    ExpDlgHookUPP      dlgHook,
-    ExpModalFilterUPP  filter,
-    void *             yourDataPtr ) THREEWORDINLINE( 0x303C, 0x0B38, 0xA82D );
+  NewPublisherReply *  reply,
+  Point                where,
+  short                expansionDITLresID,
+  ExpDlgHookUPP        dlgHook,
+  ExpModalFilterUPP    filter,
+  void *               yourDataPtr)                           THREEWORDINLINE(0x303C, 0x0B38, 0xA82D);
+
 
 /*
  *  SectionOptionsDialog()
@@ -871,7 +883,8 @@ NewPublisherExpDialog(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-SectionOptionsDialog( SectionOptionsReply *reply ) THREEWORDINLINE( 0x303C, 0x023A, 0xA82D );
+SectionOptionsDialog(SectionOptionsReply * reply)             THREEWORDINLINE(0x303C, 0x023A, 0xA82D);
+
 
 /*
  *  SectionOptionsExpDialog()
@@ -883,21 +896,24 @@ SectionOptionsDialog( SectionOptionsReply *reply ) THREEWORDINLINE( 0x303C, 0x02
  */
 EXTERN_API( OSErr )
 SectionOptionsExpDialog(
-    SectionOptionsReply *reply,
-    Point                where,
-    short                expansionDITLresID,
-    ExpDlgHookUPP        dlgHook,
-    ExpModalFilterUPP    filter,
-    void *               yourDataPtr ) THREEWORDINLINE( 0x303C, 0x0B3C, 0xA82D );
+  SectionOptionsReply *  reply,
+  Point                  where,
+  short                  expansionDITLresID,
+  ExpDlgHookUPP          dlgHook,
+  ExpModalFilterUPP      filter,
+  void *                 yourDataPtr)                         THREEWORDINLINE(0x303C, 0x0B3C, 0xA82D);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+#endif  /* CALL_NOT_IN_CARBON */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -911,3 +927,4 @@ SectionOptionsExpDialog(
 #endif
 
 #endif /* __EDITIONS__ */
+

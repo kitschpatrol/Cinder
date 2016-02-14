@@ -45,15 +45,16 @@
  
  */
 
+
 #include "cinder/app/App.h"
-#include "cinder/CameraUi.h"
-#include "cinder/Color.h"
-#include "cinder/GeomIo.h"
-#include "cinder/Log.h"
-#include "cinder/Rand.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
+#include "cinder/gl/gl.h"
+#include "cinder/GeomIo.h"
+#include "cinder/Rand.h"
+#include "cinder/CameraUi.h"
+#include "cinder/Log.h"
+#include "cinder/Color.h"
 
 #include "glm/gtx/euler_angles.hpp"
 
@@ -63,13 +64,13 @@ using namespace ci::app;
 typedef std::shared_ptr<class ShadowMap> ShadowMapRef;
 
 class ShadowMap {
-  public:
+public:
 	static ShadowMapRef create( int size ) { return ShadowMapRef( new ShadowMap{ size } ); }
 	ShadowMap( int size )
 	{
 		reset( size );
 	}
-
+	
 	void reset( int size )
 	{
 		gl::Texture2d::Format depthFormat;
@@ -80,28 +81,29 @@ class ShadowMap {
 		depthFormat.setCompareMode( GL_COMPARE_REF_TO_TEXTURE );
 		depthFormat.setCompareFunc( GL_LEQUAL );
 		mTextureShadowMap = gl::Texture2d::create( size, size, depthFormat );
-
+		
 		gl::Fbo::Format fboFormat;
 		fboFormat.attachment( GL_DEPTH_ATTACHMENT, mTextureShadowMap );
 		mShadowMap = gl::Fbo::create( size, size, fboFormat );
 	}
 
-	const gl::FboRef &      getFbo() const { return mShadowMap; }
-	const gl::Texture2dRef &getTexture() const { return mTextureShadowMap; }
-	float                   getAspectRatio() const { return mShadowMap->getAspectRatio(); }
-	ivec2                   getSize() const { return mShadowMap->getSize(); }
-  private:
-	gl::FboRef       mShadowMap;
-	gl::Texture2dRef mTextureShadowMap;
+	const gl::FboRef&		getFbo() const { return mShadowMap; }
+	const gl::Texture2dRef&	getTexture() const { return mTextureShadowMap; }
+	
+	float					getAspectRatio() const { return mShadowMap->getAspectRatio(); }
+	ivec2					getSize() const { return mShadowMap->getSize(); }
+private:
+	gl::FboRef				mShadowMap;
+	gl::Texture2dRef		mTextureShadowMap;
 };
 
 struct LightData {
-	bool        toggleViewpoint;
-	float       distanceRadius;
-	float       fov;
-	CameraPersp camera;
-	vec3        viewpoint;
-	vec3        target;
+	bool						toggleViewpoint;
+	float						distanceRadius;
+	float						fov;
+	CameraPersp					camera;
+	vec3						viewpoint;
+	vec3						target;
 };
 
 class ShadowMappingApp : public App {
@@ -109,69 +111,69 @@ class ShadowMappingApp : public App {
 	void setup() override;
 	void update() override;
 	void draw() override;
-
+	
 	void keyDown( KeyEvent event ) override;
-
   private:
-	void drawScene( float spinAngle, const gl::GlslProgRef &glsl = nullptr );
-	params::InterfaceGlRef mParams;
+	void drawScene( float spinAngle, const gl::GlslProgRef& glsl = nullptr );
+	params::InterfaceGlRef		mParams;
+	
+	float						mFrameRate;
+	CameraPersp					mCamera;
+	CameraUi					mCamUi;
+	
+	gl::BatchRef				mTeapot, mTeapotShadowed;
+	gl::BatchRef				mSphere, mSphereShadowed;
+	std::vector<std::pair<mat4, vec3>>	mTransforms;
+	
+	
+	gl::GlslProgRef				mShadowShader;
+	ShadowMapRef				mShadowMap;
+	int							mShadowMapSize;
+	bool						mOnlyShadowmap;
+	
+	LightData					mLight;
 
-	float       mFrameRate;
-	CameraPersp mCamera;
-	CameraUi    mCamUi;
-
-	gl::BatchRef mTeapot, mTeapotShadowed;
-	gl::BatchRef mSphere, mSphereShadowed;
-	std::vector<std::pair<mat4, vec3>> mTransforms;
-
-	gl::GlslProgRef mShadowShader;
-	ShadowMapRef    mShadowMap;
-	int             mShadowMapSize;
-	bool            mOnlyShadowmap;
-
-	LightData mLight;
-
-	int mShadowTechnique;
-
-	float mDepthBias;
-	bool  mEnableNormSlopeOffset;
-	float mRandomOffset;
-	int   mNumRandomSamples;
-	float mPolygonOffsetFactor, mPolygonOffsetUnits;
+	int							mShadowTechnique;
+	
+	float						mDepthBias;
+	bool						mEnableNormSlopeOffset;
+	float						mRandomOffset;
+	int							mNumRandomSamples;
+	float						mPolygonOffsetFactor, mPolygonOffsetUnits;
 };
 
 void ShadowMappingApp::setup()
 {
 	Rand::randomize();
-
-	mFrameRate = 0;
-	mShadowMapSize = 2048;
-
-	mLight.distanceRadius = 100.0f;
-	mLight.viewpoint = vec3( mLight.distanceRadius );
-	mLight.fov = 10.0f;
-	mLight.target = vec3( 0 );
-	mLight.toggleViewpoint = false;
-
-	mShadowTechnique = 1;
-	mDepthBias = -0.0005f;
-	mRandomOffset = 1.2f;
-	mNumRandomSamples = 32;
-	mEnableNormSlopeOffset = false;
-	mOnlyShadowmap = false;
-	mPolygonOffsetFactor = mPolygonOffsetUnits = 3.0f;
-
+	
+	mFrameRate				= 0;
+	mShadowMapSize			= 2048;
+	
+	mLight.distanceRadius	= 100.0f;
+	mLight.viewpoint		= vec3( mLight.distanceRadius );
+	mLight.fov				= 10.0f;
+	mLight.target			= vec3( 0 );
+	mLight.toggleViewpoint	= false;
+	
+	mShadowTechnique		= 1;
+	mDepthBias				= -0.0005f;
+	mRandomOffset			= 1.2f;
+	mNumRandomSamples		= 32;
+	mEnableNormSlopeOffset	= false;
+	mOnlyShadowmap			= false;
+	mPolygonOffsetFactor	= mPolygonOffsetUnits = 3.0f;
+	
+	
 	try {
-		mShadowShader = gl::GlslProg::create( loadAsset( "shadow_mapping.vert" ), loadAsset( "shadow_mapping.frag" ) );
-	}
-	catch( const gl::GlslProgCompileExc &exc ) {
+		mShadowShader	= gl::GlslProg::create( loadAsset( "shadow_mapping.vert"), loadAsset("shadow_mapping.frag") );
+	} catch ( const gl::GlslProgCompileExc& exc ) {
 		CI_LOG_E( "Shader failed to load: " << exc.what() );
 		quit();
 	}
-
-	mShadowMap = ShadowMap::create( mShadowMapSize );
+	
+	mShadowMap		= ShadowMap::create( mShadowMapSize );
 	mLight.camera.setPerspective( mLight.fov, mShadowMap->getAspectRatio(), 0.5, 500.0 );
-
+	
 	mParams = params::InterfaceGl::create( "Settings", toPixels( ivec2( 300, 325 ) ) );
 	mParams->addParam( "Framerate", &mFrameRate, "", true );
 	mParams->addSeparator();
@@ -184,7 +186,7 @@ void ShadowMappingApp::setup()
 	mParams->addSeparator();
 	mParams->addParam( "Polygon offset factor", &mPolygonOffsetFactor ).step( 0.025f ).min( 0.0f );
 	mParams->addParam( "Polygon offset units", &mPolygonOffsetUnits ).step( 0.025f ).min( 0.0f );
-	mParams->addParam( "Shadow map size", &mShadowMapSize ).min( 16 ).step( 16 ).updateFn( [this]() {
+	mParams->addParam( "Shadow map size",  &mShadowMapSize ).min( 16 ).step( 16 ).updateFn( [this]() {
 		mShadowMap->reset( mShadowMapSize );
 	} );
 	mParams->addParam( "Depth bias", &mDepthBias ).step( 0.00001f ).max( 0.0 );
@@ -194,19 +196,19 @@ void ShadowMappingApp::setup()
 	mParams->addParam( "Offset radius", &mRandomOffset ).min( 0.0f ).step( 0.05f );
 	mParams->addParam( "Auto normal slope offset", &mEnableNormSlopeOffset );
 	mParams->addParam( "Num samples", &mNumRandomSamples ).min( 1 );
-	//	mParams->minimize();
-
+//	mParams->minimize();
+	
 	auto positionGlsl = gl::getStockShader( gl::ShaderDef() );
-
-	auto teapot = gl::VboMesh::create( geom::Teapot().subdivisions( 5 ) );
+	
+	auto teapot = gl::VboMesh::create( geom::Teapot().subdivisions(5) );
 	mTeapot = gl::Batch::create( teapot, positionGlsl );
 	mTeapotShadowed = gl::Batch::create( teapot, mShadowShader );
-
+	
 	auto sphere = gl::VboMesh::create( geom::Icosphere() );
 	mSphere = gl::Batch::create( sphere, positionGlsl );
 	mSphereShadowed = gl::Batch::create( sphere, mShadowShader );
-
-	for( size_t i = 0; i < 10; ++i ) {
+		
+	for ( size_t i = 0; i < 10; ++i ) {
 		vec3 v( 25.0f * randVec3() );
 		mat4 m{};
 		m *= translate( v );
@@ -214,7 +216,7 @@ void ShadowMappingApp::setup()
 		m *= rotate( 2 * glm::pi<float>() * randFloat(), randVec3() );
 		mTransforms.emplace_back( m, randVec3() );
 	}
-
+	
 	gl::enableDepthRead();
 	gl::enableDepthWrite();
 
@@ -225,27 +227,27 @@ void ShadowMappingApp::setup()
 
 void ShadowMappingApp::update()
 {
-	float e = (float)getElapsedSeconds();
+	float e	= (float) getElapsedSeconds();
 	float c = cos( e );
-	float s = sin( e );
-
-	for( auto &transform : mTransforms ) {
+	float s	= sin( e );
+	
+	for ( auto& transform : mTransforms ) {
 		transform.first *= orientate4( vec3( c, s, -c ) * 0.01f );
 	}
-
+	
 	mLight.viewpoint.x = mLight.distanceRadius * sin( 0.25f * e );
 	mLight.viewpoint.z = mLight.distanceRadius * cos( 0.25f * e );
 	mLight.camera.lookAt( mLight.viewpoint, mLight.target );
 	mFrameRate = getAverageFps();
 }
 
-void ShadowMappingApp::drawScene( float spinAngle, const gl::GlslProgRef &shadowGlsl )
+void ShadowMappingApp::drawScene( float spinAngle, const gl::GlslProgRef& shadowGlsl )
 {
 	{
-		gl::ScopedColor       red( Color( 0.98f, 0.22f, 0.10f ) );
+		gl::ScopedColor red( Color( 0.98f, 0.22f, 0.10f ));
 		gl::ScopedModelMatrix push;
-		gl::scale( vec3( 4 ) );
-
+		gl::scale( vec3(4) );
+		
 		if( shadowGlsl ) {
 			shadowGlsl->uniform( "uIsTeapot", false );
 			mSphereShadowed->draw();
@@ -255,12 +257,12 @@ void ShadowMappingApp::drawScene( float spinAngle, const gl::GlslProgRef &shadow
 			mSphere->draw();
 		}
 	}
-
+	
 	{
 		gl::ScopedColor white( Color( 0.90f, 0.97f, 0.97f ) );
-		for( const auto &transform : mTransforms ) {
+		for ( const auto& transform : mTransforms ) {
 			gl::ScopedModelMatrix push;
-			gl::scale( vec3( 0.25 ) );
+			gl::scale( vec3(0.25) );
 			gl::multModelMatrix( rotate( spinAngle, transform.second ) * transform.first );
 			if( shadowGlsl )
 				mTeapotShadowed->draw();
@@ -273,14 +275,14 @@ void ShadowMappingApp::drawScene( float spinAngle, const gl::GlslProgRef &shadow
 void ShadowMappingApp::draw()
 {
 	gl::clear( Color( 0.07f, 0.05f, 0.1f ) );
-
+	
 	// Elapsed time called here: the scene must be absolutely identical on both renders!
-	float spinAngle = 0.5f * (float)app::getElapsedSeconds();
-
+	float spinAngle = 0.5f * (float) app::getElapsedSeconds();
+	
 	// Offset to help combat surface acne (self-shadowing)
 	gl::enable( GL_POLYGON_OFFSET_FILL );
 	glPolygonOffset( mPolygonOffsetFactor, mPolygonOffsetUnits );
-
+	
 	// Render scene into shadow map
 	gl::setMatrices( mLight.camera );
 	gl::viewport( mShadowMap->getSize() );
@@ -294,9 +296,9 @@ void ShadowMappingApp::draw()
 	gl::setMatrices( mLight.toggleViewpoint ? mLight.camera : mCamera );
 	gl::viewport( toPixels( getWindowSize() ) );
 	{
-		gl::ScopedGlslProg    bind( mShadowShader );
+		gl::ScopedGlslProg bind( mShadowShader );
 		gl::ScopedTextureBind texture( mShadowMap->getTexture() );
-
+		
 		mShadowShader->uniform( "uShadowMap", 0 );
 		mShadowShader->uniform( "uShadowMatrix", mLight.camera.getProjectionMatrix() * mLight.camera.getViewMatrix() );
 		mShadowShader->uniform( "uShadowTechnique", mShadowTechnique );
@@ -306,15 +308,15 @@ void ShadowMappingApp::draw()
 		mShadowShader->uniform( "uNumRandomSamples", mNumRandomSamples );
 		mShadowShader->uniform( "uEnableNormSlopeOffset", mEnableNormSlopeOffset );
 		mShadowShader->uniform( "uLightPos", vec3( gl::getModelView() * vec4( mLight.viewpoint, 1.0 ) ) );
-
+		
 		drawScene( spinAngle, mShadowShader );
 	}
-
+	
 	gl::disable( GL_POLYGON_OFFSET_FILL );
-
+	
 	// Render light direction vector
 	gl::drawVector( mLight.viewpoint, 4.5f * normalize( mLight.viewpoint ) );
-
+	
 	mParams->draw();
 }
 
@@ -324,11 +326,11 @@ void ShadowMappingApp::keyDown( KeyEvent event )
 		app::setFullScreen( !app::isFullScreen() );
 	}
 	else if( event.getChar() == KeyEvent::KEY_SPACE ) {
-		mParams->maximize( !mParams->isMaximized() );
+		mParams->maximize( ! mParams->isMaximized() );
 	}
 }
 
 CINDER_APP( ShadowMappingApp, RendererGl( RendererGl::Options().msaa( 16 ) ), []( App::Settings *settings ) {
-	//	settings->enableHighDensityDisplay();
+//	settings->enableHighDensityDisplay();
 	settings->setWindowSize( 900, 900 );
 } )

@@ -24,6 +24,9 @@
 #include <Quickdraw.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,49 +40,49 @@ extern "C" {
 #endif
 
 enum {
-	pixPurgeBit = 0,
-	noNewDeviceBit = 1,
-	useTempMemBit = 2,
-	keepLocalBit = 3,
-	useDistantHdwrMemBit = 4,
-	useLocalHdwrMemBit = 5,
-	pixelsPurgeableBit = 6,
-	pixelsLockedBit = 7,
-	mapPixBit = 16,
-	newDepthBit = 17,
-	alignPixBit = 18,
-	newRowBytesBit = 19,
-	reallocPixBit = 20,
-	clipPixBit = 28,
-	stretchPixBit = 29,
-	ditherPixBit = 30,
-	gwFlagErrBit = 31
+  pixPurgeBit                   = 0,
+  noNewDeviceBit                = 1,
+  useTempMemBit                 = 2,
+  keepLocalBit                  = 3,
+  useDistantHdwrMemBit          = 4,
+  useLocalHdwrMemBit            = 5,
+  pixelsPurgeableBit            = 6,
+  pixelsLockedBit               = 7,
+  mapPixBit                     = 16,
+  newDepthBit                   = 17,
+  alignPixBit                   = 18,
+  newRowBytesBit                = 19,
+  reallocPixBit                 = 20,
+  clipPixBit                    = 28,
+  stretchPixBit                 = 29,
+  ditherPixBit                  = 30,
+  gwFlagErrBit                  = 31
 };
 
 enum {
-	pixPurge = 1L << pixPurgeBit,
-	noNewDevice = 1L << noNewDeviceBit,
-	useTempMem = 1L << useTempMemBit,
-	keepLocal = 1L << keepLocalBit,
-	useDistantHdwrMem = 1L << useDistantHdwrMemBit,
-	useLocalHdwrMem = 1L << useLocalHdwrMemBit,
-	pixelsPurgeable = 1L << pixelsPurgeableBit,
-	pixelsLocked = 1L << pixelsLockedBit,
-	kAllocDirectDrawSurface = 1L << 14,
-	mapPix = 1L << mapPixBit,
-	newDepth = 1L << newDepthBit,
-	alignPix = 1L << alignPixBit,
-	newRowBytes = 1L << newRowBytesBit,
-	reallocPix = 1L << reallocPixBit,
-	clipPix = 1L << clipPixBit,
-	stretchPix = 1L << stretchPixBit,
-	ditherPix = 1L << ditherPixBit,
-	gwFlagErr = 1L << gwFlagErrBit
+  pixPurge                      = 1L << pixPurgeBit,
+  noNewDevice                   = 1L << noNewDeviceBit,
+  useTempMem                    = 1L << useTempMemBit,
+  keepLocal                     = 1L << keepLocalBit,
+  useDistantHdwrMem             = 1L << useDistantHdwrMemBit,
+  useLocalHdwrMem               = 1L << useLocalHdwrMemBit,
+  pixelsPurgeable               = 1L << pixelsPurgeableBit,
+  pixelsLocked                  = 1L << pixelsLockedBit,
+  kAllocDirectDrawSurface       = 1L << 14,
+  mapPix                        = 1L << mapPixBit,
+  newDepth                      = 1L << newDepthBit,
+  alignPix                      = 1L << alignPixBit,
+  newRowBytes                   = 1L << newRowBytesBit,
+  reallocPix                    = 1L << reallocPixBit,
+  clipPix                       = 1L << clipPixBit,
+  stretchPix                    = 1L << stretchPixBit,
+  ditherPix                     = 1L << ditherPixBit,
+  gwFlagErr                     = 1L << gwFlagErrBit
 };
 
-typedef unsigned long GWorldFlags;
+typedef unsigned long                   GWorldFlags;
 /* Type definition of a GWorldPtr */
-typedef CGrafPtr GWorldPtr;
+typedef CGrafPtr                        GWorldPtr;
 /*
  *  NewGWorld()
  *  
@@ -90,25 +93,26 @@ typedef CGrafPtr GWorldPtr;
  */
 EXTERN_API( QDErr )
 NewGWorld(
-    GWorldPtr * offscreenGWorld,
-    short       PixelDepth,
-    const Rect *boundsRect,
-    CTabHandle  cTable, /* can be NULL */
-    GDHandle    aGDevice, /* can be NULL */
-    GWorldFlags flags ) FOURWORDINLINE( 0x203C, 0x0016, 0x0000, 0xAB1D );
+  GWorldPtr *   offscreenGWorld,
+  short         PixelDepth,
+  const Rect *  boundsRect,
+  CTabHandle    cTable,                /* can be NULL */
+  GDHandle      aGDevice,              /* can be NULL */
+  GWorldFlags   flags)                                        FOURWORDINLINE(0x203C, 0x0016, 0x0000, 0xAB1D);
+
 
 /* GDevice attribute bits for Carbon and QuickTime 3.0*/
 enum {
-	deviceIsIndirect = ( 1L << 0 ),
-	deviceNeedsLock = ( 1L << 1 ),
-	deviceIsStatic = ( 1L << 2 ),
-	deviceIsExternalBuffer = ( 1L << 3 ),
-	deviceIsDDSurface = ( 1L << 4 ),
-	deviceIsDCISurface = ( 1L << 5 ),
-	deviceIsGDISurface = ( 1L << 6 ),
-	deviceIsAScreen = ( 1L << 7 ),
-	deviceIsOverlaySurface = ( 1L << 8 ),
-	pixMapIsDoubleBuffered = ( 1L << 9 )
+  deviceIsIndirect              = (1L << 0),
+  deviceNeedsLock               = (1L << 1),
+  deviceIsStatic                = (1L << 2),
+  deviceIsExternalBuffer        = (1L << 3),
+  deviceIsDDSurface             = (1L << 4),
+  deviceIsDCISurface            = (1L << 5),
+  deviceIsGDISurface            = (1L << 6),
+  deviceIsAScreen               = (1L << 7),
+  deviceIsOverlaySurface        = (1L << 8),
+  pixMapIsDoubleBuffered        = (1L << 9)
 };
 
 #if TARGET_OS_WIN32
@@ -122,7 +126,8 @@ enum {
  *    Mac OS X:         not available
  */
 EXTERN_API( void * )
-GetGDeviceSurface( GDHandle gdh );
+GetGDeviceSurface(GDHandle gdh);
+
 
 /*
  *  GetGDeviceAttributes()
@@ -133,7 +138,8 @@ GetGDeviceSurface( GDHandle gdh );
  *    Mac OS X:         not available
  */
 EXTERN_API( unsigned long )
-GetGDeviceAttributes( GDHandle gdh );
+GetGDeviceAttributes(GDHandle gdh);
+
 
 /* to allocate non-mac-rgb GWorlds use QTNewGWorld (ImageCompression.h) */
 /*
@@ -146,16 +152,17 @@ GetGDeviceAttributes( GDHandle gdh );
  */
 EXTERN_API( QDErr )
 NewGWorldFromHBITMAP(
-    GWorldPtr * offscreenGWorld,
-    CTabHandle  cTable,
-    GDHandle    aGDevice,
-    GWorldFlags flags,
-    void *      newHBITMAP,
-    void *      newHDC );
+  GWorldPtr *   offscreenGWorld,
+  CTabHandle    cTable,
+  GDHandle      aGDevice,
+  GWorldFlags   flags,
+  void *        newHBITMAP,
+  void *        newHDC);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* TARGET_OS_WIN32 */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* TARGET_OS_WIN32 */
 
 /*
  *  NewGWorldFromPtr()
@@ -167,14 +174,15 @@ NewGWorldFromHBITMAP(
  */
 EXTERN_API( QDErr )
 NewGWorldFromPtr(
-    GWorldPtr *   offscreenGWorld,
-    unsigned long PixelFormat,
-    const Rect *  boundsRect,
-    CTabHandle    cTable, /* can be NULL */
-    GDHandle      aGDevice, /* can be NULL */
-    GWorldFlags   flags,
-    Ptr           newBuffer,
-    long          rowBytes );
+  GWorldPtr *     offscreenGWorld,
+  unsigned long   PixelFormat,
+  const Rect *    boundsRect,
+  CTabHandle      cTable,                /* can be NULL */
+  GDHandle        aGDevice,              /* can be NULL */
+  GWorldFlags     flags,
+  Ptr             newBuffer,
+  long            rowBytes);
+
 
 /*
  *  LockPixels()
@@ -185,7 +193,8 @@ NewGWorldFromPtr(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-LockPixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x0001, 0xAB1D );
+LockPixels(PixMapHandle pm)                                   FOURWORDINLINE(0x203C, 0x0004, 0x0001, 0xAB1D);
+
 
 /*
  *  UnlockPixels()
@@ -196,7 +205,8 @@ LockPixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x0001, 0xAB1D );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-UnlockPixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x0002, 0xAB1D );
+UnlockPixels(PixMapHandle pm)                                 FOURWORDINLINE(0x203C, 0x0004, 0x0002, 0xAB1D);
+
 
 /*
  *  UpdateGWorld()
@@ -208,12 +218,13 @@ UnlockPixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x0002, 0xAB1D )
  */
 EXTERN_API( GWorldFlags )
 UpdateGWorld(
-    GWorldPtr * offscreenGWorld,
-    short       pixelDepth,
-    const Rect *boundsRect,
-    CTabHandle  cTable,
-    GDHandle    aGDevice, /* can be NULL */
-    GWorldFlags flags ) FOURWORDINLINE( 0x203C, 0x0016, 0x0003, 0xAB1D );
+  GWorldPtr *   offscreenGWorld,
+  short         pixelDepth,
+  const Rect *  boundsRect,
+  CTabHandle    cTable,
+  GDHandle      aGDevice,              /* can be NULL */
+  GWorldFlags   flags)                                        FOURWORDINLINE(0x203C, 0x0016, 0x0003, 0xAB1D);
+
 
 /*
  *  DisposeGWorld()
@@ -224,7 +235,8 @@ UpdateGWorld(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisposeGWorld( GWorldPtr offscreenGWorld ) FOURWORDINLINE( 0x203C, 0x0004, 0x0004, 0xAB1D );
+DisposeGWorld(GWorldPtr offscreenGWorld)                      FOURWORDINLINE(0x203C, 0x0004, 0x0004, 0xAB1D);
+
 
 /*
  *  GetGWorld()
@@ -236,8 +248,9 @@ DisposeGWorld( GWorldPtr offscreenGWorld ) FOURWORDINLINE( 0x203C, 0x0004, 0x000
  */
 EXTERN_API( void )
 GetGWorld(
-    CGrafPtr *port,
-    GDHandle *gdh ) FOURWORDINLINE( 0x203C, 0x0008, 0x0005, 0xAB1D );
+  CGrafPtr *  port,
+  GDHandle *  gdh)                                            FOURWORDINLINE(0x203C, 0x0008, 0x0005, 0xAB1D);
+
 
 /*
  *  SetGWorld()
@@ -249,8 +262,9 @@ GetGWorld(
  */
 EXTERN_API( void )
 SetGWorld(
-    CGrafPtr port,
-    GDHandle gdh ) FOURWORDINLINE( 0x203C, 0x0008, 0x0006, 0xAB1D );
+  CGrafPtr   port,
+  GDHandle   gdh)                                             FOURWORDINLINE(0x203C, 0x0008, 0x0006, 0xAB1D);
+
 
 /*
  *  CTabChanged()
@@ -261,7 +275,8 @@ SetGWorld(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-CTabChanged( CTabHandle ctab ) FOURWORDINLINE( 0x203C, 0x0004, 0x0007, 0xAB1D );
+CTabChanged(CTabHandle ctab)                                  FOURWORDINLINE(0x203C, 0x0004, 0x0007, 0xAB1D);
+
 
 /*
  *  PixPatChanged()
@@ -272,7 +287,8 @@ CTabChanged( CTabHandle ctab ) FOURWORDINLINE( 0x203C, 0x0004, 0x0007, 0xAB1D );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-PixPatChanged( PixPatHandle ppat ) FOURWORDINLINE( 0x203C, 0x0004, 0x0008, 0xAB1D );
+PixPatChanged(PixPatHandle ppat)                              FOURWORDINLINE(0x203C, 0x0004, 0x0008, 0xAB1D);
+
 
 /*
  *  PortChanged()
@@ -283,7 +299,8 @@ PixPatChanged( PixPatHandle ppat ) FOURWORDINLINE( 0x203C, 0x0004, 0x0008, 0xAB1
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-PortChanged( GrafPtr port ) FOURWORDINLINE( 0x203C, 0x0004, 0x0009, 0xAB1D );
+PortChanged(GrafPtr port)                                     FOURWORDINLINE(0x203C, 0x0004, 0x0009, 0xAB1D);
+
 
 /*
  *  GDeviceChanged()
@@ -294,7 +311,8 @@ PortChanged( GrafPtr port ) FOURWORDINLINE( 0x203C, 0x0004, 0x0009, 0xAB1D );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-GDeviceChanged( GDHandle gdh ) FOURWORDINLINE( 0x203C, 0x0004, 0x000A, 0xAB1D );
+GDeviceChanged(GDHandle gdh)                                  FOURWORDINLINE(0x203C, 0x0004, 0x000A, 0xAB1D);
+
 
 /*
  *  AllowPurgePixels()
@@ -305,7 +323,8 @@ GDeviceChanged( GDHandle gdh ) FOURWORDINLINE( 0x203C, 0x0004, 0x000A, 0xAB1D );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-AllowPurgePixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000B, 0xAB1D );
+AllowPurgePixels(PixMapHandle pm)                             FOURWORDINLINE(0x203C, 0x0004, 0x000B, 0xAB1D);
+
 
 /*
  *  NoPurgePixels()
@@ -316,7 +335,8 @@ AllowPurgePixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000B, 0xAB
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-NoPurgePixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000C, 0xAB1D );
+NoPurgePixels(PixMapHandle pm)                                FOURWORDINLINE(0x203C, 0x0004, 0x000C, 0xAB1D);
+
 
 /*
  *  GetPixelsState()
@@ -327,7 +347,8 @@ NoPurgePixels( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000C, 0xAB1D 
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( GWorldFlags )
-GetPixelsState( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000D, 0xAB1D );
+GetPixelsState(PixMapHandle pm)                               FOURWORDINLINE(0x203C, 0x0004, 0x000D, 0xAB1D);
+
 
 /*
  *  SetPixelsState()
@@ -339,8 +360,9 @@ GetPixelsState( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000D, 0xAB1D
  */
 EXTERN_API( void )
 SetPixelsState(
-    PixMapHandle pm,
-    GWorldFlags  state ) FOURWORDINLINE( 0x203C, 0x0008, 0x000E, 0xAB1D );
+  PixMapHandle   pm,
+  GWorldFlags    state)                                       FOURWORDINLINE(0x203C, 0x0008, 0x000E, 0xAB1D);
+
 
 /*
  *  GetPixBaseAddr()
@@ -351,7 +373,8 @@ SetPixelsState(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Ptr )
-GetPixBaseAddr( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000F, 0xAB1D );
+GetPixBaseAddr(PixMapHandle pm)                               FOURWORDINLINE(0x203C, 0x0004, 0x000F, 0xAB1D);
+
 
 /*
  *  GetPixRowBytes()
@@ -362,7 +385,8 @@ GetPixBaseAddr( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x000F, 0xAB1D
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-GetPixRowBytes( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x0018, 0xAB1D );
+GetPixRowBytes(PixMapHandle pm)                               FOURWORDINLINE(0x203C, 0x0004, 0x0018, 0xAB1D);
+
 
 /*
  *  NewScreenBuffer()
@@ -374,10 +398,11 @@ GetPixRowBytes( PixMapHandle pm ) FOURWORDINLINE( 0x203C, 0x0004, 0x0018, 0xAB1D
  */
 EXTERN_API( QDErr )
 NewScreenBuffer(
-    const Rect *  globalRect,
-    Boolean       purgeable,
-    GDHandle *    gdh,
-    PixMapHandle *offscreenPixMap ) FOURWORDINLINE( 0x203C, 0x000E, 0x0010, 0xAB1D );
+  const Rect *    globalRect,
+  Boolean         purgeable,
+  GDHandle *      gdh,
+  PixMapHandle *  offscreenPixMap)                            FOURWORDINLINE(0x203C, 0x000E, 0x0010, 0xAB1D);
+
 
 /*
  *  DisposeScreenBuffer()
@@ -388,7 +413,8 @@ NewScreenBuffer(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisposeScreenBuffer( PixMapHandle offscreenPixMap ) FOURWORDINLINE( 0x203C, 0x0004, 0x0011, 0xAB1D );
+DisposeScreenBuffer(PixMapHandle offscreenPixMap)             FOURWORDINLINE(0x203C, 0x0004, 0x0011, 0xAB1D);
+
 
 /*
  *  GetGWorldDevice()
@@ -399,7 +425,8 @@ DisposeScreenBuffer( PixMapHandle offscreenPixMap ) FOURWORDINLINE( 0x203C, 0x00
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( GDHandle )
-GetGWorldDevice( GWorldPtr offscreenGWorld ) FOURWORDINLINE( 0x203C, 0x0004, 0x0012, 0xAB1D );
+GetGWorldDevice(GWorldPtr offscreenGWorld)                    FOURWORDINLINE(0x203C, 0x0004, 0x0012, 0xAB1D);
+
 
 /*
  *  QDDone()
@@ -410,7 +437,8 @@ GetGWorldDevice( GWorldPtr offscreenGWorld ) FOURWORDINLINE( 0x203C, 0x0004, 0x0
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-QDDone( GrafPtr port ) FOURWORDINLINE( 0x203C, 0x0004, 0x0013, 0xAB1D );
+QDDone(GrafPtr port)                                          FOURWORDINLINE(0x203C, 0x0004, 0x0013, 0xAB1D);
+
 
 /*
  *  OffscreenVersion()
@@ -421,7 +449,8 @@ QDDone( GrafPtr port ) FOURWORDINLINE( 0x203C, 0x0004, 0x0013, 0xAB1D );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-OffscreenVersion( void ) TWOWORDINLINE( 0x7014, 0xAB1D );
+OffscreenVersion(void)                                        TWOWORDINLINE(0x7014, 0xAB1D);
+
 
 /*
  *  NewTempScreenBuffer()
@@ -433,10 +462,11 @@ OffscreenVersion( void ) TWOWORDINLINE( 0x7014, 0xAB1D );
  */
 EXTERN_API( QDErr )
 NewTempScreenBuffer(
-    const Rect *  globalRect,
-    Boolean       purgeable,
-    GDHandle *    gdh,
-    PixMapHandle *offscreenPixMap ) FOURWORDINLINE( 0x203C, 0x000E, 0x0015, 0xAB1D );
+  const Rect *    globalRect,
+  Boolean         purgeable,
+  GDHandle *      gdh,
+  PixMapHandle *  offscreenPixMap)                            FOURWORDINLINE(0x203C, 0x000E, 0x0015, 0xAB1D);
+
 
 /*
  *  PixMap32Bit()
@@ -447,7 +477,8 @@ NewTempScreenBuffer(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-PixMap32Bit( PixMapHandle pmHandle ) FOURWORDINLINE( 0x203C, 0x0004, 0x0016, 0xAB1D );
+PixMap32Bit(PixMapHandle pmHandle)                            FOURWORDINLINE(0x203C, 0x0004, 0x0016, 0xAB1D);
+
 
 /*
  *  GetGWorldPixMap()
@@ -458,7 +489,9 @@ PixMap32Bit( PixMapHandle pmHandle ) FOURWORDINLINE( 0x203C, 0x0004, 0x0016, 0xA
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( PixMapHandle )
-GetGWorldPixMap( GWorldPtr offscreenGWorld ) FOURWORDINLINE( 0x203C, 0x0004, 0x0017, 0xAB1D );
+GetGWorldPixMap(GWorldPtr offscreenGWorld)                    FOURWORDINLINE(0x203C, 0x0004, 0x0017, 0xAB1D);
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -471,3 +504,4 @@ GetGWorldPixMap( GWorldPtr offscreenGWorld ) FOURWORDINLINE( 0x203C, 0x0004, 0x0
 #endif
 
 #endif /* __QDOFFSCREEN__ */
+

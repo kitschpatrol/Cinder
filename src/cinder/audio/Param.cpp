@@ -29,8 +29,7 @@
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 void rampLinear( float *array, size_t count, double t, double tIncr, float valueBegin, float valueEnd )
 {
@@ -60,13 +59,13 @@ void rampOutQuad( float *array, size_t count, double t, double tIncr, float valu
 }
 
 Event::Event( double timeBegin, double timeEnd, float valueBegin, float valueEnd, bool copyValueOnBegin, const RampFn &rampFn )
-    : mTimeBegin( timeBegin ), mTimeEnd( timeEnd ), mDuration( timeEnd - timeBegin ), mCopyValueOnBegin( copyValueOnBegin ),
-      mValueBegin( valueBegin ), mValueEnd( valueEnd ), mRampFn( rampFn ), mIsComplete( false ), mIsCanceled( false ), mTimeCancel( -1 )
+	: mTimeBegin( timeBegin ), mTimeEnd( timeEnd ), mDuration( timeEnd - timeBegin ), mCopyValueOnBegin( copyValueOnBegin ),
+		mValueBegin( valueBegin ), mValueEnd( valueEnd ), mRampFn( rampFn ), mIsComplete( false ), mIsCanceled( false ), mTimeCancel( -1 )
 {
 }
 
 Param::Param( Node *parentNode, float initialValue )
-    : mParentNode( parentNode ), mValue( initialValue ), mIsVaryingThisBlock( false )
+	: mParentNode( parentNode ), mValue( initialValue ), mIsVaryingThisBlock( false )
 {
 }
 
@@ -81,13 +80,13 @@ EventRef Param::applyRamp( float valueEnd, double rampSeconds, const Options &op
 {
 	initInternalBuffer();
 
-	auto   ctx = getContext();
+	auto ctx = getContext();
 	double timeBegin = ( options.getBeginTime() >= 0 ? options.getBeginTime() : ctx->getNumProcessedSeconds() + options.getDelay() );
 	double timeEnd = timeBegin + rampSeconds;
 
 	EventRef event( new Event( timeBegin, timeEnd, mValue, valueEnd, true, options.getRampFn() ) );
 
-	if( !options.getLabel().empty() )
+	if( ! options.getLabel().empty() )
 		event->mLabel = options.getLabel();
 
 	lock_guard<mutex> lock( ctx->getMutex() );
@@ -104,13 +103,13 @@ EventRef Param::applyRamp( float valueBegin, float valueEnd, double rampSeconds,
 {
 	initInternalBuffer();
 
-	auto   ctx = getContext();
+	auto ctx = getContext();
 	double timeBegin = ( options.getBeginTime() >= 0 ? options.getBeginTime() : ctx->getNumProcessedSeconds() + options.getDelay() );
 	double timeEnd = timeBegin + rampSeconds;
 
 	EventRef event( new Event( timeBegin, timeEnd, valueBegin, valueEnd, false, options.getRampFn() ) );
 
-	if( !options.getLabel().empty() )
+	if( ! options.getLabel().empty() )
 		event->mLabel = options.getLabel();
 
 	lock_guard<mutex> lock( ctx->getMutex() );
@@ -127,14 +126,14 @@ EventRef Param::appendRamp( float valueEnd, double rampSeconds, const Options &o
 {
 	initInternalBuffer();
 
-	auto   ctx = getContext();
-	auto   endTimeAndValue = findEndTimeAndValue();
+	auto ctx = getContext();
+	auto endTimeAndValue = findEndTimeAndValue();
 	double timeBegin = ( options.getBeginTime() >= 0 ? options.getBeginTime() : endTimeAndValue.first + options.getDelay() );
 	double timeEnd = timeBegin + rampSeconds;
 
 	EventRef event( new Event( timeBegin, timeEnd, endTimeAndValue.second, valueEnd, true, options.getRampFn() ) );
 
-	if( !options.getLabel().empty() )
+	if( ! options.getLabel().empty() )
 		event->mLabel = options.getLabel();
 
 	lock_guard<mutex> lock( ctx->getMutex() );
@@ -146,14 +145,14 @@ EventRef Param::appendRamp( float valueBegin, float valueEnd, double rampSeconds
 {
 	initInternalBuffer();
 
-	auto   ctx = getContext();
-	auto   endTimeAndValue = findEndTimeAndValue();
+	auto ctx = getContext();
+	auto endTimeAndValue = findEndTimeAndValue();
 	double timeBegin = ( options.getBeginTime() >= 0 ? options.getBeginTime() : endTimeAndValue.first + options.getDelay() );
 	double timeEnd = timeBegin + rampSeconds;
 
 	EventRef event( new Event( timeBegin, timeEnd, valueBegin, valueEnd, false, options.getRampFn() ) );
 
-	if( !options.getLabel().empty() )
+	if( ! options.getLabel().empty() )
 		event->mLabel = options.getLabel();
 
 	lock_guard<mutex> lock( ctx->getMutex() );
@@ -163,7 +162,7 @@ EventRef Param::appendRamp( float valueBegin, float valueEnd, double rampSeconds
 
 void Param::setProcessor( const NodeRef &node )
 {
-	if( !node )
+	if( ! node )
 		return;
 
 	initInternalBuffer();
@@ -186,6 +185,7 @@ void Param::reset()
 	resetImpl();
 }
 
+
 size_t Param::getNumEvents() const
 {
 	lock_guard<mutex> lock( getContext()->getMutex() );
@@ -194,7 +194,7 @@ size_t Param::getNumEvents() const
 
 float Param::findDuration() const
 {
-	auto              ctx = getContext();
+	auto ctx = getContext();
 	lock_guard<mutex> lock( ctx->getMutex() );
 
 	if( mEvents.empty() )
@@ -207,7 +207,7 @@ float Param::findDuration() const
 
 pair<double, float> Param::findEndTimeAndValue() const
 {
-	auto              ctx = getContext();
+	auto ctx = getContext();
 	lock_guard<mutex> lock( ctx->getMutex() );
 
 	if( mEvents.empty() )
@@ -218,9 +218,9 @@ pair<double, float> Param::findEndTimeAndValue() const
 	}
 }
 
-const float *Param::getValueArray()
+const float* Param::getValueArray()
 {
-	if( !mIsVaryingThisBlock ) {
+	if( ! mIsVaryingThisBlock ) {
 		initInternalBuffer();
 		dsp::fill( mValue, mInternalBuffer.getData(), mInternalBuffer.getSize() );
 	}
@@ -246,7 +246,7 @@ bool Param::eval( double timeBegin, float *array, size_t arrayLength, size_t sam
 {
 	const double samplePeriod = 1.0 / (double)sampleRate;
 	const double secondsPerBlock = (double)arrayLength * samplePeriod;
-	size_t       samplesWritten = 0;
+	size_t samplesWritten = 0;
 
 	for( auto eventIt = mEvents.begin(); eventIt != mEvents.end(); /* */ ) {
 		Event &event = **eventIt;
@@ -255,9 +255,9 @@ bool Param::eval( double timeBegin, float *array, size_t arrayLength, size_t sam
 		const bool cancelled = event.mIsCanceled;
 		if( event.mTimeEnd <= timeBegin || cancelled ) {
 			// if we skipped over the last event, record its end value before erasing.
-			if( mEvents.size() == 1 && !cancelled )
+			if( mEvents.size() == 1 && ! cancelled )
 				mValue = event.mValueEnd;
-
+			
 			eventIt = mEvents.erase( eventIt );
 			continue;
 		}
@@ -319,7 +319,7 @@ bool Param::eval( double timeBegin, float *array, size_t arrayLength, size_t sam
 			++eventIt;
 	}
 
-	if( !samplesWritten )
+	if( ! samplesWritten )
 		return false;
 	else if( samplesWritten < arrayLength )
 		dsp::fill( mValue, array + (size_t)samplesWritten, size_t( arrayLength - samplesWritten ) );
@@ -333,7 +333,7 @@ bool Param::eval( double timeBegin, float *array, size_t arrayLength, size_t sam
 
 void Param::resetImpl()
 {
-	if( !mEvents.empty() ) {
+	if( ! mEvents.empty() ) {
 		for( auto &event : mEvents )
 			event->cancel();
 
@@ -370,5 +370,5 @@ ContextRef Param::getContext() const
 {
 	return mParentNode->getContext();
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

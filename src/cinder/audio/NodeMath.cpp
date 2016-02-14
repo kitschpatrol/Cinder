@@ -22,18 +22,17 @@
  */
 
 #include "cinder/audio/NodeMath.h"
-#include "cinder/CinderMath.h"
 #include "cinder/audio/dsp/Dsp.h"
+#include "cinder/CinderMath.h"
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - AddNode
 // ----------------------------------------------------------------------------------------------------
 
 MathNode::MathNode( float initialValue, const Format &format )
-    : Node( format ), mParam( this, initialValue )
+	: Node( format ), mParam( this, initialValue )
 {
 }
 
@@ -84,5 +83,5 @@ void DivideNode::process( Buffer *buffer )
 	else
 		dsp::divide( buffer->getData(), mParam.getValue(), buffer->getData(), buffer->getSize() );
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

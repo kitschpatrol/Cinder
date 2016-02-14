@@ -23,21 +23,19 @@
 
 #include "cinder/audio/dsp/Fft.h"
 #include "cinder/CinderAssert.h"
-#include "cinder/CinderMath.h"
 #include "cinder/audio/Exception.h"
+#include "cinder/CinderMath.h"
 
 #if defined( CINDER_AUDIO_FFT_OOURA )
-#include "cinder/audio/dsp/ooura/fftsg.h"
+	#include "cinder/audio/dsp/ooura/fftsg.h"
 #endif
 
-namespace cinder {
-namespace audio {
-namespace dsp {
+namespace cinder { namespace audio { namespace dsp {
 
 Fft::Fft( size_t fftSize )
-    : mSize( fftSize )
+: mSize( fftSize )
 {
-	if( mSize < 2 || !isPowerOf2( mSize ) )
+	if( mSize < 2 || ! isPowerOf2( mSize ) )
 		throw AudioExc( "invalid fft size" );
 
 	mSizeOverTwo = mSize / 2;
@@ -155,6 +153,5 @@ void Fft::inverse( const BufferSpectral *spectral, Buffer *waveform )
 }
 
 #endif // defined( CINDER_AUDIO_FFT_OOURA )
-}
-}
-} // namespace cinder::audio::dsp
+
+} } } // namespace cinder::audio::dsp

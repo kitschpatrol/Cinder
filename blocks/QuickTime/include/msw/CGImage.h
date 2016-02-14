@@ -28,6 +28,9 @@
 #include <CGDataProvider.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,31 +44,32 @@ extern "C" {
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-#if defined( __fourbyteints__ ) && !__fourbyteints__
-#define __CGIMAGE__RESTORE_TWOBYTEINTS
-#pragma fourbyteints on
-#endif
-#pragma enumsalwaysint on
+    #if defined(__fourbyteints__) && !__fourbyteints__ 
+        #define __CGIMAGE__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints on
+    #endif
+    #pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =int
+    #pragma option enum=int
 #elif PRAGMA_ENUM_PACK
-#if __option( pack_enums )
-#define __CGIMAGE__RESTORE_PACKED_ENUMS
-#pragma options( !pack_enums )
-#endif
+    #if __option(pack_enums)
+        #define __CGIMAGE__RESTORE_PACKED_ENUMS
+        #pragma options(!pack_enums)
+    #endif
 #endif
 
-typedef struct CGImage *CGImageRef;
+typedef struct CGImage*                 CGImageRef;
 enum CGImageAlphaInfo {
-	kCGImageAlphaNone = 0,
-	kCGImageAlphaPremultipliedLast = 1, /* For example, premultiplied RGBA */
-	kCGImageAlphaPremultipliedFirst = 2, /* For example, premultiplied ARGB */
-	kCGImageAlphaLast = 3, /* For example, non-premultiplied RGBA */
-	kCGImageAlphaFirst = 4, /* For example, non-premultiplied ARGB */
-	kCGImageAlphaNoneSkipLast = 5, /* Equivalent to kCGImageAlphaNone. */
-	kCGImageAlphaNoneSkipFirst = 6
+  kCGImageAlphaNone             = 0,
+  kCGImageAlphaPremultipliedLast = 1,   /* For example, premultiplied RGBA */
+  kCGImageAlphaPremultipliedFirst = 2,  /* For example, premultiplied ARGB */
+  kCGImageAlphaLast             = 3,    /* For example, non-premultiplied RGBA */
+  kCGImageAlphaFirst            = 4,    /* For example, non-premultiplied ARGB */
+  kCGImageAlphaNoneSkipLast     = 5,    /* Equivalent to kCGImageAlphaNone. */
+  kCGImageAlphaNoneSkipFirst    = 6
 };
 typedef enum CGImageAlphaInfo CGImageAlphaInfo;
+
 
 /* Create an image. */
 /*
@@ -78,17 +82,18 @@ typedef enum CGImageAlphaInfo CGImageAlphaInfo;
  */
 EXTERN_API_C( CGImageRef )
 CGImageCreate(
-    size_t                 width,
-    size_t                 height,
-    size_t                 bitsPerComponent,
-    size_t                 bitsPerPixel,
-    size_t                 bytesPerRow,
-    CGColorSpaceRef        colorspace,
-    CGImageAlphaInfo       alphaInfo,
-    CGDataProviderRef      provider,
-    const float            decode[],
-    int                    shouldInterpolate,
-    CGColorRenderingIntent intent );
+  size_t                   width,
+  size_t                   height,
+  size_t                   bitsPerComponent,
+  size_t                   bitsPerPixel,
+  size_t                   bytesPerRow,
+  CGColorSpaceRef          colorspace,
+  CGImageAlphaInfo         alphaInfo,
+  CGDataProviderRef        provider,
+  const float              decode[],
+  int                      shouldInterpolate,
+  CGColorRenderingIntent   intent);
+
 
 /* Create an image mask. */
 /*
@@ -101,14 +106,15 @@ CGImageCreate(
  */
 EXTERN_API_C( CGImageRef )
 CGImageMaskCreate(
-    size_t            width,
-    size_t            height,
-    size_t            bitsPerComponent,
-    size_t            bitsPerPixel,
-    size_t            bytesPerRow,
-    CGDataProviderRef provider,
-    const float       decode[],
-    int               shouldInterpolate );
+  size_t              width,
+  size_t              height,
+  size_t              bitsPerComponent,
+  size_t              bitsPerPixel,
+  size_t              bytesPerRow,
+  CGDataProviderRef   provider,
+  const float         decode[],
+  int                 shouldInterpolate);
+
 
 /* Create an image from `source', a data provider of JPEG-encoded data. */
 /*
@@ -121,10 +127,11 @@ CGImageMaskCreate(
  */
 EXTERN_API_C( CGImageRef )
 CGImageCreateWithJPEGDataProvider(
-    CGDataProviderRef      source,
-    const float            decode[],
-    int                    shouldInterpolate,
-    CGColorRenderingIntent intent );
+  CGDataProviderRef        source,
+  const float              decode[],
+  int                      shouldInterpolate,
+  CGColorRenderingIntent   intent);
+
 
 /* Increment the retain count of `image' and return it.  All images are
  * created with an initial retain count of 1. */
@@ -137,7 +144,8 @@ CGImageCreateWithJPEGDataProvider(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGImageRef )
-CGImageRetain( CGImageRef image );
+CGImageRetain(CGImageRef image);
+
 
 /* Decrement the retain count of `image'.  If the retain count reaches 0,
  * then release it and any associated resources. */
@@ -150,7 +158,8 @@ CGImageRetain( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGImageRelease( CGImageRef image );
+CGImageRelease(CGImageRef image);
+
 
 /* Return 1 if `image' is an image mask, 0 otherwise. */
 /*
@@ -162,7 +171,8 @@ CGImageRelease( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( int )
-CGImageIsMask( CGImageRef image );
+CGImageIsMask(CGImageRef image);
+
 
 /* Return the width of `image'. */
 /*
@@ -174,7 +184,8 @@ CGImageIsMask( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGImageGetWidth( CGImageRef image );
+CGImageGetWidth(CGImageRef image);
+
 
 /* Return the height of `image'. */
 /*
@@ -186,7 +197,8 @@ CGImageGetWidth( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGImageGetHeight( CGImageRef image );
+CGImageGetHeight(CGImageRef image);
+
 
 /* Return the number of bits/component of `image'. */
 /*
@@ -198,7 +210,8 @@ CGImageGetHeight( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGImageGetBitsPerComponent( CGImageRef image );
+CGImageGetBitsPerComponent(CGImageRef image);
+
 
 /* Return the number of bits/pixel of `image'. */
 /*
@@ -210,7 +223,8 @@ CGImageGetBitsPerComponent( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGImageGetBitsPerPixel( CGImageRef image );
+CGImageGetBitsPerPixel(CGImageRef image);
+
 
 /* Return the number of bytes/row of `image'. */
 /*
@@ -222,7 +236,8 @@ CGImageGetBitsPerPixel( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGImageGetBytesPerRow( CGImageRef image );
+CGImageGetBytesPerRow(CGImageRef image);
+
 
 /* Return the colorspace of `image', or NULL if `image' is an image
  * mask. */
@@ -235,7 +250,8 @@ CGImageGetBytesPerRow( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGColorSpaceRef )
-CGImageGetColorSpace( CGImageRef image );
+CGImageGetColorSpace(CGImageRef image);
+
 
 /* Return the alpha info of `image'. */
 /*
@@ -247,7 +263,8 @@ CGImageGetColorSpace( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGImageAlphaInfo )
-CGImageGetAlphaInfo( CGImageRef image );
+CGImageGetAlphaInfo(CGImageRef image);
+
 
 /*Return the data provider of `image'. */
 /*
@@ -259,7 +276,8 @@ CGImageGetAlphaInfo( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDataProviderRef )
-CGImageGetDataProvider( CGImageRef image );
+CGImageGetDataProvider(CGImageRef image);
+
 
 /* Return the decode array of `image'. */
 /*
@@ -271,7 +289,8 @@ CGImageGetDataProvider( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( const float * )
-CGImageGetDecode( CGImageRef image );
+CGImageGetDecode(CGImageRef image);
+
 
 /* Return the interpolation parameter of `image'. */
 /*
@@ -283,7 +302,8 @@ CGImageGetDecode( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( int )
-CGImageGetShouldInterpolate( CGImageRef image );
+CGImageGetShouldInterpolate(CGImageRef image);
+
 
 /* Return the rendering intent of `image'. */
 /*
@@ -295,17 +315,19 @@ CGImageGetShouldInterpolate( CGImageRef image );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGColorRenderingIntent )
-CGImageGetRenderingIntent( CGImageRef image );
+CGImageGetRenderingIntent(CGImageRef image);
+
+
 
 #if PRAGMA_ENUM_ALWAYSINT
-#pragma enumsalwaysint reset
-#ifdef __CGIMAGE__RESTORE_TWOBYTEINTS
-#pragma fourbyteints off
-#endif
+    #pragma enumsalwaysint reset
+    #ifdef __CGIMAGE__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints off
+    #endif
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =reset
-#elif defined( __CGIMAGE__RESTORE_PACKED_ENUMS )
-#pragma options( pack_enums )
+    #pragma option enum=reset
+#elif defined(__CGIMAGE__RESTORE_PACKED_ENUMS)
+    #pragma options(pack_enums)
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -319,3 +341,4 @@ CGImageGetRenderingIntent( CGImageRef image );
 #endif
 
 #endif /* CGIMAGE_H_ */
+

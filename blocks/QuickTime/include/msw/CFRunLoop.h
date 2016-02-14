@@ -16,6 +16,8 @@
 #ifndef __CFRUNLOOP__
 #define __CFRUNLOOP__
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -26,8 +28,8 @@
 
 #include <CFBase.h>
 
-typedef struct __CFRunLoop *      CFRunLoopRef;
-typedef struct __CFRunLoopSource *CFRunLoopSourceRef;
+typedef struct __CFRunLoop*             CFRunLoopRef;
+typedef struct __CFRunLoopSource*       CFRunLoopSourceRef;
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -35,4 +37,6 @@ typedef struct __CFRunLoopSource *CFRunLoopSourceRef;
 #pragma import reset
 #endif
 
+
 #endif /* __CFRUNLOOP__ */
+

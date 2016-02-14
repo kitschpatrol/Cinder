@@ -1,10 +1,10 @@
 #pragma once
-#include "cinder/Camera.h"
 #include "cinder/Vector.h"
+#include "cinder/Camera.h"
 #include "cinder/app/App.h"
 
 class POV {
-  public:
+public:
 	POV() {}
 	POV( ci::app::App *aApp, ci::vec3 aEye, ci::vec3 aCenter );
 
@@ -15,18 +15,19 @@ class POV {
 	void setEye( ci::vec3 v );
 	void setCenter( ci::vec3 v );
 
-  public:
-	ci::CameraPersp mCam;
-	ci::vec3        mEye;
-	ci::vec3        mCenter;
-	ci::vec3        mEyeNormal;
+public:
+	ci::CameraPersp  mCam;
+	ci::vec3         mEye;
+	ci::vec3         mCenter;
+	ci::vec3         mEyeNormal;
 
-	float mAngle, mAngleDest;
-	float mDist, mDistDest;
+	float            mAngle, mAngleDest;
+	float            mDist, mDistDest;
 
-  private:
-	ci::app::App *mApp;
+private:
+	ci::app::App    *mApp;
 
-	float mAspectRatio;
-	float mFOV;
+	float            mAspectRatio;
+	float            mFOV;
+
 };

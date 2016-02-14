@@ -22,23 +22,22 @@
 */
 
 #include "cinder/gl/wrapper.h"
-#include "cinder/Log.h"
-#include "cinder/gl/Batch.h"
 #include "cinder/gl/Environment.h"
+#include "cinder/gl/Batch.h"
 #include "cinder/gl/scoped.h"
+#include "cinder/Log.h"
 
 #if defined( CINDER_MSW )
-#include "glload/wgl_all.h"
+	#include "glload/wgl_all.h"
 #elif defined( CINDER_MAC )
-#include <OpenGL/OpenGL.h>
+	#include <OpenGL/OpenGL.h>
 #endif
 
 using namespace std;
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
-Context *context()
+Context* context()
 {
 	return Context::getCurrent();
 }
@@ -47,8 +46,8 @@ void enableVerticalSync( bool enable )
 {
 #if defined( CINDER_MAC )
 	GLint sync = ( enable ) ? 1 : 0;
-	::CGLSetParameter(::CGLGetCurrentContext(), kCGLCPSwapInterval, &sync );
-#elif defined( CINDER_MSW ) && !defined( CINDER_GL_ANGLE )
+	::CGLSetParameter( ::CGLGetCurrentContext(), kCGLCPSwapInterval, &sync );
+#elif defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
 	GLint sync = ( enable ) ? 1 : 0;
 	if( wglext_EXT_swap_control )
 		::wglSwapIntervalEXT( sync );
@@ -59,9 +58,9 @@ bool isVerticalSyncEnabled()
 {
 #if defined( CINDER_MAC )
 	GLint enabled;
-	::CGLGetParameter(::CGLGetCurrentContext(), kCGLCPSwapInterval, &enabled );
+	::CGLGetParameter( ::CGLGetCurrentContext(), kCGLCPSwapInterval, &enabled );
 	return enabled > 0;
-#elif defined( CINDER_MSW ) && !defined( CINDER_GL_ANGLE )
+#elif defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
 	if( wglext_EXT_swap_control )
 		return ::wglGetSwapIntervalEXT() > 0;
 	else
@@ -79,20 +78,20 @@ GLenum getError()
 std::string getErrorString( GLenum err )
 {
 	switch( err ) {
-	case GL_NO_ERROR:
-		return "GL_NO_ERROR";
-	case GL_INVALID_ENUM:
-		return "GL_INVALID_ENUM";
-	case GL_INVALID_VALUE:
-		return "GL_INVALID_VALUE";
-	case GL_INVALID_OPERATION:
-		return "GL_INVALID_OPERATION";
-	case GL_INVALID_FRAMEBUFFER_OPERATION:
-		return "GL_INVALID_FRAMEBUFFER_OPERATION";
-	case GL_OUT_OF_MEMORY:
-		return "GL_OUT_OF_MEMORY";
-	default:
-		return "";
+		case GL_NO_ERROR:
+			return "GL_NO_ERROR";
+		case GL_INVALID_ENUM:
+			return "GL_INVALID_ENUM";
+		case GL_INVALID_VALUE:
+			return "GL_INVALID_VALUE";
+		case GL_INVALID_OPERATION:
+			return "GL_INVALID_OPERATION";
+		case GL_INVALID_FRAMEBUFFER_OPERATION:
+			return "GL_INVALID_FRAMEBUFFER_OPERATION";
+		case GL_OUT_OF_MEMORY:
+			return "GL_OUT_OF_MEMORY";
+		default:
+			return "";
 	}
 }
 
@@ -110,41 +109,41 @@ bool isExtensionAvailable( const std::string &extName )
 	return env()->isExtensionAvailable( extName );
 }
 
-std::pair<GLint, GLint> getVersion()
+std::pair<GLint,GLint> getVersion()
 {
-//hard-coded for now
+	//hard-coded for now
 #if defined( CINDER_GL_ES_2 )
 	return std::make_pair( (GLint)2, (GLint)0 );
 #elif defined( CINDER_GL_ES_3 )
 	return std::make_pair( (GLint)3, (GLint)0 );
 #else
-	static bool sInitialized = false;
-	static pair<GLint, GLint> sVersion;
-	if( !sInitialized ) {
+	static bool	sInitialized = false;
+	static pair<GLint,GLint> sVersion;
+	if( ! sInitialized ) {
 		// adapted from LoadOGL
-		const char *strVersion = reinterpret_cast<const char *>( glGetString( GL_VERSION ) );
-		GLint       major = 0, minor = 0;
+		const char *strVersion = reinterpret_cast<const char*>( glGetString( GL_VERSION ) );
+		GLint major = 0, minor = 0;
 		const char *strDotPos = NULL;
-		int         iLength = 0;
-		char        strWorkBuff[10];
+		int iLength = 0;
+		char strWorkBuff[10];
 
 		strDotPos = strchr( strVersion, '.' );
-		if( !strDotPos )
+		if( ! strDotPos )
 			return std::make_pair( 0, 0 );
 
-		iLength = (int)( (ptrdiff_t)strDotPos - (ptrdiff_t)strVersion );
-		strncpy( strWorkBuff, strVersion, iLength );
+		iLength = (int)((ptrdiff_t)strDotPos - (ptrdiff_t)strVersion);
+		strncpy(strWorkBuff, strVersion, iLength);
 		strWorkBuff[iLength] = '\0';
 
-		major = atoi( strWorkBuff );
+		major = atoi(strWorkBuff);
 		strDotPos = strchr( strVersion + iLength + 1, ' ' );
-		if( !strDotPos ) { // No extra data. Take the whole rest of the string.
+		if( ! strDotPos ) { // No extra data. Take the whole rest of the string.
 			strcpy( strWorkBuff, strVersion + iLength + 1 );
 		}
 		else {
 			// Copy only up until the space.
-			int iLengthMinor = (int)( (ptrdiff_t)strDotPos - (ptrdiff_t)strVersion );
-			iLengthMinor = iLengthMinor - ( iLength + 1 );
+			int iLengthMinor = (int)((ptrdiff_t)strDotPos - (ptrdiff_t)strVersion);
+			iLengthMinor = iLengthMinor - (iLength + 1);
 			strncpy( strWorkBuff, strVersion + iLength + 1, iLengthMinor );
 			strWorkBuff[iLengthMinor] = '\0';
 		}
@@ -160,12 +159,12 @@ std::pair<GLint, GLint> getVersion()
 
 std::string getVersionString()
 {
-	const GLubyte *s = glGetString( GL_VERSION );
+	const GLubyte* s = glGetString( GL_VERSION );
 
-	return std::string( reinterpret_cast<const char *>( s ) );
+	return std::string( reinterpret_cast<const char*>( s ) );
 }
 
-GlslProgRef &getStockShader( const class ShaderDef &shader )
+GlslProgRef& getStockShader( const class ShaderDef &shader )
 {
 	return context()->getStockShader( shader );
 }
@@ -183,10 +182,10 @@ void setDefaultShaderVars()
 	ctx->setDefaultShaderVars();
 }
 
-void clear( const ColorA &color, bool clearDepthBuffer )
+void clear( const ColorA& color, bool clearDepthBuffer )
 {
 	clearColor( color );
-	if( clearDepthBuffer ) {
+	if ( clearDepthBuffer ) {
 		ScopedDepthWrite depthWriteScp( GL_TRUE );
 		clear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	}
@@ -197,18 +196,18 @@ void clear( const ColorA &color, bool clearDepthBuffer )
 
 void clear( GLbitfield mask )
 {
-	glClear( mask );
+    glClear( mask );
 }
 
 void clearColor( const ColorA &color )
 {
-	glClearColor( color.r, color.g, color.b, color.a );
+    glClearColor( color.r, color.g, color.b, color.a );
 }
 
 void clearDepth( const double depth )
 {
-#if !defined( CINDER_GL_ES )
-	glClearDepth( depth );
+#if ! defined( CINDER_GL_ES )
+    glClearDepth( depth );
 #else
 	glClearDepthf( depth );
 #endif
@@ -216,33 +215,33 @@ void clearDepth( const double depth )
 
 void clearDepth( const float depth )
 {
-	glClearDepthf( depth );
+    glClearDepthf( depth );
 }
 
 void clearStencil( const int s )
 {
-	glClearStencil( s );
+    glClearStencil( s );
 }
 
 void colorMask( GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha )
 {
-	glColorMask( red, green, blue, alpha );
+    glColorMask( red, green, blue, alpha );
 }
 
 void depthMask( GLboolean flag )
 {
-	auto ctx = gl::context();
+    auto ctx = gl::context();
 	ctx->depthMask( flag );
 }
 
 void stencilFunc( GLenum func, GLint ref, GLuint mask )
 {
-	glStencilFunc( func, ref, mask );
+    glStencilFunc( func, ref, mask );
 }
 
 void stencilOp( GLenum fail, GLenum zfail, GLenum zpass )
 {
-	glStencilOp( fail, zfail, zpass );
+    glStencilOp( fail, zfail, zpass );
 }
 
 void stencilMask( GLuint mask )
@@ -332,7 +331,7 @@ void cullFace( GLenum face )
 	gl::context()->cullFace( face );
 }
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 void enableLogicOp( bool enable )
 {
 	gl::context()->setBoolState( GL_COLOR_LOGIC_OP, enable );
@@ -368,15 +367,15 @@ void disableDepthWrite()
 
 void enableStencilTest( bool enable )
 {
-	gl::enable( GL_STENCIL_TEST, enable );
+    gl::enable( GL_STENCIL_TEST, enable );
 }
 
 void disableStencilTest()
 {
-	gl::disable( GL_STENCIL_TEST );
+    gl::disable( GL_STENCIL_TEST );
 }
 
-void setMatrices( const ci::Camera &cam )
+void setMatrices( const ci::Camera& cam )
 {
 	auto ctx = context();
 	ctx->getViewMatrixStack().back() = cam.getViewMatrix();
@@ -468,19 +467,19 @@ void popMatrices()
 	ctx->getProjectionMatrixStack().pop_back();
 }
 
-void multModelMatrix( const ci::mat4 &mtx )
+void multModelMatrix( const ci::mat4& mtx )
 {
 	auto ctx = gl::context();
 	ctx->getModelMatrixStack().back() *= mtx;
 }
 
-void multViewMatrix( const ci::mat4 &mtx )
+void multViewMatrix( const ci::mat4& mtx )
 {
 	auto ctx = gl::context();
 	ctx->getViewMatrixStack().back() *= mtx;
 }
 
-void multProjectionMatrix( const ci::mat4 &mtx )
+void multProjectionMatrix( const ci::mat4& mtx )
 {
 	auto ctx = gl::context();
 	ctx->getProjectionMatrixStack().back() *= mtx;
@@ -525,27 +524,31 @@ mat3 calcNormalMatrix()
 {
 	return glm::inverseTranspose( glm::mat3( getModelView() ) );
 }
-
+	
 mat3 calcModelMatrixInverseTranspose()
 {
 	auto m = glm::inverseTranspose( getModelMatrix() );
 	return mat3( m );
 }
-
+	
 mat4 calcViewportMatrix()
 {
 	auto curViewport = getViewport();
-
+	
 	const float a = ( curViewport.second.x - curViewport.first.x ) / 2.0f;
 	const float b = ( curViewport.second.y - curViewport.first.y ) / 2.0f;
 	const float c = 1.0f / 2.0f;
-
+	
 	const float tx = ( curViewport.second.x + curViewport.first.x ) / 2.0f;
 	const float ty = ( curViewport.second.y + curViewport.second.y ) / 2.0f;
 	const float tz = 1.0f / 2.0f;
-
+	
 	return mat4(
-	    a, 0, 0, 0, 0, b, 0, 0, 0, 0, c, 0, tx, ty, tz, 1 );
+		a, 0, 0, 0,
+		0, b, 0, 0,
+		0, 0, c, 0,
+		tx, ty, tz, 1
+	);
 }
 
 void setMatricesWindowPersp( int screenWidth, int screenHeight, float fovDegrees, float nearPlane, float farPlane, bool originUpperLeft )
@@ -557,12 +560,12 @@ void setMatricesWindowPersp( int screenWidth, int screenHeight, float fovDegrees
 	ctx->getProjectionMatrixStack().back() = cam.getProjectionMatrix();
 	ctx->getViewMatrixStack().back() = cam.getViewMatrix();
 	if( originUpperLeft ) {
-		ctx->getViewMatrixStack().back() *= glm::scale( vec3( 1, -1, 1 ) ); // invert Y axis so increasing Y goes down.
-		ctx->getViewMatrixStack().back() *= glm::translate( vec3( 0, (float)-screenHeight, 0 ) ); // shift origin up to upper-left corner.
+		ctx->getViewMatrixStack().back() *= glm::scale( vec3( 1, -1, 1 ) );								// invert Y axis so increasing Y goes down.
+		ctx->getViewMatrixStack().back() *= glm::translate( vec3( 0, (float) - screenHeight, 0 ) );		// shift origin up to upper-left corner.
 	}
 }
 
-void setMatricesWindowPersp( const ci::ivec2 &screenSize, float fovDegrees, float nearPlane, float farPlane, bool originUpperLeft )
+void setMatricesWindowPersp( const ci::ivec2& screenSize, float fovDegrees, float nearPlane, float farPlane, bool originUpperLeft )
 {
 	setMatricesWindowPersp( screenSize.x, screenSize.y, fovDegrees, nearPlane, farPlane, originUpperLeft );
 }
@@ -583,10 +586,13 @@ void setMatricesWindow( int screenWidth, int screenHeight, bool originUpperLeft 
 	}
 
 	mat4 &m = ctx->getProjectionMatrixStack().back();
-	m = mat4( sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, -1, 0, -1, ty, 0, 1 );
+	m = mat4( sx, 0,  0, 0,
+			  0, sy,  0, 0,
+			  0,  0, -1, 0,
+			 -1, ty,  0, 1 );
 }
 
-void setMatricesWindow( const ci::ivec2 &screenSize, bool originUpperLeft )
+void setMatricesWindow( const ci::ivec2& screenSize, bool originUpperLeft )
 {
 	setMatricesWindow( screenSize.x, screenSize.y, originUpperLeft );
 }
@@ -605,13 +611,13 @@ void rotate( float angleRadians, const vec3 &axis )
 	}
 }
 
-void scale( const ci::vec3 &v )
+void scale( const ci::vec3& v )
 {
 	auto ctx = gl::context();
 	ctx->getModelMatrixStack().back() *= glm::scale( v );
 }
 
-void translate( const ci::vec3 &v )
+void translate( const ci::vec3& v )
 {
 	auto ctx = gl::context();
 	ctx->getModelMatrixStack().back() *= glm::translate( v );
@@ -663,19 +669,19 @@ void end()
 	if( ctx->immediate().empty() )
 		return;
 	else {
-		const GlslProg *curGlslProg = ctx->getGlslProg();
-		if( !curGlslProg )
+		const GlslProg* curGlslProg = ctx->getGlslProg();
+		if( ! curGlslProg )
 			ctx->pushGlslProg( ctx->getStockShader( ShaderDef().color() ).get() );
 
 		ctx->immediate().draw();
 		ctx->immediate().clear();
 
-		if( !curGlslProg )
+		if( ! curGlslProg )
 			ctx->popGlslProg();
 	}
 }
 
-#if !defined( CINDER_GL_ES_2 )
+#if ! defined( CINDER_GL_ES_2 )
 void bindBufferBase( GLenum target, int index, BufferObjRef buffer )
 {
 	auto ctx = gl::context();
@@ -829,7 +835,7 @@ void vertex( const ci::vec4 &v )
 	ctx->immediate().vertex( v, ctx->getCurrentColor() );
 }
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 void polygonMode( GLenum face, GLenum mode )
 {
 	auto ctx = gl::context();
@@ -859,7 +865,7 @@ void lineWidth( float width )
 	gl::context()->lineWidth( width );
 }
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 
 void pointSize( float size )
 {
@@ -875,7 +881,7 @@ void vertexAttribPointer( GLuint index, GLint size, GLenum type, GLboolean norma
 	context()->vertexAttribPointer( index, size, type, normalized, stride, pointer );
 }
 
-#if !defined( CINDER_GL_ES_2 )
+#if ! defined( CINDER_GL_ES_2 )
 void vertexAttribIPointer( GLuint index, GLint size, GLenum type, GLsizei stride, const GLvoid *pointer )
 {
 	context()->vertexAttribIPointer( index, size, type, stride, pointer );
@@ -919,7 +925,7 @@ void bindBuffer( GLenum target, GLuint buffer )
 	context()->bindBuffer( target, buffer );
 }
 
-#if !defined( CINDER_GL_ES_2 )
+#if ! defined( CINDER_GL_ES_2 )
 void readBuffer( GLenum src )
 {
 	glReadBuffer( src );
@@ -932,7 +938,7 @@ void drawBuffers( GLsizei num, const GLenum *bufs )
 
 void drawBuffer( GLenum dst )
 {
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	glDrawBuffer( dst );
 #else
 	const GLenum bufs[] = { dst };
@@ -947,7 +953,7 @@ void readPixels( GLint x, GLint y, GLsizei width, GLsizei height, GLenum format,
 }
 
 // Compute
-#if defined( CINDER_MSW ) && !defined( CINDER_GL_ANGLE )
+#if defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
 ivec3 getMaxComputeWorkGroupCount()
 {
 	ivec3 count;
@@ -967,94 +973,76 @@ ivec3 getMaxComputeWorkGroupSize()
 }
 #endif // defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 // toGL conversion functions
 GLenum toGl( geom::Primitive prim )
 {
 	switch( prim ) {
-	case geom::Primitive::LINES:
-		return GL_LINES;
+		case geom::Primitive::LINES:
+			return GL_LINES;
 		break;
-	case geom::Primitive::LINE_STRIP:
-		return GL_LINE_STRIP;
+		case geom::Primitive::LINE_STRIP:
+			return GL_LINE_STRIP;
 		break;
-	case geom::Primitive::TRIANGLES:
-		return GL_TRIANGLES;
+		case geom::Primitive::TRIANGLES:
+			return GL_TRIANGLES;
 		break;
-	case geom::Primitive::TRIANGLE_STRIP:
-		return GL_TRIANGLE_STRIP;
+		case geom::Primitive::TRIANGLE_STRIP:
+			return GL_TRIANGLE_STRIP;
 		break;
-	case geom::Primitive::TRIANGLE_FAN:
-		return GL_TRIANGLE_FAN;
-	default:
-		return 0; // no clear right choice here
+		case geom::Primitive::TRIANGLE_FAN:
+			return GL_TRIANGLE_FAN;
+		default:
+			return 0; // no clear right choice here
 	}
 }
 
 geom::Primitive toGeomPrimitive( GLenum prim )
 {
 	switch( prim ) {
-	case GL_LINES:
-		return geom::Primitive::LINES;
+		case GL_LINES:
+			return geom::Primitive::LINES;
 		break;
-	case GL_LINE_STRIP:
-		return geom::Primitive::LINE_STRIP;
+		case GL_LINE_STRIP:
+			return geom::Primitive::LINE_STRIP;
 		break;
-	case GL_TRIANGLES:
-		return geom::Primitive::TRIANGLES;
+		case GL_TRIANGLES:
+			return geom::Primitive::TRIANGLES;
 		break;
-	case GL_TRIANGLE_STRIP:
-		return geom::Primitive::TRIANGLE_STRIP;
+		case GL_TRIANGLE_STRIP:
+			return geom::Primitive::TRIANGLE_STRIP;
 		break;
-	case GL_TRIANGLE_FAN:
-		return geom::Primitive::TRIANGLE_FAN;
-	default:
-		return geom::Primitive( 65535 ); // no clear right choice here
+		case GL_TRIANGLE_FAN:
+			return geom::Primitive::TRIANGLE_FAN;
+		default:
+			return geom::Primitive( 65535 ); // no clear right choice here
 	}
 }
 
 std::string uniformSemanticToString( UniformSemantic uniformSemantic )
 {
 	switch( uniformSemantic ) {
-	case UNIFORM_MODEL_MATRIX:
-		return "UNIFORM_MODEL_MATRIX";
-	case UNIFORM_MODEL_MATRIX_INVERSE:
-		return "UNIFORM_MODEL_MATRIX_INVERSE";
-	case UNIFORM_MODEL_MATRIX_INVERSE_TRANSPOSE:
-		return "UNIFORM_MODEL_MATRIX_INVERSE_TRANSPOSE";
-	case UNIFORM_VIEW_MATRIX:
-		return "UNIFORM_VIEW_MATRIX";
-	case UNIFORM_VIEW_MATRIX_INVERSE:
-		return "UNIFORM_VIEW_MATRIX_INVERSE";
-	case UNIFORM_MODEL_VIEW:
-		return "UNIFORM_MODEL_VIEW";
-	case UNIFORM_MODEL_VIEW_INVERSE:
-		return "UNIFORM_MODEL_VIEW_INVERSE";
-	case UNIFORM_MODEL_VIEW_INVERSE_TRANSPOSE:
-		return "UNIFORM_MODEL_VIEW_INVERSE_TRANSPOSE";
-	case UNIFORM_MODEL_VIEW_PROJECTION:
-		return "UNIFORM_MODEL_VIEW_PROJECTION";
-	case UNIFORM_MODEL_VIEW_PROJECTION_INVERSE:
-		return "UNIFORM_MODEL_VIEW_PROJECTION_INVERSE";
-	case UNIFORM_PROJECTION_MATRIX:
-		return "UNIFORM_PROJECTION_MATRIX";
-	case UNIFORM_PROJECTION_MATRIX_INVERSE:
-		return "UNIFORM_PROJECTION_MATRIX_INVERSE";
-	case UNIFORM_VIEW_PROJECTION:
-		return "UNIFORM_VIEW_PROJECTION";
-	case UNIFORM_NORMAL_MATRIX:
-		return "UNIFORM_NORMAL_MATRIX";
-	case UNIFORM_VIEWPORT_MATRIX:
-		return "UNIFORM_VIEWPORT_MATRIX";
-	case UNIFORM_WINDOW_SIZE:
-		return "UNIFORM_WINDOW_SIZE";
-	case UNIFORM_ELAPSED_SECONDS:
-		return "UNIFORM_ELAPSED_SECONDS";
-	case UNIFORM_USER_DEFINED:
-		return "UNIFORM_USER_DEFINED";
-	default:
-		return "";
+		case UNIFORM_MODEL_MATRIX: return "UNIFORM_MODEL_MATRIX";
+		case UNIFORM_MODEL_MATRIX_INVERSE: return "UNIFORM_MODEL_MATRIX_INVERSE";
+		case UNIFORM_MODEL_MATRIX_INVERSE_TRANSPOSE: return "UNIFORM_MODEL_MATRIX_INVERSE_TRANSPOSE";
+		case UNIFORM_VIEW_MATRIX: return "UNIFORM_VIEW_MATRIX";
+		case UNIFORM_VIEW_MATRIX_INVERSE: return "UNIFORM_VIEW_MATRIX_INVERSE";
+		case UNIFORM_MODEL_VIEW: return "UNIFORM_MODEL_VIEW";
+		case UNIFORM_MODEL_VIEW_INVERSE: return "UNIFORM_MODEL_VIEW_INVERSE";
+		case UNIFORM_MODEL_VIEW_INVERSE_TRANSPOSE: return "UNIFORM_MODEL_VIEW_INVERSE_TRANSPOSE";
+		case UNIFORM_MODEL_VIEW_PROJECTION: return "UNIFORM_MODEL_VIEW_PROJECTION";
+		case UNIFORM_MODEL_VIEW_PROJECTION_INVERSE: return "UNIFORM_MODEL_VIEW_PROJECTION_INVERSE";
+		case UNIFORM_PROJECTION_MATRIX: return "UNIFORM_PROJECTION_MATRIX";
+		case UNIFORM_PROJECTION_MATRIX_INVERSE: return "UNIFORM_PROJECTION_MATRIX_INVERSE";
+		case UNIFORM_VIEW_PROJECTION: return "UNIFORM_VIEW_PROJECTION";
+		case UNIFORM_NORMAL_MATRIX: return "UNIFORM_NORMAL_MATRIX";
+		case UNIFORM_VIEWPORT_MATRIX: return "UNIFORM_VIEWPORT_MATRIX";
+		case UNIFORM_WINDOW_SIZE: return "UNIFORM_WINDOW_SIZE";
+		case UNIFORM_ELAPSED_SECONDS: return "UNIFORM_ELAPSED_SECONDS";
+		case UNIFORM_USER_DEFINED: return "UNIFORM_USER_DEFINED";
+		default: return "";
 	}
 }
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

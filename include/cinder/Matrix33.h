@@ -20,12 +20,13 @@
  POSSIBILITY OF SUCH DAMAGE.
 */
 
+
 #pragma once
 
 #include "cinder/Cinder.h"
 #include "glm/mat3x3.hpp"
 
-namespace cinder {
+namespace cinder { 
 
 using glm::mat3;
 using glm::mat4;

@@ -1,8 +1,8 @@
 #include "cinder/Cinder.h"
 #include "cinder/Signals.h"
 
-#include <ctime>
 #include <iostream>
+#include <ctime>
 
 using namespace std;
 using namespace cinder::signals;
@@ -16,23 +16,23 @@ static uint64_t timestampBenchmark()
 static uint64_t sTestCounter = 0;
 
 struct TestCounter {
-	static uint64_t get() { return sTestCounter; }
-	static void set( uint64_t v ) { sTestCounter = v; }
-	static void add2( void *, uint64_t v ) { sTestCounter += v; }
+	static uint64_t get()						{ return sTestCounter; }
+	static void     set( uint64_t v )			{ sTestCounter = v; }
+	static void     add2( void*, uint64_t v )	{ sTestCounter +=v; }
 };
 
-void ( *testCounterAdd2 )( void *, uint64_t ) = TestCounter::add2; // external symbol to prevent easy inlining
+void        (*testCounterAdd2)( void*, uint64_t ) = TestCounter::add2; // external symbol to prevent easy inlining
 
 static void printSize()
 {
-	Signal<void()> sig;
-	cout << "sizeof( signal ): " << sizeof( sig ) << " bytes" << endl;
+    Signal<void ()> sig;
+    cout << "sizeof( signal ): " << sizeof( sig ) << " bytes" << endl;
 }
 
 // profile time for emission with 1 slot
 static void benchSignalEmission1()
 {
-	Signal<void( void *, uint64_t )> sigIncrement;
+	Signal<void ( void*, uint64_t )> sigIncrement;
 	sigIncrement.connect( testCounterAdd2 );
 
 	const uint64_t startCounter = TestCounter::get();
@@ -53,7 +53,7 @@ static void benchSignalEmission1()
 // profile time for emission with 5 slots
 static void benchSignalEmission5()
 {
-	Signal<void( void *, uint64_t )> sigIncrement;
+	Signal<void ( void*, uint64_t )> sigIncrement;
 	sigIncrement.connect( testCounterAdd2 );
 	sigIncrement.connect( testCounterAdd2 );
 	sigIncrement.connect( testCounterAdd2 );
@@ -75,13 +75,13 @@ static void benchSignalEmission5()
 	cout << "OK" << endl;
 	cout << "\tper emission: " << double( benchDone - benchStart ) / double( i ) << "ns"
 	     << ", per slot: " << double( benchDone - benchStart ) / double( i * 5 ) << "ns"
-	     << endl;
+		 << endl;
 }
 
 // profile time for emission with 4 slots, 2 in group 0 and 2 in group 1
 static void benchSignalEmissionGroups()
 {
-	Signal<void( void *, uint64_t )> sigIncrement;
+	Signal<void ( void*, uint64_t )> sigIncrement;
 	sigIncrement.connect( testCounterAdd2 );
 	sigIncrement.connect( testCounterAdd2 );
 	sigIncrement.connect( 1, testCounterAdd2 );
@@ -101,14 +101,14 @@ static void benchSignalEmissionGroups()
 
 	cout << "OK" << endl;
 	cout << "\tper emission: " << double( benchDone - benchStart ) / double( i ) << "ns"
-	     << ", per slot: " << double( benchDone - benchStart ) / double( i * 4 ) << "ns"
-	     << endl;
+	<< ", per slot: " << double( benchDone - benchStart ) / double( i * 4 ) << "ns"
+	<< endl;
 }
 
 // the time of a plain callback
 static void benchPlainCallbackLoop()
 {
-	void ( *counterIncrement )( void *, uint64_t ) = testCounterAdd2;
+	void (*counterIncrement) (void*, uint64_t) = testCounterAdd2;
 
 	const uint64_t startCounter = TestCounter::get();
 	const uint64_t benchStart = timestampBenchmark();
@@ -128,7 +128,7 @@ static void benchPlainCallbackLoop()
 // the time of a std::function callback
 static void benchStdFunctionCallbackLoop()
 {
-	void *                          someData = nullptr;
+	void *someData = nullptr;
 	std::function<void( uint64_t )> counterIncrement = [someData]( uint64_t incr ) { TestCounter::add2( someData, 1 ); };
 
 	const uint64_t startCounter = TestCounter::get();

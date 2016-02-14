@@ -29,22 +29,23 @@
 #include <map>
 #include <string>
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
-typedef std::shared_ptr<class BufferObj> BufferObjRef;
+typedef std::shared_ptr<class BufferObj>	BufferObjRef;
 
 typedef std::shared_ptr<class TransformFeedbackObj> TransformFeedbackObjRef;
 
 class TransformFeedbackObj : public std::enable_shared_from_this<TransformFeedbackObj> {
   public:
+	
 	static TransformFeedbackObjRef create();
 	virtual ~TransformFeedbackObj() {}
+	
 	//! Binds this Transform Feedback Object to the system.
 	void bind();
 	//! Unbinds this Transform Feedback Object from the system.
 	void unbind();
-
+	
 	//! Notifies the system to begin capturing Vertices
 	void begin( GLenum primitiveMode );
 	//! Notifies the system to pause capturing Vertices
@@ -53,29 +54,31 @@ class TransformFeedbackObj : public std::enable_shared_from_this<TransformFeedba
 	void resume();
 	//! Notifies the sytstem you are finished capturing Vertices with this object
 	void end();
-
+	
 	//! Returns the gl system id for this Transform Feedback Object
-	GLuint getId() const { return mId; }
+	GLuint	getId() const { return mId; }
+	
 	//! Returns the debugging label associated with the Transform Feedback Object.
-	const std::string &getLabel() const { return mLabel; }
+	const std::string&	getLabel() const { return mLabel; }
 	//! Sets the debugging label associated with the Transform Feedback Object. Calls glObjectLabel() when available.
-	void setLabel( const std::string &label );
-
+	void				setLabel( const std::string &label );	
+	
   protected:
 	TransformFeedbackObj() {}
+	
 	virtual void bindImpl( class Context *context ) = 0;
 	virtual void unbindImpl( class Context *context ) = 0;
-
+	
 	virtual void setIndex( int index, BufferObjRef buffer ) = 0;
-
-	GLuint mId;
-	std::map<GLuint, gl::BufferObjRef> mBufferBases;
-
-	std::string mLabel; // debug label
-
+	
+	GLuint								mId;
+	std::map<GLuint, gl::BufferObjRef>	mBufferBases;
+	
+	std::string							mLabel; // debug label
+	
 	friend class Context;
 };
-}
-} // cinder::gl
+
+} } // cinder::gl
 
 #endif // defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )

@@ -1,10 +1,10 @@
 #include "cinder/app/App.h"
-#include "cinder/CameraUi.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/Log.h"
-#include "cinder/Utilities.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/CameraUi.h"
+#include "cinder/Utilities.h"
+#include "cinder/CinderAssert.h"
+#include "cinder/Log.h"
 #include "cinder/params/Params.h"
 
 // Define this to blow up the selection area that is picked.
@@ -29,7 +29,7 @@ class PickingFBOApp : public App {
 	void setupGradient();
 	void setupFbo();
 
-	void     renderScene();
+	void renderScene();
 	uint32_t colorToIndex( const ColorA8u &color );
 	ColorA8u indexToColor( uint32_t index );
 	vec4 colorToVec4( const ColorA8u &color );
@@ -37,32 +37,32 @@ class PickingFBOApp : public App {
 	void restoreDefaultColors();
 	void setSelectedColors( int selected );
 
-	gl::VboMeshRef   mVerticesMesh;
-	gl::VboMeshRef   mEdgesMesh;
-	gl::VertBatchRef mGridMesh;
-	gl::BatchRef     mGradientMesh;
-	gl::BatchRef     mVerticesBatch;
-	gl::BatchRef     mEdgesBatch;
+	gl::VboMeshRef		mVerticesMesh;
+	gl::VboMeshRef		mEdgesMesh;
+	gl::VertBatchRef	mGridMesh;
+	gl::BatchRef		mGradientMesh;
+	gl::BatchRef		mVerticesBatch;
+	gl::BatchRef		mEdgesBatch;
 
-	gl::FboRef             mFbo;
-	gl::GlslProgRef        mPickableProg;
-	gl::GlslProgRef        mNotPickableProg;
-	int                    mPickPixelSize;
-	ivec2                  mPickPos;
-	CameraPersp            mCamera;
-	CameraUi               mCamUi;
-	vec4                   mDefaultVertexColor;
-	vec4                   mDefaultEdgeColor;
-	vec4                   mSelectedVertexColor;
-	vec4                   mSelectedEdgeColor;
-	mat4                   mBoxTransform;
-	gl::TextureRef         mDebugTexture;
-	float                  mDebugDisplaySize;
-	gl::Texture2dRef       mPickingTexture;
-	bool                   mNeedsRedraw;
-	bool                   mSelectVertices;
-	bool                   mSelectEdges;
-	params::InterfaceGlRef mParams;
+	gl::FboRef			mFbo;
+	gl::GlslProgRef		mPickableProg;
+	gl::GlslProgRef		mNotPickableProg;
+	int					mPickPixelSize;
+	ivec2				mPickPos;
+	CameraPersp			mCamera;
+	CameraUi			mCamUi;
+	vec4				mDefaultVertexColor;
+	vec4				mDefaultEdgeColor;
+	vec4				mSelectedVertexColor;
+	vec4				mSelectedEdgeColor;
+	mat4				mBoxTransform;
+	gl::TextureRef		mDebugTexture;
+	float				mDebugDisplaySize;
+	gl::Texture2dRef	mPickingTexture;
+	bool				mNeedsRedraw;
+	bool				mSelectVertices;
+	bool				mSelectEdges;
+	params::InterfaceGlRef		mParams;
 };
 
 void PickingFBOApp::setup()
@@ -119,7 +119,7 @@ void PickingFBOApp::draw()
 		gl::color( Color::white() );
 		gl::draw( mDebugTexture, Rectf( mPickPos.x - mDebugDisplaySize, mPickPos.y - mDebugDisplaySize, mPickPos.x + mDebugDisplaySize, mPickPos.y + mDebugDisplaySize ) );
 	}
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	mParams->draw();
 #endif
 	gl::enableDepthRead();
@@ -143,8 +143,8 @@ void PickingFBOApp::renderScene()
 	gl::popMatrices();
 	gl::enableDepthWrite();
 
-// Draw scene.
-#if !defined( CINDER_GL_ES )
+	// Draw scene.
+#if ! defined( CINDER_GL_ES )
 	gl::pointSize( 6.0f ); // this is defined in the vertex shader in ES 3
 #endif
 	gl::pushMatrices();
@@ -194,7 +194,7 @@ int PickingFBOApp::pick( const ivec2 &mousePos )
 	}
 
 	int selectedIndex = -1;
-	if( !voteCount.empty() )
+	if( ! voteCount.empty() )
 		selectedIndex = std::max_element( voteCount.begin(), voteCount.end(), voteCount.value_comp() )->first;
 
 #if DEBUG_PICKING
@@ -203,7 +203,7 @@ int PickingFBOApp::pick( const ivec2 &mousePos )
 		for( int32_t x = 0; x < pixels.getWidth(); ++x )
 			if( colorToIndex( pixels.getPixel( ivec2( x, y ) ) ) == 0 )
 				pixels.setPixel( ivec2( x, y ), ColorA8u( 255, 255, 255, 255 ) );
-
+	
 	mDebugTexture = gl::Texture::create( pixels );
 #endif
 
@@ -212,7 +212,7 @@ int PickingFBOApp::pick( const ivec2 &mousePos )
 
 void PickingFBOApp::setupParams()
 {
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	mParams = params::InterfaceGl::create( "Settings", ivec2( 200, 60 ) );
 	mParams->addParam( "Select Vertices", &mSelectVertices ).updateFn( [&] { setPickingColors( mSelectVertices, mSelectEdges ); renderScene(); } );
 	mParams->addParam( "Select Edges", &mSelectEdges ).updateFn( [&] { setPickingColors( mSelectVertices, mSelectEdges ); renderScene(); } );
@@ -234,7 +234,9 @@ void PickingFBOApp::setupGeometry()
 	};
 
 	std::array<GLushort, 24> indices = {
-		0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7
+		0, 1, 1, 2, 2, 3, 3, 0,
+		4, 5, 5, 6, 6, 7, 7, 4,
+		0, 4, 1, 5, 2, 6, 3, 7
 	};
 
 	std::vector<vec4> vertexColors( vertexPositions.size(), mDefaultVertexColor );
@@ -274,8 +276,8 @@ void PickingFBOApp::setupGrid( int xSize, int zSize, int spacing )
 	xSize = ( ( xSize / 2 ) / spacing ) * spacing;
 	zSize = ( ( zSize / 2 ) / spacing ) * spacing;
 
-	const int    xMax = xSize + spacing;
-	const int    zMax = zSize + spacing;
+	const int xMax = xSize + spacing;
+	const int zMax = zSize + spacing;
 	const Colorf defaultColor( 0.75f, 0.75f, 0.75f );
 	const Colorf black( 0, 0, 0 );
 
@@ -289,18 +291,18 @@ void PickingFBOApp::setupGrid( int xSize, int zSize, int spacing )
 			mGridMesh->color( defaultColor );
 		mGridMesh->vertex( (float)xVal, 0, (float)-zSize );
 		mGridMesh->vertex( (float)xVal, 0, (float)zSize );
-	} // end for each x dir line
+	}// end for each x dir line
 
 	// Add z lines.
 	for( int zVal = -zSize; zVal < zMax; zVal += spacing ) {
 		if( zVal == 0 ) // Center line.
 			mGridMesh->color( black );
-		else
+		else 
 			mGridMesh->color( defaultColor );
-
+		
 		mGridMesh->vertex( (float)xSize, 0, (float)zVal );
 		mGridMesh->vertex( (float)-xSize, 0, (float)zVal );
-	} // end for each z dir line
+	}// end for each z dir line
 }
 
 void PickingFBOApp::setupGradient()
@@ -322,12 +324,16 @@ void PickingFBOApp::setupFbo()
 void PickingFBOApp::setupShader()
 {
 	try {
-#if defined( CINDER_GL_ES_3 )
-		mPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "pickable_es3.vs.glsl" ) ).fragment( loadAsset( "pickable_es3.fs.glsl" ) ) );
-		mNotPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "not_pickable_es3.vs.glsl" ) ).fragment( loadAsset( "pickable_es3.fs.glsl" ) ) );
+#if defined(CINDER_GL_ES_3)
+		mPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "pickable_es3.vs.glsl" ) )
+			.fragment( loadAsset( "pickable_es3.fs.glsl" ) ) );
+		mNotPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "not_pickable_es3.vs.glsl" ) )
+			.fragment( loadAsset( "pickable_es3.fs.glsl" ) ) );
 #else
-		mPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "pickable.vs.glsl" ) ).fragment( loadAsset( "pickable.fs.glsl" ) ).fragDataLocation( 0, "oColor" ).fragDataLocation( 1, "oPickingColor" ) );
-		mNotPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "not_pickable.vs.glsl" ) ).fragment( loadAsset( "pickable.fs.glsl" ) ).fragDataLocation( 0, "oColor" ).fragDataLocation( 1, "oPickingColor" ) );
+		mPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "pickable.vs.glsl" ) )
+			.fragment( loadAsset( "pickable.fs.glsl" ) ).fragDataLocation( 0, "oColor" ).fragDataLocation( 1, "oPickingColor" ) );
+		mNotPickableProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "not_pickable.vs.glsl" ) )
+			.fragment( loadAsset( "pickable.fs.glsl" ) ).fragDataLocation( 0, "oColor" ).fragDataLocation( 1, "oPickingColor" ) );
 #endif
 	}
 	catch( ci::Exception &exc ) {
@@ -338,7 +344,7 @@ void PickingFBOApp::setupShader()
 
 uint32_t PickingFBOApp::colorToIndex( const ci::ColorA8u &color )
 {
-	return ( ( color.a << 24 ) | ( color.r << 16 ) | ( color.g << 8 ) | ( color.b ) );
+	return ((color.a << 24) | (color.r << 16) | (color.g << 8) | (color.b));
 }
 
 ci::ColorA8u PickingFBOApp::indexToColor( uint32_t index )
@@ -349,20 +355,20 @@ ci::ColorA8u PickingFBOApp::indexToColor( uint32_t index )
 vec4 PickingFBOApp::colorToVec4( const ColorA8u &color )
 {
 	return vec4( static_cast<float>( color.r ) / 255.0f,
-	    static_cast<float>( color.g ) / 255.0f,
-	    static_cast<float>( color.b ) / 255.0f,
-	    static_cast<float>( color.a ) / 255.0f );
+		static_cast<float>( color.g ) / 255.0f,
+		static_cast<float>( color.b ) / 255.0f,
+		static_cast<float>( color.a ) / 255.0f );
 }
 
 void PickingFBOApp::setPickingColors( bool selectVertices, bool selectEdges )
 {
 	// Set ordered colors picking.
-	uint32_t   colorIdx = 1;
+	uint32_t colorIdx = 1;
 	const vec4 zeroVec4( 0 );
 
 	// Handle edges.  Edges need the same color for both vertices that comprise the edge.
 	uint32_t numEdgesColors = mEdgesMesh->getNumVertices();
-	CI_ASSERT( ( numEdgesColors % 2 ) == 0 );
+	CI_ASSERT( (numEdgesColors % 2) == 0 );
 	gl::VboMesh::MappedAttrib<vec4> edgeColorIter = mEdgesMesh->mapAttrib4f( geom::CUSTOM_0, false );
 	for( uint32_t idx = 0; idx < numEdgesColors; idx += 2, ++colorIdx ) {
 		vec4 color = selectEdges ? colorToVec4( indexToColor( colorIdx ) ) : zeroVec4;
@@ -371,12 +377,12 @@ void PickingFBOApp::setPickingColors( bool selectVertices, bool selectEdges )
 	}
 	edgeColorIter.unmap();
 
-	if( !selectEdges )
+	if( ! selectEdges )
 		colorIdx = 1;
 
 	if( selectVertices ) {
 		// Handle vertices.
-		uint32_t                        numVerticesColors = mVerticesMesh->getNumVertices();
+		uint32_t numVerticesColors = mVerticesMesh->getNumVertices();
 		gl::VboMesh::MappedAttrib<vec4> vertexColorIter = mVerticesMesh->mapAttrib4f( geom::CUSTOM_0, false );
 		for( uint32_t idx = 0; idx < numVerticesColors; ++idx, ++colorIdx ) {
 			vec4 color = selectVertices ? colorToVec4( indexToColor( colorIdx ) ) : zeroVec4;
@@ -389,7 +395,7 @@ void PickingFBOApp::setPickingColors( bool selectVertices, bool selectEdges )
 void PickingFBOApp::restoreDefaultColors()
 {
 	// Set edges back to default color.
-	uint32_t                        numEdgesColors = mEdgesMesh->getNumVertices();
+	uint32_t numEdgesColors = mEdgesMesh->getNumVertices();
 	gl::VboMesh::MappedAttrib<vec4> edgeColorIter = mEdgesMesh->mapAttrib4f( geom::COLOR, false );
 	for( uint32_t idx = 0; idx < numEdgesColors; ++idx ) {
 		*edgeColorIter++ = mDefaultEdgeColor;
@@ -397,7 +403,7 @@ void PickingFBOApp::restoreDefaultColors()
 	edgeColorIter.unmap();
 
 	// Set vertices back to default color.
-	uint32_t                        numVerticesColors = mVerticesMesh->getNumVertices();
+	uint32_t numVerticesColors = mVerticesMesh->getNumVertices();
 	gl::VboMesh::MappedAttrib<vec4> vertexColorIter = mVerticesMesh->mapAttrib4f( geom::COLOR, false );
 	for( uint32_t idx = 0; idx < numVerticesColors; ++idx ) {
 		*vertexColorIter++ = mDefaultVertexColor;
@@ -414,10 +420,10 @@ void PickingFBOApp::setSelectedColors( int selected )
 	CI_ASSERT( ( numEdgeVertices % 2 ) == 0 );
 	uint32_t numEdgeColors = numEdgeVertices / 2;
 
-	if( mSelectEdges ) {
+	if( mSelectEdges )	{
 		if( static_cast<uint32_t>( selected ) < numEdgeColors ) {
 			gl::VboMesh::MappedAttrib<vec4> edgeColorIter = mEdgesMesh->mapAttrib4f( geom::COLOR, false );
-			uint32_t                        edgeIdx = selected * 2;
+			uint32_t edgeIdx = selected * 2;
 			edgeColorIter[edgeIdx] = mSelectedEdgeColor;
 			edgeColorIter[edgeIdx + 1] = mSelectedEdgeColor;
 			edgeColorIter.unmap();
@@ -437,4 +443,5 @@ void PickingFBOApp::setSelectedColors( int selected )
 	}
 }
 
-CINDER_APP( PickingFBOApp, RendererGl, []( App::Settings *settings ) { settings->setMultiTouchEnabled( false ); } )
+CINDER_APP( PickingFBOApp, RendererGl, []( App::Settings *settings ) {	
+							settings->setMultiTouchEnabled( false ); } )

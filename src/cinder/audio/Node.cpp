@@ -21,35 +21,35 @@
  POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #include "cinder/audio/Node.h"
+#include "cinder/audio/DelayNode.h"
+#include "cinder/audio/Context.h"
+#include "cinder/audio/dsp/Dsp.h"
+#include "cinder/audio/dsp/Converter.h"
 #include "cinder/CinderAssert.h"
 #include "cinder/System.h"
-#include "cinder/audio/Context.h"
-#include "cinder/audio/DelayNode.h"
-#include "cinder/audio/dsp/Converter.h"
-#include "cinder/audio/dsp/Dsp.h"
 
 #include <limits>
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - Node
 // ----------------------------------------------------------------------------------------------------
 
 Node::Node( const Format &format )
-    : mInitialized( false ), mEnabled( false ), mChannelMode( format.getChannelMode() ),
-      mNumChannels( 1 ), mAutoEnabled( true ), mProcessInPlace( true ), mLastProcessedFrame( numeric_limits<uint64_t>::max() )
+	: mInitialized( false ), mEnabled( false ),	mChannelMode( format.getChannelMode() ),
+		mNumChannels( 1 ), mAutoEnabled( true ), mProcessInPlace( true ), mLastProcessedFrame( numeric_limits<uint64_t>::max() )
 {
 	if( format.getChannels() ) {
 		mNumChannels = format.getChannels();
 		mChannelMode = ChannelMode::SPECIFIED;
 	}
 
-	if( !boost::indeterminate( format.getAutoEnable() ) )
+	if( ! boost::indeterminate( format.getAutoEnable() ) )
 		setAutoEnabled( format.getAutoEnable() );
 }
 
@@ -63,7 +63,7 @@ void Node::connect( const NodeRef &output )
 	// disconnecting us, which we may need later anyway
 	NodeRef thisRef = shared_from_this();
 
-	if( !output || !output->canConnectToInput( thisRef ) )
+	if( ! output || ! output->canConnectToInput( thisRef ) )
 		return;
 
 	if( checkCycle( thisRef, output ) )
@@ -77,7 +77,7 @@ void Node::connect( const NodeRef &output )
 
 void Node::disconnect( const NodeRef &output )
 {
-	if( !output )
+	if( ! output )
 		return;
 
 	for( auto weakOutIt = mOutputs.begin(); weakOutIt != mOutputs.end(); ++weakOutIt ) {
@@ -120,7 +120,7 @@ void Node::disconnectAllInputs()
 void Node::connectInput( const NodeRef &input )
 {
 	auto ctx = getContext();
-	if( !ctx )
+	if( ! ctx )
 		return;
 
 	lock_guard<mutex> lock( ctx->getMutex() );
@@ -132,7 +132,7 @@ void Node::connectInput( const NodeRef &input )
 void Node::disconnectInput( const NodeRef &input )
 {
 	auto ctx = getContext();
-	if( !ctx )
+	if( ! ctx )
 		return;
 
 	lock_guard<mutex> lock( ctx->getMutex() );
@@ -148,7 +148,7 @@ void Node::disconnectInput( const NodeRef &input )
 void Node::disconnectOutput( const NodeRef &output )
 {
 	auto ctx = getContext();
-	if( !ctx )
+	if( ! ctx )
 		return;
 
 	lock_guard<mutex> lock( ctx->getMutex() );
@@ -175,7 +175,7 @@ vector<NodeRef> Node::getOutputs() const
 
 void Node::enable()
 {
-	if( !mInitialized )
+	if( ! mInitialized )
 		initializeImpl();
 
 	if( mEnabled )
@@ -187,7 +187,7 @@ void Node::enable()
 
 void Node::disable()
 {
-	if( !mEnabled )
+	if( ! mEnabled )
 		return;
 
 	mEnabled = false;
@@ -211,6 +211,7 @@ void Node::setEnabled( bool b )
 	else
 		disable();
 }
+
 
 void Node::setEnabled( bool b, double when )
 {
@@ -251,7 +252,7 @@ void Node::initializeImpl()
 	if( mInitialized )
 		return;
 
-	if( mProcessInPlace && !supportsProcessInPlace() )
+	if( mProcessInPlace && ! supportsProcessInPlace() )
 		setupProcessWithSumming();
 
 	mProcessFramesRange.first = 0;
@@ -264,9 +265,10 @@ void Node::initializeImpl()
 		enable();
 }
 
+
 void Node::uninitializeImpl()
 {
-	if( !mInitialized )
+	if( ! mInitialized )
 		return;
 
 	if( mAutoEnabled )
@@ -287,7 +289,7 @@ void Node::setNumChannels( size_t numChannels )
 
 void Node::setChannelMode( ChannelMode mode )
 {
-	CI_ASSERT_MSG( !mInitialized, "setting the channel mode must be done before initializing" );
+	CI_ASSERT_MSG( ! mInitialized, "setting the channel mode must be done before initializing" );
 
 	if( mChannelMode == mode )
 		return;
@@ -316,8 +318,8 @@ size_t Node::getFramesPerBlock() const
 
 bool Node::inputChannelsAreUnequal() const
 {
-	if( !mInputs.empty() ) {
-		size_t numChannels = ( *mInputs.begin() )->getNumChannels();
+	if( ! mInputs.empty() ) {
+		size_t numChannels = (*mInputs.begin() )->getNumChannels();
 		for( auto &in : mInputs ) {
 			if( numChannels != in->getNumChannels() )
 				return true;
@@ -346,7 +348,7 @@ void Node::configureConnections()
 		bool inputProcessInPlace = true;
 
 		size_t inputNumChannels = input->getNumChannels();
-		if( !supportsInputNumChannels( inputNumChannels ) ) {
+		if( ! supportsInputNumChannels( inputNumChannels ) ) {
 			if( mChannelMode == ChannelMode::MATCHES_INPUT )
 				setNumChannels( getMaxNumInputChannels() );
 			else if( input->getChannelMode() == ChannelMode::MATCHES_OUTPUT ) {
@@ -368,10 +370,10 @@ void Node::configureConnections()
 			inputProcessInPlace = false;
 
 		// if we're unable to process in-place and we're a DelayNode, its possible that the input may be part of a feedback loop, in which case input must sum.
-		if( !mProcessInPlace && isDelay )
+		if( ! mProcessInPlace && isDelay )
 			inputProcessInPlace = false;
 
-		if( !inputProcessInPlace )
+		if( ! inputProcessInPlace )
 			input->setupProcessWithSumming();
 
 		input->initializeImpl();
@@ -379,9 +381,9 @@ void Node::configureConnections()
 
 	for( auto &out : mOutputs ) {
 		NodeRef output = out.lock();
-		if( !output )
+		if( ! output )
 			continue;
-		if( !output->supportsInputNumChannels( mNumChannels ) ) {
+		if( ! output->supportsInputNumChannels( mNumChannels ) ) {
 			if( output->getChannelMode() == ChannelMode::MATCHES_INPUT ) {
 				output->setNumChannels( mNumChannels );
 				output->configureConnections();
@@ -391,7 +393,7 @@ void Node::configureConnections()
 		}
 	}
 
-	if( !mProcessInPlace )
+	if( ! mProcessInPlace )
 		setupProcessWithSumming();
 
 	initializeImpl();
@@ -414,7 +416,7 @@ void Node::pullInputs( Buffer *inPlaceBuffer )
 			const NodeRef &input = *mInputs.begin();
 			input->pullInputs( inPlaceBuffer );
 
-			if( !input->getProcessesInPlace() )
+			if( ! input->getProcessesInPlace() )
 				dsp::mixBuffers( input->getInternalBuffer(), inPlaceBuffer );
 
 			if( mEnabled )
@@ -481,7 +483,7 @@ bool Node::checkCycle( const NodeRef &sourceNode, const NodeRef &destNode ) cons
 void Node::notifyConnectionsDidChange()
 {
 	auto ctx = getContext();
-	if( !ctx )
+	if( ! ctx )
 		return;
 
 	ctx->connectionsDidChange( shared_from_this() );
@@ -489,7 +491,7 @@ void Node::notifyConnectionsDidChange()
 
 bool Node::canConnectToInput( const NodeRef &input )
 {
-	if( !input || input == shared_from_this() )
+	if( ! input || input == shared_from_this() )
 		return false;
 
 	if( isConnectedToInput( input ) )
@@ -500,7 +502,7 @@ bool Node::canConnectToInput( const NodeRef &input )
 
 std::string Node::getName()
 {
-	return !mName.empty() ? mName : System::demangleTypeName( typeid( *this ).name() );
+	return ! mName.empty() ? mName : System::demangleTypeName( typeid( *this ).name() );
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -508,7 +510,7 @@ std::string Node::getName()
 // ----------------------------------------------------------------------------------------------------
 
 NodeAutoPullable::NodeAutoPullable( const Format &format )
-    : Node( format ), mIsPulledByContext( false )
+	: Node( format ), mIsPulledByContext( false )
 {
 }
 
@@ -557,8 +559,8 @@ void NodeAutoPullable::disconnectAllOutputs()
 
 void NodeAutoPullable::updatePullMethod()
 {
-	bool hasOutputs = !getOutputs().empty();
-	if( !hasOutputs && !mIsPulledByContext ) {
+	bool hasOutputs = ! getOutputs().empty();
+	if( ! hasOutputs && ! mIsPulledByContext ) {
 		mIsPulledByContext = true;
 		getContext()->addAutoPulledNode( shared_from_this() );
 	}
@@ -573,13 +575,13 @@ void NodeAutoPullable::updatePullMethod()
 // ----------------------------------------------------------------------------------------------------
 
 ScopedEnableNode::ScopedEnableNode( const NodeRef &node )
-    : mNode( node )
+	: mNode( node )
 {
 	mWasEnabled = ( mNode ? mNode->isEnabled() : false );
 }
 
 ScopedEnableNode::ScopedEnableNode( const NodeRef &node, bool enable )
-    : mNode( node )
+	: mNode( node )
 {
 	if( mNode ) {
 		mWasEnabled = mNode->isEnabled();
@@ -600,8 +602,9 @@ ScopedEnableNode::~ScopedEnableNode()
 // ----------------------------------------------------------------------------------------------------
 
 NodeCycleExc::NodeCycleExc( const NodeRef &sourceNode, const NodeRef &destNode )
-    : AudioExc( string( "cyclical connection between source: " ) + sourceNode->getName() + string( " and dest: " ) + destNode->getName() )
+	: AudioExc( string( "cyclical connection between source: " ) + sourceNode->getName() + string( " and dest: " ) + destNode->getName() )
 {
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio
+

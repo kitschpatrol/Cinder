@@ -1,31 +1,31 @@
 #include "cinder/app/App.h"
-#include "cinder/ImageIo.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/ImageIo.h"
 
 using namespace ci;
 using namespace ci::app;
 
 class NormalMappingBasicApp : public App {
-  public:
-	void setup() override;
-	void resize() override;
-	void update() override;
-	void draw() override;
-
-	CameraPersp     mCam;
-	gl::BatchRef    mBatch;
-	gl::TextureRef  mDiffuseTex, mNormalTex;
-	gl::GlslProgRef mGlsl;
-	mat4            mCubeRotation;
-
-	vec3 mLightPosWorldSpace;
+  public:	
+	void	setup() override;
+	void	resize() override;
+	void	update() override;
+	void	draw() override;
+	
+	CameraPersp			mCam;
+	gl::BatchRef		mBatch;
+	gl::TextureRef		mDiffuseTex, mNormalTex;
+	gl::GlslProgRef		mGlsl;
+	mat4				mCubeRotation;
+	
+	vec3				mLightPosWorldSpace;
 };
 
 void NormalMappingBasicApp::setup()
 {
 	mCam.lookAt( vec3( 3, 2, 4 ), vec3( 0 ) );
-
+	
 	mDiffuseTex = gl::Texture::create( loadImage( loadAsset( "diffuseMap.jpg" ) ), gl::Texture::Format().mipmap() );
 	mDiffuseTex->bind();
 	mNormalTex = gl::Texture::create( loadImage( loadAsset( "normalMap.png" ) ), gl::Texture::Format().mipmap() );
@@ -66,7 +66,7 @@ void NormalMappingBasicApp::draw()
 	gl::setMatrices( mCam );
 	gl::ScopedModelMatrix modelScope;
 	gl::multModelMatrix( mCubeRotation );
-	mGlsl->uniform( "uLightLocViewSpace", vec3( mCam.getViewMatrix() * vec4( mLightPosWorldSpace, 1 ) ) );
+	mGlsl->uniform( "uLightLocViewSpace", vec3( mCam.getViewMatrix() * vec4( mLightPosWorldSpace, 1 )) );
 	mBatch->draw();
 }
 

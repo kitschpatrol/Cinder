@@ -28,6 +28,10 @@
 #include <TextServices.h>
 #endif
 
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,17 +45,17 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /* signature, interface types*/
 enum {
-	kTSMTESignature = FOUR_CHAR_CODE( 'tmTE' ),
-	kTSMTEInterfaceType = FOUR_CHAR_CODE( 'tmTE' )
+  kTSMTESignature               = FOUR_CHAR_CODE('tmTE'),
+  kTSMTEInterfaceType           = FOUR_CHAR_CODE('tmTE')
 };
 
 /*
@@ -62,45 +66,47 @@ enum {
 */
 #if CALL_NOT_IN_CARBON
 enum {
-	kTSMTEDialog = FOUR_CHAR_CODE( 'tmDI' )
+  kTSMTEDialog                  = FOUR_CHAR_CODE('tmDI')
 };
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /* update flag for TSMTERec*/
 enum {
-	kTSMTEAutoScroll = 1
+  kTSMTEAutoScroll              = 1
 };
+
 
 /* callback procedure definitions*/
 
-typedef CALLBACK_API( void, TSMTEPreUpdateProcPtr )( TEHandle textH, long refCon );
-typedef CALLBACK_API( void, TSMTEPostUpdateProcPtr )( TEHandle textH, long fixLen, long inputAreaStart, long inputAreaEnd, long pinStart, long pinEnd, long refCon );
-typedef STACK_UPP_TYPE( TSMTEPreUpdateProcPtr ) TSMTEPreUpdateUPP;
-typedef STACK_UPP_TYPE( TSMTEPostUpdateProcPtr ) TSMTEPostUpdateUPP;
+typedef CALLBACK_API( void , TSMTEPreUpdateProcPtr )(TEHandle textH, long refCon);
+typedef CALLBACK_API( void , TSMTEPostUpdateProcPtr )(TEHandle textH, long fixLen, long inputAreaStart, long inputAreaEnd, long pinStart, long pinEnd, long refCon);
+typedef STACK_UPP_TYPE(TSMTEPreUpdateProcPtr)                   TSMTEPreUpdateUPP;
+typedef STACK_UPP_TYPE(TSMTEPostUpdateProcPtr)                  TSMTEPostUpdateUPP;
+
 
 /* data types*/
 struct TSMTERec {
-	TEHandle           textH;
-	TSMTEPreUpdateUPP  preUpdateProc;
-	TSMTEPostUpdateUPP postUpdateProc;
-	long               updateFlag;
-	long               refCon;
+  TEHandle            textH;
+  TSMTEPreUpdateUPP   preUpdateProc;
+  TSMTEPostUpdateUPP  postUpdateProc;
+  long                updateFlag;
+  long                refCon;
 };
-typedef struct TSMTERec TSMTERec;
-typedef TSMTERec *      TSMTERecPtr;
-typedef TSMTERecPtr *   TSMTERecHandle;
+typedef struct TSMTERec                 TSMTERec;
+typedef TSMTERec *                      TSMTERecPtr;
+typedef TSMTERecPtr *                   TSMTERecHandle;
 #if !OPAQUE_TOOLBOX_STRUCTS
 struct TSMDialogRecord {
-	DialogRecord   fDialog;
-	TSMDocumentID  fDocID;
-	TSMTERecHandle fTSMTERecH;
-	long           fTSMTERsvd[3]; /* reserved*/
+  DialogRecord        fDialog;
+  TSMDocumentID       fDocID;
+  TSMTERecHandle      fTSMTERecH;
+  long                fTSMTERsvd[3];          /* reserved*/
 };
-typedef struct TSMDialogRecord TSMDialogRecord;
-typedef TSMDialogRecord *      TSMDialogPtr;
-typedef TSMDialogPtr           TSMDialogPeek;
-#endif /* !OPAQUE_TOOLBOX_STRUCTS */
+typedef struct TSMDialogRecord          TSMDialogRecord;
+typedef TSMDialogRecord *               TSMDialogPtr;
+typedef TSMDialogPtr                    TSMDialogPeek;
+#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
 
 /*
  *  NewTSMTEPreUpdateUPP()
@@ -111,17 +117,14 @@ typedef TSMDialogPtr           TSMDialogPeek;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( TSMTEPreUpdateUPP )
-NewTSMTEPreUpdateUPP( TSMTEPreUpdateProcPtr userRoutine );
+NewTSMTEPreUpdateUPP(TSMTEPreUpdateProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppTSMTEPreUpdateProcInfo = 0x000003C0 }; /* pascal no_return_value Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( TSMTEPreUpdateUPP ) NewTSMTEPreUpdateUPP( TSMTEPreUpdateProcPtr userRoutine )
-{
-	return (TSMTEPreUpdateUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTSMTEPreUpdateProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewTSMTEPreUpdateUPP( userRoutine ) ( TSMTEPreUpdateUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTSMTEPreUpdateProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppTSMTEPreUpdateProcInfo = 0x000003C0 };  /* pascal no_return_value Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(TSMTEPreUpdateUPP) NewTSMTEPreUpdateUPP(TSMTEPreUpdateProcPtr userRoutine) { return (TSMTEPreUpdateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTSMTEPreUpdateProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewTSMTEPreUpdateUPP(userRoutine) (TSMTEPreUpdateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTSMTEPreUpdateProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -133,17 +136,14 @@ inline DEFINE_API_C( TSMTEPreUpdateUPP ) NewTSMTEPreUpdateUPP( TSMTEPreUpdatePro
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( TSMTEPostUpdateUPP )
-NewTSMTEPostUpdateUPP( TSMTEPostUpdateProcPtr userRoutine );
+NewTSMTEPostUpdateUPP(TSMTEPostUpdateProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppTSMTEPostUpdateProcInfo = 0x000FFFC0 }; /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( TSMTEPostUpdateUPP ) NewTSMTEPostUpdateUPP( TSMTEPostUpdateProcPtr userRoutine )
-{
-	return (TSMTEPostUpdateUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTSMTEPostUpdateProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewTSMTEPostUpdateUPP( userRoutine ) ( TSMTEPostUpdateUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTSMTEPostUpdateProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppTSMTEPostUpdateProcInfo = 0x000FFFC0 };  /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(TSMTEPostUpdateUPP) NewTSMTEPostUpdateUPP(TSMTEPostUpdateProcPtr userRoutine) { return (TSMTEPostUpdateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTSMTEPostUpdateProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewTSMTEPostUpdateUPP(userRoutine) (TSMTEPostUpdateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTSMTEPostUpdateProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -155,16 +155,13 @@ inline DEFINE_API_C( TSMTEPostUpdateUPP ) NewTSMTEPostUpdateUPP( TSMTEPostUpdate
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeTSMTEPreUpdateUPP( TSMTEPreUpdateUPP userUPP );
+DisposeTSMTEPreUpdateUPP(TSMTEPreUpdateUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeTSMTEPreUpdateUPP( TSMTEPreUpdateUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeTSMTEPreUpdateUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeTSMTEPreUpdateUPP(TSMTEPreUpdateUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeTSMTEPreUpdateUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -176,16 +173,13 @@ inline DEFINE_API_C( void ) DisposeTSMTEPreUpdateUPP( TSMTEPreUpdateUPP userUPP 
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeTSMTEPostUpdateUPP( TSMTEPostUpdateUPP userUPP );
+DisposeTSMTEPostUpdateUPP(TSMTEPostUpdateUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeTSMTEPostUpdateUPP( TSMTEPostUpdateUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeTSMTEPostUpdateUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeTSMTEPostUpdateUPP(TSMTEPostUpdateUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeTSMTEPostUpdateUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -198,18 +192,15 @@ inline DEFINE_API_C( void ) DisposeTSMTEPostUpdateUPP( TSMTEPostUpdateUPP userUP
  */
 EXTERN_API_C( void )
 InvokeTSMTEPreUpdateUPP(
-    TEHandle          textH,
-    long              refCon,
-    TSMTEPreUpdateUPP userUPP );
+  TEHandle           textH,
+  long               refCon,
+  TSMTEPreUpdateUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeTSMTEPreUpdateUPP( TEHandle textH, long refCon, TSMTEPreUpdateUPP userUPP )
-{
-	CALL_TWO_PARAMETER_UPP( userUPP, uppTSMTEPreUpdateProcInfo, textH, refCon );
-}
-#else
-#define InvokeTSMTEPreUpdateUPP( textH, refCon, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppTSMTEPreUpdateProcInfo, ( textH ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeTSMTEPreUpdateUPP(TEHandle textH, long refCon, TSMTEPreUpdateUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppTSMTEPreUpdateProcInfo, textH, refCon); }
+  #else
+    #define InvokeTSMTEPreUpdateUPP(textH, refCon, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppTSMTEPreUpdateProcInfo, (textH), (refCon))
+  #endif
 #endif
 
 /*
@@ -222,31 +213,28 @@ inline DEFINE_API_C( void ) InvokeTSMTEPreUpdateUPP( TEHandle textH, long refCon
  */
 EXTERN_API_C( void )
 InvokeTSMTEPostUpdateUPP(
-    TEHandle           textH,
-    long               fixLen,
-    long               inputAreaStart,
-    long               inputAreaEnd,
-    long               pinStart,
-    long               pinEnd,
-    long               refCon,
-    TSMTEPostUpdateUPP userUPP );
+  TEHandle            textH,
+  long                fixLen,
+  long                inputAreaStart,
+  long                inputAreaEnd,
+  long                pinStart,
+  long                pinEnd,
+  long                refCon,
+  TSMTEPostUpdateUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeTSMTEPostUpdateUPP( TEHandle textH, long fixLen, long inputAreaStart, long inputAreaEnd, long pinStart, long pinEnd, long refCon, TSMTEPostUpdateUPP userUPP )
-{
-	CALL_SEVEN_PARAMETER_UPP( userUPP, uppTSMTEPostUpdateProcInfo, textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon );
-}
-#else
-#define InvokeTSMTEPostUpdateUPP( textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon, userUPP ) CALL_SEVEN_PARAMETER_UPP( ( userUPP ), uppTSMTEPostUpdateProcInfo, ( textH ), ( fixLen ), ( inputAreaStart ), ( inputAreaEnd ), ( pinStart ), ( pinEnd ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeTSMTEPostUpdateUPP(TEHandle textH, long fixLen, long inputAreaStart, long inputAreaEnd, long pinStart, long pinEnd, long refCon, TSMTEPostUpdateUPP userUPP) { CALL_SEVEN_PARAMETER_UPP(userUPP, uppTSMTEPostUpdateProcInfo, textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon); }
+  #else
+    #define InvokeTSMTEPostUpdateUPP(textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon, userUPP) CALL_SEVEN_PARAMETER_UPP((userUPP), uppTSMTEPostUpdateProcInfo, (textH), (fixLen), (inputAreaStart), (inputAreaEnd), (pinStart), (pinEnd), (refCon))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewTSMTEPreUpdateProc( userRoutine ) NewTSMTEPreUpdateUPP( userRoutine )
-#define NewTSMTEPostUpdateProc( userRoutine ) NewTSMTEPostUpdateUPP( userRoutine )
-#define CallTSMTEPreUpdateProc( userRoutine, textH, refCon ) InvokeTSMTEPreUpdateUPP( textH, refCon, userRoutine )
-#define CallTSMTEPostUpdateProc( userRoutine, textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon ) InvokeTSMTEPostUpdateUPP( textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewTSMTEPreUpdateProc(userRoutine)                  NewTSMTEPreUpdateUPP(userRoutine)
+    #define NewTSMTEPostUpdateProc(userRoutine)                 NewTSMTEPostUpdateUPP(userRoutine)
+    #define CallTSMTEPreUpdateProc(userRoutine, textH, refCon)  InvokeTSMTEPreUpdateUPP(textH, refCon, userRoutine)
+    #define CallTSMTEPostUpdateProc(userRoutine, textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon) InvokeTSMTEPostUpdateUPP(textH, fixLen, inputAreaStart, inputAreaEnd, pinStart, pinEnd, refCon, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 #if ACCESSOR_CALLS_ARE_FUNCTIONS
@@ -259,7 +247,8 @@ inline DEFINE_API_C( void ) InvokeTSMTEPostUpdateUPP( TEHandle textH, long fixLe
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsTSMTEDialog( DialogRef dialog );
+IsTSMTEDialog(DialogRef dialog);
+
 
 /* Getters */
 /*
@@ -271,7 +260,8 @@ IsTSMTEDialog( DialogRef dialog );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( TSMDocumentID )
-GetTSMTEDialogDocumentID( DialogRef dialog );
+GetTSMTEDialogDocumentID(DialogRef dialog);
+
 
 /*
  *  GetTSMTEDialogTSMTERecHandle()
@@ -282,7 +272,8 @@ GetTSMTEDialogDocumentID( DialogRef dialog );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( TSMTERecHandle )
-GetTSMTEDialogTSMTERecHandle( DialogRef dialog );
+GetTSMTEDialogTSMTERecHandle(DialogRef dialog);
+
 
 /* Setters */
 /*
@@ -295,8 +286,9 @@ GetTSMTEDialogTSMTERecHandle( DialogRef dialog );
  */
 EXTERN_API( void )
 SetTSMTEDialogDocumentID(
-    DialogRef     dialog,
-    TSMDocumentID documentID );
+  DialogRef       dialog,
+  TSMDocumentID   documentID);
+
 
 /*
  *  SetTSMTEDialogTSMTERecHandle()
@@ -308,17 +300,19 @@ SetTSMTEDialogDocumentID(
  */
 EXTERN_API( void )
 SetTSMTEDialogTSMTERecHandle(
-    DialogRef      dialog,
-    TSMTERecHandle tsmteRecHandle );
+  DialogRef        dialog,
+  TSMTERecHandle   tsmteRecHandle);
 
-#endif /* ACCESSOR_CALLS_ARE_FUNCTIONS */
+
+#endif  /* ACCESSOR_CALLS_ARE_FUNCTIONS */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -332,3 +326,4 @@ SetTSMTEDialogTSMTERecHandle(
 #endif
 
 #endif /* __TSMTE__ */
+

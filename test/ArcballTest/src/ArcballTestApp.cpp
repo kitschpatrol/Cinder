@@ -1,11 +1,11 @@
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+#include "cinder/gl/Shader.h"
 #include "cinder/Arcball.h"
-#include "cinder/CameraUi.h"
 #include "cinder/Rand.h"
 #include "cinder/Sphere.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/Shader.h"
-#include "cinder/gl/gl.h"
+#include "cinder/CameraUi.h"
 
 #include "Resources.h"
 
@@ -13,24 +13,24 @@ using namespace ci;
 using namespace ci::app;
 
 class ArcballTestApp : public App {
-  public:
+  public:	
 	void setup() override;
 	void resize() override;
 	void mouseDown( MouseEvent event ) override;
 	void mouseDrag( MouseEvent event ) override;
 	void draw() override;
 	void keyDown( KeyEvent event ) override;
+	
+	Arcball			mArcball;
+	CameraPersp		mCam, mDebugCam;
+	CameraUi		mCamUi;
+	
+	Sphere			mEarthSphere;
+	gl::BatchRef	mEarth, mMarker, mConstraintAxis;
+	gl::TextureRef	mEarthTex;
 
-	Arcball     mArcball;
-	CameraPersp mCam, mDebugCam;
-	CameraUi    mCamUi;
-
-	Sphere         mEarthSphere;
-	gl::BatchRef   mEarth, mMarker, mConstraintAxis;
-	gl::TextureRef mEarthTex;
-
-	bool  mUsingCameraUi = false;
-	float mZLookAt;
+	bool			mUsingCameraUi = false;
+	float			mZLookAt;
 };
 
 void ArcballTestApp::setup()
@@ -40,16 +40,16 @@ void ArcballTestApp::setup()
 
 	mZLookAt = 0.5f;
 	mCam.setPerspective( 45.0f, getWindowAspectRatio(), 0.1f, 1000.0f );
-	mCam.lookAt( vec3( 0, 3, 5 ), vec3( mZLookAt ) );
+	mCam.lookAt( vec3( 0,3, 5 ), vec3( mZLookAt ) );
 
 	mDebugCam = mCam;
 
 	mEarthSphere = Sphere( vec3( 0, 0, -3 ), 1.5f );
-	mEarth = gl::Batch::create( geom::Sphere( Sphere( vec3( 0 ), mEarthSphere.getRadius() ) ).subdivisions( 50 ), gl::getStockShader( gl::ShaderDef().texture() ) );
+	mEarth = gl::Batch::create( geom::Sphere( Sphere( vec3(0), mEarthSphere.getRadius() ) ).subdivisions( 50 ), gl::getStockShader( gl::ShaderDef().texture() ) );
 	mEarthTex = gl::Texture::create( loadImage( loadResource( EARTH_TEX_RES ) ) );
 
-	mMarker = gl::Batch::create( geom::Sphere().radius( 0.1f ).subdivisions( 50 ), gl::getStockShader( gl::ShaderDef().color() ) );
-	auto cylinder = geom::Cylinder().radius( 0.05f ).height( mEarthSphere.getRadius() * 3.5 ) >> geom::Translate( 0, -1.75 * mEarthSphere.getRadius(), 0 );
+	mMarker = gl::Batch::create( geom::Sphere().radius(0.1f).subdivisions( 50 ), gl::getStockShader( gl::ShaderDef().color() ) );
+	auto cylinder = geom::Cylinder().radius(0.05f).height( mEarthSphere.getRadius() * 3.5 ) >> geom::Translate( 0, -1.75 * mEarthSphere.getRadius(), 0 );
 	mConstraintAxis = gl::Batch::create( cylinder, gl::getStockShader( gl::ShaderDef().color() ) );
 
 	mArcball = Arcball( &mCam, mEarthSphere );
@@ -62,11 +62,11 @@ void ArcballTestApp::keyDown( KeyEvent event )
 		mCam.setPerspective( randFloat( 5, 140 ), getWindowAspectRatio(), 1.0f, 10.0f );
 	}
 	else if( event.getChar() == 'd' ) {
-		mUsingCameraUi = !mUsingCameraUi;
+		mUsingCameraUi = ! mUsingCameraUi;
 		if( mUsingCameraUi )
 			mDebugCam = mCam;
 	}
-	else if( event.getChar() == 'c' ) {
+	else if ( event.getChar() == 'c' ) {
 		if( mArcball.isUsingConstraint() )
 			mArcball.setNoConstraintAxis();
 		else
@@ -77,8 +77,8 @@ void ArcballTestApp::keyDown( KeyEvent event )
 		mCam.lookAt( vec3( 0, 0, 5 ), vec3( mZLookAt ) );
 	}
 	else if( event.getChar() == 'r' ) {
-		mEarthSphere.setCenter( vec3( randFloat( 2 ), randFloat( 1 ), randFloat( -4, 0 ) ) );
-		mEarth = gl::Batch::create( geom::Sphere( Sphere( vec3( 0 ), mEarthSphere.getRadius() ) ).subdivisions( 50 ), gl::getStockShader( gl::ShaderDef().texture() ) );
+		mEarthSphere.setCenter( vec3( randFloat(2), randFloat(1), randFloat( -4, 0 ) ) );
+		mEarth = gl::Batch::create( geom::Sphere( Sphere( vec3(0), mEarthSphere.getRadius() ) ).subdivisions( 50 ), gl::getStockShader( gl::ShaderDef().texture() ) );
 		mArcball.setSphere( mEarthSphere );
 	}
 }

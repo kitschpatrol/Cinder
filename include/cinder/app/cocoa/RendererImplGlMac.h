@@ -32,25 +32,25 @@
 @class NSOpenGLPixelFormat;
 
 @interface RendererImplGlMac : NSObject {
-	NSOpenGLView *           mView;
-	cinder::app::RendererGl *mRenderer; // equivalent of a weak_ptr; 'renderer' actually owns us
-	NSView *                 mCinderView;
-	cinder::gl::ContextRef   mContext;
+	NSOpenGLView*					mView;
+	cinder::app::RendererGl*		mRenderer;		// equivalent of a weak_ptr; 'renderer' actually owns us
+	NSView*							mCinderView;
+	cinder::gl::ContextRef			mContext;
 }
 
-- (id)initWithFrame:(NSRect)frame cinderView:(NSView *)cinderView renderer:(cinder::app::RendererGl *)renderer sharedRenderer:(cinder::app::RendererGlRef)sharedRenderer withRetina:(BOOL)retinaEnabled;
-- (NSOpenGLView *)view;
+- (id)initWithFrame:(NSRect)frame cinderView:(NSView*)cinderView renderer:(cinder::app::RendererGl *)renderer sharedRenderer:(cinder::app::RendererGlRef)sharedRenderer withRetina:(BOOL)retinaEnabled;
+- (NSOpenGLView*)view;
 
 - (void)makeCurrentContext:(bool)force;
 - (CGLContextObj)getCglContext;
 - (CGLPixelFormatObj)getCglPixelFormat;
-- (NSOpenGLContext *)getNsOpenGlContext;
+- (NSOpenGLContext*)getNsOpenGlContext;
 - (void)flushBuffer;
 - (void)setFrameSize:(CGSize)newSize;
 - (void)defaultResize;
 
 - (BOOL)needsDrawRect;
 
-+ (NSOpenGLPixelFormat *)defaultPixelFormat:(cinder::app::RendererGl::Options)rendererOptions;
++ (NSOpenGLPixelFormat*)defaultPixelFormat: (cinder::app::RendererGl::Options)rendererOptions;
 
 @end

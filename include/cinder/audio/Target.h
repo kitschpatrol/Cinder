@@ -28,10 +28,9 @@
 
 #include "cinder/DataTarget.h"
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
-typedef std::shared_ptr<class TargetFile> TargetFileRef;
+typedef std::shared_ptr<class TargetFile>		TargetFileRef;
 
 //! Base class that is used to create and write to an audio destination. Currently only supports .wav encoding.
 class TargetFile {
@@ -39,23 +38,24 @@ class TargetFile {
 	static std::unique_ptr<TargetFile> create( const DataTargetRef &dataTarget, size_t sampleRate, size_t numChannels, SampleType sampleType = SampleType::INT_16, const std::string &extension = "" );
 	static std::unique_ptr<TargetFile> create( const fs::path &path, size_t sampleRate, size_t numChannels, SampleType sampleType = SampleType::INT_16, const std::string &extension = "" );
 	virtual ~TargetFile() {}
+
 	void write( const Buffer *buffer );
 	void write( const Buffer *buffer, size_t numFrames );
 	void write( const Buffer *buffer, size_t numFrames, size_t frameOffset );
 
-	size_t getSampleRate() const { return mSampleRate; }
-	size_t getNumChannels() const { return mNumChannels; }
+	size_t getSampleRate() const	{ return mSampleRate; }
+	size_t getNumChannels() const	{ return mNumChannels; }
+
   protected:
 	TargetFile( const DataTargetRef &dataTarget, size_t sampleRate, size_t numChannels, SampleType sampleType )
-	    : mSampleRate( sampleRate ), mNumChannels( numChannels ), mSampleType( sampleType )
-	{
-	}
+		: mSampleRate( sampleRate ), mNumChannels( numChannels ), mSampleType( sampleType )
+	{}
 
 	// Implement to write \a numFrames frames of \a buffer to file. The writing begins at \a frameOffset.
 	virtual void performWrite( const Buffer *buffer, size_t numFrames, size_t frameOffset ) = 0;
 
-	size_t     mSampleRate, mNumChannels;
-	SampleType mSampleType;
+	size_t			mSampleRate, mNumChannels;
+	SampleType		mSampleType;
 };
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

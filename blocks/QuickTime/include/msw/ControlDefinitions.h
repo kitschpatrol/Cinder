@@ -48,6 +48,11 @@
 #include <Menus.h>
 #endif
 
+
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -61,12 +66,13 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
+
 
 /*
  *  ControlDefinitions.h
@@ -80,26 +86,26 @@ extern "C" {
 /*------------------------------------------------------------------------------------------------------*/
 
 enum {
-	kControlTabListResType = FOUR_CHAR_CODE( 'tab#' ), /* used for tab control (Appearance 1.0 and later)*/
-	kControlListDescResType = FOUR_CHAR_CODE( 'ldes' ) /* used for list box control (Appearance 1.0 and later)*/
+  kControlTabListResType        = FOUR_CHAR_CODE('tab#'), /* used for tab control (Appearance 1.0 and later)*/
+  kControlListDescResType       = FOUR_CHAR_CODE('ldes') /* used for list box control (Appearance 1.0 and later)*/
 };
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Check Box Values                                                                  */
 /*--------------------------------------------------------------------------------------*/
 enum {
-	kControlCheckBoxUncheckedValue = 0,
-	kControlCheckBoxCheckedValue = 1,
-	kControlCheckBoxMixedValue = 2
+  kControlCheckBoxUncheckedValue = 0,
+  kControlCheckBoxCheckedValue  = 1,
+  kControlCheckBoxMixedValue    = 2
 };
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Radio Button Values                                                               */
 /*--------------------------------------------------------------------------------------*/
 enum {
-	kControlRadioButtonUncheckedValue = 0,
-	kControlRadioButtonCheckedValue = 1,
-	kControlRadioButtonMixedValue = 2
+  kControlRadioButtonUncheckedValue = 0,
+  kControlRadioButtonCheckedValue = 1,
+  kControlRadioButtonMixedValue = 2
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -107,29 +113,29 @@ enum {
 /*--------------------------------------------------------------------------------------*/
 /* Variant codes for the System 7 pop-up menu*/
 enum {
-	popupFixedWidth = 1 << 0,
-	popupVariableWidth = 1 << 1,
-	popupUseAddResMenu = 1 << 2,
-	popupUseWFont = 1 << 3
+  popupFixedWidth               = 1 << 0,
+  popupVariableWidth            = 1 << 1,
+  popupUseAddResMenu            = 1 << 2,
+  popupUseWFont                 = 1 << 3
 };
 
 /* Menu label styles for the System 7 pop-up menu*/
 enum {
-	popupTitleBold = 1 << 8,
-	popupTitleItalic = 1 << 9,
-	popupTitleUnderline = 1 << 10,
-	popupTitleOutline = 1 << 11,
-	popupTitleShadow = 1 << 12,
-	popupTitleCondense = 1 << 13,
-	popupTitleExtend = 1 << 14,
-	popupTitleNoStyle = 1 << 15
+  popupTitleBold                = 1 << 8,
+  popupTitleItalic              = 1 << 9,
+  popupTitleUnderline           = 1 << 10,
+  popupTitleOutline             = 1 << 11,
+  popupTitleShadow              = 1 << 12,
+  popupTitleCondense            = 1 << 13,
+  popupTitleExtend              = 1 << 14,
+  popupTitleNoStyle             = 1 << 15
 };
 
 /* Menu label justifications for the System 7 pop-up menu*/
 enum {
-	popupTitleLeftJust = 0x00000000,
-	popupTitleCenterJust = 0x00000001,
-	popupTitleRightJust = 0x000000FF
+  popupTitleLeftJust            = 0x00000000,
+  popupTitleCenterJust          = 0x00000001,
+  popupTitleRightJust           = 0x000000FF
 };
 
 /*------------------------------------------------------------------------------------------------------*/
@@ -137,13 +143,13 @@ enum {
 /*------------------------------------------------------------------------------------------------------*/
 #if !OPAQUE_TOOLBOX_STRUCTS
 struct PopupPrivateData {
-	MenuRef mHandle;
-	SInt16  mID;
+  MenuRef             mHandle;
+  SInt16              mID;
 };
-typedef struct PopupPrivateData PopupPrivateData;
-typedef PopupPrivateData *      PopupPrivateDataPtr;
-typedef PopupPrivateDataPtr *   PopupPrivateDataHandle;
-#endif /* !OPAQUE_TOOLBOX_STRUCTS */
+typedef struct PopupPrivateData         PopupPrivateData;
+typedef PopupPrivateData *              PopupPrivateDataPtr;
+typedef PopupPrivateDataPtr *           PopupPrivateDataHandle;
+#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
 
 /*------------------------------------------------------------------------------------------------------*/
 /*  o Control Definition ID's                                                                           */
@@ -151,42 +157,44 @@ typedef PopupPrivateDataPtr *   PopupPrivateDataHandle;
 /* Standard System 7 procIDs*/
 
 enum {
-	pushButProc = 0,
-	checkBoxProc = 1,
-	radioButProc = 2,
-	scrollBarProc = 16,
-	popupMenuProc = 1008
+  pushButProc                   = 0,
+  checkBoxProc                  = 1,
+  radioButProc                  = 2,
+  scrollBarProc                 = 16,
+  popupMenuProc                 = 1008
 };
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Control Part Codes                                                                */
 /*--------------------------------------------------------------------------------------*/
 enum {
-	kControlLabelPart = 1,
-	kControlMenuPart = 2,
-	kControlTrianglePart = 4,
-	kControlEditTextPart = 5, /* Appearance 1.0 and later*/
-	kControlPicturePart = 6, /* Appearance 1.0 and later*/
-	kControlIconPart = 7, /* Appearance 1.0 and later*/
-	kControlClockPart = 8, /* Appearance 1.0 and later*/
-	kControlListBoxPart = 24, /* Appearance 1.0 and later*/
-	kControlListBoxDoubleClickPart = 25, /* Appearance 1.0 and later*/
-	kControlImageWellPart = 26, /* Appearance 1.0 and later*/
-	kControlRadioGroupPart = 27, /* Appearance 1.0.2 and later*/
-	kControlButtonPart = 10,
-	kControlCheckBoxPart = 11,
-	kControlRadioButtonPart = 11,
-	kControlUpButtonPart = 20,
-	kControlDownButtonPart = 21,
-	kControlPageUpPart = 22,
-	kControlPageDownPart = 23,
-	kControlClockHourDayPart = 9, /* Appearance 1.1 and later*/
-	kControlClockMinuteMonthPart = 10, /* Appearance 1.1 and later*/
-	kControlClockSecondYearPart = 11, /* Appearance 1.1 and later*/
-	kControlClockAMPMPart = 12, /* Appearance 1.1 and later*/
-	kControlDataBrowserPart = 24, /* CarbonLib 1.0 and later*/
-	kControlDataBrowserDraggedPart = 25 /* CarbonLib 1.0 and later*/
+  kControlLabelPart             = 1,
+  kControlMenuPart              = 2,
+  kControlTrianglePart          = 4,
+  kControlEditTextPart          = 5,    /* Appearance 1.0 and later*/
+  kControlPicturePart           = 6,    /* Appearance 1.0 and later*/
+  kControlIconPart              = 7,    /* Appearance 1.0 and later*/
+  kControlClockPart             = 8,    /* Appearance 1.0 and later*/
+  kControlListBoxPart           = 24,   /* Appearance 1.0 and later*/
+  kControlListBoxDoubleClickPart = 25,  /* Appearance 1.0 and later*/
+  kControlImageWellPart         = 26,   /* Appearance 1.0 and later*/
+  kControlRadioGroupPart        = 27,   /* Appearance 1.0.2 and later*/
+  kControlButtonPart            = 10,
+  kControlCheckBoxPart          = 11,
+  kControlRadioButtonPart       = 11,
+  kControlUpButtonPart          = 20,
+  kControlDownButtonPart        = 21,
+  kControlPageUpPart            = 22,
+  kControlPageDownPart          = 23,
+  kControlClockHourDayPart      = 9,    /* Appearance 1.1 and later*/
+  kControlClockMinuteMonthPart  = 10,   /* Appearance 1.1 and later*/
+  kControlClockSecondYearPart   = 11,   /* Appearance 1.1 and later*/
+  kControlClockAMPMPart         = 12,   /* Appearance 1.1 and later*/
+  kControlDataBrowserPart       = 24,   /* CarbonLib 1.0 and later*/
+  kControlDataBrowserDraggedPart = 25   /* CarbonLib 1.0 and later*/
 };
+
+
 
 /*------------------------------------------------------------------------------------------------------*/
 /*  o Control Types and ID's available only with Appearance 1.0 and later                               */
@@ -251,55 +259,55 @@ enum {
 /*                                                                                      */
 /* Bevel Button Proc IDs */
 enum {
-	kControlBevelButtonSmallBevelProc = 32,
-	kControlBevelButtonNormalBevelProc = 33,
-	kControlBevelButtonLargeBevelProc = 34
+  kControlBevelButtonSmallBevelProc = 32,
+  kControlBevelButtonNormalBevelProc = 33,
+  kControlBevelButtonLargeBevelProc = 34
 };
 
 /* Add these variant codes to kBevelButtonSmallBevelProc to change the type of button */
 enum {
-	kControlBevelButtonSmallBevelVariant = 0,
-	kControlBevelButtonNormalBevelVariant = ( 1 << 0 ),
-	kControlBevelButtonLargeBevelVariant = ( 1 << 1 ),
-	kControlBevelButtonMenuOnRightVariant = ( 1 << 2 )
+  kControlBevelButtonSmallBevelVariant = 0,
+  kControlBevelButtonNormalBevelVariant = (1 << 0),
+  kControlBevelButtonLargeBevelVariant = (1 << 1),
+  kControlBevelButtonMenuOnRightVariant = (1 << 2)
 };
 
 /* Bevel Thicknesses */
 typedef UInt16 ControlBevelThickness;
 enum {
-	kControlBevelButtonSmallBevel = 0,
-	kControlBevelButtonNormalBevel = 1,
-	kControlBevelButtonLargeBevel = 2
+  kControlBevelButtonSmallBevel = 0,
+  kControlBevelButtonNormalBevel = 1,
+  kControlBevelButtonLargeBevel = 2
 };
 
 /* Behaviors of bevel buttons. These are set up so you can add  */
 /* them together with the content types.                        */
 enum {
-	kControlBehaviorPushbutton = 0,
-	kControlBehaviorToggles = 0x0100,
-	kControlBehaviorSticky = 0x0200,
-	kControlBehaviorSingleValueMenu = 0,
-	kControlBehaviorMultiValueMenu = 0x4000, /* only makes sense when a menu is attached.*/
-	kControlBehaviorOffsetContents = 0x8000
+  kControlBehaviorPushbutton    = 0,
+  kControlBehaviorToggles       = 0x0100,
+  kControlBehaviorSticky        = 0x0200,
+  kControlBehaviorSingleValueMenu = 0,
+  kControlBehaviorMultiValueMenu = 0x4000, /* only makes sense when a menu is attached.*/
+  kControlBehaviorOffsetContents = 0x8000
 };
 
 /* Behaviors for 1.0.1 or later */
 enum {
-	kControlBehaviorCommandMenu = 0x2000 /* menu holds commands, not choices. Overrides multi-value bit.*/
+  kControlBehaviorCommandMenu   = 0x2000 /* menu holds commands, not choices. Overrides multi-value bit.*/
 };
 
-typedef UInt16 ControlBevelButtonBehavior;
-typedef UInt16 ControlBevelButtonMenuBehavior;
+typedef UInt16                          ControlBevelButtonBehavior;
+typedef UInt16                          ControlBevelButtonMenuBehavior;
 /* Bevel Button Menu Placements */
 typedef UInt16 ControlBevelButtonMenuPlacement;
 enum {
-	kControlBevelButtonMenuOnBottom = 0,
-	kControlBevelButtonMenuOnRight = ( 1 << 2 )
+  kControlBevelButtonMenuOnBottom = 0,
+  kControlBevelButtonMenuOnRight = (1 << 2)
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindBevelButton = FOUR_CHAR_CODE( 'bevl' )
+  kControlKindBevelButton       = FOUR_CHAR_CODE('bevl')
 };
 
 /* Creation API: Carbon Only */
@@ -313,87 +321,91 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateBevelButtonControl(
-    WindowRef                       window,
-    const Rect *                    boundsRect,
-    CFStringRef                     title,
-    ControlBevelThickness           thickness,
-    ControlBevelButtonBehavior      behavior,
-    ControlButtonContentInfoPtr     info,
-    SInt16                          menuID,
-    ControlBevelButtonMenuBehavior  menuBehavior,
-    ControlBevelButtonMenuPlacement menuPlacement,
-    ControlRef *                    outControl );
+  WindowRef                         window,
+  const Rect *                      boundsRect,
+  CFStringRef                       title,
+  ControlBevelThickness             thickness,
+  ControlBevelButtonBehavior        behavior,
+  ControlButtonContentInfoPtr       info,
+  SInt16                            menuID,
+  ControlBevelButtonMenuBehavior    menuBehavior,
+  ControlBevelButtonMenuPlacement   menuPlacement,
+  ControlRef *                      outControl);
+
+
+
 
 /* Graphic Alignments */
 typedef SInt16 ControlButtonGraphicAlignment;
 enum {
-	kControlBevelButtonAlignSysDirection = -1, /* only left or right*/
-	kControlBevelButtonAlignCenter = 0,
-	kControlBevelButtonAlignLeft = 1,
-	kControlBevelButtonAlignRight = 2,
-	kControlBevelButtonAlignTop = 3,
-	kControlBevelButtonAlignBottom = 4,
-	kControlBevelButtonAlignTopLeft = 5,
-	kControlBevelButtonAlignBottomLeft = 6,
-	kControlBevelButtonAlignTopRight = 7,
-	kControlBevelButtonAlignBottomRight = 8
+  kControlBevelButtonAlignSysDirection = -1, /* only left or right*/
+  kControlBevelButtonAlignCenter = 0,
+  kControlBevelButtonAlignLeft  = 1,
+  kControlBevelButtonAlignRight = 2,
+  kControlBevelButtonAlignTop   = 3,
+  kControlBevelButtonAlignBottom = 4,
+  kControlBevelButtonAlignTopLeft = 5,
+  kControlBevelButtonAlignBottomLeft = 6,
+  kControlBevelButtonAlignTopRight = 7,
+  kControlBevelButtonAlignBottomRight = 8
 };
 
 /* Text Alignments */
 typedef SInt16 ControlButtonTextAlignment;
 enum {
-	kControlBevelButtonAlignTextSysDirection = teFlushDefault,
-	kControlBevelButtonAlignTextCenter = teCenter,
-	kControlBevelButtonAlignTextFlushRight = teFlushRight,
-	kControlBevelButtonAlignTextFlushLeft = teFlushLeft
+  kControlBevelButtonAlignTextSysDirection = teFlushDefault,
+  kControlBevelButtonAlignTextCenter = teCenter,
+  kControlBevelButtonAlignTextFlushRight = teFlushRight,
+  kControlBevelButtonAlignTextFlushLeft = teFlushLeft
 };
 
 /* Text Placements */
 typedef SInt16 ControlButtonTextPlacement;
 enum {
-	kControlBevelButtonPlaceSysDirection = -1, /* if graphic on right, then on left*/
-	kControlBevelButtonPlaceNormally = 0,
-	kControlBevelButtonPlaceToRightOfGraphic = 1,
-	kControlBevelButtonPlaceToLeftOfGraphic = 2,
-	kControlBevelButtonPlaceBelowGraphic = 3,
-	kControlBevelButtonPlaceAboveGraphic = 4
+  kControlBevelButtonPlaceSysDirection = -1, /* if graphic on right, then on left*/
+  kControlBevelButtonPlaceNormally = 0,
+  kControlBevelButtonPlaceToRightOfGraphic = 1,
+  kControlBevelButtonPlaceToLeftOfGraphic = 2,
+  kControlBevelButtonPlaceBelowGraphic = 3,
+  kControlBevelButtonPlaceAboveGraphic = 4
 };
+
 
 /* Data tags supported by the bevel button controls */
 enum {
-	kControlBevelButtonContentTag = FOUR_CHAR_CODE( 'cont' ), /* ButtonContentInfo*/
-	kControlBevelButtonTransformTag = FOUR_CHAR_CODE( 'tran' ), /* IconTransformType*/
-	kControlBevelButtonTextAlignTag = FOUR_CHAR_CODE( 'tali' ), /* ButtonTextAlignment*/
-	kControlBevelButtonTextOffsetTag = FOUR_CHAR_CODE( 'toff' ), /* SInt16*/
-	kControlBevelButtonGraphicAlignTag = FOUR_CHAR_CODE( 'gali' ), /* ButtonGraphicAlignment*/
-	kControlBevelButtonGraphicOffsetTag = FOUR_CHAR_CODE( 'goff' ), /* Point*/
-	kControlBevelButtonTextPlaceTag = FOUR_CHAR_CODE( 'tplc' ), /* ButtonTextPlacement*/
-	kControlBevelButtonMenuValueTag = FOUR_CHAR_CODE( 'mval' ), /* SInt16*/
-	kControlBevelButtonMenuHandleTag = FOUR_CHAR_CODE( 'mhnd' ), /* MenuRef*/
-	kControlBevelButtonMenuRefTag = FOUR_CHAR_CODE( 'mhnd' ), /* MenuRef*/
-	kControlBevelButtonCenterPopupGlyphTag = FOUR_CHAR_CODE( 'pglc' ) /* Boolean: true = center, false = bottom right*/
+  kControlBevelButtonContentTag = FOUR_CHAR_CODE('cont'), /* ButtonContentInfo*/
+  kControlBevelButtonTransformTag = FOUR_CHAR_CODE('tran'), /* IconTransformType*/
+  kControlBevelButtonTextAlignTag = FOUR_CHAR_CODE('tali'), /* ButtonTextAlignment*/
+  kControlBevelButtonTextOffsetTag = FOUR_CHAR_CODE('toff'), /* SInt16*/
+  kControlBevelButtonGraphicAlignTag = FOUR_CHAR_CODE('gali'), /* ButtonGraphicAlignment*/
+  kControlBevelButtonGraphicOffsetTag = FOUR_CHAR_CODE('goff'), /* Point*/
+  kControlBevelButtonTextPlaceTag = FOUR_CHAR_CODE('tplc'), /* ButtonTextPlacement*/
+  kControlBevelButtonMenuValueTag = FOUR_CHAR_CODE('mval'), /* SInt16*/
+  kControlBevelButtonMenuHandleTag = FOUR_CHAR_CODE('mhnd'), /* MenuRef*/
+  kControlBevelButtonMenuRefTag = FOUR_CHAR_CODE('mhnd'), /* MenuRef*/
+  kControlBevelButtonCenterPopupGlyphTag = FOUR_CHAR_CODE('pglc') /* Boolean: true = center, false = bottom right*/
 };
 
 /* These are tags in 1.0.1 or later */
 enum {
-	kControlBevelButtonLastMenuTag = FOUR_CHAR_CODE( 'lmnu' ), /* SInt16: menuID of last menu item selected from*/
-	kControlBevelButtonMenuDelayTag = FOUR_CHAR_CODE( 'mdly' ) /* SInt32: ticks to delay before menu appears*/
+  kControlBevelButtonLastMenuTag = FOUR_CHAR_CODE('lmnu'), /* SInt16: menuID of last menu item selected from*/
+  kControlBevelButtonMenuDelayTag = FOUR_CHAR_CODE('mdly') /* SInt32: ticks to delay before menu appears*/
 };
 
 /* tags available with Appearance 1.1 or later */
 enum {
-	/* Boolean: True = if an icon of the ideal size for*/
-	/* the button isn't available, scale a larger or*/
-	/* smaller icon to the ideal size. False = don't*/
-	/* scale; draw a smaller icon or clip a larger icon.*/
-	/* Default is false. Only applies to IconSuites and*/
-	kControlBevelButtonScaleIconTag = FOUR_CHAR_CODE( 'scal' ) /* IconRefs.*/
+                                        /* Boolean: True = if an icon of the ideal size for*/
+                                        /* the button isn't available, scale a larger or*/
+                                        /* smaller icon to the ideal size. False = don't*/
+                                        /* scale; draw a smaller icon or clip a larger icon.*/
+                                        /* Default is false. Only applies to IconSuites and*/
+  kControlBevelButtonScaleIconTag = FOUR_CHAR_CODE('scal') /* IconRefs.*/
 };
 
 /* tags available in Mac OS X and later */
 enum {
-	kControlBevelButtonOwnedMenuRefTag = FOUR_CHAR_CODE( 'omrf' ), /* MenuRef (control will dispose)*/
-	kControlBevelButtonKindTag = FOUR_CHAR_CODE( 'bebk' ) /* ThemeButtonKind ( kTheme[Small,Medium,Large,Rounded]BevelButton )*/
+  kControlBevelButtonOwnedMenuRefTag = FOUR_CHAR_CODE('omrf'), /* MenuRef (control will dispose)*/
+  kControlBevelButtonKindTag    = FOUR_CHAR_CODE('bebk') /* ThemeButtonKind ( kTheme[Small,Medium,Large,Rounded]BevelButton )*/
 };
 
 /* Helper routines are available only thru the shared library/glue. */
@@ -407,8 +419,9 @@ enum {
  */
 EXTERN_API( OSErr )
 GetBevelButtonMenuValue(
-    ControlRef inButton,
-    SInt16 *   outValue );
+  ControlRef   inButton,
+  SInt16 *     outValue);
+
 
 /*
  *  SetBevelButtonMenuValue()
@@ -420,8 +433,9 @@ GetBevelButtonMenuValue(
  */
 EXTERN_API( OSErr )
 SetBevelButtonMenuValue(
-    ControlRef inButton,
-    SInt16     inValue );
+  ControlRef   inButton,
+  SInt16       inValue);
+
 
 /*
  *  GetBevelButtonMenuHandle()
@@ -433,8 +447,9 @@ SetBevelButtonMenuValue(
  */
 EXTERN_API( OSErr )
 GetBevelButtonMenuHandle(
-    ControlRef  inButton,
-    MenuHandle *outHandle );
+  ControlRef    inButton,
+  MenuHandle *  outHandle);
+
 
 #define GetBevelButtonMenuRef GetBevelButtonMenuHandle
 /*
@@ -447,8 +462,9 @@ GetBevelButtonMenuHandle(
  */
 EXTERN_API( OSErr )
 GetBevelButtonContentInfo(
-    ControlRef                  inButton,
-    ControlButtonContentInfoPtr outContent );
+  ControlRef                    inButton,
+  ControlButtonContentInfoPtr   outContent);
+
 
 /*
  *  SetBevelButtonContentInfo()
@@ -460,8 +476,9 @@ GetBevelButtonContentInfo(
  */
 EXTERN_API( OSErr )
 SetBevelButtonContentInfo(
-    ControlRef                  inButton,
-    ControlButtonContentInfoPtr inContent );
+  ControlRef                    inButton,
+  ControlButtonContentInfoPtr   inContent);
+
 
 /*
  *  SetBevelButtonTransform()
@@ -473,8 +490,9 @@ SetBevelButtonContentInfo(
  */
 EXTERN_API( OSErr )
 SetBevelButtonTransform(
-    ControlRef        inButton,
-    IconTransformType transform );
+  ControlRef          inButton,
+  IconTransformType   transform);
+
 
 /*
  *  SetBevelButtonGraphicAlignment()
@@ -486,10 +504,11 @@ SetBevelButtonTransform(
  */
 EXTERN_API( OSErr )
 SetBevelButtonGraphicAlignment(
-    ControlRef                    inButton,
-    ControlButtonGraphicAlignment inAlign,
-    SInt16                        inHOffset,
-    SInt16                        inVOffset );
+  ControlRef                      inButton,
+  ControlButtonGraphicAlignment   inAlign,
+  SInt16                          inHOffset,
+  SInt16                          inVOffset);
+
 
 /*
  *  SetBevelButtonTextAlignment()
@@ -501,9 +520,10 @@ SetBevelButtonGraphicAlignment(
  */
 EXTERN_API( OSErr )
 SetBevelButtonTextAlignment(
-    ControlRef                 inButton,
-    ControlButtonTextAlignment inAlign,
-    SInt16                     inHOffset );
+  ControlRef                   inButton,
+  ControlButtonTextAlignment   inAlign,
+  SInt16                       inHOffset);
+
 
 /*
  *  SetBevelButtonTextPlacement()
@@ -515,8 +535,10 @@ SetBevelButtonTextAlignment(
  */
 EXTERN_API( OSErr )
 SetBevelButtonTextPlacement(
-    ControlRef                 inButton,
-    ControlButtonTextPlacement inWhere );
+  ControlRef                   inButton,
+  ControlButtonTextPlacement   inWhere);
+
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o SLIDER (CDEF 3)                                                                   */
@@ -549,24 +571,24 @@ SetBevelButtonTextPlacement(
 /*                              like the normal indicator does.                         */
 /* Slider proc ID and variants */
 enum {
-	kControlSliderProc = 48,
-	kControlSliderLiveFeedback = ( 1 << 0 ),
-	kControlSliderHasTickMarks = ( 1 << 1 ),
-	kControlSliderReverseDirection = ( 1 << 2 ),
-	kControlSliderNonDirectional = ( 1 << 3 )
+  kControlSliderProc            = 48,
+  kControlSliderLiveFeedback    = (1 << 0),
+  kControlSliderHasTickMarks    = (1 << 1),
+  kControlSliderReverseDirection = (1 << 2),
+  kControlSliderNonDirectional  = (1 << 3)
 };
 
 /* Slider Orientation */
 typedef UInt16 ControlSliderOrientation;
 enum {
-	kControlSliderPointsDownOrRight = 0,
-	kControlSliderPointsUpOrLeft = 1,
-	kControlSliderDoesNotPoint = 2
+  kControlSliderPointsDownOrRight = 0,
+  kControlSliderPointsUpOrLeft  = 1,
+  kControlSliderDoesNotPoint    = 2
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindSlider = FOUR_CHAR_CODE( 'sldr' )
+  kControlKindSlider            = FOUR_CHAR_CODE('sldr')
 };
 
 /* Creation API: Carbon Only */
@@ -580,16 +602,18 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateSliderControl(
-    WindowRef                window,
-    const Rect *             boundsRect,
-    SInt32                   value,
-    SInt32                   minimum,
-    SInt32                   maximum,
-    ControlSliderOrientation orientation,
-    UInt16                   numTickMarks,
-    Boolean                  liveTracking,
-    ControlActionUPP         liveTrackingProc,
-    ControlRef *             outControl );
+  WindowRef                  window,
+  const Rect *               boundsRect,
+  SInt32                     value,
+  SInt32                     minimum,
+  SInt32                     maximum,
+  ControlSliderOrientation   orientation,
+  UInt16                     numTickMarks,
+  Boolean                    liveTracking,
+  ControlActionUPP           liveTrackingProc,
+  ControlRef *               outControl);
+
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o DISCLOSURE TRIANGLE (CDEF 4)                                                      */
@@ -601,22 +625,22 @@ CreateSliderControl(
 /*  Control, you can just check the current value to see what state it was switched to. */
 /* Triangle proc IDs */
 enum {
-	kControlTriangleProc = 64,
-	kControlTriangleLeftFacingProc = 65,
-	kControlTriangleAutoToggleProc = 66,
-	kControlTriangleLeftFacingAutoToggleProc = 67
+  kControlTriangleProc          = 64,
+  kControlTriangleLeftFacingProc = 65,
+  kControlTriangleAutoToggleProc = 66,
+  kControlTriangleLeftFacingAutoToggleProc = 67
 };
 
 typedef UInt16 ControlDisclosureTriangleOrientation;
 enum {
-	kControlDisclosureTrianglePointDefault = 0, /* points right on a left-to-right script system (Mac OS X and later or CarbonLib 1.5 and later only)*/
-	kControlDisclosureTrianglePointRight = 1,
-	kControlDisclosureTrianglePointLeft = 2
+  kControlDisclosureTrianglePointDefault = 0, /* points right on a left-to-right script system (Mac OS X and later or CarbonLib 1.5 and later only)*/
+  kControlDisclosureTrianglePointRight = 1,
+  kControlDisclosureTrianglePointLeft = 2
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindDisclosureTriangle = FOUR_CHAR_CODE( 'dist' )
+  kControlKindDisclosureTriangle = FOUR_CHAR_CODE('dist')
 };
 
 /*
@@ -687,18 +711,20 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateDisclosureTriangleControl(
-    WindowRef                            inWindow,
-    const Rect *                         inBoundsRect,
-    ControlDisclosureTriangleOrientation inOrientation,
-    CFStringRef                          inTitle,
-    SInt32                               inInitialValue,
-    Boolean                              inDrawTitle,
-    Boolean                              inAutoToggles,
-    ControlRef *                         outControl );
+  WindowRef                              inWindow,
+  const Rect *                           inBoundsRect,
+  ControlDisclosureTriangleOrientation   inOrientation,
+  CFStringRef                            inTitle,
+  SInt32                                 inInitialValue,
+  Boolean                                inDrawTitle,
+  Boolean                                inAutoToggles,
+  ControlRef *                           outControl);
+
+
 
 /* Tagged data supported by disclosure triangles */
 enum {
-	kControlTriangleLastValueTag = FOUR_CHAR_CODE( 'last' ) /* SInt16*/
+  kControlTriangleLastValueTag  = FOUR_CHAR_CODE('last') /* SInt16*/
 };
 
 /* Helper routines are available only thru the shared library/glue. */
@@ -712,8 +738,9 @@ enum {
  */
 EXTERN_API( OSErr )
 SetDisclosureTriangleLastValue(
-    ControlRef inTabControl,
-    SInt16     inValue );
+  ControlRef   inTabControl,
+  SInt16       inValue);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o PROGRESS INDICATOR (CDEF 5)                                                       */
@@ -727,14 +754,14 @@ SetDisclosureTriangleLastValue(
 /*  idle.                                                                               */
 /* Progress Bar proc IDs */
 enum {
-	kControlProgressBarProc = 80,
-	kControlRelevanceBarProc = 81
+  kControlProgressBarProc       = 80,
+  kControlRelevanceBarProc      = 81
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindProgressBar = FOUR_CHAR_CODE( 'prgb' ),
-	kControlKindRelevanceBar = FOUR_CHAR_CODE( 'relb' )
+  kControlKindProgressBar       = FOUR_CHAR_CODE('prgb'),
+  kControlKindRelevanceBar      = FOUR_CHAR_CODE('relb')
 };
 
 /* Creation API: Carbon only */
@@ -748,13 +775,14 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateProgressBarControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    SInt32      value,
-    SInt32      minimum,
-    SInt32      maximum,
-    Boolean     indeterminate,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  SInt32        value,
+  SInt32        minimum,
+  SInt32        maximum,
+  Boolean       indeterminate,
+  ControlRef *  outControl);
+
 
 /*
  *  CreateRelevanceBarControl()
@@ -766,17 +794,18 @@ CreateProgressBarControl(
  */
 EXTERN_API( OSStatus )
 CreateRelevanceBarControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    SInt32      value,
-    SInt32      minimum,
-    SInt32      maximum,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  SInt32        value,
+  SInt32        minimum,
+  SInt32        maximum,
+  ControlRef *  outControl);
+
 
 /* Tagged data supported by progress bars */
 enum {
-	kControlProgressBarIndeterminateTag = FOUR_CHAR_CODE( 'inde' ), /* Boolean*/
-	kControlProgressBarAnimatingTag = FOUR_CHAR_CODE( 'anim' ) /* Boolean*/
+  kControlProgressBarIndeterminateTag = FOUR_CHAR_CODE('inde'), /* Boolean*/
+  kControlProgressBarAnimatingTag = FOUR_CHAR_CODE('anim') /* Boolean*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -786,12 +815,12 @@ enum {
 /*  control panel for adjusting the cache size.                                         */
 /* Little Arrows proc IDs */
 enum {
-	kControlLittleArrowsProc = 96
+  kControlLittleArrowsProc      = 96
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindLittleArrows = FOUR_CHAR_CODE( 'larr' )
+  kControlKindLittleArrows      = FOUR_CHAR_CODE('larr')
 };
 
 /* Creation API: Carbon only */
@@ -805,13 +834,14 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateLittleArrowsControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    SInt32      value,
-    SInt32      minimum,
-    SInt32      maximum,
-    SInt32      increment,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  SInt32        value,
+  SInt32        minimum,
+  SInt32        maximum,
+  SInt32        increment,
+  ControlRef *  outControl);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o CHASING ARROWS (CDEF 7)                                                           */
@@ -820,12 +850,12 @@ CreateLittleArrowsControl(
 /*                                                                                      */
 /* Chasing Arrows proc IDs */
 enum {
-	kControlChasingArrowsProc = 112
+  kControlChasingArrowsProc     = 112
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindChasingArrows = FOUR_CHAR_CODE( 'carr' )
+  kControlKindChasingArrows     = FOUR_CHAR_CODE('carr')
 };
 
 /* Creation API: Carbon only */
@@ -839,14 +869,16 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateChasingArrowsControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  ControlRef *  outControl);
+
 
 /* Tagged data supported by the Chasing Arrows control */
 enum {
-	kControlChasingArrowsAnimatingTag = FOUR_CHAR_CODE( 'anim' ) /* Boolean*/
+  kControlChasingArrowsAnimatingTag = FOUR_CHAR_CODE('anim') /* Boolean*/
 };
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o TABS (CDEF 8)                                                                     */
@@ -865,32 +897,32 @@ enum {
 /*  the name and optionally an icon for a tab.                                          */
 /* Tabs proc IDs */
 enum {
-	kControlTabLargeProc = 128, /* Large tab size, north facing   */
-	kControlTabSmallProc = 129, /* Small tab size, north facing   */
-	kControlTabLargeNorthProc = 128, /* Large tab size, north facing   */
-	kControlTabSmallNorthProc = 129, /* Small tab size, north facing   */
-	kControlTabLargeSouthProc = 130, /* Large tab size, south facing   */
-	kControlTabSmallSouthProc = 131, /* Small tab size, south facing   */
-	kControlTabLargeEastProc = 132, /* Large tab size, east facing    */
-	kControlTabSmallEastProc = 133, /* Small tab size, east facing    */
-	kControlTabLargeWestProc = 134, /* Large tab size, west facing    */
-	kControlTabSmallWestProc = 135 /* Small tab size, west facing    */
+  kControlTabLargeProc          = 128,  /* Large tab size, north facing   */
+  kControlTabSmallProc          = 129,  /* Small tab size, north facing   */
+  kControlTabLargeNorthProc     = 128,  /* Large tab size, north facing   */
+  kControlTabSmallNorthProc     = 129,  /* Small tab size, north facing   */
+  kControlTabLargeSouthProc     = 130,  /* Large tab size, south facing   */
+  kControlTabSmallSouthProc     = 131,  /* Small tab size, south facing   */
+  kControlTabLargeEastProc      = 132,  /* Large tab size, east facing    */
+  kControlTabSmallEastProc      = 133,  /* Small tab size, east facing    */
+  kControlTabLargeWestProc      = 134,  /* Large tab size, west facing    */
+  kControlTabSmallWestProc      = 135   /* Small tab size, west facing    */
 };
 
 /* Tab Directions */
 typedef UInt16 ControlTabDirection;
 enum {
-	kControlTabDirectionNorth = 0,
-	kControlTabDirectionSouth = 1,
-	kControlTabDirectionEast = 2,
-	kControlTabDirectionWest = 3
+  kControlTabDirectionNorth     = 0,
+  kControlTabDirectionSouth     = 1,
+  kControlTabDirectionEast      = 2,
+  kControlTabDirectionWest      = 3
 };
 
 /* Tab Sizes */
 typedef UInt16 ControlTabSize;
 enum {
-	kControlTabSizeLarge = kControlSizeNormal,
-	kControlTabSizeSmall = kControlSizeSmall
+  kControlTabSizeLarge          = kControlSizeNormal,
+  kControlTabSizeSmall          = kControlSizeSmall
 };
 
 /* Control Tab Entry - used during creation                             */
@@ -898,14 +930,14 @@ enum {
 /* the ControlButtonContentInfo and string storage for this             */
 /* structure.                                                           */
 struct ControlTabEntry {
-	ControlButtonContentInfo *icon;
-	CFStringRef               name;
-	Boolean                   enabled;
+  ControlButtonContentInfo * icon;
+  CFStringRef         name;
+  Boolean             enabled;
 };
-typedef struct ControlTabEntry ControlTabEntry;
+typedef struct ControlTabEntry          ControlTabEntry;
 /* Control Kind Tag */
 enum {
-	kControlKindTabs = FOUR_CHAR_CODE( 'tabs' )
+  kControlKindTabs              = FOUR_CHAR_CODE('tabs')
 };
 
 /* Creation API: Carbon only */
@@ -919,49 +951,51 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateTabsControl(
-    WindowRef              window,
-    const Rect *           boundsRect,
-    ControlTabSize         size,
-    ControlTabDirection    direction,
-    UInt16                 numTabs,
-    const ControlTabEntry *tabArray,
-    ControlRef *           outControl );
+  WindowRef                window,
+  const Rect *             boundsRect,
+  ControlTabSize           size,
+  ControlTabDirection      direction,
+  UInt16                   numTabs,
+  const ControlTabEntry *  tabArray,
+  ControlRef *             outControl);
+
+
 
 /* Tagged data supported by tabs */
 enum {
-	kControlTabContentRectTag = FOUR_CHAR_CODE( 'rect' ), /* Rect*/
-	kControlTabEnabledFlagTag = FOUR_CHAR_CODE( 'enab' ), /* Boolean*/
-	kControlTabFontStyleTag = kControlFontStyleTag /* ControlFontStyleRec*/
+  kControlTabContentRectTag     = FOUR_CHAR_CODE('rect'), /* Rect*/
+  kControlTabEnabledFlagTag     = FOUR_CHAR_CODE('enab'), /* Boolean*/
+  kControlTabFontStyleTag       = kControlFontStyleTag /* ControlFontStyleRec*/
 };
 
 /* New tags in 1.0.1 or later */
 enum {
-	kControlTabInfoTag = FOUR_CHAR_CODE( 'tabi' ) /* ControlTabInfoRec*/
+  kControlTabInfoTag            = FOUR_CHAR_CODE('tabi') /* ControlTabInfoRec*/
 };
 
 /* New tags in X 10.1 or later */
 enum {
-	kControlTabImageContentTag = FOUR_CHAR_CODE( 'cont' ) /* ControlButtonContentInfo*/
+  kControlTabImageContentTag    = FOUR_CHAR_CODE('cont') /* ControlButtonContentInfo*/
 };
 
 enum {
-	kControlTabInfoVersionZero = 0, /* ControlTabInfoRec*/
-	kControlTabInfoVersionOne = 1 /* ControlTabInfoRecV1*/
+  kControlTabInfoVersionZero    = 0,    /* ControlTabInfoRec*/
+  kControlTabInfoVersionOne     = 1     /* ControlTabInfoRecV1*/
 };
 
 struct ControlTabInfoRec {
-	SInt16 version; /* version of this structure.*/
-	SInt16 iconSuiteID; /* icon suite to use. Zero indicates no icon*/
-	Str255 name; /* name to be displayed on the tab*/
+  SInt16              version;                /* version of this structure.*/
+  SInt16              iconSuiteID;            /* icon suite to use. Zero indicates no icon*/
+  Str255              name;                   /* name to be displayed on the tab*/
 };
-typedef struct ControlTabInfoRec ControlTabInfoRec;
+typedef struct ControlTabInfoRec        ControlTabInfoRec;
 struct ControlTabInfoRecV1 {
-	SInt16      version; /* version of this structure. == kControlTabInfoVersionOne*/
-	SInt16      iconSuiteID; /* icon suite to use. Zero indicates no icon*/
-	CFStringRef name; /* name to be displayed on the tab. Will be retained so caller*/
-	/* should always release it.*/
+  SInt16              version;                /* version of this structure. == kControlTabInfoVersionOne*/
+  SInt16              iconSuiteID;            /* icon suite to use. Zero indicates no icon*/
+  CFStringRef         name;                   /* name to be displayed on the tab. Will be retained so caller*/
+                                              /* should always release it.*/
 };
-typedef struct ControlTabInfoRecV1 ControlTabInfoRecV1;
+typedef struct ControlTabInfoRecV1      ControlTabInfoRecV1;
 /* Helper routines are available only thru the shared library/glue. */
 /*
  *  GetTabContentRect()
@@ -973,8 +1007,9 @@ typedef struct ControlTabInfoRecV1 ControlTabInfoRecV1;
  */
 EXTERN_API( OSErr )
 GetTabContentRect(
-    ControlRef inTabControl,
-    Rect *     outContentRect );
+  ControlRef   inTabControl,
+  Rect *       outContentRect);
+
 
 /*
  *  SetTabEnabled()
@@ -986,9 +1021,10 @@ GetTabContentRect(
  */
 EXTERN_API( OSErr )
 SetTabEnabled(
-    ControlRef inTabControl,
-    SInt16     inTabToHilite,
-    Boolean    inEnabled );
+  ControlRef   inTabControl,
+  SInt16       inTabToHilite,
+  Boolean      inEnabled);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o VISUAL SEPARATOR (CDEF 9)                                                         */
@@ -997,12 +1033,12 @@ SetTabEnabled(
 /*  based on the relative height and width of their contrlRect.                         */
 /* Visual separator proc IDs */
 enum {
-	kControlSeparatorLineProc = 144
+  kControlSeparatorLineProc     = 144
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindSeparator = FOUR_CHAR_CODE( 'sepa' )
+  kControlKindSeparator         = FOUR_CHAR_CODE('sepa')
 };
 
 /* Creation API: Carbon only */
@@ -1016,9 +1052,10 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateSeparatorControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  ControlRef *  outControl);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o GROUP BOX (CDEF 10)                                                               */
@@ -1028,19 +1065,19 @@ CreateSeparatorControl(
 /*  group boxes, primary and secondary, which look slightly different.                  */
 /* Group Box proc IDs */
 enum {
-	kControlGroupBoxTextTitleProc = 160,
-	kControlGroupBoxCheckBoxProc = 161,
-	kControlGroupBoxPopupButtonProc = 162,
-	kControlGroupBoxSecondaryTextTitleProc = 164,
-	kControlGroupBoxSecondaryCheckBoxProc = 165,
-	kControlGroupBoxSecondaryPopupButtonProc = 166
+  kControlGroupBoxTextTitleProc = 160,
+  kControlGroupBoxCheckBoxProc  = 161,
+  kControlGroupBoxPopupButtonProc = 162,
+  kControlGroupBoxSecondaryTextTitleProc = 164,
+  kControlGroupBoxSecondaryCheckBoxProc = 165,
+  kControlGroupBoxSecondaryPopupButtonProc = 166
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindGroupBox = FOUR_CHAR_CODE( 'grpb' ),
-	kControlKindCheckGroupBox = FOUR_CHAR_CODE( 'cgrp' ),
-	kControlKindPopupGroupBox = FOUR_CHAR_CODE( 'pgrp' )
+  kControlKindGroupBox          = FOUR_CHAR_CODE('grpb'),
+  kControlKindCheckGroupBox     = FOUR_CHAR_CODE('cgrp'),
+  kControlKindPopupGroupBox     = FOUR_CHAR_CODE('pgrp')
 };
 
 /* Creation APIs: Carbon only */
@@ -1074,11 +1111,12 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateGroupBoxControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    CFStringRef title,
-    Boolean     primary,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  CFStringRef   title,
+  Boolean       primary,
+  ControlRef *  outControl);
+
 
 /*
  *  CreateCheckGroupBoxControl()
@@ -1118,13 +1156,14 @@ CreateGroupBoxControl(
  */
 EXTERN_API( OSStatus )
 CreateCheckGroupBoxControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    CFStringRef title,
-    SInt32      initialValue,
-    Boolean     primary,
-    Boolean     autoToggle,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  CFStringRef   title,
+  SInt32        initialValue,
+  Boolean       primary,
+  Boolean       autoToggle,
+  ControlRef *  outControl);
+
 
 /*
  *  CreatePopupGroupBoxControl()
@@ -1176,27 +1215,29 @@ CreateCheckGroupBoxControl(
  */
 EXTERN_API( OSStatus )
 CreatePopupGroupBoxControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    CFStringRef title,
-    Boolean     primary,
-    SInt16      menuID,
-    Boolean     variableWidth,
-    SInt16      titleWidth,
-    SInt16      titleJustification,
-    Style       titleStyle,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  CFStringRef   title,
+  Boolean       primary,
+  SInt16        menuID,
+  Boolean       variableWidth,
+  SInt16        titleWidth,
+  SInt16        titleJustification,
+  Style         titleStyle,
+  ControlRef *  outControl);
+
+
 
 /* Tagged data supported by group box */
 enum {
-	kControlGroupBoxMenuHandleTag = FOUR_CHAR_CODE( 'mhan' ), /* MenuRef (popup title only)*/
-	kControlGroupBoxMenuRefTag = FOUR_CHAR_CODE( 'mhan' ), /* MenuRef (popup title only)*/
-	kControlGroupBoxFontStyleTag = kControlFontStyleTag /* ControlFontStyleRec*/
+  kControlGroupBoxMenuHandleTag = FOUR_CHAR_CODE('mhan'), /* MenuRef (popup title only)*/
+  kControlGroupBoxMenuRefTag    = FOUR_CHAR_CODE('mhan'), /* MenuRef (popup title only)*/
+  kControlGroupBoxFontStyleTag  = kControlFontStyleTag /* ControlFontStyleRec*/
 };
 
 /* tags available with Appearance 1.1 or later */
 enum {
-	kControlGroupBoxTitleRectTag = FOUR_CHAR_CODE( 'trec' ) /* Rect. Rectangle that the title text/control is drawn in. (get only)*/
+  kControlGroupBoxTitleRectTag  = FOUR_CHAR_CODE('trec') /* Rect. Rectangle that the title text/control is drawn in. (get only)*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -1225,12 +1266,12 @@ enum {
 /*                                                                                      */
 /* Image Well proc IDs */
 enum {
-	kControlImageWellProc = 176
+  kControlImageWellProc         = 176
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindImageWell = FOUR_CHAR_CODE( 'well' )
+  kControlKindImageWell         = FOUR_CHAR_CODE('well')
 };
 
 /* Creation API: Carbon only */
@@ -1244,16 +1285,17 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateImageWellControl(
-    WindowRef                       window,
-    const Rect *                    boundsRect,
-    const ControlButtonContentInfo *info,
-    ControlRef *                    outControl );
+  WindowRef                         window,
+  const Rect *                      boundsRect,
+  const ControlButtonContentInfo *  info,
+  ControlRef *                      outControl);
+
 
 /* Tagged data supported by image wells */
 enum {
-	kControlImageWellContentTag = FOUR_CHAR_CODE( 'cont' ), /* ButtonContentInfo*/
-	kControlImageWellTransformTag = FOUR_CHAR_CODE( 'tran' ), /* IconTransformType*/
-	kControlImageWellIsDragDestinationTag = FOUR_CHAR_CODE( 'drag' ) /* Boolean*/
+  kControlImageWellContentTag   = FOUR_CHAR_CODE('cont'), /* ButtonContentInfo*/
+  kControlImageWellTransformTag = FOUR_CHAR_CODE('tran'), /* IconTransformType*/
+  kControlImageWellIsDragDestinationTag = FOUR_CHAR_CODE('drag') /* Boolean*/
 };
 
 /* Helper routines are available only thru the shared library/glue. */
@@ -1267,8 +1309,9 @@ enum {
  */
 EXTERN_API( OSErr )
 GetImageWellContentInfo(
-    ControlRef                  inButton,
-    ControlButtonContentInfoPtr outContent );
+  ControlRef                    inButton,
+  ControlButtonContentInfoPtr   outContent);
+
 
 /*
  *  SetImageWellContentInfo()
@@ -1280,8 +1323,9 @@ GetImageWellContentInfo(
  */
 EXTERN_API( OSErr )
 SetImageWellContentInfo(
-    ControlRef                  inButton,
-    ControlButtonContentInfoPtr inContent );
+  ControlRef                    inButton,
+  ControlButtonContentInfoPtr   inContent);
+
 
 /*
  *  SetImageWellTransform()
@@ -1293,8 +1337,9 @@ SetImageWellContentInfo(
  */
 EXTERN_API( OSErr )
 SetImageWellTransform(
-    ControlRef        inButton,
-    IconTransformType inTransform );
+  ControlRef          inButton,
+  IconTransformType   inTransform);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o POPUP ARROW (CDEF 12)                                                             */
@@ -1306,35 +1351,36 @@ SetImageWellTransform(
 /*                                                                                      */
 /* Popup Arrow proc IDs */
 enum {
-	kControlPopupArrowEastProc = 192,
-	kControlPopupArrowWestProc = 193,
-	kControlPopupArrowNorthProc = 194,
-	kControlPopupArrowSouthProc = 195,
-	kControlPopupArrowSmallEastProc = 196,
-	kControlPopupArrowSmallWestProc = 197,
-	kControlPopupArrowSmallNorthProc = 198,
-	kControlPopupArrowSmallSouthProc = 199
+  kControlPopupArrowEastProc    = 192,
+  kControlPopupArrowWestProc    = 193,
+  kControlPopupArrowNorthProc   = 194,
+  kControlPopupArrowSouthProc   = 195,
+  kControlPopupArrowSmallEastProc = 196,
+  kControlPopupArrowSmallWestProc = 197,
+  kControlPopupArrowSmallNorthProc = 198,
+  kControlPopupArrowSmallSouthProc = 199
 };
 
 /* Popup Arrow Orientations */
 enum {
-	kControlPopupArrowOrientationEast = 0,
-	kControlPopupArrowOrientationWest = 1,
-	kControlPopupArrowOrientationNorth = 2,
-	kControlPopupArrowOrientationSouth = 3
+  kControlPopupArrowOrientationEast = 0,
+  kControlPopupArrowOrientationWest = 1,
+  kControlPopupArrowOrientationNorth = 2,
+  kControlPopupArrowOrientationSouth = 3
 };
 
-typedef UInt16 ControlPopupArrowOrientation;
+
+typedef UInt16                          ControlPopupArrowOrientation;
 /* Popup Arrow Size */
 enum {
-	kControlPopupArrowSizeNormal = 0,
-	kControlPopupArrowSizeSmall = 1
+  kControlPopupArrowSizeNormal  = 0,
+  kControlPopupArrowSizeSmall   = 1
 };
 
-typedef UInt16 ControlPopupArrowSize;
+typedef UInt16                          ControlPopupArrowSize;
 /* Control Kind Tag */
 enum {
-	kControlKindPopupArrow = FOUR_CHAR_CODE( 'parr' )
+  kControlKindPopupArrow        = FOUR_CHAR_CODE('parr')
 };
 
 /* Creation API: Carbon only */
@@ -1348,23 +1394,24 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreatePopupArrowControl(
-    WindowRef                    window,
-    const Rect *                 boundsRect,
-    ControlPopupArrowOrientation orientation,
-    ControlPopupArrowSize        size,
-    ControlRef *                 outControl );
+  WindowRef                      window,
+  const Rect *                   boundsRect,
+  ControlPopupArrowOrientation   orientation,
+  ControlPopupArrowSize          size,
+  ControlRef *                   outControl);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o PLACARD (CDEF 14)                                                                 */
 /*--------------------------------------------------------------------------------------*/
 /* Placard proc IDs */
 enum {
-	kControlPlacardProc = 224
+  kControlPlacardProc           = 224
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindPlacard = FOUR_CHAR_CODE( 'plac' )
+  kControlKindPlacard           = FOUR_CHAR_CODE('plac')
 };
 
 /* Creation API: Carbon only */
@@ -1378,9 +1425,10 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreatePlacardControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  ControlRef *  outControl);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o CLOCK (CDEF 15)                                                                   */
@@ -1401,19 +1449,19 @@ CreatePlacardControl(
 /*          re-focusing a focused clock, it will not change the focus at all.           */
 /* Clock proc IDs */
 enum {
-	kControlClockTimeProc = 240,
-	kControlClockTimeSecondsProc = 241,
-	kControlClockDateProc = 242,
-	kControlClockMonthYearProc = 243
+  kControlClockTimeProc         = 240,
+  kControlClockTimeSecondsProc  = 241,
+  kControlClockDateProc         = 242,
+  kControlClockMonthYearProc    = 243
 };
 
 /* Clock Types */
 typedef UInt16 ControlClockType;
 enum {
-	kControlClockTypeHourMinute = 0,
-	kControlClockTypeHourMinuteSecond = 1,
-	kControlClockTypeMonthDayYear = 2,
-	kControlClockTypeMonthYear = 3
+  kControlClockTypeHourMinute   = 0,
+  kControlClockTypeHourMinuteSecond = 1,
+  kControlClockTypeMonthDayYear = 2,
+  kControlClockTypeMonthYear    = 3
 };
 
 /* Clock Flags */
@@ -1421,17 +1469,17 @@ enum {
 /*  Value is set to 0 after control is created.                                         */
 typedef UInt32 ControlClockFlags;
 enum {
-	kControlClockFlagStandard = 0, /* editable, non-live*/
-	kControlClockNoFlags = 0,
-	kControlClockFlagDisplayOnly = 1, /* add this to become non-editable*/
-	kControlClockIsDisplayOnly = 1,
-	kControlClockFlagLive = 2, /* automatically shows current time on idle. only valid with display only.*/
-	kControlClockIsLive = 2
+  kControlClockFlagStandard     = 0,    /* editable, non-live*/
+  kControlClockNoFlags          = 0,
+  kControlClockFlagDisplayOnly  = 1,    /* add this to become non-editable*/
+  kControlClockIsDisplayOnly    = 1,
+  kControlClockFlagLive         = 2,    /* automatically shows current time on idle. only valid with display only.*/
+  kControlClockIsLive           = 2
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindClock = FOUR_CHAR_CODE( 'clck' )
+  kControlKindClock             = FOUR_CHAR_CODE('clck')
 };
 
 /* Creation API: Carbon only */
@@ -1445,17 +1493,18 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateClockControl(
-    WindowRef         window,
-    const Rect *      boundsRect,
-    ControlClockType  clockType,
-    ControlClockFlags clockFlags,
-    ControlRef *      outControl );
+  WindowRef           window,
+  const Rect *        boundsRect,
+  ControlClockType    clockType,
+  ControlClockFlags   clockFlags,
+  ControlRef *        outControl);
+
 
 /* Tagged data supported by clocks */
 enum {
-	kControlClockLongDateTag = FOUR_CHAR_CODE( 'date' ), /* LongDateRec*/
-	kControlClockFontStyleTag = kControlFontStyleTag, /* ControlFontStyleRec*/
-	kControlClockAnimatingTag = FOUR_CHAR_CODE( 'anim' ) /* Boolean*/
+  kControlClockLongDateTag      = FOUR_CHAR_CODE('date'), /* LongDateRec*/
+  kControlClockFontStyleTag     = kControlFontStyleTag, /* ControlFontStyleRec*/
+  kControlClockAnimatingTag     = FOUR_CHAR_CODE('anim') /* Boolean*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -1483,12 +1532,12 @@ enum {
 
 /* User Pane proc IDs */
 enum {
-	kControlUserPaneProc = 256
+  kControlUserPaneProc          = 256
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindUserPane = FOUR_CHAR_CODE( 'upan' )
+  kControlKindUserPane          = FOUR_CHAR_CODE('upan')
 };
 
 /* Creation API: Carbon only */
@@ -1502,41 +1551,42 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateUserPaneControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    UInt32      features,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  UInt32        features,
+  ControlRef *  outControl);
+
 
 /* Tagged data supported by user panes */
 /* Currently, they are all proc ptrs for doing things like drawing and hit testing, etc. */
 enum {
-	kControlUserItemDrawProcTag = FOUR_CHAR_CODE( 'uidp' ), /* UserItemUPP*/
-	kControlUserPaneDrawProcTag = FOUR_CHAR_CODE( 'draw' ), /* ControlUserPaneDrawingUPP*/
-	kControlUserPaneHitTestProcTag = FOUR_CHAR_CODE( 'hitt' ), /* ControlUserPaneHitTestUPP*/
-	kControlUserPaneTrackingProcTag = FOUR_CHAR_CODE( 'trak' ), /* ControlUserPaneTrackingUPP*/
-	kControlUserPaneIdleProcTag = FOUR_CHAR_CODE( 'idle' ), /* ControlUserPaneIdleUPP*/
-	kControlUserPaneKeyDownProcTag = FOUR_CHAR_CODE( 'keyd' ), /* ControlUserPaneKeyDownUPP*/
-	kControlUserPaneActivateProcTag = FOUR_CHAR_CODE( 'acti' ), /* ControlUserPaneActivateUPP*/
-	kControlUserPaneFocusProcTag = FOUR_CHAR_CODE( 'foci' ), /* ControlUserPaneFocusUPP*/
-	kControlUserPaneBackgroundProcTag = FOUR_CHAR_CODE( 'back' ) /* ControlUserPaneBackgroundUPP*/
+  kControlUserItemDrawProcTag   = FOUR_CHAR_CODE('uidp'), /* UserItemUPP*/
+  kControlUserPaneDrawProcTag   = FOUR_CHAR_CODE('draw'), /* ControlUserPaneDrawingUPP*/
+  kControlUserPaneHitTestProcTag = FOUR_CHAR_CODE('hitt'), /* ControlUserPaneHitTestUPP*/
+  kControlUserPaneTrackingProcTag = FOUR_CHAR_CODE('trak'), /* ControlUserPaneTrackingUPP*/
+  kControlUserPaneIdleProcTag   = FOUR_CHAR_CODE('idle'), /* ControlUserPaneIdleUPP*/
+  kControlUserPaneKeyDownProcTag = FOUR_CHAR_CODE('keyd'), /* ControlUserPaneKeyDownUPP*/
+  kControlUserPaneActivateProcTag = FOUR_CHAR_CODE('acti'), /* ControlUserPaneActivateUPP*/
+  kControlUserPaneFocusProcTag  = FOUR_CHAR_CODE('foci'), /* ControlUserPaneFocusUPP*/
+  kControlUserPaneBackgroundProcTag = FOUR_CHAR_CODE('back') /* ControlUserPaneBackgroundUPP*/
 };
 
-typedef CALLBACK_API( void, ControlUserPaneDrawProcPtr )( ControlRef control, SInt16 part );
-typedef CALLBACK_API( ControlPartCode, ControlUserPaneHitTestProcPtr )( ControlRef control, Point where );
-typedef CALLBACK_API( ControlPartCode, ControlUserPaneTrackingProcPtr )( ControlRef control, Point startPt, ControlActionUPP actionProc );
-typedef CALLBACK_API( void, ControlUserPaneIdleProcPtr )( ControlRef control );
-typedef CALLBACK_API( ControlPartCode, ControlUserPaneKeyDownProcPtr )( ControlRef control, SInt16 keyCode, SInt16 charCode, SInt16 modifiers );
-typedef CALLBACK_API( void, ControlUserPaneActivateProcPtr )( ControlRef control, Boolean activating );
-typedef CALLBACK_API( ControlPartCode, ControlUserPaneFocusProcPtr )( ControlRef control, ControlFocusPart action );
-typedef CALLBACK_API( void, ControlUserPaneBackgroundProcPtr )( ControlRef control, ControlBackgroundPtr info );
-typedef STACK_UPP_TYPE( ControlUserPaneDrawProcPtr ) ControlUserPaneDrawUPP;
-typedef STACK_UPP_TYPE( ControlUserPaneHitTestProcPtr ) ControlUserPaneHitTestUPP;
-typedef STACK_UPP_TYPE( ControlUserPaneTrackingProcPtr ) ControlUserPaneTrackingUPP;
-typedef STACK_UPP_TYPE( ControlUserPaneIdleProcPtr ) ControlUserPaneIdleUPP;
-typedef STACK_UPP_TYPE( ControlUserPaneKeyDownProcPtr ) ControlUserPaneKeyDownUPP;
-typedef STACK_UPP_TYPE( ControlUserPaneActivateProcPtr ) ControlUserPaneActivateUPP;
-typedef STACK_UPP_TYPE( ControlUserPaneFocusProcPtr ) ControlUserPaneFocusUPP;
-typedef STACK_UPP_TYPE( ControlUserPaneBackgroundProcPtr ) ControlUserPaneBackgroundUPP;
+typedef CALLBACK_API( void , ControlUserPaneDrawProcPtr )(ControlRef control, SInt16 part);
+typedef CALLBACK_API( ControlPartCode , ControlUserPaneHitTestProcPtr )(ControlRef control, Point where);
+typedef CALLBACK_API( ControlPartCode , ControlUserPaneTrackingProcPtr )(ControlRef control, Point startPt, ControlActionUPP actionProc);
+typedef CALLBACK_API( void , ControlUserPaneIdleProcPtr )(ControlRef control);
+typedef CALLBACK_API( ControlPartCode , ControlUserPaneKeyDownProcPtr )(ControlRef control, SInt16 keyCode, SInt16 charCode, SInt16 modifiers);
+typedef CALLBACK_API( void , ControlUserPaneActivateProcPtr )(ControlRef control, Boolean activating);
+typedef CALLBACK_API( ControlPartCode , ControlUserPaneFocusProcPtr )(ControlRef control, ControlFocusPart action);
+typedef CALLBACK_API( void , ControlUserPaneBackgroundProcPtr )(ControlRef control, ControlBackgroundPtr info);
+typedef STACK_UPP_TYPE(ControlUserPaneDrawProcPtr)              ControlUserPaneDrawUPP;
+typedef STACK_UPP_TYPE(ControlUserPaneHitTestProcPtr)           ControlUserPaneHitTestUPP;
+typedef STACK_UPP_TYPE(ControlUserPaneTrackingProcPtr)          ControlUserPaneTrackingUPP;
+typedef STACK_UPP_TYPE(ControlUserPaneIdleProcPtr)              ControlUserPaneIdleUPP;
+typedef STACK_UPP_TYPE(ControlUserPaneKeyDownProcPtr)           ControlUserPaneKeyDownUPP;
+typedef STACK_UPP_TYPE(ControlUserPaneActivateProcPtr)          ControlUserPaneActivateUPP;
+typedef STACK_UPP_TYPE(ControlUserPaneFocusProcPtr)             ControlUserPaneFocusUPP;
+typedef STACK_UPP_TYPE(ControlUserPaneBackgroundProcPtr)        ControlUserPaneBackgroundUPP;
 /*
  *  NewControlUserPaneDrawUPP()
  *  
@@ -1546,17 +1596,14 @@ typedef STACK_UPP_TYPE( ControlUserPaneBackgroundProcPtr ) ControlUserPaneBackgr
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneDrawUPP )
-NewControlUserPaneDrawUPP( ControlUserPaneDrawProcPtr userRoutine );
+NewControlUserPaneDrawUPP(ControlUserPaneDrawProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneDrawProcInfo = 0x000002C0 }; /* pascal no_return_value Func(4_bytes, 2_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneDrawUPP ) NewControlUserPaneDrawUPP( ControlUserPaneDrawProcPtr userRoutine )
-{
-	return (ControlUserPaneDrawUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneDrawProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneDrawUPP( userRoutine ) ( ControlUserPaneDrawUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneDrawProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneDrawProcInfo = 0x000002C0 };  /* pascal no_return_value Func(4_bytes, 2_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneDrawUPP) NewControlUserPaneDrawUPP(ControlUserPaneDrawProcPtr userRoutine) { return (ControlUserPaneDrawUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneDrawProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneDrawUPP(userRoutine) (ControlUserPaneDrawUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneDrawProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1568,17 +1615,14 @@ inline DEFINE_API_C( ControlUserPaneDrawUPP ) NewControlUserPaneDrawUPP( Control
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneHitTestUPP )
-NewControlUserPaneHitTestUPP( ControlUserPaneHitTestProcPtr userRoutine );
+NewControlUserPaneHitTestUPP(ControlUserPaneHitTestProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneHitTestProcInfo = 0x000003E0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneHitTestUPP ) NewControlUserPaneHitTestUPP( ControlUserPaneHitTestProcPtr userRoutine )
-{
-	return (ControlUserPaneHitTestUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneHitTestProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneHitTestUPP( userRoutine ) ( ControlUserPaneHitTestUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneHitTestProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneHitTestProcInfo = 0x000003E0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneHitTestUPP) NewControlUserPaneHitTestUPP(ControlUserPaneHitTestProcPtr userRoutine) { return (ControlUserPaneHitTestUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneHitTestProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneHitTestUPP(userRoutine) (ControlUserPaneHitTestUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneHitTestProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1590,17 +1634,14 @@ inline DEFINE_API_C( ControlUserPaneHitTestUPP ) NewControlUserPaneHitTestUPP( C
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneTrackingUPP )
-NewControlUserPaneTrackingUPP( ControlUserPaneTrackingProcPtr userRoutine );
+NewControlUserPaneTrackingUPP(ControlUserPaneTrackingProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneTrackingProcInfo = 0x00000FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneTrackingUPP ) NewControlUserPaneTrackingUPP( ControlUserPaneTrackingProcPtr userRoutine )
-{
-	return (ControlUserPaneTrackingUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneTrackingProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneTrackingUPP( userRoutine ) ( ControlUserPaneTrackingUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneTrackingProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneTrackingProcInfo = 0x00000FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneTrackingUPP) NewControlUserPaneTrackingUPP(ControlUserPaneTrackingProcPtr userRoutine) { return (ControlUserPaneTrackingUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneTrackingProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneTrackingUPP(userRoutine) (ControlUserPaneTrackingUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneTrackingProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1612,17 +1653,14 @@ inline DEFINE_API_C( ControlUserPaneTrackingUPP ) NewControlUserPaneTrackingUPP(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneIdleUPP )
-NewControlUserPaneIdleUPP( ControlUserPaneIdleProcPtr userRoutine );
+NewControlUserPaneIdleUPP(ControlUserPaneIdleProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneIdleProcInfo = 0x000000C0 }; /* pascal no_return_value Func(4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneIdleUPP ) NewControlUserPaneIdleUPP( ControlUserPaneIdleProcPtr userRoutine )
-{
-	return (ControlUserPaneIdleUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneIdleProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneIdleUPP( userRoutine ) ( ControlUserPaneIdleUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneIdleProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneIdleProcInfo = 0x000000C0 };  /* pascal no_return_value Func(4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneIdleUPP) NewControlUserPaneIdleUPP(ControlUserPaneIdleProcPtr userRoutine) { return (ControlUserPaneIdleUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneIdleProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneIdleUPP(userRoutine) (ControlUserPaneIdleUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneIdleProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1634,17 +1672,14 @@ inline DEFINE_API_C( ControlUserPaneIdleUPP ) NewControlUserPaneIdleUPP( Control
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneKeyDownUPP )
-NewControlUserPaneKeyDownUPP( ControlUserPaneKeyDownProcPtr userRoutine );
+NewControlUserPaneKeyDownUPP(ControlUserPaneKeyDownProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneKeyDownProcInfo = 0x00002AE0 }; /* pascal 2_bytes Func(4_bytes, 2_bytes, 2_bytes, 2_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneKeyDownUPP ) NewControlUserPaneKeyDownUPP( ControlUserPaneKeyDownProcPtr userRoutine )
-{
-	return (ControlUserPaneKeyDownUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneKeyDownProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneKeyDownUPP( userRoutine ) ( ControlUserPaneKeyDownUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneKeyDownProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneKeyDownProcInfo = 0x00002AE0 };  /* pascal 2_bytes Func(4_bytes, 2_bytes, 2_bytes, 2_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneKeyDownUPP) NewControlUserPaneKeyDownUPP(ControlUserPaneKeyDownProcPtr userRoutine) { return (ControlUserPaneKeyDownUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneKeyDownProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneKeyDownUPP(userRoutine) (ControlUserPaneKeyDownUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneKeyDownProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1656,17 +1691,14 @@ inline DEFINE_API_C( ControlUserPaneKeyDownUPP ) NewControlUserPaneKeyDownUPP( C
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneActivateUPP )
-NewControlUserPaneActivateUPP( ControlUserPaneActivateProcPtr userRoutine );
+NewControlUserPaneActivateUPP(ControlUserPaneActivateProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneActivateProcInfo = 0x000001C0 }; /* pascal no_return_value Func(4_bytes, 1_byte) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneActivateUPP ) NewControlUserPaneActivateUPP( ControlUserPaneActivateProcPtr userRoutine )
-{
-	return (ControlUserPaneActivateUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneActivateProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneActivateUPP( userRoutine ) ( ControlUserPaneActivateUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneActivateProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneActivateProcInfo = 0x000001C0 };  /* pascal no_return_value Func(4_bytes, 1_byte) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneActivateUPP) NewControlUserPaneActivateUPP(ControlUserPaneActivateProcPtr userRoutine) { return (ControlUserPaneActivateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneActivateProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneActivateUPP(userRoutine) (ControlUserPaneActivateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneActivateProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1678,17 +1710,14 @@ inline DEFINE_API_C( ControlUserPaneActivateUPP ) NewControlUserPaneActivateUPP(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneFocusUPP )
-NewControlUserPaneFocusUPP( ControlUserPaneFocusProcPtr userRoutine );
+NewControlUserPaneFocusUPP(ControlUserPaneFocusProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneFocusProcInfo = 0x000002E0 }; /* pascal 2_bytes Func(4_bytes, 2_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneFocusUPP ) NewControlUserPaneFocusUPP( ControlUserPaneFocusProcPtr userRoutine )
-{
-	return (ControlUserPaneFocusUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneFocusProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneFocusUPP( userRoutine ) ( ControlUserPaneFocusUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneFocusProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneFocusProcInfo = 0x000002E0 };  /* pascal 2_bytes Func(4_bytes, 2_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneFocusUPP) NewControlUserPaneFocusUPP(ControlUserPaneFocusProcPtr userRoutine) { return (ControlUserPaneFocusUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneFocusProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneFocusUPP(userRoutine) (ControlUserPaneFocusUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneFocusProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1700,17 +1729,14 @@ inline DEFINE_API_C( ControlUserPaneFocusUPP ) NewControlUserPaneFocusUPP( Contr
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlUserPaneBackgroundUPP )
-NewControlUserPaneBackgroundUPP( ControlUserPaneBackgroundProcPtr userRoutine );
+NewControlUserPaneBackgroundUPP(ControlUserPaneBackgroundProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlUserPaneBackgroundProcInfo = 0x000003C0 }; /* pascal no_return_value Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlUserPaneBackgroundUPP ) NewControlUserPaneBackgroundUPP( ControlUserPaneBackgroundProcPtr userRoutine )
-{
-	return (ControlUserPaneBackgroundUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneBackgroundProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlUserPaneBackgroundUPP( userRoutine ) ( ControlUserPaneBackgroundUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlUserPaneBackgroundProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlUserPaneBackgroundProcInfo = 0x000003C0 };  /* pascal no_return_value Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlUserPaneBackgroundUPP) NewControlUserPaneBackgroundUPP(ControlUserPaneBackgroundProcPtr userRoutine) { return (ControlUserPaneBackgroundUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneBackgroundProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlUserPaneBackgroundUPP(userRoutine) (ControlUserPaneBackgroundUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlUserPaneBackgroundProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -1722,16 +1748,13 @@ inline DEFINE_API_C( ControlUserPaneBackgroundUPP ) NewControlUserPaneBackground
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneDrawUPP( ControlUserPaneDrawUPP userUPP );
+DisposeControlUserPaneDrawUPP(ControlUserPaneDrawUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneDrawUPP( ControlUserPaneDrawUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneDrawUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneDrawUPP(ControlUserPaneDrawUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneDrawUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1743,16 +1766,13 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneDrawUPP( ControlUserPaneDrawUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneHitTestUPP( ControlUserPaneHitTestUPP userUPP );
+DisposeControlUserPaneHitTestUPP(ControlUserPaneHitTestUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneHitTestUPP( ControlUserPaneHitTestUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneHitTestUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneHitTestUPP(ControlUserPaneHitTestUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneHitTestUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1764,16 +1784,13 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneHitTestUPP( ControlUserPaneHit
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneTrackingUPP( ControlUserPaneTrackingUPP userUPP );
+DisposeControlUserPaneTrackingUPP(ControlUserPaneTrackingUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneTrackingUPP( ControlUserPaneTrackingUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneTrackingUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneTrackingUPP(ControlUserPaneTrackingUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneTrackingUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1785,16 +1802,13 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneTrackingUPP( ControlUserPaneTr
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneIdleUPP( ControlUserPaneIdleUPP userUPP );
+DisposeControlUserPaneIdleUPP(ControlUserPaneIdleUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneIdleUPP( ControlUserPaneIdleUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneIdleUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneIdleUPP(ControlUserPaneIdleUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneIdleUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1806,16 +1820,13 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneIdleUPP( ControlUserPaneIdleUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneKeyDownUPP( ControlUserPaneKeyDownUPP userUPP );
+DisposeControlUserPaneKeyDownUPP(ControlUserPaneKeyDownUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneKeyDownUPP( ControlUserPaneKeyDownUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneKeyDownUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneKeyDownUPP(ControlUserPaneKeyDownUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneKeyDownUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1827,16 +1838,13 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneKeyDownUPP( ControlUserPaneKey
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneActivateUPP( ControlUserPaneActivateUPP userUPP );
+DisposeControlUserPaneActivateUPP(ControlUserPaneActivateUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneActivateUPP( ControlUserPaneActivateUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneActivateUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneActivateUPP(ControlUserPaneActivateUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneActivateUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1848,16 +1856,13 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneActivateUPP( ControlUserPaneAc
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneFocusUPP( ControlUserPaneFocusUPP userUPP );
+DisposeControlUserPaneFocusUPP(ControlUserPaneFocusUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneFocusUPP( ControlUserPaneFocusUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneFocusUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneFocusUPP(ControlUserPaneFocusUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneFocusUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1869,16 +1874,13 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneFocusUPP( ControlUserPaneFocus
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlUserPaneBackgroundUPP( ControlUserPaneBackgroundUPP userUPP );
+DisposeControlUserPaneBackgroundUPP(ControlUserPaneBackgroundUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlUserPaneBackgroundUPP( ControlUserPaneBackgroundUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlUserPaneBackgroundUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlUserPaneBackgroundUPP(ControlUserPaneBackgroundUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlUserPaneBackgroundUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -1891,18 +1893,15 @@ inline DEFINE_API_C( void ) DisposeControlUserPaneBackgroundUPP( ControlUserPane
  */
 EXTERN_API_C( void )
 InvokeControlUserPaneDrawUPP(
-    ControlRef             control,
-    SInt16                 part,
-    ControlUserPaneDrawUPP userUPP );
+  ControlRef              control,
+  SInt16                  part,
+  ControlUserPaneDrawUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeControlUserPaneDrawUPP( ControlRef control, SInt16 part, ControlUserPaneDrawUPP userUPP )
-{
-	CALL_TWO_PARAMETER_UPP( userUPP, uppControlUserPaneDrawProcInfo, control, part );
-}
-#else
-#define InvokeControlUserPaneDrawUPP( control, part, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppControlUserPaneDrawProcInfo, ( control ), ( part ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeControlUserPaneDrawUPP(ControlRef control, SInt16 part, ControlUserPaneDrawUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppControlUserPaneDrawProcInfo, control, part); }
+  #else
+    #define InvokeControlUserPaneDrawUPP(control, part, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppControlUserPaneDrawProcInfo, (control), (part))
+  #endif
 #endif
 
 /*
@@ -1915,18 +1914,15 @@ inline DEFINE_API_C( void ) InvokeControlUserPaneDrawUPP( ControlRef control, SI
  */
 EXTERN_API_C( ControlPartCode )
 InvokeControlUserPaneHitTestUPP(
-    ControlRef                control,
-    Point                     where,
-    ControlUserPaneHitTestUPP userUPP );
+  ControlRef                 control,
+  Point                      where,
+  ControlUserPaneHitTestUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneHitTestUPP( ControlRef control, Point where, ControlUserPaneHitTestUPP userUPP )
-{
-	return (ControlPartCode)CALL_TWO_PARAMETER_UPP( userUPP, uppControlUserPaneHitTestProcInfo, control, where );
-}
-#else
-#define InvokeControlUserPaneHitTestUPP( control, where, userUPP ) ( ControlPartCode ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppControlUserPaneHitTestProcInfo, ( control ), ( where ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(ControlPartCode) InvokeControlUserPaneHitTestUPP(ControlRef control, Point where, ControlUserPaneHitTestUPP userUPP) { return (ControlPartCode)CALL_TWO_PARAMETER_UPP(userUPP, uppControlUserPaneHitTestProcInfo, control, where); }
+  #else
+    #define InvokeControlUserPaneHitTestUPP(control, where, userUPP) (ControlPartCode)CALL_TWO_PARAMETER_UPP((userUPP), uppControlUserPaneHitTestProcInfo, (control), (where))
+  #endif
 #endif
 
 /*
@@ -1939,19 +1935,16 @@ inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneHitTestUPP( ControlR
  */
 EXTERN_API_C( ControlPartCode )
 InvokeControlUserPaneTrackingUPP(
-    ControlRef                 control,
-    Point                      startPt,
-    ControlActionUPP           actionProc,
-    ControlUserPaneTrackingUPP userUPP );
+  ControlRef                  control,
+  Point                       startPt,
+  ControlActionUPP            actionProc,
+  ControlUserPaneTrackingUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneTrackingUPP( ControlRef control, Point startPt, ControlActionUPP actionProc, ControlUserPaneTrackingUPP userUPP )
-{
-	return (ControlPartCode)CALL_THREE_PARAMETER_UPP( userUPP, uppControlUserPaneTrackingProcInfo, control, startPt, actionProc );
-}
-#else
-#define InvokeControlUserPaneTrackingUPP( control, startPt, actionProc, userUPP ) ( ControlPartCode ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppControlUserPaneTrackingProcInfo, ( control ), ( startPt ), ( actionProc ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(ControlPartCode) InvokeControlUserPaneTrackingUPP(ControlRef control, Point startPt, ControlActionUPP actionProc, ControlUserPaneTrackingUPP userUPP) { return (ControlPartCode)CALL_THREE_PARAMETER_UPP(userUPP, uppControlUserPaneTrackingProcInfo, control, startPt, actionProc); }
+  #else
+    #define InvokeControlUserPaneTrackingUPP(control, startPt, actionProc, userUPP) (ControlPartCode)CALL_THREE_PARAMETER_UPP((userUPP), uppControlUserPaneTrackingProcInfo, (control), (startPt), (actionProc))
+  #endif
 #endif
 
 /*
@@ -1964,17 +1957,14 @@ inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneTrackingUPP( Control
  */
 EXTERN_API_C( void )
 InvokeControlUserPaneIdleUPP(
-    ControlRef             control,
-    ControlUserPaneIdleUPP userUPP );
+  ControlRef              control,
+  ControlUserPaneIdleUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeControlUserPaneIdleUPP( ControlRef control, ControlUserPaneIdleUPP userUPP )
-{
-	CALL_ONE_PARAMETER_UPP( userUPP, uppControlUserPaneIdleProcInfo, control );
-}
-#else
-#define InvokeControlUserPaneIdleUPP( control, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppControlUserPaneIdleProcInfo, ( control ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeControlUserPaneIdleUPP(ControlRef control, ControlUserPaneIdleUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppControlUserPaneIdleProcInfo, control); }
+  #else
+    #define InvokeControlUserPaneIdleUPP(control, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppControlUserPaneIdleProcInfo, (control))
+  #endif
 #endif
 
 /*
@@ -1987,20 +1977,17 @@ inline DEFINE_API_C( void ) InvokeControlUserPaneIdleUPP( ControlRef control, Co
  */
 EXTERN_API_C( ControlPartCode )
 InvokeControlUserPaneKeyDownUPP(
-    ControlRef                control,
-    SInt16                    keyCode,
-    SInt16                    charCode,
-    SInt16                    modifiers,
-    ControlUserPaneKeyDownUPP userUPP );
+  ControlRef                 control,
+  SInt16                     keyCode,
+  SInt16                     charCode,
+  SInt16                     modifiers,
+  ControlUserPaneKeyDownUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneKeyDownUPP( ControlRef control, SInt16 keyCode, SInt16 charCode, SInt16 modifiers, ControlUserPaneKeyDownUPP userUPP )
-{
-	return (ControlPartCode)CALL_FOUR_PARAMETER_UPP( userUPP, uppControlUserPaneKeyDownProcInfo, control, keyCode, charCode, modifiers );
-}
-#else
-#define InvokeControlUserPaneKeyDownUPP( control, keyCode, charCode, modifiers, userUPP ) ( ControlPartCode ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppControlUserPaneKeyDownProcInfo, ( control ), ( keyCode ), ( charCode ), ( modifiers ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(ControlPartCode) InvokeControlUserPaneKeyDownUPP(ControlRef control, SInt16 keyCode, SInt16 charCode, SInt16 modifiers, ControlUserPaneKeyDownUPP userUPP) { return (ControlPartCode)CALL_FOUR_PARAMETER_UPP(userUPP, uppControlUserPaneKeyDownProcInfo, control, keyCode, charCode, modifiers); }
+  #else
+    #define InvokeControlUserPaneKeyDownUPP(control, keyCode, charCode, modifiers, userUPP) (ControlPartCode)CALL_FOUR_PARAMETER_UPP((userUPP), uppControlUserPaneKeyDownProcInfo, (control), (keyCode), (charCode), (modifiers))
+  #endif
 #endif
 
 /*
@@ -2013,18 +2000,15 @@ inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneKeyDownUPP( ControlR
  */
 EXTERN_API_C( void )
 InvokeControlUserPaneActivateUPP(
-    ControlRef                 control,
-    Boolean                    activating,
-    ControlUserPaneActivateUPP userUPP );
+  ControlRef                  control,
+  Boolean                     activating,
+  ControlUserPaneActivateUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeControlUserPaneActivateUPP( ControlRef control, Boolean activating, ControlUserPaneActivateUPP userUPP )
-{
-	CALL_TWO_PARAMETER_UPP( userUPP, uppControlUserPaneActivateProcInfo, control, activating );
-}
-#else
-#define InvokeControlUserPaneActivateUPP( control, activating, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppControlUserPaneActivateProcInfo, ( control ), ( activating ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeControlUserPaneActivateUPP(ControlRef control, Boolean activating, ControlUserPaneActivateUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppControlUserPaneActivateProcInfo, control, activating); }
+  #else
+    #define InvokeControlUserPaneActivateUPP(control, activating, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppControlUserPaneActivateProcInfo, (control), (activating))
+  #endif
 #endif
 
 /*
@@ -2037,18 +2021,15 @@ inline DEFINE_API_C( void ) InvokeControlUserPaneActivateUPP( ControlRef control
  */
 EXTERN_API_C( ControlPartCode )
 InvokeControlUserPaneFocusUPP(
-    ControlRef              control,
-    ControlFocusPart        action,
-    ControlUserPaneFocusUPP userUPP );
+  ControlRef               control,
+  ControlFocusPart         action,
+  ControlUserPaneFocusUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneFocusUPP( ControlRef control, ControlFocusPart action, ControlUserPaneFocusUPP userUPP )
-{
-	return (ControlPartCode)CALL_TWO_PARAMETER_UPP( userUPP, uppControlUserPaneFocusProcInfo, control, action );
-}
-#else
-#define InvokeControlUserPaneFocusUPP( control, action, userUPP ) ( ControlPartCode ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppControlUserPaneFocusProcInfo, ( control ), ( action ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(ControlPartCode) InvokeControlUserPaneFocusUPP(ControlRef control, ControlFocusPart action, ControlUserPaneFocusUPP userUPP) { return (ControlPartCode)CALL_TWO_PARAMETER_UPP(userUPP, uppControlUserPaneFocusProcInfo, control, action); }
+  #else
+    #define InvokeControlUserPaneFocusUPP(control, action, userUPP) (ControlPartCode)CALL_TWO_PARAMETER_UPP((userUPP), uppControlUserPaneFocusProcInfo, (control), (action))
+  #endif
 #endif
 
 /*
@@ -2061,38 +2042,35 @@ inline DEFINE_API_C( ControlPartCode ) InvokeControlUserPaneFocusUPP( ControlRef
  */
 EXTERN_API_C( void )
 InvokeControlUserPaneBackgroundUPP(
-    ControlRef                   control,
-    ControlBackgroundPtr         info,
-    ControlUserPaneBackgroundUPP userUPP );
+  ControlRef                    control,
+  ControlBackgroundPtr          info,
+  ControlUserPaneBackgroundUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeControlUserPaneBackgroundUPP( ControlRef control, ControlBackgroundPtr info, ControlUserPaneBackgroundUPP userUPP )
-{
-	CALL_TWO_PARAMETER_UPP( userUPP, uppControlUserPaneBackgroundProcInfo, control, info );
-}
-#else
-#define InvokeControlUserPaneBackgroundUPP( control, info, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppControlUserPaneBackgroundProcInfo, ( control ), ( info ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeControlUserPaneBackgroundUPP(ControlRef control, ControlBackgroundPtr info, ControlUserPaneBackgroundUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppControlUserPaneBackgroundProcInfo, control, info); }
+  #else
+    #define InvokeControlUserPaneBackgroundUPP(control, info, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppControlUserPaneBackgroundProcInfo, (control), (info))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewControlUserPaneDrawProc( userRoutine ) NewControlUserPaneDrawUPP( userRoutine )
-#define NewControlUserPaneHitTestProc( userRoutine ) NewControlUserPaneHitTestUPP( userRoutine )
-#define NewControlUserPaneTrackingProc( userRoutine ) NewControlUserPaneTrackingUPP( userRoutine )
-#define NewControlUserPaneIdleProc( userRoutine ) NewControlUserPaneIdleUPP( userRoutine )
-#define NewControlUserPaneKeyDownProc( userRoutine ) NewControlUserPaneKeyDownUPP( userRoutine )
-#define NewControlUserPaneActivateProc( userRoutine ) NewControlUserPaneActivateUPP( userRoutine )
-#define NewControlUserPaneFocusProc( userRoutine ) NewControlUserPaneFocusUPP( userRoutine )
-#define NewControlUserPaneBackgroundProc( userRoutine ) NewControlUserPaneBackgroundUPP( userRoutine )
-#define CallControlUserPaneDrawProc( userRoutine, control, part ) InvokeControlUserPaneDrawUPP( control, part, userRoutine )
-#define CallControlUserPaneHitTestProc( userRoutine, control, where ) InvokeControlUserPaneHitTestUPP( control, where, userRoutine )
-#define CallControlUserPaneTrackingProc( userRoutine, control, startPt, actionProc ) InvokeControlUserPaneTrackingUPP( control, startPt, actionProc, userRoutine )
-#define CallControlUserPaneIdleProc( userRoutine, control ) InvokeControlUserPaneIdleUPP( control, userRoutine )
-#define CallControlUserPaneKeyDownProc( userRoutine, control, keyCode, charCode, modifiers ) InvokeControlUserPaneKeyDownUPP( control, keyCode, charCode, modifiers, userRoutine )
-#define CallControlUserPaneActivateProc( userRoutine, control, activating ) InvokeControlUserPaneActivateUPP( control, activating, userRoutine )
-#define CallControlUserPaneFocusProc( userRoutine, control, action ) InvokeControlUserPaneFocusUPP( control, action, userRoutine )
-#define CallControlUserPaneBackgroundProc( userRoutine, control, info ) InvokeControlUserPaneBackgroundUPP( control, info, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewControlUserPaneDrawProc(userRoutine)             NewControlUserPaneDrawUPP(userRoutine)
+    #define NewControlUserPaneHitTestProc(userRoutine)          NewControlUserPaneHitTestUPP(userRoutine)
+    #define NewControlUserPaneTrackingProc(userRoutine)         NewControlUserPaneTrackingUPP(userRoutine)
+    #define NewControlUserPaneIdleProc(userRoutine)             NewControlUserPaneIdleUPP(userRoutine)
+    #define NewControlUserPaneKeyDownProc(userRoutine)          NewControlUserPaneKeyDownUPP(userRoutine)
+    #define NewControlUserPaneActivateProc(userRoutine)         NewControlUserPaneActivateUPP(userRoutine)
+    #define NewControlUserPaneFocusProc(userRoutine)            NewControlUserPaneFocusUPP(userRoutine)
+    #define NewControlUserPaneBackgroundProc(userRoutine)       NewControlUserPaneBackgroundUPP(userRoutine)
+    #define CallControlUserPaneDrawProc(userRoutine, control, part) InvokeControlUserPaneDrawUPP(control, part, userRoutine)
+    #define CallControlUserPaneHitTestProc(userRoutine, control, where) InvokeControlUserPaneHitTestUPP(control, where, userRoutine)
+    #define CallControlUserPaneTrackingProc(userRoutine, control, startPt, actionProc) InvokeControlUserPaneTrackingUPP(control, startPt, actionProc, userRoutine)
+    #define CallControlUserPaneIdleProc(userRoutine, control)   InvokeControlUserPaneIdleUPP(control, userRoutine)
+    #define CallControlUserPaneKeyDownProc(userRoutine, control, keyCode, charCode, modifiers) InvokeControlUserPaneKeyDownUPP(control, keyCode, charCode, modifiers, userRoutine)
+    #define CallControlUserPaneActivateProc(userRoutine, control, activating) InvokeControlUserPaneActivateUPP(control, activating, userRoutine)
+    #define CallControlUserPaneFocusProc(userRoutine, control, action) InvokeControlUserPaneFocusUPP(control, action, userRoutine)
+    #define CallControlUserPaneBackgroundProc(userRoutine, control, info) InvokeControlUserPaneBackgroundUPP(control, info, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -2102,18 +2080,18 @@ inline DEFINE_API_C( void ) InvokeControlUserPaneBackgroundUPP( ControlRef contr
 */
 /* Edit Text proc IDs */
 enum {
-	kControlEditTextProc = 272,
-	kControlEditTextPasswordProc = 274
+  kControlEditTextProc          = 272,
+  kControlEditTextPasswordProc  = 274
 };
 
 /* proc IDs available with Appearance 1.1 or later */
 enum {
-	kControlEditTextInlineInputProc = 276 /* Can't combine with the other variants*/
+  kControlEditTextInlineInputProc = 276 /* Can't combine with the other variants*/
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindEditText = FOUR_CHAR_CODE( 'etxt' )
+  kControlKindEditText          = FOUR_CHAR_CODE('etxt')
 };
 
 /* Creation API: Carbon only */
@@ -2127,34 +2105,37 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateEditTextControl(
-    WindowRef                  window,
-    const Rect *               boundsRect,
-    CFStringRef                text,
-    Boolean                    isPassword,
-    Boolean                    useInlineInput,
-    const ControlFontStyleRec *style, /* can be NULL */
-    ControlRef *               outControl );
+  WindowRef                    window,
+  const Rect *                 boundsRect,
+  CFStringRef                  text,
+  Boolean                      isPassword,
+  Boolean                      useInlineInput,
+  const ControlFontStyleRec *  style,                /* can be NULL */
+  ControlRef *                 outControl);
+
+
 
 /* Tagged data supported by edit text */
 enum {
-	kControlEditTextStyleTag = kControlFontStyleTag, /* ControlFontStyleRec*/
-	kControlEditTextTextTag = FOUR_CHAR_CODE( 'text' ), /* Buffer of chars - you supply the buffer*/
-	kControlEditTextTEHandleTag = FOUR_CHAR_CODE( 'than' ), /* The TEHandle of the text edit record*/
-	kControlEditTextKeyFilterTag = kControlKeyFilterTag,
-	kControlEditTextSelectionTag = FOUR_CHAR_CODE( 'sele' ), /* ControlEditTextSelectionRec*/
-	kControlEditTextPasswordTag = FOUR_CHAR_CODE( 'pass' ) /* The clear text password text*/
+  kControlEditTextStyleTag      = kControlFontStyleTag, /* ControlFontStyleRec*/
+  kControlEditTextTextTag       = FOUR_CHAR_CODE('text'), /* Buffer of chars - you supply the buffer*/
+  kControlEditTextTEHandleTag   = FOUR_CHAR_CODE('than'), /* The TEHandle of the text edit record*/
+  kControlEditTextKeyFilterTag  = kControlKeyFilterTag,
+  kControlEditTextSelectionTag  = FOUR_CHAR_CODE('sele'), /* ControlEditTextSelectionRec*/
+  kControlEditTextPasswordTag   = FOUR_CHAR_CODE('pass') /* The clear text password text*/
 };
 
 /* tags available with Appearance 1.1 or later */
 enum {
-	kControlEditTextKeyScriptBehaviorTag = FOUR_CHAR_CODE( 'kscr' ), /* ControlKeyScriptBehavior. Defaults to "PrefersRoman" for password fields,*/
-	/*       or "AllowAnyScript" for non-password fields.*/
-	kControlEditTextLockedTag = FOUR_CHAR_CODE( 'lock' ), /* Boolean. Locking disables editability.*/
-	kControlEditTextFixedTextTag = FOUR_CHAR_CODE( 'ftxt' ), /* Like the normal text tag, but fixes inline input first*/
-	kControlEditTextValidationProcTag = FOUR_CHAR_CODE( 'vali' ), /* ControlEditTextValidationUPP. Called when a key filter can't be: after cut, paste, etc.*/
-	kControlEditTextInlinePreUpdateProcTag = FOUR_CHAR_CODE( 'prup' ), /* TSMTEPreUpdateUPP and TSMTEPostUpdateUpp. For use with inline input variant...*/
-	kControlEditTextInlinePostUpdateProcTag = FOUR_CHAR_CODE( 'poup' ) /* ...The refCon parameter will contain the ControlRef.*/
+  kControlEditTextKeyScriptBehaviorTag = FOUR_CHAR_CODE('kscr'), /* ControlKeyScriptBehavior. Defaults to "PrefersRoman" for password fields,*/
+                                        /*       or "AllowAnyScript" for non-password fields.*/
+  kControlEditTextLockedTag     = FOUR_CHAR_CODE('lock'), /* Boolean. Locking disables editability.*/
+  kControlEditTextFixedTextTag  = FOUR_CHAR_CODE('ftxt'), /* Like the normal text tag, but fixes inline input first*/
+  kControlEditTextValidationProcTag = FOUR_CHAR_CODE('vali'), /* ControlEditTextValidationUPP. Called when a key filter can't be: after cut, paste, etc.*/
+  kControlEditTextInlinePreUpdateProcTag = FOUR_CHAR_CODE('prup'), /* TSMTEPreUpdateUPP and TSMTEPostUpdateUpp. For use with inline input variant...*/
+  kControlEditTextInlinePostUpdateProcTag = FOUR_CHAR_CODE('poup') /* ...The refCon parameter will contain the ControlRef.*/
 };
+
 
 /*
  *  Discussion:
@@ -2162,30 +2143,33 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * Extract the content of the edit text field as a CFString.  Don't
    * forget that you own the returned CFStringRef and are responsible
    * for CFReleasing it.
    */
-	kControlEditTextCFStringTag = FOUR_CHAR_CODE( 'cfst' ), /* CFStringRef (Also available on CarbonLib 1.5)*/
+  kControlEditTextCFStringTag   = FOUR_CHAR_CODE('cfst'), /* CFStringRef (Also available on CarbonLib 1.5)*/
 
-	/*
+  /*
    * Extract the content of the edit text field as a CFString, if it is
    * a password field.  Don't forget that you own the returned
    * CFStringRef and are responsible for CFReleasing it.
    */
-	kControlEditTextPasswordCFStringTag = FOUR_CHAR_CODE( 'pwcf' ) /* CFStringRef*/
+  kControlEditTextPasswordCFStringTag = FOUR_CHAR_CODE('pwcf') /* CFStringRef*/
 };
+
+
+
 
 /* Structure for getting the edit text selection */
 struct ControlEditTextSelectionRec {
-	SInt16 selStart;
-	SInt16 selEnd;
+  SInt16              selStart;
+  SInt16              selEnd;
 };
 typedef struct ControlEditTextSelectionRec ControlEditTextSelectionRec;
-typedef ControlEditTextSelectionRec *      ControlEditTextSelectionPtr;
-typedef CALLBACK_API( void, ControlEditTextValidationProcPtr )( ControlRef control );
-typedef STACK_UPP_TYPE( ControlEditTextValidationProcPtr ) ControlEditTextValidationUPP;
+typedef ControlEditTextSelectionRec *   ControlEditTextSelectionPtr;
+typedef CALLBACK_API( void , ControlEditTextValidationProcPtr )(ControlRef control);
+typedef STACK_UPP_TYPE(ControlEditTextValidationProcPtr)        ControlEditTextValidationUPP;
 /*
  *  NewControlEditTextValidationUPP()
  *  
@@ -2195,17 +2179,14 @@ typedef STACK_UPP_TYPE( ControlEditTextValidationProcPtr ) ControlEditTextValida
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ControlEditTextValidationUPP )
-NewControlEditTextValidationUPP( ControlEditTextValidationProcPtr userRoutine );
+NewControlEditTextValidationUPP(ControlEditTextValidationProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppControlEditTextValidationProcInfo = 0x000000C0 }; /* pascal no_return_value Func(4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ControlEditTextValidationUPP ) NewControlEditTextValidationUPP( ControlEditTextValidationProcPtr userRoutine )
-{
-	return (ControlEditTextValidationUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlEditTextValidationProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewControlEditTextValidationUPP( userRoutine ) ( ControlEditTextValidationUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppControlEditTextValidationProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppControlEditTextValidationProcInfo = 0x000000C0 };  /* pascal no_return_value Func(4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ControlEditTextValidationUPP) NewControlEditTextValidationUPP(ControlEditTextValidationProcPtr userRoutine) { return (ControlEditTextValidationUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlEditTextValidationProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewControlEditTextValidationUPP(userRoutine) (ControlEditTextValidationUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppControlEditTextValidationProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -2217,16 +2198,13 @@ inline DEFINE_API_C( ControlEditTextValidationUPP ) NewControlEditTextValidation
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeControlEditTextValidationUPP( ControlEditTextValidationUPP userUPP );
+DisposeControlEditTextValidationUPP(ControlEditTextValidationUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeControlEditTextValidationUPP( ControlEditTextValidationUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeControlEditTextValidationUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeControlEditTextValidationUPP(ControlEditTextValidationUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeControlEditTextValidationUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -2239,23 +2217,20 @@ inline DEFINE_API_C( void ) DisposeControlEditTextValidationUPP( ControlEditText
  */
 EXTERN_API_C( void )
 InvokeControlEditTextValidationUPP(
-    ControlRef                   control,
-    ControlEditTextValidationUPP userUPP );
+  ControlRef                    control,
+  ControlEditTextValidationUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeControlEditTextValidationUPP( ControlRef control, ControlEditTextValidationUPP userUPP )
-{
-	CALL_ONE_PARAMETER_UPP( userUPP, uppControlEditTextValidationProcInfo, control );
-}
-#else
-#define InvokeControlEditTextValidationUPP( control, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppControlEditTextValidationProcInfo, ( control ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeControlEditTextValidationUPP(ControlRef control, ControlEditTextValidationUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppControlEditTextValidationProcInfo, control); }
+  #else
+    #define InvokeControlEditTextValidationUPP(control, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppControlEditTextValidationProcInfo, (control))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewControlEditTextValidationProc( userRoutine ) NewControlEditTextValidationUPP( userRoutine )
-#define CallControlEditTextValidationProc( userRoutine, control ) InvokeControlEditTextValidationUPP( control, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewControlEditTextValidationProc(userRoutine)       NewControlEditTextValidationUPP(userRoutine)
+    #define CallControlEditTextValidationProc(userRoutine, control) InvokeControlEditTextValidationUPP(control, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /*--------------------------------------------------------------------------------------*/
@@ -2263,12 +2238,12 @@ inline DEFINE_API_C( void ) InvokeControlEditTextValidationUPP( ControlRef contr
 /*--------------------------------------------------------------------------------------*/
 /* Static Text proc IDs */
 enum {
-	kControlStaticTextProc = 288
+  kControlStaticTextProc        = 288
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindStaticText = FOUR_CHAR_CODE( 'stxt' )
+  kControlKindStaticText        = FOUR_CHAR_CODE('stxt')
 };
 
 /* Creation API: Carbon only */
@@ -2282,28 +2257,31 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateStaticTextControl(
-    WindowRef                  window,
-    const Rect *               boundsRect,
-    CFStringRef                text,
-    const ControlFontStyleRec *style,
-    ControlRef *               outControl );
+  WindowRef                    window,
+  const Rect *                 boundsRect,
+  CFStringRef                  text,
+  const ControlFontStyleRec *  style,
+  ControlRef *                 outControl);
+
+
 
 /* Tagged data supported by static text */
 enum {
-	kControlStaticTextStyleTag = kControlFontStyleTag, /* ControlFontStyleRec*/
-	kControlStaticTextTextTag = FOUR_CHAR_CODE( 'text' ), /* Copy of text*/
-	kControlStaticTextTextHeightTag = FOUR_CHAR_CODE( 'thei' ) /* SInt16*/
+  kControlStaticTextStyleTag    = kControlFontStyleTag, /* ControlFontStyleRec*/
+  kControlStaticTextTextTag     = FOUR_CHAR_CODE('text'), /* Copy of text*/
+  kControlStaticTextTextHeightTag = FOUR_CHAR_CODE('thei') /* SInt16*/
 };
 
 /* Tags available with appearance 1.1 or later */
 enum {
-	kControlStaticTextTruncTag = FOUR_CHAR_CODE( 'trun' ) /* TruncCode (-1 means no truncation)*/
+  kControlStaticTextTruncTag    = FOUR_CHAR_CODE('trun') /* TruncCode (-1 means no truncation)*/
 };
 
 /* Tags available with Mac OS X or later */
 enum {
-	kControlStaticTextCFStringTag = FOUR_CHAR_CODE( 'cfst' ) /* CFStringRef (Also available on CarbonLib 1.5)*/
+  kControlStaticTextCFStringTag = FOUR_CHAR_CODE('cfst') /* CFStringRef (Also available on CarbonLib 1.5)*/
 };
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o PICTURE CONTROL (CDEF 19)                                                         */
@@ -2313,13 +2291,13 @@ enum {
 /*  the 'no track' variant.                                                             */
 /* Picture control proc IDs */
 enum {
-	kControlPictureProc = 304,
-	kControlPictureNoTrackProc = 305 /* immediately returns kControlPicturePart*/
+  kControlPictureProc           = 304,
+  kControlPictureNoTrackProc    = 305   /* immediately returns kControlPicturePart*/
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindPicture = FOUR_CHAR_CODE( 'pict' )
+  kControlKindPicture           = FOUR_CHAR_CODE('pict')
 };
 
 /* Creation API: Carbon only */
@@ -2333,15 +2311,16 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreatePictureControl(
-    WindowRef                       window,
-    const Rect *                    boundsRect,
-    const ControlButtonContentInfo *content,
-    Boolean                         dontTrack,
-    ControlRef *                    outControl );
+  WindowRef                         window,
+  const Rect *                      boundsRect,
+  const ControlButtonContentInfo *  content,
+  Boolean                           dontTrack,
+  ControlRef *                      outControl);
+
 
 /* Tagged data supported by picture controls */
 enum {
-	kControlPictureHandleTag = FOUR_CHAR_CODE( 'pich' ) /* PicHandle*/
+  kControlPictureHandleTag      = FOUR_CHAR_CODE('pich') /* PicHandle*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -2352,23 +2331,23 @@ enum {
 /*  the 'no track' variant.                                                             */
 /* Icon control proc IDs */
 enum {
-	kControlIconProc = 320,
-	kControlIconNoTrackProc = 321, /* immediately returns kControlIconPart*/
-	kControlIconSuiteProc = 322,
-	kControlIconSuiteNoTrackProc = 323 /* immediately returns kControlIconPart*/
+  kControlIconProc              = 320,
+  kControlIconNoTrackProc       = 321,  /* immediately returns kControlIconPart*/
+  kControlIconSuiteProc         = 322,
+  kControlIconSuiteNoTrackProc  = 323   /* immediately returns kControlIconPart*/
 };
 
 enum {
-	/* icon ref controls may have either an icon, color icon, icon suite, or icon ref.*/
-	/* for data other than icon, you must set the data by passing a*/
-	/* ControlButtonContentInfo to SetControlData*/
-	kControlIconRefProc = 324,
-	kControlIconRefNoTrackProc = 325 /* immediately returns kControlIconPart*/
+                                        /* icon ref controls may have either an icon, color icon, icon suite, or icon ref.*/
+                                        /* for data other than icon, you must set the data by passing a*/
+                                        /* ControlButtonContentInfo to SetControlData*/
+  kControlIconRefProc           = 324,
+  kControlIconRefNoTrackProc    = 325   /* immediately returns kControlIconPart*/
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindIcon = FOUR_CHAR_CODE( 'icon' )
+  kControlKindIcon              = FOUR_CHAR_CODE('icon')
 };
 
 /*
@@ -2418,22 +2397,23 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateIconControl(
-    WindowRef                       inWindow,
-    const Rect *                    inBoundsRect,
-    const ControlButtonContentInfo *inIconContent,
-    Boolean                         inDontTrack,
-    ControlRef *                    outControl );
+  WindowRef                         inWindow,
+  const Rect *                      inBoundsRect,
+  const ControlButtonContentInfo *  inIconContent,
+  Boolean                           inDontTrack,
+  ControlRef *                      outControl);
+
 
 /* Tagged data supported by icon controls */
 enum {
-	kControlIconTransformTag = FOUR_CHAR_CODE( 'trfm' ), /* IconTransformType*/
-	kControlIconAlignmentTag = FOUR_CHAR_CODE( 'algn' ) /* IconAlignmentType*/
+  kControlIconTransformTag      = FOUR_CHAR_CODE('trfm'), /* IconTransformType*/
+  kControlIconAlignmentTag      = FOUR_CHAR_CODE('algn') /* IconAlignmentType*/
 };
 
 /* Tags available with appearance 1.1 or later */
 enum {
-	kControlIconResourceIDTag = FOUR_CHAR_CODE( 'ires' ), /* SInt16 resource ID of icon to use*/
-	kControlIconContentTag = FOUR_CHAR_CODE( 'cont' ) /* accepts a ControlButtonContentInfo*/
+  kControlIconResourceIDTag     = FOUR_CHAR_CODE('ires'), /* SInt16 resource ID of icon to use*/
+  kControlIconContentTag        = FOUR_CHAR_CODE('cont') /* accepts a ControlButtonContentInfo*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -2441,13 +2421,13 @@ enum {
 /*--------------------------------------------------------------------------------------*/
 /* Window Header proc IDs */
 enum {
-	kControlWindowHeaderProc = 336, /* normal header*/
-	kControlWindowListViewHeaderProc = 337 /* variant for list views - no bottom line*/
+  kControlWindowHeaderProc      = 336,  /* normal header*/
+  kControlWindowListViewHeaderProc = 337 /* variant for list views - no bottom line*/
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindWindowHeader = FOUR_CHAR_CODE( 'whed' )
+  kControlKindWindowHeader      = FOUR_CHAR_CODE('whed')
 };
 
 /* Creation API: Carbon Only */
@@ -2461,10 +2441,11 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateWindowHeaderControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    Boolean     isListHeader,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  Boolean       isListHeader,
+  ControlRef *  outControl);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o LIST BOX (CDEF 22)                                                                */
@@ -2478,13 +2459,13 @@ CreateWindowHeaderControl(
 /*  below (kControlListBoxLDEFTag)                                                      */
 /* List Box proc IDs */
 enum {
-	kControlListBoxProc = 352,
-	kControlListBoxAutoSizeProc = 353
+  kControlListBoxProc           = 352,
+  kControlListBoxAutoSizeProc   = 353
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindListBox = FOUR_CHAR_CODE( 'lbox' )
+  kControlKindListBox           = FOUR_CHAR_CODE('lbox')
 };
 
 /* Creation API: Carbon Only */
@@ -2498,30 +2479,31 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateListBoxControl(
-    WindowRef          window,
-    const Rect *       boundsRect,
-    Boolean            autoSize,
-    SInt16             numRows,
-    SInt16             numColumns,
-    Boolean            horizScroll,
-    Boolean            vertScroll,
-    SInt16             cellHeight,
-    SInt16             cellWidth,
-    Boolean            hasGrowSpace,
-    const ListDefSpec *listDef,
-    ControlRef *       outControl );
+  WindowRef            window,
+  const Rect *         boundsRect,
+  Boolean              autoSize,
+  SInt16               numRows,
+  SInt16               numColumns,
+  Boolean              horizScroll,
+  Boolean              vertScroll,
+  SInt16               cellHeight,
+  SInt16               cellWidth,
+  Boolean              hasGrowSpace,
+  const ListDefSpec *  listDef,
+  ControlRef *         outControl);
+
 
 /* Tagged data supported by list box */
 enum {
-	kControlListBoxListHandleTag = FOUR_CHAR_CODE( 'lhan' ), /* ListHandle*/
-	kControlListBoxKeyFilterTag = kControlKeyFilterTag, /* ControlKeyFilterUPP*/
-	kControlListBoxFontStyleTag = kControlFontStyleTag /* ControlFontStyleRec*/
+  kControlListBoxListHandleTag  = FOUR_CHAR_CODE('lhan'), /* ListHandle*/
+  kControlListBoxKeyFilterTag   = kControlKeyFilterTag, /* ControlKeyFilterUPP*/
+  kControlListBoxFontStyleTag   = kControlFontStyleTag /* ControlFontStyleRec*/
 };
 
 /* New tags in 1.0.1 or later */
 enum {
-	kControlListBoxDoubleClickTag = FOUR_CHAR_CODE( 'dblc' ), /* Boolean. Was last click a double-click?*/
-	kControlListBoxLDEFTag = FOUR_CHAR_CODE( 'ldef' ) /* SInt16. ID of LDEF to use.*/
+  kControlListBoxDoubleClickTag = FOUR_CHAR_CODE('dblc'), /* Boolean. Was last click a double-click?*/
+  kControlListBoxLDEFTag        = FOUR_CHAR_CODE('ldef') /* SInt16. ID of LDEF to use.*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -2550,32 +2532,32 @@ enum {
 /*                                                                                      */
 /* Theme Push Button/Check Box/Radio Button proc IDs */
 enum {
-	kControlPushButtonProc = 368,
-	kControlCheckBoxProc = 369,
-	kControlRadioButtonProc = 370,
-	kControlPushButLeftIconProc = 374, /* Standard pushbutton with left-side icon*/
-	kControlPushButRightIconProc = 375 /* Standard pushbutton with right-side icon*/
+  kControlPushButtonProc        = 368,
+  kControlCheckBoxProc          = 369,
+  kControlRadioButtonProc       = 370,
+  kControlPushButLeftIconProc   = 374,  /* Standard pushbutton with left-side icon*/
+  kControlPushButRightIconProc  = 375   /* Standard pushbutton with right-side icon*/
 };
 
 /* Variants with Appearance 1.1 or later */
 enum {
-	kControlCheckBoxAutoToggleProc = 371,
-	kControlRadioButtonAutoToggleProc = 372
+  kControlCheckBoxAutoToggleProc = 371,
+  kControlRadioButtonAutoToggleProc = 372
 };
 
 /* Push Button Icon Alignments */
 typedef UInt16 ControlPushButtonIconAlignment;
 enum {
-	kControlPushButtonIconOnLeft = 6,
-	kControlPushButtonIconOnRight = 7
+  kControlPushButtonIconOnLeft  = 6,
+  kControlPushButtonIconOnRight = 7
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindPushButton = FOUR_CHAR_CODE( 'push' ),
-	kControlKindPushIconButton = FOUR_CHAR_CODE( 'picn' ),
-	kControlKindRadioButton = FOUR_CHAR_CODE( 'rdio' ),
-	kControlKindCheckBox = FOUR_CHAR_CODE( 'cbox' )
+  kControlKindPushButton        = FOUR_CHAR_CODE('push'),
+  kControlKindPushIconButton    = FOUR_CHAR_CODE('picn'),
+  kControlKindRadioButton       = FOUR_CHAR_CODE('rdio'),
+  kControlKindCheckBox          = FOUR_CHAR_CODE('cbox')
 };
 
 /* Creation APIs: Carbon Only */
@@ -2589,10 +2571,11 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreatePushButtonControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    CFStringRef title,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  CFStringRef   title,
+  ControlRef *  outControl);
+
 
 /*
  *  CreatePushButtonWithIconControl()
@@ -2604,12 +2587,13 @@ CreatePushButtonControl(
  */
 EXTERN_API( OSStatus )
 CreatePushButtonWithIconControl(
-    WindowRef                      window,
-    const Rect *                   boundsRect,
-    CFStringRef                    title,
-    ControlButtonContentInfo *     icon,
-    ControlPushButtonIconAlignment iconAlignment,
-    ControlRef *                   outControl );
+  WindowRef                        window,
+  const Rect *                     boundsRect,
+  CFStringRef                      title,
+  ControlButtonContentInfo *       icon,
+  ControlPushButtonIconAlignment   iconAlignment,
+  ControlRef *                     outControl);
+
 
 /*
  *  CreateRadioButtonControl()
@@ -2621,12 +2605,13 @@ CreatePushButtonWithIconControl(
  */
 EXTERN_API( OSStatus )
 CreateRadioButtonControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    CFStringRef title,
-    SInt32      initialValue,
-    Boolean     autoToggle,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  CFStringRef   title,
+  SInt32        initialValue,
+  Boolean       autoToggle,
+  ControlRef *  outControl);
+
 
 /*
  *  CreateCheckBoxControl()
@@ -2638,17 +2623,20 @@ CreateRadioButtonControl(
  */
 EXTERN_API( OSStatus )
 CreateCheckBoxControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    CFStringRef title,
-    SInt32      initialValue,
-    Boolean     autoToggle,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  CFStringRef   title,
+  SInt32        initialValue,
+  Boolean       autoToggle,
+  ControlRef *  outControl);
+
+
+
 
 /* Tagged data supported by standard buttons */
 enum {
-	kControlPushButtonDefaultTag = FOUR_CHAR_CODE( 'dflt' ), /* default ring flag*/
-	kControlPushButtonCancelTag = FOUR_CHAR_CODE( 'cncl' ) /* cancel button flag (1.1 and later)*/
+  kControlPushButtonDefaultTag  = FOUR_CHAR_CODE('dflt'), /* default ring flag*/
+  kControlPushButtonCancelTag   = FOUR_CHAR_CODE('cncl') /* cancel button flag (1.1 and later)*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -2658,13 +2646,13 @@ enum {
 /*                                                                                      */
 /* Theme Scroll Bar proc IDs */
 enum {
-	kControlScrollBarProc = 384, /* normal scroll bar*/
-	kControlScrollBarLiveProc = 386 /* live scrolling variant*/
+  kControlScrollBarProc         = 384,  /* normal scroll bar*/
+  kControlScrollBarLiveProc     = 386   /* live scrolling variant*/
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindScrollBar = FOUR_CHAR_CODE( 'sbar' )
+  kControlKindScrollBar         = FOUR_CHAR_CODE('sbar')
 };
 
 /* Creation API: Carbon Only */
@@ -2678,20 +2666,22 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateScrollBarControl(
-    WindowRef        window,
-    const Rect *     boundsRect,
-    SInt32           value,
-    SInt32           minimum,
-    SInt32           maximum,
-    SInt32           viewSize,
-    Boolean          liveTracking,
-    ControlActionUPP liveTrackingProc,
-    ControlRef *     outControl );
+  WindowRef          window,
+  const Rect *       boundsRect,
+  SInt32             value,
+  SInt32             minimum,
+  SInt32             maximum,
+  SInt32             viewSize,
+  Boolean            liveTracking,
+  ControlActionUPP   liveTrackingProc,
+  ControlRef *       outControl);
+
 
 /* These tags are available in Mac OS X or later */
 enum {
-	kControlScrollBarShowsArrowsTag = FOUR_CHAR_CODE( 'arro' ) /* Boolean whether or not to draw the scroll arrows*/
+  kControlScrollBarShowsArrowsTag = FOUR_CHAR_CODE('arro') /* Boolean whether or not to draw the scroll arrows*/
 };
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o POPUP BUTTON (CDEF 25)                                                            */
@@ -2709,16 +2699,16 @@ enum {
 /*                                                                                      */
 /* Theme Popup Button proc IDs */
 enum {
-	kControlPopupButtonProc = 400,
-	kControlPopupFixedWidthVariant = 1 << 0,
-	kControlPopupVariableWidthVariant = 1 << 1,
-	kControlPopupUseAddResMenuVariant = 1 << 2,
-	kControlPopupUseWFontVariant = kControlUsesOwningWindowsFontVariant
+  kControlPopupButtonProc       = 400,
+  kControlPopupFixedWidthVariant = 1 << 0,
+  kControlPopupVariableWidthVariant = 1 << 1,
+  kControlPopupUseAddResMenuVariant = 1 << 2,
+  kControlPopupUseWFontVariant  = kControlUsesOwningWindowsFontVariant
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindPopupButton = FOUR_CHAR_CODE( 'popb' )
+  kControlKindPopupButton       = FOUR_CHAR_CODE('popb')
 };
 
 /* Creation API: Carbon Only */
@@ -2732,33 +2722,37 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreatePopupButtonControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    CFStringRef title,
-    SInt16      menuID,
-    Boolean     variableWidth,
-    SInt16      titleWidth,
-    SInt16      titleJustification,
-    Style       titleStyle,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  CFStringRef   title,
+  SInt16        menuID,
+  Boolean       variableWidth,
+  SInt16        titleWidth,
+  SInt16        titleJustification,
+  Style         titleStyle,
+  ControlRef *  outControl);
+
+
+
 
 /* These tags are available in 1.0.1 or later of Appearance */
 enum {
-	kControlPopupButtonMenuHandleTag = FOUR_CHAR_CODE( 'mhan' ), /* MenuRef*/
-	kControlPopupButtonMenuRefTag = FOUR_CHAR_CODE( 'mhan' ), /* MenuRef*/
-	kControlPopupButtonMenuIDTag = FOUR_CHAR_CODE( 'mnid' ) /* SInt16*/
+  kControlPopupButtonMenuHandleTag = FOUR_CHAR_CODE('mhan'), /* MenuRef*/
+  kControlPopupButtonMenuRefTag = FOUR_CHAR_CODE('mhan'), /* MenuRef*/
+  kControlPopupButtonMenuIDTag  = FOUR_CHAR_CODE('mnid') /* SInt16*/
 };
 
 /* These tags are available in 1.1 or later of Appearance */
 enum {
-	kControlPopupButtonExtraHeightTag = FOUR_CHAR_CODE( 'exht' ), /* SInt16 - extra vertical whitespace within the button*/
-	kControlPopupButtonOwnedMenuRefTag = FOUR_CHAR_CODE( 'omrf' ) /* MenuRef*/
+  kControlPopupButtonExtraHeightTag = FOUR_CHAR_CODE('exht'), /* SInt16 - extra vertical whitespace within the button*/
+  kControlPopupButtonOwnedMenuRefTag = FOUR_CHAR_CODE('omrf') /* MenuRef*/
 };
 
 /* These tags are available in Mac OS X */
 enum {
-	kControlPopupButtonCheckCurrentTag = FOUR_CHAR_CODE( 'chck' ) /* Boolean    - whether the popup puts a checkmark next to the current item (defaults to true)*/
+  kControlPopupButtonCheckCurrentTag = FOUR_CHAR_CODE('chck') /* Boolean    - whether the popup puts a checkmark next to the current item (defaults to true)*/
 };
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o RADIO GROUP (CDEF 26)                                                             */
@@ -2774,12 +2768,12 @@ enum {
 /*  NOTE: This control is only available with Appearance 1.0.1.                         */
 /* Radio Group Proc ID */
 enum {
-	kControlRadioGroupProc = 416
+  kControlRadioGroupProc        = 416
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindRadioGroup = FOUR_CHAR_CODE( 'rgrp' )
+  kControlKindRadioGroup        = FOUR_CHAR_CODE('rgrp')
 };
 
 /* Creation API: Carbon Only */
@@ -2793,9 +2787,10 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateRadioGroupControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  ControlRef *  outControl);
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o SCROLL TEXT BOX (CDEF 27)                                                         */
@@ -2816,13 +2811,13 @@ CreateRadioGroupControl(
 /*  NOTE: This control is only available with Appearance 1.1.                           */
 /* Scroll Text Box Proc IDs */
 enum {
-	kControlScrollTextBoxProc = 432,
-	kControlScrollTextBoxAutoScrollProc = 433
+  kControlScrollTextBoxProc     = 432,
+  kControlScrollTextBoxAutoScrollProc = 433
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindScrollingTextBox = FOUR_CHAR_CODE( 'stbx' )
+  kControlKindScrollingTextBox  = FOUR_CHAR_CODE('stbx')
 };
 
 /* Creation API: Carbon Only */
@@ -2836,23 +2831,25 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateScrollingTextBoxControl(
-    WindowRef   window,
-    const Rect *boundsRect,
-    SInt16      contentResID,
-    Boolean     autoScroll,
-    UInt32      delayBeforeAutoScroll,
-    UInt32      delayBetweenAutoScroll,
-    UInt16      autoScrollAmount,
-    ControlRef *outControl );
+  WindowRef     window,
+  const Rect *  boundsRect,
+  SInt16        contentResID,
+  Boolean       autoScroll,
+  UInt32        delayBeforeAutoScroll,
+  UInt32        delayBetweenAutoScroll,
+  UInt16        autoScrollAmount,
+  ControlRef *  outControl);
+
 
 /* Tagged data supported by Scroll Text Box */
 enum {
-	kControlScrollTextBoxDelayBeforeAutoScrollTag = FOUR_CHAR_CODE( 'stdl' ), /* UInt32 (ticks until autoscrolling starts)*/
-	kControlScrollTextBoxDelayBetweenAutoScrollTag = FOUR_CHAR_CODE( 'scdl' ), /* UInt32 (ticks between scrolls)*/
-	kControlScrollTextBoxAutoScrollAmountTag = FOUR_CHAR_CODE( 'samt' ), /* UInt16 (pixels per scroll) -- defaults to 1*/
-	kControlScrollTextBoxContentsTag = FOUR_CHAR_CODE( 'tres' ), /* SInt16 (resource ID of 'TEXT'/'styl') -- write only!*/
-	kControlScrollTextBoxAnimatingTag = FOUR_CHAR_CODE( 'anim' ) /* Boolean (whether the text box should auto-scroll)*/
+  kControlScrollTextBoxDelayBeforeAutoScrollTag = FOUR_CHAR_CODE('stdl'), /* UInt32 (ticks until autoscrolling starts)*/
+  kControlScrollTextBoxDelayBetweenAutoScrollTag = FOUR_CHAR_CODE('scdl'), /* UInt32 (ticks between scrolls)*/
+  kControlScrollTextBoxAutoScrollAmountTag = FOUR_CHAR_CODE('samt'), /* UInt16 (pixels per scroll) -- defaults to 1*/
+  kControlScrollTextBoxContentsTag = FOUR_CHAR_CODE('tres'), /* SInt16 (resource ID of 'TEXT'/'styl') -- write only!*/
+  kControlScrollTextBoxAnimatingTag = FOUR_CHAR_CODE('anim') /* Boolean (whether the text box should auto-scroll)*/
 };
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o DISCLOSURE BUTTON                                                                 */
@@ -2899,16 +2896,19 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateDisclosureButtonControl(
-    WindowRef   inWindow,
-    const Rect *inBoundsRect,
-    SInt32      inValue,
-    Boolean     inAutoToggles,
-    ControlRef *outControl );
+  WindowRef     inWindow,
+  const Rect *  inBoundsRect,
+  SInt32        inValue,
+  Boolean       inAutoToggles,
+  ControlRef *  outControl);
+
+
 
 /* Control Kind Tag */
 enum {
-	kControlKindDisclosureButton = FOUR_CHAR_CODE( 'disb' )
+  kControlKindDisclosureButton  = FOUR_CHAR_CODE('disb')
 };
+
 
 /*
  *  Discussion:
@@ -2916,16 +2916,17 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * The control be drawn suggesting a closed state.
    */
-	kControlDisclosureButtonClosed = 0,
+  kControlDisclosureButtonClosed = 0,
 
-	/*
+  /*
    * The control will be drawn suggesting an open state.
    */
-	kControlDisclosureButtonDisclosed = 1
+  kControlDisclosureButtonDisclosed = 1
 };
+
 
 /*--------------------------------------------------------------------------------------*/
 /*  o ROUND BUTTON                                                                      */
@@ -2940,26 +2941,26 @@ enum {
 typedef SInt16 ControlRoundButtonSize;
 enum {
 
-	/*
+  /*
    * A 20 pixel diameter button.
    */
-	kControlRoundButtonNormalSize = kControlSizeNormal,
+  kControlRoundButtonNormalSize = kControlSizeNormal,
 
-	/*
+  /*
    * A 25 pixel diameter button.
    */
-	kControlRoundButtonLargeSize = kControlSizeLarge
+  kControlRoundButtonLargeSize  = kControlSizeLarge
 };
 
 /* Data tags supported by the round button controls */
 enum {
-	kControlRoundButtonContentTag = FOUR_CHAR_CODE( 'cont' ), /* ControlButtonContentInfo*/
-	kControlRoundButtonSizeTag = kControlSizeTag /* ControlRoundButtonSize*/
+  kControlRoundButtonContentTag = FOUR_CHAR_CODE('cont'), /* ControlButtonContentInfo*/
+  kControlRoundButtonSizeTag    = kControlSizeTag /* ControlRoundButtonSize*/
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindRoundButton = FOUR_CHAR_CODE( 'rndb' )
+  kControlKindRoundButton       = FOUR_CHAR_CODE('rndb')
 };
 
 /*
@@ -3002,11 +3003,13 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateRoundButtonControl(
-    WindowRef                 inWindow,
-    const Rect *              inBoundsRect,
-    ControlRoundButtonSize    inSize,
-    ControlButtonContentInfo *inContent,
-    ControlRef *              outControl );
+  WindowRef                   inWindow,
+  const Rect *                inBoundsRect,
+  ControlRoundButtonSize      inSize,
+  ControlButtonContentInfo *  inContent,
+  ControlRef *                outControl);
+
+
 
 /*--------------------------------------------------------------------------------------*/
 /*    o DATA BROWSER                                                                    */
@@ -3052,212 +3055,212 @@ CreateRoundButtonControl(
 /*        or with a 'CNTL' resource.                                                    */
 /* Control Kind Tag */
 enum {
-	kControlKindDataBrowser = FOUR_CHAR_CODE( 'datb' )
+  kControlKindDataBrowser       = FOUR_CHAR_CODE('datb')
 };
 
 /* Error Codes */
 enum {
-	errDataBrowserNotConfigured = -4970,
-	errDataBrowserItemNotFound = -4971,
-	errDataBrowserItemNotAdded = -4975,
-	errDataBrowserPropertyNotFound = -4972,
-	errDataBrowserInvalidPropertyPart = -4973,
-	errDataBrowserInvalidPropertyData = -4974,
-	errDataBrowserPropertyNotSupported = -4979 /* Return from DataBrowserGetSetItemDataProc */
+  errDataBrowserNotConfigured   = -4970,
+  errDataBrowserItemNotFound    = -4971,
+  errDataBrowserItemNotAdded    = -4975,
+  errDataBrowserPropertyNotFound = -4972,
+  errDataBrowserInvalidPropertyPart = -4973,
+  errDataBrowserInvalidPropertyData = -4974,
+  errDataBrowserPropertyNotSupported = -4979 /* Return from DataBrowserGetSetItemDataProc */
 };
 
 enum {
-	/* Generic Control Tags */
-	kControlDataBrowserIncludesFrameAndFocusTag = FOUR_CHAR_CODE( 'brdr' ), /* Boolean */
-	kControlDataBrowserKeyFilterTag = kControlEditTextKeyFilterTag,
-	kControlDataBrowserEditTextKeyFilterTag = kControlDataBrowserKeyFilterTag,
-	kControlDataBrowserEditTextValidationProcTag = kControlEditTextValidationProcTag
+                                        /* Generic Control Tags */
+  kControlDataBrowserIncludesFrameAndFocusTag = FOUR_CHAR_CODE('brdr'), /* Boolean */
+  kControlDataBrowserKeyFilterTag = kControlEditTextKeyFilterTag,
+  kControlDataBrowserEditTextKeyFilterTag = kControlDataBrowserKeyFilterTag,
+  kControlDataBrowserEditTextValidationProcTag = kControlEditTextValidationProcTag
 };
 
 /* Data Browser View Styles */
-typedef OSType DataBrowserViewStyle;
+typedef OSType                          DataBrowserViewStyle;
 enum {
-	kDataBrowserNoView = 0x3F3F3F3F, /* Error State */
-	kDataBrowserListView = FOUR_CHAR_CODE( 'lstv' ),
-	kDataBrowserColumnView = FOUR_CHAR_CODE( 'clmv' )
+  kDataBrowserNoView            = 0x3F3F3F3F, /* Error State */
+  kDataBrowserListView          = FOUR_CHAR_CODE('lstv'),
+  kDataBrowserColumnView        = FOUR_CHAR_CODE('clmv')
 };
 
 /* Selection Flags */
 typedef UInt32 DataBrowserSelectionFlags;
 enum {
-	kDataBrowserDragSelect = 1 << 0, /* * ListMgr lNoRect */
-	kDataBrowserSelectOnlyOne = 1 << 1, /* * ListMgr lOnlyOne */
-	kDataBrowserResetSelection = 1 << 2, /* * ListMgr lNoExtend */
-	kDataBrowserCmdTogglesSelection = 1 << 3, /* * ListMgr lUseSense */
-	kDataBrowserNoDisjointSelection = 1 << 4, /* * ListMgr lNoDisjoint */
-	kDataBrowserAlwaysExtendSelection = 1 << 5, /* * ListMgr lExtendDrag */
-	kDataBrowserNeverEmptySelectionSet = 1 << 6 /* * ListMgr lNoNilHilite */
+  kDataBrowserDragSelect        = 1 << 0, /* * ListMgr lNoRect */
+  kDataBrowserSelectOnlyOne     = 1 << 1, /* * ListMgr lOnlyOne */
+  kDataBrowserResetSelection    = 1 << 2, /* * ListMgr lNoExtend */
+  kDataBrowserCmdTogglesSelection = 1 << 3, /* * ListMgr lUseSense */
+  kDataBrowserNoDisjointSelection = 1 << 4, /* * ListMgr lNoDisjoint */
+  kDataBrowserAlwaysExtendSelection = 1 << 5, /* * ListMgr lExtendDrag */
+  kDataBrowserNeverEmptySelectionSet = 1 << 6 /* * ListMgr lNoNilHilite */
 };
 
 /* Data Browser Sorting */
 typedef UInt16 DataBrowserSortOrder;
 enum {
-	kDataBrowserOrderUndefined = 0, /* Not currently supported */
-	kDataBrowserOrderIncreasing = 1,
-	kDataBrowserOrderDecreasing = 2
+  kDataBrowserOrderUndefined    = 0,    /* Not currently supported */
+  kDataBrowserOrderIncreasing   = 1,
+  kDataBrowserOrderDecreasing   = 2
 };
 
 /* Data Browser Item Management */
 typedef UInt32 DataBrowserItemID;
 enum {
-	kDataBrowserNoItem = 0L /* Reserved DataBrowserItemID */
+  kDataBrowserNoItem            = 0L    /* Reserved DataBrowserItemID */
 };
 
 typedef UInt32 DataBrowserItemState;
 enum {
-	kDataBrowserItemNoState = 0,
-	kDataBrowserItemAnyState = (unsigned long)( -1 ),
-	kDataBrowserItemIsSelected = 1 << 0,
-	kDataBrowserContainerIsOpen = 1 << 1,
-	kDataBrowserItemIsDragTarget = 1 << 2 /* During a drag operation */
+  kDataBrowserItemNoState       = 0,
+  kDataBrowserItemAnyState      = (unsigned long)(-1),
+  kDataBrowserItemIsSelected    = 1 << 0,
+  kDataBrowserContainerIsOpen   = 1 << 1,
+  kDataBrowserItemIsDragTarget  = 1 << 2 /* During a drag operation */
 };
 
 /* Options for use with RevealDataBrowserItem */
 typedef UInt8 DataBrowserRevealOptions;
 enum {
-	kDataBrowserRevealOnly = 0,
-	kDataBrowserRevealAndCenterInView = 1 << 0,
-	kDataBrowserRevealWithoutSelecting = 1 << 1
+  kDataBrowserRevealOnly        = 0,
+  kDataBrowserRevealAndCenterInView = 1 << 0,
+  kDataBrowserRevealWithoutSelecting = 1 << 1
 };
 
 /* Set operations for use with SetDataBrowserSelectedItems */
 typedef UInt32 DataBrowserSetOption;
 enum {
-	kDataBrowserItemsAdd = 0, /* add specified items to existing set */
-	kDataBrowserItemsAssign = 1, /* assign destination set to specified items */
-	kDataBrowserItemsToggle = 2, /* toggle membership state of specified items */
-	kDataBrowserItemsRemove = 3 /* remove specified items from existing set */
+  kDataBrowserItemsAdd          = 0,    /* add specified items to existing set */
+  kDataBrowserItemsAssign       = 1,    /* assign destination set to specified items */
+  kDataBrowserItemsToggle       = 2,    /* toggle membership state of specified items */
+  kDataBrowserItemsRemove       = 3     /* remove specified items from existing set */
 };
 
 /* Commands for use with MoveDataBrowserSelectionAnchor */
 typedef UInt32 DataBrowserSelectionAnchorDirection;
 enum {
-	kDataBrowserSelectionAnchorUp = 0,
-	kDataBrowserSelectionAnchorDown = 1,
-	kDataBrowserSelectionAnchorLeft = 2,
-	kDataBrowserSelectionAnchorRight = 3
+  kDataBrowserSelectionAnchorUp = 0,
+  kDataBrowserSelectionAnchorDown = 1,
+  kDataBrowserSelectionAnchorLeft = 2,
+  kDataBrowserSelectionAnchorRight = 3
 };
 
 /* Edit menu command IDs for use with Enable/ExecuteDataBrowserEditCommand */
 typedef UInt32 DataBrowserEditCommand;
 enum {
-	kDataBrowserEditMsgUndo = kHICommandUndo,
-	kDataBrowserEditMsgRedo = kHICommandRedo,
-	kDataBrowserEditMsgCut = kHICommandCut,
-	kDataBrowserEditMsgCopy = kHICommandCopy,
-	kDataBrowserEditMsgPaste = kHICommandPaste,
-	kDataBrowserEditMsgClear = kHICommandClear,
-	kDataBrowserEditMsgSelectAll = kHICommandSelectAll
+  kDataBrowserEditMsgUndo       = kHICommandUndo,
+  kDataBrowserEditMsgRedo       = kHICommandRedo,
+  kDataBrowserEditMsgCut        = kHICommandCut,
+  kDataBrowserEditMsgCopy       = kHICommandCopy,
+  kDataBrowserEditMsgPaste      = kHICommandPaste,
+  kDataBrowserEditMsgClear      = kHICommandClear,
+  kDataBrowserEditMsgSelectAll  = kHICommandSelectAll
 };
 
 /* Notifications used in DataBrowserItemNotificationProcPtr */
 typedef UInt32 DataBrowserItemNotification;
 enum {
-	kDataBrowserItemAdded = 1, /* The specified item has been added to the browser */
-	kDataBrowserItemRemoved = 2, /* The specified item has been removed from the browser */
-	kDataBrowserEditStarted = 3, /* Starting an EditText session for specified item */
-	kDataBrowserEditStopped = 4, /* Stopping an EditText session for specified item */
-	kDataBrowserItemSelected = 5, /* Item has just been added to the selection set */
-	kDataBrowserItemDeselected = 6, /* Item has just been removed from the selection set */
-	kDataBrowserItemDoubleClicked = 7,
-	kDataBrowserContainerOpened = 8, /* Container is open */
-	kDataBrowserContainerClosing = 9, /* Container is about to close (and will real soon now, y'all) */
-	kDataBrowserContainerClosed = 10, /* Container is closed (y'all come back now!) */
-	kDataBrowserContainerSorting = 11, /* Container is about to be sorted (lock any volatile properties) */
-	kDataBrowserContainerSorted = 12, /* Container has been sorted (you may release any property locks) */
-	kDataBrowserUserToggledContainer = 16, /* _User_ requested container open/close state to be toggled */
-	kDataBrowserTargetChanged = 15, /* The target has changed to the specified item */
-	kDataBrowserUserStateChanged = 13, /* The user has reformatted the view for the target */
-	kDataBrowserSelectionSetChanged = 14 /* The selection set has been modified (net result may be the same) */
+  kDataBrowserItemAdded         = 1,    /* The specified item has been added to the browser */
+  kDataBrowserItemRemoved       = 2,    /* The specified item has been removed from the browser */
+  kDataBrowserEditStarted       = 3,    /* Starting an EditText session for specified item */
+  kDataBrowserEditStopped       = 4,    /* Stopping an EditText session for specified item */
+  kDataBrowserItemSelected      = 5,    /* Item has just been added to the selection set */
+  kDataBrowserItemDeselected    = 6,    /* Item has just been removed from the selection set */
+  kDataBrowserItemDoubleClicked = 7,
+  kDataBrowserContainerOpened   = 8,    /* Container is open */
+  kDataBrowserContainerClosing  = 9,    /* Container is about to close (and will real soon now, y'all) */
+  kDataBrowserContainerClosed   = 10,   /* Container is closed (y'all come back now!) */
+  kDataBrowserContainerSorting  = 11,   /* Container is about to be sorted (lock any volatile properties) */
+  kDataBrowserContainerSorted   = 12,   /* Container has been sorted (you may release any property locks) */
+  kDataBrowserUserToggledContainer = 16, /* _User_ requested container open/close state to be toggled */
+  kDataBrowserTargetChanged     = 15,   /* The target has changed to the specified item */
+  kDataBrowserUserStateChanged  = 13,   /* The user has reformatted the view for the target */
+  kDataBrowserSelectionSetChanged = 14  /* The selection set has been modified (net result may be the same) */
 };
 
 /* DataBrowser Property Management */
 /* 0-1023 reserved; >= 1024 for client use */
 typedef UInt32 DataBrowserPropertyID;
 enum {
-	/* Predefined attribute properties, optional & non-display unless otherwise stated */
-	kDataBrowserItemNoProperty = 0L, /* The anti-property (no associated data) */
-	kDataBrowserItemIsActiveProperty = 1L, /* Boolean typed data (defaults to true) */
-	kDataBrowserItemIsSelectableProperty = 2L, /* Boolean typed data (defaults to true) */
-	kDataBrowserItemIsEditableProperty = 3L, /* Boolean typed data (defaults to false, used for editable properties) */
-	kDataBrowserItemIsContainerProperty = 4L, /* Boolean typed data (defaults to false) */
-	kDataBrowserContainerIsOpenableProperty = 5L, /* Boolean typed data (defaults to true) */
-	kDataBrowserContainerIsClosableProperty = 6L, /* Boolean typed data (defaults to true) */
-	kDataBrowserContainerIsSortableProperty = 7L, /* Boolean typed data (defaults to true) */
-	kDataBrowserItemSelfIdentityProperty = 8L, /* kDataBrowserIconAndTextType (display property; ColumnView only) */
-	kDataBrowserContainerAliasIDProperty = 9L, /* DataBrowserItemID (alias/symlink an item to a container item) */
-	kDataBrowserColumnViewPreviewProperty = 10L, /* kDataBrowserCustomType (display property; ColumnView only) */
-	kDataBrowserItemParentContainerProperty = 11L /* DataBrowserItemID (the parent of the specified item, used by ColumnView) */
+                                        /* Predefined attribute properties, optional & non-display unless otherwise stated */
+  kDataBrowserItemNoProperty    = 0L,   /* The anti-property (no associated data) */
+  kDataBrowserItemIsActiveProperty = 1L, /* Boolean typed data (defaults to true) */
+  kDataBrowserItemIsSelectableProperty = 2L, /* Boolean typed data (defaults to true) */
+  kDataBrowserItemIsEditableProperty = 3L, /* Boolean typed data (defaults to false, used for editable properties) */
+  kDataBrowserItemIsContainerProperty = 4L, /* Boolean typed data (defaults to false) */
+  kDataBrowserContainerIsOpenableProperty = 5L, /* Boolean typed data (defaults to true) */
+  kDataBrowserContainerIsClosableProperty = 6L, /* Boolean typed data (defaults to true) */
+  kDataBrowserContainerIsSortableProperty = 7L, /* Boolean typed data (defaults to true) */
+  kDataBrowserItemSelfIdentityProperty = 8L, /* kDataBrowserIconAndTextType (display property; ColumnView only) */
+  kDataBrowserContainerAliasIDProperty = 9L, /* DataBrowserItemID (alias/symlink an item to a container item) */
+  kDataBrowserColumnViewPreviewProperty = 10L, /* kDataBrowserCustomType (display property; ColumnView only) */
+  kDataBrowserItemParentContainerProperty = 11L /* DataBrowserItemID (the parent of the specified item, used by ColumnView) */
 };
 
 /* DataBrowser Property Types (for display properties; i.e. ListView columns) */
 /*      These are primarily presentation types (or styles) although         */
 /*      they also imply a particular set of primitive types or structures.  */
-typedef OSType DataBrowserPropertyType;
+typedef OSType                          DataBrowserPropertyType;
 enum {
-	/* == Corresponding data type or structure == */
-	kDataBrowserCustomType = 0x3F3F3F3F, /* No associated data, custom callbacks used */
-	kDataBrowserIconType = FOUR_CHAR_CODE( 'icnr' ), /* IconRef, IconTransformType, RGBColor */
-	kDataBrowserTextType = FOUR_CHAR_CODE( 'text' ), /* CFStringRef */
-	kDataBrowserDateTimeType = FOUR_CHAR_CODE( 'date' ), /* DateTime or LongDateTime */
-	kDataBrowserSliderType = FOUR_CHAR_CODE( 'sldr' ), /* Min, Max, Value */
-	kDataBrowserCheckboxType = FOUR_CHAR_CODE( 'chbx' ), /* ThemeButtonValue */
-	kDataBrowserProgressBarType = FOUR_CHAR_CODE( 'prog' ), /* Min, Max, Value */
-	kDataBrowserRelevanceRankType = FOUR_CHAR_CODE( 'rank' ), /* Min, Max, Value */
-	kDataBrowserPopupMenuType = FOUR_CHAR_CODE( 'menu' ), /* MenuRef, Value */
-	kDataBrowserIconAndTextType = FOUR_CHAR_CODE( 'ticn' ) /* IconRef, CFStringRef, etc */
+                                        /* == Corresponding data type or structure == */
+  kDataBrowserCustomType        = 0x3F3F3F3F, /* No associated data, custom callbacks used */
+  kDataBrowserIconType          = FOUR_CHAR_CODE('icnr'), /* IconRef, IconTransformType, RGBColor */
+  kDataBrowserTextType          = FOUR_CHAR_CODE('text'), /* CFStringRef */
+  kDataBrowserDateTimeType      = FOUR_CHAR_CODE('date'), /* DateTime or LongDateTime */
+  kDataBrowserSliderType        = FOUR_CHAR_CODE('sldr'), /* Min, Max, Value */
+  kDataBrowserCheckboxType      = FOUR_CHAR_CODE('chbx'), /* ThemeButtonValue */
+  kDataBrowserProgressBarType   = FOUR_CHAR_CODE('prog'), /* Min, Max, Value */
+  kDataBrowserRelevanceRankType = FOUR_CHAR_CODE('rank'), /* Min, Max, Value */
+  kDataBrowserPopupMenuType     = FOUR_CHAR_CODE('menu'), /* MenuRef, Value */
+  kDataBrowserIconAndTextType   = FOUR_CHAR_CODE('ticn') /* IconRef, CFStringRef, etc */
 };
 
 /* DataBrowser Property Parts */
 /*      Visual components of a property type.      */
 /*      For use with GetDataBrowserItemPartBounds. */
-typedef OSType DataBrowserPropertyPart;
+typedef OSType                          DataBrowserPropertyPart;
 enum {
-	kDataBrowserPropertyEnclosingPart = 0L,
-	kDataBrowserPropertyContentPart = FOUR_CHAR_CODE( '----' ),
-	kDataBrowserPropertyDisclosurePart = FOUR_CHAR_CODE( 'disc' ),
-	kDataBrowserPropertyTextPart = kDataBrowserTextType,
-	kDataBrowserPropertyIconPart = kDataBrowserIconType,
-	kDataBrowserPropertySliderPart = kDataBrowserSliderType,
-	kDataBrowserPropertyCheckboxPart = kDataBrowserCheckboxType,
-	kDataBrowserPropertyProgressBarPart = kDataBrowserProgressBarType,
-	kDataBrowserPropertyRelevanceRankPart = kDataBrowserRelevanceRankType
+  kDataBrowserPropertyEnclosingPart = 0L,
+  kDataBrowserPropertyContentPart = FOUR_CHAR_CODE('----'),
+  kDataBrowserPropertyDisclosurePart = FOUR_CHAR_CODE('disc'),
+  kDataBrowserPropertyTextPart  = kDataBrowserTextType,
+  kDataBrowserPropertyIconPart  = kDataBrowserIconType,
+  kDataBrowserPropertySliderPart = kDataBrowserSliderType,
+  kDataBrowserPropertyCheckboxPart = kDataBrowserCheckboxType,
+  kDataBrowserPropertyProgressBarPart = kDataBrowserProgressBarType,
+  kDataBrowserPropertyRelevanceRankPart = kDataBrowserRelevanceRankType
 };
 
 /* Modify appearance/behavior of display properties */
-typedef unsigned long DataBrowserPropertyFlags;
+typedef unsigned long                   DataBrowserPropertyFlags;
 /* Low 8 bits apply to all property types */
 enum {
-	kDataBrowserUniversalPropertyFlagsMask = 0xFF,
-	kDataBrowserPropertyIsMutable = 1 << 0,
-	kDataBrowserDefaultPropertyFlags = 0 << 0,
-	kDataBrowserUniversalPropertyFlags = kDataBrowserUniversalPropertyFlagsMask, /* support for an old name*/
-	kDataBrowserPropertyIsEditable = kDataBrowserPropertyIsMutable /* support for an old name*/
+  kDataBrowserUniversalPropertyFlagsMask = 0xFF,
+  kDataBrowserPropertyIsMutable = 1 << 0,
+  kDataBrowserDefaultPropertyFlags = 0 << 0,
+  kDataBrowserUniversalPropertyFlags = kDataBrowserUniversalPropertyFlagsMask, /* support for an old name*/
+  kDataBrowserPropertyIsEditable = kDataBrowserPropertyIsMutable /* support for an old name*/
 };
 
 /* Next 8 bits contain property-specific modifiers */
 enum {
-	kDataBrowserPropertyFlagsOffset = 8,
-	kDataBrowserPropertyFlagsMask = 0xFF << kDataBrowserPropertyFlagsOffset,
-	kDataBrowserCheckboxTriState = 1 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserCheckboxType*/
-	kDataBrowserDateTimeRelative = 1 << ( kDataBrowserPropertyFlagsOffset ), /* kDataBrowserDateTimeType */
-	kDataBrowserDateTimeDateOnly = 1 << ( kDataBrowserPropertyFlagsOffset + 1 ), /* kDataBrowserDateTimeType */
-	kDataBrowserDateTimeTimeOnly = 1 << ( kDataBrowserPropertyFlagsOffset + 2 ), /* kDataBrowserDateTimeType */
-	kDataBrowserDateTimeSecondsToo = 1 << ( kDataBrowserPropertyFlagsOffset + 3 ), /* kDataBrowserDateTimeType */
-	kDataBrowserSliderPlainThumb = kThemeThumbPlain << kDataBrowserPropertyFlagsOffset, /* kDataBrowserSliderType */
-	kDataBrowserSliderUpwardThumb = kThemeThumbUpward << kDataBrowserPropertyFlagsOffset, /* kDataBrowserSliderType */
-	kDataBrowserSliderDownwardThumb = kThemeThumbDownward << kDataBrowserPropertyFlagsOffset, /* kDataBrowserSliderType */
-	kDataBrowserDoNotTruncateText = 3 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
-	kDataBrowserTruncateTextAtEnd = 2 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
-	kDataBrowserTruncateTextMiddle = 0 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
-	kDataBrowserTruncateTextAtStart = 1 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
-	kDataBrowserPropertyModificationFlags = kDataBrowserPropertyFlagsMask, /* support for an old name*/
-	kDataBrowserRelativeDateTime = kDataBrowserDateTimeRelative /* support for an old name*/
+  kDataBrowserPropertyFlagsOffset = 8,
+  kDataBrowserPropertyFlagsMask = 0xFF << kDataBrowserPropertyFlagsOffset,
+  kDataBrowserCheckboxTriState  = 1 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserCheckboxType*/
+  kDataBrowserDateTimeRelative  = 1 << (kDataBrowserPropertyFlagsOffset), /* kDataBrowserDateTimeType */
+  kDataBrowserDateTimeDateOnly  = 1 << (kDataBrowserPropertyFlagsOffset + 1), /* kDataBrowserDateTimeType */
+  kDataBrowserDateTimeTimeOnly  = 1 << (kDataBrowserPropertyFlagsOffset + 2), /* kDataBrowserDateTimeType */
+  kDataBrowserDateTimeSecondsToo = 1 << (kDataBrowserPropertyFlagsOffset + 3), /* kDataBrowserDateTimeType */
+  kDataBrowserSliderPlainThumb  = kThemeThumbPlain << kDataBrowserPropertyFlagsOffset, /* kDataBrowserSliderType */
+  kDataBrowserSliderUpwardThumb = kThemeThumbUpward << kDataBrowserPropertyFlagsOffset, /* kDataBrowserSliderType */
+  kDataBrowserSliderDownwardThumb = kThemeThumbDownward << kDataBrowserPropertyFlagsOffset, /* kDataBrowserSliderType */
+  kDataBrowserDoNotTruncateText = 3 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
+  kDataBrowserTruncateTextAtEnd = 2 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
+  kDataBrowserTruncateTextMiddle = 0 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
+  kDataBrowserTruncateTextAtStart = 1 << kDataBrowserPropertyFlagsOffset, /* kDataBrowserTextType && kDataBrowserIconAndTextType */
+  kDataBrowserPropertyModificationFlags = kDataBrowserPropertyFlagsMask, /* support for an old name*/
+  kDataBrowserRelativeDateTime  = kDataBrowserDateTimeRelative /* support for an old name*/
 };
 
 /*
@@ -3265,27 +3268,27 @@ enum {
    See individual ViewStyle sections below for flag definitions 
 */
 enum {
-	kDataBrowserViewSpecificFlagsOffset = 16,
-	kDataBrowserViewSpecificFlagsMask = 0xFF << kDataBrowserViewSpecificFlagsOffset,
-	kDataBrowserViewSpecificPropertyFlags = kDataBrowserViewSpecificFlagsMask /* support for an old name*/
+  kDataBrowserViewSpecificFlagsOffset = 16,
+  kDataBrowserViewSpecificFlagsMask = 0xFF << kDataBrowserViewSpecificFlagsOffset,
+  kDataBrowserViewSpecificPropertyFlags = kDataBrowserViewSpecificFlagsMask /* support for an old name*/
 };
 
 /* High 8 bits are reserved for client application use */
 enum {
-	kDataBrowserClientPropertyFlagsOffset = 24,
-	kDataBrowserClientPropertyFlagsMask = (unsigned long)( 0xFF << kDataBrowserClientPropertyFlagsOffset )
+  kDataBrowserClientPropertyFlagsOffset = 24,
+  kDataBrowserClientPropertyFlagsMask = (unsigned long)(0xFF << kDataBrowserClientPropertyFlagsOffset)
 };
 
 /* Client defined property description */
 struct DataBrowserPropertyDesc {
-	DataBrowserPropertyID    propertyID;
-	DataBrowserPropertyType  propertyType;
-	DataBrowserPropertyFlags propertyFlags;
+  DataBrowserPropertyID  propertyID;
+  DataBrowserPropertyType  propertyType;
+  DataBrowserPropertyFlags  propertyFlags;
 };
-typedef struct DataBrowserPropertyDesc DataBrowserPropertyDesc;
+typedef struct DataBrowserPropertyDesc  DataBrowserPropertyDesc;
 /* Callback definition for use with ForEachDataBrowserItem */
-typedef CALLBACK_API( void, DataBrowserItemProcPtr )( DataBrowserItemID item, DataBrowserItemState state, void *clientData );
-typedef STACK_UPP_TYPE( DataBrowserItemProcPtr ) DataBrowserItemUPP;
+typedef CALLBACK_API( void , DataBrowserItemProcPtr )(DataBrowserItemID item, DataBrowserItemState state, void *clientData);
+typedef STACK_UPP_TYPE(DataBrowserItemProcPtr)                  DataBrowserItemUPP;
 /*
  *  NewDataBrowserItemUPP()
  *  
@@ -3295,7 +3298,7 @@ typedef STACK_UPP_TYPE( DataBrowserItemProcPtr ) DataBrowserItemUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserItemUPP )
-NewDataBrowserItemUPP( DataBrowserItemProcPtr userRoutine );
+NewDataBrowserItemUPP(DataBrowserItemProcPtr userRoutine);
 
 /*
  *  DisposeDataBrowserItemUPP()
@@ -3306,7 +3309,7 @@ NewDataBrowserItemUPP( DataBrowserItemProcPtr userRoutine );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemUPP( DataBrowserItemUPP userUPP );
+DisposeDataBrowserItemUPP(DataBrowserItemUPP userUPP);
 
 /*
  *  InvokeDataBrowserItemUPP()
@@ -3318,10 +3321,10 @@ DisposeDataBrowserItemUPP( DataBrowserItemUPP userUPP );
  */
 EXTERN_API_C( void )
 InvokeDataBrowserItemUPP(
-    DataBrowserItemID    item,
-    DataBrowserItemState state,
-    void *               clientData,
-    DataBrowserItemUPP   userUPP );
+  DataBrowserItemID     item,
+  DataBrowserItemState  state,
+  void *                clientData,
+  DataBrowserItemUPP    userUPP);
 
 /* Creation/Configuration */
 /*
@@ -3334,10 +3337,11 @@ InvokeDataBrowserItemUPP(
  */
 EXTERN_API( OSStatus )
 CreateDataBrowserControl(
-    WindowRef            window,
-    const Rect *         boundsRect,
-    DataBrowserViewStyle style,
-    ControlRef *         outControl );
+  WindowRef              window,
+  const Rect *           boundsRect,
+  DataBrowserViewStyle   style,
+  ControlRef *           outControl);
+
 
 /*
  *  GetDataBrowserViewStyle()
@@ -3349,8 +3353,9 @@ CreateDataBrowserControl(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserViewStyle(
-    ControlRef            browser,
-    DataBrowserViewStyle *style );
+  ControlRef              browser,
+  DataBrowserViewStyle *  style);
+
 
 /*
  *  SetDataBrowserViewStyle()
@@ -3362,8 +3367,9 @@ GetDataBrowserViewStyle(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserViewStyle(
-    ControlRef           browser,
-    DataBrowserViewStyle style );
+  ControlRef             browser,
+  DataBrowserViewStyle   style);
+
 
 /* Item Manipulation */
 /* Passing NULL for "items" argument to RemoveDataBrowserItems and */
@@ -3380,11 +3386,12 @@ SetDataBrowserViewStyle(
  */
 EXTERN_API( OSStatus )
 AddDataBrowserItems(
-    ControlRef               browser,
-    DataBrowserItemID        container,
-    UInt32                   numItems,
-    const DataBrowserItemID *items, /* can be NULL */
-    DataBrowserPropertyID    preSortProperty );
+  ControlRef                 browser,
+  DataBrowserItemID          container,
+  UInt32                     numItems,
+  const DataBrowserItemID *  items,                 /* can be NULL */
+  DataBrowserPropertyID      preSortProperty);
+
 
 /*
  *  RemoveDataBrowserItems()
@@ -3396,11 +3403,12 @@ AddDataBrowserItems(
  */
 EXTERN_API( OSStatus )
 RemoveDataBrowserItems(
-    ControlRef               browser,
-    DataBrowserItemID        container,
-    UInt32                   numItems,
-    const DataBrowserItemID *items, /* can be NULL */
-    DataBrowserPropertyID    preSortProperty );
+  ControlRef                 browser,
+  DataBrowserItemID          container,
+  UInt32                     numItems,
+  const DataBrowserItemID *  items,                 /* can be NULL */
+  DataBrowserPropertyID      preSortProperty);
+
 
 /*
  *  UpdateDataBrowserItems()
@@ -3412,12 +3420,13 @@ RemoveDataBrowserItems(
  */
 EXTERN_API( OSStatus )
 UpdateDataBrowserItems(
-    ControlRef               browser,
-    DataBrowserItemID        container,
-    UInt32                   numItems,
-    const DataBrowserItemID *items, /* can be NULL */
-    DataBrowserPropertyID    preSortProperty,
-    DataBrowserPropertyID    propertyID );
+  ControlRef                 browser,
+  DataBrowserItemID          container,
+  UInt32                     numItems,
+  const DataBrowserItemID *  items,                 /* can be NULL */
+  DataBrowserPropertyID      preSortProperty,
+  DataBrowserPropertyID      propertyID);
+
 
 /* Edit Menu Enabling and Handling */
 /*
@@ -3430,8 +3439,9 @@ UpdateDataBrowserItems(
  */
 EXTERN_API( Boolean )
 EnableDataBrowserEditCommand(
-    ControlRef             browser,
-    DataBrowserEditCommand command );
+  ControlRef               browser,
+  DataBrowserEditCommand   command);
+
 
 /*
  *  ExecuteDataBrowserEditCommand()
@@ -3443,8 +3453,9 @@ EnableDataBrowserEditCommand(
  */
 EXTERN_API( OSStatus )
 ExecuteDataBrowserEditCommand(
-    ControlRef             browser,
-    DataBrowserEditCommand command );
+  ControlRef               browser,
+  DataBrowserEditCommand   command);
+
 
 /*
  *  GetDataBrowserSelectionAnchor()
@@ -3456,9 +3467,10 @@ ExecuteDataBrowserEditCommand(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserSelectionAnchor(
-    ControlRef         browser,
-    DataBrowserItemID *first,
-    DataBrowserItemID *last );
+  ControlRef           browser,
+  DataBrowserItemID *  first,
+  DataBrowserItemID *  last);
+
 
 /*
  *  MoveDataBrowserSelectionAnchor()
@@ -3470,9 +3482,10 @@ GetDataBrowserSelectionAnchor(
  */
 EXTERN_API( OSStatus )
 MoveDataBrowserSelectionAnchor(
-    ControlRef                          browser,
-    DataBrowserSelectionAnchorDirection direction,
-    Boolean                             extendSelection );
+  ControlRef                            browser,
+  DataBrowserSelectionAnchorDirection   direction,
+  Boolean                               extendSelection);
+
 
 /* Container Manipulation */
 /*
@@ -3485,8 +3498,9 @@ MoveDataBrowserSelectionAnchor(
  */
 EXTERN_API( OSStatus )
 OpenDataBrowserContainer(
-    ControlRef        browser,
-    DataBrowserItemID container );
+  ControlRef          browser,
+  DataBrowserItemID   container);
+
 
 /*
  *  CloseDataBrowserContainer()
@@ -3498,8 +3512,9 @@ OpenDataBrowserContainer(
  */
 EXTERN_API( OSStatus )
 CloseDataBrowserContainer(
-    ControlRef        browser,
-    DataBrowserItemID container );
+  ControlRef          browser,
+  DataBrowserItemID   container);
+
 
 /*
  *  SortDataBrowserContainer()
@@ -3511,9 +3526,10 @@ CloseDataBrowserContainer(
  */
 EXTERN_API( OSStatus )
 SortDataBrowserContainer(
-    ControlRef        browser,
-    DataBrowserItemID container,
-    Boolean           sortChildren );
+  ControlRef          browser,
+  DataBrowserItemID   container,
+  Boolean             sortChildren);
+
 
 /* Aggregate Item Access and Iteration */
 /*
@@ -3526,11 +3542,12 @@ SortDataBrowserContainer(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItems(
-    ControlRef           browser,
-    DataBrowserItemID    container,
-    Boolean              recurse,
-    DataBrowserItemState state,
-    Handle               items );
+  ControlRef             browser,
+  DataBrowserItemID      container,
+  Boolean                recurse,
+  DataBrowserItemState   state,
+  Handle                 items);
+
 
 /*
  *  GetDataBrowserItemCount()
@@ -3542,11 +3559,12 @@ GetDataBrowserItems(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemCount(
-    ControlRef           browser,
-    DataBrowserItemID    container,
-    Boolean              recurse,
-    DataBrowserItemState state,
-    UInt32 *             numItems );
+  ControlRef             browser,
+  DataBrowserItemID      container,
+  Boolean                recurse,
+  DataBrowserItemState   state,
+  UInt32 *               numItems);
+
 
 /*
  *  ForEachDataBrowserItem()
@@ -3558,12 +3576,13 @@ GetDataBrowserItemCount(
  */
 EXTERN_API( OSStatus )
 ForEachDataBrowserItem(
-    ControlRef           browser,
-    DataBrowserItemID    container,
-    Boolean              recurse,
-    DataBrowserItemState state,
-    DataBrowserItemUPP   callback,
-    void *               clientData );
+  ControlRef             browser,
+  DataBrowserItemID      container,
+  Boolean                recurse,
+  DataBrowserItemState   state,
+  DataBrowserItemUPP     callback,
+  void *                 clientData);
+
 
 /* Individual Item Access and Display */
 /*
@@ -3576,8 +3595,9 @@ ForEachDataBrowserItem(
  */
 EXTERN_API( Boolean )
 IsDataBrowserItemSelected(
-    ControlRef        browser,
-    DataBrowserItemID item );
+  ControlRef          browser,
+  DataBrowserItemID   item);
+
 
 /*
  *  GetDataBrowserItemState()
@@ -3589,9 +3609,10 @@ IsDataBrowserItemSelected(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemState(
-    ControlRef            browser,
-    DataBrowserItemID     item,
-    DataBrowserItemState *state );
+  ControlRef              browser,
+  DataBrowserItemID       item,
+  DataBrowserItemState *  state);
+
 
 /*
  *  RevealDataBrowserItem()
@@ -3603,10 +3624,11 @@ GetDataBrowserItemState(
  */
 EXTERN_API( OSStatus )
 RevealDataBrowserItem(
-    ControlRef               browser,
-    DataBrowserItemID        item,
-    DataBrowserPropertyID    propertyID,
-    DataBrowserRevealOptions options );
+  ControlRef                 browser,
+  DataBrowserItemID          item,
+  DataBrowserPropertyID      propertyID,
+  DataBrowserRevealOptions   options);
+
 
 /* Selection Set Manipulation */
 /*
@@ -3619,10 +3641,12 @@ RevealDataBrowserItem(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserSelectedItems(
-    ControlRef               browser,
-    UInt32                   numItems,
-    const DataBrowserItemID *items,
-    DataBrowserSetOption     operation );
+  ControlRef                 browser,
+  UInt32                     numItems,
+  const DataBrowserItemID *  items,
+  DataBrowserSetOption       operation);
+
+
 
 /* DataBrowser Attribute Manipulation */
 /* The user customizable portion of the current view style settings */
@@ -3636,8 +3660,9 @@ SetDataBrowserSelectedItems(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserUserState(
-    ControlRef browser,
-    CFDataRef  stateInfo );
+  ControlRef   browser,
+  CFDataRef    stateInfo);
+
 
 /*
  *  GetDataBrowserUserState()
@@ -3649,8 +3674,9 @@ SetDataBrowserUserState(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserUserState(
-    ControlRef browser,
-    CFDataRef *stateInfo );
+  ControlRef   browser,
+  CFDataRef *  stateInfo);
+
 
 /* All items are active/enabled or not */
 /*
@@ -3663,8 +3689,9 @@ GetDataBrowserUserState(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserActiveItems(
-    ControlRef browser,
-    Boolean    active );
+  ControlRef   browser,
+  Boolean      active);
+
 
 /*
  *  GetDataBrowserActiveItems()
@@ -3676,8 +3703,9 @@ SetDataBrowserActiveItems(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserActiveItems(
-    ControlRef browser,
-    Boolean *  active );
+  ControlRef   browser,
+  Boolean *    active);
+
 
 /* Inset the scrollbars within the DataBrowser bounds */
 /*
@@ -3690,8 +3718,9 @@ GetDataBrowserActiveItems(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserScrollBarInset(
-    ControlRef browser,
-    Rect *     insetRect );
+  ControlRef   browser,
+  Rect *       insetRect);
+
 
 /*
  *  GetDataBrowserScrollBarInset()
@@ -3703,8 +3732,9 @@ SetDataBrowserScrollBarInset(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserScrollBarInset(
-    ControlRef browser,
-    Rect *     insetRect );
+  ControlRef   browser,
+  Rect *       insetRect);
+
 
 /* The "user focused" item */
 /* For the ListView, this means the root container */
@@ -3719,8 +3749,9 @@ GetDataBrowserScrollBarInset(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTarget(
-    ControlRef        browser,
-    DataBrowserItemID target );
+  ControlRef          browser,
+  DataBrowserItemID   target);
+
 
 /*
  *  GetDataBrowserTarget()
@@ -3732,8 +3763,9 @@ SetDataBrowserTarget(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTarget(
-    ControlRef         browser,
-    DataBrowserItemID *target );
+  ControlRef           browser,
+  DataBrowserItemID *  target);
+
 
 /* Current sort ordering */
 /* ListView tracks this per-column */
@@ -3747,8 +3779,9 @@ GetDataBrowserTarget(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserSortOrder(
-    ControlRef           browser,
-    DataBrowserSortOrder order );
+  ControlRef             browser,
+  DataBrowserSortOrder   order);
+
 
 /*
  *  GetDataBrowserSortOrder()
@@ -3760,8 +3793,9 @@ SetDataBrowserSortOrder(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserSortOrder(
-    ControlRef            browser,
-    DataBrowserSortOrder *order );
+  ControlRef              browser,
+  DataBrowserSortOrder *  order);
+
 
 /* Scrollbar values */
 /*
@@ -3774,9 +3808,10 @@ GetDataBrowserSortOrder(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserScrollPosition(
-    ControlRef browser,
-    UInt32     top,
-    UInt32     left );
+  ControlRef   browser,
+  UInt32       top,
+  UInt32       left);
+
 
 /*
  *  GetDataBrowserScrollPosition()
@@ -3788,9 +3823,10 @@ SetDataBrowserScrollPosition(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserScrollPosition(
-    ControlRef browser,
-    UInt32 *   top,
-    UInt32 *   left );
+  ControlRef   browser,
+  UInt32 *     top,
+  UInt32 *     left);
+
 
 /* Show/Hide each scrollbar */
 /*
@@ -3803,9 +3839,10 @@ GetDataBrowserScrollPosition(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserHasScrollBars(
-    ControlRef browser,
-    Boolean    horiz,
-    Boolean    vert );
+  ControlRef   browser,
+  Boolean      horiz,
+  Boolean      vert);
+
 
 /*
  *  GetDataBrowserHasScrollBars()
@@ -3817,9 +3854,10 @@ SetDataBrowserHasScrollBars(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserHasScrollBars(
-    ControlRef browser,
-    Boolean *  horiz,
-    Boolean *  vert );
+  ControlRef   browser,
+  Boolean *    horiz,
+  Boolean *    vert);
+
 
 /* Property passed to sort callback (ListView sort column) */
 /*
@@ -3832,8 +3870,9 @@ GetDataBrowserHasScrollBars(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserSortProperty(
-    ControlRef            browser,
-    DataBrowserPropertyID property );
+  ControlRef              browser,
+  DataBrowserPropertyID   property);
+
 
 /*
  *  GetDataBrowserSortProperty()
@@ -3845,8 +3884,9 @@ SetDataBrowserSortProperty(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserSortProperty(
-    ControlRef             browser,
-    DataBrowserPropertyID *property );
+  ControlRef               browser,
+  DataBrowserPropertyID *  property);
+
 
 /* Modify selection behavior */
 /*
@@ -3859,8 +3899,9 @@ GetDataBrowserSortProperty(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserSelectionFlags(
-    ControlRef                browser,
-    DataBrowserSelectionFlags selectionFlags );
+  ControlRef                  browser,
+  DataBrowserSelectionFlags   selectionFlags);
+
 
 /*
  *  GetDataBrowserSelectionFlags()
@@ -3872,8 +3913,9 @@ SetDataBrowserSelectionFlags(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserSelectionFlags(
-    ControlRef                 browser,
-    DataBrowserSelectionFlags *selectionFlags );
+  ControlRef                   browser,
+  DataBrowserSelectionFlags *  selectionFlags);
+
 
 /* Dynamically modify property appearance/behavior */
 /*
@@ -3886,9 +3928,10 @@ GetDataBrowserSelectionFlags(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserPropertyFlags(
-    ControlRef               browser,
-    DataBrowserPropertyID    property,
-    DataBrowserPropertyFlags flags );
+  ControlRef                 browser,
+  DataBrowserPropertyID      property,
+  DataBrowserPropertyFlags   flags);
+
 
 /*
  *  GetDataBrowserPropertyFlags()
@@ -3900,9 +3943,10 @@ SetDataBrowserPropertyFlags(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserPropertyFlags(
-    ControlRef                browser,
-    DataBrowserPropertyID     property,
-    DataBrowserPropertyFlags *flags );
+  ControlRef                  browser,
+  DataBrowserPropertyID       property,
+  DataBrowserPropertyFlags *  flags);
+
 
 /* Text of current in-place edit session */
 /*
@@ -3915,8 +3959,9 @@ GetDataBrowserPropertyFlags(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserEditText(
-    ControlRef  browser,
-    CFStringRef text );
+  ControlRef    browser,
+  CFStringRef   text);
+
 
 /*
  *  CopyDataBrowserEditText()
@@ -3928,8 +3973,9 @@ SetDataBrowserEditText(
  */
 EXTERN_API( OSStatus )
 CopyDataBrowserEditText(
-    ControlRef   browser,
-    CFStringRef *text );
+  ControlRef     browser,
+  CFStringRef *  text);
+
 
 /*
  *  GetDataBrowserEditText()
@@ -3941,8 +3987,9 @@ CopyDataBrowserEditText(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserEditText(
-    ControlRef         browser,
-    CFMutableStringRef text );
+  ControlRef           browser,
+  CFMutableStringRef   text);
+
 
 /* Item/property currently being edited */
 /*
@@ -3955,9 +4002,10 @@ GetDataBrowserEditText(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserEditItem(
-    ControlRef            browser,
-    DataBrowserItemID     item,
-    DataBrowserPropertyID property );
+  ControlRef              browser,
+  DataBrowserItemID       item,
+  DataBrowserPropertyID   property);
+
 
 /*
  *  GetDataBrowserEditItem()
@@ -3969,9 +4017,10 @@ SetDataBrowserEditItem(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserEditItem(
-    ControlRef             browser,
-    DataBrowserItemID *    item,
-    DataBrowserPropertyID *property );
+  ControlRef               browser,
+  DataBrowserItemID *      item,
+  DataBrowserPropertyID *  property);
+
 
 /* Get the current bounds of a visual part of an item's property */
 /*
@@ -3984,15 +4033,17 @@ GetDataBrowserEditItem(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemPartBounds(
-    ControlRef              browser,
-    DataBrowserItemID       item,
-    DataBrowserPropertyID   property,
-    DataBrowserPropertyPart part,
-    Rect *                  bounds );
+  ControlRef                browser,
+  DataBrowserItemID         item,
+  DataBrowserPropertyID     property,
+  DataBrowserPropertyPart   part,
+  Rect *                    bounds);
+
+
 
 /* DataBrowser ItemData Accessors (used within DataBrowserItemData callback) */
 
-typedef void *DataBrowserItemDataRef;
+typedef void *                          DataBrowserItemDataRef;
 /*
  *  SetDataBrowserItemDataIcon()
  *  
@@ -4003,8 +4054,9 @@ typedef void *DataBrowserItemDataRef;
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataIcon(
-    DataBrowserItemDataRef itemData,
-    IconRef                theData );
+  DataBrowserItemDataRef   itemData,
+  IconRef                  theData);
+
 
 /*
  *  GetDataBrowserItemDataIcon()
@@ -4016,8 +4068,9 @@ SetDataBrowserItemDataIcon(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataIcon(
-    DataBrowserItemDataRef itemData,
-    IconRef *              theData );
+  DataBrowserItemDataRef   itemData,
+  IconRef *                theData);
+
 
 /*
  *  SetDataBrowserItemDataText()
@@ -4029,8 +4082,9 @@ GetDataBrowserItemDataIcon(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataText(
-    DataBrowserItemDataRef itemData,
-    CFStringRef            theData );
+  DataBrowserItemDataRef   itemData,
+  CFStringRef              theData);
+
 
 /*
  *  GetDataBrowserItemDataText()
@@ -4042,8 +4096,10 @@ SetDataBrowserItemDataText(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataText(
-    DataBrowserItemDataRef itemData,
-    CFStringRef *          theData );
+  DataBrowserItemDataRef   itemData,
+  CFStringRef *            theData);
+
+
 
 /*
  *  SetDataBrowserItemDataValue()
@@ -4055,8 +4111,9 @@ GetDataBrowserItemDataText(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataValue(
-    DataBrowserItemDataRef itemData,
-    SInt32                 theData );
+  DataBrowserItemDataRef   itemData,
+  SInt32                   theData);
+
 
 /*
  *  GetDataBrowserItemDataValue()
@@ -4068,8 +4125,9 @@ SetDataBrowserItemDataValue(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataValue(
-    DataBrowserItemDataRef itemData,
-    SInt32 *               theData );
+  DataBrowserItemDataRef   itemData,
+  SInt32 *                 theData);
+
 
 /*
  *  SetDataBrowserItemDataMinimum()
@@ -4081,8 +4139,9 @@ GetDataBrowserItemDataValue(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataMinimum(
-    DataBrowserItemDataRef itemData,
-    SInt32                 theData );
+  DataBrowserItemDataRef   itemData,
+  SInt32                   theData);
+
 
 /*
  *  GetDataBrowserItemDataMinimum()
@@ -4094,8 +4153,9 @@ SetDataBrowserItemDataMinimum(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataMinimum(
-    DataBrowserItemDataRef itemData,
-    SInt32 *               theData );
+  DataBrowserItemDataRef   itemData,
+  SInt32 *                 theData);
+
 
 /*
  *  SetDataBrowserItemDataMaximum()
@@ -4107,8 +4167,9 @@ GetDataBrowserItemDataMinimum(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataMaximum(
-    DataBrowserItemDataRef itemData,
-    SInt32                 theData );
+  DataBrowserItemDataRef   itemData,
+  SInt32                   theData);
+
 
 /*
  *  GetDataBrowserItemDataMaximum()
@@ -4120,8 +4181,9 @@ SetDataBrowserItemDataMaximum(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataMaximum(
-    DataBrowserItemDataRef itemData,
-    SInt32 *               theData );
+  DataBrowserItemDataRef   itemData,
+  SInt32 *                 theData);
+
 
 /*
  *  SetDataBrowserItemDataBooleanValue()
@@ -4133,8 +4195,9 @@ GetDataBrowserItemDataMaximum(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataBooleanValue(
-    DataBrowserItemDataRef itemData,
-    Boolean                theData );
+  DataBrowserItemDataRef   itemData,
+  Boolean                  theData);
+
 
 /*
  *  GetDataBrowserItemDataBooleanValue()
@@ -4146,8 +4209,9 @@ SetDataBrowserItemDataBooleanValue(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataBooleanValue(
-    DataBrowserItemDataRef itemData,
-    Boolean *              theData );
+  DataBrowserItemDataRef   itemData,
+  Boolean *                theData);
+
 
 /*
  *  SetDataBrowserItemDataMenuRef()
@@ -4159,8 +4223,9 @@ GetDataBrowserItemDataBooleanValue(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataMenuRef(
-    DataBrowserItemDataRef itemData,
-    MenuRef                theData );
+  DataBrowserItemDataRef   itemData,
+  MenuRef                  theData);
+
 
 /*
  *  GetDataBrowserItemDataMenuRef()
@@ -4172,8 +4237,9 @@ SetDataBrowserItemDataMenuRef(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataMenuRef(
-    DataBrowserItemDataRef itemData,
-    MenuRef *              theData );
+  DataBrowserItemDataRef   itemData,
+  MenuRef *                theData);
+
 
 /*
  *  SetDataBrowserItemDataRGBColor()
@@ -4185,8 +4251,9 @@ GetDataBrowserItemDataMenuRef(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataRGBColor(
-    DataBrowserItemDataRef itemData,
-    const RGBColor *       theData );
+  DataBrowserItemDataRef   itemData,
+  const RGBColor *         theData);
+
 
 /*
  *  GetDataBrowserItemDataRGBColor()
@@ -4198,8 +4265,10 @@ SetDataBrowserItemDataRGBColor(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataRGBColor(
-    DataBrowserItemDataRef itemData,
-    RGBColor *             theData );
+  DataBrowserItemDataRef   itemData,
+  RGBColor *               theData);
+
+
 
 /*
  *  SetDataBrowserItemDataDrawState()
@@ -4211,8 +4280,9 @@ GetDataBrowserItemDataRGBColor(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataDrawState(
-    DataBrowserItemDataRef itemData,
-    ThemeDrawState         theData );
+  DataBrowserItemDataRef   itemData,
+  ThemeDrawState           theData);
+
 
 /*
  *  GetDataBrowserItemDataDrawState()
@@ -4224,8 +4294,9 @@ SetDataBrowserItemDataDrawState(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataDrawState(
-    DataBrowserItemDataRef itemData,
-    ThemeDrawState *       theData );
+  DataBrowserItemDataRef   itemData,
+  ThemeDrawState *         theData);
+
 
 /*
  *  SetDataBrowserItemDataButtonValue()
@@ -4237,8 +4308,9 @@ GetDataBrowserItemDataDrawState(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataButtonValue(
-    DataBrowserItemDataRef itemData,
-    ThemeButtonValue       theData );
+  DataBrowserItemDataRef   itemData,
+  ThemeButtonValue         theData);
+
 
 /*
  *  GetDataBrowserItemDataButtonValue()
@@ -4250,8 +4322,9 @@ SetDataBrowserItemDataButtonValue(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataButtonValue(
-    DataBrowserItemDataRef itemData,
-    ThemeButtonValue *     theData );
+  DataBrowserItemDataRef   itemData,
+  ThemeButtonValue *       theData);
+
 
 /*
  *  SetDataBrowserItemDataIconTransform()
@@ -4263,8 +4336,9 @@ GetDataBrowserItemDataButtonValue(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataIconTransform(
-    DataBrowserItemDataRef itemData,
-    IconTransformType      theData );
+  DataBrowserItemDataRef   itemData,
+  IconTransformType        theData);
+
 
 /*
  *  GetDataBrowserItemDataIconTransform()
@@ -4276,8 +4350,10 @@ SetDataBrowserItemDataIconTransform(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataIconTransform(
-    DataBrowserItemDataRef itemData,
-    IconTransformType *    theData );
+  DataBrowserItemDataRef   itemData,
+  IconTransformType *      theData);
+
+
 
 /*
  *  SetDataBrowserItemDataDateTime()
@@ -4289,8 +4365,9 @@ GetDataBrowserItemDataIconTransform(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataDateTime(
-    DataBrowserItemDataRef itemData,
-    long                   theData );
+  DataBrowserItemDataRef   itemData,
+  long                     theData);
+
 
 /*
  *  GetDataBrowserItemDataDateTime()
@@ -4302,8 +4379,9 @@ SetDataBrowserItemDataDateTime(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataDateTime(
-    DataBrowserItemDataRef itemData,
-    long *                 theData );
+  DataBrowserItemDataRef   itemData,
+  long *                   theData);
+
 
 /*
  *  SetDataBrowserItemDataLongDateTime()
@@ -4315,8 +4393,9 @@ GetDataBrowserItemDataDateTime(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataLongDateTime(
-    DataBrowserItemDataRef itemData,
-    const LongDateTime *   theData );
+  DataBrowserItemDataRef   itemData,
+  const LongDateTime *     theData);
+
 
 /*
  *  GetDataBrowserItemDataLongDateTime()
@@ -4328,8 +4407,10 @@ SetDataBrowserItemDataLongDateTime(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataLongDateTime(
-    DataBrowserItemDataRef itemData,
-    LongDateTime *         theData );
+  DataBrowserItemDataRef   itemData,
+  LongDateTime *           theData);
+
+
 
 /*
  *  SetDataBrowserItemDataItemID()
@@ -4341,8 +4422,9 @@ GetDataBrowserItemDataLongDateTime(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserItemDataItemID(
-    DataBrowserItemDataRef itemData,
-    DataBrowserItemID      theData );
+  DataBrowserItemDataRef   itemData,
+  DataBrowserItemID        theData);
+
 
 /*
  *  GetDataBrowserItemDataItemID()
@@ -4354,8 +4436,9 @@ SetDataBrowserItemDataItemID(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataItemID(
-    DataBrowserItemDataRef itemData,
-    DataBrowserItemID *    theData );
+  DataBrowserItemDataRef   itemData,
+  DataBrowserItemID *      theData);
+
 
 /*
  *  GetDataBrowserItemDataProperty()
@@ -4367,18 +4450,20 @@ GetDataBrowserItemDataItemID(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserItemDataProperty(
-    DataBrowserItemDataRef itemData,
-    DataBrowserPropertyID *theData );
+  DataBrowserItemDataRef   itemData,
+  DataBrowserPropertyID *  theData);
+
+
 
 /* Standard DataBrowser Callbacks */
 
 /* Basic Item Management & Manipulation */
-typedef CALLBACK_API( OSStatus, DataBrowserItemDataProcPtr )( ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, DataBrowserItemDataRef itemData, Boolean setValue );
-typedef STACK_UPP_TYPE( DataBrowserItemDataProcPtr ) DataBrowserItemDataUPP;
+typedef CALLBACK_API( OSStatus , DataBrowserItemDataProcPtr )(ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, DataBrowserItemDataRef itemData, Boolean setValue);
+typedef STACK_UPP_TYPE(DataBrowserItemDataProcPtr)              DataBrowserItemDataUPP;
 
 /* Item Comparison */
-typedef CALLBACK_API( Boolean, DataBrowserItemCompareProcPtr )( ControlRef browser, DataBrowserItemID itemOne, DataBrowserItemID itemTwo, DataBrowserPropertyID sortProperty );
-typedef STACK_UPP_TYPE( DataBrowserItemCompareProcPtr ) DataBrowserItemCompareUPP;
+typedef CALLBACK_API( Boolean , DataBrowserItemCompareProcPtr )(ControlRef browser, DataBrowserItemID itemOne, DataBrowserItemID itemTwo, DataBrowserPropertyID sortProperty);
+typedef STACK_UPP_TYPE(DataBrowserItemCompareProcPtr)           DataBrowserItemCompareUPP;
 
 /* ItemEvent Notification */
 /*  A Very Important Note about DataBrowserItemNotificationProcPtr:                                     */
@@ -4395,30 +4480,31 @@ typedef STACK_UPP_TYPE( DataBrowserItemCompareProcPtr ) DataBrowserItemCompareUP
 /*                                                                                                      */
 /*  If you use this technique under CarbonLib, you will *not* receive valid data in the fourth          */
 /*  parameter, and any attempt to use the invalid data will probably result in a crash.                 */
-typedef CALLBACK_API( void, DataBrowserItemNotificationWithItemProcPtr )( ControlRef browser, DataBrowserItemID item, DataBrowserItemNotification message, DataBrowserItemDataRef itemData );
-typedef CALLBACK_API( void, DataBrowserItemNotificationProcPtr )( ControlRef browser, DataBrowserItemID item, DataBrowserItemNotification message );
-typedef STACK_UPP_TYPE( DataBrowserItemNotificationWithItemProcPtr ) DataBrowserItemNotificationWithItemUPP;
-typedef STACK_UPP_TYPE( DataBrowserItemNotificationProcPtr ) DataBrowserItemNotificationUPP;
+typedef CALLBACK_API( void , DataBrowserItemNotificationWithItemProcPtr )(ControlRef browser, DataBrowserItemID item, DataBrowserItemNotification message, DataBrowserItemDataRef itemData);
+typedef CALLBACK_API( void , DataBrowserItemNotificationProcPtr )(ControlRef browser, DataBrowserItemID item, DataBrowserItemNotification message);
+typedef STACK_UPP_TYPE(DataBrowserItemNotificationWithItemProcPtr)  DataBrowserItemNotificationWithItemUPP;
+typedef STACK_UPP_TYPE(DataBrowserItemNotificationProcPtr)      DataBrowserItemNotificationUPP;
+
 
 /* Drag & Drop Processing */
-typedef CALLBACK_API( Boolean, DataBrowserAddDragItemProcPtr )( ControlRef browser, DragReference theDrag, DataBrowserItemID item, ItemReference *itemRef );
-typedef CALLBACK_API( Boolean, DataBrowserAcceptDragProcPtr )( ControlRef browser, DragReference theDrag, DataBrowserItemID item );
-typedef CALLBACK_API( Boolean, DataBrowserReceiveDragProcPtr )( ControlRef browser, DragReference theDrag, DataBrowserItemID item );
-typedef CALLBACK_API( void, DataBrowserPostProcessDragProcPtr )( ControlRef browser, DragReference theDrag, OSStatus trackDragResult );
-typedef STACK_UPP_TYPE( DataBrowserAddDragItemProcPtr ) DataBrowserAddDragItemUPP;
-typedef STACK_UPP_TYPE( DataBrowserAcceptDragProcPtr ) DataBrowserAcceptDragUPP;
-typedef STACK_UPP_TYPE( DataBrowserReceiveDragProcPtr ) DataBrowserReceiveDragUPP;
-typedef STACK_UPP_TYPE( DataBrowserPostProcessDragProcPtr ) DataBrowserPostProcessDragUPP;
+typedef CALLBACK_API( Boolean , DataBrowserAddDragItemProcPtr )(ControlRef browser, DragReference theDrag, DataBrowserItemID item, ItemReference *itemRef);
+typedef CALLBACK_API( Boolean , DataBrowserAcceptDragProcPtr )(ControlRef browser, DragReference theDrag, DataBrowserItemID item);
+typedef CALLBACK_API( Boolean , DataBrowserReceiveDragProcPtr )(ControlRef browser, DragReference theDrag, DataBrowserItemID item);
+typedef CALLBACK_API( void , DataBrowserPostProcessDragProcPtr )(ControlRef browser, DragReference theDrag, OSStatus trackDragResult);
+typedef STACK_UPP_TYPE(DataBrowserAddDragItemProcPtr)           DataBrowserAddDragItemUPP;
+typedef STACK_UPP_TYPE(DataBrowserAcceptDragProcPtr)            DataBrowserAcceptDragUPP;
+typedef STACK_UPP_TYPE(DataBrowserReceiveDragProcPtr)           DataBrowserReceiveDragUPP;
+typedef STACK_UPP_TYPE(DataBrowserPostProcessDragProcPtr)       DataBrowserPostProcessDragUPP;
 
 /* Contextual Menu Support */
-typedef CALLBACK_API( void, DataBrowserGetContextualMenuProcPtr )( ControlRef browser, MenuRef *menu, UInt32 *helpType, CFStringRef *helpItemString, AEDesc *selection );
-typedef CALLBACK_API( void, DataBrowserSelectContextualMenuProcPtr )( ControlRef browser, MenuRef menu, UInt32 selectionType, SInt16 menuID, MenuItemIndex menuItem );
-typedef STACK_UPP_TYPE( DataBrowserGetContextualMenuProcPtr ) DataBrowserGetContextualMenuUPP;
-typedef STACK_UPP_TYPE( DataBrowserSelectContextualMenuProcPtr ) DataBrowserSelectContextualMenuUPP;
+typedef CALLBACK_API( void , DataBrowserGetContextualMenuProcPtr )(ControlRef browser, MenuRef *menu, UInt32 *helpType, CFStringRef *helpItemString, AEDesc *selection);
+typedef CALLBACK_API( void , DataBrowserSelectContextualMenuProcPtr )(ControlRef browser, MenuRef menu, UInt32 selectionType, SInt16 menuID, MenuItemIndex menuItem);
+typedef STACK_UPP_TYPE(DataBrowserGetContextualMenuProcPtr)     DataBrowserGetContextualMenuUPP;
+typedef STACK_UPP_TYPE(DataBrowserSelectContextualMenuProcPtr)  DataBrowserSelectContextualMenuUPP;
 
 /* Help Manager Support */
-typedef CALLBACK_API( void, DataBrowserItemHelpContentProcPtr )( ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, HMContentRequest inRequest, HMContentProvidedType *outContentProvided, HMHelpContentPtr ioHelpContent );
-typedef STACK_UPP_TYPE( DataBrowserItemHelpContentProcPtr ) DataBrowserItemHelpContentUPP;
+typedef CALLBACK_API( void , DataBrowserItemHelpContentProcPtr )(ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, HMContentRequest inRequest, HMContentProvidedType *outContentProvided, HMHelpContentPtr ioHelpContent);
+typedef STACK_UPP_TYPE(DataBrowserItemHelpContentProcPtr)       DataBrowserItemHelpContentUPP;
 /*
  *  NewDataBrowserItemDataUPP()
  *  
@@ -4428,7 +4514,7 @@ typedef STACK_UPP_TYPE( DataBrowserItemHelpContentProcPtr ) DataBrowserItemHelpC
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserItemDataUPP )
-NewDataBrowserItemDataUPP( DataBrowserItemDataProcPtr userRoutine );
+NewDataBrowserItemDataUPP(DataBrowserItemDataProcPtr userRoutine);
 
 /*
  *  NewDataBrowserItemCompareUPP()
@@ -4439,7 +4525,7 @@ NewDataBrowserItemDataUPP( DataBrowserItemDataProcPtr userRoutine );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserItemCompareUPP )
-NewDataBrowserItemCompareUPP( DataBrowserItemCompareProcPtr userRoutine );
+NewDataBrowserItemCompareUPP(DataBrowserItemCompareProcPtr userRoutine);
 
 /*
  *  NewDataBrowserItemNotificationWithItemUPP()
@@ -4450,7 +4536,7 @@ NewDataBrowserItemCompareUPP( DataBrowserItemCompareProcPtr userRoutine );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserItemNotificationWithItemUPP )
-NewDataBrowserItemNotificationWithItemUPP( DataBrowserItemNotificationWithItemProcPtr userRoutine );
+NewDataBrowserItemNotificationWithItemUPP(DataBrowserItemNotificationWithItemProcPtr userRoutine);
 
 /*
  *  NewDataBrowserItemNotificationUPP()
@@ -4461,7 +4547,7 @@ NewDataBrowserItemNotificationWithItemUPP( DataBrowserItemNotificationWithItemPr
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserItemNotificationUPP )
-NewDataBrowserItemNotificationUPP( DataBrowserItemNotificationProcPtr userRoutine );
+NewDataBrowserItemNotificationUPP(DataBrowserItemNotificationProcPtr userRoutine);
 
 /*
  *  NewDataBrowserAddDragItemUPP()
@@ -4472,7 +4558,7 @@ NewDataBrowserItemNotificationUPP( DataBrowserItemNotificationProcPtr userRoutin
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserAddDragItemUPP )
-NewDataBrowserAddDragItemUPP( DataBrowserAddDragItemProcPtr userRoutine );
+NewDataBrowserAddDragItemUPP(DataBrowserAddDragItemProcPtr userRoutine);
 
 /*
  *  NewDataBrowserAcceptDragUPP()
@@ -4483,7 +4569,7 @@ NewDataBrowserAddDragItemUPP( DataBrowserAddDragItemProcPtr userRoutine );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserAcceptDragUPP )
-NewDataBrowserAcceptDragUPP( DataBrowserAcceptDragProcPtr userRoutine );
+NewDataBrowserAcceptDragUPP(DataBrowserAcceptDragProcPtr userRoutine);
 
 /*
  *  NewDataBrowserReceiveDragUPP()
@@ -4494,7 +4580,7 @@ NewDataBrowserAcceptDragUPP( DataBrowserAcceptDragProcPtr userRoutine );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserReceiveDragUPP )
-NewDataBrowserReceiveDragUPP( DataBrowserReceiveDragProcPtr userRoutine );
+NewDataBrowserReceiveDragUPP(DataBrowserReceiveDragProcPtr userRoutine);
 
 /*
  *  NewDataBrowserPostProcessDragUPP()
@@ -4505,7 +4591,7 @@ NewDataBrowserReceiveDragUPP( DataBrowserReceiveDragProcPtr userRoutine );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserPostProcessDragUPP )
-NewDataBrowserPostProcessDragUPP( DataBrowserPostProcessDragProcPtr userRoutine );
+NewDataBrowserPostProcessDragUPP(DataBrowserPostProcessDragProcPtr userRoutine);
 
 /*
  *  NewDataBrowserGetContextualMenuUPP()
@@ -4516,7 +4602,7 @@ NewDataBrowserPostProcessDragUPP( DataBrowserPostProcessDragProcPtr userRoutine 
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserGetContextualMenuUPP )
-NewDataBrowserGetContextualMenuUPP( DataBrowserGetContextualMenuProcPtr userRoutine );
+NewDataBrowserGetContextualMenuUPP(DataBrowserGetContextualMenuProcPtr userRoutine);
 
 /*
  *  NewDataBrowserSelectContextualMenuUPP()
@@ -4527,7 +4613,7 @@ NewDataBrowserGetContextualMenuUPP( DataBrowserGetContextualMenuProcPtr userRout
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserSelectContextualMenuUPP )
-NewDataBrowserSelectContextualMenuUPP( DataBrowserSelectContextualMenuProcPtr userRoutine );
+NewDataBrowserSelectContextualMenuUPP(DataBrowserSelectContextualMenuProcPtr userRoutine);
 
 /*
  *  NewDataBrowserItemHelpContentUPP()
@@ -4538,7 +4624,7 @@ NewDataBrowserSelectContextualMenuUPP( DataBrowserSelectContextualMenuProcPtr us
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DataBrowserItemHelpContentUPP )
-NewDataBrowserItemHelpContentUPP( DataBrowserItemHelpContentProcPtr userRoutine );
+NewDataBrowserItemHelpContentUPP(DataBrowserItemHelpContentProcPtr userRoutine);
 
 /*
  *  DisposeDataBrowserItemDataUPP()
@@ -4549,7 +4635,7 @@ NewDataBrowserItemHelpContentUPP( DataBrowserItemHelpContentProcPtr userRoutine 
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemDataUPP( DataBrowserItemDataUPP userUPP );
+DisposeDataBrowserItemDataUPP(DataBrowserItemDataUPP userUPP);
 
 /*
  *  DisposeDataBrowserItemCompareUPP()
@@ -4560,7 +4646,7 @@ DisposeDataBrowserItemDataUPP( DataBrowserItemDataUPP userUPP );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemCompareUPP( DataBrowserItemCompareUPP userUPP );
+DisposeDataBrowserItemCompareUPP(DataBrowserItemCompareUPP userUPP);
 
 /*
  *  DisposeDataBrowserItemNotificationWithItemUPP()
@@ -4571,7 +4657,7 @@ DisposeDataBrowserItemCompareUPP( DataBrowserItemCompareUPP userUPP );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemNotificationWithItemUPP( DataBrowserItemNotificationWithItemUPP userUPP );
+DisposeDataBrowserItemNotificationWithItemUPP(DataBrowserItemNotificationWithItemUPP userUPP);
 
 /*
  *  DisposeDataBrowserItemNotificationUPP()
@@ -4582,7 +4668,7 @@ DisposeDataBrowserItemNotificationWithItemUPP( DataBrowserItemNotificationWithIt
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemNotificationUPP( DataBrowserItemNotificationUPP userUPP );
+DisposeDataBrowserItemNotificationUPP(DataBrowserItemNotificationUPP userUPP);
 
 /*
  *  DisposeDataBrowserAddDragItemUPP()
@@ -4593,7 +4679,7 @@ DisposeDataBrowserItemNotificationUPP( DataBrowserItemNotificationUPP userUPP );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserAddDragItemUPP( DataBrowserAddDragItemUPP userUPP );
+DisposeDataBrowserAddDragItemUPP(DataBrowserAddDragItemUPP userUPP);
 
 /*
  *  DisposeDataBrowserAcceptDragUPP()
@@ -4604,7 +4690,7 @@ DisposeDataBrowserAddDragItemUPP( DataBrowserAddDragItemUPP userUPP );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserAcceptDragUPP( DataBrowserAcceptDragUPP userUPP );
+DisposeDataBrowserAcceptDragUPP(DataBrowserAcceptDragUPP userUPP);
 
 /*
  *  DisposeDataBrowserReceiveDragUPP()
@@ -4615,7 +4701,7 @@ DisposeDataBrowserAcceptDragUPP( DataBrowserAcceptDragUPP userUPP );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserReceiveDragUPP( DataBrowserReceiveDragUPP userUPP );
+DisposeDataBrowserReceiveDragUPP(DataBrowserReceiveDragUPP userUPP);
 
 /*
  *  DisposeDataBrowserPostProcessDragUPP()
@@ -4626,7 +4712,7 @@ DisposeDataBrowserReceiveDragUPP( DataBrowserReceiveDragUPP userUPP );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserPostProcessDragUPP( DataBrowserPostProcessDragUPP userUPP );
+DisposeDataBrowserPostProcessDragUPP(DataBrowserPostProcessDragUPP userUPP);
 
 /*
  *  DisposeDataBrowserGetContextualMenuUPP()
@@ -4637,7 +4723,7 @@ DisposeDataBrowserPostProcessDragUPP( DataBrowserPostProcessDragUPP userUPP );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserGetContextualMenuUPP( DataBrowserGetContextualMenuUPP userUPP );
+DisposeDataBrowserGetContextualMenuUPP(DataBrowserGetContextualMenuUPP userUPP);
 
 /*
  *  DisposeDataBrowserSelectContextualMenuUPP()
@@ -4648,7 +4734,7 @@ DisposeDataBrowserGetContextualMenuUPP( DataBrowserGetContextualMenuUPP userUPP 
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserSelectContextualMenuUPP( DataBrowserSelectContextualMenuUPP userUPP );
+DisposeDataBrowserSelectContextualMenuUPP(DataBrowserSelectContextualMenuUPP userUPP);
 
 /*
  *  DisposeDataBrowserItemHelpContentUPP()
@@ -4659,7 +4745,7 @@ DisposeDataBrowserSelectContextualMenuUPP( DataBrowserSelectContextualMenuUPP us
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemHelpContentUPP( DataBrowserItemHelpContentUPP userUPP );
+DisposeDataBrowserItemHelpContentUPP(DataBrowserItemHelpContentUPP userUPP);
 
 /*
  *  InvokeDataBrowserItemDataUPP()
@@ -4671,12 +4757,12 @@ DisposeDataBrowserItemHelpContentUPP( DataBrowserItemHelpContentUPP userUPP );
  */
 EXTERN_API_C( OSStatus )
 InvokeDataBrowserItemDataUPP(
-    ControlRef             browser,
-    DataBrowserItemID      item,
-    DataBrowserPropertyID  property,
-    DataBrowserItemDataRef itemData,
-    Boolean                setValue,
-    DataBrowserItemDataUPP userUPP );
+  ControlRef              browser,
+  DataBrowserItemID       item,
+  DataBrowserPropertyID   property,
+  DataBrowserItemDataRef  itemData,
+  Boolean                 setValue,
+  DataBrowserItemDataUPP  userUPP);
 
 /*
  *  InvokeDataBrowserItemCompareUPP()
@@ -4688,11 +4774,11 @@ InvokeDataBrowserItemDataUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeDataBrowserItemCompareUPP(
-    ControlRef                browser,
-    DataBrowserItemID         itemOne,
-    DataBrowserItemID         itemTwo,
-    DataBrowserPropertyID     sortProperty,
-    DataBrowserItemCompareUPP userUPP );
+  ControlRef                 browser,
+  DataBrowserItemID          itemOne,
+  DataBrowserItemID          itemTwo,
+  DataBrowserPropertyID      sortProperty,
+  DataBrowserItemCompareUPP  userUPP);
 
 /*
  *  InvokeDataBrowserItemNotificationWithItemUPP()
@@ -4704,11 +4790,11 @@ InvokeDataBrowserItemCompareUPP(
  */
 EXTERN_API_C( void )
 InvokeDataBrowserItemNotificationWithItemUPP(
-    ControlRef                             browser,
-    DataBrowserItemID                      item,
-    DataBrowserItemNotification            message,
-    DataBrowserItemDataRef                 itemData,
-    DataBrowserItemNotificationWithItemUPP userUPP );
+  ControlRef                              browser,
+  DataBrowserItemID                       item,
+  DataBrowserItemNotification             message,
+  DataBrowserItemDataRef                  itemData,
+  DataBrowserItemNotificationWithItemUPP  userUPP);
 
 /*
  *  InvokeDataBrowserItemNotificationUPP()
@@ -4720,10 +4806,10 @@ InvokeDataBrowserItemNotificationWithItemUPP(
  */
 EXTERN_API_C( void )
 InvokeDataBrowserItemNotificationUPP(
-    ControlRef                     browser,
-    DataBrowserItemID              item,
-    DataBrowserItemNotification    message,
-    DataBrowserItemNotificationUPP userUPP );
+  ControlRef                      browser,
+  DataBrowserItemID               item,
+  DataBrowserItemNotification     message,
+  DataBrowserItemNotificationUPP  userUPP);
 
 /*
  *  InvokeDataBrowserAddDragItemUPP()
@@ -4735,11 +4821,11 @@ InvokeDataBrowserItemNotificationUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeDataBrowserAddDragItemUPP(
-    ControlRef                browser,
-    DragReference             theDrag,
-    DataBrowserItemID         item,
-    ItemReference *           itemRef,
-    DataBrowserAddDragItemUPP userUPP );
+  ControlRef                 browser,
+  DragReference              theDrag,
+  DataBrowserItemID          item,
+  ItemReference *            itemRef,
+  DataBrowserAddDragItemUPP  userUPP);
 
 /*
  *  InvokeDataBrowserAcceptDragUPP()
@@ -4751,10 +4837,10 @@ InvokeDataBrowserAddDragItemUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeDataBrowserAcceptDragUPP(
-    ControlRef               browser,
-    DragReference            theDrag,
-    DataBrowserItemID        item,
-    DataBrowserAcceptDragUPP userUPP );
+  ControlRef                browser,
+  DragReference             theDrag,
+  DataBrowserItemID         item,
+  DataBrowserAcceptDragUPP  userUPP);
 
 /*
  *  InvokeDataBrowserReceiveDragUPP()
@@ -4766,10 +4852,10 @@ InvokeDataBrowserAcceptDragUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeDataBrowserReceiveDragUPP(
-    ControlRef                browser,
-    DragReference             theDrag,
-    DataBrowserItemID         item,
-    DataBrowserReceiveDragUPP userUPP );
+  ControlRef                 browser,
+  DragReference              theDrag,
+  DataBrowserItemID          item,
+  DataBrowserReceiveDragUPP  userUPP);
 
 /*
  *  InvokeDataBrowserPostProcessDragUPP()
@@ -4781,10 +4867,10 @@ InvokeDataBrowserReceiveDragUPP(
  */
 EXTERN_API_C( void )
 InvokeDataBrowserPostProcessDragUPP(
-    ControlRef                    browser,
-    DragReference                 theDrag,
-    OSStatus                      trackDragResult,
-    DataBrowserPostProcessDragUPP userUPP );
+  ControlRef                     browser,
+  DragReference                  theDrag,
+  OSStatus                       trackDragResult,
+  DataBrowserPostProcessDragUPP  userUPP);
 
 /*
  *  InvokeDataBrowserGetContextualMenuUPP()
@@ -4796,12 +4882,12 @@ InvokeDataBrowserPostProcessDragUPP(
  */
 EXTERN_API_C( void )
 InvokeDataBrowserGetContextualMenuUPP(
-    ControlRef                      browser,
-    MenuRef *                       menu,
-    UInt32 *                        helpType,
-    CFStringRef *                   helpItemString,
-    AEDesc *                        selection,
-    DataBrowserGetContextualMenuUPP userUPP );
+  ControlRef                       browser,
+  MenuRef *                        menu,
+  UInt32 *                         helpType,
+  CFStringRef *                    helpItemString,
+  AEDesc *                         selection,
+  DataBrowserGetContextualMenuUPP  userUPP);
 
 /*
  *  InvokeDataBrowserSelectContextualMenuUPP()
@@ -4813,12 +4899,12 @@ InvokeDataBrowserGetContextualMenuUPP(
  */
 EXTERN_API_C( void )
 InvokeDataBrowserSelectContextualMenuUPP(
-    ControlRef                         browser,
-    MenuRef                            menu,
-    UInt32                             selectionType,
-    SInt16                             menuID,
-    MenuItemIndex                      menuItem,
-    DataBrowserSelectContextualMenuUPP userUPP );
+  ControlRef                          browser,
+  MenuRef                             menu,
+  UInt32                              selectionType,
+  SInt16                              menuID,
+  MenuItemIndex                       menuItem,
+  DataBrowserSelectContextualMenuUPP  userUPP);
 
 /*
  *  InvokeDataBrowserItemHelpContentUPP()
@@ -4830,40 +4916,40 @@ InvokeDataBrowserSelectContextualMenuUPP(
  */
 EXTERN_API_C( void )
 InvokeDataBrowserItemHelpContentUPP(
-    ControlRef                    browser,
-    DataBrowserItemID             item,
-    DataBrowserPropertyID         property,
-    HMContentRequest              inRequest,
-    HMContentProvidedType *       outContentProvided,
-    HMHelpContentPtr              ioHelpContent,
-    DataBrowserItemHelpContentUPP userUPP );
+  ControlRef                     browser,
+  DataBrowserItemID              item,
+  DataBrowserPropertyID          property,
+  HMContentRequest               inRequest,
+  HMContentProvidedType *        outContentProvided,
+  HMHelpContentPtr               ioHelpContent,
+  DataBrowserItemHelpContentUPP  userUPP);
 
 /* Standard Callback (vtable) Structure */
 enum {
-	kDataBrowserLatestCallbacks = 0
+  kDataBrowserLatestCallbacks   = 0
 };
 
 struct DataBrowserCallbacks {
-	UInt32 version; /* Use kDataBrowserLatestCallbacks */
+  UInt32              version;                /* Use kDataBrowserLatestCallbacks */
 
-	union {
-		struct {
-			DataBrowserItemDataUPP         itemDataCallback;
-			DataBrowserItemCompareUPP      itemCompareCallback;
-			DataBrowserItemNotificationUPP itemNotificationCallback;
+  union {
+    struct {
+      DataBrowserItemDataUPP  itemDataCallback;
+      DataBrowserItemCompareUPP  itemCompareCallback;
+      DataBrowserItemNotificationUPP  itemNotificationCallback;
 
-			DataBrowserAddDragItemUPP     addDragItemCallback;
-			DataBrowserAcceptDragUPP      acceptDragCallback;
-			DataBrowserReceiveDragUPP     receiveDragCallback;
-			DataBrowserPostProcessDragUPP postProcessDragCallback;
+      DataBrowserAddDragItemUPP  addDragItemCallback;
+      DataBrowserAcceptDragUPP  acceptDragCallback;
+      DataBrowserReceiveDragUPP  receiveDragCallback;
+      DataBrowserPostProcessDragUPP  postProcessDragCallback;
 
-			DataBrowserItemHelpContentUPP      itemHelpContentCallback;
-			DataBrowserGetContextualMenuUPP    getContextualMenuCallback;
-			DataBrowserSelectContextualMenuUPP selectContextualMenuCallback;
-		} v1;
-	} u;
+      DataBrowserItemHelpContentUPP  itemHelpContentCallback;
+      DataBrowserGetContextualMenuUPP  getContextualMenuCallback;
+      DataBrowserSelectContextualMenuUPP  selectContextualMenuCallback;
+    }                       v1;
+  }                       u;
 };
-typedef struct DataBrowserCallbacks DataBrowserCallbacks;
+typedef struct DataBrowserCallbacks     DataBrowserCallbacks;
 /*
  *  InitDataBrowserCallbacks()
  *  
@@ -4873,14 +4959,12 @@ typedef struct DataBrowserCallbacks DataBrowserCallbacks;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-InitDataBrowserCallbacks( DataBrowserCallbacks *callbacks );
+InitDataBrowserCallbacks(DataBrowserCallbacks * callbacks);
+
 
 /* Macro for initializing callback structure */
-#define InitializeDataBrowserCallbacks( callbacks, vers ) \
-	{                                                     \
-		( callbacks )->version = ( vers );                \
-		InitDataBrowserCallbacks( callbacks );            \
-	}
+#define InitializeDataBrowserCallbacks(callbacks, vers) \
+{ (callbacks)->version = (vers); InitDataBrowserCallbacks(callbacks); }
 
 /*
  *  GetDataBrowserCallbacks()
@@ -4892,8 +4976,9 @@ InitDataBrowserCallbacks( DataBrowserCallbacks *callbacks );
  */
 EXTERN_API( OSStatus )
 GetDataBrowserCallbacks(
-    ControlRef            browser,
-    DataBrowserCallbacks *callbacks );
+  ControlRef              browser,
+  DataBrowserCallbacks *  callbacks);
+
 
 /*
  *  SetDataBrowserCallbacks()
@@ -4905,33 +4990,35 @@ GetDataBrowserCallbacks(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserCallbacks(
-    ControlRef                  browser,
-    const DataBrowserCallbacks *callbacks );
+  ControlRef                    browser,
+  const DataBrowserCallbacks *  callbacks);
+
+
 
 /* Custom Format Callbacks (kDataBrowserCustomType display properties) */
 
-typedef unsigned long DataBrowserDragFlags;
-typedef SInt16        DataBrowserTrackingResult;
+typedef unsigned long                   DataBrowserDragFlags;
+typedef SInt16 DataBrowserTrackingResult;
 enum {
-	kDataBrowserContentHit = 1,
-	kDataBrowserNothingHit = 0,
-	kDataBrowserStopTracking = -1
+  kDataBrowserContentHit        = 1,
+  kDataBrowserNothingHit        = 0,
+  kDataBrowserStopTracking      = -1
 };
 
-typedef CALLBACK_API( void, DataBrowserDrawItemProcPtr )( ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, DataBrowserItemState itemState, const Rect *theRect, SInt16 gdDepth, Boolean colorDevice );
-typedef CALLBACK_API( Boolean, DataBrowserEditItemProcPtr )( ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, CFStringRef theString, Rect *maxEditTextRect, Boolean *shrinkToFit );
-typedef CALLBACK_API( Boolean, DataBrowserHitTestProcPtr )( ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, const Rect *mouseRect );
-typedef CALLBACK_API( DataBrowserTrackingResult, DataBrowserTrackingProcPtr )( ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, Point startPt, EventModifiers modifiers );
-typedef CALLBACK_API( void, DataBrowserItemDragRgnProcPtr )( ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, RgnHandle dragRgn );
-typedef CALLBACK_API( DataBrowserDragFlags, DataBrowserItemAcceptDragProcPtr )( ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, DragReference theDrag );
-typedef CALLBACK_API( Boolean, DataBrowserItemReceiveDragProcPtr )( ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, DataBrowserDragFlags dragFlags, DragReference theDrag );
-typedef STACK_UPP_TYPE( DataBrowserDrawItemProcPtr ) DataBrowserDrawItemUPP;
-typedef STACK_UPP_TYPE( DataBrowserEditItemProcPtr ) DataBrowserEditItemUPP;
-typedef STACK_UPP_TYPE( DataBrowserHitTestProcPtr ) DataBrowserHitTestUPP;
-typedef STACK_UPP_TYPE( DataBrowserTrackingProcPtr ) DataBrowserTrackingUPP;
-typedef STACK_UPP_TYPE( DataBrowserItemDragRgnProcPtr ) DataBrowserItemDragRgnUPP;
-typedef STACK_UPP_TYPE( DataBrowserItemAcceptDragProcPtr ) DataBrowserItemAcceptDragUPP;
-typedef STACK_UPP_TYPE( DataBrowserItemReceiveDragProcPtr ) DataBrowserItemReceiveDragUPP;
+typedef CALLBACK_API( void , DataBrowserDrawItemProcPtr )(ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, DataBrowserItemState itemState, const Rect *theRect, SInt16 gdDepth, Boolean colorDevice);
+typedef CALLBACK_API( Boolean , DataBrowserEditItemProcPtr )(ControlRef browser, DataBrowserItemID item, DataBrowserPropertyID property, CFStringRef theString, Rect *maxEditTextRect, Boolean *shrinkToFit);
+typedef CALLBACK_API( Boolean , DataBrowserHitTestProcPtr )(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, const Rect *mouseRect);
+typedef CALLBACK_API( DataBrowserTrackingResult , DataBrowserTrackingProcPtr )(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, Point startPt, EventModifiers modifiers);
+typedef CALLBACK_API( void , DataBrowserItemDragRgnProcPtr )(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, RgnHandle dragRgn);
+typedef CALLBACK_API( DataBrowserDragFlags , DataBrowserItemAcceptDragProcPtr )(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, const Rect *theRect, DragReference theDrag);
+typedef CALLBACK_API( Boolean , DataBrowserItemReceiveDragProcPtr )(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, DataBrowserDragFlags dragFlags, DragReference theDrag);
+typedef STACK_UPP_TYPE(DataBrowserDrawItemProcPtr)              DataBrowserDrawItemUPP;
+typedef STACK_UPP_TYPE(DataBrowserEditItemProcPtr)              DataBrowserEditItemUPP;
+typedef STACK_UPP_TYPE(DataBrowserHitTestProcPtr)               DataBrowserHitTestUPP;
+typedef STACK_UPP_TYPE(DataBrowserTrackingProcPtr)              DataBrowserTrackingUPP;
+typedef STACK_UPP_TYPE(DataBrowserItemDragRgnProcPtr)           DataBrowserItemDragRgnUPP;
+typedef STACK_UPP_TYPE(DataBrowserItemAcceptDragProcPtr)        DataBrowserItemAcceptDragUPP;
+typedef STACK_UPP_TYPE(DataBrowserItemReceiveDragProcPtr)       DataBrowserItemReceiveDragUPP;
 /*
  *  NewDataBrowserDrawItemUPP()
  *  
@@ -4941,7 +5028,7 @@ typedef STACK_UPP_TYPE( DataBrowserItemReceiveDragProcPtr ) DataBrowserItemRecei
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserDrawItemUPP )
-NewDataBrowserDrawItemUPP( DataBrowserDrawItemProcPtr userRoutine );
+NewDataBrowserDrawItemUPP(DataBrowserDrawItemProcPtr userRoutine);
 
 /*
  *  NewDataBrowserEditItemUPP()
@@ -4952,7 +5039,7 @@ NewDataBrowserDrawItemUPP( DataBrowserDrawItemProcPtr userRoutine );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserEditItemUPP )
-NewDataBrowserEditItemUPP( DataBrowserEditItemProcPtr userRoutine );
+NewDataBrowserEditItemUPP(DataBrowserEditItemProcPtr userRoutine);
 
 /*
  *  NewDataBrowserHitTestUPP()
@@ -4963,7 +5050,7 @@ NewDataBrowserEditItemUPP( DataBrowserEditItemProcPtr userRoutine );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserHitTestUPP )
-NewDataBrowserHitTestUPP( DataBrowserHitTestProcPtr userRoutine );
+NewDataBrowserHitTestUPP(DataBrowserHitTestProcPtr userRoutine);
 
 /*
  *  NewDataBrowserTrackingUPP()
@@ -4974,7 +5061,7 @@ NewDataBrowserHitTestUPP( DataBrowserHitTestProcPtr userRoutine );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserTrackingUPP )
-NewDataBrowserTrackingUPP( DataBrowserTrackingProcPtr userRoutine );
+NewDataBrowserTrackingUPP(DataBrowserTrackingProcPtr userRoutine);
 
 /*
  *  NewDataBrowserItemDragRgnUPP()
@@ -4985,7 +5072,7 @@ NewDataBrowserTrackingUPP( DataBrowserTrackingProcPtr userRoutine );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserItemDragRgnUPP )
-NewDataBrowserItemDragRgnUPP( DataBrowserItemDragRgnProcPtr userRoutine );
+NewDataBrowserItemDragRgnUPP(DataBrowserItemDragRgnProcPtr userRoutine);
 
 /*
  *  NewDataBrowserItemAcceptDragUPP()
@@ -4996,7 +5083,7 @@ NewDataBrowserItemDragRgnUPP( DataBrowserItemDragRgnProcPtr userRoutine );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserItemAcceptDragUPP )
-NewDataBrowserItemAcceptDragUPP( DataBrowserItemAcceptDragProcPtr userRoutine );
+NewDataBrowserItemAcceptDragUPP(DataBrowserItemAcceptDragProcPtr userRoutine);
 
 /*
  *  NewDataBrowserItemReceiveDragUPP()
@@ -5007,7 +5094,7 @@ NewDataBrowserItemAcceptDragUPP( DataBrowserItemAcceptDragProcPtr userRoutine );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( DataBrowserItemReceiveDragUPP )
-NewDataBrowserItemReceiveDragUPP( DataBrowserItemReceiveDragProcPtr userRoutine );
+NewDataBrowserItemReceiveDragUPP(DataBrowserItemReceiveDragProcPtr userRoutine);
 
 /*
  *  DisposeDataBrowserDrawItemUPP()
@@ -5018,7 +5105,7 @@ NewDataBrowserItemReceiveDragUPP( DataBrowserItemReceiveDragProcPtr userRoutine 
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserDrawItemUPP( DataBrowserDrawItemUPP userUPP );
+DisposeDataBrowserDrawItemUPP(DataBrowserDrawItemUPP userUPP);
 
 /*
  *  DisposeDataBrowserEditItemUPP()
@@ -5029,7 +5116,7 @@ DisposeDataBrowserDrawItemUPP( DataBrowserDrawItemUPP userUPP );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserEditItemUPP( DataBrowserEditItemUPP userUPP );
+DisposeDataBrowserEditItemUPP(DataBrowserEditItemUPP userUPP);
 
 /*
  *  DisposeDataBrowserHitTestUPP()
@@ -5040,7 +5127,7 @@ DisposeDataBrowserEditItemUPP( DataBrowserEditItemUPP userUPP );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserHitTestUPP( DataBrowserHitTestUPP userUPP );
+DisposeDataBrowserHitTestUPP(DataBrowserHitTestUPP userUPP);
 
 /*
  *  DisposeDataBrowserTrackingUPP()
@@ -5051,7 +5138,7 @@ DisposeDataBrowserHitTestUPP( DataBrowserHitTestUPP userUPP );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserTrackingUPP( DataBrowserTrackingUPP userUPP );
+DisposeDataBrowserTrackingUPP(DataBrowserTrackingUPP userUPP);
 
 /*
  *  DisposeDataBrowserItemDragRgnUPP()
@@ -5062,7 +5149,7 @@ DisposeDataBrowserTrackingUPP( DataBrowserTrackingUPP userUPP );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemDragRgnUPP( DataBrowserItemDragRgnUPP userUPP );
+DisposeDataBrowserItemDragRgnUPP(DataBrowserItemDragRgnUPP userUPP);
 
 /*
  *  DisposeDataBrowserItemAcceptDragUPP()
@@ -5073,7 +5160,7 @@ DisposeDataBrowserItemDragRgnUPP( DataBrowserItemDragRgnUPP userUPP );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemAcceptDragUPP( DataBrowserItemAcceptDragUPP userUPP );
+DisposeDataBrowserItemAcceptDragUPP(DataBrowserItemAcceptDragUPP userUPP);
 
 /*
  *  DisposeDataBrowserItemReceiveDragUPP()
@@ -5084,7 +5171,7 @@ DisposeDataBrowserItemAcceptDragUPP( DataBrowserItemAcceptDragUPP userUPP );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeDataBrowserItemReceiveDragUPP( DataBrowserItemReceiveDragUPP userUPP );
+DisposeDataBrowserItemReceiveDragUPP(DataBrowserItemReceiveDragUPP userUPP);
 
 /*
  *  InvokeDataBrowserDrawItemUPP()
@@ -5096,14 +5183,14 @@ DisposeDataBrowserItemReceiveDragUPP( DataBrowserItemReceiveDragUPP userUPP );
  */
 EXTERN_API_C( void )
 InvokeDataBrowserDrawItemUPP(
-    ControlRef             browser,
-    DataBrowserItemID      item,
-    DataBrowserPropertyID  property,
-    DataBrowserItemState   itemState,
-    const Rect *           theRect,
-    SInt16                 gdDepth,
-    Boolean                colorDevice,
-    DataBrowserDrawItemUPP userUPP );
+  ControlRef              browser,
+  DataBrowserItemID       item,
+  DataBrowserPropertyID   property,
+  DataBrowserItemState    itemState,
+  const Rect *            theRect,
+  SInt16                  gdDepth,
+  Boolean                 colorDevice,
+  DataBrowserDrawItemUPP  userUPP);
 
 /*
  *  InvokeDataBrowserEditItemUPP()
@@ -5115,13 +5202,13 @@ InvokeDataBrowserDrawItemUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeDataBrowserEditItemUPP(
-    ControlRef             browser,
-    DataBrowserItemID      item,
-    DataBrowserPropertyID  property,
-    CFStringRef            theString,
-    Rect *                 maxEditTextRect,
-    Boolean *              shrinkToFit,
-    DataBrowserEditItemUPP userUPP );
+  ControlRef              browser,
+  DataBrowserItemID       item,
+  DataBrowserPropertyID   property,
+  CFStringRef             theString,
+  Rect *                  maxEditTextRect,
+  Boolean *               shrinkToFit,
+  DataBrowserEditItemUPP  userUPP);
 
 /*
  *  InvokeDataBrowserHitTestUPP()
@@ -5133,12 +5220,12 @@ InvokeDataBrowserEditItemUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeDataBrowserHitTestUPP(
-    ControlRef            browser,
-    DataBrowserItemID     itemID,
-    DataBrowserPropertyID property,
-    const Rect *          theRect,
-    const Rect *          mouseRect,
-    DataBrowserHitTestUPP userUPP );
+  ControlRef             browser,
+  DataBrowserItemID      itemID,
+  DataBrowserPropertyID  property,
+  const Rect *           theRect,
+  const Rect *           mouseRect,
+  DataBrowserHitTestUPP  userUPP);
 
 /*
  *  InvokeDataBrowserTrackingUPP()
@@ -5150,13 +5237,13 @@ InvokeDataBrowserHitTestUPP(
  */
 EXTERN_API_C( DataBrowserTrackingResult )
 InvokeDataBrowserTrackingUPP(
-    ControlRef             browser,
-    DataBrowserItemID      itemID,
-    DataBrowserPropertyID  property,
-    const Rect *           theRect,
-    Point                  startPt,
-    EventModifiers         modifiers,
-    DataBrowserTrackingUPP userUPP );
+  ControlRef              browser,
+  DataBrowserItemID       itemID,
+  DataBrowserPropertyID   property,
+  const Rect *            theRect,
+  Point                   startPt,
+  EventModifiers          modifiers,
+  DataBrowserTrackingUPP  userUPP);
 
 /*
  *  InvokeDataBrowserItemDragRgnUPP()
@@ -5168,12 +5255,12 @@ InvokeDataBrowserTrackingUPP(
  */
 EXTERN_API_C( void )
 InvokeDataBrowserItemDragRgnUPP(
-    ControlRef                browser,
-    DataBrowserItemID         itemID,
-    DataBrowserPropertyID     property,
-    const Rect *              theRect,
-    RgnHandle                 dragRgn,
-    DataBrowserItemDragRgnUPP userUPP );
+  ControlRef                 browser,
+  DataBrowserItemID          itemID,
+  DataBrowserPropertyID      property,
+  const Rect *               theRect,
+  RgnHandle                  dragRgn,
+  DataBrowserItemDragRgnUPP  userUPP);
 
 /*
  *  InvokeDataBrowserItemAcceptDragUPP()
@@ -5185,12 +5272,12 @@ InvokeDataBrowserItemDragRgnUPP(
  */
 EXTERN_API_C( DataBrowserDragFlags )
 InvokeDataBrowserItemAcceptDragUPP(
-    ControlRef                   browser,
-    DataBrowserItemID            itemID,
-    DataBrowserPropertyID        property,
-    const Rect *                 theRect,
-    DragReference                theDrag,
-    DataBrowserItemAcceptDragUPP userUPP );
+  ControlRef                    browser,
+  DataBrowserItemID             itemID,
+  DataBrowserPropertyID         property,
+  const Rect *                  theRect,
+  DragReference                 theDrag,
+  DataBrowserItemAcceptDragUPP  userUPP);
 
 /*
  *  InvokeDataBrowserItemReceiveDragUPP()
@@ -5202,33 +5289,34 @@ InvokeDataBrowserItemAcceptDragUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeDataBrowserItemReceiveDragUPP(
-    ControlRef                    browser,
-    DataBrowserItemID             itemID,
-    DataBrowserPropertyID         property,
-    DataBrowserDragFlags          dragFlags,
-    DragReference                 theDrag,
-    DataBrowserItemReceiveDragUPP userUPP );
+  ControlRef                     browser,
+  DataBrowserItemID              itemID,
+  DataBrowserPropertyID          property,
+  DataBrowserDragFlags           dragFlags,
+  DragReference                  theDrag,
+  DataBrowserItemReceiveDragUPP  userUPP);
 
 /* Custom Callback (vtable) Structure */
 enum {
-	kDataBrowserLatestCustomCallbacks = 0
+  kDataBrowserLatestCustomCallbacks = 0
 };
 
 struct DataBrowserCustomCallbacks {
-	UInt32 version; /* Use kDataBrowserLatestCustomCallbacks */
 
-	union {
-		struct {
-			DataBrowserDrawItemUPP drawItemCallback;
-			DataBrowserEditItemUPP editTextCallback;
-			DataBrowserHitTestUPP  hitTestCallback;
-			DataBrowserTrackingUPP trackingCallback;
+  UInt32              version;                /* Use kDataBrowserLatestCustomCallbacks */
 
-			DataBrowserItemDragRgnUPP     dragRegionCallback;
-			DataBrowserItemAcceptDragUPP  acceptDragCallback;
-			DataBrowserItemReceiveDragUPP receiveDragCallback;
-		} v1;
-	} u;
+  union {
+    struct {
+      DataBrowserDrawItemUPP  drawItemCallback;
+      DataBrowserEditItemUPP  editTextCallback;
+      DataBrowserHitTestUPP  hitTestCallback;
+      DataBrowserTrackingUPP  trackingCallback;
+
+      DataBrowserItemDragRgnUPP  dragRegionCallback;
+      DataBrowserItemAcceptDragUPP  acceptDragCallback;
+      DataBrowserItemReceiveDragUPP  receiveDragCallback;
+    }                       v1;
+  }                       u;
 };
 typedef struct DataBrowserCustomCallbacks DataBrowserCustomCallbacks;
 /*
@@ -5240,14 +5328,12 @@ typedef struct DataBrowserCustomCallbacks DataBrowserCustomCallbacks;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-InitDataBrowserCustomCallbacks( DataBrowserCustomCallbacks *callbacks );
+InitDataBrowserCustomCallbacks(DataBrowserCustomCallbacks * callbacks);
+
 
 /* Macro for initializing custom callback structure */
-#define InitializeDataBrowserCustomCallbacks( callbacks, vers ) \
-	{                                                           \
-		( callbacks )->version = ( vers );                      \
-		InitDataBrowserCustomCallbacks( callbacks );            \
-	}
+#define InitializeDataBrowserCustomCallbacks(callbacks, vers) \
+{ (callbacks)->version = (vers); InitDataBrowserCustomCallbacks(callbacks); }
 
 /*
  *  GetDataBrowserCustomCallbacks()
@@ -5259,8 +5345,9 @@ InitDataBrowserCustomCallbacks( DataBrowserCustomCallbacks *callbacks );
  */
 EXTERN_API( OSStatus )
 GetDataBrowserCustomCallbacks(
-    ControlRef                  browser,
-    DataBrowserCustomCallbacks *callbacks );
+  ControlRef                    browser,
+  DataBrowserCustomCallbacks *  callbacks);
+
 
 /*
  *  SetDataBrowserCustomCallbacks()
@@ -5272,33 +5359,37 @@ GetDataBrowserCustomCallbacks(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserCustomCallbacks(
-    ControlRef                        browser,
-    const DataBrowserCustomCallbacks *callbacks );
+  ControlRef                          browser,
+  const DataBrowserCustomCallbacks *  callbacks);
+
+
+
+
 
 /* TableView Formatting */
 typedef UInt32 DataBrowserTableViewHiliteStyle;
 enum {
-	kDataBrowserTableViewMinimalHilite = 0,
-	kDataBrowserTableViewFillHilite = 1
+  kDataBrowserTableViewMinimalHilite = 0,
+  kDataBrowserTableViewFillHilite = 1
 };
 
 typedef UInt32 DataBrowserTableViewPropertyFlags;
 enum {
-	/* kDataBrowserTableView DataBrowserPropertyFlags */
-	kDataBrowserTableViewSelectionColumn = 1 << kDataBrowserViewSpecificFlagsOffset
+                                        /* kDataBrowserTableView DataBrowserPropertyFlags */
+  kDataBrowserTableViewSelectionColumn = 1 << kDataBrowserViewSpecificFlagsOffset
 };
 
 /* The row and column indicies are zero-based */
 
-typedef UInt32                  DataBrowserTableViewRowIndex;
-typedef UInt32                  DataBrowserTableViewColumnIndex;
-typedef DataBrowserPropertyID   DataBrowserTableViewColumnID;
-typedef DataBrowserPropertyDesc DataBrowserTableViewColumnDesc;
+typedef UInt32                          DataBrowserTableViewRowIndex;
+typedef UInt32                          DataBrowserTableViewColumnIndex;
+typedef DataBrowserPropertyID           DataBrowserTableViewColumnID;
+typedef DataBrowserPropertyDesc         DataBrowserTableViewColumnDesc;
 
 /* TableView API */
 /* Use when setting column position */
 enum {
-	kDataBrowserTableViewLastColumn = -1
+  kDataBrowserTableViewLastColumn = -1
 };
 
 /*
@@ -5311,8 +5402,9 @@ enum {
  */
 EXTERN_API( OSStatus )
 RemoveDataBrowserTableViewColumn(
-    ControlRef                   browser,
-    DataBrowserTableViewColumnID column );
+  ControlRef                     browser,
+  DataBrowserTableViewColumnID   column);
+
 
 /*
  *  GetDataBrowserTableViewColumnCount()
@@ -5324,8 +5416,10 @@ RemoveDataBrowserTableViewColumn(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewColumnCount(
-    ControlRef browser,
-    UInt32 *   numColumns );
+  ControlRef   browser,
+  UInt32 *     numColumns);
+
+
 
 /*
  *  SetDataBrowserTableViewHiliteStyle()
@@ -5337,8 +5431,9 @@ GetDataBrowserTableViewColumnCount(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewHiliteStyle(
-    ControlRef                      browser,
-    DataBrowserTableViewHiliteStyle hiliteStyle );
+  ControlRef                        browser,
+  DataBrowserTableViewHiliteStyle   hiliteStyle);
+
 
 /*
  *  GetDataBrowserTableViewHiliteStyle()
@@ -5350,8 +5445,10 @@ SetDataBrowserTableViewHiliteStyle(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewHiliteStyle(
-    ControlRef                       browser,
-    DataBrowserTableViewHiliteStyle *hiliteStyle );
+  ControlRef                         browser,
+  DataBrowserTableViewHiliteStyle *  hiliteStyle);
+
+
 
 /*
  *  SetDataBrowserTableViewRowHeight()
@@ -5363,8 +5460,9 @@ GetDataBrowserTableViewHiliteStyle(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewRowHeight(
-    ControlRef browser,
-    UInt16     height );
+  ControlRef   browser,
+  UInt16       height);
+
 
 /*
  *  GetDataBrowserTableViewRowHeight()
@@ -5376,8 +5474,9 @@ SetDataBrowserTableViewRowHeight(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewRowHeight(
-    ControlRef browser,
-    UInt16 *   height );
+  ControlRef   browser,
+  UInt16 *     height);
+
 
 /*
  *  SetDataBrowserTableViewColumnWidth()
@@ -5389,8 +5488,9 @@ GetDataBrowserTableViewRowHeight(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewColumnWidth(
-    ControlRef browser,
-    UInt16     width );
+  ControlRef   browser,
+  UInt16       width);
+
 
 /*
  *  GetDataBrowserTableViewColumnWidth()
@@ -5402,8 +5502,9 @@ SetDataBrowserTableViewColumnWidth(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewColumnWidth(
-    ControlRef browser,
-    UInt16 *   width );
+  ControlRef   browser,
+  UInt16 *     width);
+
 
 /*
  *  SetDataBrowserTableViewItemRowHeight()
@@ -5415,9 +5516,10 @@ GetDataBrowserTableViewColumnWidth(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewItemRowHeight(
-    ControlRef        browser,
-    DataBrowserItemID item,
-    UInt16            height );
+  ControlRef          browser,
+  DataBrowserItemID   item,
+  UInt16              height);
+
 
 /*
  *  GetDataBrowserTableViewItemRowHeight()
@@ -5429,9 +5531,10 @@ SetDataBrowserTableViewItemRowHeight(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewItemRowHeight(
-    ControlRef        browser,
-    DataBrowserItemID item,
-    UInt16 *          height );
+  ControlRef          browser,
+  DataBrowserItemID   item,
+  UInt16 *            height);
+
 
 /*
  *  SetDataBrowserTableViewNamedColumnWidth()
@@ -5443,9 +5546,10 @@ GetDataBrowserTableViewItemRowHeight(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewNamedColumnWidth(
-    ControlRef                   browser,
-    DataBrowserTableViewColumnID column,
-    UInt16                       width );
+  ControlRef                     browser,
+  DataBrowserTableViewColumnID   column,
+  UInt16                         width);
+
 
 /*
  *  GetDataBrowserTableViewNamedColumnWidth()
@@ -5457,9 +5561,10 @@ SetDataBrowserTableViewNamedColumnWidth(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewNamedColumnWidth(
-    ControlRef                   browser,
-    DataBrowserTableViewColumnID column,
-    UInt16 *                     width );
+  ControlRef                     browser,
+  DataBrowserTableViewColumnID   column,
+  UInt16 *                       width);
+
 
 /*
  *  SetDataBrowserTableViewGeometry()
@@ -5471,9 +5576,10 @@ GetDataBrowserTableViewNamedColumnWidth(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewGeometry(
-    ControlRef browser,
-    Boolean    variableWidthColumns,
-    Boolean    variableHeightRows );
+  ControlRef   browser,
+  Boolean      variableWidthColumns,
+  Boolean      variableHeightRows);
+
 
 /*
  *  GetDataBrowserTableViewGeometry()
@@ -5485,9 +5591,11 @@ SetDataBrowserTableViewGeometry(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewGeometry(
-    ControlRef browser,
-    Boolean *  variableWidthColumns,
-    Boolean *  variableHeightRows );
+  ControlRef   browser,
+  Boolean *    variableWidthColumns,
+  Boolean *    variableHeightRows);
+
+
 
 /*
  *  GetDataBrowserTableViewItemID()
@@ -5499,9 +5607,10 @@ GetDataBrowserTableViewGeometry(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewItemID(
-    ControlRef                   browser,
-    DataBrowserTableViewRowIndex row,
-    DataBrowserItemID *          item );
+  ControlRef                     browser,
+  DataBrowserTableViewRowIndex   row,
+  DataBrowserItemID *            item);
+
 
 /*
  *  SetDataBrowserTableViewItemRow()
@@ -5513,9 +5622,10 @@ GetDataBrowserTableViewItemID(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewItemRow(
-    ControlRef                   browser,
-    DataBrowserItemID            item,
-    DataBrowserTableViewRowIndex row );
+  ControlRef                     browser,
+  DataBrowserItemID              item,
+  DataBrowserTableViewRowIndex   row);
+
 
 /*
  *  GetDataBrowserTableViewItemRow()
@@ -5527,9 +5637,10 @@ SetDataBrowserTableViewItemRow(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewItemRow(
-    ControlRef                    browser,
-    DataBrowserItemID             item,
-    DataBrowserTableViewRowIndex *row );
+  ControlRef                      browser,
+  DataBrowserItemID               item,
+  DataBrowserTableViewRowIndex *  row);
+
 
 /*
  *  SetDataBrowserTableViewColumnPosition()
@@ -5541,9 +5652,10 @@ GetDataBrowserTableViewItemRow(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserTableViewColumnPosition(
-    ControlRef                      browser,
-    DataBrowserTableViewColumnID    column,
-    DataBrowserTableViewColumnIndex position );
+  ControlRef                        browser,
+  DataBrowserTableViewColumnID      column,
+  DataBrowserTableViewColumnIndex   position);
+
 
 /*
  *  GetDataBrowserTableViewColumnPosition()
@@ -5555,9 +5667,10 @@ SetDataBrowserTableViewColumnPosition(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewColumnPosition(
-    ControlRef                       browser,
-    DataBrowserTableViewColumnID     column,
-    DataBrowserTableViewColumnIndex *position );
+  ControlRef                         browser,
+  DataBrowserTableViewColumnID       column,
+  DataBrowserTableViewColumnIndex *  position);
+
 
 /*
  *  GetDataBrowserTableViewColumnProperty()
@@ -5569,45 +5682,50 @@ GetDataBrowserTableViewColumnPosition(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserTableViewColumnProperty(
-    ControlRef                      browser,
-    DataBrowserTableViewColumnIndex column,
-    DataBrowserTableViewColumnID *  property );
+  ControlRef                        browser,
+  DataBrowserTableViewColumnIndex   column,
+  DataBrowserTableViewColumnID *    property);
+
+
+
+
 
 /* kDataBrowserListView Formatting */
 typedef UInt32 DataBrowserListViewPropertyFlags;
 enum {
-	/* kDataBrowserListView DataBrowserPropertyFlags */
-	kDataBrowserListViewMovableColumn = 1 << ( kDataBrowserViewSpecificFlagsOffset + 1 ),
-	kDataBrowserListViewSortableColumn = 1 << ( kDataBrowserViewSpecificFlagsOffset + 2 ),
-	kDataBrowserListViewSelectionColumn = kDataBrowserTableViewSelectionColumn,
-	kDataBrowserListViewDefaultColumnFlags = kDataBrowserListViewMovableColumn + kDataBrowserListViewSortableColumn
+                                        /* kDataBrowserListView DataBrowserPropertyFlags */
+  kDataBrowserListViewMovableColumn = 1 << (kDataBrowserViewSpecificFlagsOffset + 1),
+  kDataBrowserListViewSortableColumn = 1 << (kDataBrowserViewSpecificFlagsOffset + 2),
+  kDataBrowserListViewSelectionColumn = kDataBrowserTableViewSelectionColumn,
+  kDataBrowserListViewDefaultColumnFlags = kDataBrowserListViewMovableColumn + kDataBrowserListViewSortableColumn
 };
 
+
 enum {
-	kDataBrowserListViewLatestHeaderDesc = 0
+  kDataBrowserListViewLatestHeaderDesc = 0
 };
 
 struct DataBrowserListViewHeaderDesc {
-	UInt32 version; /* Use kDataBrowserListViewLatestHeaderDesc */
+  UInt32              version;                /* Use kDataBrowserListViewLatestHeaderDesc */
 
-	UInt16 minimumWidth;
-	UInt16 maximumWidth;
+  UInt16              minimumWidth;
+  UInt16              maximumWidth;
 
-	SInt16                   titleOffset;
-	CFStringRef              titleString;
-	DataBrowserSortOrder     initialOrder;
-	ControlFontStyleRec      btnFontStyle;
-	ControlButtonContentInfo btnContentInfo;
+  SInt16              titleOffset;
+  CFStringRef         titleString;
+  DataBrowserSortOrder  initialOrder;
+  ControlFontStyleRec  btnFontStyle;
+  ControlButtonContentInfo  btnContentInfo;
 };
 typedef struct DataBrowserListViewHeaderDesc DataBrowserListViewHeaderDesc;
 struct DataBrowserListViewColumnDesc {
-	DataBrowserTableViewColumnDesc propertyDesc;
-	DataBrowserListViewHeaderDesc  headerBtnDesc;
+  DataBrowserTableViewColumnDesc  propertyDesc;
+  DataBrowserListViewHeaderDesc  headerBtnDesc;
 };
 typedef struct DataBrowserListViewColumnDesc DataBrowserListViewColumnDesc;
 /* kDataBrowserListView API */
 enum {
-	kDataBrowserListViewAppendColumn = kDataBrowserTableViewLastColumn
+  kDataBrowserListViewAppendColumn = kDataBrowserTableViewLastColumn
 };
 
 /*
@@ -5619,7 +5737,8 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-AutoSizeDataBrowserListViewColumns( ControlRef browser );
+AutoSizeDataBrowserListViewColumns(ControlRef browser);
+
 
 /*
  *  AddDataBrowserListViewColumn()
@@ -5631,9 +5750,10 @@ AutoSizeDataBrowserListViewColumns( ControlRef browser );
  */
 EXTERN_API( OSStatus )
 AddDataBrowserListViewColumn(
-    ControlRef                      browser,
-    DataBrowserListViewColumnDesc * columnDesc,
-    DataBrowserTableViewColumnIndex position );
+  ControlRef                        browser,
+  DataBrowserListViewColumnDesc *   columnDesc,
+  DataBrowserTableViewColumnIndex   position);
+
 
 /*
  *  GetDataBrowserListViewHeaderDesc()
@@ -5645,9 +5765,10 @@ AddDataBrowserListViewColumn(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserListViewHeaderDesc(
-    ControlRef                     browser,
-    DataBrowserTableViewColumnID   column,
-    DataBrowserListViewHeaderDesc *desc );
+  ControlRef                       browser,
+  DataBrowserTableViewColumnID     column,
+  DataBrowserListViewHeaderDesc *  desc);
+
 
 /*
  *  SetDataBrowserListViewHeaderDesc()
@@ -5659,9 +5780,10 @@ GetDataBrowserListViewHeaderDesc(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserListViewHeaderDesc(
-    ControlRef                     browser,
-    DataBrowserTableViewColumnID   column,
-    DataBrowserListViewHeaderDesc *desc );
+  ControlRef                       browser,
+  DataBrowserTableViewColumnID     column,
+  DataBrowserListViewHeaderDesc *  desc);
+
 
 /*
  *  SetDataBrowserListViewHeaderBtnHeight()
@@ -5673,8 +5795,9 @@ SetDataBrowserListViewHeaderDesc(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserListViewHeaderBtnHeight(
-    ControlRef browser,
-    UInt16     height );
+  ControlRef   browser,
+  UInt16       height);
+
 
 /*
  *  GetDataBrowserListViewHeaderBtnHeight()
@@ -5686,8 +5809,9 @@ SetDataBrowserListViewHeaderBtnHeight(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserListViewHeaderBtnHeight(
-    ControlRef browser,
-    UInt16 *   height );
+  ControlRef   browser,
+  UInt16 *     height);
+
 
 /*
  *  SetDataBrowserListViewUsePlainBackground()
@@ -5699,8 +5823,9 @@ GetDataBrowserListViewHeaderBtnHeight(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserListViewUsePlainBackground(
-    ControlRef browser,
-    Boolean    usePlainBackground );
+  ControlRef   browser,
+  Boolean      usePlainBackground);
+
 
 /*
  *  GetDataBrowserListViewUsePlainBackground()
@@ -5712,8 +5837,9 @@ SetDataBrowserListViewUsePlainBackground(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserListViewUsePlainBackground(
-    ControlRef browser,
-    Boolean *  usePlainBackground );
+  ControlRef   browser,
+  Boolean *    usePlainBackground);
+
 
 /*
  *  SetDataBrowserListViewDisclosureColumn()
@@ -5725,9 +5851,10 @@ GetDataBrowserListViewUsePlainBackground(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserListViewDisclosureColumn(
-    ControlRef                   browser,
-    DataBrowserTableViewColumnID column,
-    Boolean                      expandableRows );
+  ControlRef                     browser,
+  DataBrowserTableViewColumnID   column,
+  Boolean                        expandableRows);
+
 
 /*
  *  GetDataBrowserListViewDisclosureColumn()
@@ -5739,9 +5866,11 @@ SetDataBrowserListViewDisclosureColumn(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserListViewDisclosureColumn(
-    ControlRef                    browser,
-    DataBrowserTableViewColumnID *column,
-    Boolean *                     expandableRows );
+  ControlRef                      browser,
+  DataBrowserTableViewColumnID *  column,
+  Boolean *                       expandableRows);
+
+
 
 /* kDataBrowserColumnView API */
 /*
@@ -5754,8 +5883,9 @@ GetDataBrowserListViewDisclosureColumn(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserColumnViewPath(
-    ControlRef browser,
-    Handle     path );
+  ControlRef   browser,
+  Handle       path);
+
 
 /*
  *  GetDataBrowserColumnViewPathLength()
@@ -5767,8 +5897,9 @@ GetDataBrowserColumnViewPath(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserColumnViewPathLength(
-    ControlRef browser,
-    UInt32 *   pathLength );
+  ControlRef   browser,
+  UInt32 *     pathLength);
+
 
 /*
  *  SetDataBrowserColumnViewPath()
@@ -5780,9 +5911,10 @@ GetDataBrowserColumnViewPathLength(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserColumnViewPath(
-    ControlRef               browser,
-    UInt32                   length,
-    const DataBrowserItemID *path );
+  ControlRef                 browser,
+  UInt32                     length,
+  const DataBrowserItemID *  path);
+
 
 /*
  *  SetDataBrowserColumnViewDisplayType()
@@ -5794,8 +5926,9 @@ SetDataBrowserColumnViewPath(
  */
 EXTERN_API( OSStatus )
 SetDataBrowserColumnViewDisplayType(
-    ControlRef              browser,
-    DataBrowserPropertyType propertyType );
+  ControlRef                browser,
+  DataBrowserPropertyType   propertyType);
+
 
 /*
  *  GetDataBrowserColumnViewDisplayType()
@@ -5807,8 +5940,10 @@ SetDataBrowserColumnViewDisplayType(
  */
 EXTERN_API( OSStatus )
 GetDataBrowserColumnViewDisplayType(
-    ControlRef               browser,
-    DataBrowserPropertyType *propertyType );
+  ControlRef                 browser,
+  DataBrowserPropertyType *  propertyType);
+
+
 
 /* DataBrowser UPP macros */
 /*---------------------------------------------------------------------------------------*/
@@ -5823,8 +5958,8 @@ GetDataBrowserColumnViewDisplayType(
 /* if the new text (i.e. the text in the handle) should be included in the body text    */
 /* the client should return true.  If the client wants to block the inclusion of the    */
 /* text they should return false.                                                       */
-typedef CALLBACK_API( Boolean, EditUnicodePostUpdateProcPtr )( UniCharArrayHandle uniText, UniCharCount uniTextLength, UniCharArrayOffset iStartOffset, UniCharArrayOffset iEndOffset, void *refcon );
-typedef STACK_UPP_TYPE( EditUnicodePostUpdateProcPtr ) EditUnicodePostUpdateUPP;
+typedef CALLBACK_API( Boolean , EditUnicodePostUpdateProcPtr )(UniCharArrayHandle uniText, UniCharCount uniTextLength, UniCharArrayOffset iStartOffset, UniCharArrayOffset iEndOffset, void *refcon);
+typedef STACK_UPP_TYPE(EditUnicodePostUpdateProcPtr)            EditUnicodePostUpdateUPP;
 /*
  *  NewEditUnicodePostUpdateUPP()
  *  
@@ -5834,7 +5969,7 @@ typedef STACK_UPP_TYPE( EditUnicodePostUpdateProcPtr ) EditUnicodePostUpdateUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( EditUnicodePostUpdateUPP )
-NewEditUnicodePostUpdateUPP( EditUnicodePostUpdateProcPtr userRoutine );
+NewEditUnicodePostUpdateUPP(EditUnicodePostUpdateProcPtr userRoutine);
 
 /*
  *  DisposeEditUnicodePostUpdateUPP()
@@ -5845,7 +5980,7 @@ NewEditUnicodePostUpdateUPP( EditUnicodePostUpdateProcPtr userRoutine );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeEditUnicodePostUpdateUPP( EditUnicodePostUpdateUPP userUPP );
+DisposeEditUnicodePostUpdateUPP(EditUnicodePostUpdateUPP userUPP);
 
 /*
  *  InvokeEditUnicodePostUpdateUPP()
@@ -5857,27 +5992,28 @@ DisposeEditUnicodePostUpdateUPP( EditUnicodePostUpdateUPP userUPP );
  */
 EXTERN_API_C( Boolean )
 InvokeEditUnicodePostUpdateUPP(
-    UniCharArrayHandle       uniText,
-    UniCharCount             uniTextLength,
-    UniCharArrayOffset       iStartOffset,
-    UniCharArrayOffset       iEndOffset,
-    void *                   refcon,
-    EditUnicodePostUpdateUPP userUPP );
+  UniCharArrayHandle        uniText,
+  UniCharCount              uniTextLength,
+  UniCharArrayOffset        iStartOffset,
+  UniCharArrayOffset        iEndOffset,
+  void *                    refcon,
+  EditUnicodePostUpdateUPP  userUPP);
 
 /* Use this tag when calling ControlSet/GetData to specify the UnicodePostUpdateProcPtr */
 /* tags available with Appearance 1.1 or later */
 enum {
-	kControlEditUnicodeTextPostUpdateProcTag = FOUR_CHAR_CODE( 'upup' )
+  kControlEditUnicodeTextPostUpdateProcTag = FOUR_CHAR_CODE('upup')
 };
 
+
 enum {
-	kControlEditUnicodeTextProc = 912,
-	kControlEditUnicodeTextPasswordProc = 914
+  kControlEditUnicodeTextProc   = 912,
+  kControlEditUnicodeTextPasswordProc = 914
 };
 
 /* Control Kind Tag */
 enum {
-	kControlKindEditUnicodeText = FOUR_CHAR_CODE( 'eutx' )
+  kControlKindEditUnicodeText   = FOUR_CHAR_CODE('eutx')
 };
 
 /* Creation API for X */
@@ -5891,16 +6027,17 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateEditUnicodeTextControl(
-    WindowRef                  window,
-    const Rect *               boundsRect,
-    CFStringRef                text,
-    Boolean                    isPassword,
-    const ControlFontStyleRec *style, /* can be NULL */
-    ControlRef *               outControl );
+  WindowRef                    window,
+  const Rect *                 boundsRect,
+  CFStringRef                  text,
+  Boolean                      isPassword,
+  const ControlFontStyleRec *  style,            /* can be NULL */
+  ControlRef *                 outControl);
+
 
 /* Tagged data supported by Unicode text Control only*/
 enum {
-	kControlEditTextSingleLineTag = FOUR_CHAR_CODE( 'sglc' )
+  kControlEditTextSingleLineTag = FOUR_CHAR_CODE('sglc')
 };
 
 #if OLDROUTINENAMES
@@ -5908,43 +6045,48 @@ enum {
 /*  o OLDROUTINENAMES                                                                   */
 /*--------------------------------------------------------------------------------------*/
 enum {
-	kControlCheckboxUncheckedValue = kControlCheckBoxUncheckedValue,
-	kControlCheckboxCheckedValue = kControlCheckBoxCheckedValue,
-	kControlCheckboxMixedValue = kControlCheckBoxMixedValue
+  kControlCheckboxUncheckedValue = kControlCheckBoxUncheckedValue,
+  kControlCheckboxCheckedValue  = kControlCheckBoxCheckedValue,
+  kControlCheckboxMixedValue    = kControlCheckBoxMixedValue
 };
 
 enum {
-	inLabel = kControlLabelPart,
-	inMenu = kControlMenuPart,
-	inTriangle = kControlTrianglePart,
-	inButton = kControlButtonPart,
-	inCheckBox = kControlCheckBoxPart,
-	inUpButton = kControlUpButtonPart,
-	inDownButton = kControlDownButtonPart,
-	inPageUp = kControlPageUpPart,
-	inPageDown = kControlPageDownPart
+  inLabel                       = kControlLabelPart,
+  inMenu                        = kControlMenuPart,
+  inTriangle                    = kControlTrianglePart,
+  inButton                      = kControlButtonPart,
+  inCheckBox                    = kControlCheckBoxPart,
+  inUpButton                    = kControlUpButtonPart,
+  inDownButton                  = kControlDownButtonPart,
+  inPageUp                      = kControlPageUpPart,
+  inPageDown                    = kControlPageDownPart
 };
 
 enum {
-	kInLabelControlPart = kControlLabelPart,
-	kInMenuControlPart = kControlMenuPart,
-	kInTriangleControlPart = kControlTrianglePart,
-	kInButtonControlPart = kControlButtonPart,
-	kInCheckBoxControlPart = kControlCheckBoxPart,
-	kInUpButtonControlPart = kControlUpButtonPart,
-	kInDownButtonControlPart = kControlDownButtonPart,
-	kInPageUpControlPart = kControlPageUpPart,
-	kInPageDownControlPart = kControlPageDownPart
+  kInLabelControlPart           = kControlLabelPart,
+  kInMenuControlPart            = kControlMenuPart,
+  kInTriangleControlPart        = kControlTrianglePart,
+  kInButtonControlPart          = kControlButtonPart,
+  kInCheckBoxControlPart        = kControlCheckBoxPart,
+  kInUpButtonControlPart        = kControlUpButtonPart,
+  kInDownButtonControlPart      = kControlDownButtonPart,
+  kInPageUpControlPart          = kControlPageUpPart,
+  kInPageDownControlPart        = kControlPageDownPart
 };
 
-#endif /* OLDROUTINENAMES */
+
+#endif  /* OLDROUTINENAMES */
+
+
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -5958,3 +6100,4 @@ enum {
 #endif
 
 #endif /* __CONTROLDEFINITIONS__ */
+

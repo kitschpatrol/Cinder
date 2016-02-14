@@ -10,7 +10,7 @@ using namespace ci;
 using namespace ci::app;
 
 class VoiceBasicProcessingApp : public App {
-  public:
+public:
 	void setup() override;
 	void mouseDown( MouseEvent event ) override;
 	void mouseDrag( MouseEvent event ) override;
@@ -33,21 +33,21 @@ void VoiceBasicProcessingApp::setup()
 	mFreq = 0;
 	mPhase = 0;
 
-	mVoice = audio::Voice::create( [this]( audio::Buffer *buffer, size_t sampleRate ) {
+	mVoice = audio::Voice::create( [this] ( audio::Buffer *buffer, size_t sampleRate ) {
 
 		float *channel0 = buffer->getChannel( 0 );
 
 #if 1
 		// generate a sine wave
 		float phaseIncr = ( mFreq / (float)sampleRate ) * 2 * (float)M_PI;
-		for( size_t i = 0; i < buffer->getNumFrames(); i++ ) {
+		for( size_t i = 0; i < buffer->getNumFrames(); i++ )	{
 			mPhase = fmodf( mPhase + phaseIncr, 2 * M_PI );
 			channel0[i] = std::sin( mPhase );
 		}
 #else
 		// generate a triangle wave
 		float phaseIncr = ( mFreq / (float)sampleRate );
-		for( size_t i = 0; i < buffer->getNumFrames(); i++ ) {
+		for( size_t i = 0; i < buffer->getNumFrames(); i++ )	{
 			mPhase = fmodf( mPhase + phaseIncr, 1 );
 			channel0[i] = std::min( mPhase, 1 - mPhase );
 		}

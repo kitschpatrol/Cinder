@@ -22,21 +22,20 @@
 */
 
 #include "cinder/audio/Source.h"
-#include "cinder/audio/FileOggVorbis.h"
 #include "cinder/audio/dsp/Converter.h"
+#include "cinder/audio/FileOggVorbis.h"
 
 #include "cinder/Utilities.h"
 
 #if defined( CINDER_COCOA )
-#include "cinder/audio/cocoa/FileCoreAudio.h"
+	#include "cinder/audio/cocoa/FileCoreAudio.h"
 #elif defined( CINDER_MSW )
-#include "cinder/audio/msw/FileMediaFoundation.h"
+	#include "cinder/audio/msw/FileMediaFoundation.h"
 #endif
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // TODO: these should be replaced with a generic registrar derived from the ImageIo stuff.
 
@@ -45,7 +44,7 @@ unique_ptr<SourceFile> SourceFile::create( const DataSourceRef &dataSource, size
 {
 	unique_ptr<SourceFile> result;
 
-#if !defined( CINDER_WINRT ) || ( _MSC_VER > 1800 )
+#if ! defined( CINDER_WINRT ) || ( _MSC_VER > 1800 )
 	if( dataSource->getFilePathHint().extension().string() == ".ogg" )
 #else
 	if( dataSource->getFilePathHint().extension() == ".ogg" )
@@ -83,7 +82,7 @@ vector<std::string> SourceFile::getSupportedExtensions()
 }
 
 Source::Source( size_t sampleRate )
-    : mSampleRate( sampleRate ), mMaxFramesPerRead( 4096 )
+	: mSampleRate( sampleRate ), mMaxFramesPerRead( 4096 )
 {
 }
 
@@ -92,7 +91,7 @@ Source::~Source()
 }
 
 SourceFile::SourceFile( size_t sampleRate )
-    : Source( sampleRate ), mNumFrames( 0 ), mFileNumFrames( 0 ), mReadPos( 0 )
+	: Source( sampleRate ), mNumFrames( 0 ), mFileNumFrames( 0 ), mReadPos( 0 )
 {
 }
 
@@ -100,14 +99,14 @@ void SourceFile::setupSampleRateConversion()
 {
 	size_t nativeSampleRate = getSampleRateNative();
 	size_t outputSampleRate = getSampleRate();
-	if( !outputSampleRate ) {
+	if( ! outputSampleRate ) {
 		outputSampleRate = nativeSampleRate;
 		setSampleRate( nativeSampleRate );
 	}
 	else if( outputSampleRate != nativeSampleRate ) {
 		mNumFrames = (size_t)std::ceil( (float)mFileNumFrames * (float)outputSampleRate / (float)nativeSampleRate );
 
-		if( !supportsConversion() ) {
+		if( ! supportsConversion() ) {
 			size_t numChannels = getNumChannels();
 			mConverter = audio::dsp::Converter::create( nativeSampleRate, outputSampleRate, numChannels, numChannels, getMaxFramesPerRead() );
 			mConverterReadBuffer.setSize( getMaxFramesPerRead(), numChannels );
@@ -194,5 +193,5 @@ void SourceFile::seek( size_t readPositionFrames )
 	performSeek( fileReadPos );
 	mReadPos = readPositionFrames;
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

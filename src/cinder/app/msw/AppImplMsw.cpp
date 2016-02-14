@@ -22,42 +22,41 @@
 */
 
 #include "cinder/app/msw/AppImplMsw.h"
-#include "cinder/Display.h"
-#include "cinder/Unicode.h"
-#include "cinder/Utilities.h"
 #include "cinder/app/AppBase.h"
-#include "cinder/app/msw/PlatformMsw.h"
+#include "cinder/Utilities.h"
+#include "cinder/Unicode.h"
+#include "cinder/Display.h"
 #include "cinder/msw/CinderMsw.h"
+#include "cinder/app/msw/PlatformMsw.h"
 
+#include <Windows.h>
+#include <windowsx.h>
 #include <CommDlg.h>
 #include <ShellAPI.h>
 #include <Shlobj.h>
-#include <Windows.h>
-#include <windowsx.h>
-#define max( a, b ) ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-#define min( a, b ) ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
-#define LOSHORT( l ) ( ( SHORT )( l ) )
-#define HISHORT( l ) ( ( SHORT )( ( ( DWORD )( l ) >> 16 ) & 0xFFFF ) )
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#define LOSHORT(l)           ((SHORT)(l))
+#define HISHORT(l)           ((SHORT)(((DWORD)(l) >> 16) & 0xFFFF))
 #include <gdiplus.h>
 #undef min
 #undef max
-#pragma comment( lib, "gdiplus" )
+#pragma comment(lib, "gdiplus")
 
 using std::string;
 using std::wstring;
 using std::vector;
 using std::pair;
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 LRESULT CALLBACK WndProc( HWND mWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 LRESULT CALLBACK BlankingWndProc( HWND mWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
-static const wchar_t *WINDOWED_WIN_CLASS_NAME = TEXT( "CinderWinClass" );
-static const wchar_t *BLANKING_WINDOW_CLASS_NAME = TEXT( "CinderBlankingWindow" );
+static const wchar_t *WINDOWED_WIN_CLASS_NAME = TEXT("CinderWinClass");
+static const wchar_t *BLANKING_WINDOW_CLASS_NAME = TEXT("CinderBlankingWindow");
 
 AppImplMsw::AppImplMsw( AppBase *aApp )
-    : mApp( aApp ), mSetupHasBeenCalled( false ), mActive( true ), mNeedsToRefreshDisplays( false )
+	: mApp( aApp ), mSetupHasBeenCalled( false ), mActive( true ), mNeedsToRefreshDisplays( false )
 {
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 	Gdiplus::GdiplusStartup( &mGdiplusToken, &gdiplusStartupInput, NULL );
@@ -67,52 +66,48 @@ AppImplMsw::~AppImplMsw()
 {
 	// there's no way to ensure all GDI+ objects have been freed, so we don't do this
 	// for now this seems fine
-	//	Gdiplus::GdiplusShutdown( mGdiplusToken );
+//	Gdiplus::GdiplusShutdown( mGdiplusToken );
 }
 
 void AppImplMsw::hideCursor()
 {
 	int counter;
 
-	while( ( counter = ::ShowCursor( false ) ) > -1 )
-		;
+	while( ( counter = ::ShowCursor( false ) ) > -1 );
 
 	// when repeatedly calling hideCursor(), keep counter at -1
 	if( counter < -1 )
-		while(::ShowCursor( true ) < -1 )
-			;
+		while( ::ShowCursor( true ) < -1 );
 }
 
 void AppImplMsw::showCursor()
 {
 	int counter;
 
-	while( ( counter = ::ShowCursor( true ) ) < 0 )
-		;
+	while( ( counter = ::ShowCursor( true ) ) < 0 );
 
 	// when repeatedly calling showCursor(), keep counter at 0
 	if( counter > 0 )
-		while(::ShowCursor( false ) > 0 )
-			;
+		while( ::ShowCursor( false ) > 0 );
 }
 
 fs::path AppImplMsw::getOpenFilePath( const fs::path &initialPath, vector<string> extensions )
 {
-	OPENFILENAMEW ofn; // common dialog box structure
-	wchar_t       szFile[MAX_PATH]; // buffer for file name
-	wchar_t       extensionStr[10000];
-	wchar_t       initialPathStr[MAX_PATH];
+	OPENFILENAMEW ofn;       // common dialog box structure
+	wchar_t szFile[MAX_PATH];       // buffer for file name
+	wchar_t extensionStr[10000];
+	wchar_t initialPathStr[MAX_PATH];
 
 	// Initialize OPENFILENAME
-	::ZeroMemory( &ofn, sizeof( ofn ) );
-	ofn.lStructSize = sizeof( ofn );
+	::ZeroMemory( &ofn, sizeof(ofn) );
+	ofn.lStructSize = sizeof(ofn);
 	auto app = AppBase::get();
 	if( app && app->getRenderer() )
 		ofn.hwndOwner = app->getRenderer()->getHwnd();
 	else
 		ofn.hwndOwner = 0;
 	ofn.lpstrFile = szFile;
-
+	
 	// Set lpstrFile[0] to '\0' so that GetOpenFileName does not
 	// use the contents of szFile to initialize itself.
 	//
@@ -123,7 +118,7 @@ fs::path AppImplMsw::getOpenFilePath( const fs::path &initialPath, vector<string
 	}
 	else {
 		size_t offset = 0;
-
+		
 		wcscpy( extensionStr, L"Supported Types" );
 		offset += wcslen( extensionStr ) + 1;
 		for( vector<string>::const_iterator strIt = extensions.begin(); strIt != extensions.end(); ++strIt ) {
@@ -163,7 +158,7 @@ fs::path AppImplMsw::getOpenFilePath( const fs::path &initialPath, vector<string
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
 	// Display the Open dialog box.
-	if(::GetOpenFileNameW( &ofn ) == TRUE ) {
+	if( ::GetOpenFileNameW( &ofn ) == TRUE ) {
 		return fs::path( ofn.lpstrFile );
 	}
 	else
@@ -173,14 +168,14 @@ fs::path AppImplMsw::getOpenFilePath( const fs::path &initialPath, vector<string
 namespace {
 
 // see http://support.microsoft.com/kb/179378 "How To Browse for Folders from the Current Directory"
-INT CALLBACK getFolderPathBrowseCallbackProc( HWND hwnd, UINT uMsg, LPARAM lp, LPARAM pData )
+INT CALLBACK getFolderPathBrowseCallbackProc( HWND hwnd, UINT uMsg, LPARAM lp, LPARAM pData ) 
 {
 	switch( uMsg ) {
-	case BFFM_INITIALIZED:
-		// WParam is TRUE since you are passing a path.
-		// It would be FALSE if you were passing a pidl.
-		// pData is a pointer to the wide string containing our initial path back at the original call site
-		::SendMessage( hwnd, BFFM_SETSELECTION, TRUE, pData );
+		case BFFM_INITIALIZED: 
+			// WParam is TRUE since you are passing a path.
+			// It would be FALSE if you were passing a pidl.
+			// pData is a pointer to the wide string containing our initial path back at the original call site
+			::SendMessage( hwnd, BFFM_SETSELECTION, TRUE, pData );
 		break;
 	}
 	return 0;
@@ -200,13 +195,13 @@ fs::path AppImplMsw::getFolderPath( const fs::path &initialPath )
 	if( pidl ) {
 		// get the name of the folder
 		TCHAR path[MAX_PATH];
-		if(::SHGetPathFromIDList( pidl, path ) ) {
+		if( ::SHGetPathFromIDList( pidl, path ) ) {
 			result = msw::toUtf8String( path );
 		}
 
 		// free memory used
-		::IMalloc *imalloc = 0;
-		if( SUCCEEDED(::SHGetMalloc( &imalloc ) ) ) {
+		::IMalloc * imalloc = 0;
+		if( SUCCEEDED( ::SHGetMalloc( &imalloc ) ) ) {
 			imalloc->Free( pidl );
 			imalloc->Release();
 		}
@@ -217,14 +212,14 @@ fs::path AppImplMsw::getFolderPath( const fs::path &initialPath )
 
 fs::path AppImplMsw::getSaveFilePath( const fs::path &initialPath, vector<string> extensions )
 {
-	OPENFILENAMEW ofn; // common dialog box structure
-	wchar_t       szFile[MAX_PATH]; // buffer for file name
-	wchar_t       initialPathStr[MAX_PATH];
-	wchar_t       extensionStr[10000];
+	OPENFILENAMEW ofn;       // common dialog box structure
+	wchar_t szFile[MAX_PATH];       // buffer for file name
+	wchar_t initialPathStr[MAX_PATH];
+	wchar_t extensionStr[10000];
 
 	// Initialize OPENFILENAME
-	ZeroMemory( &ofn, sizeof( ofn ) );
-	ofn.lStructSize = sizeof( ofn );
+	ZeroMemory( &ofn, sizeof(ofn) );
+	ofn.lStructSize = sizeof(ofn);
 	auto app = AppBase::get();
 	if( app && app->getRenderer() )
 		ofn.hwndOwner = app->getRenderer()->getHwnd();
@@ -282,17 +277,18 @@ fs::path AppImplMsw::getSaveFilePath( const fs::path &initialPath, vector<string
 	ofn.Flags = OFN_SHOWHELP | OFN_OVERWRITEPROMPT;
 
 	// Display the Open dialog box.
-	if(::GetSaveFileName( &ofn ) == TRUE )
+	if( ::GetSaveFileName( &ofn ) == TRUE )
 		return fs::path( ofn.lpstrFile );
 	else
 		return fs::path();
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // WindowImplMsw
 WindowImplMsw::WindowImplMsw( const Window::Format &format, RendererRef sharedRenderer, AppImplMsw *appImpl )
-    : mWindowOffset( 0, 0 ), mAppImpl( appImpl ), mIsDragging( false ), mHidden( false )
-{
+	: mWindowOffset( 0, 0 ), mAppImpl( appImpl ), mIsDragging( false ), mHidden( false )
+{	
 	mFullScreen = format.isFullScreen();
 	mDisplay = format.getDisplay();
 	mRenderer = format.getRenderer();
@@ -300,7 +296,7 @@ WindowImplMsw::WindowImplMsw( const Window::Format &format, RendererRef sharedRe
 	mAlwaysOnTop = format.isAlwaysOnTop();
 	mBorderless = format.isBorderless();
 
-	if( !mDisplay )
+	if( ! mDisplay )
 		mDisplay = Display::getMainDisplay();
 
 	mWindowedSize = format.getSize();
@@ -317,22 +313,22 @@ WindowImplMsw::WindowImplMsw( const Window::Format &format, RendererRef sharedRe
 	createWindow( ivec2( mWindowWidth, mWindowHeight ), format.getTitle(), mDisplay, sharedRenderer );
 	// set WindowRef and its impl pointer to this
 	mWindowRef = Window::privateCreate__( this, mAppImpl->getApp() );
-
+	
 	completeCreation();
 }
 
 WindowImplMsw::WindowImplMsw( HWND hwnd, RendererRef renderer, RendererRef sharedRenderer, AppImplMsw *appImpl )
-    : mWnd( hwnd ), mRenderer( renderer ), mAppImpl( appImpl ), mIsDragging( false )
+	: mWnd( hwnd ), mRenderer( renderer ), mAppImpl( appImpl ), mIsDragging( false )
 {
 	RECT rect;
 	::GetWindowRect( mWnd, &rect );
-
+	
 	mDC = ::GetDC( hwnd );
 	mWindowOffset = ivec2( rect.left, rect.top );
 	mWindowWidth = rect.right - rect.left;
 	mWindowHeight = rect.bottom - rect.top;
 
-	mDisplay = app::PlatformMsw::get()->findDisplayFromHmonitor(::MonitorFromWindow( mWnd, MONITOR_DEFAULTTONEAREST ) );
+	mDisplay = app::PlatformMsw::get()->findDisplayFromHmonitor( ::MonitorFromWindow( mWnd, MONITOR_DEFAULTTONEAREST ) );
 
 	mRenderer->setup( mWnd, mDC, sharedRenderer );
 
@@ -342,16 +338,17 @@ WindowImplMsw::WindowImplMsw( HWND hwnd, RendererRef renderer, RendererRef share
 void WindowImplMsw::setWindowStyleValues()
 {
 	if( mFullScreen ) {
-		mWindowExStyle = WS_EX_APPWINDOW; // Window Extended Style
-		mWindowStyle = WS_POPUP; // Windows Style
+		mWindowExStyle = WS_EX_APPWINDOW;								// Window Extended Style
+		mWindowStyle = WS_POPUP;										// Windows Style
 	}
 	else if( mBorderless ) {
 		mWindowExStyle = WS_EX_APPWINDOW;
 		mWindowStyle = WS_POPUP;
 	}
 	else {
-		mWindowExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE | WS_EX_ACCEPTFILES; // Window Extended Style
-		mWindowStyle = ( mResizable ) ? WS_OVERLAPPEDWINDOW : ( WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MINIMIZEBOX & ~WS_MAXIMIZEBOX ); // Windows Style
+		mWindowExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE | WS_EX_ACCEPTFILES;				// Window Extended Style
+		mWindowStyle = ( mResizable ) ? WS_OVERLAPPEDWINDOW
+			:	( WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MINIMIZEBOX & ~WS_MAXIMIZEBOX );	// Windows Style
 	}
 }
 
@@ -367,7 +364,7 @@ void WindowImplMsw::createWindow( const ivec2 &windowSize, const std::string &ti
 		windowRect.bottom = displayArea.getY2();
 	}
 	else {
-		windowRect.left = mWindowedPos.x;
+		windowRect.left = mWindowedPos.x; 
 		windowRect.right = mWindowedPos.x + windowSize.x;
 		windowRect.top = mWindowedPos.y;
 		windowRect.bottom = mWindowedPos.y + windowSize.y;
@@ -375,31 +372,30 @@ void WindowImplMsw::createWindow( const ivec2 &windowSize, const std::string &ti
 
 	registerWindowClass();
 	setWindowStyleValues();
-	::AdjustWindowRectEx( &windowRect, mWindowStyle, FALSE, mWindowExStyle ); // Adjust Window To True Requested Size
+	::AdjustWindowRectEx( &windowRect, mWindowStyle, FALSE, mWindowExStyle );		// Adjust Window To True Requested Size
 
-	std::wstring wideTitle = msw::toWideString( title );
+	std::wstring wideTitle = msw::toWideString( title ); 
 
 	// Create The Window
-	if( !( mWnd = ::CreateWindowEx( mWindowExStyle, // Extended Style For The Window
-	           WINDOWED_WIN_CLASS_NAME,
-	           wideTitle.c_str(), // Window Title
-	           mWindowStyle, // Required Window Style
-	           windowRect.left,
-	           windowRect.top, // Window Position
-	           windowRect.right - windowRect.left, // Calculate Window Width
-	           windowRect.bottom - windowRect.top, // Calculate Window Height
-	           NULL, // No Parent Window
-	           NULL, // No Menu
-	           ::GetModuleHandle( NULL ),
-	           reinterpret_cast<LPVOID>( this ) ) ) )
+	if( ! ( mWnd = ::CreateWindowEx( mWindowExStyle,						// Extended Style For The Window
+		WINDOWED_WIN_CLASS_NAME,
+		wideTitle.c_str(),						// Window Title
+		mWindowStyle,					// Required Window Style
+		windowRect.left, windowRect.top,								// Window Position
+		windowRect.right - windowRect.left,	// Calculate Window Width
+		windowRect.bottom - windowRect.top,	// Calculate Window Height
+		NULL,								// No Parent Window
+		NULL,								// No Menu
+		::GetModuleHandle( NULL ),
+		reinterpret_cast<LPVOID>( this ) )) )
 
 	{
 		//killWindow();							// Reset The Display
-		return;
+		return;		
 	}
 
 	mDC = ::GetDC( mWnd );
-	if( !mDC ) {
+	if( ! mDC ) {
 		return;
 	}
 
@@ -409,7 +405,7 @@ void WindowImplMsw::createWindow( const ivec2 &windowSize, const std::string &ti
 	}
 
 	// update display
-	mDisplay = PlatformMsw::get()->findDisplayFromHmonitor(::MonitorFromWindow( mWnd, MONITOR_DEFAULTTONEAREST ) );
+	mDisplay = PlatformMsw::get()->findDisplayFromHmonitor( ::MonitorFromWindow( mWnd, MONITOR_DEFAULTTONEAREST ) );
 
 	mRenderer->setup( mWnd, mDC, sharedRenderer );
 }
@@ -432,24 +428,24 @@ void WindowImplMsw::registerWindowClass()
 	if( sRegistered )
 		return;
 
-	WNDCLASSEX wc;
-	HMODULE    instance = ::GetModuleHandle( NULL ); // Grab An Instance For Our Window
-	wc.cbSize = sizeof( WNDCLASSEX );
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = WndProc; // WndProc Handles Messages
-	wc.cbClsExtra = 0; // No Extra Window Data
-	wc.cbWndExtra = 0; // No Extra Window Data
-	wc.hInstance = instance; // Set The Instance
-	wc.hIcon = ( HICON )::LoadImage( instance, MAKEINTRESOURCE( 1 ), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE ); // Load The Default Cinder Icon
+	WNDCLASSEX	wc;
+	HMODULE instance	= ::GetModuleHandle( NULL );				// Grab An Instance For Our Window
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.style			= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw On Size, And Own DC For Window.
+	wc.lpfnWndProc		= WndProc;						// WndProc Handles Messages
+	wc.cbClsExtra		= 0;									// No Extra Window Data
+	wc.cbWndExtra		= 0;									// No Extra Window Data
+	wc.hInstance		= instance;							// Set The Instance
+	wc.hIcon = (HICON)::LoadImage( instance, MAKEINTRESOURCE(1), IMAGE_ICON, 0, 0, LR_DEFAULTSIZE ); // Load The Default Cinder Icon
 	wc.hIconSm = NULL;
-	wc.hCursor = ::LoadCursor( NULL, IDC_ARROW ); // Load The Arrow Pointer
-	wc.hbrBackground = NULL; // No Background Required For GL
-	wc.lpszMenuName = NULL; // We Don't Want A Menu
-	wc.lpszClassName = WINDOWED_WIN_CLASS_NAME;
+	wc.hCursor			= ::LoadCursor( NULL, IDC_ARROW );		// Load The Arrow Pointer
+	wc.hbrBackground	= NULL;									// No Background Required For GL
+	wc.lpszMenuName		= NULL;									// We Don't Want A Menu
+	wc.lpszClassName	= WINDOWED_WIN_CLASS_NAME;
 
-	if( !::RegisterClassEx( &wc ) ) { // Attempt To Register The Window Class
+	if( ! ::RegisterClassEx( &wc ) ) {								// Attempt To Register The Window Class
 		DWORD err = ::GetLastError();
-		return;
+		return;							
 	}
 
 	sRegistered = true;
@@ -464,11 +460,11 @@ void WindowImplMsw::setFullScreen( bool fullScreen, const app::FullScreenOptions
 void WindowImplMsw::toggleFullScreen( const app::FullScreenOptions &options )
 {
 	ivec2 newWindowSize;
-	bool  prevFullScreen = mFullScreen;
-	HDC   oldDC = mDC;
-	HWND  oldWnd = mWnd;
-
-	mFullScreen = !mFullScreen;
+	bool prevFullScreen = mFullScreen;
+	HDC oldDC = mDC;
+	HWND oldWnd = mWnd;
+	
+	mFullScreen = ! mFullScreen;
 	setWindowStyleValues();
 
 	RECT windowRect;
@@ -481,7 +477,7 @@ void WindowImplMsw::toggleFullScreen( const app::FullScreenOptions &options )
 	}
 	else {
 		DisplayRef display = options.getDisplay();
-		if( !display ) // use the default, which is this Window's display
+		if( ! display ) // use the default, which is this Window's display
 			display = mDisplay;
 
 		mWindowedPos = mWindowOffset;
@@ -498,7 +494,8 @@ void WindowImplMsw::toggleFullScreen( const app::FullScreenOptions &options )
 
 	::SetWindowLongA( mWnd, GWL_STYLE, mWindowStyle );
 	::SetWindowLongA( mWnd, GWL_EXSTYLE, mWindowExStyle );
-	::SetWindowPos( mWnd, HWND_TOP, windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOCOPYBITS | SWP_NOREDRAW );
+	::SetWindowPos( mWnd, HWND_TOP, windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
+			SWP_FRAMECHANGED|SWP_NOZORDER|SWP_NOCOPYBITS|SWP_NOREDRAW );
 
 	::ShowWindow( mWnd, SW_SHOW );
 	::SetForegroundWindow( mWnd );
@@ -519,13 +516,11 @@ void WindowImplMsw::getScreenSize( int clientWidth, int clientHeight, int *resul
 void WindowImplMsw::setPos( const ivec2 &windowPos )
 {
 	RECT clientArea;
-	clientArea.left = windowPos.x;
-	clientArea.top = windowPos.y;
-	clientArea.right = windowPos.x + 1;
-	clientArea.bottom = windowPos.y + 1; // we don't actually care about the lower-right
+	clientArea.left = windowPos.x; clientArea.top = windowPos.y;
+	clientArea.right = windowPos.x + 1; clientArea.bottom = windowPos.y + 1; // we don't actually care about the lower-right
 	::AdjustWindowRectEx( &clientArea, mWindowStyle, FALSE, mWindowExStyle );
 	::SetWindowPos( mWnd, HWND_TOP, clientArea.left, clientArea.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER );
-
+	
 	POINT upperLeft;
 	upperLeft.x = upperLeft.y = 0;
 	::ClientToScreen( mWnd, &upperLeft );
@@ -550,14 +545,14 @@ bool WindowImplMsw::isHidden() const
 	return mHidden;
 }
 
-std::string WindowImplMsw::getTitle() const
+std::string	WindowImplMsw::getTitle() const
 {
-	int      numChars = ::GetWindowTextLengthW( mWnd );
-	wchar_t *wideChars = (wchar_t *)malloc( sizeof( wchar_t ) * ( numChars + 1 ) );
+	int numChars = ::GetWindowTextLengthW( mWnd );
+	wchar_t *wideChars = (wchar_t*)malloc( sizeof(wchar_t) * (numChars + 1) );
 	::GetWindowTextW( mWnd, &wideChars[0], numChars + 1 );
 	wideChars[numChars] = 0;
 	std::string result = msw::toUtf8String( wideChars );
-	free( (void *)wideChars );
+	free( (void*)wideChars );
 	return result;
 }
 
@@ -586,87 +581,86 @@ void WindowImplMsw::close()
 void WindowImplMsw::enableMultiTouch()
 {
 	// we need to make sure this version of User32 even has MultiTouch symbols, so we'll do that with GetProcAddress
-	BOOL( WINAPI * RegisterTouchWindow )
-	( HWND, ULONG );
-	*(size_t *)&RegisterTouchWindow = ( size_t )::GetProcAddress(::GetModuleHandle( TEXT( "user32.dll" ) ), "RegisterTouchWindow" );
+	BOOL (WINAPI *RegisterTouchWindow)( HWND, ULONG);
+	*(size_t *)&RegisterTouchWindow = (size_t)::GetProcAddress( ::GetModuleHandle(TEXT("user32.dll")), "RegisterTouchWindow" );
 	if( RegisterTouchWindow ) {
-		( *RegisterTouchWindow )( mWnd, 0 );
+		(*RegisterTouchWindow)( mWnd, 0 );
 	}
 }
 
 void WindowImplMsw::onTouch( HWND hWnd, WPARAM wParam, LPARAM lParam )
 {
 	// pull these symbols dynamically out of the user32.dll
-	static BOOL( WINAPI * GetTouchInputInfo )( HTOUCHINPUT, UINT, PTOUCHINPUT, int ) = NULL;
-	if( !GetTouchInputInfo )
-		*(size_t *)&GetTouchInputInfo = ( size_t )::GetProcAddress(::GetModuleHandle( TEXT( "user32.dll" ) ), "GetTouchInputInfo" );
-	static BOOL( WINAPI * CloseTouchInputHandle )( HTOUCHINPUT ) = NULL;
-	if( !CloseTouchInputHandle )
-		*(size_t *)&CloseTouchInputHandle = ( size_t )::GetProcAddress(::GetModuleHandle( TEXT( "user32.dll" ) ), "CloseTouchInputHandle" );
+	static BOOL (WINAPI *GetTouchInputInfo)( HTOUCHINPUT, UINT, PTOUCHINPUT, int ) = NULL;
+	if( ! GetTouchInputInfo )
+		*(size_t *)&GetTouchInputInfo = (size_t)::GetProcAddress( ::GetModuleHandle(TEXT("user32.dll")), "GetTouchInputInfo" );
+	static BOOL (WINAPI *CloseTouchInputHandle)( HTOUCHINPUT ) = NULL;
+	if( ! CloseTouchInputHandle )
+		*(size_t *)&CloseTouchInputHandle = (size_t)::GetProcAddress( ::GetModuleHandle(TEXT("user32.dll")), "CloseTouchInputHandle" );
 
-	bool                          handled = false;
-	double                        currentTime = app::getElapsedSeconds(); // we don't trust the device's sense of time
-	unsigned int                  numInputs = LOWORD( wParam );
+	bool handled = false;
+	double currentTime = app::getElapsedSeconds(); // we don't trust the device's sense of time
+	unsigned int numInputs = LOWORD( wParam );
 	std::unique_ptr<TOUCHINPUT[]> pInputs( new TOUCHINPUT[numInputs] );
 	if( pInputs ) {
 		vector<TouchEvent::Touch> beganTouches, movedTouches, endTouches, activeTouches;
-		if( GetTouchInputInfo( (HTOUCHINPUT)lParam, numInputs, pInputs.get(), sizeof( TOUCHINPUT ) ) ) {
+		if( GetTouchInputInfo((HTOUCHINPUT)lParam, numInputs, pInputs.get(), sizeof(TOUCHINPUT) ) ) {
 			for( unsigned int i = 0; i < numInputs; i++ ) {
 				const TOUCHINPUT &ti = pInputs.get()[i];
 				if( ti.dwID != 0 ) {
 					POINT pt;
 					// this has a small problem, which is that we lose the subpixel precision of the touch points.
-					// However ScreenToClient doesn't support floating or fixed point either, so we're stuck
+					// However ScreenToClient doesn't support floating or fixed point either, so we're stuck 
 					// unless we write our own ScreenToClient, which actually should be doable
 					pt.x = TOUCH_COORD_TO_PIXEL( ti.x );
 					pt.y = TOUCH_COORD_TO_PIXEL( ti.y );
 					::ScreenToClient( hWnd, &pt );
-					if( ti.dwFlags & 0x0004 /*TOUCHEVENTF_UP*/ ) {
+					if( ti.dwFlags & 0x0004/*TOUCHEVENTF_UP*/ ) {
 						vec2 prevPos = mMultiTouchPrev[ti.dwID];
 						endTouches.push_back( TouchEvent::Touch( vec2( (float)pt.x, (float)pt.y ), prevPos, ti.dwID, currentTime, &pInputs.get()[i] ) );
 						mMultiTouchPrev.erase( ti.dwID );
 					}
-					else if( ti.dwFlags & 0x0002 /*TOUCHEVENTF_DOWN*/ ) {
+					else if( ti.dwFlags & 0x0002/*TOUCHEVENTF_DOWN*/ ) {
 						beganTouches.push_back( TouchEvent::Touch( vec2( (float)pt.x, (float)pt.y ), vec2( (float)pt.x, (float)pt.y ), ti.dwID, currentTime, &pInputs.get()[i] ) );
 						mMultiTouchPrev[ti.dwID] = vec2( (float)pt.x, (float)pt.y );
 						activeTouches.push_back( beganTouches.back() );
 					}
-					else if( ti.dwFlags & 0x0001 /*TOUCHEVENTF_MOVE*/ ) {
+					else if( ti.dwFlags & 0x0001/*TOUCHEVENTF_MOVE*/ ) {
 						movedTouches.push_back( TouchEvent::Touch( vec2( (float)pt.x, (float)pt.y ), mMultiTouchPrev[ti.dwID], ti.dwID, currentTime, &pInputs.get()[i] ) );
 						activeTouches.push_back( movedTouches.back() );
 						mMultiTouchPrev[ti.dwID] = vec2( (float)pt.x, (float)pt.y );
 					}
 				}
-			}
-
+            }
+            
 			mActiveTouches = activeTouches;
-
-			// we need to post the event here so that our pInputs array is still valid since we've passed addresses into it as the native pointers
-			if( !beganTouches.empty() ) {
+            
+            // we need to post the event here so that our pInputs array is still valid since we've passed addresses into it as the native pointers
+            if( ! beganTouches.empty() ) {
 				TouchEvent event( getWindow(), beganTouches );
 				getWindow()->emitTouchesBegan( &event );
 			}
-			if( !movedTouches.empty() ) {
+			if( ! movedTouches.empty() ) {
 				TouchEvent event( getWindow(), movedTouches );
 				getWindow()->emitTouchesMoved( &event );
 			}
-			if( !endTouches.empty() ) {
+			if( ! endTouches.empty() ) {
 				TouchEvent event( getWindow(), endTouches );
 				getWindow()->emitTouchesEnded( &event );
 			}
-
-			handled = ( !beganTouches.empty() ) || ( !movedTouches.empty() ) || ( !endTouches.empty() );
-			CloseTouchInputHandle( (HTOUCHINPUT)lParam ); // this is exception-unsafe; we need some RAII goin' on there*/
-		}
-		else {
+			
+            handled = ( ! beganTouches.empty() ) || ( ! movedTouches.empty() ) || ( ! endTouches.empty() );
+            CloseTouchInputHandle( (HTOUCHINPUT)lParam ); // this is exception-unsafe; we need some RAII goin' on there*/
+        }
+        else {
 			// for now we'll just ignore an error
-		}
+        }
 	}
 
-	if( !handled ) {
-		// if we didn't handle the message, let DefWindowProc handle it
-		::DefWindowProc( hWnd, WM_TOUCH, wParam, lParam );
-	}
+    if( ! handled ) {
+        // if we didn't handle the message, let DefWindowProc handle it
+        ::DefWindowProc( hWnd, WM_TOUCH, wParam, lParam );
+    }
 }
 
 unsigned int prepMouseEventModifiers( WPARAM wParam )
@@ -677,8 +671,8 @@ unsigned int prepMouseEventModifiers( WPARAM wParam )
 	if( wParam & MK_MBUTTON ) result |= MouseEvent::MIDDLE_DOWN;
 	if( wParam & MK_RBUTTON ) result |= MouseEvent::RIGHT_DOWN;
 	if( wParam & MK_SHIFT ) result |= MouseEvent::SHIFT_DOWN;
-	if(::GetKeyState( VK_MENU ) < 0 ) result |= MouseEvent::ALT_DOWN;
-	if( (::GetKeyState( VK_LWIN ) < 0 ) || (::GetKeyState( VK_RWIN ) < 0 ) ) result |= MouseEvent::META_DOWN;
+	if( ::GetKeyState( VK_MENU ) < 0 ) result |= MouseEvent::ALT_DOWN;	
+	if( (::GetKeyState( VK_LWIN ) < 0) || (::GetKeyState( VK_RWIN ) < 0) ) result |= MouseEvent::META_DOWN;
 	return result;
 }
 
@@ -688,13 +682,13 @@ int prepNativeKeyCode( WPARAM wParam )
 {
 	unsigned int result = (int)wParam;
 	if( wParam == VK_MENU ) {
-		result = (::GetKeyState( VK_RMENU ) ) ? VK_RMENU : VK_LMENU;
+		result = ( ::GetKeyState( VK_RMENU ) ) ? VK_RMENU : VK_LMENU;
 	}
 	else if( wParam == VK_SHIFT ) {
-		result = (::GetKeyState( VK_RSHIFT ) ) ? VK_RSHIFT : VK_LSHIFT;
+		result = ( ::GetKeyState( VK_RSHIFT ) ) ? VK_RSHIFT : VK_LSHIFT;	
 	}
 	else if( wParam == VK_CONTROL ) {
-		result = (::GetKeyState( VK_RCONTROL ) ) ? VK_RCONTROL : VK_LCONTROL;
+		result = ( ::GetKeyState( VK_RCONTROL ) ) ? VK_RCONTROL : VK_LCONTROL;		
 	}
 	return result;
 }
@@ -707,7 +701,7 @@ WCHAR mapVirtualKey( WPARAM wParam )
 
 	// the control key messes up the ToAscii result, so we zero it out
 	keyboardState[VK_CONTROL] = 0;
-
+	
 	int resultLength = ::ToUnicode( wParam, ::MapVirtualKey( wParam, 0 ), keyboardState, result, 4, 0 );
 	if( resultLength >= 1 )
 		return result[0];
@@ -718,10 +712,10 @@ WCHAR mapVirtualKey( WPARAM wParam )
 unsigned int prepKeyEventModifiers()
 {
 	unsigned int result = 0;
-	if(::GetKeyState( VK_CONTROL ) & 0x8000 ) result |= KeyEvent::CTRL_DOWN;
-	if(::GetKeyState( VK_SHIFT ) & 0x8000 ) result |= KeyEvent::SHIFT_DOWN;
-	if( (::GetKeyState( VK_LMENU ) & 0x8000 ) || (::GetKeyState( VK_RMENU ) & 0x8000 ) ) result |= KeyEvent::ALT_DOWN;
-	if( (::GetKeyState( VK_LWIN ) < 0 ) || (::GetKeyState( VK_RWIN ) < 0 ) ) result |= KeyEvent::META_DOWN;
+	if( ::GetKeyState( VK_CONTROL ) & 0x8000 ) result |= KeyEvent::CTRL_DOWN;
+	if( ::GetKeyState( VK_SHIFT ) & 0x8000 ) result |= KeyEvent::SHIFT_DOWN;
+	if( ( ::GetKeyState( VK_LMENU ) & 0x8000 ) || ( ::GetKeyState( VK_RMENU ) & 0x8000 ) ) result |= KeyEvent::ALT_DOWN;	
+	if( ( ::GetKeyState( VK_LWIN ) < 0 ) || ( ::GetKeyState( VK_RWIN ) < 0 ) ) result |= KeyEvent::META_DOWN;
 	return result;
 }
 
@@ -734,8 +728,9 @@ void WindowImplMsw::setBorderless( bool borderless )
 			mWindowStyle = WS_POPUP;
 		}
 		else {
-			mWindowExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE | WS_EX_ACCEPTFILES; // Window Extended Style
-			mWindowStyle = ( mResizable ) ? WS_OVERLAPPEDWINDOW : ( WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME ); // Windows Style
+			mWindowExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE | WS_EX_ACCEPTFILES;	// Window Extended Style
+			mWindowStyle = ( mResizable ) ? WS_OVERLAPPEDWINDOW
+				:	( WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME );							// Windows Style
 		}
 
 		POINT upperLeft;
@@ -744,15 +739,14 @@ void WindowImplMsw::setBorderless( bool borderless )
 
 		RECT windowRect;
 		::GetClientRect( mWnd, &windowRect );
-		windowRect.left += upperLeft.x;
-		windowRect.right += upperLeft.x;
-		windowRect.top += upperLeft.y;
-		windowRect.bottom += upperLeft.y;
-		::AdjustWindowRectEx( &windowRect, mWindowStyle, FALSE, mWindowExStyle ); // Adjust Window To True Requested Size
+		windowRect.left += upperLeft.x; windowRect.right += upperLeft.x;
+		windowRect.top += upperLeft.y; windowRect.bottom += upperLeft.y;
+		::AdjustWindowRectEx( &windowRect, mWindowStyle, FALSE, mWindowExStyle );		// Adjust Window To True Requested Size
 
 		::SetWindowLongA( mWnd, GWL_STYLE, mWindowStyle );
 		::SetWindowLongA( mWnd, GWL_EXSTYLE, mWindowExStyle );
-		::SetWindowPos( mWnd, HWND_TOP, windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER );
+		::SetWindowPos( mWnd, HWND_TOP, windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top,
+				SWP_FRAMECHANGED|SWP_SHOWWINDOW|SWP_NOZORDER );
 		if( mBorderless )
 			::InvalidateRect( 0, NULL, TRUE );
 	}
@@ -768,200 +762,215 @@ void WindowImplMsw::setAlwaysOnTop( bool alwaysOnTop )
 			::SetWindowPos( mWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE );
 		}
 		else {
-			::SetWindowLongA( mWnd, GWL_EXSTYLE, oldExStyle &= ( ~WS_EX_TOPMOST ) );
+			::SetWindowLongA( mWnd, GWL_EXSTYLE, oldExStyle &= (~WS_EX_TOPMOST) );
 			::SetWindowPos( mWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE );
 		}
 	}
 }
 
-LRESULT CALLBACK WndProc( HWND mWnd, // Handle For This Window
-    UINT                       uMsg, // Message For This Window
-    WPARAM                     wParam, // Additional Message Information
-    LPARAM                     lParam ) // Additional Message Information
+LRESULT CALLBACK WndProc(	HWND	mWnd,			// Handle For This Window
+							UINT	uMsg,			// Message For This Window
+							WPARAM	wParam,			// Additional Message Information
+							LPARAM	lParam)			// Additional Message Information
 {
-	WindowImplMsw *impl;
+	WindowImplMsw* impl;
 
 	// if the message is WM_NCCREATE we need to hide 'this' in the window long
 	if( uMsg == WM_NCCREATE ) {
-		impl = reinterpret_cast<WindowImplMsw *>( ( (LPCREATESTRUCT)lParam )->lpCreateParams );
-		::SetWindowLongPtr( mWnd, GWLP_USERDATA, ( __int3264 )(LONG_PTR)impl );
+		impl = reinterpret_cast<WindowImplMsw*>(((LPCREATESTRUCT)lParam)->lpCreateParams);
+		::SetWindowLongPtr( mWnd, GWLP_USERDATA, (__int3264)(LONG_PTR)impl ); 
 	}
 	else // the warning on this line is harmless
-		impl = reinterpret_cast<WindowImplMsw *>(::GetWindowLongPtr( mWnd, GWLP_USERDATA ) );
+		impl = reinterpret_cast<WindowImplMsw*>( ::GetWindowLongPtr( mWnd, GWLP_USERDATA ) );
 
-	if( !impl )
-		return DefWindowProc( mWnd, uMsg, wParam, lParam );
+	if( ! impl )
+		return DefWindowProc( mWnd, uMsg, wParam, lParam );		
 	impl->mAppImpl->setWindow( impl->mWindowRef );
 
 	switch( uMsg ) {
-	case WM_SYSCOMMAND:
-		switch( wParam ) {
-		case SC_SCREENSAVE: // Screensaver Trying To Start?
-		case SC_MONITORPOWER: // Monitor Trying To Enter Powersave?
-			if( !impl->getAppImpl()->getApp()->isPowerManagementEnabled() )
-				return false;
-			else
-				return DefWindowProc( mWnd, uMsg, wParam, lParam );
-		}
-		break;
-	case WM_ACTIVATEAPP:
-		if( wParam ) {
-			if( !impl->getAppImpl()->mActive ) {
-				impl->getAppImpl()->mActive = true;
-				impl->getAppImpl()->getApp()->emitDidBecomeActive();
+		case WM_SYSCOMMAND:
+			switch( wParam ) {
+				case SC_SCREENSAVE:					// Screensaver Trying To Start?
+				case SC_MONITORPOWER:				// Monitor Trying To Enter Powersave?
+					if( ! impl->getAppImpl()->getApp()->isPowerManagementEnabled() )
+						return false;
+					else
+						return DefWindowProc( mWnd, uMsg, wParam, lParam );
 			}
-		}
-		else {
-			if( impl->getAppImpl()->mActive ) {
-				impl->getAppImpl()->mActive = false;
-				impl->getAppImpl()->getApp()->emitWillResignActive();
+		break;
+		case WM_ACTIVATEAPP:
+			if( wParam ) {
+				if( ! impl->getAppImpl()->mActive ) {
+					impl->getAppImpl()->mActive = true;
+					impl->getAppImpl()->getApp()->emitDidBecomeActive();
+				}
 			}
+			else {
+				if( impl->getAppImpl()->mActive ) {
+					impl->getAppImpl()->mActive = false;
+					impl->getAppImpl()->getApp()->emitWillResignActive();
+				}
+			}
+		break;
+		case WM_ACTIVATE:
+			if( ( wParam == WA_ACTIVE ) || ( wParam == WA_CLICKACTIVE ) )
+				impl->getAppImpl()->setForegroundWindow( impl->getWindow() );
+		break;
+		case WM_CLOSE:								// Did We Receive A Close Message?
+			impl->getAppImpl()->closeWindow( impl );
+			// be careful not to do anything with 'impl' after here
+			return 0;
+		break;
+		case WM_SYSKEYDOWN:
+		case WM_KEYDOWN: {
+			WCHAR c = mapVirtualKey( wParam );
+			KeyEvent event( impl->getWindow(), KeyEvent::translateNativeKeyCode( prepNativeKeyCode( (int)wParam ) ), 
+							c, c, prepKeyEventModifiers(), (int)wParam );
+			impl->getWindow()->emitKeyDown( &event );
+			if ( event.isHandled() )
+				return 0;
 		}
 		break;
-	case WM_ACTIVATE:
-		if( ( wParam == WA_ACTIVE ) || ( wParam == WA_CLICKACTIVE ) )
-			impl->getAppImpl()->setForegroundWindow( impl->getWindow() );
+		case WM_SYSKEYUP:
+		case WM_KEYUP: {
+			WCHAR c = mapVirtualKey( wParam );
+			KeyEvent event( impl->getWindow(), KeyEvent::translateNativeKeyCode( prepNativeKeyCode( (int)wParam ) ), 
+							c, c, prepKeyEventModifiers(), (int)wParam );
+			impl->getWindow()->emitKeyUp( &event );
+			if ( event.isHandled() )
+				return 0;
+		}
 		break;
-	case WM_CLOSE: // Did We Receive A Close Message?
-		impl->getAppImpl()->closeWindow( impl );
-		// be careful not to do anything with 'impl' after here
-		return 0;
+		// mouse events
+		case WM_LBUTTONDOWN: {
+			::SetCapture( mWnd );
+			impl->mIsDragging = true;
+			MouseEvent event( impl->getWindow(), MouseEvent::LEFT_DOWN, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+			impl->getWindow()->emitMouseDown( &event );
+			return 0;
+		}
 		break;
-	case WM_SYSKEYDOWN:
-	case WM_KEYDOWN: {
-		WCHAR    c = mapVirtualKey( wParam );
-		KeyEvent event( impl->getWindow(), KeyEvent::translateNativeKeyCode( prepNativeKeyCode( (int)wParam ) ), c, c, prepKeyEventModifiers(), (int)wParam );
-		impl->getWindow()->emitKeyDown( &event );
-		if( event.isHandled() )
+		case WM_RBUTTONDOWN: {
+			::SetCapture( mWnd );
+			impl->mIsDragging = true;
+			MouseEvent event( impl->getWindow(), MouseEvent::RIGHT_DOWN, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+			impl->getWindow()->emitMouseDown( &event );
 			return 0;
-	} break;
-	case WM_SYSKEYUP:
-	case WM_KEYUP: {
-		WCHAR    c = mapVirtualKey( wParam );
-		KeyEvent event( impl->getWindow(), KeyEvent::translateNativeKeyCode( prepNativeKeyCode( (int)wParam ) ), c, c, prepKeyEventModifiers(), (int)wParam );
-		impl->getWindow()->emitKeyUp( &event );
-		if( event.isHandled() )
+		}
+		break;		
+		case WM_MBUTTONDOWN: {
+			::SetCapture( mWnd );
+			impl->mIsDragging = true;		
+			MouseEvent event( impl->getWindow(), MouseEvent::MIDDLE_DOWN, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+			impl->getWindow()->emitMouseDown( &event );
 			return 0;
-	} break;
-	// mouse events
-	case WM_LBUTTONDOWN: {
-		::SetCapture( mWnd );
-		impl->mIsDragging = true;
-		MouseEvent event( impl->getWindow(), MouseEvent::LEFT_DOWN, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-		impl->getWindow()->emitMouseDown( &event );
-		return 0;
-	} break;
-	case WM_RBUTTONDOWN: {
-		::SetCapture( mWnd );
-		impl->mIsDragging = true;
-		MouseEvent event( impl->getWindow(), MouseEvent::RIGHT_DOWN, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-		impl->getWindow()->emitMouseDown( &event );
-		return 0;
-	} break;
-	case WM_MBUTTONDOWN: {
-		::SetCapture( mWnd );
-		impl->mIsDragging = true;
-		MouseEvent event( impl->getWindow(), MouseEvent::MIDDLE_DOWN, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-		impl->getWindow()->emitMouseDown( &event );
-		return 0;
-	} break;
-	case WM_LBUTTONUP: {
-		::ReleaseCapture();
-		impl->mIsDragging = false;
-		MouseEvent event( impl->getWindow(), MouseEvent::LEFT_DOWN, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-		impl->getWindow()->emitMouseUp( &event );
-		return 0;
-	} break;
-	case WM_RBUTTONUP: {
-		::ReleaseCapture();
-		impl->mIsDragging = false;
-		MouseEvent event( impl->getWindow(), MouseEvent::RIGHT_DOWN, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-		impl->getWindow()->emitMouseUp( &event );
-		return 0;
-	} break;
-	case WM_MBUTTONUP: {
-		::ReleaseCapture();
-		impl->mIsDragging = false;
-		MouseEvent event( impl->getWindow(), MouseEvent::MIDDLE_DOWN, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-		impl->getWindow()->emitMouseUp( &event );
-		return 0;
-	} break;
-	case WM_MOUSEWHEEL: {
-		POINT pt = { ( (int)(short)LOWORD( lParam ) ), ( (int)(short)HIWORD( lParam ) ) };
-		::MapWindowPoints( NULL, mWnd, &pt, 1 );
-		MouseEvent event( impl->getWindow(), 0, pt.x, pt.y, prepMouseEventModifiers( wParam ), GET_WHEEL_DELTA_WPARAM( wParam ) / 120.0f, static_cast<unsigned int>( wParam ) );
-		impl->getWindow()->emitMouseWheel( &event );
-	} break;
-	case WM_KILLFOCUS:
-		// if we lose capture during a drag, post a mouseup event as a notifier
-		if( impl->mIsDragging ) {
-			MouseEvent event( impl->getWindow(), 0, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+		}
+		break;
+		case WM_LBUTTONUP: {
+			::ReleaseCapture();
+			impl->mIsDragging = false;
+			MouseEvent event( impl->getWindow(), MouseEvent::LEFT_DOWN, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
 			impl->getWindow()->emitMouseUp( &event );
+			return 0;
 		}
-		impl->mIsDragging = false;
 		break;
-	case WM_MOUSEMOVE: {
-		if( impl->mIsDragging ) {
-			MouseEvent event( impl->getWindow(), 0, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-			impl->getWindow()->emitMouseDrag( &event );
+		case WM_RBUTTONUP: {
+			::ReleaseCapture();
+			impl->mIsDragging = false;		
+			MouseEvent event( impl->getWindow(), MouseEvent::RIGHT_DOWN, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+			impl->getWindow()->emitMouseUp( &event );
+			return 0;
 		}
-		else {
-			MouseEvent event( impl->getWindow(), 0, LOSHORT( lParam ), HISHORT( lParam ), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
-			impl->getWindow()->emitMouseMove( &event );
+		break;		
+		case WM_MBUTTONUP: {
+			::ReleaseCapture();
+			impl->mIsDragging = false;
+			MouseEvent event( impl->getWindow(), MouseEvent::MIDDLE_DOWN, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+			impl->getWindow()->emitMouseUp( &event );
+			return 0;
 		}
-	} break;
-	case WM_SIZE:
-		impl->mWindowWidth = LOWORD( lParam );
-		impl->mWindowHeight = HIWORD( lParam );
-		if( impl->getWindow() && impl->mAppImpl->setupHasBeenCalled() ) {
-			impl->getWindow()->emitResize();
-		}
-		return 0;
 		break;
-	case WM_MOVE: {
-		impl->mWindowOffset = ivec2( LOSHORT( lParam ), HISHORT( lParam ) );
-		if( impl->getWindow() ) {
-			DisplayRef oldDisplay = impl->mDisplay;
-			impl->mDisplay = PlatformMsw::get()->findDisplayFromHmonitor(::MonitorFromWindow( mWnd, MONITOR_DEFAULTTONEAREST ) );
-			// signal display change as appropriate
-			if( oldDisplay != impl->mDisplay ) {
-				impl->getWindow()->emitDisplayChange();
+		case WM_MOUSEWHEEL: {
+			POINT pt = { ((int)(short)LOWORD(lParam)), ((int)(short)HIWORD(lParam)) };
+			::MapWindowPoints( NULL, mWnd, &pt, 1 );
+			MouseEvent event( impl->getWindow(), 0, pt.x, pt.y, prepMouseEventModifiers( wParam ),
+								GET_WHEEL_DELTA_WPARAM( wParam ) / 120.0f, static_cast<unsigned int>( wParam ) );
+			impl->getWindow()->emitMouseWheel( &event );
+		}
+		break;
+		case WM_KILLFOCUS:
+			// if we lose capture during a drag, post a mouseup event as a notifier
+			if( impl->mIsDragging ) {
+				MouseEvent event( impl->getWindow(), 0, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+				impl->getWindow()->emitMouseUp( &event );
 			}
-			// signal window move
-			impl->getWindow()->emitMove();
+			impl->mIsDragging = false;
+		break;
+		case WM_MOUSEMOVE: {
+			if( impl->mIsDragging ) {
+				MouseEvent event( impl->getWindow(), 0, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+				impl->getWindow()->emitMouseDrag( &event );						
+			}
+			else {
+				MouseEvent event( impl->getWindow(), 0, LOSHORT(lParam), HISHORT(lParam), prepMouseEventModifiers( wParam ), 0.0f, static_cast<unsigned int>( wParam ) );
+				impl->getWindow()->emitMouseMove( &event );
+			}
 		}
-		return 0;
-	} break;
-	case WM_DROPFILES: {
-		HDROP            dropH = (HDROP)wParam;
-		POINT            dropPoint;
-		char             fileName[8192];
-		vector<fs::path> files;
-
-		int droppedFileCount = ::DragQueryFile( dropH, 0xFFFFFFFF, 0, 0 );
-		for( int i = 0; i < droppedFileCount; ++i ) {
-			::DragQueryFileA( dropH, i, fileName, 8192 );
-			files.push_back( std::string( fileName ) );
+		break;
+		case WM_SIZE:
+			impl->mWindowWidth = LOWORD(lParam);
+			impl->mWindowHeight = HIWORD(lParam);
+			if( impl->getWindow() && impl->mAppImpl->setupHasBeenCalled() ) {
+				impl->getWindow()->emitResize();
+			}
+			return 0;
+		break;
+		case WM_MOVE: {
+			impl->mWindowOffset = ivec2( LOSHORT(lParam), HISHORT(lParam) );
+			if( impl->getWindow() ) {
+				DisplayRef oldDisplay = impl->mDisplay;
+				impl->mDisplay = PlatformMsw::get()->findDisplayFromHmonitor( ::MonitorFromWindow( mWnd, MONITOR_DEFAULTTONEAREST ) );
+				// signal display change as appropriate
+				if( oldDisplay != impl->mDisplay ) {
+					impl->getWindow()->emitDisplayChange();
+				}
+				// signal window move
+				impl->getWindow()->emitMove();
+			}
+			return 0;
 		}
+		break;
+		case WM_DROPFILES: {
+			HDROP dropH = (HDROP)wParam;
+			POINT dropPoint;
+			char fileName[8192];
+			vector<fs::path> files;
+			
+			int droppedFileCount = ::DragQueryFile( dropH, 0xFFFFFFFF, 0, 0 );
+			for( int i = 0; i < droppedFileCount; ++i ) {
+				::DragQueryFileA( dropH, i, fileName, 8192 );
+				files.push_back( std::string( fileName ) );
+			}
 
-		::DragQueryPoint( dropH, &dropPoint );
-		::DragFinish( dropH );
+			::DragQueryPoint( dropH, &dropPoint );
+			::DragFinish( dropH );
 
-		FileDropEvent dropEvent( impl->getWindow(), dropPoint.x, dropPoint.y, files );
-		impl->getWindow()->emitFileDrop( &dropEvent );
-		return 0;
-	} break;
-	case WM_PAINT:
-		impl->draw();
+			FileDropEvent dropEvent( impl->getWindow(), dropPoint.x, dropPoint.y, files );
+			impl->getWindow()->emitFileDrop( &dropEvent );
+			return 0;
+		}
 		break;
-	case WM_TOUCH:
-		impl->onTouch( mWnd, wParam, lParam );
+		case WM_PAINT:
+			impl->draw();
 		break;
-	case WM_DISPLAYCHANGE:
-		impl->mAppImpl->mNeedsToRefreshDisplays = true;
+		case WM_TOUCH:
+			impl->onTouch( mWnd, wParam, lParam );
 		break;
-	case WM_DEVICECHANGE:
-		impl->mAppImpl->mNeedsToRefreshDisplays = true;
+		case WM_DISPLAYCHANGE:
+			impl->mAppImpl->mNeedsToRefreshDisplays = true;
+		break;
+		case WM_DEVICECHANGE:
+			impl->mAppImpl->mNeedsToRefreshDisplays = true;
 		break;
 	}
 
@@ -1020,27 +1029,27 @@ BlankingWindow::BlankingWindow( DisplayRef display )
 	windowRect.right = displayArea.getX2();
 	windowRect.top = displayArea.getY1();
 	windowRect.bottom = displayArea.getY2();
-
+	
 	UINT windowExStyle = WS_EX_APPWINDOW;
 	UINT windowStyle = WS_POPUP;
 
-	::AdjustWindowRectEx( &windowRect, windowStyle, FALSE, windowExStyle ); // Adjust Window To True Requested Size
+	::AdjustWindowRectEx( &windowRect, windowStyle, FALSE, windowExStyle );		// Adjust Window To True Requested Size
 
-	std::wstring unicodeTitle = L"";
+	std::wstring unicodeTitle = L""; 
 
 	// Create The Window
-	if( !( mWnd = ::CreateWindowEx( windowExStyle, // Extended Style For The Window
-	           BLANKING_WINDOW_CLASS_NAME,
-	           unicodeTitle.c_str(),
-	           windowStyle, // Required Window Style
-	           windowRect.left,
-	           windowRect.top, // Window Position
-	           windowRect.right - windowRect.left, // Calculate Window Width
-	           windowRect.bottom - windowRect.top, // Calculate Window Height
-	           NULL, // No Parent Window
-	           NULL, // No Menu
-	           ::GetModuleHandle( NULL ),
-	           reinterpret_cast<LPVOID>( this ) ) ) ) {
+	if( ! ( mWnd = ::CreateWindowEx( windowExStyle,						// Extended Style For The Window
+		BLANKING_WINDOW_CLASS_NAME,
+		unicodeTitle.c_str(),
+		windowStyle,					// Required Window Style
+		windowRect.left, windowRect.top,								// Window Position
+		windowRect.right - windowRect.left,	// Calculate Window Width
+		windowRect.bottom - windowRect.top,	// Calculate Window Height
+		NULL,								// No Parent Window
+		NULL,								// No Menu
+		::GetModuleHandle( NULL ),
+		reinterpret_cast<LPVOID>( this ) )) )
+	{
 		//killWindow();							// Reset The Display
 		return;
 	}
@@ -1050,6 +1059,7 @@ BlankingWindow::BlankingWindow( DisplayRef display )
 	::SetWindowPos( mWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE );
 	::SetForegroundWindow( mWnd );
 	::SetFocus( mWnd );
+
 }
 
 void BlankingWindow::registerWindowClass()
@@ -1059,22 +1069,22 @@ void BlankingWindow::registerWindowClass()
 	if( sRegistered )
 		return;
 
-	WNDCLASS wc;
-	HMODULE  instance = ::GetModuleHandle( NULL ); // Grab An Instance For Our Window
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = BlankingWndProc; // WndProc Handles Messages
-	wc.cbClsExtra = 0; // No Extra Window Data
-	wc.cbWndExtra = 0; // No Extra Window Data
-	wc.hInstance = instance; // Set The Instance
-	wc.hIcon = ::LoadIcon( NULL, IDI_WINLOGO ); // Load The Default Icon
-	wc.hCursor = ::LoadCursor( NULL, IDC_ARROW ); // Load The Arrow Pointer
-	wc.hbrBackground = NULL; // No Background Required For GL
-	wc.lpszMenuName = NULL; // We Don't Want A Menu
-	wc.lpszClassName = BLANKING_WINDOW_CLASS_NAME;
+	WNDCLASS	wc;
+	HMODULE instance	= ::GetModuleHandle( NULL );				// Grab An Instance For Our Window
+	wc.style			= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;	// Redraw On Size, And Own DC For Window.
+	wc.lpfnWndProc		= BlankingWndProc;						// WndProc Handles Messages
+	wc.cbClsExtra		= 0;									// No Extra Window Data
+	wc.cbWndExtra		= 0;									// No Extra Window Data
+	wc.hInstance		= instance;							// Set The Instance
+	wc.hIcon			= ::LoadIcon( NULL, IDI_WINLOGO );		// Load The Default Icon
+	wc.hCursor			= ::LoadCursor( NULL, IDC_ARROW );		// Load The Arrow Pointer
+	wc.hbrBackground	= NULL;									// No Background Required For GL
+	wc.lpszMenuName		= NULL;									// We Don't Want A Menu
+	wc.lpszClassName	= BLANKING_WINDOW_CLASS_NAME;
 
-	if( !::RegisterClass( &wc ) ) { // Attempt To Register The Window Class
+	if( ! ::RegisterClass( &wc ) ) {								// Attempt To Register The Window Class
 		DWORD err = ::GetLastError();
-		return;
+		return;							
 	}
 
 	sRegistered = true;
@@ -1083,20 +1093,21 @@ void BlankingWindow::registerWindowClass()
 LRESULT CALLBACK BlankingWndProc( HWND wnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	static HBRUSH backgroundBrush = ::CreateSolidBrush( RGB( 0, 0, 0 ) );
-
+	
 	switch( uMsg ) {
-	case WM_PAINT: {
-		PAINTSTRUCT ps;
-		RECT        clientRect;
-		HDC         hdc = ::BeginPaint( wnd, &ps );
-		::GetClientRect( wnd, &clientRect );
-		::SelectObject( hdc, backgroundBrush );
-		::Rectangle( hdc, 0, 0, clientRect.right, clientRect.bottom );
-		::EndPaint( wnd, &ps );
-		return 0;
-	} break;
-	default:
-		return ::DefWindowProc( wnd, uMsg, wParam, lParam );
+		case WM_PAINT: {
+			PAINTSTRUCT ps;
+			RECT clientRect;
+			HDC hdc = ::BeginPaint( wnd, &ps );
+			::GetClientRect( wnd, &clientRect );
+			::SelectObject( hdc, backgroundBrush );
+			::Rectangle( hdc, 0, 0, clientRect.right, clientRect.bottom );
+			::EndPaint( wnd, &ps );
+			return 0;
+		}
+		break;
+		default:
+			return ::DefWindowProc( wnd, uMsg, wParam, lParam );
 	}
 }
 
@@ -1105,5 +1116,5 @@ void BlankingWindow::destroy()
 	if( mWnd )
 		::DestroyWindow( mWnd );
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

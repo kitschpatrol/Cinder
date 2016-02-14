@@ -4,7 +4,7 @@
 
 @interface NativeViewController ()
 
-@property ( nonatomic ) UIButton *infoButton;
+@property (nonatomic) UIButton *infoButton;
 
 - (NSArray *)tabBarItems;
 - (void)barButtonTapped:(UIBarButtonItem *)sender;
@@ -15,7 +15,7 @@
 
 @interface MyTableViewController : UITableViewController
 
-@property ( nonatomic, weak ) UINavigationController *parentNavigationController;
+@property (nonatomic, weak ) UINavigationController *parentNavigationController;
 
 @end
 
@@ -36,7 +36,7 @@
 {
 	UIViewController *cinderViewParent = ci::app::getWindow()->getNativeViewController();
 
-	self.viewControllers = @[ cinderViewParent ];
+	self.viewControllers = @[cinderViewParent];
 
 	cinderViewParent.title = @"CinderView's parent";
 	cinderViewParent.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
@@ -49,7 +49,7 @@
 {
 	[self addEmptyViewControllerToFront];
 	UIViewController *front = [self.viewControllers objectAtIndex:0];
-	UIView *          cinderView = (__bridge UIView *)ci::app::getWindow()->getNative();
+	UIView *cinderView = (__bridge UIView *)ci::app::getWindow()->getNative();
 	cinderView.frame = CGRectMake( 0, 0, 60, self.navigationBar.frame.size.height );
 	front.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cinderView];
 }
@@ -68,12 +68,12 @@
 	self.toolbar.tintColor = tintColor;
 
 	_infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-	[_infoButton addTarget:self action:@selector( infoButtonWasTapped: ) forControlEvents:UIControlEventTouchUpInside];
+	[_infoButton addTarget:self action:@selector(infoButtonWasTapped:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	NSLog( @"%@ will rotate", NSStringFromClass( [self class] ) );
+	NSLog(@"%@ will rotate", NSStringFromClass([self class]));
 	ci::app::AppCocoaTouch::get()->emitWillRotate();
 }
 
@@ -105,18 +105,18 @@
 	emptyViewController.title = @"Empty VC";
 	emptyViewController.view.backgroundColor = [UIColor clearColor];
 
-	self.viewControllers = @[ emptyViewController ];
+	self.viewControllers = @[emptyViewController];
 	emptyViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
 	emptyViewController.toolbarItems = [self tabBarItems];
 }
 
 - (NSArray *)tabBarItems
 {
-	UIBarButtonItem *button1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector( barButtonTapped: )];
-	UIBarButtonItem *button2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector( barButtonTapped: )];
-	UIBarButtonItem *button3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector( barButtonTapped: )];
-	UIBarButtonItem *button4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector( barButtonTapped: )];
-	UIBarButtonItem *button5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector( barButtonTapped: )];
+	UIBarButtonItem *button1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action: @selector(barButtonTapped:)];
+	UIBarButtonItem *button2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action: @selector(barButtonTapped:)];
+	UIBarButtonItem *button3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action: @selector(barButtonTapped:)];
+	UIBarButtonItem *button4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action: @selector(barButtonTapped:)];
+	UIBarButtonItem *button5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action: @selector(barButtonTapped:)];
 	UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
 	button1.tag = 1;
@@ -125,7 +125,7 @@
 	button4.tag = 4;
 	button5.tag = 5;
 
-	return @[ button1, flexibleSpace, button2, flexibleSpace, button3, flexibleSpace, button4, flexibleSpace, button5 ];
+	return @[button1, flexibleSpace, button2, flexibleSpace, button3, flexibleSpace, button4, flexibleSpace, button5];
 }
 
 - (void)barButtonTapped:(UIBarButtonItem *)sender
@@ -140,7 +140,7 @@
 - (void)infoButtonWasTapped:(id)sender
 {
 	if( _infoButtonCallback ) {
-		_infoButtonCallback();
+		_infoButtonCallback() ;
 	}
 }
 
@@ -171,7 +171,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	UIColor *        color = cell.backgroundView.backgroundColor;
+	UIColor *color = cell.backgroundView.backgroundColor;
 
 	self.parentNavigationController.navigationBar.tintColor = color;
 	self.parentNavigationController.toolbar.tintColor = color;

@@ -23,48 +23,48 @@
 
 #pragma once
 
-#include "cinder/Display.h"
 #include "cinder/app/Platform.h"
+#include "cinder/Display.h"
 
 #if defined __OBJC__
-@class NSBundle;
-@class NSAutoreleasePool;
-#if defined( CINDER_MAC )
-@class NSScreen;
+	@class NSBundle;
+	@class NSAutoreleasePool;
+	#if defined( CINDER_MAC )
+		@class NSScreen;
+	#else
+		@class UIScreen;
+	#endif
 #else
-@class UIScreen;
-#endif
-#else
-class NSBundle;
-class NSAutoreleasePool;
-#if defined( CINDER_MAC )
-class NSScreen;
-#else
-class UIScreen;
-#endif
+	class NSBundle;
+	class NSAutoreleasePool;
+	#if defined( CINDER_MAC )
+		class NSScreen;
+	#else
+		class UIScreen;
+	#endif
 #endif
 typedef uint32_t CGDisplayChangeSummaryFlags;
 typedef uint32_t CGDirectDisplayID;
 
 namespace cinder {
 #if defined( CINDER_MAC )
-class DisplayMac;
+	class DisplayMac;
 #else
-class DisplayCocoaTouch;
+	class DisplayCocoaTouch;
 #endif
 }
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 class PlatformCocoa : public Platform {
   public:
 	PlatformCocoa();
-	static PlatformCocoa *get() { return reinterpret_cast<PlatformCocoa *>( Platform::get() ); }
-	void                  prepareLaunch() override;
-	void                  cleanupLaunch() override;
+	static PlatformCocoa*	get() { return reinterpret_cast<PlatformCocoa*>( Platform::get() ); }
 
-	DataSourceRef loadResource( const fs::path &resourcePath ) override;
+	void prepareLaunch() override;
+	void cleanupLaunch() override;
+
+	DataSourceRef	loadResource( const fs::path &resourcePath ) override;
 
 	fs::path getResourceDirectory() const override;
 	fs::path getResourcePath( const fs::path &rsrcRelativePath ) const override;
@@ -77,55 +77,55 @@ class PlatformCocoa : public Platform {
 	fs::path getSaveFilePath( const fs::path &initialPath, const std::vector<std::string> &extensions ) override;
 
 	//! Sets the NSBundle that should be associated with this global platform object. By default this is `[NSBundle mainBundle]`.
-	void setBundle( NSBundle *bundle );
+	void			setBundle( NSBundle *bundle );
 	//! Returns the NSBundle associated with this global platform object. By default this is `[NSBundle mainBundle]`.
-	NSBundle *getBundle() const;
+	NSBundle*		getBundle() const;
 
 	void prepareAssetLoading() override;
 
-	std::map<std::string, std::string> getEnvironmentVariables() override;
+	std::map<std::string,std::string>	getEnvironmentVariables() override;
 
-	fs::path expandPath( const fs::path &path ) override;
-	fs::path getHomeDirectory() const override;
-	fs::path getDocumentsDirectory() const override;
-	fs::path getDefaultExecutablePath() const override;
+	fs::path	expandPath( const fs::path &path ) override;
+	fs::path	getHomeDirectory() const override;
+	fs::path	getDocumentsDirectory() const override;
+	fs::path	getDefaultExecutablePath() const override;
 
 	void sleep( float milliseconds ) override;
 
 	void launchWebBrowser( const Url &url ) override;
 
-	std::vector<std::string> stackTrace() override;
-
-	const std::vector<DisplayRef> &getDisplays() override;
+	std::vector<std::string>		stackTrace() override;
+	
+	const std::vector<DisplayRef>& getDisplays() override;
 
 #if defined( CINDER_MAC )
 	//! Finds a Display based on its CGDirectDisplayID. Returns \c nullptr on failure.
-	DisplayRef findFromCgDirectDisplayId( CGDirectDisplayID displayID );
+	DisplayRef			findFromCgDirectDisplayId( CGDirectDisplayID displayID );
 	//! Finds a Display based on its NSScreen. Returns \c nullptr on failure.
-	DisplayRef findFromNsScreen( NSScreen *nsScreen );
+	DisplayRef			findFromNsScreen( NSScreen *nsScreen );
 #else
 	//! Finds a Display based on its UISScreen. Returns \c nullptr on failure.
-	DisplayRef findDisplayFromUiScreen( UIScreen *uiScreen );
+	DisplayRef			findDisplayFromUiScreen( UIScreen *uiScreen );
 #endif
 	// Display-specific callbacks
 	//! Makes a record of \a display and signals appropriately. Generally only useful for Cinder internals.
-	void addDisplay( const DisplayRef &display );
+	void		addDisplay( const DisplayRef &display );
 	//! Removes record of \a display from mDisplays and signals appropriately. Generally only useful for Cinder internals.
-	void removeDisplay( const DisplayRef &display );
+	void		removeDisplay( const DisplayRef &display );
 
 #if defined( CINDER_MAC )
 	//! Returns whether the application is currently inside the event loop of modal dialog
-	bool isInsideModalLoop() const { return mInsideModalLoop; }
+	bool		isInsideModalLoop() const { return mInsideModalLoop; }
 	//! Flags whether the application is currently inside the event loop of modal dialog
-	void setInsideModalLoop( bool inside = true ) { mInsideModalLoop = inside; }
+	void		setInsideModalLoop( bool inside = true ) { mInsideModalLoop = inside; }
 #endif
 
   private:
-	NSAutoreleasePool *mAutoReleasePool;
-	mutable NSBundle * mBundle;
-
-	bool                    mDisplaysInitialized;
-	std::vector<DisplayRef> mDisplays;
+	NSAutoreleasePool*		mAutoReleasePool;
+	mutable NSBundle*		mBundle;
+	
+	bool					mDisplaysInitialized;
+	std::vector<DisplayRef>	mDisplays;
 
 #if defined( CINDER_MAC )
 	friend DisplayMac;
@@ -134,11 +134,11 @@ class PlatformCocoa : public Platform {
 #endif
 
 #if defined( CINDER_MAC )
-	bool mInsideModalLoop;
+	bool	mInsideModalLoop;
 #endif
 };
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app
 
 namespace cinder {
 #if defined( CINDER_MAC )
@@ -146,15 +146,16 @@ namespace cinder {
 //! Represents a monitor/display on OS X
 class DisplayMac : public Display {
   public:
-	NSScreen *        getNsScreen() const;
-	CGDirectDisplayID getCgDirectDisplayId() const { return mDirectDisplayId; }
-	std::string       getName() const override;
+	NSScreen*			getNsScreen() const;
+	CGDirectDisplayID	getCgDirectDisplayId() const { return mDirectDisplayId; }
 
-  protected:
-	static void displayReconfiguredCallback( CGDirectDisplayID displayId, CGDisplayChangeSummaryFlags flags, void *userInfo );
+	std::string			getName() const override;
 
-	CGDirectDisplayID mDirectDisplayId;
+  protected:	
+	static void	displayReconfiguredCallback( CGDirectDisplayID displayId, CGDisplayChangeSummaryFlags flags, void *userInfo );
 
+	CGDirectDisplayID	mDirectDisplayId;
+	
 	friend app::PlatformCocoa;
 };
 
@@ -165,18 +166,18 @@ class DisplayCocoaTouch : public Display {
   public:
 	DisplayCocoaTouch( UIScreen *screen );
 	~DisplayCocoaTouch();
-
-	UIScreen *getUiScreen() const { return mUiScreen; }
+	
+	UIScreen*	getUiScreen() const { return mUiScreen; }
 	//! Returns a vector of resolutions the Display supports
-	const std::vector<ivec2> &getSupportedResolutions() const { return mSupportedResolutions; }
+	const std::vector<ivec2>&	getSupportedResolutions() const { return mSupportedResolutions; }
 	//! Sets the resolution of the Display. Rounds to the nearest supported resolution.
-	void setResolution( const ivec2 &resolution );
+	void						setResolution( const ivec2 &resolution );
 
   protected:
-	UIScreen *         mUiScreen;
-	std::vector<ivec2> mSupportedResolutions;
-
-	friend app::PlatformCocoa;
+	UIScreen				*mUiScreen;
+	std::vector<ivec2>		mSupportedResolutions;
+	
+	friend app::PlatformCocoa;	
 };
 #endif
 

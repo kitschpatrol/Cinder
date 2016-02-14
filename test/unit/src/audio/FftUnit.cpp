@@ -1,7 +1,7 @@
 #include "cinder/Cinder.h"
 
 // FIXME: OOURA roundtrip FFT seems to be broken on windows for sizeFft = 4 (https://github.com/cinder/Cinder/issues/1263)
-#if !defined( CINDER_MSW )
+#if ! defined( CINDER_MSW )
 
 #include "catch.hpp"
 #include "utils.h"
@@ -17,8 +17,8 @@ namespace {
 
 void computeRoundTrip( size_t sizeFft )
 {
-	dsp::Fft       fft( sizeFft );
-	Buffer         waveform( sizeFft );
+	dsp::Fft fft( sizeFft );
+	Buffer waveform( sizeFft );
 	BufferSpectral spectral( sizeFft );
 
 	fillRandom( &waveform );
@@ -32,6 +32,7 @@ void computeRoundTrip( size_t sizeFft )
 	BufferSpectral spectralCopy( spectral );
 	fft.inverse( &spectral, &waveform );
 
+
 	// guarantee spectral was not modified
 	float errAfterInverseTransfer = maxError( spectral, spectralCopy );
 	REQUIRE( errAfterInverseTransfer < ACCEPTABLE_FLOAT_ERROR );
@@ -41,16 +42,18 @@ void computeRoundTrip( size_t sizeFft )
 
 	REQUIRE( maxErr < ACCEPTABLE_FLOAT_ERROR );
 }
+
 }
 
 TEST_CASE( "audio/Fft" )
 {
-	SECTION( "round trip error" )
-	{
-		CI_LOG_I( "... Fft round trip max acceptable error: " << ACCEPTABLE_FLOAT_ERROR );
-		for( size_t i = 0; i < 14; i++ )
-			computeRoundTrip( 2 << i );
-	}
+
+SECTION( "round trip error" )
+{
+	CI_LOG_I( "... Fft round trip max acceptable error: " << ACCEPTABLE_FLOAT_ERROR );
+	for( size_t i = 0; i < 14; i ++ )
+		computeRoundTrip( 2 << i );
+}
 
 } // "audio/Fft"
 

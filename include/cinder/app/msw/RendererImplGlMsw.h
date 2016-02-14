@@ -26,37 +26,35 @@
 #include "cinder/app/AppBase.h"
 #include "cinder/app/msw/RendererImplMsw.h"
 
-namespace cinder {
-namespace gl {
-class Context;
-typedef std::shared_ptr<Context> ContextRef;
-}
-}
+namespace cinder { namespace gl {
+	class Context;
+	typedef std::shared_ptr<Context>	ContextRef;
+} }
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 class RendererImplGlMsw : public RendererImplMsw {
-  public:
+ public:
 	RendererImplGlMsw( class RendererGl *aRenderer );
+	
+	virtual bool	initialize( HWND wnd, HDC dc, RendererRef sharedRenderer );
+	virtual void	prepareToggleFullScreen();
+	virtual void	finishToggleFullScreen();
+	virtual void	kill();
+	virtual void	defaultResize() const;
+	virtual void	swapBuffers() const;
+	virtual void	makeCurrentContext( bool force = false );
 
-	virtual bool initialize( HWND wnd, HDC dc, RendererRef sharedRenderer );
-	virtual void prepareToggleFullScreen();
-	virtual void finishToggleFullScreen();
-	virtual void kill();
-	virtual void defaultResize() const;
-	virtual void swapBuffers() const;
-	virtual void makeCurrentContext( bool force = false );
+	HDC				getDc() const { return mDC; }
 
-	HDC getDc() const { return mDC; }
-  protected:
-	class RendererGl *mRenderer;
-	gl::ContextRef    mCinderContext;
+ protected:
+	class RendererGl	*mRenderer;
+	gl::ContextRef		mCinderContext;
 
-	bool  mWasFullScreen;
-	bool  mWasVerticalSynced;
-	HGLRC mRC;
-	HDC   mDC;
+	bool		mWasFullScreen;
+	bool		mWasVerticalSynced;
+	HGLRC		mRC;
+	HDC			mDC;
 };
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

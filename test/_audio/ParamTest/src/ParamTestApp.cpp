@@ -1,14 +1,14 @@
 #include "cinder/app/App.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/Rand.h"
 #include "cinder/Timeline.h"
-#include "cinder/app/RendererGl.h"
+#include "cinder/CinderAssert.h"
+#include "cinder/Log.h"
 
 #include "cinder/audio/Context.h"
-#include "cinder/audio/FilterNode.h"
 #include "cinder/audio/GenNode.h"
 #include "cinder/audio/NodeEffects.h"
+#include "cinder/audio/FilterNode.h"
 #include "cinder/audio/Target.h"
 
 #include "../../common/AudioTestGui.h"
@@ -42,16 +42,16 @@ class ParamTestApp : public App {
 
 	void writeParamEval( audio::Param *param );
 
-	audio::GenNodeRef           mGen;
-	audio::GainNodeRef          mGain;
-	audio::Pan2dNodeRef         mPan;
-	audio::FilterLowPassNodeRef mLowPass;
+	audio::GenNodeRef				mGen;
+	audio::GainNodeRef				mGain;
+	audio::Pan2dNodeRef				mPan;
+	audio::FilterLowPassNodeRef		mLowPass;
 
-	vector<TestWidget *> mWidgets;
-	Button               mPlayButton, mApplyButton, mApply0Button, mApplyAppendButton, mAppendButton;
-	Button               mDelayButton, mProcessorButton, mAppendCancelButton, mScheduleButton;
-	VSelector            mTestSelector;
-	HSlider              mGainSlider, mPanSlider, mLowPassFreqSlider, mGenFreqSlider;
+	vector<TestWidget *>	mWidgets;
+	Button					mPlayButton, mApplyButton, mApply0Button, mApplyAppendButton, mAppendButton;
+	Button					mDelayButton, mProcessorButton, mAppendCancelButton, mScheduleButton;
+	VSelector				mTestSelector;
+	HSlider					mGainSlider, mPanSlider, mLowPassFreqSlider, mGenFreqSlider;
 };
 
 void ParamTestApp::setup()
@@ -63,8 +63,8 @@ void ParamTestApp::setup()
 	mPan = ctx->makeNode( new audio::Pan2dNode() );
 
 	mGen = ctx->makeNode( new audio::GenSineNode() );
-	//	mGen = ctx->makeNode( new audio::GenTriangleNode() );
-	//	mGen = ctx->makeNode( new audio::GenPhasorNode() );
+//	mGen = ctx->makeNode( new audio::GenTriangleNode() );
+//	mGen = ctx->makeNode( new audio::GenPhasorNode() );
 	mGen = ctx->makeNode( new audio::GenPulseNode );
 
 	mGen->setFreq( 220 );
@@ -78,8 +78,8 @@ void ParamTestApp::setup()
 	PRINT_GRAPH( ctx );
 
 	testApply();
-	//	testApply2();
-	//	connectProcessor();
+//	testApply2();
+//	connectProcessor();
 }
 
 void ParamTestApp::setupBasic()
@@ -97,15 +97,15 @@ void ParamTestApp::setupFilter()
 void ParamTestApp::testApply()
 {
 	// (a): ramp volume to 0.7 of 0.2 seconds
-	//	mGain->getParam()->applyRamp( 0.7f, 0.2f );
+//	mGain->getParam()->applyRamp( 0.7f, 0.2f );
 
 	mGen->getParamFreq()->applyRamp( 220, 440, 2 );
 
 	// PSEUDO CODE: possible syntax where context keeps references to Params, calling updateValueArray() (or just process() ?) on them each block:
 	// - problem I have with this right now is that its alot more syntax for the common case (see: (a)) of ramping up volume
-	//	Context::master()->timeline()->apply( mGen->getParamFreq(), 220, 440, 1 );
+//	Context::master()->timeline()->apply( mGen->getParamFreq(), 220, 440, 1 );
 	// - a bit shorter:
-	//	audio::timeline()->apply( mGen->getParamFreq(), 220, 440, 1 );
+//	audio::timeline()->apply( mGen->getParamFreq(), 220, 440, 1 );
 
 	CI_LOG_V( "num events: " << mGen->getParamFreq()->getNumEvents() );
 }
@@ -126,7 +126,7 @@ void ParamTestApp::testApply2()
 
 	CI_LOG_V( "num events: " << mGen->getParamFreq()->getNumEvents() );
 
-	//	writeParamEval( mGen->getParamFreq() );
+//	writeParamEval( mGen->getParamFreq() );
 }
 
 // append an event with random frequency and duration 1 second, allowing them to build up. new events begin from the end of the last event
@@ -154,8 +154,7 @@ void ParamTestApp::testAppendCancel()
 	timeline().add( [ramp] {
 		CI_LOG_V( "canceling." );
 		ramp->cancel();
-	},
-	    (float)getElapsedSeconds() + 1 );
+	}, (float)getElapsedSeconds() + 1 );
 }
 
 void ParamTestApp::testProcessor()
@@ -170,7 +169,7 @@ void ParamTestApp::testProcessor()
 void ParamTestApp::testSchedule()
 {
 	bool enabled = mGen->isEnabled();
-	mGen->setEnabled( !enabled, audio::master()->getNumProcessedSeconds() + 0.5f );
+	mGen->setEnabled( ! enabled, audio::master()->getNumProcessedSeconds() + 0.5f );
 }
 
 void ParamTestApp::setupUI()
@@ -226,7 +225,7 @@ void ParamTestApp::setupUI()
 	mTestSelector.mBounds = Rectf( (float)getWindowWidth() * 0.67f, 0, (float)getWindowWidth(), 160 );
 	mWidgets.push_back( &mTestSelector );
 
-	float width = std::min( (float)getWindowWidth() - 20.0f, 440.0f );
+	float width = std::min( (float)getWindowWidth() - 20.0f,  440.0f );
 	Rectf sliderRect( getWindowCenter().x - width / 2.0f, 200, getWindowCenter().x + width / 2.0f, 250 );
 	mGainSlider.mBounds = sliderRect;
 	mGainSlider.mTitle = "GainNode";
@@ -254,10 +253,10 @@ void ParamTestApp::setupUI()
 	mLowPassFreqSlider.set( mLowPass->getCutoffFreq() );
 	mWidgets.push_back( &mLowPassFreqSlider );
 
-	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -268,17 +267,17 @@ void ParamTestApp::setupUI()
 void ParamTestApp::processDrag( ivec2 pos )
 {
 	if( mGainSlider.hitTest( pos ) ) {
-		//		mGain->setValue( mGainSlider.mValueScaled );
-		//		mGain->getParam()->applyRamp( mGainSlider.mValueScaled );
+//		mGain->setValue( mGainSlider.mValueScaled );
+//		mGain->getParam()->applyRamp( mGainSlider.mValueScaled );
 		mGain->getParam()->applyRamp( mGainSlider.mValueScaled, 0.15f );
 	}
 	if( mPanSlider.hitTest( pos ) ) {
-		//		mPan->setPos( mPanSlider.mValueScaled );
+//		mPan->setPos( mPanSlider.mValueScaled );
 		mPan->getParamPos()->applyRamp( mPanSlider.mValueScaled, 0.3f, audio::Param::Options().rampFn( &audio::rampOutQuad ) );
 	}
 	if( mGenFreqSlider.hitTest( pos ) ) {
-		//		mGen->setFreq( mGenFreqSlider.mValueScaled );
-		//		mGen->getParamFreq()->applyRamp( mGenFreqSlider.mValueScaled, 0.3f );
+//		mGen->setFreq( mGenFreqSlider.mValueScaled );
+//		mGen->getParamFreq()->applyRamp( mGenFreqSlider.mValueScaled, 0.3f );
 		mGen->getParamFreq()->applyRamp( mGenFreqSlider.mValueScaled, 0.3f, audio::Param::Options().rampFn( &audio::rampOutQuad ) );
 	}
 	if( mLowPassFreqSlider.hitTest( pos ) )
@@ -287,11 +286,11 @@ void ParamTestApp::processDrag( ivec2 pos )
 
 void ParamTestApp::processTap( ivec2 pos )
 {
-	auto   ctx = audio::master();
+	auto ctx = audio::master();
 	size_t selectorIndex = mTestSelector.mCurrentSectionIndex;
 
 	if( mPlayButton.hitTest( pos ) )
-		ctx->setEnabled( !ctx->isEnabled() );
+		ctx->setEnabled( ! ctx->isEnabled() );
 	else if( mApplyButton.hitTest( pos ) )
 		testApply();
 	else if( mApply0Button.hitTest( pos ) )
@@ -353,10 +352,10 @@ void ParamTestApp::draw()
 // TODO: this will be formalized once there is an offline audio context and OutputFileNode.
 void ParamTestApp::writeParamEval( audio::Param *param )
 {
-	auto          ctx = audio::master();
-	float         duration = param->findDuration();
-	float         currTime = (float)ctx->getNumProcessedSeconds();
-	size_t        sampleRate = ctx->getSampleRate();
+	auto ctx = audio::master();
+	float duration = param->findDuration();
+	float currTime = (float)ctx->getNumProcessedSeconds();
+	size_t sampleRate = ctx->getSampleRate();
 	audio::Buffer audioBuffer( (size_t)duration * sampleRate );
 
 	param->eval( currTime, audioBuffer.getData(), audioBuffer.getSize(), sampleRate );

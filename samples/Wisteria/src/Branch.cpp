@@ -7,11 +7,11 @@ using std::vector;
 int Branch::sWindowWidth, Branch::sWindowHeight;
 
 Branch::Branch( const vec2 &aOrigin, float flowerHue, int launchDelay )
-    : mOrigin( aOrigin )
+	: mOrigin( aOrigin )
 {
 	mIsRoot = true;
 	float baseHue = 0.33333f;
-
+	
 	float sat = 0.5 + Rand::randFloat( 0.5f );
 	float brightness = 1.0;
 	float opacity = 0.8 + Rand::randFloat( 0.2f );
@@ -23,12 +23,13 @@ Branch::Branch( const vec2 &aOrigin, float flowerHue, int launchDelay )
 	}
 }
 
-Branch::Branch( const vec2 &aOrigin, int aLifespan, float aSpeed, int aLaunchDelay, float aAngle, float aAngleDelta, float aChangeProb, float aFlowerProb, float aStartEllipseRadius, float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, ColorA aFlowerColor, float aScale )
-    : mOrigin( aOrigin ), mPos( aOrigin )
-{
+Branch::Branch( const vec2 &aOrigin, int aLifespan, float aSpeed, int aLaunchDelay, float aAngle, float aAngleDelta, float aChangeProb, float aFlowerProb,
+	  float aStartEllipseRadius, float aEndEllipseRadius, ColorA aStartColor, ColorA aEndColor, ColorA aFlowerColor, float aScale )
+	: mOrigin( aOrigin ), mPos( aOrigin )
+{ 
 	mIsRoot = false;
-	mLifespan = (int)( aLifespan * aScale );
-	mTotalLifespan = (int)( aLifespan * aScale );
+	mLifespan = (int)(aLifespan * aScale);
+	mTotalLifespan = (int)(aLifespan * aScale);
 	mAngle = aAngle;
 	mSpeed = aSpeed;
 	mLaunchDelay = aLaunchDelay;
@@ -47,13 +48,13 @@ Branch::Branch( const vec2 &aOrigin, int aLifespan, float aSpeed, int aLaunchDel
 }
 
 void Branch::update()
-{
-	if( mLaunchDelay-- > 0 )
-		return;
+{ 
+	if ( mLaunchDelay-- > 0 )
+	  return;
 
-	if( ( mLifespan > 0 ) && ( !mIsRoot ) ) {
+	if( ( mLifespan > 0 ) && ( ! mIsRoot ) ) {
 		mPos += vec2( cos( mAngle ), sin( mAngle ) ) * ( mSpeed * 2.0f * mScale );
-		if( !Area( 0, 0, sWindowWidth, sWindowHeight ).contains( mPos ) )
+		if( ! Area( 0, 0, sWindowWidth, sWindowHeight ).contains( mPos ) )
 			mLifespan = 0;
 
 		mAngle += mAngleDelta;
@@ -64,12 +65,13 @@ void Branch::update()
 		float ageLerp = 1.0 - mLifespan / (float)mTotalLifespan;
 		if( Rand::randFloat() < mFlowerProb * ( 1.0 - ageLerp ) ) {
 			if( mBranches.size() < MAX_BRANCHES ) {
+				
 				Branch newBranch( *this );
 				newBranch.mBranches.clear();
 				newBranch.mStartColor = lerp( mFlowerColor, ColorA( 0, 0, 0, 1.0f ), 0.5f );
 				newBranch.mEndColor = mFlowerColor;
 				newBranch.mFlowerProb = -1.0f;
-				newBranch.mLifespan = (int)( 30 * mScale );
+				newBranch.mLifespan = (int)(30 * mScale); 
 				newBranch.mTotalLifespan = newBranch.mLifespan;
 				newBranch.mLaunchDelay = Rand::randInt( 40, 70 );
 				newBranch.mStartEllipseRadius = newBranch.mEndEllipseRadius;
@@ -80,7 +82,7 @@ void Branch::update()
 			}
 		}
 	}
-
+  
 	for( vector<Branch>::iterator blossomIt = mBranches.begin(); blossomIt != mBranches.end(); ++blossomIt ) {
 		blossomIt->update();
 	}
@@ -88,12 +90,12 @@ void Branch::update()
 
 void Branch::draw( cairo::Context ctx )
 {
-	if( mLaunchDelay > 0 )
-		return;
+	if ( mLaunchDelay > 0 )
+	  return;
 
-	if( ( mLifespan > 0 ) && ( !mIsRoot ) ) {
-		float  ageLerp = 1.0 - mLifespan / (float)mTotalLifespan;
-		float  radius = lerp( mStartEllipseRadius, mEndEllipseRadius, ageLerp );
+	if( ( mLifespan > 0 ) && ( ! mIsRoot ) ) {
+		float ageLerp = 1.0 - mLifespan / (float)mTotalLifespan;
+		float radius = lerp( mStartEllipseRadius, mEndEllipseRadius, ageLerp );
 		ColorA drawColor = lerp( mStartColor, mEndColor, ageLerp );
 		ctx.setSourceRgba( drawColor.r, drawColor.g, drawColor.b, 0.075f );
 		ctx.circle( mPos, ( 5.0f * mScale + radius * 1.3f ) / 2 );
@@ -102,7 +104,7 @@ void Branch::draw( cairo::Context ctx )
 		ctx.circle( mPos, radius / 2 );
 		ctx.fill();
 	}
-
+	
 	for( vector<Branch>::iterator blossomIt = mBranches.begin(); blossomIt != mBranches.end(); ++blossomIt ) {
 		blossomIt->draw( ctx );
 	}
@@ -110,7 +112,7 @@ void Branch::draw( cairo::Context ctx )
 
 bool Branch::isAlive()
 {
-	if( ( !mIsRoot ) && ( mLifespan > 0 ) ) {
+	if ( ( ! mIsRoot ) && ( mLifespan > 0 ) ) {
 		return true;
 	}
 	else {
@@ -119,29 +121,31 @@ bool Branch::isAlive()
 				return true;
 		}
 	}
-
+  
 	return false;
 }
 
 void Branch::createBranch( const vec2 &origin, float baseHue, ColorA flowerColor, int launchDelay )
 {
-	float  changeProb = 0.05f + Rand::randFloat( 0.05f );
-	float  flowerProb = 0.05f + Rand::randFloat( 0.21f );
-	float  startRadius = 5 + Rand::randFloat( 5 );
-	float  endRadius = Rand::randFloat( 1 );
-	int    lifespan = 100 + Rand::randInt( 100 );
-	float  speed = Rand::randFloat( 0.9f, 1.0f );
-	float  angleDelta = Rand::randFloat( 0.02f, 0.15f );
-	float  hue = baseHue + Rand::randFloat( 0.1f );
-	float  sat = 0.5 + Rand::randFloat( 0.5f );
-	float  brightness = 1.0f;
-	float  opacity = 0.5 + Rand::randFloat( 0.5 );
+	float changeProb = 0.05f + Rand::randFloat( 0.05f );
+	float flowerProb = 0.05f + Rand::randFloat( 0.21f );
+	float startRadius = 5 + Rand::randFloat( 5 );
+	float endRadius = Rand::randFloat( 1 );
+	int lifespan = 100 + Rand::randInt( 100 );
+	float speed = Rand::randFloat( 0.9f, 1.0f );
+	float angleDelta = Rand::randFloat( 0.02f, 0.15f );
+	float hue = baseHue + Rand::randFloat( 0.1f );
+	float sat = 0.5 + Rand::randFloat( 0.5f );
+	float brightness = 1.0f;
+	float opacity = 0.5 + Rand::randFloat( 0.5 );
 	ColorA startColor = ColorA( CM_HSV, hue, sat, brightness, opacity );
 	ColorA endColor = ColorA( CM_HSV, hue + 0.1, sat, brightness / 2.0, opacity );
-	float  scale = Rand::randFloat( 0.5f, 1.0f );
+	float scale = Rand::randFloat( 0.5f, 1.0f );
 
-	mBranches.push_back( Branch( origin, lifespan, speed, launchDelay, Rand::randFloat( 6.28f ), angleDelta, changeProb, flowerProb, startRadius, endRadius, startColor, endColor, flowerColor, scale ) );
+	mBranches.push_back( Branch( origin, lifespan, speed, launchDelay, Rand::randFloat( 6.28f ), angleDelta, 
+		changeProb, flowerProb, startRadius, endRadius, startColor, endColor, flowerColor, scale ) );
 }
+
 
 float Branch::randomHue()
 {

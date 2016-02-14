@@ -26,8 +26,7 @@
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 const float kGainNegative100Decibels = 0.00001f; // linear gain equal to -100db
 const float kGainNegative100DecibelsInverse = 1.0f / kGainNegative100Decibels;
@@ -51,7 +50,7 @@ float decibelToLinear( float gainDecibels )
 	if( gainDecibels < kGainNegative100Decibels )
 		return 0.0f;
 	else
-		return ( kGainNegative100Decibels * powf( 10.0f, gainDecibels * 0.05f ) );
+		return( kGainNegative100Decibels * powf( 10.0f, gainDecibels * 0.05f ) );
 }
 
 void decibelToLinear( float *array, size_t length )
@@ -82,7 +81,7 @@ uint64_t timeToFrame( double timeSeconds, double sampleRate )
 bool thresholdBuffer( const Buffer &buffer, float threshold, size_t *recordFrame )
 {
 	const float *buf = buffer.getData();
-	size_t       count = buffer.getSize();
+	size_t count = buffer.getSize();
 	for( size_t t = 0; t < count; t++ ) {
 		if( fabs( buf[t] ) > threshold ) {
 			if( recordFrame )
@@ -93,5 +92,5 @@ bool thresholdBuffer( const Buffer &buffer, float threshold, size_t *recordFrame
 
 	return false;
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

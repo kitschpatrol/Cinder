@@ -28,13 +28,13 @@
         match with U+D800.
 */
 
-#if !defined( __COREFOUNDATION_CFCHARACTERSET__ )
+#if !defined(__COREFOUNDATION_CFCHARACTERSET__)
 #define __COREFOUNDATION_CFCHARACTERSET__ 1
 
 #include <CoreFoundation/CFBase.h>
 #include <CoreFoundation/CFData.h>
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -42,38 +42,36 @@ extern "C" {
 	@typedef CFCharacterSetRef
 	This is the type of a reference to immutable CFCharacterSets.
 */
-typedef const struct __CFCharacterSet *CFCharacterSetRef;
+typedef const struct __CFCharacterSet * CFCharacterSetRef;
 
 /*!
 	@typedef CFMutableCharacterSetRef
 	This is the type of a reference to mutable CFMutableCharacterSets.
 */
-typedef struct __CFCharacterSet *CFMutableCharacterSetRef;
+typedef struct __CFCharacterSet * CFMutableCharacterSetRef;
 
 /*!
 	@typedef CFCharacterSetPredefinedSet
         Type of the predefined CFCharacterSet selector values.
 */
 typedef enum {
-	kCFCharacterSetControl = 1, /* Control character set (Unicode General Category Cc and Cf) */
-	kCFCharacterSetWhitespace, /* Whitespace character set (Unicode General Category Zs and U0009 CHARACTER TABULATION) */
-	kCFCharacterSetWhitespaceAndNewline, /* Whitespace and Newline character set (Unicode General Category Z*, U000A ~ U000D, and U0085) */
-	kCFCharacterSetDecimalDigit, /* Decimal digit character set */
-	kCFCharacterSetLetter, /* Letter character set (Unicode General Category L* & M*) */
-	kCFCharacterSetLowercaseLetter, /* Lowercase character set (Unicode General Category Ll) */
-	kCFCharacterSetUppercaseLetter, /* Uppercase character set (Unicode General Category Lu and Lt) */
-	kCFCharacterSetNonBase, /* Non-base character set (Unicode General Category M*) */
-	kCFCharacterSetDecomposable, /* Canonically decomposable character set */
-	kCFCharacterSetAlphaNumeric, /* Alpha Numeric character set (Unicode General Category L*, M*, & N*) */
-	kCFCharacterSetPunctuation, /* Punctuation character set (Unicode General Category P*) */
-	kCFCharacterSetIllegal /* Illegal character set */
+    kCFCharacterSetControl = 1, /* Control character set (Unicode General Category Cc and Cf) */
+    kCFCharacterSetWhitespace, /* Whitespace character set (Unicode General Category Zs and U0009 CHARACTER TABULATION) */
+    kCFCharacterSetWhitespaceAndNewline,  /* Whitespace and Newline character set (Unicode General Category Z*, U000A ~ U000D, and U0085) */
+    kCFCharacterSetDecimalDigit, /* Decimal digit character set */
+    kCFCharacterSetLetter, /* Letter character set (Unicode General Category L* & M*) */
+    kCFCharacterSetLowercaseLetter, /* Lowercase character set (Unicode General Category Ll) */
+    kCFCharacterSetUppercaseLetter, /* Uppercase character set (Unicode General Category Lu and Lt) */
+    kCFCharacterSetNonBase, /* Non-base character set (Unicode General Category M*) */
+    kCFCharacterSetDecomposable, /* Canonically decomposable character set */
+    kCFCharacterSetAlphaNumeric, /* Alpha Numeric character set (Unicode General Category L*, M*, & N*) */
+    kCFCharacterSetPunctuation, /* Punctuation character set (Unicode General Category P*) */
+    kCFCharacterSetIllegal /* Illegal character set */
 #if MAC_OS_X_VERSION_10_2 <= MAC_OS_X_VERSION_MAX_ALLOWED
-	,
-	kCFCharacterSetCapitalizedLetter /* Titlecase character set (Unicode General Category Lt) */
+    , kCFCharacterSetCapitalizedLetter /* Titlecase character set (Unicode General Category Lt) */
 #endif
 #if MAC_OS_X_VERSION_10_3 <= MAC_OS_X_VERSION_MAX_ALLOWED
-	,
-	kCFCharacterSetSymbol /* Symbol character set (Unicode General Category S*) */
+    , kCFCharacterSetSymbol /* Symbol character set (Unicode General Category S*) */
 #endif
 } CFCharacterSetPredefinedSet;
 
@@ -82,7 +80,7 @@ typedef enum {
 	Returns the type identifier of all CFCharacterSet instances.
 */
 CF_EXPORT
-CFTypeID CFCharacterSetGetTypeID( void );
+CFTypeID CFCharacterSetGetTypeID(void);
 
 /*!
 	@function CFCharacterSetGetPredefined
@@ -95,7 +93,7 @@ CFTypeID CFCharacterSetGetTypeID( void );
                 This instance is owned by CF.
 */
 CF_EXPORT
-CFCharacterSetRef CFCharacterSetGetPredefined( CFCharacterSetPredefinedSet theSetIdentifier );
+CFCharacterSetRef CFCharacterSetGetPredefined(CFCharacterSetPredefinedSet theSetIdentifier);
 
 /*!
 	@function CFCharacterSetCreateWithCharactersInRange
@@ -114,7 +112,7 @@ CFCharacterSetRef CFCharacterSetGetPredefined( CFCharacterSetPredefinedSet theSe
 	@result A reference to the new immutable CFCharacterSet.
 */
 CF_EXPORT
-CFCharacterSetRef CFCharacterSetCreateWithCharactersInRange( CFAllocatorRef alloc, CFRange theRange );
+CFCharacterSetRef CFCharacterSetCreateWithCharactersInRange(CFAllocatorRef alloc, CFRange theRange);
 
 /*!
 	@function CFCharacterSetCreateWithCharactersInString
@@ -131,7 +129,7 @@ CFCharacterSetRef CFCharacterSetCreateWithCharactersInRange( CFAllocatorRef allo
         @result A reference to the new immutable CFCharacterSet.
 */
 CF_EXPORT
-CFCharacterSetRef CFCharacterSetCreateWithCharactersInString( CFAllocatorRef alloc, CFStringRef theString );
+CFCharacterSetRef CFCharacterSetCreateWithCharactersInString(CFAllocatorRef alloc, CFStringRef theString);
 
 /*!
 	@function CFCharacterSetCreateWithBitmapRepresentation
@@ -159,7 +157,7 @@ CFCharacterSetRef CFCharacterSetCreateWithCharactersInString( CFAllocatorRef all
         @result A reference to the new immutable CFCharacterSet.
 */
 CF_EXPORT
-CFCharacterSetRef CFCharacterSetCreateWithBitmapRepresentation( CFAllocatorRef alloc, CFDataRef theData );
+CFCharacterSetRef CFCharacterSetCreateWithBitmapRepresentation(CFAllocatorRef alloc, CFDataRef theData);
 
 #if MAC_OS_X_VERSION_10_2 <= MAC_OS_X_VERSION_MAX_ALLOWED
 /*!
@@ -175,7 +173,7 @@ CFCharacterSetRef CFCharacterSetCreateWithBitmapRepresentation( CFAllocatorRef a
               		undefined.
 	@result A reference to the new immutable CFCharacterSet.
 */
-CF_EXPORT CFCharacterSetRef CFCharacterSetCreateInvertedSet( CFAllocatorRef alloc, CFCharacterSetRef theSet );
+CF_EXPORT CFCharacterSetRef CFCharacterSetCreateInvertedSet(CFAllocatorRef alloc, CFCharacterSetRef theSet);
 
 /*!
 	@function CFCharacterSetIsSupersetOfSet
@@ -185,7 +183,7 @@ CF_EXPORT CFCharacterSetRef CFCharacterSetCreateInvertedSet( CFAllocatorRef allo
 	@param theOtherset  The character set to be checked whether or not it is a subset of theSet.
 		If this parameter is not a valid CFCharacterSet, the behavior is undefined.
 */
-CF_EXPORT Boolean CFCharacterSetIsSupersetOfSet( CFCharacterSetRef theSet, CFCharacterSetRef theOtherset );
+CF_EXPORT Boolean CFCharacterSetIsSupersetOfSet(CFCharacterSetRef theSet, CFCharacterSetRef theOtherset);
 
 /*!
 	@function CFCharacterSetHasMemberInPlane
@@ -196,7 +194,7 @@ CF_EXPORT Boolean CFCharacterSetIsSupersetOfSet( CFCharacterSetRef theSet, CFCha
 		The valid value range is from 0 to 16.  If the value is outside of the valid
 		plane number range, the behavior is undefined.
 */
-CF_EXPORT Boolean CFCharacterSetHasMemberInPlane( CFCharacterSetRef theSet, CFIndex thePlane );
+CF_EXPORT Boolean CFCharacterSetHasMemberInPlane(CFCharacterSetRef theSet, CFIndex thePlane);
 #endif
 
 /*!
@@ -210,7 +208,7 @@ CF_EXPORT Boolean CFCharacterSetHasMemberInPlane( CFCharacterSetRef theSet, CFIn
 	@result A reference to the new mutable CFCharacterSet.
 */
 CF_EXPORT
-CFMutableCharacterSetRef CFCharacterSetCreateMutable( CFAllocatorRef alloc );
+CFMutableCharacterSetRef CFCharacterSetCreateMutable(CFAllocatorRef alloc);
 
 #if MAC_OS_X_VERSION_10_3 <= MAC_OS_X_VERSION_MAX_ALLOWED
 /*!
@@ -227,7 +225,7 @@ CFMutableCharacterSetRef CFCharacterSetCreateMutable( CFAllocatorRef alloc );
 	@result A reference to the new CFCharacterSet.
 */
 CF_EXPORT
-CFCharacterSetRef CFCharacterSetCreateCopy( CFAllocatorRef alloc, CFCharacterSetRef theSet ) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
+CFCharacterSetRef CFCharacterSetCreateCopy(CFAllocatorRef alloc, CFCharacterSetRef theSet) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
 #endif /* MAC_OS_X_VERSION_10_3 <= MAC_OS_X_VERSION_MAX_ALLOWED */
 
 /*!
@@ -244,7 +242,7 @@ CFCharacterSetRef CFCharacterSetCreateCopy( CFAllocatorRef alloc, CFCharacterSet
 	@result A reference to the new mutable CFCharacterSet.
 */
 CF_EXPORT
-CFMutableCharacterSetRef CFCharacterSetCreateMutableCopy( CFAllocatorRef alloc, CFCharacterSetRef theSet );
+CFMutableCharacterSetRef CFCharacterSetCreateMutableCopy(CFAllocatorRef alloc, CFCharacterSetRef theSet);
 
 /*!
 	@function CFCharacterSetIsCharacterMember
@@ -258,7 +256,7 @@ CFMutableCharacterSetRef CFCharacterSetCreateMutableCopy( CFAllocatorRef alloc, 
         @result true, if the value is in the character set, otherwise false.
 */
 CF_EXPORT
-Boolean CFCharacterSetIsCharacterMember( CFCharacterSetRef theSet, UniChar theChar );
+Boolean CFCharacterSetIsCharacterMember(CFCharacterSetRef theSet, UniChar theChar);
 
 #if MAC_OS_X_VERSION_10_2 <= MAC_OS_X_VERSION_MAX_ALLOWED
 /*!
@@ -270,7 +268,7 @@ Boolean CFCharacterSetIsCharacterMember( CFCharacterSetRef theSet, UniChar theCh
 			character set.
         @result true, if the value is in the character set, otherwise false.
 */
-CF_EXPORT Boolean CFCharacterSetIsLongCharacterMember( CFCharacterSetRef theSet, UTF32Char theChar );
+CF_EXPORT Boolean CFCharacterSetIsLongCharacterMember(CFCharacterSetRef theSet, UTF32Char theChar);
 #endif
 
 /*!
@@ -290,7 +288,7 @@ CF_EXPORT Boolean CFCharacterSetIsLongCharacterMember( CFCharacterSetRef theSet,
 	@result A reference to the new immutable CFData.
 */
 CF_EXPORT
-CFDataRef CFCharacterSetCreateBitmapRepresentation( CFAllocatorRef alloc, CFCharacterSetRef theSet );
+CFDataRef CFCharacterSetCreateBitmapRepresentation(CFAllocatorRef alloc, CFCharacterSetRef theSet);
 
 /*!
 	@function CFCharacterSetAddCharactersInRange
@@ -305,7 +303,7 @@ CFDataRef CFCharacterSetCreateBitmapRepresentation( CFAllocatorRef alloc, CFChar
                 the behavior is undefined.
 */
 CF_EXPORT
-void CFCharacterSetAddCharactersInRange( CFMutableCharacterSetRef theSet, CFRange theRange );
+void CFCharacterSetAddCharactersInRange(CFMutableCharacterSetRef theSet, CFRange theRange);
 
 /*!
 	@function CFCharacterSetRemoveCharactersInRange
@@ -320,7 +318,7 @@ void CFCharacterSetAddCharactersInRange( CFMutableCharacterSetRef theSet, CFRang
                 the behavior is undefined.
 */
 CF_EXPORT
-void CFCharacterSetRemoveCharactersInRange( CFMutableCharacterSetRef theSet, CFRange theRange );
+void CFCharacterSetRemoveCharactersInRange(CFMutableCharacterSetRef theSet, CFRange theRange);
 
 /*!
 	@function CFCharacterSetAddCharactersInString
@@ -333,7 +331,7 @@ void CFCharacterSetRemoveCharactersInRange( CFMutableCharacterSetRef theSet, CFR
                 is undefined.
 */
 CF_EXPORT
-void CFCharacterSetAddCharactersInString( CFMutableCharacterSetRef theSet, CFStringRef theString );
+void CFCharacterSetAddCharactersInString(CFMutableCharacterSetRef theSet,  CFStringRef theString);
 
 /*!
 	@function CFCharacterSetRemoveCharactersInString
@@ -346,7 +344,7 @@ void CFCharacterSetAddCharactersInString( CFMutableCharacterSetRef theSet, CFStr
                 is undefined.
 */
 CF_EXPORT
-void CFCharacterSetRemoveCharactersInString( CFMutableCharacterSetRef theSet, CFStringRef theString );
+void CFCharacterSetRemoveCharactersInString(CFMutableCharacterSetRef theSet, CFStringRef theString);
 
 /*!
 	@function CFCharacterSetUnion
@@ -360,7 +358,7 @@ void CFCharacterSetRemoveCharactersInString( CFMutableCharacterSetRef theSet, CF
                 the behavior is undefined.
 */
 CF_EXPORT
-void CFCharacterSetUnion( CFMutableCharacterSetRef theSet, CFCharacterSetRef theOtherSet );
+void CFCharacterSetUnion(CFMutableCharacterSetRef theSet, CFCharacterSetRef theOtherSet);
 
 /*!
 	@function CFCharacterSetIntersect
@@ -374,7 +372,7 @@ void CFCharacterSetUnion( CFMutableCharacterSetRef theSet, CFCharacterSetRef the
                 the behavior is undefined.
 */
 CF_EXPORT
-void CFCharacterSetIntersect( CFMutableCharacterSetRef theSet, CFCharacterSetRef theOtherSet );
+void CFCharacterSetIntersect(CFMutableCharacterSetRef theSet, CFCharacterSetRef theOtherSet);
 
 /*!
 	@function CFCharacterSetInvert
@@ -384,10 +382,11 @@ void CFCharacterSetIntersect( CFMutableCharacterSetRef theSet, CFCharacterSetRef
                 the behavior is undefined.
 */
 CF_EXPORT
-void CFCharacterSetInvert( CFMutableCharacterSetRef theSet );
+void CFCharacterSetInvert(CFMutableCharacterSetRef theSet);
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif
 
 #endif /* !__COREFOUNDATION_CFCHARACTERSET__ */
+

@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/Camera.h"
-#include "cinder/Rand.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Camera.h"
+#include "cinder/Rand.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -11,17 +11,17 @@ using namespace std;
 class slerpBasicApp : public App {
   public:
 	void setup();
-	void mouseDown( MouseEvent event );
+	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
 	void drawPathBetweenVectors( vec3 a, vec3 b );
 
 	void setupSlerp();
-
-	CameraPersp mCam;
-	quat        mSpinTheWholeWorld;
-	vec3        mVecA, mVecB;
-	float       mSlerpAmt;
+	
+	CameraPersp		mCam;
+	quat			mSpinTheWholeWorld;
+	vec3			mVecA, mVecB;
+	float			mSlerpAmt;
 };
 
 void slerpBasicApp::setup()
@@ -30,9 +30,9 @@ void slerpBasicApp::setup()
 	mCam = CameraPersp( getWindowWidth(), getWindowHeight(), 45 );
 	mCam.setPerspective( 45.0f, getWindowAspectRatio(), 0.1f, 100.0f );
 	mCam.lookAt( vec3( 3, 3, 3 ), vec3( 0 ) );
-
+	
 	mSpinTheWholeWorld = quat( 0.0f, vec3( 0, 1, 0 ) );
-
+	
 	setupSlerp();
 }
 
@@ -46,7 +46,7 @@ void slerpBasicApp::update()
 	mSlerpAmt += 0.01f;
 	if( mSlerpAmt > 1 )
 		mSlerpAmt = 0;
-
+	
 	// spin the scene by a few degrees around the y Axis
 	mSpinTheWholeWorld = angleAxis( 0.01f, vec3( 0, 1, 0 ) ) * mSpinTheWholeWorld;
 }
@@ -70,9 +70,9 @@ void slerpBasicApp::drawPathBetweenVectors( vec3 a, vec3 b )
 void slerpBasicApp::draw()
 {
 	// clear out the window with black
-	gl::clear( Color( 0, 0, 0 ) );
+	gl::clear( Color( 0, 0, 0 ) ); 
 	gl::enableAlphaBlending();
-
+	
 	gl::setMatrices( mCam );
 	gl::rotate( mSpinTheWholeWorld );
 
@@ -81,13 +81,13 @@ void slerpBasicApp::draw()
 	gl::color( ColorA( 1, 1, 0, 0.25f ) );
 	gl::drawSphere( vec3( 0 ), 1, 20 );
 	gl::disableWireframe();
-
+	
 	// draw the path
 	gl::color( Color::white() );
 	drawPathBetweenVectors( mVecA, mVecB );
-
+	
 	const float smallSphereRadius = 0.05f;
-	const int   smallSphereSegments = 20;
+	const int smallSphereSegments = 20;
 	// draw vector A
 	gl::color( ColorA( 1, 0, 0, 1 ) );
 	gl::drawSphere( mVecA, smallSphereRadius, smallSphereSegments );

@@ -1,10 +1,10 @@
 #include "cinder/app/App.h"
-#include "cinder/Easing.h"
-#include "cinder/Log.h"
-#include "cinder/Text.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/Easing.h"
+#include "cinder/Text.h"
+#include "cinder/Log.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -14,13 +14,13 @@ const float TWEEN_SPEED = 0.5f;
 
 struct EaseBox {
   public:
-	EaseBox( std::function<float( float )> fn, string name )
-	    : mFn( fn )
+	EaseBox( std::function<float (float)> fn, string name )
+		: mFn( fn )
 	{
 		// create label
 		TextLayout text;
 		text.clear( Color::white() );
-		text.setColor( Color( 0.5f, 0.5f, 0.5f ) );
+		text.setColor( Color(0.5f, 0.5f, 0.5f) );
 		try {
 			text.setFont( Font( "Futura-CondensedMedium", 18 ) );
 		}
@@ -31,7 +31,7 @@ struct EaseBox {
 		text.addLine( name );
 		mLabelTex = gl::Texture::create( text.render( true ) );
 	}
-
+	
 	void draw( float t ) const
 	{
 		// draw box and frame
@@ -40,26 +40,26 @@ struct EaseBox {
 		gl::color( Color( 0.4f, 0.4f, 0.4f ) );
 		gl::drawStrokedRect( mDrawRect );
 		gl::color( Color::white() );
-		gl::draw( mLabelTex, mDrawRect.getCenter() - vec2( mLabelTex->getSize() ) / 2.0f );
-
+		gl::draw( mLabelTex, mDrawRect.getCenter() - vec2(mLabelTex->getSize()) / 2.0f );
+				
 		// draw graph
 		gl::color( ColorA( 0.25f, 0.5f, 1.0f, 0.5f ) );
-
+		
 		gl::begin( GL_LINE_STRIP );
 		for( float x = 0; x < mDrawRect.getWidth(); x += 0.25f ) {
 			float y = 1.0f - mFn( x / mDrawRect.getWidth() );
 			gl::vertex( vec2( x, y * mDrawRect.getHeight() ) + mDrawRect.getUpperLeft() );
 		}
 		gl::end();
-
+		
 		// draw animating circle
 		gl::color( Color( 1, 0.5f, 0.25f ) );
 		gl::drawSolidCircle( mDrawRect.getUpperLeft() + mFn( t ) * mDrawRect.getSize(), 5.0f );
 	}
-
-	std::function<float( float )> mFn;
-	Rectf                         mDrawRect;
-	gl::TextureRef                mLabelTex;
+	
+	std::function<float (float)>	mFn;
+	Rectf							mDrawRect;
+	gl::TextureRef					mLabelTex;
 };
 
 class EaseGalleryApp : public App {
@@ -68,8 +68,8 @@ class EaseGalleryApp : public App {
 	void draw();
 	void resize();
 	void sizeRectangles();
-
-	vector<EaseBox> mEaseBoxes;
+	
+	vector<EaseBox>		mEaseBoxes;
 };
 
 void EaseGalleryApp::setup()
@@ -141,21 +141,21 @@ void EaseGalleryApp::resize()
 
 void EaseGalleryApp::sizeRectangles()
 {
-	const int  cellColumns = 4;
-	const int  cellRows = 11;
+	const int cellColumns = 4;
+	const int cellRows = 11;	
 	const vec2 padding( 10, 10 );
 	const vec2 cellSize( ( getWindowWidth() - padding.x ) / cellColumns - padding.x, ( getWindowHeight() - padding.y ) / cellRows - padding.y );
 
 	for( size_t c = 0; c < mEaseBoxes.size(); ++c ) {
 		int col = c % cellColumns;
 		int row = c / cellColumns;
-		mEaseBoxes[c].mDrawRect = Rectf( vec2( col, row ) * ( cellSize + padding ), vec2( col, row ) * ( cellSize + padding ) + cellSize ) + padding;
+		mEaseBoxes[c].mDrawRect = Rectf( vec2( col, row ) * (cellSize + padding), vec2( col, row ) * (cellSize + padding) + cellSize ) + padding;
 	}
 }
 
 void EaseGalleryApp::draw()
 {
-	gl::clear( Color( 0.9f, 0.9f, 0.9f ) );
+	gl::clear( Color( 0.9f, 0.9f, 0.9f ) ); 
 	gl::lineWidth( 4.0f );
 
 	// time cycles every 1 / TWEEN_SPEED seconds, with a 50% pause at the end

@@ -1,14 +1,14 @@
 #include "cinder/app/App.h"
-#include "cinder/CameraUi.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/CameraUi.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 class AABBtestApp : public App {
-  public:
+public:
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -16,10 +16,10 @@ class AABBtestApp : public App {
 	void mouseMove( MouseEvent event ) override;
 
 	AxisAlignedBox mBox;
-	gl::BatchRef   mCube;
-	CameraPersp    mCam;
-	CameraUi       mCamUi;
-	ci::ivec2      mMousePos;
+	gl::BatchRef     mCube;
+	CameraPersp      mCam;
+	CameraUi         mCamUi;
+	ci::ivec2        mMousePos;
 };
 
 void AABBtestApp::setup()
@@ -34,7 +34,7 @@ void AABBtestApp::setup()
 
 	assert( mBox.intersects( AxisAlignedBox( vec3( -1 ), vec3( 1 ) ) ) );
 	assert( mBox.intersects( AxisAlignedBox( vec3( 3, 0, 1 ), vec3( 3, 1, 0 ) ) ) );
-	assert( !mBox.intersects( Ray( vec3( 4, 0, -10 ), vec3( 0, 0, 1 ) ) ) );
+	assert( !mBox.intersects( Ray( vec3( 4, 0, -10 ), vec3( 0, 0, 1 ) ) ) );	
 
 	mCube = gl::Batch::create( geom::WireCube().size( 1, 1, 1 ), gl::getStockShader( gl::ShaderDef().color() ) );
 
@@ -55,8 +55,8 @@ void AABBtestApp::draw()
 	gl::clear();
 
 	// Animate box.
-	float t = (float)getElapsedSeconds() * 0.2f;
-	mat4  transform = glm::translate( vec3( 5.0f * glm::sin( t ), 0, 0 ) );
+	float t = (float) getElapsedSeconds() * 0.2f;
+	mat4 transform = glm::translate( vec3( 5.0f * glm::sin( t ), 0, 0 ) );
 	transform *= glm::rotate( t, glm::normalize( vec3( 1, 2, 3 ) ) );
 	transform *= glm::scale( vec3( 0.75f ) );
 
@@ -89,11 +89,11 @@ void AABBtestApp::draw()
 
 	vec3 src = vec3( 5 );
 	vec3 dir = vec3( -1 );
-	Ray  ray( src, dir );
-
+	Ray ray( src, dir );
+	
 	gl::color( 1, 0, 0 );
 	gl::drawLine( src, src + 10.0f * dir );
-
+	
 	float min, max;
 	if( aabb.intersect( ray, &min, &max ) > 0 ) {
 		gl::color( 0, 1, 1 );

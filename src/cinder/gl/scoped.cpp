@@ -22,26 +22,25 @@
  */
 
 #include "cinder/gl/scoped.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/gl/BufferObj.h"
 #include "cinder/gl/Context.h"
+#include "cinder/gl/BufferObj.h"
 #include "cinder/gl/Fbo.h"
+#include "cinder/CinderAssert.h"
 
 using namespace std;
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedVao
 ScopedVao::ScopedVao( Vao *vao )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushVao( vao );
 }
 
 ScopedVao::ScopedVao( VaoRef &vao )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushVao( vao );
 }
@@ -54,13 +53,13 @@ ScopedVao::~ScopedVao()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedBuffer
 ScopedBuffer::ScopedBuffer( const BufferObjRef &bufferObj )
-    : mCtx( gl::context() ), mTarget( bufferObj->getTarget() )
+	: mCtx( gl::context() ), mTarget( bufferObj->getTarget() )
 {
 	mCtx->pushBufferBinding( mTarget, bufferObj->getId() );
 }
 
 ScopedBuffer::ScopedBuffer( GLenum target, GLuint id )
-    : mCtx( gl::context() ), mTarget( target )
+		: mCtx( gl::context() ), mTarget( target )
 {
 	mCtx->pushBufferBinding( target, id );
 }
@@ -73,36 +72,35 @@ ScopedBuffer::~ScopedBuffer()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedState
 ScopedState::ScopedState( GLenum cap, GLboolean value )
-    : mCtx( gl::context() ), mCap( cap )
+	: mCtx( gl::context() ), mCap( cap )
 {
 	mCtx->pushBoolState( cap, value );
 }
 
-ScopedState::~ScopedState()
-{
+ScopedState::~ScopedState() {
 	mCtx->popBoolState( mCap );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedColor
 ScopedColor::ScopedColor()
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mColor = mCtx->getCurrentColor();
 }
 
 ScopedColor::ScopedColor( const ColorAf &color )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mColor = mCtx->getCurrentColor();
 	mCtx->setCurrentColor( color );
 }
 
 ScopedColor::ScopedColor( float red, float green, float blue, float alpha )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mColor = mCtx->getCurrentColor();
-	mCtx->setCurrentColor( ColorA( red, green, blue, alpha ) );
+	mCtx->setCurrentColor( ColorA( red, green, blue, alpha ) );	
 }
 
 ScopedColor::~ScopedColor()
@@ -113,14 +111,14 @@ ScopedColor::~ScopedColor()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedBlend
 ScopedBlend::ScopedBlend( GLboolean enable )
-    : mCtx( gl::context() ), mSaveFactors( false )
+	: mCtx( gl::context() ), mSaveFactors( false )
 {
 	mCtx->pushBoolState( GL_BLEND, enable );
 }
 
 //! Parallels glBlendFunc(), implicitly enables blending
 ScopedBlend::ScopedBlend( GLenum sfactor, GLenum dfactor )
-    : mCtx( gl::context() ), mSaveFactors( true )
+	: mCtx( gl::context() ), mSaveFactors( true )
 {
 	mCtx->pushBoolState( GL_BLEND, GL_TRUE );
 	mCtx->pushBlendFuncSeparate( sfactor, dfactor, sfactor, dfactor );
@@ -128,7 +126,7 @@ ScopedBlend::ScopedBlend( GLenum sfactor, GLenum dfactor )
 
 //! Parallels glBlendFuncSeparate(), implicitly enables blending
 ScopedBlend::ScopedBlend( GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha )
-    : mCtx( gl::context() ), mSaveFactors( true )
+	: mCtx( gl::context() ), mSaveFactors( true )
 {
 	mCtx->pushBoolState( GL_BLEND, GL_TRUE );
 	mCtx->pushBlendFuncSeparate( srcRGB, dstRGB, srcAlpha, dstAlpha );
@@ -143,22 +141,22 @@ ScopedBlend::~ScopedBlend()
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedGlslProg
-ScopedGlslProg::ScopedGlslProg( GlslProgRef &prog )
-    : mCtx( gl::context() )
+ScopedGlslProg::ScopedGlslProg( GlslProgRef& prog )
+	: mCtx( gl::context() )
 {
 	mCtx->pushGlslProg( prog.get() );
 }
 
 ScopedGlslProg::ScopedGlslProg( const std::shared_ptr<const GlslProg> &prog )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushGlslProg( std::const_pointer_cast<GlslProg>( prog ).get() );
 }
 
-ScopedGlslProg::ScopedGlslProg( const GlslProg *prog )
-    : mCtx( gl::context() )
+ScopedGlslProg::ScopedGlslProg( const GlslProg* prog )
+	: mCtx( gl::context() )
 {
-	mCtx->pushGlslProg( const_cast<GlslProg *>( prog ) );
+	mCtx->pushGlslProg( const_cast<GlslProg*>( prog ) );
 }
 
 ScopedGlslProg::~ScopedGlslProg()
@@ -169,20 +167,20 @@ ScopedGlslProg::~ScopedGlslProg()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedFramebuffer
 ScopedFramebuffer::ScopedFramebuffer( const FboRef &fbo, GLenum target )
-    : mCtx( gl::context() ), mTarget( target )
+	: mCtx( gl::context() ), mTarget( target )
 {
 	mCtx->pushFramebuffer( fbo, target );
 }
 
 ScopedFramebuffer::ScopedFramebuffer( GLenum target, GLuint framebufferId )
-    : mCtx( gl::context() ), mTarget( target )
+	: mCtx( gl::context() ), mTarget( target )
 {
 	mCtx->pushFramebuffer( target, framebufferId );
 }
 
 ScopedFramebuffer::~ScopedFramebuffer()
-{
-#if !defined( CINDER_GL_HAS_FBO_MULTISAMPLING )
+{	
+#if ! defined( CINDER_GL_HAS_FBO_MULTISAMPLING )
 	mCtx->popFramebuffer( GL_FRAMEBUFFER );
 #else
 	if( mTarget == GL_FRAMEBUFFER || mTarget == GL_READ_FRAMEBUFFER )
@@ -195,11 +193,11 @@ ScopedFramebuffer::~ScopedFramebuffer()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedActiveTexture
 ScopedActiveTexture::ScopedActiveTexture( uint8_t textureUnit )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushActiveTexture( textureUnit );
 }
-
+	
 ScopedActiveTexture::~ScopedActiveTexture()
 {
 	mCtx->popActiveTexture();
@@ -208,27 +206,27 @@ ScopedActiveTexture::~ScopedActiveTexture()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedTextureBind
 ScopedTextureBind::ScopedTextureBind( GLenum target, GLuint textureId )
-    : mCtx( gl::context() ), mTarget( target )
+	: mCtx( gl::context() ), mTarget( target )
 {
 	mTextureUnit = mCtx->getActiveTexture();
 	mCtx->pushTextureBinding( mTarget, textureId, mTextureUnit );
 }
 
 ScopedTextureBind::ScopedTextureBind( GLenum target, GLuint textureId, uint8_t textureUnit )
-    : mCtx( gl::context() ), mTarget( target ), mTextureUnit( textureUnit )
+	: mCtx( gl::context() ), mTarget( target ), mTextureUnit( textureUnit )
 {
 	mCtx->pushTextureBinding( mTarget, textureId, mTextureUnit );
 }
 
 ScopedTextureBind::ScopedTextureBind( const TextureBaseRef &texture )
-    : mCtx( gl::context() ), mTarget( texture->getTarget() )
+	: mCtx( gl::context() ), mTarget( texture->getTarget() )
 {
 	mTextureUnit = mCtx->getActiveTexture();
 	mCtx->pushTextureBinding( mTarget, texture->getId(), mTextureUnit );
 }
 
 ScopedTextureBind::ScopedTextureBind( const TextureBaseRef &texture, uint8_t textureUnit )
-    : mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
+	: mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
 {
 	mCtx->pushTextureBinding( mTarget, texture->getId(), mTextureUnit );
 }
@@ -237,29 +235,29 @@ ScopedTextureBind::ScopedTextureBind( const TextureBaseRef &texture, uint8_t tex
 // These overloads are to alleviate a VS2013 bug where it cannot deduce
 // the correct constructor when a TextureBaseRef subclass is passed in
 ScopedTextureBind::ScopedTextureBind( const Texture2dRef &texture, uint8_t textureUnit )
-    : mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
+	: mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
 {
 	mCtx->pushTextureBinding( mTarget, texture->getId(), mTextureUnit );
 }
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 ScopedTextureBind::ScopedTextureBind( const Texture1dRef &texture, uint8_t textureUnit )
-    : mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
+: mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
 {
 	mCtx->pushTextureBinding( mTarget, texture->getId(), mTextureUnit );
 }
 #endif // ! defined( CINDER_GL_ES )
 
-#if !defined( CINDER_GL_ES_2 )
+#if ! defined( CINDER_GL_ES_2 )
 ScopedTextureBind::ScopedTextureBind( const Texture3dRef &texture, uint8_t textureUnit )
-    : mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
+	: mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
 {
 	mCtx->pushTextureBinding( mTarget, texture->getId(), mTextureUnit );
 }
 #endif // ! defined( CINDER_GL_ES_2 )
 
 ScopedTextureBind::ScopedTextureBind( const TextureCubeMapRef &texture, uint8_t textureUnit )
-    : mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
+	: mCtx( gl::context() ), mTarget( texture->getTarget() ), mTextureUnit( textureUnit )
 {
 	mCtx->pushTextureBinding( mTarget, texture->getId(), mTextureUnit );
 }
@@ -273,19 +271,19 @@ ScopedTextureBind::~ScopedTextureBind()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedScissor
 ScopedScissor::ScopedScissor( const ivec2 &lowerLeftPosition, const ivec2 &dimension )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushBoolState( GL_SCISSOR_TEST, GL_TRUE );
 	mCtx->pushScissor( std::pair<ivec2, ivec2>( lowerLeftPosition, dimension ) );
 }
 
 ScopedScissor::ScopedScissor( int lowerLeftX, int lowerLeftY, int width, int height )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushBoolState( GL_SCISSOR_TEST, GL_TRUE );
-	mCtx->pushScissor( std::pair<ivec2, ivec2>( ivec2( lowerLeftX, lowerLeftY ), ivec2( width, height ) ) );
+	mCtx->pushScissor( std::pair<ivec2, ivec2>( ivec2( lowerLeftX, lowerLeftY ), ivec2( width, height ) ) );		
 }
-
+	
 ScopedScissor::~ScopedScissor()
 {
 	mCtx->popBoolState( GL_SCISSOR_TEST );
@@ -295,13 +293,13 @@ ScopedScissor::~ScopedScissor()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedFaceCulling
 ScopedFaceCulling::ScopedFaceCulling( bool cull )
-    : mCtx( gl::context() ), mSaveFace( false )
+	: mCtx( gl::context() ), mSaveFace( false )
 {
 	mCtx->pushBoolState( GL_CULL_FACE, cull );
 }
 
 ScopedFaceCulling::ScopedFaceCulling( bool cull, GLenum face )
-    : mCtx( gl::context() ), mSaveFace( true )
+	: mCtx( gl::context() ), mSaveFace( true )
 {
 	mCtx->pushBoolState( GL_CULL_FACE, cull );
 	mCtx->pushCullFace( face );
@@ -314,18 +312,18 @@ ScopedFaceCulling::~ScopedFaceCulling()
 		mCtx->popCullFace();
 }
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedLogicOp
 ScopedLogicOp::ScopedLogicOp( bool enable )
-    : mCtx( gl::context() ), mSaveMode( false )
+: mCtx( gl::context() ), mSaveMode( false )
 {
 	mCtx->pushBoolState( GL_COLOR_LOGIC_OP, enable );
 }
 
 ScopedLogicOp::ScopedLogicOp( bool enable, GLenum mode )
-    : mCtx( gl::context() ), mSaveMode( true )
+: mCtx( gl::context() ), mSaveMode( true )
 {
 	mCtx->pushBoolState( GL_COLOR_LOGIC_OP, enable );
 	mCtx->pushLogicOp( mode );
@@ -343,14 +341,14 @@ ScopedLogicOp::~ScopedLogicOp()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedDepth
 ScopedDepth::ScopedDepth( bool enableReadAndWrite )
-    : mCtx( gl::context() ), mSaveMask( true ), mSaveFunc( false )
+	: mCtx( gl::context() ), mSaveMask( true ), mSaveFunc( false )
 {
 	mCtx->pushBoolState( GL_DEPTH_TEST, enableReadAndWrite );
 	mCtx->pushDepthMask( enableReadAndWrite );
 }
-
+	
 ScopedDepth::ScopedDepth( bool enableReadAndWrite, GLenum depthFunc )
-    : mCtx( gl::context() ), mSaveMask( true ), mSaveFunc( true )
+	: mCtx( gl::context() ), mSaveMask( true ), mSaveFunc( true )
 {
 	mCtx->pushBoolState( GL_DEPTH_TEST, enableReadAndWrite );
 	mCtx->pushDepthMask( enableReadAndWrite );
@@ -367,13 +365,13 @@ ScopedDepth::~ScopedDepth()
 }
 
 ScopedDepthTest::ScopedDepthTest( bool enableTest )
-    : mCtx( gl::context() ), mSaveFunc( false )
+	: mCtx( gl::context() ), mSaveFunc( false )
 {
 	mCtx->pushBoolState( GL_DEPTH_TEST, enableTest );
 }
 
 ScopedDepthTest::ScopedDepthTest( bool enableTest, GLenum depthFunc )
-    : mCtx( gl::context() ), mSaveFunc( true )
+	: mCtx( gl::context() ), mSaveFunc( true )
 {
 	mCtx->pushBoolState( GL_DEPTH_TEST, enableTest );
 	mCtx->pushDepthFunc( depthFunc );
@@ -387,7 +385,7 @@ ScopedDepthTest::~ScopedDepthTest()
 }
 
 ScopedDepthWrite::ScopedDepthWrite( bool enableWrite )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushDepthMask( enableWrite );
 }
@@ -400,13 +398,13 @@ ScopedDepthWrite::~ScopedDepthWrite()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedRenderbuffer
 ScopedRenderbuffer::ScopedRenderbuffer( const RenderbufferRef &renderBuffer )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushRenderbufferBinding( GL_RENDERBUFFER, renderBuffer->getId() );
 }
 
 ScopedRenderbuffer::ScopedRenderbuffer( GLenum target, GLuint id )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	// this is the only legal value currently
 	CI_ASSERT( target == GL_RENDERBUFFER );
@@ -421,23 +419,23 @@ ScopedRenderbuffer::~ScopedRenderbuffer()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedViewport
 ScopedViewport::ScopedViewport( const ivec2 &lowerLeftPosition, const ivec2 &dimension )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushViewport( { lowerLeftPosition, dimension } );
 }
 
 ScopedViewport::ScopedViewport( const ivec2 &size )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushViewport( { ivec2( 0 ), size } );
 }
 
 ScopedViewport::ScopedViewport( int lowerLeftX, int lowerLeftY, int width, int height )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushViewport( { ivec2( lowerLeftX, lowerLeftY ), ivec2( width, height ) } );
 }
-
+	
 ScopedViewport::~ScopedViewport()
 {
 	mCtx->popViewport();
@@ -446,7 +444,7 @@ ScopedViewport::~ScopedViewport()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedLineWidth
 ScopedLineWidth::ScopedLineWidth( float width )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushLineWidth( width );
 }
@@ -456,12 +454,12 @@ ScopedLineWidth::~ScopedLineWidth()
 	mCtx->popLineWidth();
 }
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedPolygonMode
 ScopedPolygonMode::ScopedPolygonMode( GLenum mode )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushPolygonMode( GL_FRONT_AND_BACK, mode );
 }
@@ -476,7 +474,7 @@ ScopedPolygonMode::~ScopedPolygonMode()
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ScopedFrontFace
 ScopedFrontFace::ScopedFrontFace( GLenum mode )
-    : mCtx( gl::context() )
+	: mCtx( gl::context() )
 {
 	mCtx->pushFrontFace( mode );
 }
@@ -485,5 +483,5 @@ ScopedFrontFace::~ScopedFrontFace()
 {
 	mCtx->popFrontFace();
 }
-}
-} // namespace cinder::gl
+
+} } // namespace cinder::gl

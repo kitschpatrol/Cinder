@@ -23,23 +23,23 @@
 
 #import <Cocoa/Cocoa.h>
 
-#include "cinder/Log.h"
 #include "cinder/app/cocoa/AppCocoaView.h"
 #include "cinder/app/cocoa/CinderViewMac.h"
 #include "cinder/app/cocoa/PlatformCocoa.h"
+#include "cinder/Log.h"
 
 using namespace std;
 using namespace cinder;
 using namespace cinder::app;
 
-@interface WindowImplCocoaView : NSObject <CinderViewDelegate, WindowImplCocoa> {
+@interface WindowImplCocoaView : NSObject<CinderViewDelegate, WindowImplCocoa> {
   @public
-	AppImplCocoaView *     mAppImpl;
-	CinderViewMac *        mCinderView;
-	cinder::app::WindowRef mWindowRef;
-	cinder::DisplayRef     mDisplay;
-	cinder::ivec2          mSize, mPos;
-	bool                   mBorderless, mAlwaysOnTop, mIsHidden;
+	AppImplCocoaView*		mAppImpl;
+	CinderViewMac*			mCinderView;
+	cinder::app::WindowRef	mWindowRef;
+	cinder::DisplayRef		mDisplay;
+	cinder::ivec2			mSize, mPos;
+	bool					mBorderless, mAlwaysOnTop, mIsHidden;
 }
 
 - (WindowImplCocoaView *)init:(CinderViewMac *)cinderView format:(cinder::app::Window::Format)winFormat appImpl:(AppImplCocoaView *)appImpl;
@@ -60,38 +60,38 @@ using namespace cinder::app;
 - (void)setAlwaysOnTop:(bool)alwaysOnTop;
 - (cinder::DisplayRef)getDisplay;
 - (cinder::app::RendererRef)getRenderer;
-- (void *)getNative;
+- (void*)getNative;
 
 // CinderViewDelegate methods
 - (void)resize;
 - (void)draw;
-- (void)mouseDown:(cinder::app::MouseEvent *)event;
-- (void)mouseDrag:(cinder::app::MouseEvent *)event;
-- (void)mouseUp:(cinder::app::MouseEvent *)event;
-- (void)mouseMove:(cinder::app::MouseEvent *)event;
-- (void)mouseWheel:(cinder::app::MouseEvent *)event;
-- (void)keyDown:(cinder::app::KeyEvent *)event;
-- (void)keyUp:(cinder::app::KeyEvent *)event;
-- (void)touchesBegan:(cinder::app::TouchEvent *)event;
-- (void)touchesMoved:(cinder::app::TouchEvent *)event;
-- (void)touchesEnded:(cinder::app::TouchEvent *)event;
-- (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches;
-- (void)fileDrop:(cinder::app::FileDropEvent *)event;
+- (void)mouseDown:(cinder::app::MouseEvent*)event;
+- (void)mouseDrag:(cinder::app::MouseEvent*)event;
+- (void)mouseUp:(cinder::app::MouseEvent*)event;
+- (void)mouseMove:(cinder::app::MouseEvent*)event;
+- (void)mouseWheel:(cinder::app::MouseEvent*)event;
+- (void)keyDown:(cinder::app::KeyEvent*)event;
+- (void)keyUp:(cinder::app::KeyEvent*)event;
+- (void)touchesBegan:(cinder::app::TouchEvent*)event;
+- (void)touchesMoved:(cinder::app::TouchEvent*)event;
+- (void)touchesEnded:(cinder::app::TouchEvent*)event;
+- (const std::vector<cinder::app::TouchEvent::Touch>&)getActiveTouches;
+- (void)fileDrop:(cinder::app::FileDropEvent*)event;
 - (cinder::app::WindowRef)getWindowRef;
 
 @end
 
 @interface AppImplCocoaView : NSObject {
   @public
-	NSTimer *                        mAnimationTimer;
-	cinder::app::AppCocoaView *      mApp;
-	cinder::app::RendererRef         mDefaultRenderer;
-	std::list<WindowImplCocoaView *> mWindows;
-	WindowImplCocoaView *            mActiveWindow;
-
-	bool  mNeedsUpdate;
-	bool  mFrameRateEnabled;
-	float mFrameRate;
+	NSTimer								*mAnimationTimer;
+	cinder::app::AppCocoaView			*mApp;
+	cinder::app::RendererRef			mDefaultRenderer;
+	std::list<WindowImplCocoaView*>		mWindows;
+	WindowImplCocoaView					*mActiveWindow;
+	
+	bool								mNeedsUpdate;
+	bool								mFrameRateEnabled;
+	float								mFrameRate;
 }
 
 - (AppImplCocoaView *)init:(cinder::app::AppCocoaView *)app settings:(const AppCocoaView::Settings &)settings defaultRenderer:(cinder::app::RendererRef)defaultRenderer;
@@ -106,11 +106,12 @@ using namespace cinder::app;
 - (bool)isFrameRateEnabled;
 
 - (cinder::app::RendererRef)findSharedRenderer:(cinder::app::RendererRef)match;
-- (void)setActiveWindow:(WindowImplCocoaView *)activeWindow;
+- (void)setActiveWindow:(WindowImplCocoaView*)activeWindow;
 - (cinder::app::WindowRef)getWindow;
 - (size_t)getNumWindows;
 - (cinder::app::WindowRef)getWindowIndex:(size_t)index;
 @end
+
 
 @implementation WindowImplCocoaView
 
@@ -120,77 +121,77 @@ using namespace cinder::app;
 	mWindowRef->emitDraw();
 }
 
-- (void)mouseDown:(cinder::app::MouseEvent *)event
+- (void)mouseDown:(cinder::app::MouseEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitMouseDown( event );
 }
 
-- (void)mouseDrag:(cinder::app::MouseEvent *)event
+- (void)mouseDrag:(cinder::app::MouseEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitMouseDrag( event );
 }
 
-- (void)mouseUp:(cinder::app::MouseEvent *)event
+- (void)mouseUp:(cinder::app::MouseEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitMouseUp( event );
 }
 
-- (void)mouseMove:(cinder::app::MouseEvent *)event
+- (void)mouseMove:(cinder::app::MouseEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitMouseMove( event );
 }
 
-- (void)mouseWheel:(cinder::app::MouseEvent *)event
+- (void)mouseWheel:(cinder::app::MouseEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitMouseWheel( event );
 }
 
-- (void)keyDown:(cinder::app::KeyEvent *)event
+- (void)keyDown:(cinder::app::KeyEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitKeyDown( event );
 }
 
-- (void)keyUp:(cinder::app::KeyEvent *)event
+- (void)keyUp:(cinder::app::KeyEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitKeyUp( event );
 }
 
-- (void)touchesBegan:(cinder::app::TouchEvent *)event
+- (void)touchesBegan:(cinder::app::TouchEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitTouchesBegan( event );
 }
 
-- (void)touchesMoved:(cinder::app::TouchEvent *)event
+- (void)touchesMoved:(cinder::app::TouchEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitTouchesMoved( event );
 }
 
-- (void)touchesEnded:(cinder::app::TouchEvent *)event
+- (void)touchesEnded:(cinder::app::TouchEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
 	mWindowRef->emitTouchesEnded( event );
 }
 
-- (void)fileDrop:(cinder::app::FileDropEvent *)event
+- (void)fileDrop:(cinder::app::FileDropEvent*)event
 {
 	[mAppImpl setActiveWindow:self];
 	event->setWindow( mWindowRef );
@@ -202,7 +203,7 @@ using namespace cinder::app;
 	return mWindowRef;
 }
 
-- (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches
+- (const std::vector<cinder::app::TouchEvent::Touch>&)getActiveTouches
 {
 	return [mCinderView getActiveTouches];
 }
@@ -257,7 +258,7 @@ using namespace cinder::app;
 
 - (void)setAlwaysOnTop:(bool)alwaysOnTop
 {
-	[[mCinderView window] setLevel:( alwaysOnTop ) ? NSScreenSaverWindowLevel : NSNormalWindowLevel];
+	[[mCinderView window] setLevel:(alwaysOnTop)?NSScreenSaverWindowLevel:NSNormalWindowLevel];
 }
 
 - (cinder::DisplayRef)getDisplay
@@ -268,7 +269,7 @@ using namespace cinder::app;
 		if( screen )
 			return cinder::app::PlatformCocoa::get()->findFromNsScreen( screen );
 	}
-
+	
 	return cinder::DisplayRef();
 }
 
@@ -303,7 +304,7 @@ using namespace cinder::app;
 	NSRect frame = [mCinderView frame];
 	mSize = cinder::ivec2( frame.size.width, frame.size.height );
 	mPos = cinder::ivec2( frame.origin.x, frame.origin.y );
-
+	
 	mWindowRef->emitResize();
 }
 
@@ -347,7 +348,7 @@ using namespace cinder::app;
 	mSize.x = (int)contentRect.size.width;
 	mSize.y = (int)contentRect.size.height;
 	mPos = cinder::ivec2( contentRect.origin.x, contentRect.origin.y );
-
+	
 	// for some renderers, ok really just GL, we want an existing renderer so we can steal its context to share with. If this comes back with NULL that's fine - we're first
 	cinder::app::RendererRef sharedRenderer = [appImpl findSharedRenderer:winFormat.getRenderer()];
 
@@ -372,16 +373,16 @@ using namespace cinder::app;
 - (AppImplCocoaView *)init:(cinder::app::AppCocoaView *)app settings:(const AppCocoaView::Settings &)settings defaultRenderer:(cinder::app::RendererRef)defaultRenderer
 {
 	self = [super init];
-
+	
 	mApp = app;
 	mDefaultRenderer = defaultRenderer;
 	mAnimationTimer = nil;
 	mFrameRateEnabled = settings.isFrameRateEnabled();
 	mFrameRate = settings.getFrameRate();
-
+	
 	// register for notification of application termination
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( applicationWillTerminate: ) name:NSApplicationWillTerminateNotification object:nil];
-
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:NSApplicationWillTerminateNotification object:nil];
+	
 	return self;
 }
 
@@ -399,10 +400,10 @@ using namespace cinder::app;
 {
 	for( auto &win : mWindows ) {
 		cinder::app::RendererRef renderer = [win->mCinderView getRenderer];
-		if( typeid( renderer ) == typeid( match ) )
+		if( typeid(renderer) == typeid(match) )
 			return renderer;
 	}
-
+	
 	return cinder::app::RendererRef();
 }
 
@@ -423,10 +424,10 @@ using namespace cinder::app;
 {
 	if( index >= mWindows.size() )
 		return cinder::app::WindowRef();
-
-	std::list<WindowImplCocoaView *>::iterator iter = mWindows.begin();
+	
+	std::list<WindowImplCocoaView*>::iterator iter = mWindows.begin();
 	std::advance( iter, index );
-	return ( *iter )->mWindowRef;
+	return (*iter)->mWindowRef;
 }
 
 - (cinder::app::WindowRef)getWindow
@@ -434,7 +435,7 @@ using namespace cinder::app;
 	return mActiveWindow->mWindowRef;
 }
 
-- (void)setActiveWindow:(WindowImplCocoaView *)activeWindow
+- (void)setActiveWindow:(WindowImplCocoaView*)activeWindow
 {
 	mActiveWindow = activeWindow;
 }
@@ -443,13 +444,13 @@ using namespace cinder::app;
 {
 	if( mAnimationTimer && [mAnimationTimer isValid] )
 		[mAnimationTimer invalidate];
-
+	
 	float interval = ( mFrameRateEnabled ) ? 1.0f / mFrameRate : 0.001f;
-	mAnimationTimer = [NSTimer timerWithTimeInterval:interval
-	                                          target:self
-	                                        selector:@selector( timerFired: )
-	                                        userInfo:nil
-	                                         repeats:YES];
+	mAnimationTimer = [NSTimer	 timerWithTimeInterval:interval
+												target:self
+											  selector:@selector(timerFired:)
+											  userInfo:nil
+											   repeats:YES];
 	[[NSRunLoop currentRunLoop] addTimer:mAnimationTimer forMode:NSDefaultRunLoopMode];
 	[[NSRunLoop currentRunLoop] addTimer:mAnimationTimer forMode:NSEventTrackingRunLoopMode];
 }
@@ -458,12 +459,12 @@ using namespace cinder::app;
 {
 	// issue update() event
 	mApp->privateUpdate__();
-
+	
 	// all live windows are ready to draw now that we've fired an update
 	for( auto &win : mWindows ) {
 		[win->mCinderView setReadyToDraw:YES];
-	}
-
+	}	
+	
 	// walk all windows and draw them
 	for( auto &win : mWindows ) {
 		[self setActiveWindow:win];
@@ -509,11 +510,10 @@ using namespace cinder::app;
 
 @end // AppImplCocoaView
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 AppCocoaView::AppCocoaView()
-    : AppBase()
+	: AppBase()
 {
 	const Settings *settings = dynamic_cast<Settings *>( sSettingsFromMain );
 	CI_ASSERT( settings );
@@ -534,8 +534,8 @@ void AppCocoaView::setupCinderView( CinderViewMac *cinderView )
 
 void AppCocoaView::launch()
 {
-	if( !mImpl->mWindows.empty() )
-		[mImpl setActiveWindow:*( mImpl->mWindows.begin() )];
+	if( ! mImpl->mWindows.empty() )
+		[mImpl setActiveWindow:*(mImpl->mWindows.begin())];
 	else
 		[mImpl setActiveWindow:nil];
 	privateSetup__();
@@ -545,8 +545,8 @@ void AppCocoaView::launch()
 		[win->mCinderView makeCurrentContext];
 		[mImpl setActiveWindow:win];
 		win->mWindowRef->emitResize();
-	}
-
+	}	
+	
 	[mImpl startAnimationTimer];
 }
 
@@ -605,5 +605,5 @@ void AppCocoaView::showCursor()
 {
 	[NSCursor unhide];
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

@@ -27,37 +27,36 @@
 #undef min
 #undef max
 
-#include "cinder/Surface.h"
 #include "cinder/app/msw/RendererImplMsw.h"
+#include "cinder/Surface.h"
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 class AppBase;
 
 class RendererImpl2dGdi : public RendererImplMsw {
-  public:
-	RendererImpl2dGdi( bool doubleBuffer, bool paintEvents );
+ public:
+	 RendererImpl2dGdi( bool doubleBuffer, bool paintEvents );
 
-	virtual bool initialize( HWND wnd, HDC dc, RendererRef sharedRenderer );
-	virtual void kill() {}
-	virtual void defaultResize() const;
-	virtual void swapBuffers() const;
-	virtual void makeCurrentContext( bool force = false );
+	virtual bool	initialize( HWND wnd, HDC dc, RendererRef sharedRenderer );
+	virtual void	kill() {}
+	virtual void	defaultResize() const;
+	virtual void	swapBuffers() const;
+	virtual void	makeCurrentContext( bool force = false );
+	
+	virtual HDC		getDc() const { return ( mDoubleBuffer ) ? mDoubleBufferDc : mPaintDc; }
+	Surface8u		copyWindowContents( const Area &area );
+	
+ protected:
+	::HDC			mPaintDc;
+	::PAINTSTRUCT	mPaintStruct;
+	
+	bool			mDoubleBuffer;
+	bool 			mPaintEvents;
 
-	virtual HDC getDc() const { return ( mDoubleBuffer ) ? mDoubleBufferDc : mPaintDc; }
-	Surface8u copyWindowContents( const Area &area );
-
-  protected:
-	::HDC         mPaintDc;
-	::PAINTSTRUCT mPaintStruct;
-
-	bool mDoubleBuffer;
-	bool mPaintEvents;
-
-	::HDC     mDoubleBufferDc;
-	::HBITMAP mDoubleBufferBitmap, mDoubleBufferOldBitmap;
-	ivec2     mDoubleBufferBitmapSize;
+	::HDC			mDoubleBufferDc;
+	::HBITMAP		mDoubleBufferBitmap, mDoubleBufferOldBitmap;
+	ivec2			mDoubleBufferBitmapSize;
 };
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

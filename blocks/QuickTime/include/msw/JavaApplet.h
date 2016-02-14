@@ -33,6 +33,10 @@
 #include <JavaControl.h>
 #endif
 
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -46,27 +50,28 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-#if defined( __fourbyteints__ ) && !__fourbyteints__
-#define __JAVAAPPLET__RESTORE_TWOBYTEINTS
-#pragma fourbyteints on
-#endif
-#pragma enumsalwaysint on
+    #if defined(__fourbyteints__) && !__fourbyteints__ 
+        #define __JAVAAPPLET__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints on
+    #endif
+    #pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =int
+    #pragma option enum=int
 #elif PRAGMA_ENUM_PACK
-#if __option( pack_enums )
-#define __JAVAAPPLET__RESTORE_PACKED_ENUMS
-#pragma options( !pack_enums )
+    #if __option(pack_enums)
+        #define __JAVAAPPLET__RESTORE_PACKED_ENUMS
+        #pragma options(!pack_enums)
+    #endif
 #endif
-#endif
+
 
 /*
  *  AppletDescriptor
@@ -76,26 +81,26 @@ extern "C" {
  *    definition of the applet to create when you call CreateJavaApplet.
  */
 struct AppletDescriptor {
-	CFURLRef docBase;
-	CFURLRef codeBase;
+  CFURLRef            docBase;
+  CFURLRef            codeBase;
 
-	/*
+  /*
    * The attributes found in the <applet ...> tag formatted as a
    * CFDictionary of CFStrings. For attributes like height and width
    * they should be in screen coordinates. some Applets define them as
    * % (for example 90%) and should be converted to pixels before put
    * into the dictionary.
    */
-	CFDictionaryRef htmlAttrs;
+  CFDictionaryRef     htmlAttrs;
 
-	/*
+  /*
    * The parameters to the applet formatted as a CFDictionary of
    * CFStrings. These are typically found in <param ...> tags inside of
    * the applet tag.
    */
-	CFDictionaryRef appletParams;
+  CFDictionaryRef     appletParams;
 };
-typedef struct AppletDescriptor AppletDescriptor;
+typedef struct AppletDescriptor         AppletDescriptor;
 
 /*
  *  AppletArena
@@ -105,14 +110,14 @@ typedef struct AppletDescriptor AppletDescriptor;
  *    arena represents a single classloader, so all applets that share
  *    an arena share a common classloader.
  */
-typedef struct OpaqueAppletArena *AppletArena;
+typedef struct OpaqueAppletArena*       AppletArena;
 /*    
     kUniqueArena is the value to pass to CreateJavaApplet if you want the applet to be created
     in a unique arena. A unique arena is one which is guaranteed not to be shared with
     any other applet running in this Java VM. This is the appropriate default value to
     pass to CreateJavaApplet.
 */
-#define kUniqueArena ( (AppletArena)NULL )
+#define kUniqueArena                    ((AppletArena)NULL)
 
 /*
  *  JE_ShowDocumentCallback
@@ -139,7 +144,7 @@ typedef struct OpaqueAppletArena *AppletArena;
  *      Data specified when this callback was registered using
  *      RegisterShowDocumentCallback.
  */
-typedef CALLBACK_API_C( void, JE_ShowDocumentCallback )( jobject applet, CFURLRef url, CFStringRef windowName, void *userData );
+typedef CALLBACK_API_C( void , JE_ShowDocumentCallback )(jobject applet, CFURLRef url, CFStringRef windowName, void *userData);
 
 /*
  *  JE_SetStatusCallback
@@ -160,7 +165,7 @@ typedef CALLBACK_API_C( void, JE_ShowDocumentCallback )( jobject applet, CFURLRe
  *      Data specified when this callback was registered using
  *      RegisterStatusCallback.
  */
-typedef CALLBACK_API_C( void, JE_SetStatusCallback )( jobject applet, CFStringRef statusMessage, void *userData );
+typedef CALLBACK_API_C( void , JE_SetStatusCallback )(jobject applet, CFStringRef statusMessage, void *userData);
 /*
  *  GetEmbeddingVMParams()
  *  
@@ -182,7 +187,8 @@ typedef CALLBACK_API_C( void, JE_SetStatusCallback )( jobject applet, CFStringRe
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( OSStatus )
-GetEmbeddingVMParams( JavaVMInitArgs *ioJavaVMInitArgs );
+GetEmbeddingVMParams(JavaVMInitArgs * ioJavaVMInitArgs);
+
 
 /*
  *  CreateAppletArena()
@@ -205,7 +211,9 @@ GetEmbeddingVMParams( JavaVMInitArgs *ioJavaVMInitArgs );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( OSStatus )
-CreateAppletArena( AppletArena *outNewArena );
+CreateAppletArena(AppletArena * outNewArena);
+
+
 
 /*
  *  CreateJavaApplet()
@@ -240,11 +248,13 @@ CreateAppletArena( AppletArena *outNewArena );
  */
 EXTERN_API_C( OSStatus )
 CreateJavaApplet(
-    JNIEnv *         env,
-    AppletDescriptor applet,
-    Boolean          trusted,
-    AppletArena      arena, /* can be NULL */
-    jobject *        outJavaFrame );
+  JNIEnv *           env,
+  AppletDescriptor   applet,
+  Boolean            trusted,
+  AppletArena        arena,              /* can be NULL */
+  jobject *          outJavaFrame);
+
+
 
 /*
  *  AppletState
@@ -253,11 +263,12 @@ CreateJavaApplet(
  *    Constants that are passed to SetJavaAppletState.
  */
 enum AppletState {
-	kAppletStart = 1, /* Starts the applet processing 3.*/
-	kAppletStop = 2, /* Halts the applet, but it can be started again.*/
-	kAppletDestroy = 4 /* Tears down the applet.*/
+  kAppletStart                  = 1,    /* Starts the applet processing 3.*/
+  kAppletStop                   = 2,    /* Halts the applet, but it can be started again.*/
+  kAppletDestroy                = 4     /* Tears down the applet.*/
 };
 typedef enum AppletState AppletState;
+
 
 /*
  *  SetJavaAppletState()
@@ -286,9 +297,11 @@ typedef enum AppletState AppletState;
  */
 EXTERN_API_C( OSStatus )
 SetJavaAppletState(
-    JNIEnv *    env,
-    jobject     inAppletFrame,
-    AppletState inNewState );
+  JNIEnv *      env,
+  jobject       inAppletFrame,
+  AppletState   inNewState);
+
+
 
 /*
  *  RegisterStatusCallback()
@@ -326,10 +339,12 @@ SetJavaAppletState(
  */
 EXTERN_API_C( OSStatus )
 RegisterStatusCallback(
-    JNIEnv *             env,
-    jobject              inJavaFrame,
-    JE_SetStatusCallback showStatusFunction,
-    void *               userData );
+  JNIEnv *               env,
+  jobject                inJavaFrame,
+  JE_SetStatusCallback   showStatusFunction,
+  void *                 userData);
+
+
 
 /*
  *  RegisterShowDocumentCallback()
@@ -370,28 +385,31 @@ RegisterStatusCallback(
  */
 EXTERN_API_C( OSStatus )
 RegisterShowDocumentCallback(
-    JNIEnv *                env,
-    jobject                 inJavaFrame,
-    JE_ShowDocumentCallback showDocumentFunction,
-    void *                  userData );
+  JNIEnv *                  env,
+  jobject                   inJavaFrame,
+  JE_ShowDocumentCallback   showDocumentFunction,
+  void *                    userData);
+
+
+
 
 #if PRAGMA_ENUM_ALWAYSINT
-#pragma enumsalwaysint reset
-#ifdef __JAVAAPPLET__RESTORE_TWOBYTEINTS
-#pragma fourbyteints off
-#endif
+    #pragma enumsalwaysint reset
+    #ifdef __JAVAAPPLET__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints off
+    #endif
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =reset
-#elif defined( __JAVAAPPLET__RESTORE_PACKED_ENUMS )
-#pragma options( pack_enums )
+    #pragma option enum=reset
+#elif defined(__JAVAAPPLET__RESTORE_PACKED_ENUMS)
+    #pragma options(pack_enums)
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF

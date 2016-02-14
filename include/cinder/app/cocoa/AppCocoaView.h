@@ -26,48 +26,50 @@
 #include "cinder/app/AppBase.h"
 
 #if defined( __OBJC__ )
-@class AppImplCocoaView;
-@class CinderViewMac;
+	@class AppImplCocoaView;
+	@class CinderViewMac;
 #else
-class AppImplCocoaView;
-class CinderViewMac;
+	class AppImplCocoaView;
+	class CinderViewMac;
 #endif
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 class AppCocoaView : public AppBase {
   public:
+
 	AppCocoaView();
 	~AppCocoaView();
+		
+	static void		initialize( Settings *settings, const RendererRef &defaultRenderer )	{ AppBase::initialize( settings, defaultRenderer, nullptr, 0, nullptr ); }
 
-	static void initialize( Settings *settings, const RendererRef &defaultRenderer ) { AppBase::initialize( settings, defaultRenderer, nullptr, 0, nullptr ); }
-	virtual void setupCinderView( CinderViewMac *cinderView );
+	virtual void	setupCinderView( CinderViewMac *cinderView );
 
-	void launch() override;
-	void quit() override;
+	void			launch() override;
+	void			quit() override;
 	//! Returns the maximum frame-rate the App will attempt to maintain measured in frames-per-second
-	float getFrameRate() const override;
+	float			getFrameRate() const override;
 	//! Sets the maximum frame-rate the App will attempt to maintain \ a frameRate frames-per-second
-	void setFrameRate( float frameRate ) override;
+	void			setFrameRate( float frameRate ) override;
 	//! Disables frameRate limiting.
-	void disableFrameRate() override;
+	void			disableFrameRate() override;
 	//! Returns whether frameRate limiting is enabled.
-	bool isFrameRateEnabled() const override;
+	bool			isFrameRateEnabled() const override;
 
-	size_t    getNumWindows() const override;
-	WindowRef getWindow() const override;
-	WindowRef getWindowIndex( size_t index ) const override;
-	ivec2 getMousePos() const override;
+	size_t		getNumWindows() const override;
+	WindowRef	getWindow() const override;
+	WindowRef	getWindowIndex( size_t index ) const override;
+	ivec2		getMousePos() const override;
 
 	//! \note no-op and returns an empty WindowRef, user is expected to create new windows using NSWindow API directly
-	WindowRef createWindow( const Window::Format &format = Window::Format() ) override { return WindowRef(); }
-	WindowRef                                     getForegroundWindow() const override { return getWindow(); }
-	void                                          hideCursor() override;
-	void                                          showCursor() override;
+	WindowRef	createWindow( const Window::Format &format = Window::Format() ) override	{ return WindowRef(); }
+	WindowRef	getForegroundWindow() const override	{ return getWindow(); }
+
+	void		hideCursor() override;
+	void		showCursor() override;
 
   protected:
-	AppImplCocoaView *mImpl;
+	AppImplCocoaView	*mImpl;
 };
-}
-} // cinder::app
+
+} } // cinder::app

@@ -28,44 +28,43 @@
 
 #include "cinder/gl/platform.h"
 
-#include "cinder/qtime/AvfUtils.h"
 #include "cinder/qtime/QuickTimeImplAvf.h"
+#include "cinder/qtime/AvfUtils.h"
 
 #if defined( CINDER_COCOA )
-#include <CoreVideo/CoreVideo.h>
-#include <AVFoundation/AVFoundation.h>
+	#include <CoreVideo/CoreVideo.h>
+	#include <AVFoundation/AVFoundation.h>
 #endif
 
 using namespace std;
 
-namespace cinder {
-namespace qtime {
+namespace cinder { namespace qtime {
 
 bool setAudioSessionModes()
 {
 #if defined( CINDER_COCOA_TOUCH )
-	NSError *error = nil;
+	NSError* error = nil;
 	[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeMoviePlayback error:&error];
 	return [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:&error];
-
+	
 #else
 	return false;
-
+	
 #endif
 }
 
 bool dictionarySetValue( CFMutableDictionaryRef dict, CFStringRef key, SInt32 value )
 {
-	bool        setNumber = false;
-	CFNumberRef number = CFNumberCreate( kCFAllocatorDefault, kCFNumberSInt32Type, &value );
-
-	if( number != NULL ) {
+	bool         setNumber = false;
+    CFNumberRef  number    = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &value);
+	
+    if( number != NULL ) {
 		CFDictionarySetValue( dict, key, number );
 		CFRelease( number );
 		setNumber = true;
 	}
-
-	return setNumber;
+	
+    return setNumber;
 }
 
 bool dictionarySetPixelBufferPixelFormatType( bool alpha, CFMutableDictionaryRef dict )
@@ -76,7 +75,7 @@ bool dictionarySetPixelBufferPixelFormatType( bool alpha, CFMutableDictionaryRef
 #elif defined( CINDER_COCOA )
 	setPixelBufferOptions = dictionarySetValue( dict, kCVPixelBufferPixelFormatTypeKey, ( alpha ) ? k32BGRAPixelFormat : k24RGBPixelFormat );
 #endif
-	return setPixelBufferOptions;
+	return  setPixelBufferOptions;
 }
 
 bool dictionarySetPixelBufferSize( const unsigned int width, const unsigned int height, CFMutableDictionaryRef dict )
@@ -85,7 +84,7 @@ bool dictionarySetPixelBufferSize( const unsigned int width, const unsigned int 
 
 	setSize = dictionarySetValue( dict, kCVPixelBufferWidthKey, width );
 	setSize = setSize && dictionarySetValue( dict, kCVPixelBufferHeightKey, height );
-
+	
 	return setSize;
 }
 
@@ -98,18 +97,18 @@ bool dictionarySetPixelBufferBytesPerRowAlignment( CFMutableDictionaryRef dict )
 
 void dictionarySetPixelBufferOpenGLCompatibility( CFMutableDictionaryRef dict )
 {
-	CFDictionarySetValue( dict, kCVPixelBufferOpenGLCompatibilityKey, kCFBooleanTrue );
+	CFDictionarySetValue(dict, kCVPixelBufferOpenGLCompatibilityKey, kCFBooleanTrue);
 }
 
 bool dictionarySetPixelBufferOptions( unsigned int width, unsigned int height, bool alpha, CFMutableDictionaryRef *pixelBufferOptions )
 {
-	bool                   setPixelBufferOptions = false;
-	CFMutableDictionaryRef pixelBufferDict = CFDictionaryCreateMutable( kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );
+	bool setPixelBufferOptions = false;
+    CFMutableDictionaryRef  pixelBufferDict = CFDictionaryCreateMutable( kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks );
 
-	if( pixelBufferDict != NULL ) {
-		if( dictionarySetPixelBufferPixelFormatType( alpha, pixelBufferDict ) ) {
-			if( dictionarySetPixelBufferSize( width, height, pixelBufferDict ) ) {
-				if( dictionarySetPixelBufferBytesPerRowAlignment( pixelBufferDict ) ) {
+    if ( pixelBufferDict != NULL ) {
+		if ( dictionarySetPixelBufferPixelFormatType( alpha, pixelBufferDict ) ) {
+			if ( dictionarySetPixelBufferSize( width, height, pixelBufferDict ) ) {
+				if ( dictionarySetPixelBufferBytesPerRowAlignment( pixelBufferDict ) ) {
 					dictionarySetPixelBufferOpenGLCompatibility( pixelBufferDict );
 					*pixelBufferOptions = pixelBufferDict;
 					setPixelBufferOptions = true;
@@ -117,11 +116,11 @@ bool dictionarySetPixelBufferOptions( unsigned int width, unsigned int height, b
 			}
 		}
 	}
-
+	
 	return setPixelBufferOptions;
 }
-
-/*
+	
+	/*
 CFMutableDictionaryRef initQTVisualContextOptions( int width, int height, bool alpha )
 {
 	CFMutableDictionaryRef  visualContextOptions = NULL;
@@ -275,39 +274,39 @@ Handle createPointerDataRefWithExtensions( void *data, size_t dataSize, const st
     return NULL;
 }
 */
-
-static void CVPixelBufferDealloc( void *refcon )
+	
+static void CVPixelBufferDealloc( void* refcon )
 {
-	::CVBufferRelease( ( CVPixelBufferRef )( refcon ) );
+	::CVBufferRelease( (CVPixelBufferRef)(refcon) );
 }
 
 Surface8uRef convertCvPixelBufferToSurface( CVPixelBufferRef pixelBufferRef )
 {
 	::CVPixelBufferLockBaseAddress( pixelBufferRef, 0 );
-	uint8_t *ptr = reinterpret_cast<uint8_t *>(::CVPixelBufferGetBaseAddress( pixelBufferRef ) );
-	int32_t  rowBytes = ( int32_t )::CVPixelBufferGetBytesPerRow( pixelBufferRef );
-	OSType   type = ::CVPixelBufferGetPixelFormatType( pixelBufferRef );
-	size_t   width = ::CVPixelBufferGetWidth( pixelBufferRef );
-	size_t   height = ::CVPixelBufferGetHeight( pixelBufferRef );
-	::CVPixelBufferUnlockBaseAddress( pixelBufferRef, 0 );
-
+	uint8_t *ptr = reinterpret_cast<uint8_t*>( ::CVPixelBufferGetBaseAddress( pixelBufferRef ) );
+	int32_t rowBytes = (int32_t)::CVPixelBufferGetBytesPerRow( pixelBufferRef );
+	OSType type = ::CVPixelBufferGetPixelFormatType( pixelBufferRef );
+	size_t width = ::CVPixelBufferGetWidth( pixelBufferRef );
+	size_t height = ::CVPixelBufferGetHeight( pixelBufferRef );
+	::CVPixelBufferUnlockBaseAddress(pixelBufferRef, 0);
+	
 	SurfaceChannelOrder sco;
 #if defined( CINDER_COCOA_TOUCH )
-	if( type == kCVPixelFormatType_24RGB )
+	if (type == kCVPixelFormatType_24RGB )
 		sco = SurfaceChannelOrder::RGB;
-	else if( type == kCVPixelFormatType_24BGR )
+	else if (type == kCVPixelFormatType_24BGR )
 		sco = SurfaceChannelOrder::BGR;
-	else if( type == kCVPixelFormatType_30RGB )
+	else if (type == kCVPixelFormatType_30RGB )
 		sco = SurfaceChannelOrder::RGB;
-	else if( type == kCVPixelFormatType_32ARGB )
+	else if ( type == kCVPixelFormatType_32ARGB )
 		sco = SurfaceChannelOrder::ARGB;
-	else if( type == kCVPixelFormatType_32BGRA )
+	else if (type == kCVPixelFormatType_32BGRA )
 		sco = SurfaceChannelOrder::BGRA;
-	else if( type == kCVPixelFormatType_32ABGR )
+	else if (type == kCVPixelFormatType_32ABGR )
 		sco = SurfaceChannelOrder::ABGR;
-	else if( type == kCVPixelFormatType_32RGBA )
+	else if (type == kCVPixelFormatType_32RGBA )
 		sco = SurfaceChannelOrder::BGRA;
-
+	
 #elif defined( CINDER_COCOA )
 	if( type == k24RGBPixelFormat )
 		sco = SurfaceChannelOrder::RGB;
@@ -318,9 +317,9 @@ Surface8uRef convertCvPixelBufferToSurface( CVPixelBufferRef pixelBufferRef )
 	else if( type == k32BGRAPixelFormat )
 		sco = SurfaceChannelOrder::BGRA;
 #endif
-
+	
 	return std::shared_ptr<Surface8u>( new Surface8u( ptr, (int32_t)width, (int32_t)height, rowBytes, sco ),
-	    [=]( Surface8u *s ) { delete s; CVPixelBufferDealloc( pixelBufferRef ); } );
+		[=]( Surface8u *s ) { delete s; CVPixelBufferDealloc( pixelBufferRef ); } );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -336,122 +335,124 @@ ImageTargetCvPixelBufferRef ImageTargetCvPixelBuffer::createRef( ImageSourceRef 
 }
 
 ImageTargetCvPixelBuffer::ImageTargetCvPixelBuffer( ImageSourceRef imageSource, CVPixelBufferPoolRef pbPool )
-    : ImageTarget(), mPixelBufferRef( 0 )
+	: ImageTarget(), mPixelBufferRef( 0 )
 {
 	setSize( imageSource->getWidth(), imageSource->getHeight() );
-
+	
 	//http://developer.apple.com/mac/library/qa/qa2006/qa1501.html
-
+	
 	// if we're converting to YCbCr, we'll load all of the data as RGB in terms of ci::ImageIo
 	// but we run color space conversion over it later in the finalize method
 	OSType formatType;
-	if( !mConvertToYpCbCr ) {
+	if( ! mConvertToYpCbCr ) {
 		switch( imageSource->getDataType() ) {
-		// for now all we support is 8 bit RGB(A)
-		case ImageIo::UINT16:
-		case ImageIo::FLOAT32:
-		case ImageIo::UINT8:
-			setDataType( ImageIo::UINT8 );
-			if( imageSource->hasAlpha() ) {
+				// for now all we support is 8 bit RGB(A)
+			case ImageIo::UINT16:
+			case ImageIo::FLOAT32:
+			case ImageIo::UINT8:
+				setDataType( ImageIo::UINT8 );
+				if( imageSource->hasAlpha () ) {
 #if defined( CINDER_COCOA_TOUCH )
-				formatType = kCVPixelFormatType_32ARGB;
+					formatType = kCVPixelFormatType_32ARGB;
 #elif defined( CINDER_COCOA )
-				formatType = k32ARGBPixelFormat;
+					formatType = k32ARGBPixelFormat;
 #endif
-				setChannelOrder( ImageIo::ARGB );
-			}
-			else {
+					setChannelOrder( ImageIo::ARGB );
+				}
+				else {
 #if defined( CINDER_COCOA_TOUCH )
-				formatType = kCVPixelFormatType_24RGB;
+					formatType = kCVPixelFormatType_24RGB;
 #elif defined( CINDER_COCOA )
-				formatType = k24RGBPixelFormat;
+					formatType = k24RGBPixelFormat;
 #endif
-				setChannelOrder( ImageIo::RGB );
-			}
-			setColorModel( ImageIo::CM_RGB );
-			break;
-		default:
-			throw ImageIoException();
+					setChannelOrder( ImageIo::RGB );
+				}
+				setColorModel( ImageIo::CM_RGB );
+				break;
+			default:
+				throw ImageIoException();
 		}
 	}
 	else {
-		formatType = 'v408'; /*k4444YpCbCrA8PixelFormat;*/
+		formatType = 'v408';/*k4444YpCbCrA8PixelFormat;*/
 		setDataType( ImageIo::UINT8 );
 		setChannelOrder( ImageIo::RGBA );
 		setColorModel( ImageIo::CM_RGB );
 	}
-
+	
 	// TODO: Can we create the buffer from the pool????? Seems like no at first attempt --maybe a pixel buffer attributes mismatch?
-	//	CFMutableDictionaryRef attributes = CFDictionaryCreateMutable( kCFAllocatorDefault, 6, nil, nil );
-	//	dictionarySetPixelBufferOpenGLCompatibility( attributes );
-	//	CVReturn status = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, pbPool, attributes, &mPixelBufferRef);
-	//	if( attributes ) {
-	//		CFRelease( attributes );
-	//		attributes = NULL;
-	//	}
+//	CFMutableDictionaryRef attributes = CFDictionaryCreateMutable( kCFAllocatorDefault, 6, nil, nil );
+//	dictionarySetPixelBufferOpenGLCompatibility( attributes );
+//	CVReturn status = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes(kCFAllocatorDefault, pbPool, attributes, &mPixelBufferRef);
+//	if( attributes ) {
+//		CFRelease( attributes );
+//		attributes = NULL;
+//	}
 	CVReturn status = CVPixelBufferPoolCreatePixelBuffer( kCFAllocatorDefault, pbPool, &mPixelBufferRef );
 	if( kCVReturnSuccess != status )
 		throw ImageIoException();
-
-	if(::CVPixelBufferLockBaseAddress( mPixelBufferRef, 0 ) != kCVReturnSuccess )
+	
+	if( ::CVPixelBufferLockBaseAddress( mPixelBufferRef, 0 ) != kCVReturnSuccess )
 		throw ImageIoException();
-	mData = reinterpret_cast<uint8_t *>(::CVPixelBufferGetBaseAddress( mPixelBufferRef ) );
+	mData = reinterpret_cast<uint8_t*>( ::CVPixelBufferGetBaseAddress( mPixelBufferRef ) );
 	mRowBytes = ::CVPixelBufferGetBytesPerRow( mPixelBufferRef );
-	std::cout << "Total size: " << ::CVPixelBufferGetDataSize( mPixelBufferRef ) << " Planar: " << (int)::CVPixelBufferIsPlanar( mPixelBufferRef ) << std::endl;
+std::cout << "Total size: " << ::CVPixelBufferGetDataSize( mPixelBufferRef ) << " Planar: " << (int)::CVPixelBufferIsPlanar( mPixelBufferRef ) << std::endl;	
 }
 
+
 ImageTargetCvPixelBuffer::ImageTargetCvPixelBuffer( ImageSourceRef imageSource, bool convertToYpCbCr )
-    : ImageTarget(), mPixelBufferRef( 0 ), mConvertToYpCbCr( convertToYpCbCr )
+	: ImageTarget(), mPixelBufferRef( 0 ), mConvertToYpCbCr( convertToYpCbCr )
 {
 	setSize( imageSource->getWidth(), imageSource->getHeight() );
-
+	
 	//http://developer.apple.com/mac/library/qa/qa2006/qa1501.html
-
+	
 	// if we're converting to YCbCr, we'll load all of the data as RGB in terms of ci::ImageIo
 	// but we run color space conversion over it later in the finalize method
 	OSType formatType;
-	if( !mConvertToYpCbCr ) {
+	if( ! mConvertToYpCbCr ) {
 		switch( imageSource->getDataType() ) {
-		// for now all we support is 8 bit RGB(A)
-		case ImageIo::UINT16:
-		case ImageIo::FLOAT32:
-		case ImageIo::UINT8:
-			setDataType( ImageIo::UINT8 );
-			if( imageSource->hasAlpha() ) {
+			// for now all we support is 8 bit RGB(A)
+			case ImageIo::UINT16:
+			case ImageIo::FLOAT32:
+			case ImageIo::UINT8:
+				setDataType( ImageIo::UINT8 );
+				if( imageSource->hasAlpha () ) {
 #if defined( CINDER_COCOA_TOUCH )
-				formatType = kCVPixelFormatType_32ARGB;
+					formatType = kCVPixelFormatType_32ARGB;
 #elif defined( CINDER_COCOA )
-				formatType = k32ARGBPixelFormat;
+					formatType = k32ARGBPixelFormat;
 #endif
-				setChannelOrder( ImageIo::ARGB );
-			}
-			else {
+					setChannelOrder( ImageIo::ARGB );
+				}
+				else {
 #if defined( CINDER_COCOA_TOUCH )
-				formatType = kCVPixelFormatType_24RGB;
+					formatType = kCVPixelFormatType_24RGB;
 #elif defined( CINDER_COCOA )
-				formatType = k24RGBPixelFormat;
+					formatType = k24RGBPixelFormat;
 #endif
-				setChannelOrder( ImageIo::RGB );
-			}
-			setColorModel( ImageIo::CM_RGB );
+					setChannelOrder( ImageIo::RGB );
+				}
+				setColorModel( ImageIo::CM_RGB );
 			break;
-		default:
-			throw ImageIoException();
+			default:
+				throw ImageIoException();
 		}
 	}
 	else {
-		formatType = 'v408'; /*k4444YpCbCrA8PixelFormat;*/
+		formatType = 'v408';/*k4444YpCbCrA8PixelFormat;*/
 		setDataType( ImageIo::UINT8 );
 		setChannelOrder( ImageIo::RGBA );
 		setColorModel( ImageIo::CM_RGB );
 	}
 
-	if(::CVPixelBufferCreate( kCFAllocatorDefault, imageSource->getWidth(), imageSource->getHeight(), formatType, NULL, &mPixelBufferRef ) != kCVReturnSuccess )
+	if( ::CVPixelBufferCreate( kCFAllocatorDefault, imageSource->getWidth(), imageSource->getHeight(), 
+				formatType, NULL, &mPixelBufferRef ) != kCVReturnSuccess )
 		throw ImageIoException();
-
-	if(::CVPixelBufferLockBaseAddress( mPixelBufferRef, 0 ) != kCVReturnSuccess )
+	
+	if( ::CVPixelBufferLockBaseAddress( mPixelBufferRef, 0 ) != kCVReturnSuccess )
 		throw ImageIoException();
-	mData = reinterpret_cast<uint8_t *>(::CVPixelBufferGetBaseAddress( mPixelBufferRef ) );
+	mData = reinterpret_cast<uint8_t*>( ::CVPixelBufferGetBaseAddress( mPixelBufferRef ) );
 	mRowBytes = ::CVPixelBufferGetBytesPerRow( mPixelBufferRef );
 }
 
@@ -463,21 +464,21 @@ ImageTargetCvPixelBuffer::~ImageTargetCvPixelBuffer()
 	}
 }
 
-void *ImageTargetCvPixelBuffer::getRowPointer( int32_t row )
+void* ImageTargetCvPixelBuffer::getRowPointer( int32_t row )
 {
 	return &mData[row * mRowBytes];
 }
 
 void ImageTargetCvPixelBuffer::finalize()
 {
-	switch(::CVPixelBufferGetPixelFormatType( mPixelBufferRef ) ) {
-	case 'v408': /*k4444YpCbCrA8PixelFormat:*/
-		convertDataToAYpCbCr();
-		::CVBufferSetAttachment( mPixelBufferRef, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate );
+	switch( ::CVPixelBufferGetPixelFormatType( mPixelBufferRef ) ) {
+		case 'v408':/*k4444YpCbCrA8PixelFormat:*/
+			convertDataToAYpCbCr();
+			::CVBufferSetAttachment( mPixelBufferRef, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate );
 		break;
-	case 'v308': /*k444YpCbCr8CodecType:*/
-		convertDataToYpCbCr();
-		::CVBufferSetAttachment( mPixelBufferRef, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate );
+		case 'v308':/*k444YpCbCr8CodecType:*/
+			convertDataToYpCbCr();
+			::CVBufferSetAttachment( mPixelBufferRef, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate );
 		break;
 	}
 }
@@ -486,17 +487,17 @@ void ImageTargetCvPixelBuffer::finalize()
 void ImageTargetCvPixelBuffer::convertDataToYpCbCr()
 {
 	for( int32_t y = 0; y < mHeight; ++y ) {
-		uint8_t *data = reinterpret_cast<uint8_t *>( getRowPointer( y ) );
+		uint8_t *data = reinterpret_cast<uint8_t*>( getRowPointer( y ) );
 		for( int32_t x = 0; x < mWidth; ++x ) {
-			float   r = data[x * 3 + 0] / 255.0f;
-			float   g = data[x * 3 + 1] / 255.0f;
-			float   b = data[x * 3 + 2] / 255.0f;
+			float r = data[x*3+0] / 255.0f;
+			float g = data[x*3+1] / 255.0f;
+			float b = data[x*3+2] / 255.0f;
 			uint8_t yp = 16 + (int)( 65.481f * r + 128.553f * g + 24.966f * b );
 			uint8_t cb = 128 + (int)( -37.797f * r + -74.203f * g + 112 * b );
 			uint8_t cr = 128 + (int)( 112 * r + -93.786f * g + -18.214f * b );
-			data[x * 3 + 0] = yp;
-			data[x * 3 + 1] = cb;
-			data[x * 3 + 2] = cr;
+			data[x*3+0] = yp;
+			data[x*3+1] = cb;
+			data[x*3+2] = cr;
 		}
 	}
 }
@@ -505,17 +506,17 @@ void ImageTargetCvPixelBuffer::convertDataToYpCbCr()
 void ImageTargetCvPixelBuffer::convertDataToAYpCbCr()
 {
 	for( int32_t y = 0; y < mHeight; ++y ) {
-		uint8_t *data = reinterpret_cast<uint8_t *>( getRowPointer( y ) );
+		uint8_t *data = reinterpret_cast<uint8_t*>( getRowPointer( y ) );
 		for( int32_t x = 0; x < mWidth; ++x ) {
-			float   r = data[x * 4 + 0] / 255.0f;
-			float   g = data[x * 4 + 1] / 255.0f;
-			float   b = data[x * 4 + 2] / 255.0f;
+			float r = data[x*4+0] / 255.0f;
+			float g = data[x*4+1] / 255.0f;
+			float b = data[x*4+2] / 255.0f;
 			uint8_t yp = 16 + (int)( 65.481f * r + 128.553f * g + 24.966f * b );
 			uint8_t cb = 128 + (int)( -37.797f * r + -74.203f * g + 112 * b );
 			uint8_t cr = 128 + (int)( 112 * r + -93.786f * g + -18.214f * b );
-			data[x * 4 + 0] = cb;
-			data[x * 4 + 1] = yp;
-			data[x * 4 + 2] = cr;
+			data[x*4+0] = cb;
+			data[x*4+1] = yp;
+			data[x*4+2] = cr;
 		}
 	}
 }
@@ -539,8 +540,8 @@ CVPixelBufferRef createCvPixelBuffer( ImageSourceRef imageSource, CVPixelBufferP
 	::CVPixelBufferRetain( result );
 	return result;
 }
-}
-} // namespace cinder::qtime
+
+} } // namespace cinder::qtime
 
 // // This path is used on iOS or Mac OS X 10.8+
 #endif // defined( CINDER_COCOA_TOUCH ) || ( defined( CINDER_MAC ) && ( MAC_OS_X_VERSION_MIN_REQUIRED >= 1080 ) )

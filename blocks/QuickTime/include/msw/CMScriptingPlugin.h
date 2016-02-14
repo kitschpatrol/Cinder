@@ -21,6 +21,11 @@
 #include <CMApplication.h>
 #endif
 
+
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -34,34 +39,36 @@ extern "C" {
 #endif
 
 enum {
-	/* ColorSync Scripting AppleEvent Errors */
-	cmspInvalidImageFile = -4220, /* Plugin cannot handle this image file type */
-	cmspInvalidImageSpace = -4221, /* Plugin cannot create an image file of this colorspace */
-	cmspInvalidProfileEmbed = -4222, /* Specific invalid profile errors */
-	cmspInvalidProfileSource = -4223,
-	cmspInvalidProfileDest = -4224,
-	cmspInvalidProfileProof = -4225,
-	cmspInvalidProfileLink = -4226
+                                        /* ColorSync Scripting AppleEvent Errors */
+  cmspInvalidImageFile          = -4220, /* Plugin cannot handle this image file type */
+  cmspInvalidImageSpace         = -4221, /* Plugin cannot create an image file of this colorspace */
+  cmspInvalidProfileEmbed       = -4222, /* Specific invalid profile errors */
+  cmspInvalidProfileSource      = -4223,
+  cmspInvalidProfileDest        = -4224,
+  cmspInvalidProfileProof       = -4225,
+  cmspInvalidProfileLink        = -4226
 };
+
 
 /**** embedFlags field  ****/
 /* reserved for future use: currently 0 */
 
 /**** matchFlags field  ****/
 enum {
-	cmspFavorEmbeddedMask = 0x00000001 /* if bit 0 is 0 then use srcProf profile, if 1 then use profile embedded in image if present*/
+  cmspFavorEmbeddedMask         = 0x00000001 /* if bit 0 is 0 then use srcProf profile, if 1 then use profile embedded in image if present*/
 };
 
+
 /**** scripting plugin entry points  ****/
-typedef CALLBACK_API_C( CMError, ValidateImageProcPtr )( const FSSpec *spec );
-typedef CALLBACK_API_C( CMError, GetImageSpaceProcPtr )( const FSSpec *spec, OSType *space );
-typedef CALLBACK_API_C( CMError, ValidateSpaceProcPtr )( const FSSpec *spec, OSType *space );
-typedef CALLBACK_API_C( CMError, EmbedImageProcPtr )( const FSSpec *specFrom, const FSSpec *specInto, CMProfileRef embedProf, UInt32 embedFlags );
-typedef CALLBACK_API_C( CMError, UnembedImageProcPtr )( const FSSpec *specFrom, const FSSpec *specInto );
-typedef CALLBACK_API_C( CMError, MatchImageProcPtr )( const FSSpec *specFrom, const FSSpec *specInto, UInt32 qual, UInt32 srcIntent, CMProfileRef srcProf, CMProfileRef dstProf, CMProfileRef prfProf, UInt32 matchFlags );
-typedef CALLBACK_API_C( CMError, CountImageProfilesProcPtr )( const FSSpec *spec, UInt32 *count );
-typedef CALLBACK_API_C( CMError, GetIndImageProfileProcPtr )( const FSSpec *spec, UInt32 index, CMProfileRef *prof );
-typedef CALLBACK_API_C( CMError, SetIndImageProfileProcPtr )( const FSSpec *specFrom, const FSSpec *specInto, UInt32 index, CMProfileRef prof, UInt32 embedFlags );
+typedef CALLBACK_API_C( CMError , ValidateImageProcPtr )(const FSSpec * spec);
+typedef CALLBACK_API_C( CMError , GetImageSpaceProcPtr )(const FSSpec *spec, OSType *space);
+typedef CALLBACK_API_C( CMError , ValidateSpaceProcPtr )(const FSSpec *spec, OSType *space);
+typedef CALLBACK_API_C( CMError , EmbedImageProcPtr )(const FSSpec *specFrom, const FSSpec *specInto, CMProfileRef embedProf, UInt32 embedFlags);
+typedef CALLBACK_API_C( CMError , UnembedImageProcPtr )(const FSSpec *specFrom, const FSSpec *specInto);
+typedef CALLBACK_API_C( CMError , MatchImageProcPtr )(const FSSpec *specFrom, const FSSpec *specInto, UInt32 qual, UInt32 srcIntent, CMProfileRef srcProf, CMProfileRef dstProf, CMProfileRef prfProf, UInt32 matchFlags);
+typedef CALLBACK_API_C( CMError , CountImageProfilesProcPtr )(const FSSpec *spec, UInt32 *count);
+typedef CALLBACK_API_C( CMError , GetIndImageProfileProcPtr )(const FSSpec *spec, UInt32 index, CMProfileRef *prof);
+typedef CALLBACK_API_C( CMError , SetIndImageProfileProcPtr )(const FSSpec *specFrom, const FSSpec *specInto, UInt32 index, CMProfileRef prof, UInt32 embedFlags);
 /**** CSScriptingLib API  ****/
 
 /*
@@ -73,7 +80,8 @@ typedef CALLBACK_API_C( CMError, SetIndImageProfileProcPtr )( const FSSpec *spec
  *    Mac OS X:         in 3.0 and later
  */
 EXTERN_API_C( CMError )
-CMValidImage( const FSSpec *spec );
+CMValidImage(const FSSpec * spec);
+
 
 /*
  *  CMGetImageSpace()
@@ -85,8 +93,9 @@ CMValidImage( const FSSpec *spec );
  */
 EXTERN_API_C( CMError )
 CMGetImageSpace(
-    const FSSpec *spec,
-    OSType *      space );
+  const FSSpec *  spec,
+  OSType *        space);
+
 
 /*
  *  CMEmbedImage()
@@ -98,10 +107,11 @@ CMGetImageSpace(
  */
 EXTERN_API_C( CMError )
 CMEmbedImage(
-    const FSSpec *specFrom,
-    const FSSpec *specInto,
-    Boolean       repl,
-    CMProfileRef  embProf );
+  const FSSpec *  specFrom,
+  const FSSpec *  specInto,
+  Boolean         repl,
+  CMProfileRef    embProf);
+
 
 /*
  *  CMUnembedImage()
@@ -113,9 +123,10 @@ CMEmbedImage(
  */
 EXTERN_API_C( CMError )
 CMUnembedImage(
-    const FSSpec *specFrom,
-    const FSSpec *specInto,
-    Boolean       repl );
+  const FSSpec *  specFrom,
+  const FSSpec *  specInto,
+  Boolean         repl);
+
 
 /*
  *  CMMatchImage()
@@ -127,13 +138,14 @@ CMUnembedImage(
  */
 EXTERN_API_C( CMError )
 CMMatchImage(
-    const FSSpec *specFrom,
-    const FSSpec *specInto,
-    Boolean       repl,
-    UInt32        qual,
-    CMProfileRef  srcProf,
-    UInt32        srcIntent,
-    CMProfileRef  dstProf );
+  const FSSpec *  specFrom,
+  const FSSpec *  specInto,
+  Boolean         repl,
+  UInt32          qual,
+  CMProfileRef    srcProf,
+  UInt32          srcIntent,
+  CMProfileRef    dstProf);
+
 
 /*
  *  CMProofImage()
@@ -145,14 +157,15 @@ CMMatchImage(
  */
 EXTERN_API_C( CMError )
 CMProofImage(
-    const FSSpec *specFrom,
-    const FSSpec *specInto,
-    Boolean       repl,
-    UInt32        qual,
-    CMProfileRef  srcProf,
-    UInt32        srcIntent,
-    CMProfileRef  dstProf,
-    CMProfileRef  prfProf );
+  const FSSpec *  specFrom,
+  const FSSpec *  specInto,
+  Boolean         repl,
+  UInt32          qual,
+  CMProfileRef    srcProf,
+  UInt32          srcIntent,
+  CMProfileRef    dstProf,
+  CMProfileRef    prfProf);
+
 
 /*
  *  CMLinkImage()
@@ -164,12 +177,13 @@ CMProofImage(
  */
 EXTERN_API_C( CMError )
 CMLinkImage(
-    const FSSpec *specFrom,
-    const FSSpec *specInto,
-    Boolean       repl,
-    UInt32        qual,
-    CMProfileRef  lnkProf,
-    UInt32        lnkIntent );
+  const FSSpec *  specFrom,
+  const FSSpec *  specInto,
+  Boolean         repl,
+  UInt32          qual,
+  CMProfileRef    lnkProf,
+  UInt32          lnkIntent);
+
 
 /*
  *  CMCountImageProfiles()
@@ -181,8 +195,9 @@ CMLinkImage(
  */
 EXTERN_API_C( CMError )
 CMCountImageProfiles(
-    const FSSpec *spec,
-    UInt32 *      count );
+  const FSSpec *  spec,
+  UInt32 *        count);
+
 
 /*
  *  CMGetIndImageProfile()
@@ -194,9 +209,10 @@ CMCountImageProfiles(
  */
 EXTERN_API_C( CMError )
 CMGetIndImageProfile(
-    const FSSpec *spec,
-    UInt32        index,
-    CMProfileRef *prof );
+  const FSSpec *  spec,
+  UInt32          index,
+  CMProfileRef *  prof);
+
 
 /*
  *  CMSetIndImageProfile()
@@ -208,11 +224,13 @@ CMGetIndImageProfile(
  */
 EXTERN_API_C( CMError )
 CMSetIndImageProfile(
-    const FSSpec *specFrom,
-    const FSSpec *specInto,
-    Boolean       repl,
-    UInt32        index,
-    CMProfileRef  prof );
+  const FSSpec *  specFrom,
+  const FSSpec *  specInto,
+  Boolean         repl,
+  UInt32          index,
+  CMProfileRef    prof);
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off

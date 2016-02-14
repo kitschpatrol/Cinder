@@ -26,10 +26,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "cinder/audio/Node.h"
 #include "cinder/audio/Param.h"
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
-typedef std::shared_ptr<class DelayNode> DelayNodeRef;
+typedef std::shared_ptr<class DelayNode>		DelayNodeRef;
 
 //! \brief General purpose delay line, supporting variable delay with linear interpolation.
 //!
@@ -41,26 +40,29 @@ class DelayNode : public Node {
 	DelayNode( const Format &format = Format() );
 
 	//! Sets the maximimum delay in seconds.
-	void setMaxDelaySeconds( float seconds );
+	void	setMaxDelaySeconds( float seconds );
 	//! Returns the maximum delay in seconds.
-	float getMaxDelaySeconds() const { return mMaxDelaySeconds; }
+	float	getMaxDelaySeconds() const		{ return mMaxDelaySeconds; }
+
 	//! Sets the delay value in seconds. Must be at least at least the length of one processing block.
-	void setDelaySeconds( float seconds );
+	void	setDelaySeconds( float seconds );
 	//! Returns the delay value in seconds.
-	float getDelaySeconds() const { return mParamDelaySeconds.getValue(); }
+	float	getDelaySeconds() const				{ return mParamDelaySeconds.getValue(); }
 	//! Returns the Param used to automate the delay seconds. \note Values over max delay seconds will be clipped, causing pops.
-	Param *getParamDelaySeconds() { return &mParamDelaySeconds; }
+	Param*	getParamDelaySeconds()			{ return &mParamDelaySeconds; }
+
 	//! Clears any samples in the delay buffer (sets them to zero).
 	void clearBuffer();
 
   protected:
-	void initialize() override;
-	void process( Buffer *buffer ) override;
-	bool          supportsCycles() const override { return true; }
-	size_t        mWriteIndex;
-	float         mMaxDelaySeconds, mSampleRate;
-	Param         mParamDelaySeconds;
-	BufferDynamic mDelayBuffer;
+	void initialize()				override;
+	void process( Buffer *buffer )	override;
+	bool supportsCycles() const		override	{ return true; }
+
+	size_t			mWriteIndex;
+	float			mMaxDelaySeconds, mSampleRate;
+	Param			mParamDelaySeconds;
+	BufferDynamic	mDelayBuffer;
 };
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

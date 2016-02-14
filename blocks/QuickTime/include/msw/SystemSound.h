@@ -9,6 +9,9 @@
 #include <Files.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -25,14 +28,14 @@ extern "C" {
 /* Errors                                                                           */
 /* ================================================================================ */
 enum {
-	kSystemSoundNoError = 0,
-	kSystemSoundUnspecifiedError = -1500
+  kSystemSoundNoError           = 0,
+  kSystemSoundUnspecifiedError  = -1500
 };
 
 /* ================================================================================ */
 /* Types                                                                            */
 /* ================================================================================ */
-typedef UInt32 SystemSoundActionID;
+typedef UInt32                          SystemSoundActionID;
 /* ================================================================================ */
 /* Public APIs                                                                      */
 /* ================================================================================ */
@@ -52,7 +55,8 @@ typedef UInt32 SystemSoundActionID;
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( void )
-AlertSoundPlay( void );
+AlertSoundPlay(void);
+
 
 /*
  *  SystemSoundPlay()
@@ -77,7 +81,8 @@ AlertSoundPlay( void );
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( void )
-SystemSoundPlay( SystemSoundActionID inAction );
+SystemSoundPlay(SystemSoundActionID inAction);
+
 
 /*
  *  SystemSoundGetActionID()
@@ -109,8 +114,9 @@ SystemSoundPlay( SystemSoundActionID inAction );
  */
 EXTERN_API_C( OSStatus )
 SystemSoundGetActionID(
-    const FSRef *        userFile,
-    SystemSoundActionID *outAction );
+  const FSRef *          userFile,
+  SystemSoundActionID *  outAction);
+
 
 /*
  *  SystemSoundRemoveActionID()
@@ -136,7 +142,9 @@ SystemSoundGetActionID(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-SystemSoundRemoveActionID( SystemSoundActionID inAction );
+SystemSoundRemoveActionID(SystemSoundActionID inAction);
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -149,3 +157,4 @@ SystemSoundRemoveActionID( SystemSoundActionID inAction );
 #endif
 
 #endif /* __SYSTEMSOUND__ */
+

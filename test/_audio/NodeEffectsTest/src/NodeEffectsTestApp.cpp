@@ -1,7 +1,7 @@
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/CinderAssert.h"
 #include "cinder/Log.h"
-#include "cinder/app/RendererGl.h"
 
 #include "cinder/audio/Context.h"
 #include "cinder/audio/GenNode.h"
@@ -38,16 +38,16 @@ class NodeEffectsTestApp : public App {
 	void processDrag( ivec2 pos );
 	void processTap( ivec2 pos );
 
-	audio::GenNodeRef           mGen;
-	audio::GainNodeRef          mGain;
-	audio::Pan2dNodeRef         mPan;
-	audio::FilterLowPassNodeRef mLowPass;
-	audio::DelayNodeRef         mDelay;
+	audio::GenNodeRef				mGen;
+	audio::GainNodeRef				mGain;
+	audio::Pan2dNodeRef			mPan;
+	audio::FilterLowPassNodeRef	mLowPass;
+	audio::DelayNodeRef			mDelay;
 
-	vector<TestWidget *> mWidgets;
-	Button               mPlayButton, mGenButton, mGenEnabledButton, mChirpButton;
-	VSelector            mTestSelector;
-	HSlider              mGainSlider, mPanSlider, mLowPassFreqSlider, mFilterParam2Slider;
+	vector<TestWidget *>	mWidgets;
+	Button					mPlayButton, mGenButton, mGenEnabledButton, mChirpButton;
+	VSelector				mTestSelector;
+	HSlider					mGainSlider, mPanSlider, mLowPassFreqSlider, mFilterParam2Slider;
 };
 
 void NodeEffectsTestApp::setup()
@@ -62,7 +62,7 @@ void NodeEffectsTestApp::setup()
 	ctx->setOutput( lineOut );
 #endif
 
-	//	mGenButton.setEnabled( true ); // set to start with GenSineNode
+//	mGenButton.setEnabled( true ); // set to start with GenSineNode
 
 	makeNodes();
 	setupOne();
@@ -94,11 +94,11 @@ void NodeEffectsTestApp::makeNodes()
 
 	mLowPass = ctx->makeNode( new audio::FilterLowPassNode() );
 	mLowPass->setCutoffFreq( 400 );
-	//	mLowPass = ctx->makeNode( new audio::FilterHighPassNode() );
+//	mLowPass = ctx->makeNode( new audio::FilterHighPassNode() );
 
 	mDelay = ctx->makeNode( new audio::DelayNode );
 	mDelay->setDelaySeconds( 0.5f );
-	//	mDelay->setDelaySeconds( 100.0f / (float)ctx->getSampleRate() );
+//	mDelay->setDelaySeconds( 100.0f / (float)ctx->getSampleRate() );
 }
 
 void NodeEffectsTestApp::setupOne()
@@ -167,7 +167,7 @@ void NodeEffectsTestApp::setupEcho()
 
 	mGen >> mGain;
 
-	mGain >> audio::master()->getOutput(); // dry
+	mGain >> audio::master()->getOutput();										// dry
 	mGain >> mDelay >> feedbackGain >> mDelay >> audio::master()->getOutput(); // wet
 }
 
@@ -192,7 +192,7 @@ void NodeEffectsTestApp::applyChirp()
 void NodeEffectsTestApp::setupUI()
 {
 	const float padding = 8;
-	Rectf       buttonRect( 0, 0, 200, 50 );
+	Rectf buttonRect( 0, 0, 200, 50 );
 
 	mPlayButton = Button( true, "stopped", "playing" );
 	mPlayButton.mBounds = buttonRect;
@@ -229,7 +229,7 @@ void NodeEffectsTestApp::setupUI()
 	mTestSelector.mBounds = Rectf( (float)getWindowWidth() * 0.67f, 0, (float)getWindowWidth(), 200 );
 	mWidgets.push_back( &mTestSelector );
 
-	float width = std::min( (float)getWindowWidth() - 20, 440.0f );
+	float width = std::min( (float)getWindowWidth() - 20,  440.0f );
 	Rectf sliderRect( getWindowCenter().x - width / 2, 250, getWindowCenter().x + width / 2, 300 );
 	mGainSlider.mBounds = sliderRect;
 	mGainSlider.mTitle = "GainNode";
@@ -256,10 +256,10 @@ void NodeEffectsTestApp::setupUI()
 	mFilterParam2Slider.set( mLowPass->getResonance() );
 	mWidgets.push_back( &mFilterParam2Slider );
 
-	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -284,7 +284,7 @@ void NodeEffectsTestApp::processTap( ivec2 pos )
 	auto ctx = audio::master();
 
 	if( mPlayButton.hitTest( pos ) )
-		ctx->setEnabled( !ctx->isEnabled() );
+		ctx->setEnabled( ! ctx->isEnabled() );
 	else if( mGenButton.hitTest( pos ) ) {
 		makeNodes();
 		switchTest( mTestSelector.currentSection() );
@@ -296,6 +296,7 @@ void NodeEffectsTestApp::processTap( ivec2 pos )
 		mGen->setEnabled( mGenEnabledButton.mEnabled );
 	else if( mChirpButton.hitTest( pos ) )
 		applyChirp();
+
 
 	size_t currentIndex = mTestSelector.mCurrentSectionIndex;
 	if( mTestSelector.hitTest( pos ) && currentIndex != mTestSelector.mCurrentSectionIndex ) {

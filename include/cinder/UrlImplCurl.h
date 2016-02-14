@@ -34,39 +34,39 @@ class IStreamUrlImplCurl : public IStreamUrlImpl {
 	IStreamUrlImplCurl( const std::string &url, const std::string &user, const std::string &password );
 	~IStreamUrlImplCurl();
 
-	virtual size_t readDataAvailable( void *dest, size_t maxSize );
-	virtual void seekAbsolute( off_t absoluteOffset );
-	virtual void seekRelative( off_t relativeOffset );
-	virtual off_t tell() const;
-	virtual off_t size() const;
-
-	virtual bool isEof() const;
-	virtual void IORead( void *t, size_t size );
+	virtual size_t		readDataAvailable( void *dest, size_t maxSize );
+	virtual void		seekAbsolute( off_t absoluteOffset );
+	virtual void		seekRelative( off_t relativeOffset );
+	virtual off_t		tell() const;
+	virtual off_t		size() const;
+	
+	virtual bool		isEof() const;
+	virtual void		IORead( void *t, size_t size );
 
   private:
-	int  bufferRemaining() const { return mBufferedBytes - mBufferOffset; }
-	void fillBuffer( int wantBytes ) const;
+	int					bufferRemaining() const { return mBufferedBytes - mBufferOffset; }
+	void				fillBuffer( int wantBytes ) const;
+	
+	static size_t		writeCallback( char *buffer, size_t size, size_t nitems, void *userp );   
+  
+ 	CURL					*mCurl;
+	CURLM					*mMulti;
+	
+	std::string				mUserColonPassword;
+	
+	mutable int still_running;				// Is background url fetch still in progress
+	mutable bool			mStartedRead;
 
-	static size_t writeCallback( char *buffer, size_t size, size_t nitems, void *userp );
-
-	CURL * mCurl;
-	CURLM *mMulti;
-
-	std::string mUserColonPassword;
-
-	mutable int  still_running; // Is background url fetch still in progress
-	mutable bool mStartedRead;
-
-	mutable off_t mSize;
-	mutable bool  mSizeCached;
-	mutable long  mResponseCode;
-	mutable char *mEffectiveUrl;
-
-	mutable uint8_t *mBuffer;
-	mutable int      mBufferSize;
-	mutable int      mBufferOffset, mBufferedBytes;
-	mutable off_t    mBufferFileOffset; // where in the file the buffer starts
-	static const int DEFAULT_BUFFER_SIZE = 4096;
+	mutable off_t			mSize;
+	mutable bool			mSizeCached;
+	mutable long			mResponseCode;
+	mutable char			*mEffectiveUrl;
+	
+	mutable uint8_t		*mBuffer;
+	mutable int			mBufferSize;
+	mutable int			mBufferOffset, mBufferedBytes;
+	mutable off_t		mBufferFileOffset;	// where in the file the buffer starts
+	static const int	DEFAULT_BUFFER_SIZE = 4096;
 };
 
 } // namespace cinder

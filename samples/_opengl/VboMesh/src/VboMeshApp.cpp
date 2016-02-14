@@ -5,11 +5,11 @@
 //
 
 #include "cinder/app/App.h"
-#include "cinder/CameraUi.h"
-#include "cinder/GeomIO.h"
-#include "cinder/ImageIo.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/GeomIO.h"
+#include "cinder/ImageIo.h"
+#include "cinder/CameraUi.h"
 
 #include "Resources.h"
 
@@ -19,19 +19,19 @@ using namespace ci::app;
 using std::vector;
 
 class VboMeshApp : public App {
-  public:
-	void setup() override;
-	void update() override;
-	void draw() override;
+ public:
+	void	setup() override;
+	void	update() override;
+	void	draw() override;
 
-	void keyDown( KeyEvent event ) override;
+	void	keyDown( KeyEvent event ) override;
 
   private:
-	gl::VboMeshRef mVboMesh;
-	gl::TextureRef mTexture;
-
-	CameraPersp mCamera;
-	CameraUi    mCamUi;
+	gl::VboMeshRef	mVboMesh;
+	gl::TextureRef	mTexture;
+	
+	CameraPersp		mCamera;
+	CameraUi		mCamUi;
 };
 
 void VboMeshApp::setup()
@@ -49,14 +49,14 @@ void VboMeshApp::setup()
 	mVboMesh = gl::VboMesh::create( plane, bufferLayout );
 
 	mTexture = gl::Texture::create( loadImage( loadResource( RES_IMAGE ) ), gl::Texture::Format().loadTopDown() );
-
+	
 	mCamUi = CameraUi( &mCamera, getWindow() );
 }
 
 void VboMeshApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'w' )
-		gl::setWireframeEnabled( !gl::isWireframeEnabled() );
+		gl::setWireframeEnabled( ! gl::isWireframeEnabled() );
 }
 
 void VboMeshApp::update()
@@ -81,10 +81,11 @@ void VboMeshApp::draw()
 
 	gl::setMatrices( mCamera );
 
-	gl::ScopedGlslProg    glslScope( gl::getStockShader( gl::ShaderDef().texture() ) );
+	gl::ScopedGlslProg glslScope( gl::getStockShader( gl::ShaderDef().texture() ) );
 	gl::ScopedTextureBind texScope( mTexture );
 
 	gl::draw( mVboMesh );
 }
+
 
 CINDER_APP( VboMeshApp, RendererGl( RendererGl::Options().msaa( 16 ) ) )

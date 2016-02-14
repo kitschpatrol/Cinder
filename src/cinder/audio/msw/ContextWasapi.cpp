@@ -24,26 +24,26 @@
 #if( _WIN32_WINNT >= 0x0600 ) // Requires Windows Vista+
 
 #include "cinder/audio/msw/ContextWasapi.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/Log.h"
-#include "cinder/audio/Context.h"
-#include "cinder/audio/Exception.h"
-#include "cinder/audio/dsp/Converter.h"
-#include "cinder/audio/dsp/Dsp.h"
-#include "cinder/audio/dsp/RingBuffer.h"
 #include "cinder/audio/msw/DeviceManagerWasapi.h"
 #include "cinder/audio/msw/MswUtil.h"
+#include "cinder/audio/Context.h"
+#include "cinder/audio/dsp/Dsp.h"
+#include "cinder/audio/dsp/RingBuffer.h"
+#include "cinder/audio/dsp/Converter.h"
+#include "cinder/audio/Exception.h"
 #include "cinder/msw/CinderMsw.h"
+#include "cinder/CinderAssert.h"
+#include "cinder/Log.h"
 
 #include <Audioclient.h>
-#include <avrt.h>
 #include <mmdeviceapi.h>
-#pragma comment( lib, "avrt.lib" )
+#include <avrt.h>
+#pragma comment(lib, "avrt.lib")
 
 namespace {
 
 // TODO: should requestedDuration come from Device's frames per block?
-// - seems like this is fixed at 10ms in shared mode. (896 samples @ stereo 44100 s/r)
+// - seems like this is fixed at 10ms in shared mode. (896 samples @ stereo 44100 s/r) 
 const size_t DEFAULT_AUDIOCLIENT_FRAMES = 1024;
 //! When there are mismatched samplerates between OutputDeviceNode and InputDeviceNode, the capture AudioClient's buffer needs to be larger.
 const size_t CAPTURE_CONVERSION_PADDING_FACTOR = 2;
@@ -51,23 +51,21 @@ const size_t CAPTURE_CONVERSION_PADDING_FACTOR = 2;
 // converts to 100-nanoseconds
 inline ::REFERENCE_TIME samplesToReferenceTime( size_t samples, size_t sampleRate )
 {
-	return (::REFERENCE_TIME )( (double)samples * 10000000.0 / (double)sampleRate );
+	return (::REFERENCE_TIME)( (double)samples * 10000000.0 / (double)sampleRate );
 }
 
 } // anonymous namespace
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
-namespace msw {
+namespace cinder { namespace audio { namespace msw {
 
 struct WasapiAudioClientImpl {
 	WasapiAudioClientImpl();
 
-	unique_ptr<::IAudioClient, ci::msw::ComDeleter> mAudioClient;
+	unique_ptr<::IAudioClient, ci::msw::ComDeleter>		mAudioClient;
 
-	size_t mNumFramesBuffered, mAudioClientNumFrames, mNumChannels;
+	size_t	mNumFramesBuffered, mAudioClientNumFrames, mNumChannels;
 
   protected:
 	void initAudioClient( const DeviceRef &device, size_t numChannels, HANDLE eventHandle );
@@ -80,14 +78,14 @@ struct WasapiRenderClientImpl : public WasapiAudioClientImpl {
 	void init();
 	void uninit();
 
-	unique_ptr<::IAudioRenderClient, ci::msw::ComDeleter> mRenderClient;
+	unique_ptr<::IAudioRenderClient, ci::msw::ComDeleter>	mRenderClient;
 
-	::HANDLE mRenderSamplesReadyEvent, mRenderShouldQuitEvent;
-	::HANDLE mRenderThread;
+	::HANDLE	mRenderSamplesReadyEvent, mRenderShouldQuitEvent;
+	::HANDLE    mRenderThread;
 
-	std::unique_ptr<dsp::RingBuffer> mRingBuffer;
+	std::unique_ptr<dsp::RingBuffer>	mRingBuffer;
 
-  private:
+private:
 	void initRenderClient();
 	void runRenderThread();
 	void renderAudio();
@@ -95,7 +93,7 @@ struct WasapiRenderClientImpl : public WasapiAudioClientImpl {
 
 	static DWORD __stdcall renderThreadEntryPoint( LPVOID Context );
 
-	OutputDeviceNodeWasapi *mOutputDeviceNode; // weak pointer to parent
+	OutputDeviceNodeWasapi*	mOutputDeviceNode; // weak pointer to parent
 };
 
 struct WasapiCaptureClientImpl : public WasapiAudioClientImpl {
@@ -105,19 +103,19 @@ struct WasapiCaptureClientImpl : public WasapiAudioClientImpl {
 	void uninit();
 	void captureAudio();
 
-	unique_ptr<::IAudioCaptureClient, ci::msw::ComDeleter> mCaptureClient;
+	unique_ptr<::IAudioCaptureClient, ci::msw::ComDeleter>	mCaptureClient;
 
-	vector<dsp::RingBuffer> mRingBuffers;
+	vector<dsp::RingBuffer>				mRingBuffers;
 
   private:
 	void initCapture();
 
-	std::unique_ptr<dsp::Converter> mConverter;
-	BufferInterleaved               mInterleavedBuffer;
-	BufferDynamic                   mReadBuffer, mConvertedReadBuffer;
-	size_t                          mMaxReadFrames;
+	std::unique_ptr<dsp::Converter>		mConverter;
+	BufferInterleaved					mInterleavedBuffer;
+	BufferDynamic						mReadBuffer, mConvertedReadBuffer;
+	size_t								mMaxReadFrames;
 
-	InputDeviceNodeWasapi *mInputDeviceNode; // weak pointer to parent
+	InputDeviceNodeWasapi*		mInputDeviceNode; // weak pointer to parent
 };
 
 // ----------------------------------------------------------------------------------------------------
@@ -125,13 +123,13 @@ struct WasapiCaptureClientImpl : public WasapiAudioClientImpl {
 // ----------------------------------------------------------------------------------------------------
 
 WasapiAudioClientImpl::WasapiAudioClientImpl()
-    : mAudioClientNumFrames( DEFAULT_AUDIOCLIENT_FRAMES ), mNumFramesBuffered( 0 ), mNumChannels( 0 )
+	: mAudioClientNumFrames( DEFAULT_AUDIOCLIENT_FRAMES ), mNumFramesBuffered( 0 ), mNumChannels( 0 )
 {
 }
 
 void WasapiAudioClientImpl::initAudioClient( const DeviceRef &device, size_t numChannels, HANDLE eventHandle )
 {
-	CI_ASSERT( !mAudioClient );
+	CI_ASSERT( ! mAudioClient );
 
 	DeviceManagerWasapi *manager = dynamic_cast<DeviceManagerWasapi *>( Context::deviceManager() );
 	CI_ASSERT( manager );
@@ -140,14 +138,14 @@ void WasapiAudioClientImpl::initAudioClient( const DeviceRef &device, size_t num
 	shared_ptr<::IMMDevice> immDevice = manager->getIMMDevice( device );
 
 	::IAudioClient *audioClient;
-	HRESULT         hr = immDevice->Activate( __uuidof(::IAudioClient ), CLSCTX_ALL, NULL, (void **)&audioClient );
+	HRESULT hr = immDevice->Activate( __uuidof(::IAudioClient), CLSCTX_ALL, NULL, (void**)&audioClient );
 	CI_ASSERT( hr == S_OK );
 	mAudioClient = ci::msw::makeComUnique( audioClient );
 
-	size_t          sampleRate = device->getSampleRate();
-	auto            wfx = interleavedFloatWaveFormat( sampleRate, numChannels );
+	size_t sampleRate = device->getSampleRate();
+	auto wfx = interleavedFloatWaveFormat( sampleRate, numChannels );
 	::WAVEFORMATEX *closestMatch;
-	hr = mAudioClient->IsFormatSupported(::AUDCLNT_SHAREMODE_SHARED, wfx.get(), &closestMatch );
+	hr = mAudioClient->IsFormatSupported( ::AUDCLNT_SHAREMODE_SHARED, wfx.get(), &closestMatch );
 	// S_FALSE indicates that a closest match was provided. AUDCLNT_E_UNSUPPORTED_FORMAT seems to be unreliable,
 	// so we accept it too and try to Initialize() optimistically.
 	if( hr == S_FALSE ) {
@@ -174,9 +172,9 @@ void WasapiAudioClientImpl::initAudioClient( const DeviceRef &device, size_t num
 	mNumChannels = wfx->nChannels; // in preparation for using closesMatch
 
 	::REFERENCE_TIME requestedDuration = samplesToReferenceTime( mAudioClientNumFrames, sampleRate );
-	DWORD            streamFlags = eventHandle ? AUDCLNT_STREAMFLAGS_EVENTCALLBACK : 0;
+	DWORD streamFlags = eventHandle ? AUDCLNT_STREAMFLAGS_EVENTCALLBACK : 0;
 
-	hr = mAudioClient->Initialize(::AUDCLNT_SHAREMODE_SHARED, streamFlags, requestedDuration, 0, wfx.get(), NULL );
+	hr = mAudioClient->Initialize( ::AUDCLNT_SHAREMODE_SHARED, streamFlags, requestedDuration, 0, wfx.get(), NULL );
 	if( hr != S_OK )
 		throw AudioExc( "Could not initialize IAudioClient", (int32_t)hr );
 
@@ -198,7 +196,7 @@ void WasapiAudioClientImpl::initAudioClient( const DeviceRef &device, size_t num
 // ----------------------------------------------------------------------------------------------------
 
 WasapiRenderClientImpl::WasapiRenderClientImpl( OutputDeviceNodeWasapi *outputDeviceNode )
-    : WasapiAudioClientImpl(), mOutputDeviceNode( outputDeviceNode )
+	: WasapiAudioClientImpl(), mOutputDeviceNode( outputDeviceNode )
 {
 	// create render events
 	mRenderSamplesReadyEvent = ::CreateEvent( NULL, FALSE, FALSE, NULL );
@@ -252,7 +250,7 @@ void WasapiRenderClientImpl::initRenderClient()
 	CI_ASSERT( mAudioClient );
 
 	::IAudioRenderClient *renderClient;
-	HRESULT               hr = mAudioClient->GetService( __uuidof(::IAudioRenderClient ), (void **)&renderClient );
+	HRESULT hr = mAudioClient->GetService( __uuidof(::IAudioRenderClient), (void**)&renderClient );
 	CI_ASSERT( hr == S_OK );
 	mRenderClient = ci::msw::makeComUnique( renderClient );
 
@@ -265,7 +263,7 @@ void WasapiRenderClientImpl::initRenderClient()
 }
 
 // static
-DWORD WasapiRenderClientImpl::renderThreadEntryPoint(::LPVOID lpParameter )
+DWORD WasapiRenderClientImpl::renderThreadEntryPoint( ::LPVOID lpParameter )
 {
 	WasapiRenderClientImpl *renderer = static_cast<WasapiRenderClientImpl *>( lpParameter );
 	renderer->runRenderThread();
@@ -278,19 +276,19 @@ void WasapiRenderClientImpl::runRenderThread()
 	increaseThreadPriority();
 
 	HANDLE waitEvents[2] = { mRenderShouldQuitEvent, mRenderSamplesReadyEvent };
-	bool   running = true;
+	bool running = true;
 
 	while( running ) {
 		DWORD waitResult = ::WaitForMultipleObjects( 2, waitEvents, FALSE, INFINITE );
 		switch( waitResult ) {
-		case WAIT_OBJECT_0 + 0: // mRenderShouldQuitEvent
-			running = false;
-			break;
-		case WAIT_OBJECT_0 + 1: // mRenderSamplesReadyEvent
-			renderAudio();
-			break;
-		default:
-			CI_ASSERT_NOT_REACHABLE();
+			case WAIT_OBJECT_0 + 0:     // mRenderShouldQuitEvent
+				running = false;
+				break;
+			case WAIT_OBJECT_0 + 1:		// mRenderSamplesReadyEvent
+				renderAudio();
+				break;
+			default:
+				CI_ASSERT_NOT_REACHABLE();
 		}
 	}
 }
@@ -298,7 +296,7 @@ void WasapiRenderClientImpl::runRenderThread()
 void WasapiRenderClientImpl::renderAudio()
 {
 	// the current padding represents the number of frames queued on the audio endpoint, waiting to be sent to hardware.
-	UINT32  numFramesPadding;
+	UINT32 numFramesPadding;
 	HRESULT hr = mAudioClient->GetCurrentPadding( &numFramesPadding );
 	CI_ASSERT( hr == S_OK );
 
@@ -311,9 +309,9 @@ void WasapiRenderClientImpl::renderAudio()
 	hr = mRenderClient->GetBuffer( numWriteFramesAvailable, (BYTE **)&renderBuffer );
 	CI_ASSERT( hr == S_OK );
 
-	DWORD  bufferFlags = 0;
+	DWORD bufferFlags = 0;
 	size_t numReadSamples = numWriteFramesAvailable * mNumChannels;
-	bool   readSuccess = mRingBuffer->read( renderBuffer, numReadSamples );
+	bool readSuccess = mRingBuffer->read( renderBuffer, numReadSamples );
 	CI_ASSERT( readSuccess ); // since this is sync read / write, the read should always succeed.
 
 	mNumFramesBuffered -= numWriteFramesAvailable;
@@ -326,9 +324,9 @@ void WasapiRenderClientImpl::renderAudio()
 // The priority increase can be seen in the threads debugger, it should have Priority = "Time Critical"
 void WasapiRenderClientImpl::increaseThreadPriority()
 {
-	DWORD    taskIndex = 0;
+	DWORD taskIndex = 0;
 	::HANDLE avrtHandle = ::AvSetMmThreadCharacteristics( L"Pro Audio", &taskIndex );
-	if( !avrtHandle )
+	if( ! avrtHandle )
 		CI_LOG_W( "Unable to enable MMCSS for 'Pro Audio', error: " << GetLastError() );
 }
 
@@ -337,7 +335,7 @@ void WasapiRenderClientImpl::increaseThreadPriority()
 // ----------------------------------------------------------------------------------------------------
 
 WasapiCaptureClientImpl::WasapiCaptureClientImpl( InputDeviceNodeWasapi *inputDeviceNode )
-    : WasapiAudioClientImpl(), mInputDeviceNode( inputDeviceNode ), mMaxReadFrames( 0 )
+	: WasapiAudioClientImpl(), mInputDeviceNode( inputDeviceNode ), mMaxReadFrames( 0 )
 {
 }
 
@@ -378,7 +376,7 @@ void WasapiCaptureClientImpl::initCapture()
 	CI_ASSERT( mAudioClient );
 
 	::IAudioCaptureClient *captureClient;
-	HRESULT                hr = mAudioClient->GetService( __uuidof(::IAudioCaptureClient ), (void **)&captureClient );
+	HRESULT hr = mAudioClient->GetService( __uuidof(::IAudioCaptureClient), (void**)&captureClient );
 	CI_ASSERT( hr == S_OK );
 
 	mCaptureClient = ci::msw::makeComUnique( captureClient );
@@ -386,7 +384,7 @@ void WasapiCaptureClientImpl::initCapture()
 
 void WasapiCaptureClientImpl::captureAudio()
 {
-	UINT32  numPacketFrames;
+	UINT32 numPacketFrames;
 	HRESULT hr = mCaptureClient->GetNextPacketSize( &numPacketFrames );
 	CI_ASSERT( hr == S_OK );
 
@@ -395,10 +393,10 @@ void WasapiCaptureClientImpl::captureAudio()
 			mInputDeviceNode->markOverrun();
 			return;
 		}
-
-		BYTE *  audioData;
-		UINT32  numFramesAvailable;
-		DWORD   flags;
+	
+		BYTE *audioData;
+		UINT32 numFramesAvailable;
+		DWORD flags;
 		HRESULT hr = mCaptureClient->GetBuffer( &audioData, &numFramesAvailable, &flags, NULL, NULL );
 		if( hr == AUDCLNT_S_BUFFER_EMPTY )
 			return;
@@ -418,14 +416,14 @@ void WasapiCaptureClientImpl::captureAudio()
 		if( mConverter ) {
 			pair<size_t, size_t> count = mConverter->convert( &mReadBuffer, &mConvertedReadBuffer );
 			for( size_t ch = 0; ch < mNumChannels; ch++ ) {
-				if( !mRingBuffers[ch].write( mConvertedReadBuffer.getChannel( ch ), count.second ) )
+				if( ! mRingBuffers[ch].write( mConvertedReadBuffer.getChannel( ch ), count.second ) )
 					mInputDeviceNode->markOverrun();
 			}
 			mNumFramesBuffered += count.second;
 		}
 		else {
 			for( size_t ch = 0; ch < mNumChannels; ch++ ) {
-				if( !mRingBuffers[ch].write( mReadBuffer.getChannel( ch ), numFramesAvailable ) )
+				if( ! mRingBuffers[ch].write( mReadBuffer.getChannel( ch ), numFramesAvailable ) )
 					mInputDeviceNode->markOverrun();
 			}
 			mNumFramesBuffered += numFramesAvailable;
@@ -444,7 +442,7 @@ void WasapiCaptureClientImpl::captureAudio()
 // ----------------------------------------------------------------------------------------------------
 
 OutputDeviceNodeWasapi::OutputDeviceNodeWasapi( const DeviceRef &device, const Format &format )
-    : OutputDeviceNode( device, format ), mRenderImpl( new WasapiRenderClientImpl( this ) )
+	: OutputDeviceNode( device, format ), mRenderImpl( new WasapiRenderClientImpl( this ) )
 {
 }
 
@@ -484,14 +482,14 @@ void OutputDeviceNodeWasapi::disableProcessing()
 void OutputDeviceNodeWasapi::renderInputs()
 {
 	auto ctx = getContext();
-	if( !ctx )
+	if( ! ctx )
 		return;
 
 	lock_guard<mutex> lock( ctx->getMutex() );
 
 	// verify context still exists, since its destructor may have been holding the lock
 	ctx = getContext();
-	if( !ctx )
+	if( ! ctx )
 		return;
 
 	ctx->preProcess();
@@ -516,7 +514,7 @@ void OutputDeviceNodeWasapi::renderInputs()
 // ----------------------------------------------------------------------------------------------------
 
 InputDeviceNodeWasapi::InputDeviceNodeWasapi( const DeviceRef &device, const Format &format )
-    : InputDeviceNode( device, format ), mCaptureImpl( new WasapiCaptureClientImpl( this ) )
+	: InputDeviceNode( device, format ), mCaptureImpl( new WasapiCaptureClientImpl( this ) )
 {
 }
 
@@ -537,7 +535,7 @@ void InputDeviceNodeWasapi::uninitialize()
 void InputDeviceNodeWasapi::enableProcessing()
 {
 	HRESULT hr = mCaptureImpl->mAudioClient->Start();
-	CI_ASSERT( hr == S_OK );
+	CI_ASSERT( hr == S_OK );	
 }
 
 void InputDeviceNodeWasapi::disableProcessing()
@@ -577,8 +575,7 @@ InputDeviceNodeRef ContextWasapi::createInputDeviceNode( const DeviceRef &device
 {
 	return makeNode( new InputDeviceNodeWasapi( device, format ) );
 }
-}
-}
-} // namespace cinder::audio::msw
+
+} } } // namespace cinder::audio::msw
 
 #endif // ( _WIN32_WINNT >= _WIN32_WINNT_VISTA )

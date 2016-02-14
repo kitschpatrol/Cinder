@@ -20,8 +20,10 @@
 
 /// Timer for profiling. This has platform specific code and may
 /// not work on every platform.
-class b2Timer {
-  public:
+class b2Timer
+{
+public:
+
 	/// Constructor
 	b2Timer();
 
@@ -31,11 +33,12 @@ class b2Timer {
 	/// Get the time since construction or the last reset.
 	float32 GetMilliseconds() const;
 
-  private:
-#if defined( _WIN32 )
-	float64        m_start;
+private:
+
+#if defined(_WIN32)
+	float64 m_start;
 	static float64 s_invFrequency;
-#elif defined( __linux__ ) || defined( __APPLE__ )
+#elif defined(__linux__) || defined (__APPLE__)
 	unsigned long m_start_sec;
 	unsigned long m_start_msec;
 #endif

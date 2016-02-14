@@ -31,11 +31,10 @@
 #include "vorbis/codec.h"
 #include "vorbis/vorbisfile.h"
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 namespace dsp {
-class Converter;
+	class Converter;
 }
 
 //! SourceFile implementation for decoding ogg vorbis files.
@@ -45,28 +44,29 @@ class SourceFileOggVorbis : public SourceFile {
 	SourceFileOggVorbis( const DataSourceRef &dataSource, size_t sampleRate );
 	virtual ~SourceFileOggVorbis();
 
-	SourceFileRef cloneWithSampleRate( size_t sampleRate ) const override;
+	SourceFileRef	cloneWithSampleRate( size_t sampleRate ) const	override;
 
-	size_t getNumChannels() const override { return mNumChannels; }
-	size_t getSampleRateNative() const override { return mSampleRate; }
-	size_t performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded ) override;
-	void performSeek( size_t readPositionFrames ) override;
-	std::string getMetaData() const override;
+	size_t		getNumChannels() const	override		{ return mNumChannels; }
+	size_t		getSampleRateNative() const	override	{ return mSampleRate; }
+
+	size_t		performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded )		override;
+	void		performSeek( size_t readPositionFrames )											override;
+	std::string getMetaData() const																	override;
 
   private:
 	void init();
 
 	// ov_callbacks
-	static size_t readFn( void *ptr, size_t size, size_t count, void *datasource );
-	static int seekFn( void *datasource, ogg_int64_t offset, int whence );
-	static int closeFn( void *datasource );
-	static long tellFn( void *datasource );
+	static size_t	readFn( void *ptr, size_t size, size_t count, void *datasource );
+	static int		seekFn( void *datasource, ogg_int64_t offset, int whence );
+	static int		closeFn( void *datasource );
+	static long		tellFn( void *datasource );
 
-	::OggVorbis_File mOggVorbisFile;
+	::OggVorbis_File	mOggVorbisFile;
 
-	ci::DataSourceRef mDataSource;
-	ci::IStreamRef    mStream;
-	size_t            mNumChannels, mSampleRate;
+	ci::DataSourceRef	mDataSource;
+	ci::IStreamRef		mStream;
+	size_t				mNumChannels, mSampleRate;
 };
 
 //class TargetFileImplOggVorbis : public TargetFile {
@@ -78,5 +78,5 @@ class SourceFileOggVorbis : public SourceFile {
 //
 //private:
 //};
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

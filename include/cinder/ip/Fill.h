@@ -22,26 +22,25 @@
 
 #pragma once
 
-#include "cinder/Area.h"
-#include "cinder/Channel.h"
-#include "cinder/Color.h"
 #include "cinder/Surface.h"
+#include "cinder/Channel.h"
+#include "cinder/Area.h"
+#include "cinder/Color.h"
 
-namespace cinder {
-namespace ip {
+namespace cinder { namespace ip {
 
-template <typename T, typename Y>
+template<typename T, typename Y>
 void fill( SurfaceT<T> *surface, const ColorT<Y> &color );
-template <typename T, typename Y>
+template<typename T, typename Y>
 void fill( SurfaceT<T> *surface, const ColorT<Y> &color, const Area &area );
-template <typename T, typename Y>
+template<typename T, typename Y>
 void fill( SurfaceT<T> *surface, const ColorAT<Y> &color );
-template <typename T, typename Y>
+template<typename T, typename Y>
 void fill( SurfaceT<T> *surface, const ColorAT<Y> &color, const Area &area );
 
-template <typename T>
+template<typename T>
 void fill( ChannelT<T> *channel, T value, const Area &area );
-template <typename T>
+template<typename T>
 void fill( ChannelT<T> *channel, T value );
-}
-} // namespace cinder::ip
+
+} } // namespace cinder::ip

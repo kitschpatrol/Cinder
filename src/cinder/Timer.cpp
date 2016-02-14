@@ -24,20 +24,20 @@
 
 #include "cinder/Timer.h"
 
-#if( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
-#include <windows.h>
+#if (defined( CINDER_MSW ) || defined( CINDER_WINRT))
+	#include <windows.h>
 #elif defined( CINDER_COCOA )
-#include <CoreFoundation/CoreFoundation.h>
+	#include <CoreFoundation/CoreFoundation.h>
 #endif
 
 namespace cinder {
 
 Timer::Timer()
-    : mIsStopped( true )
+	: mIsStopped( true )
 {
 #if defined( CINDER_COCOA )
 	mEndTime = mStartTime = -1;
-#elif( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
+#elif (defined( CINDER_MSW ) || defined( CINDER_WINRT))
 	::LARGE_INTEGER nativeFreq;
 	::QueryPerformanceFrequency( &nativeFreq );
 	mInvNativeFreq = 1.0 / nativeFreq.QuadPart;
@@ -46,11 +46,11 @@ Timer::Timer()
 }
 
 Timer::Timer( bool startOnConstruction )
-    : mIsStopped( true )
+	: mIsStopped( true )
 {
 #if defined( CINDER_COCOA )
-	mEndTime = mStartTime = -1;
-#elif( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
+		mEndTime = mStartTime = -1;
+#elif (defined( CINDER_MSW ) || defined( CINDER_WINRT))
 	::LARGE_INTEGER nativeFreq;
 	::QueryPerformanceFrequency( &nativeFreq );
 	mInvNativeFreq = 1.0 / nativeFreq.QuadPart;
@@ -62,10 +62,10 @@ Timer::Timer( bool startOnConstruction )
 }
 
 void Timer::start( double offsetSeconds )
-{
+{	
 #if defined( CINDER_COCOA )
 	mStartTime = ::CFAbsoluteTimeGetCurrent() - offsetSeconds;
-#elif( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
+#elif (defined( CINDER_MSW ) || defined( CINDER_WINRT))
 	::LARGE_INTEGER rawTime;
 	::QueryPerformanceCounter( &rawTime );
 	mStartTime = rawTime.QuadPart * mInvNativeFreq - offsetSeconds;
@@ -81,20 +81,20 @@ double Timer::getSeconds() const
 	else {
 #if defined( CINDER_COCOA )
 		return ::CFAbsoluteTimeGetCurrent() - mStartTime;
-#elif( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
-		::LARGE_INTEGER rawTime;
-		::QueryPerformanceCounter( &rawTime );
-		return ( rawTime.QuadPart * mInvNativeFreq ) - mStartTime;
+#elif (defined( CINDER_MSW ) || defined( CINDER_WINRT ))
+	::LARGE_INTEGER rawTime;
+	::QueryPerformanceCounter( &rawTime );
+	return (rawTime.QuadPart * mInvNativeFreq) - mStartTime;
 #endif
 	}
 }
 
 void Timer::stop()
 {
-	if( !mIsStopped ) {
+	if( ! mIsStopped ) {
 #if defined( CINDER_COCOA )
 		mEndTime = ::CFAbsoluteTimeGetCurrent();
-#elif( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
+#elif (defined( CINDER_MSW ) || defined( CINDER_WINRT))
 		::LARGE_INTEGER rawTime;
 		::QueryPerformanceCounter( &rawTime );
 		mEndTime = rawTime.QuadPart * mInvNativeFreq;

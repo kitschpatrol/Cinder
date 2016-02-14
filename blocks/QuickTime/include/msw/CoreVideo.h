@@ -13,32 +13,33 @@
     @discussion This header includes all necesssary headers for the CoreVideo API
 */
 
-#include <AvailabilityMacros.h>
 #include <TargetConditionals.h>
+#include <AvailabilityMacros.h>
+
 
 #if TARGET_OS_MAC
+#include <QuartzCore/CVReturn.h>
 #include <QuartzCore/CVBase.h>
-#include <QuartzCore/CVBuffer.h>
-#include <QuartzCore/CVDisplayLink.h>
 #include <QuartzCore/CVHostTime.h>
+#include <QuartzCore/CVDisplayLink.h>
+#include <QuartzCore/CVBuffer.h>
+#include <QuartzCore/CVPixelBuffer.h>
+#include <QuartzCore/CVPixelBufferPool.h>
 #include <QuartzCore/CVOpenGLBuffer.h>
 #include <QuartzCore/CVOpenGLBufferPool.h>
 #include <QuartzCore/CVOpenGLTexture.h>
 #include <QuartzCore/CVOpenGLTextureCache.h>
-#include <QuartzCore/CVPixelBuffer.h>
-#include <QuartzCore/CVPixelBufferPool.h>
 #include <QuartzCore/CVPixelFormatDescription.h>
-#include <QuartzCore/CVReturn.h>
 #else
+#include <CVReturn.h>
 #include <CVBase.h>
+#include <CVHostTime.h>
 #include <CVBuffer.h>
+#include <CVPixelBuffer.h>
+#include <CVPixelBufferPool.h>
+#include <CVPixelFormatDescription.h>
 #include <CVDirect3DBuffer.h>
 #include <CVDirect3DBufferPool.h>
 #include <CVDirect3DTexture.h>
 #include <CVDirect3DTextureCache.h>
-#include <CVHostTime.h>
-#include <CVPixelBuffer.h>
-#include <CVPixelBufferPool.h>
-#include <CVPixelFormatDescription.h>
-#include <CVReturn.h>
 #endif

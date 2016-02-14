@@ -25,11 +25,11 @@
  */
 
 #include "cinder/app/winrt/AppWinRt.h"
-#include "cinder/Log.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/app/winrt/CinderFrameworkView.h"
 #include "cinder/app/winrt/WindowImplWinRt.h"
 #include "cinder/winrt/WinRtUtils.h"
+#include "cinder/app/winrt/CinderFrameworkView.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/Log.h"
 
 using namespace Windows::ApplicationModel;
 using namespace Windows::ApplicationModel::Core;
@@ -43,13 +43,12 @@ using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
 using namespace std;
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
-std::function<AppWinRt *()> AppWinRt::sAppFactoryFn;
+std::function<AppWinRt*()> AppWinRt::sAppFactoryFn;
 
 AppWinRt::AppWinRt()
-    : mVisible( false ), mShouldQuit( false )
+	: mVisible( false ), mShouldQuit( false )
 {
 }
 
@@ -57,21 +56,21 @@ AppWinRt::~AppWinRt()
 {
 }
 
-void AppWinRt::initialize( AppWinRt::Settings *settings, ::Platform::Array<::Platform::String ^> ^ args, const RendererRef &defaultRenderer )
+void AppWinRt::initialize( AppWinRt::Settings *settings, ::Platform::Array<::Platform::String^>^ args, const RendererRef &defaultRenderer )
 {
 	AppBase::initialize( settings, defaultRenderer, "", 0, nullptr );
 	// TODO: parse args
 	//settings->pushBackCommandLineArg( toUtf8( ... ) );
 }
 
-void AppWinRt::executeLaunch( const std::function<AppWinRt *()> &appFactoryFn )
+void AppWinRt::executeLaunch( const std::function<AppWinRt*()> &appFactoryFn )
 {
 	sAppFactoryFn = appFactoryFn;
-	auto cinderFrameworkViewSource = ref new CinderFrameworkViewSource();
-	CoreApplication::Run( cinderFrameworkViewSource );
+	auto cinderFrameworkViewSource = ref new CinderFrameworkViewSource(); 
+	CoreApplication::Run( cinderFrameworkViewSource ); 
 }
 
-AppWinRt *AppWinRt::create()
+AppWinRt* AppWinRt::create()
 {
 	return sAppFactoryFn();
 }
@@ -82,7 +81,7 @@ WindowRef AppWinRt::createWindow( const Window::Format &format )
 	return nullptr;
 }
 
-void AppWinRt::run( Windows::UI::Core::CoreWindow ^ window )
+void AppWinRt::run( Windows::UI::Core::CoreWindow^ window )
 {
 	mWindows.push_back( make_shared<WindowImplWinRt>( window, make_shared<RendererGl>(), this ) );
 
@@ -96,7 +95,7 @@ void AppWinRt::run( Windows::UI::Core::CoreWindow ^ window )
 	if( AppBase::sSettingsFromMain->isMultiTouchEnabled() )
 		mWindows.back()->enableMultiTouch();
 
-	while( !mShouldQuit ) {
+	while( ! mShouldQuit ) {
 		if( mVisible ) { // update and draw
 			privateUpdate__();
 			CoreWindow::GetForCurrentThread()->Dispatcher->ProcessEvents( CoreProcessEventsOption::ProcessAllIfPresent );
@@ -108,7 +107,7 @@ void AppWinRt::run( Windows::UI::Core::CoreWindow ^ window )
 		}
 	}
 	emitCleanup();
-	//	delete mApp;
+//	delete mApp;
 }
 
 void AppWinRt::setWindow( const WindowRef &window )
@@ -176,7 +175,7 @@ ivec2 AppWinRt::getMousePos() const
 	return ivec2( -1 ); // not implemented
 }
 
-WindowImplWinRt *AppWinRt::findWindowForCoreWindow( CoreWindow ^ coreWindow )
+WindowImplWinRt* AppWinRt::findWindowForCoreWindow( CoreWindow^ coreWindow )
 {
 	// TODO: not currently supporting multiple windows
 	return mWindows.back().get();
@@ -187,34 +186,34 @@ void AppWinRt::setVisible( bool visible )
 	mVisible = visible;
 }
 
-void AppWinRt::windowSizeChange( Windows::UI::Core::CoreWindow ^ sender )
+void AppWinRt::windowSizeChange( Windows::UI::Core::CoreWindow^ sender )
 {
 	findWindowForCoreWindow( sender )->sizeChanged();
 }
 
-void AppWinRt::handlePointerDown( CoreWindow ^ sender, PointerEventArgs ^ args )
+void AppWinRt::handlePointerDown( CoreWindow^ sender, PointerEventArgs^ args ) 
 {
 	findWindowForCoreWindow( sender )->handlePointerDown( args );
 }
 
-void AppWinRt::handlePointerMoved( CoreWindow ^ sender, PointerEventArgs ^ args )
+void AppWinRt::handlePointerMoved( CoreWindow^ sender, PointerEventArgs^ args ) 
 {
 	findWindowForCoreWindow( sender )->handlePointerMoved( args );
 }
 
-void AppWinRt::handlePointerUp( CoreWindow ^ sender, PointerEventArgs ^ args )
+void AppWinRt::handlePointerUp( CoreWindow^ sender, PointerEventArgs^ args )
 {
 	findWindowForCoreWindow( sender )->handlePointerUp( args );
 }
 
-void AppWinRt::handleKeyDown( CoreWindow ^ sender, KeyEventArgs ^ args )
+void AppWinRt::handleKeyDown( CoreWindow^ sender, KeyEventArgs^ args )
 {
 	findWindowForCoreWindow( sender )->handleKeyDown( args );
 }
 
-void AppWinRt::handleKeyUp( CoreWindow ^ sender, KeyEventArgs ^ args )
+void AppWinRt::handleKeyUp( CoreWindow^ sender, KeyEventArgs^ args )
 {
 	findWindowForCoreWindow( sender )->handleKeyUp( args );
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

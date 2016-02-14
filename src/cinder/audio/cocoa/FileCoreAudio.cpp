@@ -22,30 +22,27 @@
 */
 
 #include "cinder/audio/cocoa/FileCoreAudio.h"
-#include "cinder/audio/Exception.h"
 #include "cinder/audio/cocoa/CinderCoreAudio.h"
 #include "cinder/cocoa/CinderCocoa.h"
+#include "cinder/audio/Exception.h"
 
 #include <AudioToolbox/AudioFile.h>
 
 using namespace std;
 using namespace ci;
 
-namespace cinder {
-namespace audio {
-namespace cocoa {
+namespace cinder { namespace audio { namespace cocoa {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - SourceFileCoreAudio
 // ----------------------------------------------------------------------------------------------------
 
 SourceFileCoreAudio::SourceFileCoreAudio()
-    : SourceFile( 0 )
-{
-}
+	: SourceFile( 0 )
+{}
 
 SourceFileCoreAudio::SourceFileCoreAudio( const DataSourceRef &dataSource, size_t sampleRate )
-    : SourceFile( sampleRate ), mDataSource( dataSource )
+	: SourceFile( sampleRate ), mDataSource( dataSource )
 {
 	CI_ASSERT_MSG( mDataSource->isFilePath(), "only DataSource type supported is file" );
 
@@ -66,11 +63,11 @@ SourceFileCoreAudio::~SourceFileCoreAudio()
 
 void SourceFileCoreAudio::initImpl()
 {
-	::CFURLRef        fileUrl = ci::cocoa::createCfUrl( Url( mDataSource->getFilePath().string() ) );
+	::CFURLRef fileUrl = ci::cocoa::createCfUrl( Url( mDataSource->getFilePath().string() ) );
 	::ExtAudioFileRef audioFile;
-	OSStatus          status = ::ExtAudioFileOpenURL( fileUrl, &audioFile );
+	OSStatus status = ::ExtAudioFileOpenURL( fileUrl, &audioFile );
 	if( fileUrl ) {
-		CFRelease( fileUrl );
+		CFRelease(fileUrl);
 		fileUrl = NULL;
 	}
 	if( status != noErr ) {
@@ -80,7 +77,7 @@ void SourceFileCoreAudio::initImpl()
 	mExtAudioFile = ExtAudioFilePtr( audioFile );
 
 	::AudioStreamBasicDescription fileFormat;
-	UInt32                        propSize = sizeof( fileFormat );
+	UInt32 propSize = sizeof( fileFormat );
 	status = ::ExtAudioFileGetProperty( audioFile, kExtAudioFileProperty_FileDataFormat, &propSize, &fileFormat );
 	CI_VERIFY( status == noErr );
 
@@ -88,7 +85,7 @@ void SourceFileCoreAudio::initImpl()
 	mSampleRateNative = fileFormat.mSampleRate;
 
 	size_t outputSampleRate = getSampleRate(); // may be 0 at init
-	if( !outputSampleRate )
+	if( ! outputSampleRate )
 		outputSampleRate = mSampleRateNative;
 
 	SInt64 numFrames;
@@ -112,7 +109,7 @@ size_t SourceFileCoreAudio::performRead( Buffer *buffer, size_t bufferFrameOffse
 		mBufferList->mBuffers[ch].mData = &buffer->getChannel( ch )[bufferFrameOffset];
 	}
 
-	UInt32   frameCount = (UInt32)numFramesNeeded;
+	UInt32 frameCount = (UInt32)numFramesNeeded;
 	OSStatus status = ::ExtAudioFileRead( mExtAudioFile.get(), &frameCount, mBufferList.get() );
 	CI_VERIFY( status == noErr );
 
@@ -131,18 +128,18 @@ vector<string> SourceFileCoreAudio::getSupportedExtensions()
 	vector<string> result;
 
 	::CFArrayRef extensionsCF;
-	UInt32       propSize = sizeof( extensionsCF );
-	OSStatus     status = ::AudioFileGetGlobalInfo( kAudioFileGlobalInfo_AllExtensions, 0, NULL, &propSize, &extensionsCF );
+	UInt32 propSize = sizeof( extensionsCF );
+	OSStatus status = ::AudioFileGetGlobalInfo( kAudioFileGlobalInfo_AllExtensions, 0, NULL, &propSize, &extensionsCF );
 	CI_VERIFY( status == noErr );
 
 	CFIndex extCount = ::CFArrayGetCount( extensionsCF );
 	for( CFIndex index = 0; index < extCount; ++index ) {
-		string ext = ci::cocoa::convertCfString( ( CFStringRef )::CFArrayGetValueAtIndex( extensionsCF, index ) );
+		string ext = ci::cocoa::convertCfString( (CFStringRef)::CFArrayGetValueAtIndex( extensionsCF, index ) );
 		result.push_back( ext );
 	}
 
 	::CFRelease( extensionsCF );
-
+	
 	return result;
 }
 
@@ -151,25 +148,25 @@ vector<string> SourceFileCoreAudio::getSupportedExtensions()
 // ----------------------------------------------------------------------------------------------------
 
 TargetFileCoreAudio::TargetFileCoreAudio( const DataTargetRef &dataTarget, size_t sampleRate, size_t numChannels, SampleType sampleType, const std::string &extension )
-    : TargetFile( dataTarget, sampleRate, numChannels, sampleType )
+	: TargetFile( dataTarget, sampleRate, numChannels, sampleType )
 {
-	::CFURLRef        targetUrl = ci::cocoa::createCfUrl( Url( dataTarget->getFilePath().string() ) );
+	::CFURLRef targetUrl = ci::cocoa::createCfUrl( Url( dataTarget->getFilePath().string() ) );
 	::AudioFileTypeID fileType = getFileTypeIdFromExtension( extension );
 
 	::AudioStreamBasicDescription fileAsbd;
 	switch( mSampleType ) {
-	case SampleType::INT_16:
-		fileAsbd = createInt16Asbd( mSampleRate, mNumChannels, true );
-		break;
-	case SampleType::FLOAT_32:
-		fileAsbd = createFloatAsbd( mSampleRate, mNumChannels, true );
-		break;
-	default:
-		CI_ASSERT_NOT_REACHABLE();
+		case SampleType::INT_16:
+			fileAsbd = createInt16Asbd( mSampleRate, mNumChannels, true );
+			break;
+		case SampleType::FLOAT_32:
+			fileAsbd = createFloatAsbd( mSampleRate, mNumChannels, true );
+			break;
+		default:
+			CI_ASSERT_NOT_REACHABLE();
 	}
 
 	::ExtAudioFileRef audioFile;
-	OSStatus          status = ::ExtAudioFileCreateWithURL( targetUrl, fileType, &fileAsbd, nullptr, kAudioFileFlags_EraseFile, &audioFile );
+	OSStatus status = ::ExtAudioFileCreateWithURL( targetUrl, fileType, &fileAsbd, nullptr, kAudioFileFlags_EraseFile, &audioFile );
 	if( status == kAudioFileUnsupportedDataFormatError )
 		throw AudioFileExc( string( "Extended Audio File Services: Unsupported format error, target file: " ) + dataTarget->getFilePath().string(), (int32_t)status );
 	else if( status != noErr )
@@ -212,6 +209,5 @@ void TargetFileCoreAudio::performWrite( const Buffer *buffer, size_t numFrames, 
 
 	throw AudioFileExc( string( "TargetFileCoreAudio: unexpected extension '" ) + ext + "'" );
 }
-}
-}
-} // namespace cinder::audio::cocoa
+
+} } } // namespace cinder::audio::cocoa

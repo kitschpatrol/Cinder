@@ -46,12 +46,12 @@
 	whatever.
 */
 
-#if !defined( __COREFOUNDATION_CFARRAY__ )
+#if !defined(__COREFOUNDATION_CFARRAY__)
 #define __COREFOUNDATION_CFARRAY__ 1
 
 #include <CoreFoundation/CFBase.h>
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -77,16 +77,16 @@ extern "C" {
 	@field equal The callback used to compare values in the array for
 		equality for some operations.
 */
-typedef const void *( *CFArrayRetainCallBack )( CFAllocatorRef allocator, const void *value );
-typedef void ( *CFArrayReleaseCallBack )( CFAllocatorRef allocator, const void *value );
-typedef CFStringRef ( *CFArrayCopyDescriptionCallBack )( const void *value );
-typedef Boolean ( *CFArrayEqualCallBack )( const void *value1, const void *value2 );
+typedef const void *	(*CFArrayRetainCallBack)(CFAllocatorRef allocator, const void *value);
+typedef void		(*CFArrayReleaseCallBack)(CFAllocatorRef allocator, const void *value);
+typedef CFStringRef	(*CFArrayCopyDescriptionCallBack)(const void *value);
+typedef Boolean		(*CFArrayEqualCallBack)(const void *value1, const void *value2);
 typedef struct {
-	CFIndex                        version;
-	CFArrayRetainCallBack          retain;
-	CFArrayReleaseCallBack         release;
-	CFArrayCopyDescriptionCallBack copyDescription;
-	CFArrayEqualCallBack           equal;
+    CFIndex				version;
+    CFArrayRetainCallBack		retain;
+    CFArrayReleaseCallBack		release;
+    CFArrayCopyDescriptionCallBack	copyDescription;
+    CFArrayEqualCallBack		equal;
 } CFArrayCallBacks;
 
 /*!
@@ -95,7 +95,7 @@ typedef struct {
 	appropriate for use when the values in a CFArray are all CFTypes.
 */
 #if TARGET_OS_WIN32
-#define kCFTypeArrayCallBacks ( *( (const CFArrayCallBacks *)QTGetCFConstant( "kCFTypeArrayCallBacks" ) ) )
+#define kCFTypeArrayCallBacks (*((const CFArrayCallBacks *)QTGetCFConstant("kCFTypeArrayCallBacks")))
 #else
 CF_EXPORT
 const CFArrayCallBacks kCFTypeArrayCallBacks;
@@ -109,26 +109,26 @@ const CFArrayCallBacks kCFTypeArrayCallBacks;
 	@param context The user-defined context parameter given to the apply
 		function.
 */
-typedef void ( *CFArrayApplierFunction )( const void *value, void *context );
+typedef void (*CFArrayApplierFunction)(const void *value, void *context);
 
 /*!
 	@typedef CFArrayRef
 	This is the type of a reference to immutable CFArrays.
 */
-typedef const struct __CFArray *CFArrayRef;
+typedef const struct __CFArray * CFArrayRef;
 
 /*!
 	@typedef CFMutableArrayRef
 	This is the type of a reference to mutable CFArrays.
 */
-typedef struct __CFArray *CFMutableArrayRef;
+typedef struct __CFArray * CFMutableArrayRef;
 
 /*!
 	@function CFArrayGetTypeID
 	Returns the type identifier of all CFArray instances.
 */
 CF_EXPORT
-CFTypeID CFArrayGetTypeID( void );
+CFTypeID CFArrayGetTypeID(void);
 
 /*!
 	@function CFArrayCreate
@@ -181,7 +181,7 @@ CFTypeID CFArrayGetTypeID( void );
 	@result A reference to the new immutable CFArray.
 */
 CF_EXPORT
-CFArrayRef CFArrayCreate( CFAllocatorRef allocator, const void **values, CFIndex numValues, const CFArrayCallBacks *callBacks );
+CFArrayRef CFArrayCreate(CFAllocatorRef allocator, const void **values, CFIndex numValues, const CFArrayCallBacks *callBacks);
 
 /*!
 	@function CFArrayCreateCopy
@@ -202,7 +202,7 @@ CFArrayRef CFArrayCreate( CFAllocatorRef allocator, const void **values, CFIndex
 	@result A reference to the new immutable CFArray.
 */
 CF_EXPORT
-CFArrayRef CFArrayCreateCopy( CFAllocatorRef allocator, CFArrayRef theArray );
+CFArrayRef CFArrayCreateCopy(CFAllocatorRef allocator, CFArrayRef theArray);
 
 /*!
 	@function CFArrayCreateMutable
@@ -247,7 +247,7 @@ CFArrayRef CFArrayCreateCopy( CFAllocatorRef allocator, CFArrayRef theArray );
 	@result A reference to the new mutable CFArray.
 */
 CF_EXPORT
-CFMutableArrayRef CFArrayCreateMutable( CFAllocatorRef allocator, CFIndex capacity, const CFArrayCallBacks *callBacks );
+CFMutableArrayRef CFArrayCreateMutable(CFAllocatorRef allocator, CFIndex capacity, const CFArrayCallBacks *callBacks);
 
 /*!
 	@function CFArrayCreateMutableCopy
@@ -277,7 +277,7 @@ CFMutableArrayRef CFArrayCreateMutable( CFAllocatorRef allocator, CFIndex capaci
 	@result A reference to the new mutable CFArray.
 */
 CF_EXPORT
-CFMutableArrayRef CFArrayCreateMutableCopy( CFAllocatorRef allocator, CFIndex capacity, CFArrayRef theArray );
+CFMutableArrayRef CFArrayCreateMutableCopy(CFAllocatorRef allocator, CFIndex capacity, CFArrayRef theArray);
 
 /*!
 	@function CFArrayGetCount
@@ -287,7 +287,7 @@ CFMutableArrayRef CFArrayCreateMutableCopy( CFAllocatorRef allocator, CFIndex ca
 	@result The number of values in the array.
 */
 CF_EXPORT
-CFIndex CFArrayGetCount( CFArrayRef theArray );
+CFIndex CFArrayGetCount(CFArrayRef theArray);
 
 /*!
 	@function CFArrayGetCountOfValue
@@ -310,7 +310,7 @@ CFIndex CFArrayGetCount( CFArrayRef theArray );
 		within the specified range.
 */
 CF_EXPORT
-CFIndex CFArrayGetCountOfValue( CFArrayRef theArray, CFRange range, const void *value );
+CFIndex CFArrayGetCountOfValue(CFArrayRef theArray, CFRange range, const void *value);
 
 /*!
 	@function CFArrayContainsValue
@@ -333,7 +333,7 @@ CFIndex CFArrayGetCountOfValue( CFArrayRef theArray, CFRange range, const void *
 		otherwise false.
 */
 CF_EXPORT
-Boolean CFArrayContainsValue( CFArrayRef theArray, CFRange range, const void *value );
+Boolean CFArrayContainsValue(CFArrayRef theArray, CFRange range, const void *value);
 
 /*!
 	@function CFArrayGetValueAtIndex
@@ -347,7 +347,7 @@ Boolean CFArrayContainsValue( CFArrayRef theArray, CFRange range, const void *va
 	@result The value with the given index in the array.
 */
 CF_EXPORT
-const void *CFArrayGetValueAtIndex( CFArrayRef theArray, CFIndex idx );
+const void *CFArrayGetValueAtIndex(CFArrayRef theArray, CFIndex idx);
 
 /*!
 	@function CFArrayGetValues
@@ -368,7 +368,7 @@ const void *CFArrayGetValueAtIndex( CFArrayRef theArray, CFIndex idx );
 		range.length pointers, the behavior is undefined.
 */
 CF_EXPORT
-void CFArrayGetValues( CFArrayRef theArray, CFRange range, const void **values );
+void CFArrayGetValues(CFArrayRef theArray, CFRange range, const void **values);
 
 /*!
 	@function CFArrayApplyFunction
@@ -395,7 +395,7 @@ void CFArrayGetValues( CFArrayRef theArray, CFRange range, const void **values )
 		undefined.
 */
 CF_EXPORT
-void CFArrayApplyFunction( CFArrayRef theArray, CFRange range, CFArrayApplierFunction applier, void *context );
+void CFArrayApplyFunction(CFArrayRef theArray, CFRange range, CFArrayApplierFunction applier, void *context);
 
 /*!
 	@function CFArrayGetFirstIndexOfValue
@@ -420,7 +420,7 @@ void CFArrayApplyFunction( CFArrayRef theArray, CFRange range, CFArrayApplierFun
 		kCFNotFound if no value in the range matched.
 */
 CF_EXPORT
-CFIndex CFArrayGetFirstIndexOfValue( CFArrayRef theArray, CFRange range, const void *value );
+CFIndex CFArrayGetFirstIndexOfValue(CFArrayRef theArray, CFRange range, const void *value);
 
 /*!
 	@function CFArrayGetLastIndexOfValue
@@ -445,7 +445,7 @@ CFIndex CFArrayGetFirstIndexOfValue( CFArrayRef theArray, CFRange range, const v
 		kCFNotFound if no value in the range matched.
 */
 CF_EXPORT
-CFIndex CFArrayGetLastIndexOfValue( CFArrayRef theArray, CFRange range, const void *value );
+CFIndex CFArrayGetLastIndexOfValue(CFArrayRef theArray, CFRange range, const void *value);
 
 /*!
 	@function CFArrayBSearchValues
@@ -484,7 +484,7 @@ CFIndex CFArrayGetLastIndexOfValue( CFArrayRef theArray, CFRange range, const vo
 		of) the values in the range.
 */
 CF_EXPORT
-CFIndex CFArrayBSearchValues( CFArrayRef theArray, CFRange range, const void *value, CFComparatorFunction comparator, void *context );
+CFIndex CFArrayBSearchValues(CFArrayRef theArray, CFRange range, const void *value, CFComparatorFunction comparator, void *context);
 
 /*!
 	@function CFArrayAppendValue
@@ -501,7 +501,7 @@ CFIndex CFArrayBSearchValues( CFArrayRef theArray, CFRange range, const void *va
 		index, and the count of the array is increased by one.
 */
 CF_EXPORT
-void CFArrayAppendValue( CFMutableArrayRef theArray, const void *value );
+void CFArrayAppendValue(CFMutableArrayRef theArray, const void *value);
 
 /*!
 	@function CFArrayInsertValueAtIndex
@@ -523,7 +523,7 @@ void CFArrayAppendValue( CFMutableArrayRef theArray, const void *value );
 		larger indices have their indexes increased by one.
 */
 CF_EXPORT
-void CFArrayInsertValueAtIndex( CFMutableArrayRef theArray, CFIndex idx, const void *value );
+void CFArrayInsertValueAtIndex(CFMutableArrayRef theArray, CFIndex idx, const void *value);
 
 /*!
 	@function CFArraySetValueAtIndex
@@ -546,7 +546,7 @@ void CFArrayInsertValueAtIndex( CFMutableArrayRef theArray, CFIndex idx, const v
 		other values is not affected.
 */
 CF_EXPORT
-void CFArraySetValueAtIndex( CFMutableArrayRef theArray, CFIndex idx, const void *value );
+void CFArraySetValueAtIndex(CFMutableArrayRef theArray, CFIndex idx, const void *value);
 
 /*!
 	@function CFArrayRemoveValueAtIndex
@@ -560,7 +560,7 @@ void CFArraySetValueAtIndex( CFMutableArrayRef theArray, CFIndex idx, const void
 		behavior is undefined.
 */
 CF_EXPORT
-void CFArrayRemoveValueAtIndex( CFMutableArrayRef theArray, CFIndex idx );
+void CFArrayRemoveValueAtIndex(CFMutableArrayRef theArray, CFIndex idx);
 
 /*!
 	@function CFArrayRemoveAllValues
@@ -570,7 +570,7 @@ void CFArrayRemoveValueAtIndex( CFMutableArrayRef theArray, CFIndex idx );
 		the behavior is undefined.
 */
 CF_EXPORT
-void CFArrayRemoveAllValues( CFMutableArrayRef theArray );
+void CFArrayRemoveAllValues(CFMutableArrayRef theArray);
 
 /*!
 	@function CFArrayReplaceValues
@@ -604,7 +604,7 @@ void CFArrayRemoveAllValues( CFMutableArrayRef theArray );
 		C array, the behavior is undefined.
 */
 CF_EXPORT
-void CFArrayReplaceValues( CFMutableArrayRef theArray, CFRange range, const void **newValues, CFIndex newCount );
+void CFArrayReplaceValues(CFMutableArrayRef theArray, CFRange range, const void **newValues, CFIndex newCount);
 
 /*!
 	@function CFArrayExchangeValuesAtIndices
@@ -622,7 +622,7 @@ void CFArrayReplaceValues( CFMutableArrayRef theArray, CFRange range, const void
 		operation), the behavior is undefined.
 */
 CF_EXPORT
-void CFArrayExchangeValuesAtIndices( CFMutableArrayRef theArray, CFIndex idx1, CFIndex idx2 );
+void CFArrayExchangeValuesAtIndices(CFMutableArrayRef theArray, CFIndex idx1, CFIndex idx2);
 
 /*!
 	@function CFArraySortValues
@@ -652,7 +652,7 @@ void CFArrayExchangeValuesAtIndices( CFMutableArrayRef theArray, CFIndex idx1, C
 		undefined.
 */
 CF_EXPORT
-void CFArraySortValues( CFMutableArrayRef theArray, CFRange range, CFComparatorFunction comparator, void *context );
+void CFArraySortValues(CFMutableArrayRef theArray, CFRange range, CFComparatorFunction comparator, void *context);
 
 /*!
 	@function CFArrayAppendArray
@@ -682,10 +682,11 @@ void CFArraySortValues( CFMutableArrayRef theArray, CFRange range, CFComparatorF
 		order in which they appear in the otherArray.
 */
 CF_EXPORT
-void CFArrayAppendArray( CFMutableArrayRef theArray, CFArrayRef otherArray, CFRange otherRange );
+void CFArrayAppendArray(CFMutableArrayRef theArray, CFArrayRef otherArray, CFRange otherRange);
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif
 
 #endif /* ! __COREFOUNDATION_CFARRAY__ */
+

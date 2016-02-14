@@ -1,6 +1,6 @@
 #include "cinder/app/App.h"
-#include "cinder/ImageIo.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/ImageIo.h"
 #include "cinder/gl/gl.h"
 
 using namespace ci;
@@ -8,8 +8,8 @@ using namespace ci::app;
 using namespace std;
 
 struct Satellite {
-	vec3   mPos;
-	Colorf mColor;
+	vec3		mPos;
+	Colorf		mColor;
 };
 
 class DynamicCubeMappingApp : public App {
@@ -23,16 +23,16 @@ class DynamicCubeMappingApp : public App {
 	void drawSkyBox();
 	void draw();
 
-	gl::TextureCubeMapRef mSkyBoxCubeMap;
-	gl::BatchRef          mTeapotBatch, mSkyBoxBatch;
-	mat4                  mObjectRotation;
-	CameraPersp           mCam;
-
-	gl::FboCubeMapRef mDynamicCubeMapFbo;
-	bool              mDrawCubeMap;
-
-	std::vector<Satellite> mSatellites;
-	gl::BatchRef           mSatelliteBatch;
+	gl::TextureCubeMapRef	mSkyBoxCubeMap;
+	gl::BatchRef			mTeapotBatch, mSkyBoxBatch;
+	mat4					mObjectRotation;
+	CameraPersp				mCam;
+	
+	gl::FboCubeMapRef		mDynamicCubeMapFbo;
+	bool					mDrawCubeMap;
+	
+	std::vector<Satellite>	mSatellites;
+	gl::BatchRef			mSatelliteBatch;
 };
 
 const int SKY_BOX_SIZE = 500;
@@ -54,7 +54,7 @@ void DynamicCubeMappingApp::setup()
 
 	mSkyBoxBatch = gl::Batch::create( geom::Cube(), skyBoxGlsl );
 	mSkyBoxBatch->getGlslProg()->uniform( "uCubeMapTex", 0 );
-
+	
 	// build our dynamic CubeMap
 	mDynamicCubeMapFbo = gl::FboCubeMap::create( 1024, 1024 );
 
@@ -70,7 +70,7 @@ void DynamicCubeMappingApp::setup()
 	mDrawCubeMap = true;
 
 	gl::enableDepthRead();
-	gl::enableDepthWrite();
+	gl::enableDepthWrite();	
 }
 
 void DynamicCubeMappingApp::resize()
@@ -82,21 +82,21 @@ void DynamicCubeMappingApp::update()
 {
 	// move the camera semi-randomly around based on time
 	mCam.lookAt( vec3( 8 * sin( getElapsedSeconds() / 1 + 10 ), 7 * sin( getElapsedSeconds() / 2 ), 8 * cos( getElapsedSeconds() / 4 + 11 ) ), vec3( 0 ) );
-
+	
 	// rotate the object (teapot) a bit each frame
 	mObjectRotation *= rotate( 0.04f, normalize( vec3( 0.1f, 1, 0.1f ) ) );
-
+	
 	// move the satellites
 	for( int i = 0; i < 33; ++i ) {
 		float angle = i / 33.0f;
 		mSatellites[i].mPos = vec3( cos( angle * 2 * M_PI ) * 7, 6 * sin( getElapsedSeconds() * 2 + angle * 4 * M_PI ), sin( angle * 2 * M_PI ) * 7 );
-	}
+	}	
 }
 
 void DynamicCubeMappingApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'd' )
-		mDrawCubeMap = !mDrawCubeMap;
+		mDrawCubeMap = ! mDrawCubeMap;
 }
 
 void DynamicCubeMappingApp::drawSatellites()
@@ -114,8 +114,8 @@ void DynamicCubeMappingApp::drawSkyBox()
 {
 	mSkyBoxCubeMap->bind();
 	gl::pushMatrices();
-	gl::scale( SKY_BOX_SIZE, SKY_BOX_SIZE, SKY_BOX_SIZE );
-	mSkyBoxBatch->draw();
+		gl::scale( SKY_BOX_SIZE, SKY_BOX_SIZE, SKY_BOX_SIZE );
+		mSkyBoxBatch->draw();
 	gl::popMatrices();
 }
 
@@ -130,7 +130,7 @@ void DynamicCubeMappingApp::draw()
 		gl::setProjectionMatrix( ci::CameraPersp( mDynamicCubeMapFbo->getWidth(), mDynamicCubeMapFbo->getHeight(), 90.0f, 1, 1000 ).getProjectionMatrix() );
 		gl::setViewMatrix( mDynamicCubeMapFbo->calcViewMatrix( GL_TEXTURE_CUBE_MAP_POSITIVE_X + dir, vec3( 0 ) ) );
 		mDynamicCubeMapFbo->bindFramebufferFace( GL_TEXTURE_CUBE_MAP_POSITIVE_X + dir );
-
+		
 		gl::clear();
 		drawSatellites();
 		drawSkyBox();
@@ -142,13 +142,13 @@ void DynamicCubeMappingApp::draw()
 	gl::setMatrices( mCam );
 	// now draw the full scene
 	drawSatellites();
-	drawSkyBox();
-
+	drawSkyBox();	
+	
 	mDynamicCubeMapFbo->bindTexture( 0 );
 	gl::pushMatrices();
-	gl::multModelMatrix( mObjectRotation );
-	gl::scale( vec3( 4 ) );
-	mTeapotBatch->draw();
+		gl::multModelMatrix( mObjectRotation );
+		gl::scale( vec3( 4 ) );
+		mTeapotBatch->draw();
 	gl::popMatrices();
 
 	if( mDrawCubeMap ) {

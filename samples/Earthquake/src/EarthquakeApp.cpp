@@ -16,7 +16,7 @@ using namespace ci::app;
 using namespace std;
 
 class EarthquakeApp : public App {
-  public:
+public:
 	static void prepareSettings( Settings *settings );
 
 	void setup();
@@ -29,23 +29,23 @@ class EarthquakeApp : public App {
 
 	void parseEarthquakes( const string &url );
 
-  public:
-	gl::Texture2dRef mStars;
-	gl::BatchRef     mStarSphere;
+public:
+	gl::Texture2dRef  mStars;
+	gl::BatchRef      mStarSphere;
 
-	POV   mPov;
-	Earth mEarth;
+	POV               mPov;
+	Earth             mEarth;
 
-	vec2 mLastMouse;
-	vec2 mCurrentMouse;
+	vec2              mLastMouse;
+	vec2              mCurrentMouse;
 
-	vec3 mBillboardUp, mBillboardRight;
+	vec3              mBillboardUp, mBillboardRight;
 
-	bool mSaveFrames;
-	bool mShowStars;
-	bool mShowEarth;
-	bool mShowText;
-	bool mShowQuakes;
+	bool              mSaveFrames;
+	bool              mShowStars;
+	bool              mShowEarth;
+	bool              mShowText;
+	bool              mShowQuakes;
 };
 
 void EarthquakeApp::prepareSettings( Settings *settings )
@@ -146,8 +146,8 @@ void EarthquakeApp::draw()
 {
 	gl::clear( Color( 1, 0, 0 ) );
 
-	gl::ScopedDepth depth( true );
-	gl::ScopedColor color( 1, 1, 1 );
+	gl::ScopedDepth       depth( true );
+	gl::ScopedColor       color( 1, 1, 1 );
 
 	// Draw stars.
 	if( mShowStars ) {
@@ -182,8 +182,8 @@ void EarthquakeApp::parseEarthquakes( const string &url )
 	try {
 		const JsonTree json( loadUrl( url ) );
 		for( auto &feature : json["features"].getChildren() ) {
-			auto &        coords = feature["geometry"]["coordinates"];
-			float         mag = feature["properties"]["mag"].getValue<float>();
+			auto &coords = feature["geometry"]["coordinates"];
+			float mag = feature["properties"]["mag"].getValue<float>();
 			const string &title = feature["properties"]["title"].getValue();
 
 			mEarth.addQuake( coords[0].getValue<float>(), coords[1].getValue<float>(), mag, title );

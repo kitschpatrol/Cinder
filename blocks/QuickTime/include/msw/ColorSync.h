@@ -20,6 +20,7 @@
 #include <CoreServices.h>
 #endif
 
+
 #ifndef __CMTYPES__
 #include <CMTypes.h>
 #endif
@@ -44,4 +45,6 @@
 #include <CMScriptingPlugin.h>
 #endif
 
+
 #endif /* __COLORSYNC__ */
+

@@ -10,10 +10,10 @@ class _TBOX_PREFIX_App : public AppScreenSaver {
 	void setup() override;
 	void update() override;
 	void draw() override;
-
+	
   protected:
-	ci::Color mColor, mBackgroundColor;
-	float     mRadius;
+	ci::Color	mColor, mBackgroundColor;
+	float		mRadius;
 };
 
 void _TBOX_PREFIX_App::setup()

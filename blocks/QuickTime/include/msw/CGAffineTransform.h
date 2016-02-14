@@ -24,6 +24,9 @@
 #include <CGGeometry.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,22 +40,22 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 struct CGAffineTransform {
-	float a;
-	float b;
-	float c;
-	float d;
-	float tx;
-	float ty;
+  float               a;
+  float               b;
+  float               c;
+  float               d;
+  float               tx;
+  float               ty;
 };
-typedef struct CGAffineTransform CGAffineTransform;
+typedef struct CGAffineTransform        CGAffineTransform;
 /* The identity transform: [ 1 0 0 1 0 0 ]. */
 /*
  *  CGAffineTransformIdentity
@@ -74,12 +77,13 @@ extern const CGAffineTransform CGAffineTransformIdentity;
  */
 EXTERN_API_C( CGAffineTransform )
 CGAffineTransformMake(
-    float a,
-    float b,
-    float c,
-    float d,
-    float tx,
-    float ty );
+  float   a,
+  float   b,
+  float   c,
+  float   d,
+  float   tx,
+  float   ty);
+
 
 /* Return a transform which translates by `(tx, ty)':
  *   t' = [ 1 0 0 1 tx ty ] */
@@ -93,8 +97,9 @@ CGAffineTransformMake(
  */
 EXTERN_API_C( CGAffineTransform )
 CGAffineTransformMakeTranslation(
-    float tx,
-    float ty );
+  float   tx,
+  float   ty);
+
 
 /* Return a transform which scales by `(sx, sy)':
  *   t' = [ sx 0 0 sy 0 0 ] */
@@ -108,8 +113,9 @@ CGAffineTransformMakeTranslation(
  */
 EXTERN_API_C( CGAffineTransform )
 CGAffineTransformMakeScale(
-    float sx,
-    float sy );
+  float   sx,
+  float   sy);
+
 
 /* Return a transform which rotates by `angle' radians:
  *   t' = [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] */
@@ -122,7 +128,8 @@ CGAffineTransformMakeScale(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGAffineTransform )
-CGAffineTransformMakeRotation( float angle );
+CGAffineTransformMakeRotation(float angle);
+
 
 /* Translate `t' by `(tx, ty)' and return the result:
  *   t' = [ 1 0 0 1 tx ty ] * t */
@@ -136,9 +143,10 @@ CGAffineTransformMakeRotation( float angle );
  */
 EXTERN_API_C( CGAffineTransform )
 CGAffineTransformTranslate(
-    CGAffineTransform t,
-    float             tx,
-    float             ty );
+  CGAffineTransform   t,
+  float               tx,
+  float               ty);
+
 
 /* Scale `t' by `(sx, sy)' and return the result:
  *   t' = [ sx 0 0 sy 0 0 ] * t */
@@ -152,9 +160,10 @@ CGAffineTransformTranslate(
  */
 EXTERN_API_C( CGAffineTransform )
 CGAffineTransformScale(
-    CGAffineTransform t,
-    float             sx,
-    float             sy );
+  CGAffineTransform   t,
+  float               sx,
+  float               sy);
+
 
 /* Rotate `t' by `angle' radians and return the result:
  *   t' =  [ cos(angle) sin(angle) -sin(angle) cos(angle) 0 0 ] * t */
@@ -168,8 +177,9 @@ CGAffineTransformScale(
  */
 EXTERN_API_C( CGAffineTransform )
 CGAffineTransformRotate(
-    CGAffineTransform t,
-    float             angle );
+  CGAffineTransform   t,
+  float               angle);
+
 
 /* Invert `t' and return the result.  If `t' has zero determinant, then `t'
  * is returned unchanged. */
@@ -182,7 +192,8 @@ CGAffineTransformRotate(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGAffineTransform )
-CGAffineTransformInvert( CGAffineTransform t );
+CGAffineTransformInvert(CGAffineTransform t);
+
 
 /* Concatenate `t2' to `t1' and returne the result:
  *   t' = t1 * t2 */
@@ -196,8 +207,9 @@ CGAffineTransformInvert( CGAffineTransform t );
  */
 EXTERN_API_C( CGAffineTransform )
 CGAffineTransformConcat(
-    CGAffineTransform t1,
-    CGAffineTransform t2 );
+  CGAffineTransform   t1,
+  CGAffineTransform   t2);
+
 
 /* Transform `point' by `t' and return the result:
  *   p' = p * t
@@ -212,8 +224,9 @@ CGAffineTransformConcat(
  */
 EXTERN_API_C( CGPoint )
 CGPointApplyAffineTransform(
-    CGPoint           point,
-    CGAffineTransform t );
+  CGPoint             point,
+  CGAffineTransform   t);
+
 
 /* Transform `size' by `t' and return the result:
  *   s' = s * t
@@ -228,15 +241,19 @@ CGPointApplyAffineTransform(
  */
 EXTERN_API_C( CGSize )
 CGSizeApplyAffineTransform(
-    CGSize            size,
-    CGAffineTransform t );
+  CGSize              size,
+  CGAffineTransform   t);
+
+
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -250,3 +267,4 @@ CGSizeApplyAffineTransform(
 #endif
 
 #endif /* CGAFFINETRANSFORM_H_ */
+

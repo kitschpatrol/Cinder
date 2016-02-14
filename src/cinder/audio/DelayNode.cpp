@@ -22,15 +22,14 @@
  */
 
 #include "cinder/audio/DelayNode.h"
-#include "cinder/CinderMath.h"
-#include "cinder/audio/Context.h"
 #include "cinder/audio/Utilities.h" // currently for lroundf TODO: remove once this is moved to CinderMath
+#include "cinder/audio/Context.h"
+#include "cinder/CinderMath.h"
 
 using namespace ci;
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 namespace {
 
@@ -38,9 +37,9 @@ inline float interpLinear( const float *array, size_t arraySize, float readPos )
 {
 	size_t index1 = (size_t)readPos;
 	size_t index2 = ( index1 + 1 ) % arraySize;
-	float  val1 = array[index1];
-	float  val2 = array[index2];
-	float  frac = readPos - (float)index1;
+	float val1 = array[index1];
+	float val2 = array[index2];
+	float frac = readPos - (float)index1;
 
 	return val2 + frac * ( val2 - val1 );
 }
@@ -48,7 +47,7 @@ inline float interpLinear( const float *array, size_t arraySize, float readPos )
 } // anonymous namespace
 
 DelayNode::DelayNode( const Format &format )
-    : Node( format ), mParamDelaySeconds( this, 0 ), mWriteIndex( 0 ), mSampleRate( 0 ), mMaxDelaySeconds( 0 )
+	: Node( format ), mParamDelaySeconds( this, 0 ), mWriteIndex( 0 ), mSampleRate( 0 ), mMaxDelaySeconds( 0 )
 {
 	setNumChannels( 1 );
 	setChannelMode( ChannelMode::SPECIFIED );
@@ -97,11 +96,11 @@ void DelayNode::initialize()
 
 void DelayNode::process( Buffer *buffer )
 {
-	const float  sampleRate = mSampleRate;
+	const float sampleRate = mSampleRate;
 	const size_t numFrames = buffer->getNumFrames();
 	const size_t delayBufferFrames = mDelayBuffer.getNumFrames();
-	float *      inChannel = buffer->getData();
-	float *      delayChannel = mDelayBuffer.getData();
+	float *inChannel = buffer->getData();
+	float *delayChannel = mDelayBuffer.getData();
 
 	// currently doesn't support delay buffer size smaller than one processing block.
 	// TODO: with more work this can support smaller delay sizes (and more effects).
@@ -115,7 +114,7 @@ void DelayNode::process( Buffer *buffer )
 
 		for( size_t i = 0; i < numFrames; i++ ) {
 			const float delayFrames = delaySecondsArray[i] * sampleRate;
-			float       readPos = float( writeIndex + delayBufferFrames ) - delayFrames;
+			float readPos = float( writeIndex + delayBufferFrames ) - delayFrames;
 
 			if( readPos >= delayBufferFrames )
 				readPos -= delayBufferFrames;
@@ -131,7 +130,7 @@ void DelayNode::process( Buffer *buffer )
 	}
 	else {
 		const size_t delayFrames = size_t( mParamDelaySeconds.getValue() * sampleRate );
-		size_t       readIndex = writeIndex + delayBufferFrames - delayFrames;
+		size_t readIndex = writeIndex + delayBufferFrames - delayFrames;
 
 		for( size_t i = 0; i < numFrames; i++ ) {
 			float sample = *inChannel;
@@ -145,5 +144,5 @@ void DelayNode::process( Buffer *buffer )
 
 	mWriteIndex = writeIndex;
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

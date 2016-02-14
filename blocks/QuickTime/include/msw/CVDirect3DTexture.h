@@ -5,21 +5,21 @@
  *  Copyright (c) 2004 Apple Computer, Inc. All rights reserved.
  *
  */
-
-/*! @header CVDirect3DTexture.h
+ 
+ /*! @header CVDirect3DTexture.h
 	@copyright 2004 Apple Computer, Inc. All rights reserved.
     @discussion A CoreVideo Texture derives from an ImageBuffer, and is used for supplying source image data to Direct3D.
     		   
 */
 
-#if !defined( __COREVIDEO_CVDIRECT3DTEXTURE_H__ )
+#if !defined(__COREVIDEO_CVDIRECT3DTEXTURE_H__)
 #define __COREVIDEO_CVDIRECT3DTEXTURE_H__ 1
 
 #include <CVBase.h>
-#include <CVImageBuffer.h>
 #include <CVReturn.h>
+#include <CVImageBuffer.h>
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -57,7 +57,7 @@ CV_EXPORT void CVDirect3DTextureRelease( CVDirect3DTextureRef texture );
     @param      image Target CVDirect3DTexture
     @result     an LPDIRECT3DTEXTURE9 pointing to the texture
 */
-CV_EXPORT void *CVDirect3DTextureGetName( CVDirect3DTextureRef image );
+CV_EXPORT void* CVDirect3DTextureGetName( CVDirect3DTextureRef image);
 
 /*!
     @function   CVDirect3DTextureIsFlipped
@@ -65,7 +65,7 @@ CV_EXPORT void *CVDirect3DTextureGetName( CVDirect3DTextureRef image );
     @param      image Target CVDirect3DTexture
     @result     True if 0,0 in the texture is upper left, false if 0,0 is lower left
 */
-CV_EXPORT Boolean CVDirect3DTextureIsFlipped( CVDirect3DTextureRef image );
+CV_EXPORT Boolean CVDirect3DTextureIsFlipped( CVDirect3DTextureRef image);
 
 /*!
     @function   CVDirect3DTextureGetCleanTexCoords 
@@ -78,13 +78,13 @@ CV_EXPORT Boolean CVDirect3DTextureIsFlipped( CVDirect3DTextureRef image );
     @param      upperRight - array of two floats where the s and t texture coordinates of the upper right corner of the image will be stored
     @param      upperLeft  - array of two floats where the s and t texture coordinates of the upper right corner of the image will be stored
 */
-CV_EXPORT void CVDirect3DTextureGetCleanTexCoords( CVDirect3DTextureRef image,
-    float                                                               lowerLeft[2],
-    float                                                               lowerRight[2],
-    float                                                               upperRight[2],
-    float                                                               upperLeft[2] );
+CV_EXPORT void CVDirect3DTextureGetCleanTexCoords( CVDirect3DTextureRef image, 
+                                                 float lowerLeft[2], 
+						 float lowerRight[2], 
+						 float upperRight[2],
+						 float upperLeft[2]);
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif
 

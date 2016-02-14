@@ -11,9 +11,9 @@
  */
 
 #include "cinder/app/App.h"
+#include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/TextureFont.h"
-#include "cinder/gl/gl.h"
 
 #include "cinder/audio/Context.h"
 #include "cinder/audio/MonitorNode.h"
@@ -35,12 +35,12 @@ class InputAnalyzer : public App {
 	void drawLabels();
 	void printBinInfo( int mouseX );
 
-	audio::InputDeviceNodeRef     mInputDeviceNode;
-	audio::MonitorSpectralNodeRef mMonitorSpectralNode;
-	vector<float>                 mMagSpectrum;
+	audio::InputDeviceNodeRef		mInputDeviceNode;
+	audio::MonitorSpectralNodeRef	mMonitorSpectralNode;
+	vector<float>					mMagSpectrum;
 
-	SpectrumPlot       mSpectrumPlot;
-	gl::TextureFontRef mTextureFont;
+	SpectrumPlot					mSpectrumPlot;
+	gl::TextureFontRef				mTextureFont;
 };
 
 void InputAnalyzer::setup()
@@ -89,7 +89,7 @@ void InputAnalyzer::draw()
 
 void InputAnalyzer::drawLabels()
 {
-	if( !mTextureFont )
+	if( ! mTextureFont )
 		mTextureFont = gl::TextureFont::create( Font( Font::getDefault().getName(), 16 ) );
 
 	gl::color( 0, 0.9f, 0.9f );
@@ -101,9 +101,9 @@ void InputAnalyzer::drawLabels()
 	// draw y-axis label
 	string dbLabel = "Magnitude (decibels, linear)";
 	gl::pushModelView();
-	gl::translate( 30, getWindowCenter().y + mTextureFont->measureString( dbLabel ).x / 2 );
-	gl::rotate( -M_PI / 2 );
-	mTextureFont->drawString( dbLabel, vec2( 0 ) );
+		gl::translate( 30, getWindowCenter().y + mTextureFont->measureString( dbLabel ).x / 2 );
+		gl::rotate( -M_PI / 2 );
+		mTextureFont->drawString( dbLabel, vec2( 0 ) );
 	gl::popModelView();
 }
 

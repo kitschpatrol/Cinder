@@ -24,12 +24,12 @@
 
 #include <vector>
 
-#include "cinder/BSpline.h"
 #include "cinder/BandedMatrix.h"
+#include "cinder/BSpline.h"
 
 namespace cinder {
 
-template <int D, typename T>
+template<int D, typename T>
 BSpline<D, T> fitBSpline( const std::vector<typename BSpline<D, T>::VecT> &samples, int degree, int outputSamples );
 
 } // namespace cinder

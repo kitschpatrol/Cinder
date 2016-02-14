@@ -28,47 +28,43 @@
 
 #include <string>
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 //! General audio exception.
 class AudioExc : public Exception {
   public:
-	AudioExc( const std::string &description, int32_t errorCode = 0 )
-	    : Exception( description ) {}
+	AudioExc( const std::string &description, int32_t errorCode = 0 ) : Exception( description )	{}
+
 	//! Returns a platform-specific error code. Could return 0 (meaning none was available).
-	int32_t getCode() const { return mErrorCode; }
+	int32_t getCode() const						{ return mErrorCode; }
+
   protected:
-	std::string mDescription;
-	int32_t     mErrorCode;
+	std::string	mDescription;
+	int32_t		mErrorCode;
 };
 
 //! Audio exception related to Device management.
 class AudioDeviceExc : public AudioExc {
   public:
-	AudioDeviceExc( const std::string &description )
-	    : AudioExc( description ) {}
+	AudioDeviceExc( const std::string &description ) : AudioExc( description )	{}
 };
 
 //! Audio exception originating from within the Context.
 class AudioContextExc : public AudioExc {
   public:
-	AudioContextExc( const std::string &description )
-	    : AudioExc( description ) {}
+	AudioContextExc( const std::string &description ) : AudioExc( description )	{}
 };
 
 //! Audio exception that occurs when the format of a Node leads to an irrecoverable error.
 class AudioFormatExc : public AudioExc {
   public:
-	AudioFormatExc( const std::string &description )
-	    : AudioExc( description ) {}
+	AudioFormatExc( const std::string &description ) : AudioExc( description )	{}
 };
 
 //! Audio exception related to file i/o.
 class AudioFileExc : public AudioExc {
   public:
-	AudioFileExc( const std::string &description, int32_t errorCode = 0 )
-	    : AudioExc( description ) {}
+	AudioFileExc( const std::string &description, int32_t errorCode = 0 ) : AudioExc( description )	{}
 };
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

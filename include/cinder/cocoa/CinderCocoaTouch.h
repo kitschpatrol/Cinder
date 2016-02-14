@@ -25,17 +25,16 @@
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
 
-#include <CoreFoundation/CoreFoundation.h>
 #include <CoreGraphics/CoreGraphics.h>
+#include <CoreFoundation/CoreFoundation.h>
 
 #if defined( __OBJC__ )
-@class UIImage;
+	@class UIImage;
 #else
-class UIImage;
+	class UIImage;
 #endif
 
-namespace cinder {
-namespace cocoa {
+namespace cinder { namespace cocoa {
 
 /** \brief Converts a UIImage* into a cinder::Surface8u
 	If \a assumeOwnership the result will increment the retain count on construction and decrement it upon the its own destruction. **/
@@ -46,19 +45,13 @@ class SafeUiImage {
   public:
 	SafeUiImage() {}
 	SafeUiImage( UIImage *uiImage, CGImageRef imageRef );
-
-	operator UIImage *() const
-	{
-		if( mObj )
-			return mObj->first;
-		else
-			return 0;
-	}
+	
+	operator UIImage*() const { if( mObj ) return mObj->first; else return 0; }
 
   private:
-	static void destroy( std::pair<UIImage *, CGImageRef> *data );
+	static void destroy( std::pair<UIImage*,CGImageRef> *data );
 
-	std::shared_ptr<std::pair<UIImage *, CGImageRef>> mObj;
+	std::shared_ptr<std::pair<UIImage*,CGImageRef> >	mObj;
 };
 
 /** Loads an ImageSourceRef \a imageSource into a SafeUiImage, which acts like a shared_ptr but can cast itself to UIImage* automatically **/
@@ -66,5 +59,6 @@ SafeUiImage createUiImage( const ImageSourceRef imageSource );
 
 //! Writes an image to the device's Photo Album
 void writeToSavedPhotosAlbum( const ImageSourceRef imageSource );
-}
-} // namespace cinder::cocoa
+
+} } // namespace cinder::cocoa
+

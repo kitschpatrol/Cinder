@@ -1,6 +1,6 @@
 #include "cinder/app/App.h"
-#include "cinder/ImageIo.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/ImageIo.h"
 #include "cinder/gl/gl.h"
 
 using namespace ci;
@@ -14,10 +14,10 @@ class CubeMappingApp : public App {
 	void update();
 	void draw();
 
-	gl::TextureCubeMapRef mCubeMap;
-	gl::BatchRef          mTeapotBatch, mSkyBoxBatch;
-	mat4                  mObjectRotation;
-	CameraPersp           mCam;
+	gl::TextureCubeMapRef	mCubeMap;
+	gl::BatchRef			mTeapotBatch, mSkyBoxBatch;
+	mat4				mObjectRotation;
+	CameraPersp				mCam;
 };
 
 const int SKY_BOX_SIZE = 500;
@@ -39,9 +39,9 @@ void CubeMappingApp::setup()
 
 	mSkyBoxBatch = gl::Batch::create( geom::Cube(), skyBoxGlsl );
 	mSkyBoxBatch->getGlslProg()->uniform( "uCubeMapTex", 0 );
-
+	
 	gl::enableDepthRead();
-	gl::enableDepthWrite();
+	gl::enableDepthWrite();	
 }
 
 void CubeMappingApp::resize()
@@ -53,7 +53,7 @@ void CubeMappingApp::update()
 {
 	// move the camera semi-randomly around based on time
 	mCam.lookAt( vec3( 8 * sin( getElapsedSeconds() / 1 + 10 ), 7 * sin( getElapsedSeconds() / 2 ), 8 * cos( getElapsedSeconds() / 4 + 11 ) ), vec3( 0 ) );
-
+	
 	// rotate the object (teapot) a bit each frame
 	mObjectRotation *= rotate( 0.04f, normalize( vec3( 0.1f, 1, 0.1f ) ) );
 }
@@ -65,16 +65,16 @@ void CubeMappingApp::draw()
 
 	mCubeMap->bind();
 	gl::pushMatrices();
-	gl::multModelMatrix( mObjectRotation );
-	gl::scale( vec3( 4 ) );
-	mTeapotBatch->draw();
+		gl::multModelMatrix( mObjectRotation );
+		gl::scale( vec3( 4 ) );
+		mTeapotBatch->draw();
 	gl::popMatrices();
-
+	
 	// draw sky box
 	gl::pushMatrices();
-	gl::scale( SKY_BOX_SIZE, SKY_BOX_SIZE, SKY_BOX_SIZE );
-	mSkyBoxBatch->draw();
-	gl::popMatrices();
+		gl::scale( SKY_BOX_SIZE, SKY_BOX_SIZE, SKY_BOX_SIZE );
+		mSkyBoxBatch->draw();
+	gl::popMatrices();		
 }
 
 CINDER_APP( CubeMappingApp, RendererGl( RendererGl::Options().msaa( 16 ) ) )

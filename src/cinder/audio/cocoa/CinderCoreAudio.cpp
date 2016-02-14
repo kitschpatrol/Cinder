@@ -26,19 +26,17 @@
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
-namespace cocoa {
+namespace cinder { namespace audio { namespace cocoa {
 
 namespace {
 
 const OSStatus kErrorNotEnoughEnoughSourceFrames = -2;
 
 template <typename PropT>
-PropT getAudioConverterProperty(::AudioConverterRef audioConverter, ::AudioConverterPropertyID propertyId )
+PropT getAudioConverterProperty( ::AudioConverterRef audioConverter, ::AudioConverterPropertyID propertyId )
 {
-	PropT    result;
-	UInt32   resultSize = sizeof( result );
+	PropT result;
+	UInt32 resultSize = sizeof( result );
 	OSStatus status = ::AudioConverterGetProperty( audioConverter, propertyId, &resultSize, &result );
 	CI_VERIFY( status == noErr );
 	return result;
@@ -51,7 +49,7 @@ PropT getAudioConverterProperty(::AudioConverterRef audioConverter, ::AudioConve
 // ----------------------------------------------------------------------------------------------------
 
 ConverterImplCoreAudio::ConverterImplCoreAudio( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock )
-    : Converter( sourceSampleRate, destSampleRate, sourceNumChannels, destNumChannels, sourceMaxFramesPerBlock ), mAudioConverter( nullptr )
+: Converter( sourceSampleRate, destSampleRate, sourceNumChannels, destNumChannels, sourceMaxFramesPerBlock ), mAudioConverter( nullptr )
 {
 	::AudioStreamBasicDescription sourceAsbd = createFloatAsbd( mSourceSampleRate, mSourceNumChannels );
 	::AudioStreamBasicDescription destAsbd = createFloatAsbd( mDestSampleRate, mDestNumChannels );
@@ -59,8 +57,8 @@ ConverterImplCoreAudio::ConverterImplCoreAudio( size_t sourceSampleRate, size_t 
 	if( mSourceNumChannels == 1 && mDestNumChannels > 1 ) {
 		// map mono source to all dest channels
 		vector<UInt32> channelMap( mDestNumChannels, 0 );
-		UInt32         propSize = (UInt32)mDestNumChannels * sizeof( UInt32 );
-		OSStatus       status = ::AudioConverterSetProperty( mAudioConverter, kAudioConverterChannelMap, propSize, channelMap.data() );
+		UInt32 propSize =  (UInt32)mDestNumChannels * sizeof( UInt32 );
+		OSStatus status = ::AudioConverterSetProperty( mAudioConverter, kAudioConverterChannelMap, propSize, channelMap.data() );
 		CI_VERIFY( status == noErr );
 	}
 	else if( mSourceNumChannels > 1 && mDestNumChannels == 1 ) {
@@ -121,14 +119,14 @@ pair<size_t, size_t> ConverterImplCoreAudio::convertComplexImpl( const Buffer *s
 	return make_pair( mNumSourceBufferFramesUsed, (size_t)numOutputFrames );
 }
 
-OSStatus ConverterImplCoreAudio::converterCallback(::AudioConverterRef inAudioConverter, UInt32 *ioNumberDataPackets, ::AudioBufferList *ioData, ::AudioStreamPacketDescription **outDataPacketDescription, void *inUserData )
+OSStatus ConverterImplCoreAudio::converterCallback( ::AudioConverterRef inAudioConverter, UInt32 *ioNumberDataPackets, ::AudioBufferList *ioData, ::AudioStreamPacketDescription **outDataPacketDescription, void *inUserData )
 {
-	CI_ASSERT_MSG( !outDataPacketDescription, "VBR not handled" );
+	CI_ASSERT_MSG( ! outDataPacketDescription, "VBR not handled" );
 
 	ConverterImplCoreAudio *converter = (ConverterImplCoreAudio *)inUserData;
-	const Buffer *          sourceBuffer = converter->mSourceBuffer;
-	const size_t            numFramesNeeded = converter->mNumReadFramesNeeded;
-	const size_t            numSourceBufferFramesUsed = converter->mNumSourceBufferFramesUsed;
+	const Buffer *sourceBuffer = converter->mSourceBuffer;
+	const size_t numFramesNeeded = converter->mNumReadFramesNeeded;
+	const size_t numSourceBufferFramesUsed = converter->mNumSourceBufferFramesUsed;
 
 	if( converter->mNumSourceBufferFramesUsed == numFramesNeeded ) {
 		// no more source samples left this time around, inform converter by returning custom error code
@@ -137,7 +135,7 @@ OSStatus ConverterImplCoreAudio::converterCallback(::AudioConverterRef inAudioCo
 	}
 
 	UInt32 numPacketsToConvert = *ioNumberDataPackets;
-	numPacketsToConvert = std::min( numPacketsToConvert, ( UInt32 )( numFramesNeeded - numSourceBufferFramesUsed ) );
+	numPacketsToConvert = std::min( numPacketsToConvert, (UInt32)( numFramesNeeded - numSourceBufferFramesUsed ) );
 
 	for( UInt32 ch = 0; ch < ioData->mNumberBuffers; ch++ ) {
 		ioData->mBuffers[ch].mDataByteSize = numPacketsToConvert * sizeof( float );
@@ -159,26 +157,26 @@ void ConverterImplCoreAudio::clear()
 // MARK: - Utility functions
 // ----------------------------------------------------------------------------------------------------
 
-void printASBD( const ::AudioStreamBasicDescription &asbd )
-{
-	char   formatIDString[5];
-	UInt32 formatID = CFSwapInt32HostToBig( asbd.mFormatID );
-	bcopy( &formatID, formatIDString, 4 );
+
+void printASBD( const ::AudioStreamBasicDescription &asbd ) {
+	char formatIDString[5];
+	UInt32 formatID = CFSwapInt32HostToBig (asbd.mFormatID);
+	bcopy (&formatID, formatIDString, 4);
 	formatIDString[4] = '\0';
 
-	printf( "  Sample Rate:         %10.0f\n", asbd.mSampleRate );
-	printf( "  Format ID:           %10s\n", formatIDString );
-	printf( "  Format Flags:        %10X\n", (unsigned int)asbd.mFormatFlags );
-	printf( "  Bytes per Packet:    %10d\n", (unsigned int)asbd.mBytesPerPacket );
-	printf( "  Frames per Packet:   %10d\n", (unsigned int)asbd.mFramesPerPacket );
-	printf( "  Bytes per Frame:     %10d\n", (unsigned int)asbd.mBytesPerFrame );
-	printf( "  Channels per Frame:  %10d\n", (unsigned int)asbd.mChannelsPerFrame );
-	printf( "  Bits per Channel:    %10d\n", (unsigned int)asbd.mBitsPerChannel );
+	printf( "  Sample Rate:         %10.0f\n",  asbd.mSampleRate );
+	printf( "  Format ID:           %10s\n",    formatIDString );
+	printf( "  Format Flags:        %10X\n",    (unsigned int)asbd.mFormatFlags );
+	printf( "  Bytes per Packet:    %10d\n",    (unsigned int)asbd.mBytesPerPacket );
+	printf( "  Frames per Packet:   %10d\n",    (unsigned int)asbd.mFramesPerPacket );
+	printf( "  Bytes per Frame:     %10d\n",    (unsigned int)asbd.mBytesPerFrame );
+	printf( "  Channels per Frame:  %10d\n",    (unsigned int)asbd.mChannelsPerFrame );
+	printf( "  Bits per Channel:    %10d\n",    (unsigned int)asbd.mBitsPerChannel );
 }
 
-void AudioBufferListDeleter::operator()(::AudioBufferList *bufferList )
+void AudioBufferListDeleter::operator()( ::AudioBufferList *bufferList )
 {
-	if( !mShallow ) {
+	if( ! mShallow ) {
 		for( size_t i = 0; i < bufferList->mNumberBuffers; i++ )
 			free( bufferList->mBuffers[i].mData );
 	}
@@ -188,7 +186,7 @@ void AudioBufferListDeleter::operator()(::AudioBufferList *bufferList )
 
 AudioBufferListPtr createNonInterleavedBufferList( size_t numFrames, size_t numChannels )
 {
-	::AudioBufferList *bufferList = static_cast<::AudioBufferList *>( calloc( 1, sizeof(::AudioBufferList ) + sizeof(::AudioBuffer ) * ( numChannels - 1 ) ) );
+	::AudioBufferList *bufferList = static_cast<::AudioBufferList *>( calloc( 1, sizeof( ::AudioBufferList ) + sizeof( ::AudioBuffer ) * (numChannels - 1) ) );
 	bufferList->mNumberBuffers = static_cast<UInt32>( numChannels );
 	for( size_t i = 0; i < numChannels; i++ ) {
 		::AudioBuffer *buffer = &bufferList->mBuffers[i];
@@ -202,7 +200,7 @@ AudioBufferListPtr createNonInterleavedBufferList( size_t numFrames, size_t numC
 
 AudioBufferListPtr createNonInterleavedBufferListShallow( size_t numChannels )
 {
-	::AudioBufferList *bufferList = static_cast<::AudioBufferList *>( calloc( 1, sizeof(::AudioBufferList ) + sizeof(::AudioBuffer ) * ( numChannels - 1 ) ) );
+	::AudioBufferList *bufferList = static_cast<::AudioBufferList *>( calloc( 1, sizeof( ::AudioBufferList ) + sizeof( ::AudioBuffer ) * (numChannels - 1) ) );
 	bufferList->mNumberBuffers = static_cast<UInt32>( numChannels );
 	for( size_t i = 0; i < numChannels; i++ ) {
 		::AudioBuffer *buffer = &bufferList->mBuffers[i];
@@ -226,19 +224,19 @@ AudioBufferListPtr createNonInterleavedBufferListShallow( size_t numChannels )
 void findAndCreateAudioComponent( const ::AudioComponentDescription &componentDescription, ::AudioComponentInstance *componentInstance )
 {
 	::AudioComponent component = findAudioComponent( componentDescription );
-	OSStatus         status = ::AudioComponentInstanceNew( component, componentInstance );
+	OSStatus status = ::AudioComponentInstanceNew( component, componentInstance );
 	CI_VERIFY( status == noErr );
 }
 
 ::AudioStreamBasicDescription createFloatAsbd( size_t sampleRate, size_t numChannels, bool isInterleaved )
 {
-	const UInt32                  kBytesPerSample = sizeof( float );
+	const UInt32 kBytesPerSample = sizeof( float );
 	::AudioStreamBasicDescription asbd{ 0 };
-	asbd.mSampleRate = sampleRate;
-	asbd.mFormatID = kAudioFormatLinearPCM;
-	asbd.mFramesPerPacket = 1;
-	asbd.mChannelsPerFrame = (UInt32)numChannels;
-	asbd.mBitsPerChannel = 8 * kBytesPerSample;
+	asbd.mSampleRate		= sampleRate;
+	asbd.mFormatID			= kAudioFormatLinearPCM;
+	asbd.mFramesPerPacket	= 1;
+	asbd.mChannelsPerFrame	= (UInt32)numChannels;
+	asbd.mBitsPerChannel	= 8 * kBytesPerSample;
 
 	if( isInterleaved ) {
 		asbd.mFormatFlags = kAudioFormatFlagIsFloat | kAudioFormatFlagsNativeEndian | kLinearPCMFormatFlagIsPacked;
@@ -248,9 +246,9 @@ void findAndCreateAudioComponent( const ::AudioComponentDescription &componentDe
 	else {
 		// paraphrasing comment in CoreAudioTypes.h: for non-interleaved, the ABSD describes the format of
 		// one AudioBuffer that is contained with the AudioBufferList, each AudioBuffer is a mono signal.
-		asbd.mFormatFlags = kAudioFormatFlagIsFloat | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsNonInterleaved;
-		asbd.mBytesPerPacket = kBytesPerSample;
-		asbd.mBytesPerFrame = kBytesPerSample;
+		asbd.mFormatFlags        = kAudioFormatFlagIsFloat | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsNonInterleaved;
+		asbd.mBytesPerPacket     = kBytesPerSample;
+		asbd.mBytesPerFrame      = kBytesPerSample;
 	}
 
 	return asbd;
@@ -258,13 +256,13 @@ void findAndCreateAudioComponent( const ::AudioComponentDescription &componentDe
 
 ::AudioStreamBasicDescription createInt16Asbd( size_t sampleRate, size_t numChannels, bool isInterleaved )
 {
-	const UInt32                  kBytesPerSample = sizeof( int16_t );
+	const UInt32 kBytesPerSample = sizeof( int16_t );
 	::AudioStreamBasicDescription asbd{ 0 };
-	asbd.mSampleRate = sampleRate;
-	asbd.mFormatID = kAudioFormatLinearPCM;
-	asbd.mFramesPerPacket = 1;
-	asbd.mChannelsPerFrame = (UInt32)numChannels;
-	asbd.mBitsPerChannel = 8 * kBytesPerSample;
+	asbd.mSampleRate		= sampleRate;
+	asbd.mFormatID			= kAudioFormatLinearPCM;
+	asbd.mFramesPerPacket	= 1;
+	asbd.mChannelsPerFrame	= (UInt32)numChannels;
+	asbd.mBitsPerChannel	= 8 * kBytesPerSample;
 
 	if( isInterleaved ) {
 		asbd.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kLinearPCMFormatFlagIsPacked;
@@ -273,9 +271,9 @@ void findAndCreateAudioComponent( const ::AudioComponentDescription &componentDe
 	}
 	else {
 		// see note in createFloatAsbd
-		asbd.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsNonInterleaved;
-		asbd.mBytesPerPacket = kBytesPerSample;
-		asbd.mBytesPerFrame = kBytesPerSample;
+		asbd.mFormatFlags        = kLinearPCMFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsNonInterleaved;
+		asbd.mBytesPerPacket     = kBytesPerSample;
+		asbd.mBytesPerFrame      = kBytesPerSample;
 	}
 
 	return asbd;
@@ -294,14 +292,13 @@ void findAndCreateAudioComponent( const ::AudioComponentDescription &componentDe
 	return result;
 }
 
-::AudioStreamBasicDescription getAudioUnitASBD(::AudioUnit audioUnit, ::AudioUnitScope scope, ::AudioUnitElement bus )
+::AudioStreamBasicDescription getAudioUnitASBD( ::AudioUnit audioUnit, ::AudioUnitScope scope, ::AudioUnitElement bus )
 {
 	::AudioStreamBasicDescription result;
-	UInt32                        resultSize = sizeof( result );
-	OSStatus                      status = ::AudioUnitGetProperty( audioUnit, kAudioUnitProperty_StreamFormat, scope, bus, &result, &resultSize );
+	UInt32 resultSize = sizeof( result );
+	OSStatus status = ::AudioUnitGetProperty( audioUnit, kAudioUnitProperty_StreamFormat, scope, bus, &result, &resultSize );
 	CI_VERIFY( status == noErr );
 	return result;
 }
-}
-}
-} // namespace cinder::audio::cocoa
+
+} } } // namespace cinder::audio::cocoa

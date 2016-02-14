@@ -22,16 +22,16 @@
 */
 
 #import "cinder/app/cocoa/AppImplMacScreenSaver.h"
-#include "cinder/CinderAssert.h"
 #include "cinder/app/cocoa/PlatformCocoa.h"
+#include "cinder/CinderAssert.h"
 
 #import <Foundation/NSThread.h>
 
-static AppImplMacScreenSaver *                                sAppImplInstance = nil;
+static AppImplMacScreenSaver *sAppImplInstance = nil;
 static std::unique_ptr<cinder::app::AppScreenSaver::Settings> sSettings;
-static void                                                   initSettings();
-static AppImplMacScreenSaver *                                getAppImpl();
-static bool                                                   sFirstView = true; // records whether a call is the first to initView; reset to true at stop animation
+static void initSettings();
+static AppImplMacScreenSaver* getAppImpl();
+static bool sFirstView = true; // records whether a call is the first to initView; reset to true at stop animation
 
 @implementation WindowImplCocoaScreenSaver
 
@@ -41,28 +41,26 @@ static bool                                                   sFirstView = true;
 {
 	mResizeCalled = NO;
 	mHasDrawnSinceLastUpdate = YES; // in order to force an update later
-
+	
 	initSettings();
+	
+	bool blankingWindow = sSettings->isSecondaryDisplayBlankingEnabled() && ( ! mIsMainView );
 
-	bool blankingWindow = sSettings->isSecondaryDisplayBlankingEnabled() && ( !mIsMainView );
-
-	if( !blankingWindow ) {
+	if( ! blankingWindow ) {
 		cinder::app::RendererRef renderer = sSettings->getDefaultRenderer()->clone();
 		// we only want to look for a shared renderer if we're not the first window
 		cinder::app::RendererRef sharedRenderer;
 		if( sAppImplInstance )
 			sharedRenderer = [sAppImplInstance findSharedRenderer:renderer];
 		mCinderView = [[CinderViewMac alloc] initWithFrame:rect renderer:renderer sharedRenderer:sharedRenderer
-		                                 appReceivesEvents:NO
-		                                highDensityDisplay:sSettings->isHighDensityDisplayEnabled()
-		                                  enableMultiTouch:NO];
+										appReceivesEvents:NO highDensityDisplay:sSettings->isHighDensityDisplayEnabled() enableMultiTouch:NO];
 		[mCinderView setDelegate:self];
 
 		[self setAutoresizesSubviews:YES];
 		[self addSubview:mCinderView];
 
 		[mCinderView release]; // addSubview incs the retainCount and the parent assumes ownership
-
+		
 		[self setAnimationTimeInterval:1 / sSettings->getFrameRate()];
 	}
 	else {
@@ -70,7 +68,7 @@ static bool                                                   sFirstView = true;
 		mCinderView = nil;
 		[self setAnimationTimeInterval:-1];
 	}
-
+	
 	// now that we've initialized the window, for impl instantiation
 	getAppImpl();
 }
@@ -78,16 +76,16 @@ static bool                                                   sFirstView = true;
 - (id)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview
 {
 	self = [super initWithFrame:frame isPreview:isPreview];
-
+	
 	mPreview = isPreview;
 	mCinderView = nil;
 
-	return self;
+    return self;
 }
 
 - (void)setFrameSize:(NSSize)newSize
 {
-	if( !sAppImplInstance )
+	if( ! sAppImplInstance )
 		return;
 
 	[super setFrameSize:newSize];
@@ -97,12 +95,12 @@ static bool                                                   sFirstView = true;
 
 - (void)drawRect:(NSRect)rect
 {
-	if( !sAppImplInstance ) {
+	if( ! sAppImplInstance ) {
 		[super drawRect:rect]; // draws black by default
 		return;
 	}
 
-	if( ( !mCinderView ) || ( !mCinderView.readyToDraw ) ) {
+	if( ( ! mCinderView ) || ( ! mCinderView.readyToDraw ) ) {
 		[super drawRect:rect]; // draws black by default
 		return;
 	}
@@ -110,7 +108,8 @@ static bool                                                   sFirstView = true;
 
 - (void)animateOneFrame
 {
-	if( !sAppImplInstance ) // ignore until we have an instance
+
+	if( ! sAppImplInstance ) // ignore until we have an instance
 		return;
 
 	[getAppImpl() animateOneFrame:self];
@@ -128,7 +127,7 @@ static bool                                                   sFirstView = true;
 	mIsMainView = sFirstView;
 	sFirstView = false;
 	[self instantiateView:newFrame];
-
+	
 	mWindowRef = cinder::app::Window::privateCreate__( self, getAppImpl()->mApp );
 	// this needs to be called after instantiateView
 	[getAppImpl() addWindow:self];
@@ -146,18 +145,18 @@ static bool                                                   sFirstView = true;
 - (BOOL)hasConfigureSheet
 {
 	initSettings();
-
-	return sSettings->getProvidesMacConfigDialog();
+	
+    return sSettings->getProvidesMacConfigDialog();
 }
 
-- (NSWindow *)configureSheet
+- (NSWindow*)configureSheet
 {
 	initSettings();
 
 	if( sSettings->getProvidesMacConfigDialog() )
-		return static_cast<NSWindow *>( getAppImpl()->mApp->createMacConfigDialog() );
+		return static_cast<NSWindow*>( getAppImpl()->mApp->createMacConfigDialog() );
 	else
-		return nil;
+	    return nil;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -228,9 +227,9 @@ static bool                                                   sFirstView = true;
 
 - (cinder::DisplayRef)getDisplay
 {
-	if( !mDisplay )
+	if( ! mDisplay )
 		mDisplay = cinder::app::PlatformCocoa::get()->findFromNsScreen( [[self window] screen] );
-
+	
 	return mDisplay;
 }
 
@@ -242,7 +241,7 @@ static bool                                                   sFirstView = true;
 		return cinder::app::RendererRef();
 }
 
-- (void *)getNative
+- (void*)getNative
 {
 	return self;
 }
@@ -276,47 +275,47 @@ static bool                                                   sFirstView = true;
 	return mWindowRef;
 }
 
-- (void)mouseDown:(cinder::app::MouseEvent *)event
+- (void)mouseDown:(cinder::app::MouseEvent*)event
 { // NO-OP
 }
 
-- (void)mouseDrag:(cinder::app::MouseEvent *)event
+- (void)mouseDrag:(cinder::app::MouseEvent*)event
 { // NO-OP
 }
 
-- (void)mouseUp:(cinder::app::MouseEvent *)event
+- (void)mouseUp:(cinder::app::MouseEvent*)event
 { // NO-OP
 }
 
-- (void)mouseMove:(cinder::app::MouseEvent *)event
+- (void)mouseMove:(cinder::app::MouseEvent*)event
 { // NO-OP
 }
 
-- (void)mouseWheel:(cinder::app::MouseEvent *)event
+- (void)mouseWheel:(cinder::app::MouseEvent*)event
 { // NO-OP
 }
 
-- (void)keyDown:(cinder::app::KeyEvent *)event
+- (void)keyDown:(cinder::app::KeyEvent*)event
 { // NO-OP
 }
 
-- (void)keyUp:(cinder::app::KeyEvent *)event
+- (void)keyUp:(cinder::app::KeyEvent*)event
 { // NO-OP
 }
 
-- (void)touchesBegan:(cinder::app::TouchEvent *)event
+- (void)touchesBegan:(cinder::app::TouchEvent*)event
 { // NO-OP
 }
 
-- (void)touchesMoved:(cinder::app::TouchEvent *)event
+- (void)touchesMoved:(cinder::app::TouchEvent*)event
 { // NO-OP
 }
 
-- (void)touchesEnded:(cinder::app::TouchEvent *)event
+- (void)touchesEnded:(cinder::app::TouchEvent*)event
 { // NO-OP
 }
 
-- (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches
+- (const std::vector<cinder::app::TouchEvent::Touch>&)getActiveTouches
 {
 	if( mCinderView )
 		return [mCinderView getActiveTouches];
@@ -326,7 +325,7 @@ static bool                                                   sFirstView = true;
 	}
 }
 
-- (void)fileDrop:(cinder::app::FileDropEvent *)event
+- (void)fileDrop:(cinder::app::FileDropEvent*)event
 { // NO-OP
 }
 
@@ -334,23 +333,23 @@ static bool                                                   sFirstView = true;
 
 static void initSettings()
 {
-	if( !sSettings ) {
+	if( ! sSettings ) {
 		sSettings = std::unique_ptr<cinder::app::AppScreenSaver::Settings>( new cinder::app::AppScreenSaver::Settings() );
 		ScreenSaverSettingsMethod( sSettings.get() );
 	}
 }
 
-static AppImplMacScreenSaver *getAppImpl()
+static AppImplMacScreenSaver* getAppImpl()
 {
-	if( !sAppImplInstance ) {
+	if( ! sAppImplInstance ) {
 		initSettings();
-
+		
 		sAppImplInstance = [[AppImplMacScreenSaver alloc] init];
 		sAppImplInstance->mApp = ScreenSaverFactoryMethod( sAppImplInstance, sSettings.get() );
 		sAppImplInstance->mFrameRate = sSettings->getFrameRate();
 		sAppImplInstance->mSetupCalled = NO;
 	}
-
+	
 	return sAppImplInstance;
 }
 
@@ -359,29 +358,29 @@ static AppImplMacScreenSaver *getAppImpl()
 
 @implementation AppImplMacScreenSaver
 
-- (AppImplMacScreenSaver *)init
+- (AppImplMacScreenSaver*)init
 {
 	self = [super init];
-
+	
 	mApp = NULL;
-
+	
 	return self;
 }
 
-- (void)addWindow:(WindowImplCocoaScreenSaver *)windowImpl
+- (void)addWindow:(WindowImplCocoaScreenSaver*)windowImpl
 {
 	[windowImpl retain];
-	mWindows.push_back( windowImpl );
+	mWindows.push_back( windowImpl );	
 }
 
 - (cinder::app::RendererRef)findSharedRenderer:(cinder::app::RendererRef)sharedRenderer
 {
-	if( !sharedRenderer )
+	if( ! sharedRenderer )
 		return cinder::app::RendererRef();
-
+	
 	for( const auto &win : mWindows ) {
 		auto ren = win->mWindowRef->getRenderer();
-		if( ren && ( typeid( *ren ) == typeid( *sharedRenderer ) ) )
+		if( ren && ( typeid(*ren) == typeid(*sharedRenderer) ) )
 			return ren;
 	}
 
@@ -402,15 +401,15 @@ static AppImplMacScreenSaver *getAppImpl()
 {
 	if( index >= mWindows.size() )
 		throw cinder::app::ExcInvalidWindow();
-
-	std::list<WindowImplCocoaScreenSaver *>::iterator iter = mWindows.begin();
+	
+	std::list<WindowImplCocoaScreenSaver*>::iterator iter = mWindows.begin();
 	std::advance( iter, index );
-	return ( *iter )->mWindowRef;
+	return (*iter)->mWindowRef;
 }
 
 - (cinder::app::WindowRef)getWindow
 {
-	if( !mActiveWindow )
+	if( ! mActiveWindow )
 		throw cinder::app::ExcInvalidWindow();
 	else
 		return mActiveWindow->mWindowRef;
@@ -426,7 +425,7 @@ static AppImplMacScreenSaver *getAppImpl()
 	}
 }
 
-- (void)setActiveWindow:(WindowImplCocoaScreenSaver *)activeWindow
+- (void)setActiveWindow:(WindowImplCocoaScreenSaver*)activeWindow
 {
 	mActiveWindow = activeWindow;
 	[mActiveWindow->mCinderView makeCurrentContext];
@@ -453,9 +452,9 @@ static AppImplMacScreenSaver *getAppImpl()
 	return [[[NSBundle bundleForClass:[self class]] bundlePath] UTF8String];
 }
 
-- (void)animateOneFrame:(WindowImplCocoaScreenSaver *)callee
+- (void)animateOneFrame:(WindowImplCocoaScreenSaver*)callee
 {
-	if( !mSetupCalled ) {
+	if( ! mSetupCalled ) {
 		// fire setup for the first time
 		[self setActiveWindow:callee];
 		mApp->privateSetup__();
@@ -464,12 +463,12 @@ static AppImplMacScreenSaver *getAppImpl()
 
 	// mark all our CinderViews as ready to draw after calling resize where necessary; this only has any effect the first time
 	for( auto &win : mWindows ) {
-		if( win->mCinderView && ( !win->mResizeCalled ) ) {
+		if( win->mCinderView && ( ! win->mResizeCalled ) ) {
 			[self setActiveWindow:win];
 			win->mWindowRef->emitResize();
 			win->mResizeCalled = YES;
 		}
-
+	
 		if( win->mCinderView )
 			win->mCinderView.readyToDraw = [win isAnimating];
 	}
@@ -477,7 +476,7 @@ static AppImplMacScreenSaver *getAppImpl()
 	// determine if all of our windows have drawn since the last update, and update if so
 	BOOL allWindowsDrawn = YES;
 	for( auto &win : mWindows ) {
-		if( win->mCinderView && [win isAnimating] && ( !win->mHasDrawnSinceLastUpdate ) ) {
+		if( win->mCinderView && [win isAnimating] && ( ! win->mHasDrawnSinceLastUpdate ) ) {
 			allWindowsDrawn = NO;
 			break;
 		}
@@ -489,15 +488,15 @@ static AppImplMacScreenSaver *getAppImpl()
 		for( auto &win : mWindows )
 			win->mHasDrawnSinceLastUpdate = NO;
 	}
-
-	if( !callee->mHasDrawnSinceLastUpdate ) {
+	
+	if( ! callee->mHasDrawnSinceLastUpdate ) {
 		if( callee->mCinderView )
 			[callee setNeedsDisplay:YES];
 		callee->mHasDrawnSinceLastUpdate = YES;
 	}
 }
 
-- (void)removeCinderView:(WindowImplCocoaScreenSaver *)win
+- (void)removeCinderView:(WindowImplCocoaScreenSaver*)win
 {
 	// issue a close signal against this window
 	[self setActiveWindow:win];
@@ -506,15 +505,15 @@ static AppImplMacScreenSaver *getAppImpl()
 	// release its Cinder View
 	[win->mCinderView removeFromSuperview];
 	win->mCinderView = nil;
-
+	
 	// if no Windows have CinderViews anymore that means we need to finalCleanup
 	BOOL foundACinderView = NO;
 	for( auto &win : mWindows ) {
 		if( win->mCinderView != nil )
 			foundACinderView = YES;
 	}
-
-	if( !foundACinderView ) {
+	
+	if( ! foundACinderView ) {
 		[self finalCleanup];
 		return;
 	}

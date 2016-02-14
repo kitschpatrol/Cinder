@@ -28,22 +28,24 @@
 class DebugMesh : public ci::geom::Source {
   public:
 	DebugMesh();
-	DebugMesh( const ci::TriMesh &mesh );
+	DebugMesh( const ci::TriMesh& mesh );
 	~DebugMesh();
 
-	void clear();
-	void setMesh( const ci::TriMesh &mesh );
+	void						clear();
+	void						setMesh(const ci::TriMesh& mesh);
 
-	size_t              getNumVertices() const override { return mVertices.size(); }
-	size_t              getNumIndices() const override { return mIndices.size(); }
-	ci::geom::Primitive getPrimitive() const override { return ci::geom::Primitive::LINES; }
-	uint8_t getAttribDims( ci::geom::Attrib attr ) const override;
+	size_t				getNumVertices() const override { return mVertices.size(); }
+	size_t				getNumIndices() const override { return mIndices.size(); }
+	ci::geom::Primitive	getPrimitive() const override { return ci::geom::Primitive::LINES; }
+	uint8_t				getAttribDims( ci::geom::Attrib attr ) const override;
 
-	ci::geom::AttribSet getAvailableAttribs() const override;
-	void loadInto( ci::geom::Target *target, const ci::geom::AttribSet &requestedAttribs ) const override;
-	DebugMesh *clone() const override { return new DebugMesh( *this ); }
+	ci::geom::AttribSet	getAvailableAttribs() const override;
+	void				loadInto( ci::geom::Target *target, const ci::geom::AttribSet &requestedAttribs ) const override;
+	DebugMesh*			clone() const override { return new DebugMesh( *this ); }
+
   private:
-	std::vector<ci::vec3>     mVertices;
-	std::vector<ci::Color>    mColors;
-	std::vector<ci::uint32_t> mIndices;
+	std::vector<ci::vec3>		mVertices;
+	std::vector<ci::Color>		mColors;
+	std::vector<ci::uint32_t>	mIndices;
 };
+

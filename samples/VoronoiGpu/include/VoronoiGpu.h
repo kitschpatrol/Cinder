@@ -1,6 +1,6 @@
 #pragma once
-#include "cinder/Surface.h"
 #include "cinder/Vector.h"
+#include "cinder/Surface.h"
 
 #include <vector>
 

@@ -22,22 +22,21 @@
  */
 
 #include "cinder/audio/SamplePlayerNode.h"
-#include "cinder/CinderMath.h"
 #include "cinder/audio/Context.h"
+#include "cinder/CinderMath.h"
 
 using namespace ci;
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - SamplePlayerNode
 // ----------------------------------------------------------------------------------------------------
 
 SamplePlayerNode::SamplePlayerNode( const Format &format )
-    : InputNode( format ), mNumFrames( 0 ), mReadPos( 0 ), mLoop( false ),
-      mLoopBegin( 0 ), mLoopEnd( 0 )
+	: InputNode( format ), mNumFrames( 0 ), mReadPos( 0 ), mLoop( false ),
+		mLoopBegin( 0 ), mLoopEnd( 0 )
 {
 	setChannelMode( ChannelMode::SPECIFIED );
 }
@@ -117,12 +116,12 @@ double SamplePlayerNode::getNumSeconds() const
 // ----------------------------------------------------------------------------------------------------
 
 BufferPlayerNode::BufferPlayerNode( const Format &format )
-    : SamplePlayerNode( format )
+	: SamplePlayerNode( format )
 {
 }
 
 BufferPlayerNode::BufferPlayerNode( const BufferRef &buffer, const Format &format )
-    : SamplePlayerNode( format ), mBuffer( buffer )
+	: SamplePlayerNode( format ), mBuffer( buffer )
 {
 	size_t numFrames = mBuffer ? mBuffer->getNumFrames() : 0;
 	mNumFrames = mLoopEnd = numFrames;
@@ -133,7 +132,7 @@ BufferPlayerNode::BufferPlayerNode( const BufferRef &buffer, const Format &forma
 
 void BufferPlayerNode::enableProcessing()
 {
-	if( !mBuffer ) {
+	if( ! mBuffer ) {
 		disable();
 		return;
 	}
@@ -156,7 +155,7 @@ void BufferPlayerNode::setBuffer( const BufferRef &buffer )
 			setNumChannels( buffer->getNumChannels() );
 			configureConnections();
 		}
-
+		
 		mNumFrames = buffer->getNumFrames();
 	}
 	else
@@ -194,7 +193,7 @@ void BufferPlayerNode::process( Buffer *buffer )
 		buffer->copyOffset( *mBuffer, readCount, frameRange.first, readPos );
 	}
 
-	if( readCount < numFrames ) {
+	if( readCount < numFrames  ) {
 		// End of File. If looping copy from beginning, otherwise disable and mark mIsEof.
 		if( mLoop ) {
 			size_t readBegin = mLoopBegin;
@@ -218,13 +217,13 @@ void BufferPlayerNode::process( Buffer *buffer )
 // ----------------------------------------------------------------------------------------------------
 
 FilePlayerNode::FilePlayerNode( const Format &format )
-    : SamplePlayerNode( format ), mRingBufferPaddingFactor( 2 ), mLastUnderrun( 0 ), mLastOverrun( 0 ), mIsReadAsync( true )
+	: SamplePlayerNode( format ), mRingBufferPaddingFactor( 2 ), mLastUnderrun( 0 ), mLastOverrun( 0 ), mIsReadAsync( true )
 {
 }
 
 FilePlayerNode::FilePlayerNode( const SourceFileRef &sourceFile, bool isReadAsync, const Format &format )
-    : SamplePlayerNode( format ), mSourceFile( sourceFile ), mIsReadAsync( isReadAsync ), mRingBufferPaddingFactor( 2 ),
-      mLastUnderrun( 0 ), mLastOverrun( 0 )
+	: SamplePlayerNode( format ), mSourceFile( sourceFile ), mIsReadAsync( isReadAsync ), mRingBufferPaddingFactor( 2 ),
+		mLastUnderrun( 0 ), mLastOverrun( 0 )
 {
 	if( mSourceFile ) {
 		mNumFrames = mSourceFile->getNumFrames();
@@ -251,7 +250,7 @@ void FilePlayerNode::initialize()
 		mNumFrames = mSourceFile->getNumFrames();
 	}
 
-	if( !mLoopEnd || mLoopEnd > mNumFrames )
+	if( ! mLoopEnd  || mLoopEnd > mNumFrames )
 		mLoopEnd = mNumFrames;
 
 	mIoBuffer.setSize( mSourceFile->getMaxFramesPerRead(), getNumChannels() );
@@ -274,7 +273,7 @@ void FilePlayerNode::uninitialize()
 
 void FilePlayerNode::enableProcessing()
 {
-	if( !mSourceFile ) {
+	if( ! mSourceFile ) {
 		disable();
 		return;
 	}
@@ -294,7 +293,7 @@ void FilePlayerNode::stop()
 	}
 	else {
 		auto ctx = getContext();
-		if( !ctx->isAudioThread() ) {
+		if( ! ctx->isAudioThread() ) {
 			lock_guard<mutex> lock( ctx->getMutex() );
 			stopImpl();
 		}
@@ -313,7 +312,7 @@ void FilePlayerNode::seek( size_t readPositionFrames )
 	}
 	else {
 		auto ctx = getContext();
-		if( !ctx->isAudioThread() ) {
+		if( ! ctx->isAudioThread() ) {
 			lock_guard<mutex> lock( ctx->getMutex() );
 			seekImpl( readPositionFrames );
 		}
@@ -382,7 +381,7 @@ void FilePlayerNode::process( Buffer *buffer )
 	size_t readCount = std::min( numReadAvail, numFrames );
 
 	for( size_t ch = 0; ch < buffer->getNumChannels(); ch++ ) {
-		if( !mRingBuffers[ch].read( buffer->getChannel( ch ), readCount ) )
+		if( ! mRingBuffers[ch].read( buffer->getChannel( ch ), readCount ) )
 			mLastUnderrun = getContext()->getNumProcessedFrames();
 	}
 
@@ -426,7 +425,7 @@ void FilePlayerNode::readImpl()
 	size_t readEnd = mLoop ? mLoopEnd.load() : mNumFrames;
 	size_t numFramesToRead = readEnd < readPos ? 0 : min( availableWrite, readEnd - readPos );
 
-	if( !numFramesToRead ) {
+	if( ! numFramesToRead ) {
 		mLastOverrun = getContext()->getNumProcessedFrames();
 		return;
 	}
@@ -441,7 +440,7 @@ void FilePlayerNode::readImpl()
 	mReadPos += numRead;
 
 	for( size_t ch = 0; ch < getNumChannels(); ch++ ) {
-		if( !mRingBuffers[ch].write( mIoBuffer.getChannel( ch ), numRead ) ) {
+		if( ! mRingBuffers[ch].write( mIoBuffer.getChannel( ch ), numRead ) ) {
 			mLastOverrun = getContext()->getNumProcessedFrames();
 			return;
 		}
@@ -450,14 +449,14 @@ void FilePlayerNode::readImpl()
 
 void FilePlayerNode::seekImpl( size_t readPos )
 {
-	if( !mSourceFile )
+	if( ! mSourceFile )
 		return;
 
 	mIsEof = false;
 	mReadPos = math<size_t>::clamp( readPos, 0, mNumFrames );
 
 	// if async mode, readAsyncImpl() will notice mReadPos was updated and do the seek there.
-	if( !mIsReadAsync )
+	if( ! mIsReadAsync )
 		mSourceFile->seek( mReadPos );
 }
 
@@ -479,5 +478,5 @@ void FilePlayerNode::destroyReadThreadImpl()
 		mReadThread->join();
 	}
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

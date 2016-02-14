@@ -20,37 +20,27 @@
  POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
-#include "cinder/CinderMath.h"
 #include "cinder/Perlin.h"
+#include "cinder/CinderMath.h"
 #include "cinder/Rand.h"
 
 namespace cinder {
 
-static inline float fade( float t )
-{
-	return t * t * t * ( t * ( t * 6 - 15 ) + 10 );
-}
-static inline float dfade( float t )
-{
-	return 30.0f * t * t * ( t * ( t - 2.0f ) + 1.0f );
-}
-inline float nlerp( float t, float a, float b )
-{
-	return a + t * ( b - a );
-}
+static inline float fade( float t ) { return t * t * t * (t * (t * 6 - 15) + 10); }
+static inline float dfade( float t ) { return 30.0f * t * t * ( t * ( t - 2.0f ) + 1.0f ); }
+inline float nlerp(float t, float a, float b) { return a + t * (b - a); }
 
 Perlin::Perlin( uint8_t aOctaves, int32_t aSeed )
-    : mOctaves( aOctaves ), mSeed( aSeed )
-{
+	: mOctaves( aOctaves ), mSeed( aSeed ){
 	initPermutationTable();
 }
 
 Perlin::Perlin( uint8_t aOctaves )
-    : mOctaves( aOctaves ), mSeed( 0x214 )
+	: mOctaves( aOctaves ), mSeed( 0x214 )
 {
 	initPermutationTable();
 }
@@ -94,8 +84,7 @@ float Perlin::fBm( const vec2 &v ) const
 
 	for( uint8_t i = 0; i < mOctaves; i++ ) {
 		result += noise( x, y ) * amp;
-		x *= 2.0f;
-		y *= 2.0f;
+		x *= 2.0f; y *= 2.0f;
 		amp *= 0.5f;
 	}
 
@@ -110,9 +99,7 @@ float Perlin::fBm( const vec3 &v ) const
 
 	for( uint8_t i = 0; i < mOctaves; i++ ) {
 		result += noise( x, y, z ) * amp;
-		x *= 2.0f;
-		y *= 2.0f;
-		z *= 2.0f;
+		x *= 2.0f; y *= 2.0f; z *= 2.0f;
 		amp *= 0.5f;
 	}
 
@@ -137,15 +124,14 @@ float Perlin::fBm( const vec3 &v ) const
 
 vec2 Perlin::dfBm( const vec2 &v ) const
 {
-	vec2  result;
+	vec2 result;
 	float amp = 0.5f;
 
 	float x = v.x, y = v.y;
 
 	for( uint8_t i = 0; i < mOctaves; i++ ) {
 		result += dnoise( x, y ) * amp;
-		x *= 2.0f;
-		y *= 2.0f;
+		x *= 2.0f; y *= 2.0f;
 		amp *= 0.5f;
 	}
 
@@ -154,15 +140,13 @@ vec2 Perlin::dfBm( const vec2 &v ) const
 
 vec3 Perlin::dfBm( const vec3 &v ) const
 {
-	vec3  result;
+	vec3 result;
 	float amp = 0.5f;
 	float x = v.x, y = v.y, z = v.z;
 
 	for( uint8_t i = 0; i < mOctaves; i++ ) {
 		result += dnoise( x, y, z ) * amp;
-		x *= 2.0f;
-		y *= 2.0f;
-		z *= 2.0f;
+		x *= 2.0f; y *= 2.0f; z *= 2.0f;
 		amp *= 0.5f;
 	}
 
@@ -173,47 +157,50 @@ vec3 Perlin::dfBm( const vec3 &v ) const
 // noise
 float Perlin::noise( float x ) const
 {
-	int32_t X = ( (int32_t)floorf( x ) ) & 255;
-	x -= floorf( x );
-	float   u = fade( x );
-	int32_t A = mPerms[X], AA = mPerms[A], B = mPerms[X + 1], BA = mPerms[B];
+	int32_t X = ((int32_t)floorf(x)) & 255;
+	x -= floorf(x);
+	float u = fade( x );
+	int32_t A = mPerms[X], AA = mPerms[A], B = mPerms[X+1], BA = mPerms[B];
 
-	return nlerp( u, grad( mPerms[AA], x ), grad( mPerms[BA], x - 1 ) );
+	return nlerp( u, grad( mPerms[AA  ], x ), grad( mPerms[BA], x-1 ) );
 }
 
 float Perlin::noise( float x, float y ) const
 {
-	int32_t X = ( (int32_t)floorf( x ) ) & 255, Y = ( (int32_t)floorf( y ) ) & 255;
-	x -= floorf( x );
-	y -= floorf( y );
-	float   u = fade( x ), v = fade( y );
-	int32_t A = mPerms[X] + Y, AA = mPerms[A], AB = mPerms[A + 1],
-	        B = mPerms[X + 1] + Y, BA = mPerms[B], BB = mPerms[B + 1];
+	int32_t X = ((int32_t)floorf(x)) & 255, Y = ((int32_t)floorf(y)) & 255;
+	x -= floorf(x); y -= floorf(y);
+	float	u = fade( x ), v = fade( y );
+	int32_t A = mPerms[X  ]+Y, AA = mPerms[A], AB = mPerms[A+1],
+	B = mPerms[X+1]+Y, BA = mPerms[B], BB = mPerms[B+1];
 
-	return nlerp( v, nlerp( u, grad( mPerms[AA], x, y ), grad( mPerms[BA], x - 1, y ) ), nlerp( u, grad( mPerms[AB], x, y - 1 ), grad( mPerms[BB], x - 1, y - 1 ) ) );
+	return nlerp(v, nlerp(u, grad(mPerms[AA  ], x  , y   ),
+							 grad(mPerms[BA  ], x-1, y   )),
+					 nlerp(u, grad(mPerms[AB  ], x  , y-1   ),
+							 grad(mPerms[BB  ], x-1, y-1   )));
 }
 
 float Perlin::noise( float x, float y, float z ) const
 {
 	// These floors need to remain that due to behavior with negatives.
-	int32_t X = ( (int32_t)floorf( x ) ) & 255, Y = ( (int32_t)floorf( y ) ) & 255, Z = ( (int32_t)floorf( z ) ) & 255;
-	x -= floorf( x );
-	y -= floorf( y );
-	z -= floorf( z );
-	float   u = fade( x ), v = fade( y ), w = fade( z );
-	int32_t A = mPerms[X] + Y, AA = mPerms[A] + Z, AB = mPerms[A + 1] + Z,
-	        B = mPerms[X + 1] + Y, BA = mPerms[B] + Z, BB = mPerms[B + 1] + Z;
+	int32_t X = ((int32_t)floorf(x)) & 255, Y = ((int32_t)floorf(y)) & 255, Z = ((int32_t)floorf(z)) & 255;
+	x -= floorf(x); y -= floorf(y); z -= floorf(z);
+	float	u = fade(x), v = fade(y), w = fade(z);
+	int32_t A = mPerms[X  ]+Y, AA = mPerms[A]+Z, AB = mPerms[A+1]+Z,
+	B = mPerms[X+1]+Y, BA = mPerms[B]+Z, BB = mPerms[B+1]+Z;
 
-	float a = grad( mPerms[AA], x, y, z );
-	float b = grad( mPerms[BA], x - 1, y, z );
-	float c = grad( mPerms[AB], x, y - 1, z );
-	float d = grad( mPerms[BB], x - 1, y - 1, z );
-	float e = grad( mPerms[AA + 1], x, y, z - 1 );
-	float f = grad( mPerms[BA + 1], x - 1, y, z - 1 );
-	float g = grad( mPerms[AB + 1], x, y - 1, z - 1 );
-	float h = grad( mPerms[BB + 1], x - 1, y - 1, z - 1 );
+	float a = grad(mPerms[AA  ], x  , y  , z   );
+	float b = grad(mPerms[BA  ], x-1, y  , z   );
+	float c = grad(mPerms[AB  ], x  , y-1, z   );
+	float d = grad(mPerms[BB  ], x-1, y-1, z   );
+	float e = grad(mPerms[AA+1], x  , y  , z-1 );
+	float f = grad(mPerms[BA+1], x-1, y  , z-1 );
+	float g = grad(mPerms[AB+1], x  , y-1, z-1 );
+	float h = grad(mPerms[BB+1], x-1, y-1, z-1 );
 
-	return nlerp( w, nlerp( v, nlerp( u, a, b ), nlerp( u, c, d ) ), nlerp( v, nlerp( u, e, f ), nlerp( u, g, h ) ) );
+	return	nlerp(w, nlerp( v, nlerp( u, a, b ),
+							 nlerp( u, c, d ) ),
+					nlerp(v, nlerp( u, e, f ),
+							 nlerp( u, g, h ) ) );	
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -235,64 +222,61 @@ throw; //TODO
 // Credit for the ideas for analytical Perlin derivatives below are due to Iñigo Quílez
 vec2 Perlin::dnoise( float x, float y ) const
 {
-	int32_t X = ( (int32_t)x ) & 255, Y = ( (int32_t)y ) & 255;
-	x -= floorf( x );
-	y -= floorf( y );
-	float   u = fade( x ), v = fade( y );
-	float   du = dfade( x ), dv = dfade( y );
-	int32_t A = mPerms[X] + Y, AA = mPerms[A] + 0, AB = mPerms[A + 1] + 0,
-	        B = mPerms[X + 1] + Y, BA = mPerms[B] + 0, BB = mPerms[B + 1] + 0;
+	int32_t X = ((int32_t)x) & 255, Y = ((int32_t)y) & 255;
+	x -= floorf(x); y -= floorf(y);
+	float u = fade( x ), v = fade( y );
+	float du = dfade( x ), dv = dfade( y );
+	int32_t A = mPerms[X  ]+Y, AA = mPerms[A]+0, AB = mPerms[A+1]+0,
+		B = mPerms[X+1]+Y, BA = mPerms[B]+0, BB = mPerms[B+1]+0;
 
 	if( du < 0.000001f ) du = 1.0f;
 	if( dv < 0.000001f ) dv = 1.0f;
 
-	float a = grad( mPerms[AA], x, y );
-	float b = grad( mPerms[BA], x - 1, y );
-	float c = grad( mPerms[AB], x, y - 1 );
-	float d = grad( mPerms[BB], x - 1, y - 1 );
-
-	const float k1 = b - a;
-	const float k2 = c - a;
-	const float k4 = a - b - c + d;
+	float a = grad( mPerms[AA], x  , y   );
+	float b = grad( mPerms[BA], x-1, y   );
+	float c = grad( mPerms[AB], x  , y-1   );
+	float d = grad( mPerms[BB], x-1, y-1   );
+	
+    const float k1 =   b - a;
+    const float k2 =   c - a;
+    const float k4 =   a - b - c + d;
 
 	return vec2( du * ( k1 + k4 * v ), dv * ( k2 + k4 * u ) );
 }
 
 vec3 Perlin::dnoise( float x, float y, float z ) const
 {
-	int32_t X = ( (int32_t)floorf( x ) ) & 255, Y = ( (int32_t)floorf( y ) ) & 255, Z = ( (int32_t)floorf( z ) ) & 255;
-	x -= floorf( x );
-	y -= floorf( y );
-	z -= floorf( z );
-	float   u = fade( x ), v = fade( y ), w = fade( z );
-	float   du = dfade( x ), dv = dfade( y ), dw = dfade( z );
-	int32_t A = mPerms[X] + Y, AA = mPerms[A] + Z, AB = mPerms[A + 1] + Z,
-	        B = mPerms[X + 1] + Y, BA = mPerms[B] + Z, BB = mPerms[B + 1] + Z;
+	int32_t X = ((int32_t)floorf(x)) & 255, Y = ((int32_t)floorf(y)) & 255, Z = ((int32_t)floorf(z)) & 255;
+	x -= floorf(x); y -= floorf(y); z -= floorf(z);
+	float u = fade( x ), v = fade( y ), w = fade( z );
+	float du = dfade( x ), dv = dfade( y ), dw = dfade( z );
+	int32_t A = mPerms[X  ]+Y, AA = mPerms[A]+Z, AB = mPerms[A+1]+Z,
+		B = mPerms[X+1]+Y, BA = mPerms[B]+Z, BB = mPerms[B+1]+Z;
 
 	if( du < 0.000001f ) du = 1.0f;
 	if( dv < 0.000001f ) dv = 1.0f;
-	if( dw < 0.000001f ) dw = 1.0f;
+	if( dw < 0.000001f ) dw = 1.0f;	
 
-	float a = grad( mPerms[AA], x, y, z );
-	float b = grad( mPerms[BA], x - 1, y, z );
-	float c = grad( mPerms[AB], x, y - 1, z );
-	float d = grad( mPerms[BB], x - 1, y - 1, z );
-	float e = grad( mPerms[AA + 1], x, y, z - 1 );
-	float f = grad( mPerms[BA + 1], x - 1, y, z - 1 );
-	float g = grad( mPerms[AB + 1], x, y - 1, z - 1 );
-	float h = grad( mPerms[BB + 1], x - 1, y - 1, z - 1 );
+	float a = grad( mPerms[AA  ], x  , y  , z   );
+	float b = grad( mPerms[BA  ], x-1, y  , z   );
+	float c = grad( mPerms[AB  ], x  , y-1, z   );
+	float d = grad( mPerms[BB  ], x-1, y-1, z   );
+	float e = grad( mPerms[AA+1], x  , y  , z-1 );
+	float f = grad( mPerms[BA+1], x-1, y  , z-1 );
+	float g = grad( mPerms[AB+1], x  , y-1, z-1 );
+	float h = grad( mPerms[BB+1], x-1, y-1, z-1 );
 
-	const float k1 = b - a;
-	const float k2 = c - a;
-	const float k3 = e - a;
-	const float k4 = a - b - c + d;
-	const float k5 = a - c - e + g;
-	const float k6 = a - b - e + f;
-	const float k7 = -a + b + c - d + e - f - g + h;
+    const float k1 =   b - a;
+    const float k2 =   c - a;
+    const float k3 =   e - a;
+    const float k4 =   a - b - c + d;
+    const float k5 =   a - c - e + g;
+    const float k6 =   a - b - e + f;
+    const float k7 =  -a + b + c - d + e - f - g + h;
 
-	return vec3( du * ( k1 + k4 * v + k6 * w + k7 * v * w ),
-	    dv * ( k2 + k5 * w + k4 * u + k7 * w * u ),
-	    dw * ( k3 + k6 * u + k5 * v + k7 * u * v ) );
+	return vec3(	du * ( k1 + k4*v + k6*w + k7*v*w ),
+					dv * ( k2 + k5*w + k4*u + k7*w*u ),
+					dw * ( k3 + k6*u + k5*v + k7*u*v ) );
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,26 +284,28 @@ vec3 Perlin::dnoise( float x, float y, float z ) const
 
 float Perlin::grad( int32_t hash, float x ) const
 {
-	int32_t h = hash & 15; // CONVERT LO 4 BITS OF HASH CODE
-	float   u = h < 8 ? x : 0, // INTO 12 GRADIENT DIRECTIONS.
-	    v = h < 4 ? 0 : h == 12 || h == 14 ? x : 0;
-	return ( ( h & 1 ) == 0 ? u : -u ) + ( ( h & 2 ) == 0 ? v : -v );
+	int32_t h = hash & 15;                      // CONVERT LO 4 BITS OF HASH CODE
+	float	u = h<8 ? x : 0,                 // INTO 12 GRADIENT DIRECTIONS.
+			v = h<4 ? 0 : h==12||h==14 ? x : 0;
+	return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
 }
 
 float Perlin::grad( int32_t hash, float x, float y ) const
 {
-	int32_t h = hash & 15; // CONVERT LO 4 BITS OF HASH CODE
-	float   u = h < 8 ? x : y, // INTO 12 GRADIENT DIRECTIONS.
-	    v = h < 4 ? y : h == 12 || h == 14 ? x : 0;
-	return ( ( h & 1 ) == 0 ? u : -u ) + ( ( h & 2 ) == 0 ? v : -v );
+	int32_t h = hash & 15;                      // CONVERT LO 4 BITS OF HASH CODE
+	float	u = h<8 ? x : y,                 // INTO 12 GRADIENT DIRECTIONS.
+			v = h<4 ? y : h==12||h==14 ? x : 0;
+	return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
 }
 
 float Perlin::grad( int32_t hash, float x, float y, float z ) const
 {
-	int32_t h = hash & 15; // CONVERT LO 4 BITS OF HASH CODE
-	float   u = h < 8 ? x : y, // INTO 12 GRADIENT DIRECTIONS.
-	    v = h < 4 ? y : h == 12 || h == 14 ? x : z;
-	return ( ( h & 1 ) == 0 ? u : -u ) + ( ( h & 2 ) == 0 ? v : -v );
+	int32_t h = hash & 15;                      // CONVERT LO 4 BITS OF HASH CODE
+	float u = h<8 ? x : y,                 // INTO 12 GRADIENT DIRECTIONS.
+		 v = h<4 ? y : h==12||h==14 ? x : z;
+	return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
 }
+
+
 
 } // namespace cinder

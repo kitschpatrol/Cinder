@@ -24,6 +24,8 @@
 #include <CFBase.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,15 +43,15 @@ extern "C" {
 /*----------------------------------------------------------------------------------*/
 /* Keyboard API Trap Number. Should be moved to Traps.i */
 enum {
-	_KeyboardDispatch = 0xAA7A
+  _KeyboardDispatch             = 0xAA7A
 };
 
 /* Gestalt selector and values for the Keyboard API */
 enum {
-	gestaltKeyboardsAttr = FOUR_CHAR_CODE( 'kbds' ),
-	gestaltKBPS2Keyboards = 1,
-	gestaltKBPS2SetIDToAny = 2,
-	gestaltKBPS2SetTranslationTable = 4
+  gestaltKeyboardsAttr          = FOUR_CHAR_CODE('kbds'),
+  gestaltKBPS2Keyboards         = 1,
+  gestaltKBPS2SetIDToAny        = 2,
+  gestaltKBPS2SetTranslationTable = 4
 };
 
 /* Keyboard API Error Codes */
@@ -58,12 +60,13 @@ enum {
    be updated to the officially registered range.
 */
 enum {
-	errKBPS2KeyboardNotAvailable = -30850,
-	errKBIlligalParameters = -30851,
-	errKBFailSettingID = -30852,
-	errKBFailSettingTranslationTable = -30853,
-	errKBFailWritePreference = -30854
+  errKBPS2KeyboardNotAvailable  = -30850,
+  errKBIlligalParameters        = -30851,
+  errKBFailSettingID            = -30852,
+  errKBFailSettingTranslationTable = -30853,
+  errKBFailWritePreference      = -30854
 };
+
 
 /*
  *  PhysicalKeyboardLayoutType
@@ -75,30 +78,33 @@ enum {
 typedef UInt32 PhysicalKeyboardLayoutType;
 enum {
 
-	/*
+  /*
    * A JIS keyboard layout type.
    */
-	kKeyboardJIS = FOUR_CHAR_CODE( 'JIS ' ),
+  kKeyboardJIS                  = FOUR_CHAR_CODE('JIS '),
 
-	/*
+  /*
    * An ANSI keyboard layout type.
    */
-	kKeyboardANSI = FOUR_CHAR_CODE( 'ANSI' ),
+  kKeyboardANSI                 = FOUR_CHAR_CODE('ANSI'),
 
-	/*
+  /*
    * An ISO keyboard layout type.
    */
-	kKeyboardISO = FOUR_CHAR_CODE( 'ISO ' ),
+  kKeyboardISO                  = FOUR_CHAR_CODE('ISO '),
 
-	/*
+  /*
    * An unknown physical keyboard layout type.
    */
-	kKeyboardUnknown = kUnknownType /* '????'*/
+  kKeyboardUnknown              = kUnknownType /* '????'*/
 };
+
 
 /*----------------------------------------------------------------------------------*/
 /* Keyboard API types                                                               */
 /*----------------------------------------------------------------------------------*/
+
+
 
 /*----------------------------------------------------------------------------------*/
 /* Keyboard API routines                                                            */
@@ -114,7 +120,8 @@ enum {
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-KBInitialize( void ) THREEWORDINLINE( 0x303C, 0x0000, 0xAA7A );
+KBInitialize(void)                                            THREEWORDINLINE(0x303C, 0x0000, 0xAA7A);
+
 
 /*
  *  KBSetupPS2Keyboard()
@@ -126,8 +133,9 @@ KBInitialize( void ) THREEWORDINLINE( 0x303C, 0x0000, 0xAA7A );
  */
 EXTERN_API( OSErr )
 KBSetupPS2Keyboard(
-    SInt16 keyboardType,
-    SInt8 *alternativeTable ) THREEWORDINLINE( 0x303C, 0x0001, 0xAA7A );
+  SInt16   keyboardType,
+  SInt8 *  alternativeTable)                                  THREEWORDINLINE(0x303C, 0x0001, 0xAA7A);
+
 
 /*
  *  KBGetPS2KeyboardID()
@@ -138,7 +146,8 @@ KBSetupPS2Keyboard(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-KBGetPS2KeyboardID( SInt16 *keyboardType ) THREEWORDINLINE( 0x303C, 0x0002, 0xAA7A );
+KBGetPS2KeyboardID(SInt16 * keyboardType)                     THREEWORDINLINE(0x303C, 0x0002, 0xAA7A);
+
 
 /*
  *  KBIsPS2KeyboardConnected()
@@ -149,7 +158,8 @@ KBGetPS2KeyboardID( SInt16 *keyboardType ) THREEWORDINLINE( 0x303C, 0x0002, 0xAA
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-KBIsPS2KeyboardConnected( void ) THREEWORDINLINE( 0x303C, 0x0003, 0xAA7A );
+KBIsPS2KeyboardConnected(void)                                THREEWORDINLINE(0x303C, 0x0003, 0xAA7A);
+
 
 /*
  *  KBIsPS2KeyboardEnabled()
@@ -160,7 +170,8 @@ KBIsPS2KeyboardConnected( void ) THREEWORDINLINE( 0x303C, 0x0003, 0xAA7A );
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-KBIsPS2KeyboardEnabled( void ) THREEWORDINLINE( 0x303C, 0x0004, 0xAA7A );
+KBIsPS2KeyboardEnabled(void)                                  THREEWORDINLINE(0x303C, 0x0004, 0xAA7A);
+
 
 /*
  *  KBGetPS2KeyboardAttributes()
@@ -171,7 +182,8 @@ KBIsPS2KeyboardEnabled( void ) THREEWORDINLINE( 0x303C, 0x0004, 0xAA7A );
  *    Mac OS X:         not available
  */
 EXTERN_API( SInt32 )
-KBGetPS2KeyboardAttributes( void ) THREEWORDINLINE( 0x303C, 0x0005, 0xAA7A );
+KBGetPS2KeyboardAttributes(void)                              THREEWORDINLINE(0x303C, 0x0005, 0xAA7A);
+
 
 /*
  *  KBSetKCAPForPS2Keyboard()
@@ -182,7 +194,8 @@ KBGetPS2KeyboardAttributes( void ) THREEWORDINLINE( 0x303C, 0x0005, 0xAA7A );
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-KBSetKCAPForPS2Keyboard( Handle kcapHandle ) THREEWORDINLINE( 0x303C, 0x0006, 0xAA7A );
+KBSetKCAPForPS2Keyboard(Handle kcapHandle)                    THREEWORDINLINE(0x303C, 0x0006, 0xAA7A);
+
 
 /*
  *  KBSetupPS2KeyboardFromLayoutType()
@@ -193,7 +206,8 @@ KBSetKCAPForPS2Keyboard( Handle kcapHandle ) THREEWORDINLINE( 0x303C, 0x0006, 0x
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-KBSetupPS2KeyboardFromLayoutType( OSType layoutType ) THREEWORDINLINE( 0x303C, 0x0008, 0xAA7A );
+KBSetupPS2KeyboardFromLayoutType(OSType layoutType)           THREEWORDINLINE(0x303C, 0x0008, 0xAA7A);
+
 
 /*
  *  KBGetPS2KeyboardLayoutType()
@@ -204,9 +218,10 @@ KBSetupPS2KeyboardFromLayoutType( OSType layoutType ) THREEWORDINLINE( 0x303C, 0
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-KBGetPS2KeyboardLayoutType( OSType *layoutType ) THREEWORDINLINE( 0x303C, 0x0009, 0xAA7A );
+KBGetPS2KeyboardLayoutType(OSType * layoutType)               THREEWORDINLINE(0x303C, 0x0009, 0xAA7A);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  KBGetLayoutType()
@@ -225,7 +240,9 @@ KBGetPS2KeyboardLayoutType( OSType *layoutType ) THREEWORDINLINE( 0x303C, 0x0009
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSType )
-KBGetLayoutType( SInt16 iKeyboardType ) THREEWORDINLINE( 0x303C, 0x0007, 0xAA7A );
+KBGetLayoutType(SInt16 iKeyboardType)                         THREEWORDINLINE(0x303C, 0x0007, 0xAA7A);
+
+
 
 /*
  *  KeyboardLayoutRef
@@ -239,7 +256,7 @@ KBGetLayoutType( SInt16 iKeyboardType ) THREEWORDINLINE( 0x303C, 0x0007, 0xAA7A 
  *    convention. You mustn't release any references you get from APIs
  *    named "Get."
  */
-typedef struct OpaqueKeyboardLayoutRef *KeyboardLayoutRef;
+typedef struct OpaqueKeyboardLayoutRef*  KeyboardLayoutRef;
 
 /*
  *  KeyboardLayoutPropertyTag
@@ -251,48 +268,49 @@ typedef struct OpaqueKeyboardLayoutRef *KeyboardLayoutRef;
 typedef UInt32 KeyboardLayoutPropertyTag;
 enum {
 
-	/*
+  /*
    * The keyboard layout data (const void *).  It is used with the
    * KeyTranslate API.
    */
-	kKLKCHRData = 0,
+  kKLKCHRData                   = 0,
 
-	/*
+  /*
    * The keyboard layout data (const void *).  It is used with the
    * UCKeyTranslate API.
    */
-	kKLuchrData = 1,
+  kKLuchrData                   = 1,
 
-	/*
+  /*
    * The keyboard layout identifier (SInt32).
    */
-	kKLIdentifier = 2,
+  kKLIdentifier                 = 2,
 
-	/*
+  /*
    * The keyboard layout icon (IconRef).
    */
-	kKLIcon = 3,
+  kKLIcon                       = 3,
 
-	/*
+  /*
    * The localized keyboard layout name (CFStringRef).
    */
-	kKLLocalizedName = 4,
+  kKLLocalizedName              = 4,
 
-	/*
+  /*
    * The keyboard layout name (CFStringRef).
    */
-	kKLName = 5,
+  kKLName                       = 5,
 
-	/*
+  /*
    * The keyboard layout group identifier (SInt32).
    */
-	kKLGroupIdentifier = 6,
+  kKLGroupIdentifier            = 6,
 
-	/*
+  /*
    * The keyboard layout kind (SInt32).
    */
-	kKLKind = 7
+  kKLKind                       = 7
 };
+
 
 /*
  *  KeyboardLayoutKind
@@ -303,21 +321,22 @@ enum {
 typedef SInt32 KeyboardLayoutKind;
 enum {
 
-	/*
+  /*
    * Both KCHR and uchr formats are available.
    */
-	kKLKCHRuchrKind = 0,
+  kKLKCHRuchrKind               = 0,
 
-	/*
+  /*
    * Only KCHR format is avaiable.
    */
-	kKLKCHRKind = 1,
+  kKLKCHRKind                   = 1,
 
-	/*
+  /*
    * Only uchr format is available.
    */
-	kKLuchrKind = 2
+  kKLuchrKind                   = 2
 };
+
 
 /*
  *  KeyboardLayoutIdentifier
@@ -327,7 +346,7 @@ enum {
  */
 typedef SInt32 KeyboardLayoutIdentifier;
 enum {
-	kKLUSKeyboard = 0
+  kKLUSKeyboard                 = 0
 };
 
 /* iterate keyboard layouts*/
@@ -349,7 +368,8 @@ enum {
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-KLGetKeyboardLayoutCount( CFIndex *oCount );
+KLGetKeyboardLayoutCount(CFIndex * oCount);
+
 
 /*
  *  KLGetKeyboardLayoutAtIndex()
@@ -375,8 +395,9 @@ KLGetKeyboardLayoutCount( CFIndex *oCount );
  */
 EXTERN_API_C( OSStatus )
 KLGetKeyboardLayoutAtIndex(
-    CFIndex            iIndex,
-    KeyboardLayoutRef *oKeyboardLayout );
+  CFIndex              iIndex,
+  KeyboardLayoutRef *  oKeyboardLayout);
+
 
 /* NOTE: "Indexed" is a wrong name, please use "AtIndex"...*/
 /*
@@ -389,8 +410,9 @@ KLGetKeyboardLayoutAtIndex(
  */
 EXTERN_API_C( OSStatus )
 KLGetIndexedKeyboardLayout(
-    CFIndex            iIndex,
-    KeyboardLayoutRef *oKeyboardLayout );
+  CFIndex              iIndex,
+  KeyboardLayoutRef *  oKeyboardLayout);
+
 
 /* get keyboard layout info*/
 
@@ -420,9 +442,10 @@ KLGetIndexedKeyboardLayout(
  */
 EXTERN_API_C( OSStatus )
 KLGetKeyboardLayoutProperty(
-    KeyboardLayoutRef         iKeyboardLayout,
-    KeyboardLayoutPropertyTag iPropertyTag,
-    const void **             oValue );
+  KeyboardLayoutRef           iKeyboardLayout,
+  KeyboardLayoutPropertyTag   iPropertyTag,
+  const void **               oValue);
+
 
 /* get keyboard layout with identifier or name*/
 
@@ -454,8 +477,9 @@ KLGetKeyboardLayoutProperty(
  */
 EXTERN_API_C( OSStatus )
 KLGetKeyboardLayoutWithIdentifier(
-    SInt32             iIdentifier,
-    KeyboardLayoutRef *oKeyboardLayout );
+  SInt32               iIdentifier,
+  KeyboardLayoutRef *  oKeyboardLayout);
+
 
 /*
  *  KLGetKeyboardLayoutWithName()
@@ -478,8 +502,9 @@ KLGetKeyboardLayoutWithIdentifier(
  */
 EXTERN_API_C( OSStatus )
 KLGetKeyboardLayoutWithName(
-    CFStringRef        iName,
-    KeyboardLayoutRef *oKeyboardLayout );
+  CFStringRef          iName,
+  KeyboardLayoutRef *  oKeyboardLayout);
+
 
 /* get/set current keyboard layout of the current group identifier*/
 
@@ -500,7 +525,8 @@ KLGetKeyboardLayoutWithName(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-KLGetCurrentKeyboardLayout( KeyboardLayoutRef *oKeyboardLayout );
+KLGetCurrentKeyboardLayout(KeyboardLayoutRef * oKeyboardLayout);
+
 
 /*
  *  KLSetCurrentKeyboardLayout()
@@ -519,7 +545,9 @@ KLGetCurrentKeyboardLayout( KeyboardLayoutRef *oKeyboardLayout );
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-KLSetCurrentKeyboardLayout( KeyboardLayoutRef iKeyboardLayout );
+KLSetCurrentKeyboardLayout(KeyboardLayoutRef iKeyboardLayout);
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -532,3 +560,4 @@ KLSetCurrentKeyboardLayout( KeyboardLayoutRef iKeyboardLayout );
 #endif
 
 #endif /* __KEYBOARDS__ */
+

@@ -24,11 +24,10 @@
 #include "cinder/gl/Context.h"
 #include "cinder/gl/scoped.h"
 
-namespace cinder {
-namespace gl {
-
-#if !defined( CINDER_GL_ES )
-
+namespace cinder { namespace gl {
+	
+#if ! defined( CINDER_GL_ES )
+	
 BufferTextureRef BufferTexture::create( const BufferObjRef &buffer, GLenum internalFormat )
 {
 	return BufferTextureRef( new BufferTexture( buffer, internalFormat ) );
@@ -41,7 +40,7 @@ BufferTextureRef BufferTexture::create( const void *data, size_t numBytes, GLenu
 }
 
 BufferTexture::BufferTexture( const BufferObjRef &buffer, GLenum internalFormat )
-    : mTarget( GL_TEXTURE_BUFFER )
+	: mTarget( GL_TEXTURE_BUFFER )
 {
 	glGenTextures( 1, &mId );
 	setBuffer( buffer, internalFormat );
@@ -71,7 +70,8 @@ void BufferTexture::unbindTexture( uint8_t textureUnit )
 	ScopedActiveTexture activeTexture( textureUnit );
 	gl::context()->bindTexture( mTarget, 0 );
 }
-
+	
 #endif
-}
-}
+	
+} }
+

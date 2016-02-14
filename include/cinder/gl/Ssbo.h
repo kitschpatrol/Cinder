@@ -26,47 +26,38 @@
 #include "cinder/Cinder.h"
 #include "cinder/gl/gl.h"
 
-#if( defined( CINDER_MSW ) && !defined( CINDER_GL_ANGLE ) ) || defined( CINDER_LINUX )
+#if ( defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE ) ) || defined( CINDER_LINUX )
 
 #include "cinder/gl/BufferObj.h"
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 class Ssbo;
-typedef std::shared_ptr<Ssbo> SsboRef;
+typedef std::shared_ptr<Ssbo>	SsboRef;
 
 class Ssbo : public BufferObj {
-  public:
+public:
 	//! Creates a shader storage buffer object with storage for \a allocationSize bytes, and filled with data \a data if it is not NULL.
-	static inline SsboRef create( GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_STATIC_DRAW )
+	static inline SsboRef	create( GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_STATIC_DRAW )
 	{
 		return SsboRef( new Ssbo( allocationSize, data, usage ) );
 	}
 
 	//! Bind base.
-	inline void bindBase( GLuint index )
-	{
-		glBindBufferBase( mTarget, index, mId );
-		mBase = index;
-	}
+	inline void bindBase( GLuint index ) { glBindBufferBase( mTarget, index, mId );  mBase = index; }
 	//! Unbinds the buffer.
-	inline void unbindBase()
-	{
-		glBindBufferBase( mTarget, mBase, 0 );
-		mBase = 0;
-	}
+	inline void unbindBase() { glBindBufferBase( mTarget, mBase, 0 ); mBase = 0; }
 	//! Analogous to bufferStorage.
 	inline void bufferStorage( GLsizeiptr size, const void *data, GLbitfield flags ) const { glBufferStorage( mTarget, size, data, flags ); }
-  protected:
+protected:
 	Ssbo( GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_STATIC_DRAW )
-	    : BufferObj( GL_SHADER_STORAGE_BUFFER, allocationSize, data, usage ),
-	      mBase( 0 )
+		: BufferObj( GL_SHADER_STORAGE_BUFFER, allocationSize, data, usage ),
+			mBase( 0 )
 	{
 	}
 	GLuint mBase;
 };
-}
-} // cinder::gl
+
+} } // cinder::gl
 
 #endif // ( defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE ) ) || defined( CINDER_LINUX )

@@ -7,27 +7,27 @@
  *
  */
 
-/*! @header CVDirect3DBufferPool.h
+ /*! @header CVDirect3DBufferPool.h
 	@copyright 2004 Apple Computer, Inc. All rights reserved.
     @discussion CVDirect3DBufferPool is a utility object for managing a set of CVDirect3DBuffer objects that are going to be recycled.
 		   
 */
 
-#if !defined( __COREVIDEO__CVDIRECT3DBUFFERPOOL_H__ )
+#if !defined(__COREVIDEO__CVDIRECT3DBUFFERPOOL_H__)
 #define __COREVIDEO__CVDIRECT3DBUFFERPOOL_H__ 1
 
 #include <CVBase.h>
-#include <CVDirect3DBuffer.h>
 #include <CVReturn.h>
+#include <CVDirect3DBuffer.h>
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
 typedef struct __CVDirect3DBufferPool *CVDirect3DBufferPoolRef;
 
-#define kCVDirect3DBufferPoolMinimumBufferCountKey CFSTR( "MinimumBufferCount" )
-#define kCVDirect3DBufferPoolMaximumBufferAgeKey CFSTR( "MaximumBufferAge" )
+#define kCVDirect3DBufferPoolMinimumBufferCountKey	CFSTR("MinimumBufferCount")
+#define kCVDirect3DBufferPoolMaximumBufferAgeKey		CFSTR("MaximumBufferAge")
 
 CV_EXPORT CFTypeID CVDirect3DBufferPoolGetTypeID();
 
@@ -59,11 +59,11 @@ CV_EXPORT void CVDirect3DBufferPoolRelease( CVDirect3DBufferPoolRef pixelBufferP
     @param      poolOut   The newly created pool will be placed here
     @result     Returns kCVReturnSuccess on success
 */
-CV_EXPORT CVReturn CVDirect3DBufferPoolCreate( CFAllocatorRef allocator,
-    CFDictionaryRef                                           poolAttributes,
-    CFDictionaryRef                                           pixelBufferAttributes,
-    void *                                                    d3dDevice,
-    CVDirect3DBufferPoolRef *                                 poolOut );
+CV_EXPORT CVReturn CVDirect3DBufferPoolCreate(CFAllocatorRef allocator,
+					   CFDictionaryRef poolAttributes,
+					   CFDictionaryRef pixelBufferAttributes,
+					   void *d3dDevice, 
+					   CVDirect3DBufferPoolRef *poolOut);
 
 /*!
     @function   CVDirect3DBufferPoolGetAttributes
@@ -71,7 +71,7 @@ CV_EXPORT CVReturn CVDirect3DBufferPoolCreate( CFAllocatorRef allocator,
     @param      pool  The CVDirect3DBufferPoolRef to retrieve the attributes from
     @result     Returns the pool attributes dictionary, or NULL on failure.
 */
-CV_EXPORT CFDictionaryRef CVDirect3DBufferPoolGetAttributes( CVDirect3DBufferPoolRef pool );
+CV_EXPORT CFDictionaryRef CVDirect3DBufferPoolGetAttributes(CVDirect3DBufferPoolRef pool);
 
 /*!
     @function   CVDirect3DBufferPoolGetDirect3DBufferAttributes
@@ -81,7 +81,7 @@ CV_EXPORT CFDictionaryRef CVDirect3DBufferPoolGetAttributes( CVDirect3DBufferPoo
     @param      pool  The CVDirect3DBufferPoolRef to retrieve the attributes from
     @result     Returns the pixel buffer attributes dictionary, or NULL on failure.
 */
-CV_EXPORT CFDictionaryRef CVDirect3DBufferPoolGetDirect3DBufferAttributes( CVDirect3DBufferPoolRef pool );
+CV_EXPORT CFDictionaryRef CVDirect3DBufferPoolGetDirect3DBufferAttributes(CVDirect3DBufferPoolRef pool);
 
 /*!
     @function   CVDirect3DBufferPoolCreateDirect3DBuffer
@@ -92,11 +92,11 @@ CV_EXPORT CFDictionaryRef CVDirect3DBufferPoolGetDirect3DBufferAttributes( CVDir
     @param      pixelBufferOut   The newly created pixel buffer will be placed here
     @result     Returns kCVReturnSuccess on success
 */
-CV_EXPORT CVReturn CVDirect3DBufferPoolCreateDirect3DBuffer( CFAllocatorRef allocator,
-    CVDirect3DBufferPoolRef                                                 pixelBufferPool,
-    CVDirect3DBufferRef *                                                   pixelBufferOut );
+CV_EXPORT CVReturn CVDirect3DBufferPoolCreateDirect3DBuffer(CFAllocatorRef allocator, 
+						         CVDirect3DBufferPoolRef pixelBufferPool,
+							 CVDirect3DBufferRef *pixelBufferOut);
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif
 

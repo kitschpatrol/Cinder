@@ -24,13 +24,13 @@
 
 #include "cinder/Cinder.h"
 
-#include "cinder/Font.h"
 #include "cinder/Surface.h"
+#include "cinder/Font.h"
 #include "cinder/Vector.h"
 
+#include <vector>
 #include <deque>
 #include <string>
-#include <vector>
 
 // Core Text forward declarations
 #if defined( CINDER_COCOA )
@@ -41,7 +41,7 @@ struct __CTLine;
 namespace cinder {
 
 class TextLayout {
-  public:
+ public:
 	/*! \brief This is an abstract line
 	 
 	 Makes a TextLayout Object.
@@ -50,172 +50,113 @@ class TextLayout {
 	TextLayout();
 
 	//! Sets the background color for the TextLayout. Implicit opqaue alpha.
-	void clear( const Color &color );
+	void	clear( const Color &color );
 	//! Sets the background color and alpha for the TextLayout to unpremulitiplied color \a color
-	void clear( const ColorA &color );
-
+	void	clear( const ColorA &color );	
+	
 	//! Adds a left-justified line of text to the layout. Assumes UTF-8 encoding.
-	void addLine( const std::string &line );
+	void	addLine( const std::string &line );
 	//! Adds a centered line of text to the layout. Assumes UTF-8 encoding.
-	void addCenteredLine( const std::string &line );
+	void	addCenteredLine( const std::string &line );
 	//! Adds a right-justified line of text to the layout. Assumes UTF-8 encoding.
-	void addRightLine( const std::string &line );
+	void	addRightLine( const std::string &line );
 	//! Appends string \a str to the current line. Assumes UTF-8 encoding.
-	void append( const std::string &str );
+	void	append( const std::string &str );
 
-	void setFont( const Font &font );
+	void	setFont( const Font &font );
 	//! Sets the currently active color. Implicit opqaue alpha.
-	void setColor( const Color &color );
+	void	setColor( const Color &color );
 	//! Sets the currently active color and alpha.
-	void setColor( const ColorA &color );
+	void	setColor( const ColorA &color );
 	//! Sets an offset relative to the default leading (the vertical space between lines).
-	void setLeadingOffset( float leadingOffset );
+	void	setLeadingOffset( float leadingOffset );
 
 	//! Adds a \a horizontal pixel border to the left and the right sides, and a \a vertical border to the top and bottom
-	void setBorder( int horizontal, int vertical );
+	void	setBorder( int horizontal, int vertical );
 
 	//! Returns a Surface into which the TextLayout is rendered. If \a useAlpha the Surface will contain an alpha channel. If \a premultiplied the alpha will be premulitplied.
-	Surface render( bool useAlpha = false, bool premultiplied = false );
-
-  private:
-	ColorA mBackgroundColor;
-	Font   mCurrentFont;
-	ColorA mCurrentColor;
-	float  mCurrentLeadingOffset;
-	int    mHorizontalBorder, mVerticalBorder;
-
-	std::deque<std::shared_ptr<class Line>> mLines;
+	Surface		render( bool useAlpha = false, bool premultiplied = false );
+	
+ private:
+	ColorA	mBackgroundColor;
+	Font	mCurrentFont;
+	ColorA	mCurrentColor;
+	float	mCurrentLeadingOffset;
+	int		mHorizontalBorder, mVerticalBorder;
+  
+	std::deque<std::shared_ptr<class Line> >		mLines;
 };
 
 class TextBox {
   public:
-	typedef enum Alignment { LEFT,
-		CENTER,
-		RIGHT } Alignment;
+	typedef enum Alignment { LEFT, CENTER, RIGHT } Alignment;
 	enum { GROW = 0 };
+	
+	TextBox() : mAlign( LEFT ), mSize( GROW, GROW ), mFont( Font::getDefault() ), mInvalid( true ), mColor( 1, 1, 1, 1 ), mBackgroundColor( 0, 0, 0, 0 ), mPremultiplied( false ), mLigate( true ) {}
 
-	TextBox()
-	    : mAlign( LEFT ), mSize( GROW, GROW ), mFont( Font::getDefault() ), mInvalid( true ), mColor( 1, 1, 1, 1 ), mBackgroundColor( 0, 0, 0, 0 ), mPremultiplied( false ), mLigate( true ) {}
-	TextBox &size( ivec2 sz )
-	{
-		setSize( sz );
-		return *this;
-	}
-	TextBox &size( int width, int height )
-	{
-		setSize( ivec2( width, height ) );
-		return *this;
-	}
-	ivec2 getSize() const { return mSize; }
-	void setSize( ivec2 sz )
-	{
-		mSize = sz;
-		mInvalid = true;
-	}
+	TextBox&			size( ivec2 sz ) { setSize( sz ); return *this; }
+	TextBox&			size( int width, int height ) { setSize( ivec2( width, height ) ); return *this; }
+	ivec2				getSize() const { return mSize; }
+	void				setSize( ivec2 sz ) { mSize = sz; mInvalid = true; }
 
-	TextBox &text( const std::string &t )
-	{
-		setText( t );
-		return *this;
-	}
-	const std::string &getText() const { return mText; }
-	void setText( const std::string &t )
-	{
-		mText = t;
-		mInvalid = true;
-	}
-	void appendText( const std::string &t )
-	{
-		mText += t;
-		mInvalid = true;
-	}
+	TextBox&			text( const std::string &t ) { setText( t ); return *this; }
+	const std::string&	getText() const { return mText; }
+	void				setText( const std::string &t ) { mText = t; mInvalid = true; }
+	void				appendText( const std::string &t ) { mText += t; mInvalid = true; }
 
-	TextBox &font( const Font &f )
-	{
-		setFont( f );
-		return *this;
-	}
-	const Font &getFont() const { return mFont; }
-	void setFont( const Font &f )
-	{
-		mFont = f;
-		mInvalid = true;
-	}
+	TextBox&			font( const Font &f ) { setFont( f ); return *this; }
+	const Font&			getFont() const { return mFont; }
+	void				setFont( const Font &f ) { mFont = f; mInvalid = true; }
 
-	TextBox &alignment( Alignment align )
-	{
-		setAlignment( align );
-		return *this;
-	}
-	Alignment getAlignment() const { return mAlign; }
-	void setAlignment( Alignment align )
-	{
-		mAlign = align;
-		mInvalid = true;
-	}
+	TextBox&			alignment( Alignment align ) { setAlignment( align ); return *this; }
+	Alignment			getAlignment() const { return mAlign; }
+	void				setAlignment( Alignment align ) { mAlign = align; mInvalid = true; }
 
-	TextBox &color( ColorA color )
-	{
-		setColor( color );
-		return *this;
-	}
-	ColorA getColor() const { return mColor; }
-	void setColor( ColorA color )
-	{
-		mColor = color;
-		mInvalid = true;
-	}
+	TextBox&			color( ColorA color ) { setColor( color ); return *this; }
+	ColorA				getColor() const { return mColor; }
+	void				setColor( ColorA color ) { mColor = color; mInvalid = true; }
 
-	TextBox &backgroundColor( ColorA bgColor )
-	{
-		setBackgroundColor( bgColor );
-		return *this;
-	}
-	ColorA getBackgroundColor() const { return mBackgroundColor; }
-	void setBackgroundColor( ColorA bgColor ) { mBackgroundColor = bgColor; }
-	TextBox &premultiplied( bool premult = true )
-	{
-		setPremultiplied( premult );
-		return *this;
-	}
-	bool getPremultiplied() const { return mPremultiplied; }
-	void setPremultiplied( bool premult ) { mPremultiplied = premult; }
-	TextBox &ligate( bool ligateText = true )
-	{
-		setLigate( ligateText );
-		return *this;
-	}
-	bool getLigate() const { return mLigate; }
-	void setLigate( bool ligateText ) { mLigate = ligateText; }
-	vec2                 measure() const;
+	TextBox&			backgroundColor( ColorA bgColor ) { setBackgroundColor( bgColor ); return *this; }
+	ColorA				getBackgroundColor() const { return mBackgroundColor; }
+	void				setBackgroundColor( ColorA bgColor ) { mBackgroundColor = bgColor; }
+
+	TextBox&			premultiplied( bool premult = true ) { setPremultiplied( premult ); return *this; }
+	bool				getPremultiplied() const { return mPremultiplied; }
+	void				setPremultiplied( bool premult ) { mPremultiplied = premult; }
+
+	TextBox&			ligate( bool ligateText = true ) { setLigate( ligateText ); return *this; }
+	bool				getLigate() const { return mLigate; }
+	void				setLigate( bool ligateText ) { mLigate = ligateText; }
+
+	vec2									measure() const;
 	/** Returns a vector of pairs of glyph indices and the position of their left baselines
 		\warning Does not support word wrapping on Windows. **/
-	std::vector<std::pair<uint16_t, vec2>> measureGlyphs() const;
+	std::vector<std::pair<uint16_t,vec2> >	measureGlyphs() const;
 
-	Surface render( vec2 offset = vec2() );
+	Surface				render( vec2 offset = vec2() );
 
   protected:
-	Alignment    mAlign;
-	ivec2        mSize;
-	std::string  mText;
-	Font         mFont;
-	ColorA       mColor, mBackgroundColor;
-	bool         mPremultiplied;
-	bool         mLigate;
-	mutable bool mInvalid;
+	Alignment		mAlign;
+	ivec2			mSize;
+	std::string		mText;
+	Font			mFont;
+	ColorA			mColor, mBackgroundColor;
+	bool			mPremultiplied;
+	bool			mLigate;
+	mutable bool	mInvalid;
 
-	mutable vec2 mCalculatedSize;
+	mutable vec2	mCalculatedSize;
 #if defined( CINDER_COCOA )
-	void createLines() const;
+	void			createLines() const;
 
-	mutable std::vector<std::pair<std::shared_ptr<const __CTLine>, vec2>> mLines;
+	mutable std::vector<std::pair<std::shared_ptr<const __CTLine>,vec2> >	mLines;
 #elif defined( CINDER_MSW )
-	std::vector<std::string> calculateLineBreaks() const;
-	void                     calculate() const;
+	std::vector<std::string>	calculateLineBreaks() const;
+	void						calculate() const;
 
-	mutable std::u16string mWideText;
+	mutable std::u16string	mWideText;
 #elif defined( CINDER_WINRT )
-	std::vector<std::string> calculateLineBreaks() const;
+	std::vector<std::string>	calculateLineBreaks() const;
 #endif
 };
 

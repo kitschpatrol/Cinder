@@ -14,6 +14,7 @@
  
 */
 
+
 /*
    ===========================================================================================
    *** WARNING: You must properly check the availability of MP services before calling them!
@@ -21,12 +22,16 @@
    ===========================================================================================
 */
 
+
 #ifndef __MULTIPROCESSING__
 #define __MULTIPROCESSING__
 
 #ifndef __MACTYPES__
 #include <MacTypes.h>
 #endif
+
+
+
 
 #if PRAGMA_ONCE
 #pragma once
@@ -41,12 +46,13 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = power
+    #pragma options align=power
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
+
 
 /*
    ===========================================================================================
@@ -65,6 +71,7 @@ extern "C" {
    code should avoid use of these defunct services, except for _MPIsFullyInitialized.
    ===========================================================================================
 */
+
 
 /*
    ===========================================================================================
@@ -95,6 +102,7 @@ extern "C" {
     _MPIsFullyInitialized       (See comments about checking for MP API availability.)
    ===========================================================================================
 */
+
 
 /*
    ===========================================================================================
@@ -135,6 +143,7 @@ extern "C" {
    ===========================================================================================
 */
 
+
 /*
    ===========================================================================================
    The following services are new in version 2.1:
@@ -146,6 +155,7 @@ extern "C" {
     MPGetNextCpuID
    ===========================================================================================
 */
+
 
 /*
    ===========================================================================================
@@ -160,6 +170,7 @@ extern "C" {
    ===========================================================================================
 */
 
+
 /*
    ===========================================================================================
    The following services were in previous versions of this header for "debugging only" use.
@@ -173,6 +184,7 @@ extern "C" {
    ===========================================================================================
 */
 
+
 /*
    .
    ===========================================================================================
@@ -180,74 +192,79 @@ extern "C" {
    ===========================
 */
 
-#define MPCopyrightNotice \
-	"Copyright © 1995-2000 Apple Computer, Inc.\n"
+
+#define MPCopyrightNotice   \
+    "Copyright © 1995-2000 Apple Computer, Inc.\n"
 #define MPLibraryName "MPLibrary"
 #define MPLibraryCName MPLibraryName
 #define MPLibraryPName "\p" MPLibraryName
 #define MP_API_Version "2.3"
 
 enum {
-	MPLibrary_MajorVersion = 2, /* ! When these change be sure to update the build versions*/
-	MPLibrary_MinorVersion = 3, /* !  used in the startup check in MPInitializeAPI!*/
-	MPLibrary_Release = 1,
-	MPLibrary_DevelopmentRevision = 1
+  MPLibrary_MajorVersion        = 2,    /* ! When these change be sure to update the build versions*/
+  MPLibrary_MinorVersion        = 3,    /* !  used in the startup check in MPInitializeAPI!*/
+  MPLibrary_Release             = 1,
+  MPLibrary_DevelopmentRevision = 1
 };
 
-typedef struct OpaqueMPProcessID *       MPProcessID;
-typedef struct OpaqueMPTaskID *          MPTaskID;
-typedef struct OpaqueMPQueueID *         MPQueueID;
-typedef struct OpaqueMPSemaphoreID *     MPSemaphoreID;
-typedef struct OpaqueMPCriticalRegionID *MPCriticalRegionID;
-typedef struct OpaqueMPTimerID *         MPTimerID;
-typedef struct OpaqueMPEventID *         MPEventID;
-typedef struct OpaqueMPAddressSpaceID *  MPAddressSpaceID;
-typedef struct OpaqueMPNotificationID *  MPNotificationID;
-typedef struct OpaqueMPCoherenceID *     MPCoherenceID;
-typedef struct OpaqueMPCpuID *           MPCpuID;
-typedef struct OpaqueMPAreaID *          MPAreaID;
-typedef struct OpaqueMPConsoleID *       MPConsoleID;
-typedef struct OpaqueMPOpaqueID *        MPOpaqueID;
+
+
+typedef struct OpaqueMPProcessID*       MPProcessID;
+typedef struct OpaqueMPTaskID*          MPTaskID;
+typedef struct OpaqueMPQueueID*         MPQueueID;
+typedef struct OpaqueMPSemaphoreID*     MPSemaphoreID;
+typedef struct OpaqueMPCriticalRegionID*  MPCriticalRegionID;
+typedef struct OpaqueMPTimerID*         MPTimerID;
+typedef struct OpaqueMPEventID*         MPEventID;
+typedef struct OpaqueMPAddressSpaceID*  MPAddressSpaceID;
+typedef struct OpaqueMPNotificationID*  MPNotificationID;
+typedef struct OpaqueMPCoherenceID*     MPCoherenceID;
+typedef struct OpaqueMPCpuID*           MPCpuID;
+typedef struct OpaqueMPAreaID*          MPAreaID;
+typedef struct OpaqueMPConsoleID*       MPConsoleID;
+typedef struct OpaqueMPOpaqueID*        MPOpaqueID;
 enum {
-	/* Values for MPOpaqueIDClass.*/
-	kOpaqueAnyID = 0,
-	kOpaqueProcessID = 1,
-	kOpaqueTaskID = 2,
-	kOpaqueTimerID = 3,
-	kOpaqueQueueID = 4,
-	kOpaqueSemaphoreID = 5,
-	kOpaqueCriticalRegionID = 6,
-	kOpaqueCpuID = 7,
-	kOpaqueAddressSpaceID = 8,
-	kOpaqueEventID = 9,
-	kOpaqueCoherenceID = 10,
-	kOpaqueAreaID = 11,
-	kOpaqueNotificationID = 12,
-	kOpaqueConsoleID = 13
+                                        /* Values for MPOpaqueIDClass.*/
+  kOpaqueAnyID                  = 0,
+  kOpaqueProcessID              = 1,
+  kOpaqueTaskID                 = 2,
+  kOpaqueTimerID                = 3,
+  kOpaqueQueueID                = 4,
+  kOpaqueSemaphoreID            = 5,
+  kOpaqueCriticalRegionID       = 6,
+  kOpaqueCpuID                  = 7,
+  kOpaqueAddressSpaceID         = 8,
+  kOpaqueEventID                = 9,
+  kOpaqueCoherenceID            = 10,
+  kOpaqueAreaID                 = 11,
+  kOpaqueNotificationID         = 12,
+  kOpaqueConsoleID              = 13
 };
 
-typedef UInt32 MPOpaqueIDClass;
-
-enum {
-	kMPNoID = kInvalidID /* New code should use kInvalidID everywhere.*/
-};
-
-typedef OptionBits MPTaskOptions;
-typedef UInt32     TaskStorageIndex;
-typedef UInt32     TaskStorageValue;
-typedef ItemCount  MPSemaphoreCount;
-typedef UInt32     MPTaskWeight;
-typedef UInt32     MPEventFlags;
-typedef UInt32     MPExceptionKind;
-typedef UInt32     MPTaskStateKind;
-typedef UInt32     MPPageSizeClass;
+typedef UInt32                          MPOpaqueIDClass;
 
 enum {
-	kDurationImmediate = 0L,
-	kDurationForever = 0x7FFFFFFF,
-	kDurationMillisecond = 1,
-	kDurationMicrosecond = -1
+  kMPNoID                       = kInvalidID /* New code should use kInvalidID everywhere.*/
 };
+
+
+typedef OptionBits                      MPTaskOptions;
+typedef UInt32                          TaskStorageIndex;
+typedef UInt32                          TaskStorageValue;
+typedef ItemCount                       MPSemaphoreCount;
+typedef UInt32                          MPTaskWeight;
+typedef UInt32                          MPEventFlags;
+typedef UInt32                          MPExceptionKind;
+typedef UInt32                          MPTaskStateKind;
+typedef UInt32                          MPPageSizeClass;
+
+enum {
+  kDurationImmediate            = 0L,
+  kDurationForever              = 0x7FFFFFFF,
+  kDurationMillisecond          = 1,
+  kDurationMicrosecond          = -1
+};
+
 
 /*
    .
@@ -255,6 +272,8 @@ enum {
    Process/Processor Services
    ==========================
 */
+
+
 
 /*
  *  MPProcessors()
@@ -265,7 +284,8 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ItemCount )
-MPProcessors( void );
+MPProcessors(void);
+
 
 /* The physical total.*/
 
@@ -278,7 +298,8 @@ MPProcessors( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ItemCount )
-MPProcessorsScheduled( void );
+MPProcessorsScheduled(void);
+
 
 /* Those currently in use.*/
 
@@ -289,17 +310,23 @@ MPProcessorsScheduled( void );
    ================
 */
 
+
+
 enum {
-	/* For MPCreateTask options*/
-	kMPCreateTaskSuspendedMask = 1L << 0,
-	kMPCreateTaskTakesAllExceptionsMask = 1L << 1,
-	kMPCreateTaskNotDebuggableMask = 1L << 2,
-	kMPCreateTaskValidOptionsMask = kMPCreateTaskSuspendedMask | kMPCreateTaskTakesAllExceptionsMask | kMPCreateTaskNotDebuggableMask
+                                        /* For MPCreateTask options*/
+  kMPCreateTaskSuspendedMask    = 1L << 0,
+  kMPCreateTaskTakesAllExceptionsMask = 1L << 1,
+  kMPCreateTaskNotDebuggableMask = 1L << 2,
+  kMPCreateTaskValidOptionsMask = kMPCreateTaskSuspendedMask | kMPCreateTaskTakesAllExceptionsMask | kMPCreateTaskNotDebuggableMask
 };
+
 
 /* -------------------------------------------------------------------------------------------*/
 
-typedef CALLBACK_API_C( OSStatus, TaskProc )( void *parameter );
+
+
+
+typedef CALLBACK_API_C( OSStatus , TaskProc )(void * parameter);
 
 /*
  *  MPCreateTask()
@@ -311,14 +338,17 @@ typedef CALLBACK_API_C( OSStatus, TaskProc )( void *parameter );
  */
 EXTERN_API_C( OSStatus )
 MPCreateTask(
-    TaskProc      entryPoint,
-    void *        parameter,
-    ByteCount     stackSize,
-    MPQueueID     notifyQueue,
-    void *        terminationParameter1,
-    void *        terminationParameter2,
-    MPTaskOptions options,
-    MPTaskID *    task );
+  TaskProc        entryPoint,
+  void *          parameter,
+  ByteCount       stackSize,
+  MPQueueID       notifyQueue,
+  void *          terminationParameter1,
+  void *          terminationParameter2,
+  MPTaskOptions   options,
+  MPTaskID *      task);
+
+
+
 
 /*
  *  MPTerminateTask()
@@ -330,8 +360,11 @@ MPCreateTask(
  */
 EXTERN_API_C( OSStatus )
 MPTerminateTask(
-    MPTaskID task,
-    OSStatus terminationStatus );
+  MPTaskID   task,
+  OSStatus   terminationStatus);
+
+
+
 
 /*
  *  MPSetTaskWeight()
@@ -343,8 +376,11 @@ MPTerminateTask(
  */
 EXTERN_API_C( OSStatus )
 MPSetTaskWeight(
-    MPTaskID     task,
-    MPTaskWeight weight );
+  MPTaskID       task,
+  MPTaskWeight   weight);
+
+
+
 
 /*
  *  MPTaskIsPreemptive()
@@ -355,7 +391,8 @@ MPSetTaskWeight(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-MPTaskIsPreemptive( MPTaskID taskID );
+MPTaskIsPreemptive(MPTaskID taskID);
+
 
 /* May be kInvalidID.*/
 
@@ -368,7 +405,10 @@ MPTaskIsPreemptive( MPTaskID taskID );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-MPExit( OSStatus status );
+MPExit(OSStatus status);
+
+
+
 
 /*
  *  MPYield()
@@ -379,7 +419,10 @@ MPExit( OSStatus status );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-MPYield( void );
+MPYield(void);
+
+
+
 
 /*
  *  MPCurrentTaskID()
@@ -390,7 +433,10 @@ MPYield( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( MPTaskID )
-MPCurrentTaskID( void );
+MPCurrentTaskID(void);
+
+
+
 
 /*
  *  MPSetTaskType()
@@ -402,15 +448,20 @@ MPCurrentTaskID( void );
  */
 EXTERN_API_C( OSStatus )
 MPSetTaskType(
-    MPTaskID task,
-    OSType   taskType );
+  MPTaskID   task,
+  OSType     taskType);
+
+
 
 /* -------------------------------------------------------------------------------------------*/
+
 
 /*
    ---------------------------------------------------
    ! The task storage services are new in version 2.0.
 */
+
+
 
 /*
  *  MPAllocateTaskStorageIndex()
@@ -421,7 +472,10 @@ MPSetTaskType(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPAllocateTaskStorageIndex( TaskStorageIndex *index );
+MPAllocateTaskStorageIndex(TaskStorageIndex * index);
+
+
+
 
 /*
  *  MPDeallocateTaskStorageIndex()
@@ -432,7 +486,10 @@ MPAllocateTaskStorageIndex( TaskStorageIndex *index );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDeallocateTaskStorageIndex( TaskStorageIndex index );
+MPDeallocateTaskStorageIndex(TaskStorageIndex index);
+
+
+
 
 /*
  *  MPSetTaskStorageValue()
@@ -444,8 +501,11 @@ MPDeallocateTaskStorageIndex( TaskStorageIndex index );
  */
 EXTERN_API_C( OSStatus )
 MPSetTaskStorageValue(
-    TaskStorageIndex index,
-    TaskStorageValue value );
+  TaskStorageIndex   index,
+  TaskStorageValue   value);
+
+
+
 
 /*
  *  MPGetTaskStorageValue()
@@ -456,7 +516,9 @@ MPSetTaskStorageValue(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( TaskStorageValue )
-MPGetTaskStorageValue( TaskStorageIndex index );
+MPGetTaskStorageValue(TaskStorageIndex index);
+
+
 
 /*
    .
@@ -464,6 +526,8 @@ MPGetTaskStorageValue( TaskStorageIndex index );
    Synchronization Services
    ========================
 */
+
+
 
 /*
  *  MPCreateQueue()
@@ -474,7 +538,10 @@ MPGetTaskStorageValue( TaskStorageIndex index );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPCreateQueue( MPQueueID *queue );
+MPCreateQueue(MPQueueID * queue);
+
+
+
 
 /*
  *  MPDeleteQueue()
@@ -485,7 +552,10 @@ MPCreateQueue( MPQueueID *queue );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDeleteQueue( MPQueueID queue );
+MPDeleteQueue(MPQueueID queue);
+
+
+
 
 /*
  *  MPNotifyQueue()
@@ -497,10 +567,13 @@ MPDeleteQueue( MPQueueID queue );
  */
 EXTERN_API_C( OSStatus )
 MPNotifyQueue(
-    MPQueueID queue,
-    void *    param1,
-    void *    param2,
-    void *    param3 );
+  MPQueueID   queue,
+  void *      param1,
+  void *      param2,
+  void *      param3);
+
+
+
 
 /*
  *  MPWaitOnQueue()
@@ -512,11 +585,14 @@ MPNotifyQueue(
  */
 EXTERN_API_C( OSStatus )
 MPWaitOnQueue(
-    MPQueueID queue,
-    void **   param1,
-    void **   param2,
-    void **   param3,
-    Duration  timeout );
+  MPQueueID   queue,
+  void **     param1,
+  void **     param2,
+  void **     param3,
+  Duration    timeout);
+
+
+
 
 /*
  *  MPSetQueueReserve()
@@ -528,10 +604,14 @@ MPWaitOnQueue(
  */
 EXTERN_API_C( OSStatus )
 MPSetQueueReserve(
-    MPQueueID queue,
-    ItemCount count );
+  MPQueueID   queue,
+  ItemCount   count);
+
+
 
 /* -------------------------------------------------------------------------------------------*/
+
+
 
 /*
  *  MPCreateSemaphore()
@@ -543,9 +623,12 @@ MPSetQueueReserve(
  */
 EXTERN_API_C( OSStatus )
 MPCreateSemaphore(
-    MPSemaphoreCount maximumValue,
-    MPSemaphoreCount initialValue,
-    MPSemaphoreID *  semaphore );
+  MPSemaphoreCount   maximumValue,
+  MPSemaphoreCount   initialValue,
+  MPSemaphoreID *    semaphore);
+
+
+
 
 /*
  *  MPDeleteSemaphore()
@@ -556,7 +639,10 @@ MPCreateSemaphore(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDeleteSemaphore( MPSemaphoreID semaphore );
+MPDeleteSemaphore(MPSemaphoreID semaphore);
+
+
+
 
 /*
  *  MPSignalSemaphore()
@@ -567,7 +653,10 @@ MPDeleteSemaphore( MPSemaphoreID semaphore );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPSignalSemaphore( MPSemaphoreID semaphore );
+MPSignalSemaphore(MPSemaphoreID semaphore);
+
+
+
 
 /*
  *  MPWaitOnSemaphore()
@@ -579,13 +668,17 @@ MPSignalSemaphore( MPSemaphoreID semaphore );
  */
 EXTERN_API_C( OSStatus )
 MPWaitOnSemaphore(
-    MPSemaphoreID semaphore,
-    Duration      timeout );
+  MPSemaphoreID   semaphore,
+  Duration        timeout);
 
-#define MPCreateBinarySemaphore( semaphore ) \
-	MPCreateSemaphore( 1, 1, ( semaphore ) )
+
+
+#define MPCreateBinarySemaphore(semaphore)  \
+            MPCreateSemaphore ( 1, 1, (semaphore) )
 
 /* -------------------------------------------------------------------------------------------*/
+
+
 
 /*
  *  MPCreateCriticalRegion()
@@ -596,7 +689,10 @@ MPWaitOnSemaphore(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPCreateCriticalRegion( MPCriticalRegionID *criticalRegion );
+MPCreateCriticalRegion(MPCriticalRegionID * criticalRegion);
+
+
+
 
 /*
  *  MPDeleteCriticalRegion()
@@ -607,7 +703,10 @@ MPCreateCriticalRegion( MPCriticalRegionID *criticalRegion );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDeleteCriticalRegion( MPCriticalRegionID criticalRegion );
+MPDeleteCriticalRegion(MPCriticalRegionID criticalRegion);
+
+
+
 
 /*
  *  MPEnterCriticalRegion()
@@ -619,8 +718,11 @@ MPDeleteCriticalRegion( MPCriticalRegionID criticalRegion );
  */
 EXTERN_API_C( OSStatus )
 MPEnterCriticalRegion(
-    MPCriticalRegionID criticalRegion,
-    Duration           timeout );
+  MPCriticalRegionID   criticalRegion,
+  Duration             timeout);
+
+
+
 
 /*
  *  MPExitCriticalRegion()
@@ -631,9 +733,12 @@ MPEnterCriticalRegion(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPExitCriticalRegion( MPCriticalRegionID criticalRegion );
+MPExitCriticalRegion(MPCriticalRegionID criticalRegion);
+
+
 
 /* -------------------------------------------------------------------------------------------*/
+
 
 /*
  *  MPCreateEvent()
@@ -644,7 +749,9 @@ MPExitCriticalRegion( MPCriticalRegionID criticalRegion );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-MPCreateEvent( MPEventID *event );
+MPCreateEvent(MPEventID * event);
+
+
 
 /*
  *  MPDeleteEvent()
@@ -655,7 +762,10 @@ MPCreateEvent( MPEventID *event );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDeleteEvent( MPEventID event );
+MPDeleteEvent(MPEventID event);
+
+
+
 
 /*
  *  MPSetEvent()
@@ -667,8 +777,10 @@ MPDeleteEvent( MPEventID event );
  */
 EXTERN_API_C( OSStatus )
 MPSetEvent(
-    MPEventID    event,
-    MPEventFlags flags );
+  MPEventID      event,
+  MPEventFlags   flags);
+
+
 
 /*
  *  MPWaitForEvent()
@@ -680,9 +792,10 @@ MPSetEvent(
  */
 EXTERN_API( OSStatus )
 MPWaitForEvent(
-    MPEventID     event,
-    MPEventFlags *flags,
-    Duration      timeout );
+  MPEventID       event,
+  MPEventFlags *  flags,
+  Duration        timeout);
+
 
 /*
    .
@@ -690,6 +803,8 @@ MPWaitForEvent(
    Notification Services (API)
    =====================
 */
+
+
 
 /*
  *  MPCreateNotification()
@@ -700,7 +815,10 @@ MPWaitForEvent(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPCreateNotification( MPNotificationID *notificationID );
+MPCreateNotification(MPNotificationID * notificationID);
+
+
+
 
 /*
  *  MPDeleteNotification()
@@ -711,7 +829,10 @@ MPCreateNotification( MPNotificationID *notificationID );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDeleteNotification( MPNotificationID notificationID );
+MPDeleteNotification(MPNotificationID notificationID);
+
+
+
 
 /*
  *  MPModifyNotification()
@@ -723,11 +844,14 @@ MPDeleteNotification( MPNotificationID notificationID );
  */
 EXTERN_API_C( OSStatus )
 MPModifyNotification(
-    MPNotificationID notificationID,
-    MPOpaqueID       anID,
-    void *           notifyParam1,
-    void *           notifyParam2,
-    void *           notifyParam3 );
+  MPNotificationID   notificationID,
+  MPOpaqueID         anID,
+  void *             notifyParam1,
+  void *             notifyParam2,
+  void *             notifyParam3);
+
+
+
 
 /*
  *  MPModifyNotificationParameters()
@@ -739,11 +863,14 @@ MPModifyNotification(
  */
 EXTERN_API_C( OSStatus )
 MPModifyNotificationParameters(
-    MPNotificationID notificationID,
-    MPOpaqueIDClass  kind,
-    void *           notifyParam1,
-    void *           notifyParam2,
-    void *           notifyParam3 );
+  MPNotificationID   notificationID,
+  MPOpaqueIDClass    kind,
+  void *             notifyParam1,
+  void *             notifyParam2,
+  void *             notifyParam3);
+
+
+
 
 /*
  *  MPCauseNotification()
@@ -754,7 +881,9 @@ MPModifyNotificationParameters(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPCauseNotification( MPNotificationID notificationID );
+MPCauseNotification(MPNotificationID notificationID);
+
+
 
 /*
    .
@@ -763,10 +892,12 @@ MPCauseNotification( MPNotificationID notificationID );
    ==============
 */
 
+
 /*
    --------------------------------------------
    ! The timer services are new in version 2.0.
 */
+
 
 #if 0
 /* For now these are taken from DriverServices, should be in a better place.*/
@@ -806,16 +937,20 @@ DurationToAbsolute(Duration duration);
 EXTERN_API_C( Duration )
 AbsoluteToDuration(AbsoluteTime time);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* 0 */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* 0 */
+
 
 enum {
-	/* For MPArmTimer options*/
-	kMPPreserveTimerIDMask = 1L << 0,
-	kMPTimeIsDeltaMask = 1L << 1,
-	kMPTimeIsDurationMask = 1L << 2
+                                        /* For MPArmTimer options*/
+  kMPPreserveTimerIDMask        = 1L << 0,
+  kMPTimeIsDeltaMask            = 1L << 1,
+  kMPTimeIsDurationMask         = 1L << 2
 };
+
+
 
 /*
  *  MPDelayUntil()
@@ -826,7 +961,10 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDelayUntil( AbsoluteTime *expirationTime );
+MPDelayUntil(AbsoluteTime * expirationTime);
+
+
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -838,9 +976,12 @@ MPDelayUntil( AbsoluteTime *expirationTime );
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-MPDelayUntilSys( AbsoluteTime *expirationTime );
+MPDelayUntilSys(AbsoluteTime * expirationTime);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  MPCreateTimer()
@@ -851,7 +992,10 @@ MPDelayUntilSys( AbsoluteTime *expirationTime );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPCreateTimer( MPTimerID *timerID );
+MPCreateTimer(MPTimerID * timerID);
+
+
+
 
 /*
  *  MPDeleteTimer()
@@ -862,7 +1006,10 @@ MPCreateTimer( MPTimerID *timerID );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPDeleteTimer( MPTimerID timerID );
+MPDeleteTimer(MPTimerID timerID);
+
+
+
 
 /*
  *  MPSetTimerNotify()
@@ -874,11 +1021,14 @@ MPDeleteTimer( MPTimerID timerID );
  */
 EXTERN_API_C( OSStatus )
 MPSetTimerNotify(
-    MPTimerID  timerID,
-    MPOpaqueID anID,
-    void *     notifyParam1,
-    void *     notifyParam2,
-    void *     notifyParam3 );
+  MPTimerID    timerID,
+  MPOpaqueID   anID,
+  void *       notifyParam1,
+  void *       notifyParam2,
+  void *       notifyParam3);
+
+
+
 
 /*
  *  MPArmTimer()
@@ -890,9 +1040,12 @@ MPSetTimerNotify(
  */
 EXTERN_API_C( OSStatus )
 MPArmTimer(
-    MPTimerID     timerID,
-    AbsoluteTime *expirationTime,
-    OptionBits    options );
+  MPTimerID       timerID,
+  AbsoluteTime *  expirationTime,
+  OptionBits      options);
+
+
+
 
 /*
  *  MPCancelTimer()
@@ -904,8 +1057,10 @@ MPArmTimer(
  */
 EXTERN_API_C( OSStatus )
 MPCancelTimer(
-    MPTimerID     timerID,
-    AbsoluteTime *timeRemaining );
+  MPTimerID       timerID,
+  AbsoluteTime *  timeRemaining);
+
+
 
 /*
    .
@@ -914,36 +1069,42 @@ MPCancelTimer(
    ===============
 */
 
+
 enum {
-	/* Maximum allocation request size is 1GB.*/
-	kMPMaxAllocSize = 1024L * 1024 * 1024
+                                        /* Maximum allocation request size is 1GB.*/
+  kMPMaxAllocSize               = 1024L * 1024 * 1024
 };
 
 enum {
-	/* Values for the alignment parameter to MPAllocateAligned.*/
-	kMPAllocateDefaultAligned = 0,
-	kMPAllocate8ByteAligned = 3,
-	kMPAllocate16ByteAligned = 4,
-	kMPAllocate32ByteAligned = 5,
-	kMPAllocate1024ByteAligned = 10,
-	kMPAllocate4096ByteAligned = 12,
-	kMPAllocateMaxAlignment = 16, /* Somewhat arbitrary limit on expectations.*/
-	kMPAllocateAltiVecAligned = kMPAllocate16ByteAligned, /* The P.C. name.*/
-	kMPAllocateVMXAligned = kMPAllocateAltiVecAligned, /* The older, common name.*/
-	kMPAllocateVMPageAligned = 254, /* Pseudo value, converted at runtime.*/
-	kMPAllocateInterlockAligned = 255 /* Pseudo value, converted at runtime.*/
+                                        /* Values for the alignment parameter to MPAllocateAligned.*/
+  kMPAllocateDefaultAligned     = 0,
+  kMPAllocate8ByteAligned       = 3,
+  kMPAllocate16ByteAligned      = 4,
+  kMPAllocate32ByteAligned      = 5,
+  kMPAllocate1024ByteAligned    = 10,
+  kMPAllocate4096ByteAligned    = 12,
+  kMPAllocateMaxAlignment       = 16,   /* Somewhat arbitrary limit on expectations.*/
+  kMPAllocateAltiVecAligned     = kMPAllocate16ByteAligned, /* The P.C. name.*/
+  kMPAllocateVMXAligned         = kMPAllocateAltiVecAligned, /* The older, common name.*/
+  kMPAllocateVMPageAligned      = 254,  /* Pseudo value, converted at runtime.*/
+  kMPAllocateInterlockAligned   = 255   /* Pseudo value, converted at runtime.*/
 };
 
+
+
 enum {
-	/* Values for the options parameter to MPAllocateAligned.*/
-	kMPAllocateClearMask = 0x0001, /* Zero the allocated block.*/
-	kMPAllocateGloballyMask = 0x0002, /* Allocate from the globally visible pool.*/
-	kMPAllocateResidentMask = 0x0004, /* Allocate from the RAM-resident pool.*/
-	kMPAllocateNoGrowthMask = 0x0010, /* Do not attempt to grow the pool.*/
-	kMPAllocateNoCreateMask = 0x0020 /* Do not attempt to create the pool if it doesn't exist yet.*/
+                                        /* Values for the options parameter to MPAllocateAligned.*/
+  kMPAllocateClearMask          = 0x0001, /* Zero the allocated block.*/
+  kMPAllocateGloballyMask       = 0x0002, /* Allocate from the globally visible pool.*/
+  kMPAllocateResidentMask       = 0x0004, /* Allocate from the RAM-resident pool.*/
+  kMPAllocateNoGrowthMask       = 0x0010, /* Do not attempt to grow the pool.*/
+  kMPAllocateNoCreateMask       = 0x0020 /* Do not attempt to create the pool if it doesn't exist yet.*/
 };
+
 
 /* -------------------------------------------------------------------------------------------*/
+
+
 
 /*
  *  MPAllocateAligned()
@@ -955,9 +1116,10 @@ enum {
  */
 EXTERN_API_C( LogicalAddress )
 MPAllocateAligned(
-    ByteCount  size,
-    UInt8      alignment,
-    OptionBits options );
+  ByteCount    size,
+  UInt8        alignment,
+  OptionBits   options);
+
 
 /* ! MPAllocateAligned is new in version 2.0.*/
 
@@ -970,7 +1132,8 @@ MPAllocateAligned(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( LogicalAddress )
-MPAllocate( ByteCount size );
+MPAllocate(ByteCount size);
+
 
 /* Use MPAllocateAligned instead.*/
 
@@ -983,7 +1146,10 @@ MPAllocate( ByteCount size );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-MPFree( LogicalAddress object );
+MPFree(LogicalAddress object);
+
+
+
 
 /*
  *  MPGetAllocatedBlockSize()
@@ -994,9 +1160,13 @@ MPFree( LogicalAddress object );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ByteCount )
-MPGetAllocatedBlockSize( LogicalAddress object );
+MPGetAllocatedBlockSize(LogicalAddress object);
+
+
 
 /* -------------------------------------------------------------------------------------------*/
+
+
 
 /*
  *  MPBlockCopy()
@@ -1008,9 +1178,12 @@ MPGetAllocatedBlockSize( LogicalAddress object );
  */
 EXTERN_API_C( void )
 MPBlockCopy(
-    LogicalAddress source,
-    LogicalAddress destination,
-    ByteCount      size );
+  LogicalAddress   source,
+  LogicalAddress   destination,
+  ByteCount        size);
+
+
+
 
 /*
  *  MPBlockClear()
@@ -1022,8 +1195,9 @@ MPBlockCopy(
  */
 EXTERN_API_C( void )
 MPBlockClear(
-    LogicalAddress address,
-    ByteCount      size );
+  LogicalAddress   address,
+  ByteCount        size);
+
 
 /* ! MPBlockClear is new in version 2.0.*/
 
@@ -1037,8 +1211,9 @@ MPBlockClear(
  */
 EXTERN_API_C( void )
 MPDataToCode(
-    LogicalAddress address,
-    ByteCount      size );
+  LogicalAddress   address,
+  ByteCount        size);
+
 
 /* ! MPDataToCode is new in version 2.0.*/
 /*
@@ -1047,6 +1222,7 @@ MPDataToCode(
    Exception/Debugging Services
    ============================
 */
+
 
 /*
    -------------------------------------------------------------------------------------------
@@ -1083,68 +1259,75 @@ MPDataToCode(
         kMPTaskStateTaskInfo                -> MPTaskInfo
 */
 
+
+
 enum {
-	/* Values for the TaskStateKind to MPExtractTaskState and MPSetTaskState.*/
-	kMPTaskStateRegisters = 0, /* The task general registers.*/
-	kMPTaskStateFPU = 1, /* The task floating point registers*/
-	kMPTaskStateVectors = 2, /* The task vector registers*/
-	kMPTaskStateMachine = 3, /* The task machine registers*/
-	kMPTaskState32BitMemoryException = 4, /* The task memory exception information for 32-bit CPUs.*/
-	kMPTaskStateTaskInfo = 5 /* Static and dynamic information about the task.*/
+                                        /* Values for the TaskStateKind to MPExtractTaskState and MPSetTaskState.*/
+  kMPTaskStateRegisters         = 0,    /* The task general registers.*/
+  kMPTaskStateFPU               = 1,    /* The task floating point registers*/
+  kMPTaskStateVectors           = 2,    /* The task vector registers*/
+  kMPTaskStateMachine           = 3,    /* The task machine registers*/
+  kMPTaskState32BitMemoryException = 4, /* The task memory exception information for 32-bit CPUs.*/
+  kMPTaskStateTaskInfo          = 5     /* Static and dynamic information about the task.*/
+};
+
+
+
+enum {
+                                        /* Option bits and numbers for MPDisposeTaskException.*/
+  kMPTaskPropagate              = 0,    /* The exception is propagated.*/
+  kMPTaskResumeStep             = 1,    /* The task is resumed and single step is enabled.*/
+  kMPTaskResumeBranch           = 2,    /* The task is resumed and branch stepping is enabled.*/
+  kMPTaskResumeMask             = 0x0000, /* The task is resumed.*/
+  kMPTaskPropagateMask          = 1 << kMPTaskPropagate, /* The exception is propagated.*/
+  kMPTaskResumeStepMask         = 1 << kMPTaskResumeStep, /* The task is resumed and single step is enabled.*/
+  kMPTaskResumeBranchMask       = 1 << kMPTaskResumeBranch /* The task is resumed and branch stepping is enabled.*/
+};
+
+
+
+enum {
+                                        /* For kMPTaskStateTaskInfo, the task's runState*/
+  kMPTaskBlocked                = 0,    /* Task is blocked (queued on resource)*/
+  kMPTaskReady                  = 1,    /* Task is runnable*/
+  kMPTaskRunning                = 2     /* Task is running*/
 };
 
 enum {
-	/* Option bits and numbers for MPDisposeTaskException.*/
-	kMPTaskPropagate = 0, /* The exception is propagated.*/
-	kMPTaskResumeStep = 1, /* The task is resumed and single step is enabled.*/
-	kMPTaskResumeBranch = 2, /* The task is resumed and branch stepping is enabled.*/
-	kMPTaskResumeMask = 0x0000, /* The task is resumed.*/
-	kMPTaskPropagateMask = 1 << kMPTaskPropagate, /* The exception is propagated.*/
-	kMPTaskResumeStepMask = 1 << kMPTaskResumeStep, /* The task is resumed and single step is enabled.*/
-	kMPTaskResumeBranchMask = 1 << kMPTaskResumeBranch /* The task is resumed and branch stepping is enabled.*/
+                                        /* For kMPTaskStateTaskInfo, the version of the MPTaskInfo structure requested.*/
+  kMPTaskInfoVersion            = 3
 };
 
-enum {
-	/* For kMPTaskStateTaskInfo, the task's runState*/
-	kMPTaskBlocked = 0, /* Task is blocked (queued on resource)*/
-	kMPTaskReady = 1, /* Task is runnable*/
-	kMPTaskRunning = 2 /* Task is running*/
-};
-
-enum {
-	/* For kMPTaskStateTaskInfo, the version of the MPTaskInfo structure requested.*/
-	kMPTaskInfoVersion = 3
-};
 
 struct MPTaskInfo {
-	PBVersion version; /* Version 3 of the data structure requested*/
+  PBVersion           version;                /* Version 3 of the data structure requested*/
 
-	OSType name; /* Task name*/
+  OSType              name;                   /* Task name*/
 
-	OSType queueName; /* Task's queue owner name*/
-	UInt16 runState; /* Running, ready, blocked*/
-	UInt16 lastCPU; /* Address of CPU where task previously ran*/
-	UInt32 weight; /* Processing weight: 1 - 10,000*/
+  OSType              queueName;              /* Task's queue owner name*/
+  UInt16              runState;               /* Running, ready, blocked*/
+  UInt16              lastCPU;                /* Address of CPU where task previously ran*/
+  UInt32              weight;                 /* Processing weight: 1 - 10,000*/
 
-	MPProcessID processID; /* Owning process ID*/
+  MPProcessID         processID;              /* Owning process ID*/
 
-	AbsoluteTime cpuTime; /* Accumulated task time*/
-	AbsoluteTime schedTime; /* Time when last scheduled*/
-	AbsoluteTime creationTime; /* Time when task created*/
+  AbsoluteTime        cpuTime;                /* Accumulated task time*/
+  AbsoluteTime        schedTime;              /* Time when last scheduled*/
+  AbsoluteTime        creationTime;           /* Time when task created*/
 
-	ItemCount codePageFaults; /* Page faults from code execution*/
-	ItemCount dataPageFaults; /* Page faults from data access*/
-	ItemCount preemptions; /* Number of times task was preempted*/
+  ItemCount           codePageFaults;         /* Page faults from code execution*/
+  ItemCount           dataPageFaults;         /* Page faults from data access*/
+  ItemCount           preemptions;            /* Number of times task was preempted*/
 
-	MPCpuID          cpuID; /* ID of CPU where task previously ran.*/
-	MPOpaqueID       blockedObject; /* ID of blocked object.*/
-	MPAddressSpaceID spaceID; /* Address space ID of this task.*/
+  MPCpuID             cpuID;                  /* ID of CPU where task previously ran.*/
+  MPOpaqueID          blockedObject;          /* ID of blocked object.*/
+  MPAddressSpaceID    spaceID;                /* Address space ID of this task.*/
 
-	LogicalAddress stackBase; /* Base of stack (lowest address).*/
-	LogicalAddress stackLimit; /* Stack limit (highest address).*/
-	LogicalAddress stackCurr; /* Current stack address.*/
+  LogicalAddress      stackBase;              /* Base of stack (lowest address).*/
+  LogicalAddress      stackLimit;             /* Stack limit (highest address).*/
+  LogicalAddress      stackCurr;              /* Current stack address.*/
 };
-typedef struct MPTaskInfo MPTaskInfo;
+typedef struct MPTaskInfo               MPTaskInfo;
 /*
     Upon a task exception, the following message is sent to the designated queue:
       1. The MPTaskID, 
@@ -1152,7 +1335,10 @@ typedef struct MPTaskInfo MPTaskInfo;
       3. N/A
 */
 
+
 /* -------------------------------------------------------------------------------------------*/
+
+
 
 /*
  *  MPSetExceptionHandler()
@@ -1164,8 +1350,11 @@ typedef struct MPTaskInfo MPTaskInfo;
  */
 EXTERN_API_C( OSStatus )
 MPSetExceptionHandler(
-    MPTaskID  task,
-    MPQueueID exceptionQ );
+  MPTaskID    task,
+  MPQueueID   exceptionQ);
+
+
+
 
 /*
  *  MPDisposeTaskException()
@@ -1177,8 +1366,11 @@ MPSetExceptionHandler(
  */
 EXTERN_API_C( OSStatus )
 MPDisposeTaskException(
-    MPTaskID   task,
-    OptionBits action );
+  MPTaskID     task,
+  OptionBits   action);
+
+
+
 
 /*
  *  MPExtractTaskState()
@@ -1190,9 +1382,12 @@ MPDisposeTaskException(
  */
 EXTERN_API_C( OSStatus )
 MPExtractTaskState(
-    MPTaskID        task,
-    MPTaskStateKind kind,
-    void *          info );
+  MPTaskID          task,
+  MPTaskStateKind   kind,
+  void *            info);
+
+
+
 
 /*
  *  MPSetTaskState()
@@ -1204,9 +1399,12 @@ MPExtractTaskState(
  */
 EXTERN_API_C( OSStatus )
 MPSetTaskState(
-    MPTaskID        task,
-    MPTaskStateKind kind,
-    void *          info );
+  MPTaskID          task,
+  MPTaskStateKind   kind,
+  void *            info);
+
+
+
 
 /*
  *  MPThrowException()
@@ -1218,17 +1416,22 @@ MPSetTaskState(
  */
 EXTERN_API_C( OSStatus )
 MPThrowException(
-    MPTaskID        task,
-    MPExceptionKind kind );
+  MPTaskID          task,
+  MPExceptionKind   kind);
+
+
 
 /* -------------------------------------------------------------------------------------------*/
 
+
 typedef UInt32 MPDebuggerLevel;
 enum {
-	kMPLowLevelDebugger = 0x00000000, /* MacsBug-like*/
-	kMPMidLevelDebugger = 0x10000000, /* Jasik-like*/
-	kMPHighLevelDebugger = 0x20000000 /* Metrowerks-like*/
+  kMPLowLevelDebugger           = 0x00000000, /* MacsBug-like*/
+  kMPMidLevelDebugger           = 0x10000000, /* Jasik-like*/
+  kMPHighLevelDebugger          = 0x20000000 /* Metrowerks-like*/
 };
+
+
 
 /*
  *  MPRegisterDebugger()
@@ -1240,8 +1443,11 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 MPRegisterDebugger(
-    MPQueueID       queue,
-    MPDebuggerLevel level );
+  MPQueueID         queue,
+  MPDebuggerLevel   level);
+
+
+
 
 /*
  *  MPUnregisterDebugger()
@@ -1252,7 +1458,9 @@ MPRegisterDebugger(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-MPUnregisterDebugger( MPQueueID queue );
+MPUnregisterDebugger(MPQueueID queue);
+
+
 
 /*
    .
@@ -1261,15 +1469,19 @@ MPUnregisterDebugger( MPQueueID queue );
    ====================
 */
 
-typedef CALLBACK_API_C( void *, MPRemoteProcedure )( void *parameter );
 
-typedef UInt8 MPRemoteContext;
+
+typedef CALLBACK_API_C( void *, MPRemoteProcedure )(void * parameter);
+
+typedef UInt8                           MPRemoteContext;
 enum {
-	kMPAnyRemoteContext = 0,
-	kMPOwningProcessRemoteContext = 1,
-	kMPInterruptRemoteContext = 2,
-	kMPAsyncInterruptRemoteContext = 3
+  kMPAnyRemoteContext           = 0,
+  kMPOwningProcessRemoteContext = 1,
+  kMPInterruptRemoteContext     = 2,
+  kMPAsyncInterruptRemoteContext = 3
 };
+
+
 
 /*
  *  MPRemoteCall()
@@ -1281,9 +1493,10 @@ enum {
  */
 EXTERN_API_C( void * )
 MPRemoteCall(
-    MPRemoteProcedure remoteProc,
-    void *            parameter,
-    MPRemoteContext   context );
+  MPRemoteProcedure   remoteProc,
+  void *              parameter,
+  MPRemoteContext     context);
+
 
 /* ! MPRemoteCall is new in version 2.0.*/
 /*
@@ -1292,6 +1505,7 @@ MPRemoteCall(
    Checking API Availability
    =========================
 */
+
 
 /*
    ===========================================================================================
@@ -1348,6 +1562,7 @@ MPRemoteCall(
    ===========================================================================================
 */
 
+
 /*
  *  _MPIsFullyInitialized()
  *  
@@ -1357,18 +1572,21 @@ MPRemoteCall(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-_MPIsFullyInitialized( void );
+_MPIsFullyInitialized(void);
 
-typedef CALLBACK_API_C( Boolean, MPIsFullyInitializedProc )( void );
+
+typedef CALLBACK_API_C( Boolean , MPIsFullyInitializedProc )(void);
 #define kMPUnresolvedCFragSymbolAddress 0
-#define MPLibraryIsLoaded() \
-	( ( (UInt32)_MPIsFullyInitialized != (UInt32)kMPUnresolvedCFragSymbolAddress ) && ( _MPIsFullyInitialized() ) )
+#define MPLibraryIsLoaded()     \
+            ( ( (UInt32)_MPIsFullyInitialized != (UInt32)kMPUnresolvedCFragSymbolAddress ) &&   \
+              ( _MPIsFullyInitialized () ) )
 /*
    .
    ===========================================================================================
    Miscellaneous Services
    ======================
 */
+
 
 /*
  *  _MPLibraryVersion()
@@ -1380,11 +1598,12 @@ typedef CALLBACK_API_C( Boolean, MPIsFullyInitializedProc )( void );
  */
 EXTERN_API_C( void )
 _MPLibraryVersion(
-    const char **versionCString,
-    UInt32 *     major,
-    UInt32 *     minor,
-    UInt32 *     release,
-    UInt32 *     revision );
+  const char **  versionCString,
+  UInt32 *       major,
+  UInt32 *       minor,
+  UInt32 *       release,
+  UInt32 *       revision);
+
 
 /*
    .
@@ -1392,6 +1611,7 @@ _MPLibraryVersion(
    Unofficial Services
    ===================
 */
+
 
 /*
    ===========================================================================================
@@ -1414,7 +1634,8 @@ _MPLibraryVersion(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( LogicalAddress )
-_MPAllocateSys( ByteCount size );
+_MPAllocateSys(ByteCount size);
+
 
 /* Use MPAllocateAligned instead.*/
 /*
@@ -1427,8 +1648,9 @@ _MPAllocateSys( ByteCount size );
  */
 EXTERN_API_C( void * )
 _MPRPC(
-    MPRemoteProcedure remoteProc,
-    void *            parameter );
+  MPRemoteProcedure   remoteProc,
+  void *              parameter);
+
 
 /* Use _MPRemoteCall instead.*/
 /*
@@ -1440,11 +1662,12 @@ _MPRPC(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( Boolean )
-_MPTaskIsToolboxSafe( MPTaskID task );
+_MPTaskIsToolboxSafe(MPTaskID task);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  _MPLibraryIsCompatible()
@@ -1456,14 +1679,16 @@ _MPTaskIsToolboxSafe( MPTaskID task );
  */
 EXTERN_API_C( Boolean )
 _MPLibraryIsCompatible(
-    const char *versionCString,
-    UInt32      major,
-    UInt32      minor,
-    UInt32      release,
-    UInt32      revision );
+  const char *  versionCString,
+  UInt32        major,
+  UInt32        minor,
+  UInt32        release,
+  UInt32        revision);
 
-#define MPRPC _MPRPC
-#define MPTaskIsToolboxSafe _MPTaskIsToolboxSafe
+
+
+#define MPRPC                   _MPRPC
+#define MPTaskIsToolboxSafe     _MPTaskIsToolboxSafe
 
 /*
    .
@@ -1475,7 +1700,7 @@ _MPLibraryIsCompatible(
 #if CALL_NOT_IN_CARBON
 #ifndef MPIncludeDefunctServices
 #define MPIncludeDefunctServices 0
-#endif /* !defined(MPIncludeDefunctServices) */
+#endif  /* !defined(MPIncludeDefunctServices) */
 
 #if MPIncludeDefunctServices
 #if CALL_NOT_IN_CARBON
@@ -1488,7 +1713,8 @@ _MPLibraryIsCompatible(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-_MPDebugStr( ConstStr255Param msg );
+_MPDebugStr(ConstStr255Param msg);
+
 
 /*
  *  _MPStatusPString()
@@ -1499,7 +1725,8 @@ _MPDebugStr( ConstStr255Param msg );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( StringPtr )
-_MPStatusPString( OSStatus status );
+_MPStatusPString(OSStatus status);
+
 
 /*
  *  _MPStatusCString()
@@ -1510,12 +1737,14 @@ _MPStatusPString( OSStatus status );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( const char * )
-_MPStatusCString( OSStatus status );
+_MPStatusCString(OSStatus status);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 #include <stdarg.h>
-typedef CALLBACK_API_C( void, MPPrintfHandler )( MPTaskID taskID, const char *format, va_list args );
+typedef CALLBACK_API_C( void , MPPrintfHandler )(MPTaskID taskID, const char *format, va_list args);
 #if CALL_NOT_IN_CARBON
 /*
  *  _MPInitializePrintf()
@@ -1526,7 +1755,8 @@ typedef CALLBACK_API_C( void, MPPrintfHandler )( MPTaskID taskID, const char *fo
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-_MPInitializePrintf( MPPrintfHandler pfn );
+_MPInitializePrintf(MPPrintfHandler pfn);
+
 
 /*
  *  _MPPrintf()
@@ -1537,22 +1767,25 @@ _MPInitializePrintf( MPPrintfHandler pfn );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-_MPPrintf( const char *format, ... );
+_MPPrintf(const char * format, ...);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* MPIncludeDefunctServices */
+#endif  /* CALL_NOT_IN_CARBON */
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* MPIncludeDefunctServices */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /* ===========================================================================================*/
 
+
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1566,3 +1799,4 @@ _MPPrintf( const char *format, ... );
 #endif
 
 #endif /* __MULTIPROCESSING__ */
+

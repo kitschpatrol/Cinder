@@ -28,16 +28,15 @@
 #include "cinder/Cinder.h"
 
 #if defined( CINDER_COCOA )
-#define CINDER_AUDIO_VDSP
+	#define CINDER_AUDIO_VDSP
 #endif
 
 #include <atomic>
-#include <cmath>
 #include <vector>
+#include <cmath>
 
-namespace cinder {
-namespace audio {
-namespace dsp {
+namespace cinder { namespace audio { namespace dsp {
+
 
 //! Fills \a length samples of \a window with a Blackmann windowing function.
 void generateBlackmanWindow( float *window, size_t length );
@@ -51,7 +50,7 @@ enum class WindowType {
 	BLACKMAN,
 	HAMMING,
 	HANN,
-	RECT //! no window
+	RECT		//! no window
 };
 
 //! fills \a window array with a windowing function specified by \a windowType
@@ -85,6 +84,5 @@ float sum( const float *array, size_t length );
 float rms( const float *array, size_t length );
 //! normalizes \a array to \a maxValue (default = 1)
 void normalize( float *array, size_t length, float maxValue = 1 );
-}
-}
-} // namespace cinder::audio::dsp
+
+} } } // namespace cinder::audio::dsp

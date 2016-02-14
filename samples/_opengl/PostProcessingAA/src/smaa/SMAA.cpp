@@ -23,8 +23,8 @@
 #include "cinder/app/App.h"
 #include "cinder/Log.h"
 
-#include "AreaTex.h"
 #include "SMAA.h"
+#include "AreaTex.h"
 #include "SearchTex.h"
 
 using namespace ci;
@@ -42,7 +42,7 @@ SMAA::SMAA()
 		mGlslSecondPass = gl::GlslProg::create( gl::GlslProg::Format( fmt ).define( "SMAA_PASS", "2" ) );
 		mGlslThirdPass = gl::GlslProg::create( gl::GlslProg::Format( fmt ).define( "SMAA_PASS", "3" ) );
 	}
-	catch( const std::exception &e ) {
+	catch( const std::exception& e ) {
 		CI_LOG_EXCEPTION( "exception caught loading smaa shaders", e );
 	}
 
@@ -75,14 +75,14 @@ SMAA::SMAA()
 void SMAA::apply( const gl::FboRef &destination, const gl::FboRef &source )
 {
 	gl::ScopedFramebuffer fbo( destination );
-	gl::ScopedViewport    viewport( 0, 0, destination->getWidth(), destination->getHeight() );
-	gl::ScopedMatrices    matrices;
+	gl::ScopedViewport viewport( 0, 0, destination->getWidth(), destination->getHeight() );
+	gl::ScopedMatrices matrices;
 	gl::setMatricesWindow( destination->getSize() );
 
 	// Make sure our source is linearly interpolated.
 	GLenum minFilter = source->getFormat().getColorTextureFormat().getMinFilter();
 	GLenum magFilter = source->getFormat().getColorTextureFormat().getMagFilter();
-	bool   filterChanged = ( minFilter != GL_LINEAR || magFilter != GL_LINEAR );
+	bool filterChanged = ( minFilter != GL_LINEAR || magFilter != GL_LINEAR );
 	if( filterChanged ) {
 		source->getColorTexture()->setMinFilter( GL_LINEAR );
 		source->getColorTexture()->setMagFilter( GL_LINEAR );
@@ -101,7 +101,7 @@ void SMAA::apply( const gl::FboRef &destination, const gl::FboRef &source )
 
 void SMAA::draw( const gl::Texture2dRef &source, const Area &bounds )
 {
-	if( !mGlslFirstPass || !mGlslSecondPass || !mGlslThirdPass )
+	if( ! mGlslFirstPass || ! mGlslSecondPass || ! mGlslThirdPass )
 		return;
 
 	// Create or resize buffers.
@@ -116,7 +116,7 @@ void SMAA::draw( const gl::Texture2dRef &source, const Area &bounds )
 	// Apply SMAA.
 	gl::ScopedTextureBind tex0( source );
 	gl::ScopedTextureBind tex1( mFboBlendPass->getColorTexture(), 1 );
-	gl::ScopedGlslProg    glslScope( mGlslThirdPass );
+	gl::ScopedGlslProg glslScope( mGlslThirdPass );
 	mGlslThirdPass->uniform( "SMAA_RT_METRICS", mMetrics );
 	mGlslThirdPass->uniform( "uColorTex", 0 );
 	mGlslThirdPass->uniform( "uBlendTex", 1 );
@@ -148,7 +148,7 @@ void SMAA::createBuffers( int width, int height )
 		mFboBlendPass = gl::Fbo::create( width, height, mFboFormat );
 	}
 
-	mMetrics = vec4( 1.0f / width, 1.0f / height, (float)width, (float)height );
+	mMetrics = vec4( 1.0f / width, 1.0f / height, (float) width, (float) height );
 }
 
 void SMAA::doEdgePass( const gl::Texture2dRef &source )
@@ -158,7 +158,7 @@ void SMAA::doEdgePass( const gl::Texture2dRef &source )
 	gl::clear( ColorA( 0, 0, 0, 0 ) );
 
 	gl::ScopedTextureBind tex0( source );
-	gl::ScopedGlslProg    glslScope( mGlslFirstPass );
+	gl::ScopedGlslProg glslScope( mGlslFirstPass );
 	mGlslFirstPass->uniform( "SMAA_RT_METRICS", mMetrics );
 	mGlslFirstPass->uniform( "uColorTex", 0 );
 
@@ -176,7 +176,7 @@ void SMAA::doBlendPass()
 	gl::ScopedTextureBind tex0( mFboEdgePass->getColorTexture() );
 	gl::ScopedTextureBind tex1( mAreaTex, 1 );
 	gl::ScopedTextureBind tex2( mSearchTex, 2 );
-	gl::ScopedGlslProg    glslScope( mGlslSecondPass );
+	gl::ScopedGlslProg glslScope( mGlslSecondPass );
 	mGlslSecondPass->uniform( "SMAA_RT_METRICS", mMetrics );
 	mGlslSecondPass->uniform( "uEdgesTex", 0 );
 	mGlslSecondPass->uniform( "uAreaTex", 1 );

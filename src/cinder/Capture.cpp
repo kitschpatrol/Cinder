@@ -23,23 +23,24 @@
 #include "cinder/Cinder.h"
 #include "cinder/Capture.h"
 #if defined( CINDER_MAC ) || defined( CINDER_COCOA_TOUCH_DEVICE )
-#import "cinder/CaptureImplAvFoundation.h"
-typedef CaptureImplAvFoundation CapturePlatformImpl;
+	#import "cinder/CaptureImplAvFoundation.h"
+	typedef CaptureImplAvFoundation	CapturePlatformImpl;
 #elif defined( CINDER_COCOA_TOUCH_SIMULATOR )
-#include "cinder/CaptureImplCocoaDummy.h"
-typedef CaptureImplCocoaDummy CapturePlatformImpl;
+	#include "cinder/CaptureImplCocoaDummy.h"
+	typedef CaptureImplCocoaDummy	CapturePlatformImpl;
 #elif defined( CINDER_MSW )
-#include "cinder/CaptureImplDirectShow.h"
-typedef cinder::CaptureImplDirectShow CapturePlatformImpl;
+	#include "cinder/CaptureImplDirectShow.h"
+	typedef cinder::CaptureImplDirectShow	CapturePlatformImpl;
 #endif
 
 #include <set>
 using namespace std;
 
+
 namespace cinder {
 
-const vector<Capture::DeviceRef> &Capture::getDevices( bool forceRefresh )
-{
+const vector<Capture::DeviceRef>& Capture::getDevices( bool forceRefresh )
+{	
 #if defined( CINDER_COCOA )
 	return [CapturePlatformImpl getDevices:forceRefresh];
 #else
@@ -53,12 +54,12 @@ Capture::DeviceRef Capture::findDeviceByName( const string &name )
 		if( dev->getName() == name )
 			return dev;
 	}
-
+	
 	return DeviceRef(); // failed - return "null" device
 }
 
 Capture::DeviceRef Capture::findDeviceByNameContains( const string &nameFragment )
-{
+{	
 	for( const auto &dev : getDevices() ) {
 		if( dev->getName().find( nameFragment ) != std::string::npos )
 			return dev;
@@ -67,10 +68,10 @@ Capture::DeviceRef Capture::findDeviceByNameContains( const string &nameFragment
 	return DeviceRef();
 }
 
-Capture::Capture( int32_t width, int32_t height, const DeviceRef device )
+Capture::Capture( int32_t width, int32_t height, const DeviceRef device ) 
 {
 #if defined( CINDER_COCOA )
-	mImpl = [[ ::CapturePlatformImpl alloc] initWithDevice:device width:width height:height];
+	mImpl = [[::CapturePlatformImpl alloc] initWithDevice:device width:width height:height];
 #else
 	mImpl = new CapturePlatformImpl( width, height, device );
 #endif
@@ -79,7 +80,7 @@ Capture::Capture( int32_t width, int32_t height, const DeviceRef device )
 Capture::~Capture()
 {
 #if defined( CINDER_COCOA )
-	[((::CapturePlatformImpl *)mImpl)release];
+	[((::CapturePlatformImpl*)mImpl) release];
 #else
 	delete mImpl;
 #endif
@@ -118,7 +119,7 @@ bool Capture::checkNewFrame() const
 	return [mImpl checkNewFrame];
 #else
 	return mImpl->checkNewFrame();
-#endif
+#endif	
 }
 
 Surface8uRef Capture::getSurface() const
@@ -130,17 +131,15 @@ Surface8uRef Capture::getSurface() const
 #endif
 }
 
-int32_t Capture::getWidth() const
-{
+int32_t	Capture::getWidth() const { 
 #if defined( CINDER_COCOA )
 	return [mImpl getWidth];
-#else
+#else 
 	return mImpl->getWidth();
 #endif
 }
 
-int32_t Capture::getHeight() const
-{
+int32_t	Capture::getHeight() const { 
 #if defined( CINDER_COCOA )
 	return [mImpl getHeight];
 #else
@@ -148,8 +147,7 @@ int32_t Capture::getHeight() const
 #endif
 }
 
-const Capture::DeviceRef Capture::getDevice() const
-{
+const Capture::DeviceRef Capture::getDevice() const {
 #if defined( CINDER_COCOA )
 	return [mImpl getDevice];
 #else

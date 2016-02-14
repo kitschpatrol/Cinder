@@ -27,26 +27,25 @@
 #include "cinder/Utilities.h"
 
 #if defined( CINDER_COCOA )
-#include "cinder/audio/cocoa/FileCoreAudio.h"
+	#include "cinder/audio/cocoa/FileCoreAudio.h"
 #elif defined( CINDER_MSW ) || defined( CINDER_WINRT )
-#include "cinder/audio/msw/FileMediaFoundation.h"
+	#include "cinder/audio/msw/FileMediaFoundation.h"
 #endif
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // TODO: these should be replaced with a generic registrar derived from the ImageIo stuff.
 
 std::unique_ptr<TargetFile> TargetFile::create( const DataTargetRef &dataTarget, size_t sampleRate, size_t numChannels, SampleType sampleType, const std::string &extension )
 {
-#if !defined( CINDER_WINRT ) || ( _MSC_VER > 1800 )
+#if ! defined( CINDER_WINRT ) || ( _MSC_VER > 1800 )
 	std::string ext = dataTarget->getFilePathHint().extension().string();
 #else
 	std::string ext = dataTarget->getFilePathHint().extension();
 #endif
-	ext = ( ( !ext.empty() ) && ( ext[0] == '.' ) ) ? ext.substr( 1, string::npos ) : ext;
+	ext = ( ( ! ext.empty() ) && ( ext[0] == '.' ) ) ? ext.substr( 1, string::npos ) : ext;
 
 #if defined( CINDER_COCOA )
 	return std::unique_ptr<TargetFile>( new cocoa::TargetFileCoreAudio( dataTarget, sampleRate, numChannels, sampleType, ext ) );
@@ -78,5 +77,5 @@ void TargetFile::write( const Buffer *buffer, size_t numFrames, size_t frameOffs
 
 	performWrite( buffer, numFrames, frameOffset );
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

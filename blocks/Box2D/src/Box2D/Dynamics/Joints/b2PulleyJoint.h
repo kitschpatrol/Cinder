@@ -25,14 +25,15 @@ const float32 b2_minPulleyLength = 2.0f;
 
 /// Pulley joint definition. This requires two ground anchors,
 /// two dynamic body anchor points, and a pulley ratio.
-struct b2PulleyJointDef : public b2JointDef {
+struct b2PulleyJointDef : public b2JointDef
+{
 	b2PulleyJointDef()
 	{
 		type = e_pulleyJoint;
-		groundAnchorA.Set( -1.0f, 1.0f );
-		groundAnchorB.Set( 1.0f, 1.0f );
-		localAnchorA.Set( -1.0f, 0.0f );
-		localAnchorB.Set( 1.0f, 0.0f );
+		groundAnchorA.Set(-1.0f, 1.0f);
+		groundAnchorB.Set(1.0f, 1.0f);
+		localAnchorA.Set(-1.0f, 0.0f);
+		localAnchorB.Set(1.0f, 0.0f);
 		lengthA = 0.0f;
 		lengthB = 0.0f;
 		ratio = 1.0f;
@@ -40,7 +41,10 @@ struct b2PulleyJointDef : public b2JointDef {
 	}
 
 	/// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-	void Initialize( b2Body *bodyA, b2Body *bodyB, const b2Vec2 &groundAnchorA, const b2Vec2 &groundAnchorB, const b2Vec2 &anchorA, const b2Vec2 &anchorB, float32 ratio );
+	void Initialize(b2Body* bodyA, b2Body* bodyB,
+					const b2Vec2& groundAnchorA, const b2Vec2& groundAnchorB,
+					const b2Vec2& anchorA, const b2Vec2& anchorB,
+					float32 ratio);
 
 	/// The first ground anchor in world coordinates. This point never moves.
 	b2Vec2 groundAnchorA;
@@ -72,13 +76,14 @@ struct b2PulleyJointDef : public b2JointDef {
 /// work better when combined with prismatic joints. You should also cover the
 /// the anchor points with static shapes to prevent one side from going to
 /// zero length.
-class b2PulleyJoint : public b2Joint {
-  public:
+class b2PulleyJoint : public b2Joint
+{
+public:
 	b2Vec2 GetAnchorA() const;
 	b2Vec2 GetAnchorB() const;
 
-	b2Vec2 GetReactionForce( float32 inv_dt ) const;
-	float32 GetReactionTorque( float32 inv_dt ) const;
+	b2Vec2 GetReactionForce(float32 inv_dt) const;
+	float32 GetReactionTorque(float32 inv_dt) const;
 
 	/// Get the first ground anchor.
 	b2Vec2 GetGroundAnchorA() const;
@@ -98,35 +103,36 @@ class b2PulleyJoint : public b2Joint {
 	/// Dump joint to dmLog
 	void Dump();
 
-  protected:
+protected:
+
 	friend class b2Joint;
-	b2PulleyJoint( const b2PulleyJointDef *data );
+	b2PulleyJoint(const b2PulleyJointDef* data);
 
-	void InitVelocityConstraints( const b2SolverData &data );
-	void SolveVelocityConstraints( const b2SolverData &data );
-	bool SolvePositionConstraints( const b2SolverData &data );
+	void InitVelocityConstraints(const b2SolverData& data);
+	void SolveVelocityConstraints(const b2SolverData& data);
+	bool SolvePositionConstraints(const b2SolverData& data);
 
-	b2Vec2  m_groundAnchorA;
-	b2Vec2  m_groundAnchorB;
+	b2Vec2 m_groundAnchorA;
+	b2Vec2 m_groundAnchorB;
 	float32 m_lengthA;
 	float32 m_lengthB;
-
+	
 	// Solver shared
-	b2Vec2  m_localAnchorA;
-	b2Vec2  m_localAnchorB;
+	b2Vec2 m_localAnchorA;
+	b2Vec2 m_localAnchorB;
 	float32 m_constant;
 	float32 m_ratio;
 	float32 m_impulse;
 
 	// Solver temp
-	int32   m_indexA;
-	int32   m_indexB;
-	b2Vec2  m_uA;
-	b2Vec2  m_uB;
-	b2Vec2  m_rA;
-	b2Vec2  m_rB;
-	b2Vec2  m_localCenterA;
-	b2Vec2  m_localCenterB;
+	int32 m_indexA;
+	int32 m_indexB;
+	b2Vec2 m_uA;
+	b2Vec2 m_uB;
+	b2Vec2 m_rA;
+	b2Vec2 m_rB;
+	b2Vec2 m_localCenterA;
+	b2Vec2 m_localCenterB;
 	float32 m_invMassA;
 	float32 m_invMassB;
 	float32 m_invIA;

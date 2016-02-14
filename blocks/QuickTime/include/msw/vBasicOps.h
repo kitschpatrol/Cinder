@@ -20,6 +20,8 @@
 #include <ConditionalMacros.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -33,11 +35,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 #ifdef __VEC__
@@ -157,9 +159,10 @@ Following is a short description of functions in this section:
  */
 EXTERN_API_C( vector unsigned char )
 vU8Divide(
-    vector unsigned char  vN,
-    vector unsigned char  vD,
-    vector unsigned char *vRemainder );
+  vector unsigned char    vN,
+  vector unsigned char    vD,
+  vector unsigned char *  vRemainder);
+
 
 /*
  *  vS8Divide()
@@ -171,9 +174,10 @@ vU8Divide(
  */
 EXTERN_API_C( vector signed char )
 vS8Divide(
-    vector signed char  vN,
-    vector signed char  vD,
-    vector signed char *vRemainder );
+  vector signed char    vN,
+  vector signed char    vD,
+  vector signed char *  vRemainder);
+
 
 /*
  *  vU16Divide()
@@ -185,9 +189,10 @@ vS8Divide(
  */
 EXTERN_API_C( vector unsigned short )
 vU16Divide(
-    vector unsigned short  vN,
-    vector unsigned short  vD,
-    vector unsigned short *vRemainder );
+  vector unsigned short    vN,
+  vector unsigned short    vD,
+  vector unsigned short *  vRemainder);
+
 
 /*
  *  vS16Divide()
@@ -199,9 +204,10 @@ vU16Divide(
  */
 EXTERN_API_C( vector signed short )
 vS16Divide(
-    vector signed short  vN,
-    vector signed short  vD,
-    vector signed short *vRemainder );
+  vector signed short    vN,
+  vector signed short    vD,
+  vector signed short *  vRemainder);
+
 
 /*
  *  vU32Divide()
@@ -213,9 +219,10 @@ vS16Divide(
  */
 EXTERN_API_C( vector unsigned int )
 vU32Divide(
-    vector unsigned int  vN,
-    vector unsigned int  vD,
-    vector unsigned int *vRemainder );
+  vector unsigned int    vN,
+  vector unsigned int    vD,
+  vector unsigned int *  vRemainder);
+
 
 /*
  *  vS32Divide()
@@ -227,9 +234,10 @@ vU32Divide(
  */
 EXTERN_API_C( vector signed int )
 vS32Divide(
-    vector signed int  vN,
-    vector signed int  vD,
-    vector signed int *vRemainder );
+  vector signed int    vN,
+  vector signed int    vD,
+  vector signed int *  vRemainder);
+
 
 /*
  *  vU64Divide()
@@ -241,9 +249,10 @@ vS32Divide(
  */
 EXTERN_API_C( vector unsigned int )
 vU64Divide(
-    vector unsigned int  vN,
-    vector unsigned int  vD,
-    vector unsigned int *vRemainder );
+  vector unsigned int    vN,
+  vector unsigned int    vD,
+  vector unsigned int *  vRemainder);
+
 
 /*
  *  vS64Divide()
@@ -255,9 +264,10 @@ vU64Divide(
  */
 EXTERN_API_C( vector signed int )
 vS64Divide(
-    vector signed int  vN,
-    vector signed int  vD,
-    vector signed int *vRemainder );
+  vector signed int    vN,
+  vector signed int    vD,
+  vector signed int *  vRemainder);
+
 
 /*
  *  vU128Divide()
@@ -269,9 +279,10 @@ vS64Divide(
  */
 EXTERN_API_C( vector unsigned int )
 vU128Divide(
-    vector unsigned int  vN,
-    vector unsigned int  vD,
-    vector unsigned int *vRemainder );
+  vector unsigned int    vN,
+  vector unsigned int    vD,
+  vector unsigned int *  vRemainder);
+
 
 /*
  *  vS128Divide()
@@ -283,9 +294,11 @@ vU128Divide(
  */
 EXTERN_API_C( vector signed int )
 vS128Divide(
-    vector signed int  vN,
-    vector signed int  vD,
-    vector signed int *vRemainder );
+  vector signed int    vN,
+  vector signed int    vD,
+  vector signed int *  vRemainder);
+
+
 
 /*
  *  vU8HalfMultiply()
@@ -297,8 +310,9 @@ vS128Divide(
  */
 EXTERN_API_C( vector unsigned char )
 vU8HalfMultiply(
-    vector unsigned char vA,
-    vector unsigned char vB );
+  vector unsigned char   vA,
+  vector unsigned char   vB);
+
 
 /*
  *  vS8HalfMultiply()
@@ -310,8 +324,9 @@ vU8HalfMultiply(
  */
 EXTERN_API_C( vector signed char )
 vS8HalfMultiply(
-    vector signed char vA,
-    vector signed char vB );
+  vector signed char   vA,
+  vector signed char   vB);
+
 
 /*
  *  vU16HalfMultiply()
@@ -323,8 +338,9 @@ vS8HalfMultiply(
  */
 EXTERN_API_C( vector unsigned short )
 vU16HalfMultiply(
-    vector unsigned short vA,
-    vector unsigned short vB );
+  vector unsigned short   vA,
+  vector unsigned short   vB);
+
 
 /*
  *  vS16HalfMultiply()
@@ -336,8 +352,9 @@ vU16HalfMultiply(
  */
 EXTERN_API_C( vector signed short )
 vS16HalfMultiply(
-    vector signed short vA,
-    vector signed short vB );
+  vector signed short   vA,
+  vector signed short   vB);
+
 
 /*
  *  vU32HalfMultiply()
@@ -349,8 +366,9 @@ vS16HalfMultiply(
  */
 EXTERN_API_C( vector unsigned int )
 vU32HalfMultiply(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vS32HalfMultiply()
@@ -362,8 +380,9 @@ vU32HalfMultiply(
  */
 EXTERN_API_C( vector signed int )
 vS32HalfMultiply(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vU32FullMulEven()
@@ -375,8 +394,9 @@ vS32HalfMultiply(
  */
 EXTERN_API_C( vector unsigned int )
 vU32FullMulEven(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU32FullMulOdd()
@@ -388,8 +408,9 @@ vU32FullMulEven(
  */
 EXTERN_API_C( vector unsigned int )
 vU32FullMulOdd(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vS32FullMulEven()
@@ -401,8 +422,9 @@ vU32FullMulOdd(
  */
 EXTERN_API_C( vector signed int )
 vS32FullMulEven(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS32FullMulOdd()
@@ -414,8 +436,9 @@ vS32FullMulEven(
  */
 EXTERN_API_C( vector signed int )
 vS32FullMulOdd(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vU64FullMulEven()
@@ -427,8 +450,9 @@ vS32FullMulOdd(
  */
 EXTERN_API_C( vector unsigned int )
 vU64FullMulEven(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU64FullMulOdd()
@@ -440,8 +464,9 @@ vU64FullMulEven(
  */
 EXTERN_API_C( vector unsigned int )
 vU64FullMulOdd(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU64HalfMultiply()
@@ -453,8 +478,9 @@ vU64FullMulOdd(
  */
 EXTERN_API_C( vector unsigned int )
 vU64HalfMultiply(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vS64HalfMultiply()
@@ -466,8 +492,9 @@ vU64HalfMultiply(
  */
 EXTERN_API_C( vector signed int )
 vS64HalfMultiply(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS64FullMulEven()
@@ -479,8 +506,9 @@ vS64HalfMultiply(
  */
 EXTERN_API_C( vector signed int )
 vS64FullMulEven(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS64FullMulOdd()
@@ -492,8 +520,9 @@ vS64FullMulEven(
  */
 EXTERN_API_C( vector signed int )
 vS64FullMulOdd(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vU128HalfMultiply()
@@ -505,8 +534,9 @@ vS64FullMulOdd(
  */
 EXTERN_API_C( vector unsigned int )
 vU128HalfMultiply(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vS128HalfMultiply()
@@ -518,8 +548,10 @@ vU128HalfMultiply(
  */
 EXTERN_API_C( vector signed int )
 vS128HalfMultiply(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
+
 
 /*
  *  vU64Sub()
@@ -531,8 +563,9 @@ vS128HalfMultiply(
  */
 EXTERN_API_C( vector unsigned int )
 vU64Sub(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU64SubS()
@@ -544,8 +577,9 @@ vU64Sub(
  */
 EXTERN_API_C( vector unsigned int )
 vU64SubS(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU128Sub()
@@ -557,8 +591,9 @@ vU64SubS(
  */
 EXTERN_API_C( vector unsigned int )
 vU128Sub(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU128SubS()
@@ -570,8 +605,9 @@ vU128Sub(
  */
 EXTERN_API_C( vector unsigned int )
 vU128SubS(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vS64Sub()
@@ -583,8 +619,9 @@ vU128SubS(
  */
 EXTERN_API_C( vector signed int )
 vS64Sub(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS128Sub()
@@ -596,8 +633,9 @@ vS64Sub(
  */
 EXTERN_API_C( vector signed int )
 vS128Sub(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS64SubS()
@@ -609,8 +647,9 @@ vS128Sub(
  */
 EXTERN_API_C( vector signed int )
 vS64SubS(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS128SubS()
@@ -622,8 +661,10 @@ vS64SubS(
  */
 EXTERN_API_C( vector signed int )
 vS128SubS(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
+
 
 /*
  *  vU64Add()
@@ -635,8 +676,9 @@ vS128SubS(
  */
 EXTERN_API_C( vector unsigned int )
 vU64Add(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU64AddS()
@@ -648,8 +690,9 @@ vU64Add(
  */
 EXTERN_API_C( vector unsigned int )
 vU64AddS(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU128Add()
@@ -661,8 +704,9 @@ vU64AddS(
  */
 EXTERN_API_C( vector unsigned int )
 vU128Add(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vU128AddS()
@@ -674,8 +718,9 @@ vU128Add(
  */
 EXTERN_API_C( vector unsigned int )
 vU128AddS(
-    vector unsigned int vA,
-    vector unsigned int vB );
+  vector unsigned int   vA,
+  vector unsigned int   vB);
+
 
 /*
  *  vS64Add()
@@ -687,8 +732,9 @@ vU128AddS(
  */
 EXTERN_API_C( vector signed int )
 vS64Add(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS64AddS()
@@ -700,8 +746,9 @@ vS64Add(
  */
 EXTERN_API_C( vector signed int )
 vS64AddS(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS128Add()
@@ -713,8 +760,9 @@ vS64AddS(
  */
 EXTERN_API_C( vector signed int )
 vS128Add(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
 
 /*
  *  vS128AddS()
@@ -726,8 +774,10 @@ vS128Add(
  */
 EXTERN_API_C( vector signed int )
 vS128AddS(
-    vector signed int vA,
-    vector signed int vB );
+  vector signed int   vA,
+  vector signed int   vB);
+
+
 
 /*
  *  vLL64Shift()
@@ -739,8 +789,9 @@ vS128AddS(
  */
 EXTERN_API_C( vector unsigned int )
 vLL64Shift(
-    vector unsigned int  vA,
-    vector unsigned char vShiftFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vShiftFactor);
+
 
 /*
  *  vA64Shift()
@@ -752,8 +803,9 @@ vLL64Shift(
  */
 EXTERN_API_C( vector unsigned int )
 vA64Shift(
-    vector unsigned int  vA,
-    vector unsigned char vShiftFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vShiftFactor);
+
 
 /*
  *  vLR64Shift()
@@ -765,8 +817,9 @@ vA64Shift(
  */
 EXTERN_API_C( vector unsigned int )
 vLR64Shift(
-    vector unsigned int  vA,
-    vector unsigned char vShiftFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vShiftFactor);
+
 
 /*
  *  vLL64Shift2()
@@ -778,8 +831,9 @@ vLR64Shift(
  */
 EXTERN_API_C( vector unsigned int )
 vLL64Shift2(
-    vector unsigned int  vA,
-    vector unsigned char vShiftFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vShiftFactor);
+
 
 /*
  *  vA64Shift2()
@@ -791,8 +845,9 @@ vLL64Shift2(
  */
 EXTERN_API_C( vector unsigned int )
 vA64Shift2(
-    vector unsigned int  vA,
-    vector unsigned char vShiftFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vShiftFactor);
+
 
 /*
  *  vLR64Shift2()
@@ -804,8 +859,9 @@ vA64Shift2(
  */
 EXTERN_API_C( vector unsigned int )
 vLR64Shift2(
-    vector unsigned int  vA,
-    vector unsigned char vShiftFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vShiftFactor);
+
 
 /*
  *  vA128Shift()
@@ -817,8 +873,10 @@ vLR64Shift2(
  */
 EXTERN_API_C( vector unsigned int )
 vA128Shift(
-    vector unsigned int  vA,
-    vector unsigned char vShiftFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vShiftFactor);
+
+
 
 /*
  *  vL64Rotate()
@@ -830,8 +888,9 @@ vA128Shift(
  */
 EXTERN_API_C( vector unsigned int )
 vL64Rotate(
-    vector unsigned int  vA,
-    vector unsigned char vRotateFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vRotateFactor);
+
 
 /*
  *  vR64Rotate()
@@ -843,8 +902,9 @@ vL64Rotate(
  */
 EXTERN_API_C( vector unsigned int )
 vR64Rotate(
-    vector unsigned int  vA,
-    vector unsigned char vRotateFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vRotateFactor);
+
 
 /*
  *  vL64Rotate2()
@@ -856,8 +916,9 @@ vR64Rotate(
  */
 EXTERN_API_C( vector unsigned int )
 vL64Rotate2(
-    vector unsigned int  vA,
-    vector unsigned char vRotateFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vRotateFactor);
+
 
 /*
  *  vR64Rotate2()
@@ -869,8 +930,9 @@ vL64Rotate2(
  */
 EXTERN_API_C( vector unsigned int )
 vR64Rotate2(
-    vector unsigned int  vA,
-    vector unsigned char vRotateFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vRotateFactor);
+
 
 /*
  *  vL128Rotate()
@@ -882,8 +944,9 @@ vR64Rotate2(
  */
 EXTERN_API_C( vector unsigned int )
 vL128Rotate(
-    vector unsigned int  vA,
-    vector unsigned char vRotateFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vRotateFactor);
+
 
 /*
  *  vR128Rotate()
@@ -895,17 +958,19 @@ vL128Rotate(
  */
 EXTERN_API_C( vector unsigned int )
 vR128Rotate(
-    vector unsigned int  vA,
-    vector unsigned char vRotateFactor );
+  vector unsigned int    vA,
+  vector unsigned char   vRotateFactor);
 
-#endif /* defined(__VEC__) */
+
+#endif  /* defined(__VEC__) */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -919,3 +984,4 @@ vR128Rotate(
 #endif
 
 #endif /* __VBASICOPS__ */
+

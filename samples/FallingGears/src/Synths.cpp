@@ -1,17 +1,17 @@
 #include "Synths.h"
 #include "AudioController.h"
 
-#include "cinder/app/App.h"
 #include "cinder/audio/Context.h"
 #include "cinder/audio/Utilities.h"
+#include "cinder/app/App.h"
 
 using namespace ci;
 using namespace std;
 
 Synth::Synth( AudioController *parent )
-    : mParentController( parent ), mInUse( false ), mTimeLastUsed( 0 )
+	: mParentController( parent ), mInUse( false ), mTimeLastUsed( 0 )
 {
-	mGain = audio::master()->makeNode( new audio::GainNode( audio::Node::Format().autoEnable( false ) ) );
+	mGain = audio::master()->makeNode( new audio::GainNode( audio::Node::Format().autoEnable( false )) );
 }
 
 void Synth::update()
@@ -33,7 +33,7 @@ void Synth::setInUse()
 }
 
 AltoSynth::AltoSynth( AudioController *parent )
-    : Synth( parent )
+	: Synth( parent )
 {
 	mGen = audio::master()->makeNode( new audio::GenOscNode );
 	mGen->setWaveTable( mParentController->getSawToothTable() );
@@ -62,7 +62,7 @@ void AltoSynth::trigger( float freqMidi, float decaySeconds )
 }
 
 BassSynth::BassSynth( AudioController *parent )
-    : Synth( parent )
+	: Synth( parent )
 {
 	auto ctx = audio::master();
 

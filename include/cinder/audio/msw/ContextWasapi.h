@@ -28,9 +28,7 @@
 
 #include "cinder/audio/Context.h"
 
-namespace cinder {
-namespace audio {
-namespace msw {
+namespace cinder { namespace audio { namespace msw {
 
 struct WasapiRenderClientImpl;
 struct WasapiCaptureClientImpl;
@@ -39,46 +37,46 @@ class OutputDeviceNodeWasapi : public OutputDeviceNode {
   public:
 	OutputDeviceNodeWasapi( const DeviceRef &device, const Format &format );
 
-  protected:
-	void initialize() override;
-	void uninitialize() override;
-	void enableProcessing() override;
-	void disableProcessing() override;
-	bool supportsProcessInPlace() const override { return false; }
+protected:
+	void initialize()				override;
+	void uninitialize()				override;
+	void enableProcessing()			override;
+	void disableProcessing()		override;
+	bool supportsProcessInPlace() const	override	{ return false; }
+
   private:
 	void renderInputs();
 
-	std::unique_ptr<WasapiRenderClientImpl> mRenderImpl;
-	BufferInterleaved                       mInterleavedBuffer;
+	std::unique_ptr<WasapiRenderClientImpl>		mRenderImpl;
+	BufferInterleaved							mInterleavedBuffer;
 
 	friend WasapiRenderClientImpl;
 };
 
 class InputDeviceNodeWasapi : public InputDeviceNode {
-  public:
+public:
 	InputDeviceNodeWasapi( const DeviceRef &device, const Format &format = Format() );
 	virtual ~InputDeviceNodeWasapi();
 
-  protected:
-	void initialize() override;
-	void uninitialize() override;
-	void enableProcessing() override;
-	void disableProcessing() override;
-	void process( Buffer *buffer ) override;
+protected:
+	void initialize()				override;
+	void uninitialize()				override;
+	void enableProcessing()			override;
+	void disableProcessing()		override;
+	void process( Buffer *buffer )	override;
 
-  private:
-	std::unique_ptr<WasapiCaptureClientImpl> mCaptureImpl;
+private:
+	std::unique_ptr<WasapiCaptureClientImpl>	mCaptureImpl;
 
 	friend WasapiCaptureClientImpl;
 };
 
 class ContextWasapi : public Context {
   public:
-	OutputDeviceNodeRef createOutputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format() ) override;
-	InputDeviceNodeRef createInputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format() ) override;
+	OutputDeviceNodeRef	createOutputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format() ) override;
+	InputDeviceNodeRef	createInputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format()  ) override;
 };
-}
-}
-} // namespace cinder::audio::msw
+
+} } } // namespace cinder::audio::msw
 
 #endif // defined( CINDER_WINRT ) || ( _WIN32_WINNT >= 0x0600 )

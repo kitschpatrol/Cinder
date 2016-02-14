@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/Font.h"
 #include "cinder/TriMesh.h"
 #include "cinder/Triangulate.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 
@@ -12,25 +12,26 @@ using namespace std;
 
 class TriangulationApp : public App {
   public:
-	void setup();
-	void draw();
+	void		setup();
+	void		draw();
 
-	void keyDown( KeyEvent event ) { setRandomGlyph(); }
-	void                   recalcMesh();
+	void		keyDown( KeyEvent event ) { setRandomGlyph(); }
 
-	void setRandomFont();
-	void setRandomGlyph();
-
-	Font                mFont;
-	Shape2d             mShape;
-	vector<string>      mFontNames;
-	gl::VboMeshRef      mVboMesh;
-	params::InterfaceGl mParams;
-	bool                mDrawWireframe;
-	int                 mFontSize;
-	float               mZoom;
-	float               mPrecision, mOldPrecision;
-	int32_t             mNumPoints;
+	void		recalcMesh();
+	
+	void		setRandomFont();
+	void		setRandomGlyph();
+	
+	Font				mFont;
+	Shape2d				mShape;
+	vector<string>		mFontNames;
+	gl::VboMeshRef		mVboMesh;
+	params::InterfaceGl	mParams;
+	bool				mDrawWireframe;
+	int					mFontSize;
+	float				mZoom;
+	float				mPrecision, mOldPrecision;
+	int32_t				mNumPoints;
 };
 
 void TriangulationApp::setup()
@@ -51,7 +52,7 @@ void TriangulationApp::setup()
 	mFontNames = Font::getNames();
 	mFont = Font( "Times", mFontSize );
 	mShape = mFont.getGlyphShape( mFont.getGlyphChar( 'A' ) );
-
+	
 	// load VBO
 	recalcMesh();
 }
@@ -60,7 +61,7 @@ void TriangulationApp::recalcMesh()
 {
 	TriMesh mesh = Triangulator( mShape, mPrecision ).calcMesh( Triangulator::WINDING_ODD );
 	mNumPoints = mesh.getNumIndices();
-	mVboMesh = gl::VboMesh::create( mesh );
+	mVboMesh = gl::VboMesh::create( mesh ); 
 	mOldPrecision = mPrecision;
 }
 
@@ -78,7 +79,7 @@ void TriangulationApp::setRandomGlyph()
 		mShape = mFont.getGlyphShape( glyphIndex );
 		recalcMesh();
 	}
-	catch( FontGlyphFailureExc &exc ) {
+	catch( FontGlyphFailureExc &exc  ) {
 		console() << "Looks like glyph " << glyphIndex << " doesn't exist in this font." << std::endl;
 	}
 }
@@ -90,19 +91,20 @@ void TriangulationApp::draw()
 
 	gl::clear();
 	gl::pushModelView();
-	gl::translate( getWindowCenter() * vec2( 0.8f, 1.2f ) );
-	gl::scale( vec3( mZoom, mZoom, mZoom ) );
-	gl::color( Color( 0.8f, 0.4f, 0.0f ) );
-	gl::draw( mVboMesh );
-	if( mDrawWireframe ) {
-		gl::enableWireframe();
-		gl::color( Color::white() );
+		gl::translate( getWindowCenter() * vec2( 0.8f, 1.2f ) );
+		gl::scale( vec3( mZoom, mZoom, mZoom ) );
+		gl::color( Color( 0.8f, 0.4f, 0.0f ) );
 		gl::draw( mVboMesh );
-		gl::disableWireframe();
-	}
+		if( mDrawWireframe ) {
+			gl::enableWireframe();
+			gl::color( Color::white() );
+			gl::draw( mVboMesh );
+			gl::disableWireframe();
+		}
 	gl::popModelView();
-
+	
 	mParams.draw();
 }
+
 
 CINDER_APP( TriangulationApp, RendererGl )

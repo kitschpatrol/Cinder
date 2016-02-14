@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/Arcball.h"
-#include "cinder/Sphere.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Arcball.h"
+#include "cinder/Sphere.h"
 
 #include "Resources.h"
 
@@ -10,19 +10,19 @@ using namespace ci;
 using namespace ci::app;
 
 class ArcballDemoApp : public App {
-  public:
+  public:	
 	void setup() override;
 	void resize() override;
 	void mouseDown( MouseEvent event ) override;
 	void mouseDrag( MouseEvent event ) override;
 	void draw() override;
-
-	Arcball     mArcball;
-	CameraPersp mCamera;
-
-	Sphere         mEarthSphere;
-	gl::BatchRef   mEarth;
-	gl::TextureRef mEarthTex;
+	
+	Arcball			mArcball;
+	CameraPersp		mCamera;
+	
+	Sphere			mEarthSphere;
+	gl::BatchRef	mEarth;
+	gl::TextureRef	mEarthTex;
 };
 
 void ArcballDemoApp::setup()
@@ -65,6 +65,7 @@ void ArcballDemoApp::draw()
 	mEarth->draw();
 }
 
-CINDER_APP( ArcballDemoApp, RendererGl, []( App::Settings *settings ) {
+CINDER_APP( ArcballDemoApp, RendererGl, [] ( App::Settings *settings ) {
 	settings->setMultiTouchEnabled( false );
-} )
+}
+ )

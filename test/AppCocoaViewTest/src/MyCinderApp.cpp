@@ -2,10 +2,10 @@
 #include "cinder/Log.h"
 
 #if defined( USE_RENDERER2D )
-#include "cinder/cocoa/CinderCocoa.h"
-#include <QuartzCore/QuartzCore.h>
+	#include "cinder/cocoa/CinderCocoa.h"
+	#include <QuartzCore/QuartzCore.h>
 #else
-#include "cinder/gl/gl.h"
+	#include "cinder/gl/gl.h"
 #endif
 
 using namespace ci;
@@ -38,7 +38,7 @@ void MyCinderApp::setup()
 	app::WindowRef win = getWindow();
 	console() << "NSView: " << win->getNative() << std::endl;
 	win->setTitle( "Behold." );
-	console() << "Display: " << *( win->getDisplay() ) << std::endl;
+	console() << "Display: " << *(win->getDisplay()) << std::endl;
 }
 
 void MyCinderApp::resize()
@@ -62,11 +62,13 @@ void MyCinderApp::draw()
 	::CGContextFillRect( ctx, CGRectMake( 0, 0, getWindowWidth(), getWindowHeight() ) );
 
 	::CGContextSetRGBFillColor( ctx, 1, 0.5, 0.25, 1 );
-	::CGContextFillEllipseInRect( ctx, CGRectMake( getWindowCenter().x - mAnimatedRadius, getWindowCenter().y - mAnimatedRadius, mAnimatedRadius * 2, mAnimatedRadius * 2 ) );
+	::CGContextFillEllipseInRect( ctx, CGRectMake( getWindowCenter().x - mAnimatedRadius, getWindowCenter().y - mAnimatedRadius,
+			mAnimatedRadius * 2, mAnimatedRadius * 2 ) );
 	::CGContextSetRGBFillColor( ctx, mColor.r, mColor.g, mColor.b, 0.5f );
-	::CGContextFillEllipseInRect( ctx, CGRectMake( getWindowCenter().x - mRadius, getWindowCenter().y - mRadius, mRadius * 2, mRadius * 2 ) );
+	::CGContextFillEllipseInRect( ctx, CGRectMake( getWindowCenter().x - mRadius, getWindowCenter().y - mRadius,
+			mRadius * 2, mRadius * 2 ) );
 #else
-	gl::clear();
+	gl::clear();	
 	gl::color( Color( 1, 0.5f, 0.25f ) );
 	gl::drawSolidCircle( getWindowCenter(), mAnimatedRadius );
 	gl::color( mColor );
@@ -92,17 +94,17 @@ void MyCinderApp::mouseUp( MouseEvent event )
 
 void MyCinderApp::mouseDrag( MouseEvent event )
 {
-	console() << "Drag:" << event.getPos() << std::endl;
+	console() << "Drag:" << event.getPos() << std::endl;	
 }
 
 void MyCinderApp::mouseMove( MouseEvent event )
 {
-	console() << "Move:" << event.getPos() << std::endl;
+	console() << "Move:" << event.getPos() << std::endl;	
 }
 
 void MyCinderApp::touchesMoved( TouchEvent event )
 {
-	console() << "Touches Moved:" << event << std::endl;
+	console() << "Touches Moved:" << event << std::endl;	
 }
 
 void MyCinderApp::keyDown( KeyEvent event )
@@ -110,10 +112,10 @@ void MyCinderApp::keyDown( KeyEvent event )
 	console() << "Key down: " << event.getChar();
 	console() << "  shift: " << event.isShiftDown() << std::endl;
 	if( event.getChar() == 'f' )
-		setFullScreen( !isFullScreen() );
+		setFullScreen( ! isFullScreen() );
 }
 
 void MyCinderApp::fileDrop( FileDropEvent event )
 {
-	console() << "File Drop:" << event.getPos() << std::endl;
+	console() << "File Drop:" << event.getPos() << std::endl;	
 }

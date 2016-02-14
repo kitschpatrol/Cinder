@@ -60,6 +60,9 @@
 #include <CarbonEvents.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -73,65 +76,71 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
-typedef struct OpaqueTXNObject *        TXNObject;
-typedef struct OpaqueTXNFontMenuObject *TXNFontMenuObject;
+
+
+typedef struct OpaqueTXNObject*         TXNObject;
+typedef struct OpaqueTXNFontMenuObject*  TXNFontMenuObject;
 typedef UInt32                          TXNFrameID;
 typedef UInt32                          TXNVersionValue;
 enum {
-	kTXNWillDefaultToATSUIBit = 0,
-	kTXNWillDefaultToCarbonEventBit = 1
+  kTXNWillDefaultToATSUIBit     = 0,
+  kTXNWillDefaultToCarbonEventBit = 1
 };
+
 
 typedef OptionBits TXNFeatureBits;
 enum {
-	kTXNWillDefaultToATSUIMask = 1L << kTXNWillDefaultToATSUIBit,
-	kTXNWillDefaultToCarbonEventMask = 1L << kTXNWillDefaultToCarbonEventBit
+  kTXNWillDefaultToATSUIMask    = 1L << kTXNWillDefaultToATSUIBit,
+  kTXNWillDefaultToCarbonEventMask = 1L << kTXNWillDefaultToCarbonEventBit
 };
 
 enum {
-	kTXNWantMoviesBit = 0,
-	kTXNWantSoundBit = 1,
-	kTXNWantGraphicsBit = 2,
-	kTXNAlwaysUseQuickDrawTextBit = 3,
-	kTXNUseTemporaryMemoryBit = 4
+  kTXNWantMoviesBit             = 0,
+  kTXNWantSoundBit              = 1,
+  kTXNWantGraphicsBit           = 2,
+  kTXNAlwaysUseQuickDrawTextBit = 3,
+  kTXNUseTemporaryMemoryBit     = 4
 };
+
 
 typedef OptionBits TXNInitOptions;
 enum {
-	kTXNWantMoviesMask = 1L << kTXNWantMoviesBit,
-	kTXNWantSoundMask = 1L << kTXNWantSoundBit,
-	kTXNWantGraphicsMask = 1L << kTXNWantGraphicsBit,
-	kTXNAlwaysUseQuickDrawTextMask = 1L << kTXNAlwaysUseQuickDrawTextBit,
-	kTXNUseTemporaryMemoryMask = 1L << kTXNUseTemporaryMemoryBit
+  kTXNWantMoviesMask            = 1L << kTXNWantMoviesBit,
+  kTXNWantSoundMask             = 1L << kTXNWantSoundBit,
+  kTXNWantGraphicsMask          = 1L << kTXNWantGraphicsBit,
+  kTXNAlwaysUseQuickDrawTextMask = 1L << kTXNAlwaysUseQuickDrawTextBit,
+  kTXNUseTemporaryMemoryMask    = 1L << kTXNUseTemporaryMemoryBit
 };
 
 enum {
-	kTXNDrawGrowIconBit = 0,
-	kTXNShowWindowBit = 1,
-	kTXNWantHScrollBarBit = 2,
-	kTXNWantVScrollBarBit = 3,
-	kTXNNoTSMEverBit = 4,
-	kTXNReadOnlyBit = 5,
-	kTXNNoKeyboardSyncBit = 6,
-	kTXNNoSelectionBit = 7,
-	kTXNSaveStylesAsSTYLResourceBit = 8,
-	kOutputTextInUnicodeEncodingBit = 9,
-	kTXNDoNotInstallDragProcsBit = 10,
-	kTXNAlwaysWrapAtViewEdgeBit = 11,
-	kTXNDontDrawCaretWhenInactiveBit = 12,
-	kTXNDontDrawSelectionWhenInactiveBit = 13,
-	kTXNSingleLineOnlyBit = 14,
-	kTXNDisableDragAndDropBit = 15,
-	kTXNUseQDforImagingBit = 16,
-	kTXNMonostyledTextBit = 17
+  kTXNDrawGrowIconBit           = 0,
+  kTXNShowWindowBit             = 1,
+  kTXNWantHScrollBarBit         = 2,
+  kTXNWantVScrollBarBit         = 3,
+  kTXNNoTSMEverBit              = 4,
+  kTXNReadOnlyBit               = 5,
+  kTXNNoKeyboardSyncBit         = 6,
+  kTXNNoSelectionBit            = 7,
+  kTXNSaveStylesAsSTYLResourceBit = 8,
+  kOutputTextInUnicodeEncodingBit = 9,
+  kTXNDoNotInstallDragProcsBit  = 10,
+  kTXNAlwaysWrapAtViewEdgeBit   = 11,
+  kTXNDontDrawCaretWhenInactiveBit = 12,
+  kTXNDontDrawSelectionWhenInactiveBit = 13,
+  kTXNSingleLineOnlyBit         = 14,
+  kTXNDisableDragAndDropBit     = 15,
+  kTXNUseQDforImagingBit        = 16,
+  kTXNMonostyledTextBit         = 17
 };
+
+
 
 /*
  *  TXNFrameOptions
@@ -147,52 +156,52 @@ enum {
 typedef OptionBits TXNFrameOptions;
 enum {
 
-	/*
+  /*
    * Indicates that the frame will have a size box.
    */
-	kTXNDrawGrowIconMask = 1L << kTXNDrawGrowIconBit,
+  kTXNDrawGrowIconMask          = 1L << kTXNDrawGrowIconBit,
 
-	/*
+  /*
    * Indicates that the window associated with the text object will be
    * displayed when the object is created.  The application no longer
    * needs to call the ShowWindow function from the Window Manager;
    * MLTE will do this for you.
    */
-	kTXNShowWindowMask = 1L << kTXNShowWindowBit,
+  kTXNShowWindowMask            = 1L << kTXNShowWindowBit,
 
-	/*
+  /*
    * Indicates that the frame will have a horizontal scrollbar.
    */
-	kTXNWantHScrollBarMask = 1L << kTXNWantHScrollBarBit,
+  kTXNWantHScrollBarMask        = 1L << kTXNWantHScrollBarBit,
 
-	/*
+  /*
    * Indicates that the frame will have a vertical scrollbar.
    */
-	kTXNWantVScrollBarMask = 1L << kTXNWantVScrollBarBit,
+  kTXNWantVScrollBarMask        = 1L << kTXNWantVScrollBarBit,
 
-	/*
+  /*
    * Indicates that the Text Services Manager will not be used.  You
    * cannot use this mask when your application accepts Unicode input.
    */
-	kTXNNoTSMEverMask = 1L << kTXNNoTSMEverBit,
+  kTXNNoTSMEverMask             = 1L << kTXNNoTSMEverBit,
 
-	/*
+  /*
    * Indicates that the text object will be read-only.
    */
-	kTXNReadOnlyMask = 1L << kTXNReadOnlyBit,
+  kTXNReadOnlyMask              = 1L << kTXNReadOnlyBit,
 
-	/*
+  /*
    * Indicates that keyboard synchronization will not occur.
    */
-	kTXNNoKeyboardSyncMask = 1L << kTXNNoKeyboardSyncBit,
+  kTXNNoKeyboardSyncMask        = 1L << kTXNNoKeyboardSyncBit,
 
-	/*
+  /*
    * Indicates that the user shouldn't be able to set the insertion
    * point or make a selection.
    */
-	kTXNNoSelectionMask = 1L << kTXNNoSelectionBit,
+  kTXNNoSelectionMask           = 1L << kTXNNoSelectionBit,
 
-	/*
+  /*
    * Indicates that the text style will be saved as a
    * kTXNMultipleStylesPerTextDocumentResType resource.  You can set
    * this to assure compatibility with SimpleText.  If you use
@@ -206,76 +215,77 @@ enum {
    * kTXNSingleStylePerTextDocumentResType resource, their output is
    * similar to those output by CodeWarrior, BBEdit, and MPW.
    */
-	kTXNSaveStylesAsSTYLResourceMask = 1L << kTXNSaveStylesAsSTYLResourceBit,
+  kTXNSaveStylesAsSTYLResourceMask = 1L << kTXNSaveStylesAsSTYLResourceBit,
 
-	/*
+  /*
    * Indicates that plain text will be saved as Unicode.
    */
-	kOutputTextInUnicodeEncodingMask = 1L << kOutputTextInUnicodeEncodingBit,
+  kOutputTextInUnicodeEncodingMask = 1L << kOutputTextInUnicodeEncodingBit,
 
-	/*
+  /*
    * Indicates that MLTE will not install its own drag handler for the
    * text object.  This can be used if the client wants to install
    * their own handler.
    */
-	kTXNDoNotInstallDragProcsMask = 1L << kTXNDoNotInstallDragProcsBit,
+  kTXNDoNotInstallDragProcsMask = 1L << kTXNDoNotInstallDragProcsBit,
 
-	/*
+  /*
    * Indicates that lines will wrap at the edge of the view rectangle.
    */
-	kTXNAlwaysWrapAtViewEdgeMask = 1L << kTXNAlwaysWrapAtViewEdgeBit,
+  kTXNAlwaysWrapAtViewEdgeMask  = 1L << kTXNAlwaysWrapAtViewEdgeBit,
 
-	/*
+  /*
    * Indicates that the caret shouldn't be drawn when the text object
    * doesn't have focus.
    */
-	kTXNDontDrawCaretWhenInactiveMask = 1L << kTXNDontDrawCaretWhenInactiveBit,
+  kTXNDontDrawCaretWhenInactiveMask = 1L << kTXNDontDrawCaretWhenInactiveBit,
 
-	/*
+  /*
    * Indicates that the selection (if one) shouldn't be drawn when the
    * text object doesn't have focus.
    */
-	kTXNDontDrawSelectionWhenInactiveMask = 1L << kTXNDontDrawSelectionWhenInactiveBit,
+  kTXNDontDrawSelectionWhenInactiveMask = 1L << kTXNDontDrawSelectionWhenInactiveBit,
 
-	/*
+  /*
    * Indicates that the text object will not scroll vertically,
    * horizontal scrolling will stop when the end of the text is visible
    * (plus any right margin), and there will be no limit to the width
    * of the text.
    */
-	kTXNSingleLineOnlyMask = 1L << kTXNSingleLineOnlyBit,
+  kTXNSingleLineOnlyMask        = 1L << kTXNSingleLineOnlyBit,
 
-	/*
+  /*
    * Indicates that drag and drop will not be allowed in the text
    * object.
    */
-	kTXNDisableDragAndDropMask = 1L << kTXNDisableDragAndDropBit,
+  kTXNDisableDragAndDropMask    = 1L << kTXNDisableDragAndDropBit,
 
-	/*
+  /*
    * Indicates that QuickDraw will be used for imaging instead of the
    * default CoreGraphics (Quartz). [X-only]
    */
-	kTXNUseQDforImagingMask = 1L << kTXNUseQDforImagingBit,
+  kTXNUseQDforImagingMask       = 1L << kTXNUseQDforImagingBit,
 
-	/*
+  /*
    * Indicates that the text object will keep in single style no matter
    * what kind of changes made to the object.
    */
-	kTXNMonostyledTextMask = 1L << kTXNMonostyledTextBit
+  kTXNMonostyledTextMask        = 1L << kTXNMonostyledTextBit
 };
 
 enum {
-	kTXNSetFlushnessBit = 0,
-	kTXNSetJustificationBit = 1,
-	kTXNUseFontFallBackBit = 2,
-	kTXNRotateTextBit = 3,
-	kTXNUseVerticalTextBit = 4,
-	kTXNDontUpdateBoxRectBit = 5,
-	kTXNDontDrawTextBit = 6,
-	kTXNUseCGContextRefBit = 7,
-	kTXNImageWithQDBit = 8,
-	kTXNDontWrapTextBit = 9
+  kTXNSetFlushnessBit           = 0,
+  kTXNSetJustificationBit       = 1,
+  kTXNUseFontFallBackBit        = 2,
+  kTXNRotateTextBit             = 3,
+  kTXNUseVerticalTextBit        = 4,
+  kTXNDontUpdateBoxRectBit      = 5,
+  kTXNDontDrawTextBit           = 6,
+  kTXNUseCGContextRefBit        = 7,
+  kTXNImageWithQDBit            = 8,
+  kTXNDontWrapTextBit           = 9
 };
+
 
 /*
  *  TXNTextBoxOptions
@@ -291,184 +301,187 @@ enum {
 typedef OptionBits TXNTextBoxOptions;
 enum {
 
-	/*
+  /*
    * Indicates that the text will be flush according to the line
    * direction.
    */
-	kTXNSetFlushnessMask = 1L << kTXNSetFlushnessBit,
+  kTXNSetFlushnessMask          = 1L << kTXNSetFlushnessBit,
 
-	/*
+  /*
    * Indicates that the text will be justified in the direction that
    * the text is displayed.  Horizontal text will be justified
    * horizontally, but not vertically.  Vertical text will be justified
    * vertically, but not horizontally.
    */
-	kTXNSetJustificationMask = 1L << kTXNSetJustificationBit,
+  kTXNSetJustificationMask      = 1L << kTXNSetJustificationBit,
 
-	/*
+  /*
    * Indicates that ATSUI transient font matching (that searches for a
    * font that has a matching character) will be used.
    */
-	kTXNUseFontFallBackMask = 1L << kTXNUseFontFallBackBit,
+  kTXNUseFontFallBackMask       = 1L << kTXNUseFontFallBackBit,
 
-	/*
+  /*
    * Indicates that the text will be rotated.  The amount of rotation
    * is given in the rotation field of the TXNTextBoxOptionsData
    * structure and is in units of degrees (negative values indicate
    * clockwise rotation).
    */
-	kTXNRotateTextMask = 1L << kTXNRotateTextBit,
+  kTXNRotateTextMask            = 1L << kTXNRotateTextBit,
 
-	/*
+  /*
    * Indicates that the text will be displayed vertically from top to
    * bottom.
    */
-	kTXNUseVerticalTextMask = 1L << kTXNUseVerticalTextBit,
+  kTXNUseVerticalTextMask       = 1L << kTXNUseVerticalTextBit,
 
-	/*
+  /*
    * Indicates that the specified rectangle will not be updated.  If
    * you use this mask when you call a TXNDrawxxxTextBox function, the
    * funtion does not update the right coordinate (bottom coordinate if
    * kTXNUseVerticalTextMask is used) of the specified rectangle to
    * accommodate the longest line for text.
    */
-	kTXNDontUpdateBoxRectMask = 1L << kTXNDontUpdateBoxRectBit,
+  kTXNDontUpdateBoxRectMask     = 1L << kTXNDontUpdateBoxRectBit,
 
-	/*
+  /*
    * Indicates that the size of the text will be returned but the text
    * box will not be drawn.
    */
-	kTXNDontDrawTextMask = 1L << kTXNDontDrawTextBit,
+  kTXNDontDrawTextMask          = 1L << kTXNDontDrawTextBit,
 
-	/*
+  /*
    * Indicates that the client has provided a CGContext to be used for
    * CG imaging inside the text box. [X-only]
    */
-	kTXNUseCGContextRefMask = 1L << kTXNUseCGContextRefBit,
+  kTXNUseCGContextRefMask       = 1L << kTXNUseCGContextRefBit,
 
-	/*
+  /*
    * Indicates that imaging will be done using QuickDraw instead of the
    * default CoreGraphics. [X-only]
    */
-	kTXNImageWithQDMask = 1L << kTXNImageWithQDBit,
+  kTXNImageWithQDMask           = 1L << kTXNImageWithQDBit,
 
-	/*
+  /*
    * Indicates that text should not be wrapped. [X-only]
    */
-	kTXNDontWrapTextMask = 1L << kTXNDontWrapTextBit
+  kTXNDontWrapTextMask          = 1L << kTXNDontWrapTextBit
 };
 
 struct TXNTextBoxOptionsData {
-	TXNTextBoxOptions optionTags;
-	Fract             flushness;
-	Fract             justification;
-	Fixed             rotation;
-	void *            options; /* for future use*/
+  TXNTextBoxOptions   optionTags;
+  Fract               flushness;
+  Fract               justification;
+  Fixed               rotation;
+  void *              options;                /* for future use*/
 };
-typedef struct TXNTextBoxOptionsData TXNTextBoxOptionsData;
+typedef struct TXNTextBoxOptionsData    TXNTextBoxOptionsData;
 enum {
-	kTXNFontContinuousBit = 0,
-	kTXNSizeContinuousBit = 1,
-	kTXNStyleContinuousBit = 2,
-	kTXNColorContinuousBit = 3
+  kTXNFontContinuousBit         = 0,
+  kTXNSizeContinuousBit         = 1,
+  kTXNStyleContinuousBit        = 2,
+  kTXNColorContinuousBit        = 3
 };
 
 typedef OptionBits TXNContinuousFlags;
 enum {
-	kTXNFontContinuousMask = 1L << kTXNFontContinuousBit,
-	kTXNSizeContinuousMask = 1L << kTXNSizeContinuousBit,
-	kTXNStyleContinuousMask = 1L << kTXNStyleContinuousBit,
-	kTXNColorContinuousMask = 1L << kTXNColorContinuousBit
+  kTXNFontContinuousMask        = 1L << kTXNFontContinuousBit,
+  kTXNSizeContinuousMask        = 1L << kTXNSizeContinuousBit,
+  kTXNStyleContinuousMask       = 1L << kTXNStyleContinuousBit,
+  kTXNColorContinuousMask       = 1L << kTXNColorContinuousBit
 };
 
 enum {
-	kTXNIgnoreCaseBit = 0,
-	kTXNEntireWordBit = 1,
-	kTXNUseEncodingWordRulesBit = 31
+  kTXNIgnoreCaseBit             = 0,
+  kTXNEntireWordBit             = 1,
+  kTXNUseEncodingWordRulesBit   = 31
 };
 
 typedef OptionBits TXNMatchOptions;
 enum {
-	kTXNIgnoreCaseMask = 1L << kTXNIgnoreCaseBit,
-	kTXNEntireWordMask = 1L << kTXNEntireWordBit,
-	kTXNUseEncodingWordRulesMask = (unsigned long)( 1L << kTXNUseEncodingWordRulesBit )
+  kTXNIgnoreCaseMask            = 1L << kTXNIgnoreCaseBit,
+  kTXNEntireWordMask            = 1L << kTXNEntireWordBit,
+  kTXNUseEncodingWordRulesMask  = (unsigned long)(1L << kTXNUseEncodingWordRulesBit)
 };
+
 
 typedef OSType TXNFileType;
 enum {
-	kTXNTextensionFile = FOUR_CHAR_CODE( 'txtn' ),
-	kTXNTextFile = FOUR_CHAR_CODE( 'TEXT' ),
-	kTXNPictureFile = FOUR_CHAR_CODE( 'PICT' ),
-	kTXNMovieFile = FOUR_CHAR_CODE( 'MooV' ),
-	kTXNSoundFile = FOUR_CHAR_CODE( 'sfil' ),
-	kTXNAIFFFile = FOUR_CHAR_CODE( 'AIFF' ),
-	kTXNUnicodeTextFile = FOUR_CHAR_CODE( 'utxt' )
+  kTXNTextensionFile            = FOUR_CHAR_CODE('txtn'),
+  kTXNTextFile                  = FOUR_CHAR_CODE('TEXT'),
+  kTXNPictureFile               = FOUR_CHAR_CODE('PICT'),
+  kTXNMovieFile                 = FOUR_CHAR_CODE('MooV'),
+  kTXNSoundFile                 = FOUR_CHAR_CODE('sfil'),
+  kTXNAIFFFile                  = FOUR_CHAR_CODE('AIFF'),
+  kTXNUnicodeTextFile           = FOUR_CHAR_CODE('utxt')
 };
 
 /* Only kTXNTextEditStyleFrameType is supported at this time */
 typedef UInt32 TXNFrameType;
 enum {
-	kTXNTextEditStyleFrameType = 1,
-	kTXNPageFrameType = 2, /* not supported*/
-	kTXNMultipleFrameType = 3 /* not supported*/
+  kTXNTextEditStyleFrameType    = 1,
+  kTXNPageFrameType             = 2,    /* not supported*/
+  kTXNMultipleFrameType         = 3     /* not supported*/
 };
+
 
 typedef OSType TXNDataType;
 enum {
-	kTXNTextData = FOUR_CHAR_CODE( 'TEXT' ),
-	kTXNPictureData = FOUR_CHAR_CODE( 'PICT' ),
-	kTXNMovieData = FOUR_CHAR_CODE( 'moov' ),
-	kTXNSoundData = FOUR_CHAR_CODE( 'snd ' ),
-	kTXNUnicodeTextData = FOUR_CHAR_CODE( 'utxt' )
+  kTXNTextData                  = FOUR_CHAR_CODE('TEXT'),
+  kTXNPictureData               = FOUR_CHAR_CODE('PICT'),
+  kTXNMovieData                 = FOUR_CHAR_CODE('moov'),
+  kTXNSoundData                 = FOUR_CHAR_CODE('snd '),
+  kTXNUnicodeTextData           = FOUR_CHAR_CODE('utxt')
 };
+
 
 typedef FourCharCode TXNControlTag;
 enum {
-	kTXNLineDirectionTag = FOUR_CHAR_CODE( 'lndr' ),
-	kTXNJustificationTag = FOUR_CHAR_CODE( 'just' ),
-	kTXNIOPrivilegesTag = FOUR_CHAR_CODE( 'iopv' ),
-	kTXNSelectionStateTag = FOUR_CHAR_CODE( 'slst' ),
-	kTXNInlineStateTag = FOUR_CHAR_CODE( 'inst' ),
-	kTXNWordWrapStateTag = FOUR_CHAR_CODE( 'wwrs' ),
-	kTXNKeyboardSyncStateTag = FOUR_CHAR_CODE( 'kbsy' ),
-	kTXNAutoIndentStateTag = FOUR_CHAR_CODE( 'auin' ),
-	kTXNTabSettingsTag = FOUR_CHAR_CODE( 'tabs' ),
-	kTXNRefConTag = FOUR_CHAR_CODE( 'rfcn' ),
-	kTXNMarginsTag = FOUR_CHAR_CODE( 'marg' ),
-	kTXNFlattenMoviesTag = FOUR_CHAR_CODE( 'flat' ),
-	kTXNDoFontSubstitution = FOUR_CHAR_CODE( 'fSub' ), /*note : this could degrade performance greatly in the case of large documents.*/
-	kTXNNoUserIOTag = FOUR_CHAR_CODE( 'nuio' ),
-	kTXNUseCarbonEvents = FOUR_CHAR_CODE( 'cbcb' ),
-	kTXNDrawCaretWhenInactiveTag = FOUR_CHAR_CODE( 'dcrt' ),
-	kTXNDrawSelectionWhenInactiveTag = FOUR_CHAR_CODE( 'dsln' ),
-	kTXNDisableDragAndDropTag = FOUR_CHAR_CODE( 'drag' ),
-	kTXNSingleLevelUndoTag = FOUR_CHAR_CODE( 'undo' ),
-	kTXNVisibilityTag = FOUR_CHAR_CODE( 'visb' ) /*set the visibility state of the object*/
+  kTXNLineDirectionTag          = FOUR_CHAR_CODE('lndr'),
+  kTXNJustificationTag          = FOUR_CHAR_CODE('just'),
+  kTXNIOPrivilegesTag           = FOUR_CHAR_CODE('iopv'),
+  kTXNSelectionStateTag         = FOUR_CHAR_CODE('slst'),
+  kTXNInlineStateTag            = FOUR_CHAR_CODE('inst'),
+  kTXNWordWrapStateTag          = FOUR_CHAR_CODE('wwrs'),
+  kTXNKeyboardSyncStateTag      = FOUR_CHAR_CODE('kbsy'),
+  kTXNAutoIndentStateTag        = FOUR_CHAR_CODE('auin'),
+  kTXNTabSettingsTag            = FOUR_CHAR_CODE('tabs'),
+  kTXNRefConTag                 = FOUR_CHAR_CODE('rfcn'),
+  kTXNMarginsTag                = FOUR_CHAR_CODE('marg'),
+  kTXNFlattenMoviesTag          = FOUR_CHAR_CODE('flat'),
+  kTXNDoFontSubstitution        = FOUR_CHAR_CODE('fSub'), /*note : this could degrade performance greatly in the case of large documents.*/
+  kTXNNoUserIOTag               = FOUR_CHAR_CODE('nuio'),
+  kTXNUseCarbonEvents           = FOUR_CHAR_CODE('cbcb'),
+  kTXNDrawCaretWhenInactiveTag  = FOUR_CHAR_CODE('dcrt'),
+  kTXNDrawSelectionWhenInactiveTag = FOUR_CHAR_CODE('dsln'),
+  kTXNDisableDragAndDropTag     = FOUR_CHAR_CODE('drag'),
+  kTXNSingleLevelUndoTag        = FOUR_CHAR_CODE('undo'),
+  kTXNVisibilityTag             = FOUR_CHAR_CODE('visb') /*set the visibility state of the object*/
 };
 
 typedef UInt32 TXNActionKey;
 enum {
-	kTXNTypingAction = 0,
-	kTXNCutAction = 1,
-	kTXNPasteAction = 2,
-	kTXNClearAction = 3,
-	kTXNChangeFontAction = 4,
-	kTXNChangeFontColorAction = 5,
-	kTXNChangeFontSizeAction = 6,
-	kTXNChangeStyleAction = 7,
-	kTXNAlignLeftAction = 8,
-	kTXNAlignCenterAction = 9,
-	kTXNAlignRightAction = 10,
-	kTXNDropAction = 11,
-	kTXNMoveAction = 12,
-	kTXNFontFeatureAction = 13,
-	kTXNFontVariationAction = 14,
-	kTXNUndoLastAction = 1024 /*use if none of the above apply*/
+  kTXNTypingAction              = 0,
+  kTXNCutAction                 = 1,
+  kTXNPasteAction               = 2,
+  kTXNClearAction               = 3,
+  kTXNChangeFontAction          = 4,
+  kTXNChangeFontColorAction     = 5,
+  kTXNChangeFontSizeAction      = 6,
+  kTXNChangeStyleAction         = 7,
+  kTXNAlignLeftAction           = 8,
+  kTXNAlignCenterAction         = 9,
+  kTXNAlignRightAction          = 10,
+  kTXNDropAction                = 11,
+  kTXNMoveAction                = 12,
+  kTXNFontFeatureAction         = 13,
+  kTXNFontVariationAction       = 14,
+  kTXNUndoLastAction            = 1024  /*use if none of the above apply*/
 };
 
 enum {
-	kTXNClearThisControl = (long)0xFFFFFFFF,
-	kTXNClearTheseFontFeatures = (long)0x80000000
+  kTXNClearThisControl          = (long)0xFFFFFFFF,
+  kTXNClearTheseFontFeatures    = (long)0x80000000
 };
 
 /*
@@ -476,83 +489,84 @@ enum {
    kTXNIOPrivilegesTag
 */
 enum {
-	kTXNReadWrite = false,
-	kTXNReadOnly = true
+  kTXNReadWrite                 = false,
+  kTXNReadOnly                  = true
 };
 
 /* kTXNSelectionStateTag*/
 enum {
-	kTXNSelectionOn = true,
-	kTXNSelectionOff = false
+  kTXNSelectionOn               = true,
+  kTXNSelectionOff              = false
 };
 
 /* kTXNInlineStateTag*/
 enum {
-	kTXNUseInline = false,
-	kTXNUseBottomline = true
+  kTXNUseInline                 = false,
+  kTXNUseBottomline             = true
 };
+
 
 /* kTXNWordWrapStateTag*/
 enum {
-	kTXNAutoWrap = false,
-	kTXNNoAutoWrap = true
+  kTXNAutoWrap                  = false,
+  kTXNNoAutoWrap                = true
 };
 
 /* kTXNKeyboardSyncStateTag*/
 enum {
-	kTXNSyncKeyboard = false,
-	kTXNNoSyncKeyboard = true
+  kTXNSyncKeyboard              = false,
+  kTXNNoSyncKeyboard            = true
 };
 
 /* kTXNAutoIndentStateTag*/
 enum {
-	kTXNAutoIndentOff = false,
-	kTXNAutoIndentOn = true
+  kTXNAutoIndentOff             = false,
+  kTXNAutoIndentOn              = true
 };
 
 /* kTXNDrawCaretWhenInactiveTag*/
 enum {
-	kTXNDontDrawCaretWhenInactive = false,
-	kTXNDrawCaretWhenInactive = true
+  kTXNDontDrawCaretWhenInactive = false,
+  kTXNDrawCaretWhenInactive     = true
 };
 
 /* kTXNDrawSelectionWhenInactiveTag*/
 enum {
-	kTXNDontDrawSelectionWhenInactive = false,
-	kTXNDrawSelectionWhenInactive = true
+  kTXNDontDrawSelectionWhenInactive = false,
+  kTXNDrawSelectionWhenInactive = true
 };
 
 /* kTXNDisableDragAndDropTag*/
 enum {
-	kTXNEnableDragAndDrop = false,
-	kTXNDisableDragAndDrop = true
+  kTXNEnableDragAndDrop         = false,
+  kTXNDisableDragAndDrop        = true
 };
 
 typedef SInt8 TXNTabType;
 enum {
-	kTXNRightTab = -1,
-	kTXNLeftTab = 0,
-	kTXNCenterTab = 1
+  kTXNRightTab                  = -1,
+  kTXNLeftTab                   = 0,
+  kTXNCenterTab                 = 1
 };
 
 struct TXNTab {
-	SInt16     value;
-	TXNTabType tabType;
-	UInt8      filler;
+  SInt16              value;
+  TXNTabType          tabType;
+  UInt8               filler;
 };
-typedef struct TXNTab TXNTab;
+typedef struct TXNTab                   TXNTab;
 enum {
-	kTXNLeftToRight = 0,
-	kTXNRightToLeft = 1
+  kTXNLeftToRight               = 0,
+  kTXNRightToLeft               = 1
 };
 
 enum {
-	kTXNFlushDefault = 0, /*flush according to the line direction */
-	kTXNFlushLeft = 1,
-	kTXNFlushRight = 2,
-	kTXNCenter = 4,
-	kTXNFullJust = 8,
-	kTXNForceFullJust = 16 /*flush left for all scripts */
+  kTXNFlushDefault              = 0,    /*flush according to the line direction */
+  kTXNFlushLeft                 = 1,
+  kTXNFlushRight                = 2,
+  kTXNCenter                    = 4,
+  kTXNFullJust                  = 8,
+  kTXNForceFullJust             = 16    /*flush left for all scripts */
 };
 
 /*
@@ -560,23 +574,23 @@ enum {
   The bottom margin is a placeholder for possible future enhancements. 
 */
 struct TXNMargins {
-	SInt16 topMargin;
-	SInt16 leftMargin;
-	SInt16 bottomMargin;
-	SInt16 rightMargin;
+  SInt16              topMargin;
+  SInt16              leftMargin;
+  SInt16              bottomMargin;
+  SInt16              rightMargin;
 };
-typedef struct TXNMargins TXNMargins;
+typedef struct TXNMargins               TXNMargins;
 union TXNControlData {
-	UInt32      uValue;
-	SInt32      sValue;
-	TXNTab      tabValue;
-	TXNMargins *marginsPtr;
+  UInt32              uValue;
+  SInt32              sValue;
+  TXNTab              tabValue;
+  TXNMargins *        marginsPtr;
 };
-typedef union TXNControlData TXNControlData;
-typedef Boolean              TXNScrollBarState;
+typedef union TXNControlData            TXNControlData;
+typedef Boolean TXNScrollBarState;
 enum {
-	kScrollBarsAlwaysActive = true,
-	kScrollBarsSyncWithFocus = false
+  kScrollBarsAlwaysActive       = true,
+  kScrollBarsSyncWithFocus      = false
 };
 
 /*
@@ -584,62 +598,65 @@ enum {
   to see if the variation is continuous and there was no variation in the continuous range
 */
 enum {
-	kTXNDontCareTypeSize = (long)0xFFFFFFFF,
-	kTXNDontCareTypeStyle = 0xFF,
-	kTXNIncrementTypeSize = 0x00000001,
-	kTXNDecrementTypeSize = (long)0x80000000,
-	kTXNUseScriptDefaultValue = -1,
-	kTXNNoFontVariations = 0x7FFF
+  kTXNDontCareTypeSize          = (long)0xFFFFFFFF,
+  kTXNDontCareTypeStyle         = 0xFF,
+  kTXNIncrementTypeSize         = 0x00000001,
+  kTXNDecrementTypeSize         = (long)0x80000000,
+  kTXNUseScriptDefaultValue     = -1,
+  kTXNNoFontVariations          = 0x7FFF
 };
 
 typedef UInt32 TXNOffset;
 enum {
-	kTXNUseCurrentSelection = (unsigned long)0xFFFFFFFF,
-	kTXNStartOffset = 0,
-	kTXNEndOffset = 0x7FFFFFFF
+  kTXNUseCurrentSelection       = (unsigned long)0xFFFFFFFF,
+  kTXNStartOffset               = 0,
+  kTXNEndOffset                 = 0x7FFFFFFF
 };
+
 
 enum {
-	kTXNSingleStylePerTextDocumentResType = FOUR_CHAR_CODE( 'MPSR' ),
-	kTXNMultipleStylesPerTextDocumentResType = FOUR_CHAR_CODE( 'styl' )
+  kTXNSingleStylePerTextDocumentResType = FOUR_CHAR_CODE('MPSR'),
+  kTXNMultipleStylesPerTextDocumentResType = FOUR_CHAR_CODE('styl')
 };
 
-typedef void *TXNObjectRefcon;
+
+typedef void *                          TXNObjectRefcon;
 /*constants for TXNShowSelection*/
 enum {
-	kTXNShowStart = false,
-	kTXNShowEnd = true
+  kTXNShowStart                 = false,
+  kTXNShowEnd                   = true
 };
 
-typedef OSStatus TXNErrors;
+typedef OSStatus                        TXNErrors;
 /*default constants for TXTNInit.  */
-#define kTXNDefaultFontName ( (StringPtr)NULL )
+#define kTXNDefaultFontName             ((StringPtr)NULL)
 enum {
-	kTXNDefaultFontSize = 0x000C0000
+  kTXNDefaultFontSize           = 0x000C0000
 };
 
 enum {
-	kTXNDefaultFontStyle = normal
+  kTXNDefaultFontStyle          = normal
 };
+
 
 typedef UInt32 TXNHyperLinkState;
 enum {
-	kTXNLinkNotPressed = 0,
-	kTXNLinkWasPressed = 1,
-	kTXNLinkTracking = 3
+  kTXNLinkNotPressed            = 0,
+  kTXNLinkWasPressed            = 1,
+  kTXNLinkTracking              = 3
 };
 
 typedef FourCharCode TXNTypeRunAttributes;
 enum {
-	kTXNQDFontNameAttribute = FOUR_CHAR_CODE( 'fntn' ),
-	kTXNQDFontFamilyIDAttribute = FOUR_CHAR_CODE( 'font' ),
-	kTXNQDFontSizeAttribute = FOUR_CHAR_CODE( 'size' ),
-	kTXNQDFontStyleAttribute = FOUR_CHAR_CODE( 'face' ),
-	kTXNQDFontColorAttribute = FOUR_CHAR_CODE( 'klor' ),
-	kTXNTextEncodingAttribute = FOUR_CHAR_CODE( 'encd' ),
-	kTXNATSUIFontFeaturesAttribute = FOUR_CHAR_CODE( 'atfe' ),
-	kTXNATSUIFontVariationsAttribute = FOUR_CHAR_CODE( 'atva' ),
-	kTXNURLAttribute = FOUR_CHAR_CODE( 'urla' )
+  kTXNQDFontNameAttribute       = FOUR_CHAR_CODE('fntn'),
+  kTXNQDFontFamilyIDAttribute   = FOUR_CHAR_CODE('font'),
+  kTXNQDFontSizeAttribute       = FOUR_CHAR_CODE('size'),
+  kTXNQDFontStyleAttribute      = FOUR_CHAR_CODE('face'),
+  kTXNQDFontColorAttribute      = FOUR_CHAR_CODE('klor'),
+  kTXNTextEncodingAttribute     = FOUR_CHAR_CODE('encd'),
+  kTXNATSUIFontFeaturesAttribute = FOUR_CHAR_CODE('atfe'),
+  kTXNATSUIFontVariationsAttribute = FOUR_CHAR_CODE('atva'),
+  kTXNURLAttribute              = FOUR_CHAR_CODE('urla')
 };
 
 /*
@@ -649,66 +666,68 @@ enum {
 */
 typedef ByteCount TXNTypeRunAttributeSizes;
 enum {
-	kTXNQDFontNameAttributeSize = sizeof( Str255 ),
-	kTXNQDFontFamilyIDAttributeSize = sizeof( SInt16 ),
-	kTXNQDFontSizeAttributeSize = sizeof( SInt16 ),
-	kTXNQDFontStyleAttributeSize = sizeof( Style ),
-	kTXNQDFontColorAttributeSize = sizeof( RGBColor ),
-	kTXNTextEncodingAttributeSize = sizeof( TextEncoding ),
-	kTXNFontSizeAttributeSize = sizeof( Fixed )
+  kTXNQDFontNameAttributeSize   = sizeof(Str255),
+  kTXNQDFontFamilyIDAttributeSize = sizeof(SInt16),
+  kTXNQDFontSizeAttributeSize   = sizeof(SInt16),
+  kTXNQDFontStyleAttributeSize  = sizeof(Style),
+  kTXNQDFontColorAttributeSize  = sizeof(RGBColor),
+  kTXNTextEncodingAttributeSize = sizeof(TextEncoding),
+  kTXNFontSizeAttributeSize     = sizeof(Fixed)
 };
 
 typedef UInt32 TXNPermanentTextEncodingType;
 enum {
-	kTXNSystemDefaultEncoding = 0,
-	kTXNMacOSEncoding = 1,
-	kTXNUnicodeEncoding = 2
+  kTXNSystemDefaultEncoding     = 0,
+  kTXNMacOSEncoding             = 1,
+  kTXNUnicodeEncoding           = 2
 };
 
-typedef FourCharCode TXTNTag;
+
+
+typedef FourCharCode                    TXTNTag;
 struct TXNATSUIFeatures {
-	ItemCount                featureCount;
-	ATSUFontFeatureType *    featureTypes;
-	ATSUFontFeatureSelector *featureSelectors;
+  ItemCount           featureCount;
+  ATSUFontFeatureType * featureTypes;
+  ATSUFontFeatureSelector * featureSelectors;
 };
-typedef struct TXNATSUIFeatures TXNATSUIFeatures;
+typedef struct TXNATSUIFeatures         TXNATSUIFeatures;
 struct TXNATSUIVariations {
-	ItemCount               variationCount;
-	ATSUFontVariationAxis * variationAxis;
-	ATSUFontVariationValue *variationValues;
+  ItemCount           variationCount;
+  ATSUFontVariationAxis * variationAxis;
+  ATSUFontVariationValue * variationValues;
 };
-typedef struct TXNATSUIVariations TXNATSUIVariations;
+typedef struct TXNATSUIVariations       TXNATSUIVariations;
 union TXNAttributeData {
-	void *              dataPtr;
-	UInt32              dataValue;
-	TXNATSUIFeatures *  atsuFeatures;
-	TXNATSUIVariations *atsuVariations;
-	CFURLRef            urlReference;
+  void *              dataPtr;
+  UInt32              dataValue;
+  TXNATSUIFeatures *  atsuFeatures;
+  TXNATSUIVariations * atsuVariations;
+  CFURLRef            urlReference;
 };
-typedef union TXNAttributeData TXNAttributeData;
+typedef union TXNAttributeData          TXNAttributeData;
 struct TXNTypeAttributes {
-	TXTNTag          tag;
-	ByteCount        size;
-	TXNAttributeData data;
+  TXTNTag             tag;
+  ByteCount           size;
+  TXNAttributeData    data;
 };
-typedef struct TXNTypeAttributes TXNTypeAttributes;
+typedef struct TXNTypeAttributes        TXNTypeAttributes;
 struct TXNMacOSPreferredFontDescription {
-	UInt32       fontID;
-	Fixed        pointSize;
-	TextEncoding encoding;
-	Style        fontStyle;
+  UInt32              fontID;
+  Fixed               pointSize;
+  TextEncoding        encoding;
+  Style               fontStyle;
 };
 typedef struct TXNMacOSPreferredFontDescription TXNMacOSPreferredFontDescription;
 struct TXNMatchTextRecord {
-	const void * iTextPtr;
-	SInt32       iTextToMatchLength;
-	TextEncoding iTextEncoding;
+  const void *        iTextPtr;
+  SInt32              iTextToMatchLength;
+  TextEncoding        iTextEncoding;
 };
-typedef struct TXNMatchTextRecord TXNMatchTextRecord;
+typedef struct TXNMatchTextRecord       TXNMatchTextRecord;
 /*constants & typedefs for setting the background*/
 typedef UInt32 TXNBackgroundType;
 enum {
-	kTXNBackgroundTypeRGB = 1
+  kTXNBackgroundTypeRGB         = 1
 };
 
 /*
@@ -716,57 +735,58 @@ enum {
    in the future to support other background types
 */
 union TXNBackgroundData {
-	RGBColor color;
+  RGBColor            color;
 };
-typedef union TXNBackgroundData TXNBackgroundData;
+typedef union TXNBackgroundData         TXNBackgroundData;
 struct TXNBackground {
-	TXNBackgroundType bgType;
-	TXNBackgroundData bg;
+  TXNBackgroundType   bgType;
+  TXNBackgroundData   bg;
 };
-typedef struct TXNBackground TXNBackground;
+typedef struct TXNBackground            TXNBackground;
 struct TXNLongRect {
-	SInt32 top;
-	SInt32 left;
-	SInt32 bottom;
-	SInt32 right;
+  SInt32              top;
+  SInt32              left;
+  SInt32              bottom;
+  SInt32              right;
 };
-typedef struct TXNLongRect TXNLongRect;
+typedef struct TXNLongRect              TXNLongRect;
 /*
   options for TXNGet/ClearActionChangeCount to decide what type(s) of action 
   count to use 
 */
 enum {
-	kTXNTextInputCountBit = 0,
-	kTXNRunCountBit = 1
+  kTXNTextInputCountBit         = 0,
+  kTXNRunCountBit               = 1
 };
 
 typedef OptionBits TXNCountOptions;
 enum {
-	kTXNTextInputCountMask = 1L << kTXNTextInputCountBit,
-	kTXNRunCountMask = 1L << kTXNRunCountBit,
-	kTXNAllCountMask = kTXNTextInputCountMask | kTXNRunCountMask
+  kTXNTextInputCountMask        = 1L << kTXNTextInputCountBit,
+  kTXNRunCountMask              = 1L << kTXNRunCountBit,
+  kTXNAllCountMask              = kTXNTextInputCountMask | kTXNRunCountMask
 };
+
 
 typedef UInt32 TXNScrollUnit;
 enum {
-	kTXNScrollUnitsInPixels = 0,
-	kTXNScrollUnitsInLines = 1,
-	kTXNScrollUnitsInViewRects = 2
+  kTXNScrollUnitsInPixels       = 0,
+  kTXNScrollUnitsInLines        = 1,
+  kTXNScrollUnitsInViewRects    = 2
 };
 
 typedef UInt32 TXNScrollBarOrientation;
 enum {
-	kTXNHorizontal = 0,
-	kTXNVertical = 1
+  kTXNHorizontal                = 0,
+  kTXNVertical                  = 1
 };
 
-typedef CALLBACK_API( OSStatus, TXNFindProcPtr )( const TXNMatchTextRecord *matchData, TXNDataType iDataType, TXNMatchOptions iMatchOptions, const void *iSearchTextPtr, TextEncoding encoding, TXNOffset absStartOffset, ByteCount searchTextLength, TXNOffset *oStartMatch, TXNOffset *oEndMatch, Boolean *ofound, UInt32 refCon );
-typedef CALLBACK_API( CFStringRef, TXNActionKeyMapperProcPtr )( TXNActionKey actionKey, UInt32 commandID );
+typedef CALLBACK_API( OSStatus , TXNFindProcPtr )(const TXNMatchTextRecord *matchData, TXNDataType iDataType, TXNMatchOptions iMatchOptions, const void *iSearchTextPtr, TextEncoding encoding, TXNOffset absStartOffset, ByteCount searchTextLength, TXNOffset *oStartMatch, TXNOffset *oEndMatch, Boolean *ofound, UInt32 refCon);
+typedef CALLBACK_API( CFStringRef , TXNActionKeyMapperProcPtr )(TXNActionKey actionKey, UInt32 commandID);
 
-typedef CALLBACK_API( void, TXNScrollInfoProcPtr )( SInt32 iValue, SInt32 iMaximumValue, TXNScrollBarOrientation iScrollBarOrientation, SInt32 iRefCon );
-typedef STACK_UPP_TYPE( TXNFindProcPtr ) TXNFindUPP;
-typedef STACK_UPP_TYPE( TXNActionKeyMapperProcPtr ) TXNActionKeyMapperUPP;
-typedef STACK_UPP_TYPE( TXNScrollInfoProcPtr ) TXNScrollInfoUPP;
+typedef CALLBACK_API( void , TXNScrollInfoProcPtr )(SInt32 iValue, SInt32 iMaximumValue, TXNScrollBarOrientation iScrollBarOrientation, SInt32 iRefCon);
+typedef STACK_UPP_TYPE(TXNFindProcPtr)                          TXNFindUPP;
+typedef STACK_UPP_TYPE(TXNActionKeyMapperProcPtr)               TXNActionKeyMapperUPP;
+typedef STACK_UPP_TYPE(TXNScrollInfoProcPtr)                    TXNScrollInfoUPP;
 /*
  *  NewTXNFindUPP()
  *  
@@ -776,17 +796,14 @@ typedef STACK_UPP_TYPE( TXNScrollInfoProcPtr ) TXNScrollInfoUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( TXNFindUPP )
-NewTXNFindUPP( TXNFindProcPtr userRoutine );
+NewTXNFindUPP(TXNFindProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppTXNFindProcInfo = 0x0FFFFFF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( TXNFindUPP ) NewTXNFindUPP( TXNFindProcPtr userRoutine )
-{
-	return (TXNFindUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTXNFindProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewTXNFindUPP( userRoutine ) ( TXNFindUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTXNFindProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppTXNFindProcInfo = 0x0FFFFFF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(TXNFindUPP) NewTXNFindUPP(TXNFindProcPtr userRoutine) { return (TXNFindUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTXNFindProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewTXNFindUPP(userRoutine) (TXNFindUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTXNFindProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -798,17 +815,14 @@ inline DEFINE_API_C( TXNFindUPP ) NewTXNFindUPP( TXNFindProcPtr userRoutine )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( TXNActionKeyMapperUPP )
-NewTXNActionKeyMapperUPP( TXNActionKeyMapperProcPtr userRoutine );
+NewTXNActionKeyMapperUPP(TXNActionKeyMapperProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppTXNActionKeyMapperProcInfo = 0x000003F0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( TXNActionKeyMapperUPP ) NewTXNActionKeyMapperUPP( TXNActionKeyMapperProcPtr userRoutine )
-{
-	return (TXNActionKeyMapperUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTXNActionKeyMapperProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewTXNActionKeyMapperUPP( userRoutine ) ( TXNActionKeyMapperUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTXNActionKeyMapperProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppTXNActionKeyMapperProcInfo = 0x000003F0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(TXNActionKeyMapperUPP) NewTXNActionKeyMapperUPP(TXNActionKeyMapperProcPtr userRoutine) { return (TXNActionKeyMapperUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTXNActionKeyMapperProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewTXNActionKeyMapperUPP(userRoutine) (TXNActionKeyMapperUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTXNActionKeyMapperProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -820,17 +834,14 @@ inline DEFINE_API_C( TXNActionKeyMapperUPP ) NewTXNActionKeyMapperUPP( TXNAction
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( TXNScrollInfoUPP )
-NewTXNScrollInfoUPP( TXNScrollInfoProcPtr userRoutine );
+NewTXNScrollInfoUPP(TXNScrollInfoProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppTXNScrollInfoProcInfo = 0x00003FC0 }; /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( TXNScrollInfoUPP ) NewTXNScrollInfoUPP( TXNScrollInfoProcPtr userRoutine )
-{
-	return (TXNScrollInfoUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTXNScrollInfoProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewTXNScrollInfoUPP( userRoutine ) ( TXNScrollInfoUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppTXNScrollInfoProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppTXNScrollInfoProcInfo = 0x00003FC0 };  /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(TXNScrollInfoUPP) NewTXNScrollInfoUPP(TXNScrollInfoProcPtr userRoutine) { return (TXNScrollInfoUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTXNScrollInfoProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewTXNScrollInfoUPP(userRoutine) (TXNScrollInfoUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppTXNScrollInfoProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -842,16 +853,13 @@ inline DEFINE_API_C( TXNScrollInfoUPP ) NewTXNScrollInfoUPP( TXNScrollInfoProcPt
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeTXNFindUPP( TXNFindUPP userUPP );
+DisposeTXNFindUPP(TXNFindUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeTXNFindUPP( TXNFindUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeTXNFindUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeTXNFindUPP(TXNFindUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeTXNFindUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -863,16 +871,13 @@ inline DEFINE_API_C( void ) DisposeTXNFindUPP( TXNFindUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeTXNActionKeyMapperUPP( TXNActionKeyMapperUPP userUPP );
+DisposeTXNActionKeyMapperUPP(TXNActionKeyMapperUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeTXNActionKeyMapperUPP( TXNActionKeyMapperUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeTXNActionKeyMapperUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeTXNActionKeyMapperUPP(TXNActionKeyMapperUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeTXNActionKeyMapperUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -884,16 +889,13 @@ inline DEFINE_API_C( void ) DisposeTXNActionKeyMapperUPP( TXNActionKeyMapperUPP 
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-DisposeTXNScrollInfoUPP( TXNScrollInfoUPP userUPP );
+DisposeTXNScrollInfoUPP(TXNScrollInfoUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeTXNScrollInfoUPP( TXNScrollInfoUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeTXNScrollInfoUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeTXNScrollInfoUPP(TXNScrollInfoUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeTXNScrollInfoUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -906,27 +908,24 @@ inline DEFINE_API_C( void ) DisposeTXNScrollInfoUPP( TXNScrollInfoUPP userUPP )
  */
 EXTERN_API_C( OSStatus )
 InvokeTXNFindUPP(
-    const TXNMatchTextRecord *matchData,
-    TXNDataType               iDataType,
-    TXNMatchOptions           iMatchOptions,
-    const void *              iSearchTextPtr,
-    TextEncoding              encoding,
-    TXNOffset                 absStartOffset,
-    ByteCount                 searchTextLength,
-    TXNOffset *               oStartMatch,
-    TXNOffset *               oEndMatch,
-    Boolean *                 ofound,
-    UInt32                    refCon,
-    TXNFindUPP                userUPP );
+  const TXNMatchTextRecord *  matchData,
+  TXNDataType                 iDataType,
+  TXNMatchOptions             iMatchOptions,
+  const void *                iSearchTextPtr,
+  TextEncoding                encoding,
+  TXNOffset                   absStartOffset,
+  ByteCount                   searchTextLength,
+  TXNOffset *                 oStartMatch,
+  TXNOffset *                 oEndMatch,
+  Boolean *                   ofound,
+  UInt32                      refCon,
+  TXNFindUPP                  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeTXNFindUPP( const TXNMatchTextRecord *matchData, TXNDataType iDataType, TXNMatchOptions iMatchOptions, const void *iSearchTextPtr, TextEncoding encoding, TXNOffset absStartOffset, ByteCount searchTextLength, TXNOffset *oStartMatch, TXNOffset *oEndMatch, Boolean *ofound, UInt32 refCon, TXNFindUPP userUPP )
-{
-	return (OSStatus)CALL_ELEVEN_PARAMETER_UPP( userUPP, uppTXNFindProcInfo, matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon );
-}
-#else
-#define InvokeTXNFindUPP( matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon, userUPP ) ( OSStatus ) CALL_ELEVEN_PARAMETER_UPP( ( userUPP ), uppTXNFindProcInfo, ( matchData ), ( iDataType ), ( iMatchOptions ), ( iSearchTextPtr ), ( encoding ), ( absStartOffset ), ( searchTextLength ), ( oStartMatch ), ( oEndMatch ), ( ofound ), ( refCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeTXNFindUPP(const TXNMatchTextRecord * matchData, TXNDataType iDataType, TXNMatchOptions iMatchOptions, const void * iSearchTextPtr, TextEncoding encoding, TXNOffset absStartOffset, ByteCount searchTextLength, TXNOffset * oStartMatch, TXNOffset * oEndMatch, Boolean * ofound, UInt32 refCon, TXNFindUPP userUPP) { return (OSStatus)CALL_ELEVEN_PARAMETER_UPP(userUPP, uppTXNFindProcInfo, matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon); }
+  #else
+    #define InvokeTXNFindUPP(matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon, userUPP) (OSStatus)CALL_ELEVEN_PARAMETER_UPP((userUPP), uppTXNFindProcInfo, (matchData), (iDataType), (iMatchOptions), (iSearchTextPtr), (encoding), (absStartOffset), (searchTextLength), (oStartMatch), (oEndMatch), (ofound), (refCon))
+  #endif
 #endif
 
 /*
@@ -939,18 +938,15 @@ inline DEFINE_API_C( OSStatus ) InvokeTXNFindUPP( const TXNMatchTextRecord *matc
  */
 EXTERN_API_C( CFStringRef )
 InvokeTXNActionKeyMapperUPP(
-    TXNActionKey          actionKey,
-    UInt32                commandID,
-    TXNActionKeyMapperUPP userUPP );
+  TXNActionKey           actionKey,
+  UInt32                 commandID,
+  TXNActionKeyMapperUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( CFStringRef ) InvokeTXNActionKeyMapperUPP( TXNActionKey actionKey, UInt32 commandID, TXNActionKeyMapperUPP userUPP )
-{
-	return (CFStringRef)CALL_TWO_PARAMETER_UPP( userUPP, uppTXNActionKeyMapperProcInfo, actionKey, commandID );
-}
-#else
-#define InvokeTXNActionKeyMapperUPP( actionKey, commandID, userUPP ) ( CFStringRef ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppTXNActionKeyMapperProcInfo, ( actionKey ), ( commandID ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(CFStringRef) InvokeTXNActionKeyMapperUPP(TXNActionKey actionKey, UInt32 commandID, TXNActionKeyMapperUPP userUPP) { return (CFStringRef)CALL_TWO_PARAMETER_UPP(userUPP, uppTXNActionKeyMapperProcInfo, actionKey, commandID); }
+  #else
+    #define InvokeTXNActionKeyMapperUPP(actionKey, commandID, userUPP) (CFStringRef)CALL_TWO_PARAMETER_UPP((userUPP), uppTXNActionKeyMapperProcInfo, (actionKey), (commandID))
+  #endif
 #endif
 
 /*
@@ -963,31 +959,31 @@ inline DEFINE_API_C( CFStringRef ) InvokeTXNActionKeyMapperUPP( TXNActionKey act
  */
 EXTERN_API_C( void )
 InvokeTXNScrollInfoUPP(
-    SInt32                  iValue,
-    SInt32                  iMaximumValue,
-    TXNScrollBarOrientation iScrollBarOrientation,
-    SInt32                  iRefCon,
-    TXNScrollInfoUPP        userUPP );
+  SInt32                   iValue,
+  SInt32                   iMaximumValue,
+  TXNScrollBarOrientation  iScrollBarOrientation,
+  SInt32                   iRefCon,
+  TXNScrollInfoUPP         userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeTXNScrollInfoUPP( SInt32 iValue, SInt32 iMaximumValue, TXNScrollBarOrientation iScrollBarOrientation, SInt32 iRefCon, TXNScrollInfoUPP userUPP )
-{
-	CALL_FOUR_PARAMETER_UPP( userUPP, uppTXNScrollInfoProcInfo, iValue, iMaximumValue, iScrollBarOrientation, iRefCon );
-}
-#else
-#define InvokeTXNScrollInfoUPP( iValue, iMaximumValue, iScrollBarOrientation, iRefCon, userUPP ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppTXNScrollInfoProcInfo, ( iValue ), ( iMaximumValue ), ( iScrollBarOrientation ), ( iRefCon ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeTXNScrollInfoUPP(SInt32 iValue, SInt32 iMaximumValue, TXNScrollBarOrientation iScrollBarOrientation, SInt32 iRefCon, TXNScrollInfoUPP userUPP) { CALL_FOUR_PARAMETER_UPP(userUPP, uppTXNScrollInfoProcInfo, iValue, iMaximumValue, iScrollBarOrientation, iRefCon); }
+  #else
+    #define InvokeTXNScrollInfoUPP(iValue, iMaximumValue, iScrollBarOrientation, iRefCon, userUPP) CALL_FOUR_PARAMETER_UPP((userUPP), uppTXNScrollInfoProcInfo, (iValue), (iMaximumValue), (iScrollBarOrientation), (iRefCon))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewTXNFindProc( userRoutine ) NewTXNFindUPP( userRoutine )
-#define NewTXNActionKeyMapperProc( userRoutine ) NewTXNActionKeyMapperUPP( userRoutine )
-#define NewTXNScrollInfoProc( userRoutine ) NewTXNScrollInfoUPP( userRoutine )
-#define CallTXNFindProc( userRoutine, matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon ) InvokeTXNFindUPP( matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon, userRoutine )
-#define CallTXNActionKeyMapperProc( userRoutine, actionKey, commandID ) InvokeTXNActionKeyMapperUPP( actionKey, commandID, userRoutine )
-#define CallTXNScrollInfoProc( userRoutine, iValue, iMaximumValue, iScrollBarOrientation, iRefCon ) InvokeTXNScrollInfoUPP( iValue, iMaximumValue, iScrollBarOrientation, iRefCon, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewTXNFindProc(userRoutine)                         NewTXNFindUPP(userRoutine)
+    #define NewTXNActionKeyMapperProc(userRoutine)              NewTXNActionKeyMapperUPP(userRoutine)
+    #define NewTXNScrollInfoProc(userRoutine)                   NewTXNScrollInfoUPP(userRoutine)
+    #define CallTXNFindProc(userRoutine, matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon) InvokeTXNFindUPP(matchData, iDataType, iMatchOptions, iSearchTextPtr, encoding, absStartOffset, searchTextLength, oStartMatch, oEndMatch, ofound, refCon, userRoutine)
+    #define CallTXNActionKeyMapperProc(userRoutine, actionKey, commandID) InvokeTXNActionKeyMapperUPP(actionKey, commandID, userRoutine)
+    #define CallTXNScrollInfoProc(userRoutine, iValue, iMaximumValue, iScrollBarOrientation, iRefCon) InvokeTXNScrollInfoUPP(iValue, iMaximumValue, iScrollBarOrientation, iRefCon, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
+
+
+
 
 /*
   These are currently the only settings for the flags field of TXNCarbonEventInfo
@@ -997,34 +993,34 @@ inline DEFINE_API_C( void ) InvokeTXNScrollInfoUPP( SInt32 iValue, SInt32 iMaxim
 */
 
 enum {
-	kTXNNoAppleEventHandlersBit = 0,
-	kTXNRestartAppleEventHandlersBit = 1
+  kTXNNoAppleEventHandlersBit   = 0,
+  kTXNRestartAppleEventHandlersBit = 1
 };
 
 enum {
-	kTXNNoAppleEventHandlersMask = 1 << kTXNNoAppleEventHandlersBit,
-	kTXNRestartAppleEventHandlersMask = 1 << kTXNRestartAppleEventHandlersBit
+  kTXNNoAppleEventHandlersMask  = 1 << kTXNNoAppleEventHandlersBit,
+  kTXNRestartAppleEventHandlersMask = 1 << kTXNRestartAppleEventHandlersBit
 };
 
 /*dictionary keys currently supported in the TXNCarbonEventInfo dictionary*/
-#define kTXNTextHandlerKey CFSTR( "TextInput" )
-#define kTXNWindowEventHandlerKey CFSTR( "WindowEvent" )
-#define kTXNWindowResizeEventHandlerKey CFSTR( "WindowResize" )
-#define kTXNCommandTargetKey CFSTR( "CommandTarget" )
-#define kTXNCommandUpdateKey CFSTR( "CommandUpdate" )
-#define kTXNFontMenuRefKey CFSTR( "FontMenuRef" )
-#define kTXNFontMenuObjectKey CFSTR( "FontMenuObject" )
-#define kTXNActionKeyMapperKey CFSTR( "ActionKeyMapper" )
-#define kTXNWheelMouseEventHandlerKey CFSTR( "WheelMouseEvent" )
+#define   kTXNTextHandlerKey                        CFSTR("TextInput")
+#define   kTXNWindowEventHandlerKey                 CFSTR("WindowEvent")
+#define   kTXNWindowResizeEventHandlerKey           CFSTR("WindowResize")
+#define   kTXNCommandTargetKey                      CFSTR("CommandTarget")
+#define   kTXNCommandUpdateKey                      CFSTR("CommandUpdate")
+#define   kTXNFontMenuRefKey                        CFSTR("FontMenuRef")
+#define   kTXNFontMenuObjectKey                     CFSTR("FontMenuObject")
+#define   kTXNActionKeyMapperKey                    CFSTR("ActionKeyMapper")
+#define   kTXNWheelMouseEventHandlerKey             CFSTR("WheelMouseEvent")
 
 /* use this to pass an EventTargetRef to MLTE via the TXNSetTXNControl... call*/
 struct TXNCarbonEventInfo {
-	Boolean         useCarbonEvents;
-	UInt8           filler;
-	UInt16          flags;
-	CFDictionaryRef fDictionary;
+  Boolean             useCarbonEvents;
+  UInt8               filler;
+  UInt16              flags;
+  CFDictionaryRef     fDictionary;
 };
-typedef struct TXNCarbonEventInfo TXNCarbonEventInfo;
+typedef struct TXNCarbonEventInfo       TXNCarbonEventInfo;
 
 /*
   *****************************************************************************************************
@@ -1083,16 +1079,18 @@ typedef struct TXNCarbonEventInfo TXNCarbonEventInfo;
  */
 EXTERN_API_C( OSStatus )
 TXNNewObject(
-    const FSSpec *               iFileSpec, /* can be NULL */
-    WindowRef                    iWindow,
-    const Rect *                 iFrame, /* can be NULL */
-    TXNFrameOptions              iFrameOptions,
-    TXNFrameType                 iFrameType,
-    TXNFileType                  iFileType,
-    TXNPermanentTextEncodingType iPermanentEncoding,
-    TXNObject *                  oTXNObject,
-    TXNFrameID *                 oTXNFrameID,
-    TXNObjectRefcon              iRefCon );
+  const FSSpec *                 iFileSpec,                /* can be NULL */
+  WindowRef                      iWindow,
+  const Rect *                   iFrame,                   /* can be NULL */
+  TXNFrameOptions                iFrameOptions,
+  TXNFrameType                   iFrameType,
+  TXNFileType                    iFileType,
+  TXNPermanentTextEncodingType   iPermanentEncoding,
+  TXNObject *                    oTXNObject,
+  TXNFrameID *                   oTXNFrameID,
+  TXNObjectRefcon                iRefCon);
+
+
 
 /*
   *************************************************************************************************
@@ -1112,7 +1110,9 @@ TXNNewObject(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNDeleteObject( TXNObject iTXNObject );
+TXNDeleteObject(TXNObject iTXNObject);
+
+
 
 /*
   *************************************************************************************************                         
@@ -1138,10 +1138,12 @@ TXNDeleteObject( TXNObject iTXNObject );
  */
 EXTERN_API_C( void )
 TXNResizeFrame(
-    TXNObject  iTXNObject,
-    UInt32     iWidth,
-    UInt32     iHeight,
-    TXNFrameID iTXNFrameID );
+  TXNObject    iTXNObject,
+  UInt32       iWidth,
+  UInt32       iHeight,
+  TXNFrameID   iTXNFrameID);
+
+
 
 /*
   *************************************************************************************************                         
@@ -1165,12 +1167,14 @@ TXNResizeFrame(
  */
 EXTERN_API_C( void )
 TXNSetFrameBounds(
-    TXNObject  iTXNObject,
-    SInt32     iTop,
-    SInt32     iLeft,
-    SInt32     iBottom,
-    SInt32     iRight,
-    TXNFrameID iTXNFrameID );
+  TXNObject    iTXNObject,
+  SInt32       iTop,
+  SInt32       iLeft,
+  SInt32       iBottom,
+  SInt32       iRight,
+  TXNFrameID   iTXNFrameID);
+
+
 
 /*
   ****************************************************************************************************
@@ -1214,9 +1218,11 @@ TXNSetFrameBounds(
  */
 EXTERN_API_C( OSStatus )
 TXNInitTextension(
-    const TXNMacOSPreferredFontDescription iDefaultFonts[], /* can be NULL */
-    ItemCount                              iCountDefaultFonts,
-    TXNInitOptions                         iUsageFlags );
+  const TXNMacOSPreferredFontDescription   iDefaultFonts[],          /* can be NULL */
+  ItemCount                                iCountDefaultFonts,
+  TXNInitOptions                           iUsageFlags);
+
+
 
 /*
   *************************************************************************************
@@ -1233,7 +1239,9 @@ TXNInitTextension(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNTerminateTextension( void );
+TXNTerminateTextension(void);
+
+
 
 /*
   **************************************************************************************
@@ -1257,8 +1265,9 @@ TXNTerminateTextension( void );
  */
 EXTERN_API_C( void )
 TXNKeyDown(
-    TXNObject          iTXNObject,
-    const EventRecord *iEvent );
+  TXNObject            iTXNObject,
+  const EventRecord *  iEvent);
+
 
 /*
   ***************************************************************************************
@@ -1281,8 +1290,10 @@ TXNKeyDown(
  */
 EXTERN_API_C( void )
 TXNAdjustCursor(
-    TXNObject iTXNObject,
-    RgnHandle ioCursorRgn );
+  TXNObject   iTXNObject,
+  RgnHandle   ioCursorRgn);
+
+
 
 /*
   ****************************************************************************************                      
@@ -1303,8 +1314,10 @@ TXNAdjustCursor(
  */
 EXTERN_API_C( void )
 TXNClick(
-    TXNObject          iTXNObject,
-    const EventRecord *iEvent );
+  TXNObject            iTXNObject,
+  const EventRecord *  iEvent);
+
+
 
 /*
   ********************************************************************************************
@@ -1335,8 +1348,10 @@ TXNClick(
  */
 EXTERN_API_C( Boolean )
 TXNTSMCheck(
-    TXNObject    iTXNObject, /* can be NULL */
-    EventRecord *ioEvent );
+  TXNObject      iTXNObject,       /* can be NULL */
+  EventRecord *  ioEvent);
+
+
 
 /*
   ***********************************************************************************************                       
@@ -1345,7 +1360,7 @@ TXNTSMCheck(
         iTXNObject: opaque TXNObject 
   ***********************************************************************************************   
 */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  TXNSelectAll()
@@ -1356,7 +1371,10 @@ TXNTSMCheck(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNSelectAll( TXNObject iTXNObject );
+TXNSelectAll(TXNObject iTXNObject);
+
+
+
 
 /*
   ***********************************************************************************************                       
@@ -1379,8 +1397,9 @@ TXNSelectAll( TXNObject iTXNObject );
  */
 EXTERN_API_C( void )
 TXNFocus(
-    TXNObject iTXNObject,
-    Boolean   iBecomingFocused );
+  TXNObject   iTXNObject,
+  Boolean     iBecomingFocused);
+
 
 /*
   ************************************************************************************************                      
@@ -1400,7 +1419,8 @@ TXNFocus(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNUpdate( TXNObject iTXNObject );
+TXNUpdate(TXNObject iTXNObject);
+
 
 /*
   *************************************************************************************************
@@ -1432,8 +1452,9 @@ TXNUpdate( TXNObject iTXNObject );
  */
 EXTERN_API_C( void )
 TXNDraw(
-    TXNObject iTXNObject,
-    GWorldPtr iDrawPort ); /* can be NULL */
+  TXNObject   iTXNObject,
+  GWorldPtr   iDrawPort);       /* can be NULL */
+
 
 /*
   *************************************************************************************************
@@ -1452,7 +1473,9 @@ TXNDraw(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNForceUpdate( TXNObject iTXNObject );
+TXNForceUpdate(TXNObject iTXNObject);
+
+
 
 /*
   **************************************************************************************************
@@ -1474,7 +1497,8 @@ TXNForceUpdate( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UInt32 )
-TXNGetSleepTicks( TXNObject iTXNObject );
+TXNGetSleepTicks(TXNObject iTXNObject);
+
 
 /*
   ***************************************************************************************************
@@ -1493,7 +1517,9 @@ TXNGetSleepTicks( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNIdle( TXNObject iTXNObject );
+TXNIdle(TXNObject iTXNObject);
+
+
 
 /*
   *********************************************************************************************************
@@ -1513,8 +1539,10 @@ TXNIdle( TXNObject iTXNObject );
  */
 EXTERN_API_C( void )
 TXNGrowWindow(
-    TXNObject          iTXNObject,
-    const EventRecord *iEvent );
+  TXNObject            iTXNObject,
+  const EventRecord *  iEvent);
+
+
 
 /*
   ********************************************************************************************************
@@ -1534,8 +1562,10 @@ TXNGrowWindow(
  */
 EXTERN_API_C( void )
 TXNZoomWindow(
-    TXNObject iTXNObject,
-    SInt16    iPart );
+  TXNObject   iTXNObject,
+  SInt16      iPart);
+
+
 
 /*
   *******************************************************************************************************
@@ -1561,8 +1591,9 @@ TXNZoomWindow(
  */
 EXTERN_API_C( Boolean )
 TXNCanUndo(
-    TXNObject     iTXNObject,
-    TXNActionKey *oTXNActionKey ); /* can be NULL */
+  TXNObject       iTXNObject,
+  TXNActionKey *  oTXNActionKey);      /* can be NULL */
+
 
 /*
   ********************************************************************************************************
@@ -1580,7 +1611,9 @@ TXNCanUndo(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNUndo( TXNObject iTXNObject );
+TXNUndo(TXNObject iTXNObject);
+
+
 
 /*
   *********************************************************************************************************
@@ -1604,8 +1637,10 @@ TXNUndo( TXNObject iTXNObject );
  */
 EXTERN_API_C( Boolean )
 TXNCanRedo(
-    TXNObject     iTXNObject,
-    TXNActionKey *oTXNActionKey ); /* can be NULL */
+  TXNObject       iTXNObject,
+  TXNActionKey *  oTXNActionKey);      /* can be NULL */
+
+
 
 /*
   ********************************************************************************************************
@@ -1623,7 +1658,9 @@ TXNCanRedo(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-TXNRedo( TXNObject iTXNObject );
+TXNRedo(TXNObject iTXNObject);
+
+
 
 /*
   *********************************************************************************************************
@@ -1643,7 +1680,9 @@ TXNRedo( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNCut( TXNObject iTXNObject );
+TXNCut(TXNObject iTXNObject);
+
+
 
 /*
   *********************************************************************************************************
@@ -1664,7 +1703,9 @@ TXNCut( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNCopy( TXNObject iTXNObject );
+TXNCopy(TXNObject iTXNObject);
+
+
 
 /*
   ***********************************************************************************************************
@@ -1685,7 +1726,9 @@ TXNCopy( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNPaste( TXNObject iTXNObject );
+TXNPaste(TXNObject iTXNObject);
+
+
 
 /*
   **********************************************************************************************************
@@ -1706,7 +1749,9 @@ TXNPaste( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNClear( TXNObject iTXNObject );
+TXNClear(TXNObject iTXNObject);
+
+
 
 /*
   *********************************************************************************************************
@@ -1732,9 +1777,11 @@ TXNClear( TXNObject iTXNObject );
  */
 EXTERN_API_C( void )
 TXNGetSelection(
-    TXNObject  iTXNObject,
-    TXNOffset *oStartOffset,
-    TXNOffset *oEndOffset );
+  TXNObject    iTXNObject,
+  TXNOffset *  oStartOffset,
+  TXNOffset *  oEndOffset);
+
+
 
 /*
   *****************************************************************************************************
@@ -1755,8 +1802,10 @@ TXNGetSelection(
  */
 EXTERN_API_C( void )
 TXNShowSelection(
-    TXNObject iTXNObject,
-    Boolean   iShowEnd );
+  TXNObject   iTXNObject,
+  Boolean     iShowEnd);
+
+
 
 /*
   *****************************************************************************************************
@@ -1778,7 +1827,9 @@ TXNShowSelection(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-TXNIsSelectionEmpty( TXNObject iTXNObject );
+TXNIsSelectionEmpty(TXNObject iTXNObject);
+
+
 
 /*
   ********************************************************************************************************
@@ -1800,9 +1851,11 @@ TXNIsSelectionEmpty( TXNObject iTXNObject );
  */
 EXTERN_API_C( OSStatus )
 TXNSetSelection(
-    TXNObject iTXNObject,
-    TXNOffset iStartOffset,
-    TXNOffset iEndOffset );
+  TXNObject   iTXNObject,
+  TXNOffset   iStartOffset,
+  TXNOffset   iEndOffset);
+
+
 
 /*
   *******************************************************************************************************
@@ -1845,10 +1898,12 @@ TXNSetSelection(
  */
 EXTERN_API_C( OSStatus )
 TXNGetContinuousTypeAttributes(
-    TXNObject           iTxnObject,
-    TXNContinuousFlags *oContinuousFlags,
-    ItemCount           iCount,
-    TXNTypeAttributes   ioTypeAttributes[] ); /* can be NULL */
+  TXNObject             iTxnObject,
+  TXNContinuousFlags *  oContinuousFlags,
+  ItemCount             iCount,
+  TXNTypeAttributes     ioTypeAttributes[]);    /* can be NULL */
+
+
 
 /*
   *************************************************************************************************
@@ -1880,11 +1935,13 @@ TXNGetContinuousTypeAttributes(
  */
 EXTERN_API_C( OSStatus )
 TXNSetTypeAttributes(
-    TXNObject               iTXNObject,
-    ItemCount               iAttrCount,
-    const TXNTypeAttributes iAttributes[],
-    TXNOffset               iStartOffset,
-    TXNOffset               iEndOffset );
+  TXNObject                 iTXNObject,
+  ItemCount                 iAttrCount,
+  const TXNTypeAttributes   iAttributes[],
+  TXNOffset                 iStartOffset,
+  TXNOffset                 iEndOffset);
+
+
 
 /*
  *  TXNSetTXNObjectControls()
@@ -1944,11 +2001,13 @@ TXNSetTypeAttributes(
  */
 EXTERN_API_C( OSStatus )
 TXNSetTXNObjectControls(
-    TXNObject            iTXNObject,
-    Boolean              iClearAll,
-    ItemCount            iControlCount,
-    const TXNControlTag  iControlTags[], /* can be NULL */
-    const TXNControlData iControlData[] ); /* can be NULL */
+  TXNObject              iTXNObject,
+  Boolean                iClearAll,
+  ItemCount              iControlCount,
+  const TXNControlTag    iControlTags[],      /* can be NULL */
+  const TXNControlData   iControlData[]);     /* can be NULL */
+
+
 
 /*
  *  TXNGetTXNObjectControls()
@@ -1988,10 +2047,12 @@ TXNSetTXNObjectControls(
  */
 EXTERN_API_C( OSStatus )
 TXNGetTXNObjectControls(
-    TXNObject           iTXNObject, /* can be NULL */
-    ItemCount           iControlCount,
-    const TXNControlTag iControlTags[],
-    TXNControlData      oControlData[] );
+  TXNObject             iTXNObject,          /* can be NULL */
+  ItemCount             iControlCount,
+  const TXNControlTag   iControlTags[],
+  TXNControlData        oControlData[]);
+
+
 
 /*
   ******************************************************************************************************
@@ -2019,10 +2080,12 @@ TXNGetTXNObjectControls(
  */
 EXTERN_API_C( OSStatus )
 TXNCountRunsInRange(
-    TXNObject  iTXNObject,
-    TXNOffset  iStartOffset,
-    TXNOffset  iEndOffset,
-    ItemCount *oRunCount );
+  TXNObject    iTXNObject,
+  TXNOffset    iStartOffset,
+  TXNOffset    iEndOffset,
+  ItemCount *  oRunCount);
+
+
 
 /*
  *  TXNGetIndexedRunInfoFromRange()
@@ -2090,15 +2153,17 @@ TXNCountRunsInRange(
  */
 EXTERN_API_C( OSStatus )
 TXNGetIndexedRunInfoFromRange(
-    TXNObject          iTXNObject,
-    ItemCount          iIndex,
-    TXNOffset          iStartOffset,
-    TXNOffset          iEndOffset,
-    TXNOffset *        oRunStartOffset, /* can be NULL */
-    TXNOffset *        oRunEndOffset, /* can be NULL */
-    TXNDataType *      oRunDataType, /* can be NULL */
-    ItemCount          iTypeAttributeCount,
-    TXNTypeAttributes *ioTypeAttributes ); /* can be NULL */
+  TXNObject            iTXNObject,
+  ItemCount            iIndex,
+  TXNOffset            iStartOffset,
+  TXNOffset            iEndOffset,
+  TXNOffset *          oRunStartOffset,           /* can be NULL */
+  TXNOffset *          oRunEndOffset,             /* can be NULL */
+  TXNDataType *        oRunDataType,              /* can be NULL */
+  ItemCount            iTypeAttributeCount,
+  TXNTypeAttributes *  ioTypeAttributes);         /* can be NULL */
+
+
 
 /*
   **********************************************************************************************************
@@ -2120,7 +2185,9 @@ TXNGetIndexedRunInfoFromRange(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ByteCount )
-TXNDataSize( TXNObject iTXNObject );
+TXNDataSize(TXNObject iTXNObject);
+
+
 
 /*
   ***********************************************************************************************************
@@ -2157,10 +2224,12 @@ TXNDataSize( TXNObject iTXNObject );
  */
 EXTERN_API_C( OSStatus )
 TXNGetData(
-    TXNObject iTXNObject,
-    TXNOffset iStartOffset,
-    TXNOffset iEndOffset,
-    Handle *  oDataHandle );
+  TXNObject   iTXNObject,
+  TXNOffset   iStartOffset,
+  TXNOffset   iEndOffset,
+  Handle *    oDataHandle);
+
+
 
 /*
   ***********************************************************************************************************
@@ -2191,11 +2260,13 @@ TXNGetData(
  */
 EXTERN_API_C( OSStatus )
 TXNGetDataEncoded(
-    TXNObject   iTXNObject,
-    TXNOffset   iStartOffset,
-    TXNOffset   iEndOffset,
-    Handle *    oDataHandle,
-    TXNDataType iEncoding );
+  TXNObject     iTXNObject,
+  TXNOffset     iStartOffset,
+  TXNOffset     iEndOffset,
+  Handle *      oDataHandle,
+  TXNDataType   iEncoding);
+
+
 
 /*
   *********************************************************************************************************
@@ -2229,12 +2300,14 @@ TXNGetDataEncoded(
  */
 EXTERN_API_C( OSStatus )
 TXNSetDataFromFile(
-    TXNObject iTXNObject,
-    SInt16    iFileRefNum,
-    OSType    iFileType,
-    ByteCount iFileLength,
-    TXNOffset iStartOffset,
-    TXNOffset iEndOffset );
+  TXNObject   iTXNObject,
+  SInt16      iFileRefNum,
+  OSType      iFileType,
+  ByteCount   iFileLength,
+  TXNOffset   iStartOffset,
+  TXNOffset   iEndOffset);
+
+
 
 /*
  *  TXNSetData()
@@ -2281,12 +2354,13 @@ TXNSetDataFromFile(
  */
 EXTERN_API_C( OSStatus )
 TXNSetData(
-    TXNObject   iTXNObject,
-    TXNDataType iDataType,
-    const void *iDataPtr, /* can be NULL */
-    ByteCount   iDataSize,
-    TXNOffset   iStartOffset,
-    TXNOffset   iEndOffset );
+  TXNObject     iTXNObject,
+  TXNDataType   iDataType,
+  const void *  iDataPtr,           /* can be NULL */
+  ByteCount     iDataSize,
+  TXNOffset     iStartOffset,
+  TXNOffset     iEndOffset);
+
 
 /*
   ************************************************************************************************************                          
@@ -2310,7 +2384,9 @@ TXNSetData(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ItemCount )
-TXNGetChangeCount( TXNObject iTXNObject );
+TXNGetChangeCount(TXNObject iTXNObject);
+
+
 
 /*
   *********************************************************************************************************
@@ -2349,13 +2425,15 @@ TXNGetChangeCount( TXNObject iTXNObject );
  */
 EXTERN_API_C( OSStatus )
 TXNSave(
-    TXNObject                    iTXNObject,
-    TXNFileType                  iType,
-    OSType                       iResType,
-    TXNPermanentTextEncodingType iPermanentEncoding,
-    const FSSpec *               iFileSpecification,
-    SInt16                       iDataReference,
-    SInt16                       iResourceReference );
+  TXNObject                      iTXNObject,
+  TXNFileType                    iType,
+  OSType                         iResType,
+  TXNPermanentTextEncodingType   iPermanentEncoding,
+  const FSSpec *                 iFileSpecification,
+  SInt16                         iDataReference,
+  SInt16                         iResourceReference);
+
+
 
 /*
   ***********************************************************************************************************
@@ -2376,7 +2454,9 @@ TXNSave(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNRevert( TXNObject iTXNObject );
+TXNRevert(TXNObject iTXNObject);
+
+
 
 /*
   *********************************************************************************************************                 
@@ -2398,7 +2478,9 @@ TXNRevert( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNPageSetup( TXNObject iTXNObject );
+TXNPageSetup(TXNObject iTXNObject);
+
+
 
 /*
   **********************************************************************************************************
@@ -2418,7 +2500,9 @@ TXNPageSetup( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNPrint( TXNObject iTXNObject );
+TXNPrint(TXNObject iTXNObject);
+
+
 
 /*
   ***********************************************************************************************************                           
@@ -2440,7 +2524,9 @@ TXNPrint( TXNObject iTXNObject );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-TXNIsScrapPastable( void );
+TXNIsScrapPastable(void);
+
+
 
 /*
   ***********************************************************************************************************
@@ -2460,7 +2546,9 @@ TXNIsScrapPastable( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNConvertToPublicScrap( void );
+TXNConvertToPublicScrap(void);
+
+
 
 /*
   ***********************************************************************************************************
@@ -2480,7 +2568,9 @@ TXNConvertToPublicScrap( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNConvertFromPublicScrap( void );
+TXNConvertFromPublicScrap(void);
+
+
 
 /*
   ************************************************************************************************************
@@ -2502,8 +2592,10 @@ TXNConvertFromPublicScrap( void );
  */
 EXTERN_API_C( void )
 TXNGetViewRect(
-    TXNObject iTXNObject,
-    Rect *    oViewRect );
+  TXNObject   iTXNObject,
+  Rect *      oViewRect);
+
+
 
 /*
   !! TXNSetViewRect is now deprecated for 10.2 and later.  Please use TXNSetFrameBounds or TXNSetRectBounds API !!
@@ -2529,8 +2621,10 @@ TXNGetViewRect(
  */
 EXTERN_API_C( void )
 TXNSetViewRect(
-    TXNObject   iTXNObject,
-    const Rect *iViewRect );
+  TXNObject     iTXNObject,
+  const Rect *  iViewRect);
+
+
 
 /*
   ***********************************************************************************************************
@@ -2577,16 +2671,18 @@ TXNSetViewRect(
  */
 EXTERN_API_C( OSStatus )
 TXNFind(
-    TXNObject                 iTXNObject,
-    const TXNMatchTextRecord *iMatchTextDataPtr, /* can be NULL */
-    TXNDataType               iDataType,
-    TXNMatchOptions           iMatchOptions,
-    TXNOffset                 iStartSearchOffset,
-    TXNOffset                 iEndSearchOffset,
-    TXNFindUPP                iFindProc,
-    SInt32                    iRefCon,
-    TXNOffset *               oStartMatchOffset,
-    TXNOffset *               oEndMatchOffset );
+  TXNObject                   iTXNObject,
+  const TXNMatchTextRecord *  iMatchTextDataPtr,        /* can be NULL */
+  TXNDataType                 iDataType,
+  TXNMatchOptions             iMatchOptions,
+  TXNOffset                   iStartSearchOffset,
+  TXNOffset                   iEndSearchOffset,
+  TXNFindUPP                  iFindProc,
+  SInt32                      iRefCon,
+  TXNOffset *                 oStartMatchOffset,
+  TXNOffset *                 oEndMatchOffset);
+
+
 
 /*
   ***************************************************************************************************************
@@ -2611,9 +2707,11 @@ TXNFind(
  */
 EXTERN_API_C( OSStatus )
 TXNSetFontDefaults(
-    TXNObject                              iTXNObject,
-    ItemCount                              iCount,
-    const TXNMacOSPreferredFontDescription iFontDefaults[] );
+  TXNObject                                iTXNObject,
+  ItemCount                                iCount,
+  const TXNMacOSPreferredFontDescription   iFontDefaults[]);
+
+
 
 /*
   ***************************************************************************************************************
@@ -2640,9 +2738,11 @@ TXNSetFontDefaults(
  */
 EXTERN_API_C( OSStatus )
 TXNGetFontDefaults(
-    TXNObject                        iTXNObject,
-    ItemCount *                      ioCount,
-    TXNMacOSPreferredFontDescription ioFontDefaults[] ); /* can be NULL */
+  TXNObject                          iTXNObject,
+  ItemCount *                        ioCount,
+  TXNMacOSPreferredFontDescription   ioFontDefaults[]);    /* can be NULL */
+
+
 
 /*
   ****************************************************************************************************************
@@ -2675,9 +2775,11 @@ TXNGetFontDefaults(
  */
 EXTERN_API_C( OSStatus )
 TXNAttachObjectToWindow(
-    TXNObject iTXNObject,
-    GWorldPtr iWindow,
-    Boolean   iIsActualWindow );
+  TXNObject   iTXNObject,
+  GWorldPtr   iWindow,
+  Boolean     iIsActualWindow);
+
+
 
 /*
   ****************************************************************************************************************
@@ -2700,7 +2802,9 @@ TXNAttachObjectToWindow(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-TXNIsObjectAttachedToWindow( TXNObject iTXNObject );
+TXNIsObjectAttachedToWindow(TXNObject iTXNObject);
+
+
 
 /*
   ****************************************************************************************************************
@@ -2731,12 +2835,14 @@ TXNIsObjectAttachedToWindow( TXNObject iTXNObject );
  */
 EXTERN_API_C( OSErr )
 TXNDragTracker(
-    TXNObject           iTXNObject,
-    TXNFrameID          iTXNFrameID,
-    DragTrackingMessage iMessage,
-    WindowRef           iWindow,
-    DragReference       iDragReference,
-    Boolean             iDifferentObjectSameWindow );
+  TXNObject             iTXNObject,
+  TXNFrameID            iTXNFrameID,
+  DragTrackingMessage   iMessage,
+  WindowRef             iWindow,
+  DragReference         iDragReference,
+  Boolean               iDifferentObjectSameWindow);
+
+
 
 /*
   ****************************************************************************************************************
@@ -2766,11 +2872,13 @@ TXNDragTracker(
  */
 EXTERN_API_C( OSErr )
 TXNDragReceiver(
-    TXNObject     iTXNObject,
-    TXNFrameID    iTXNFrameID,
-    WindowRef     iWindow,
-    DragReference iDragReference,
-    Boolean       iDifferentObjectSameWindow );
+  TXNObject       iTXNObject,
+  TXNFrameID      iTXNFrameID,
+  WindowRef       iWindow,
+  DragReference   iDragReference,
+  Boolean         iDifferentObjectSameWindow);
+
+
 
 /*
   ****************************************************************************************************************
@@ -2802,9 +2910,11 @@ TXNDragReceiver(
  */
 EXTERN_API_C( OSStatus )
 TXNActivate(
-    TXNObject         iTXNObject,
-    TXNFrameID        iTXNFrameID,
-    TXNScrollBarState iActiveState );
+  TXNObject           iTXNObject,
+  TXNFrameID          iTXNFrameID,
+  TXNScrollBarState   iActiveState);
+
+
 
 /*
   *****************************************************************************************************************
@@ -2829,8 +2939,10 @@ TXNActivate(
  */
 EXTERN_API_C( OSStatus )
 TXNSetBackground(
-    TXNObject            iTXNObject,
-    const TXNBackground *iBackgroundInfo );
+  TXNObject              iTXNObject,
+  const TXNBackground *  iBackgroundInfo);
+
+
 
 /*
   *****************************************************************************************************************
@@ -2861,10 +2973,12 @@ TXNSetBackground(
  */
 EXTERN_API_C( OSStatus )
 TXNEchoMode(
-    TXNObject    iTXNObject,
-    UniChar      iEchoCharacter,
-    TextEncoding iEncoding,
-    Boolean      iOn );
+  TXNObject      iTXNObject,
+  UniChar        iEchoCharacter,
+  TextEncoding   iEncoding,
+  Boolean        iOn);
+
+
 
 /*
   ********************************************************************************************************************
@@ -2900,10 +3014,12 @@ TXNEchoMode(
  */
 EXTERN_API_C( OSStatus )
 TXNNewFontMenuObject(
-    MenuRef            iFontMenuHandle,
-    SInt16             iMenuID,
-    SInt16             iStartHierMenuID,
-    TXNFontMenuObject *oTXNFontMenuObject );
+  MenuRef              iFontMenuHandle,
+  SInt16               iMenuID,
+  SInt16               iStartHierMenuID,
+  TXNFontMenuObject *  oTXNFontMenuObject);
+
+
 
 /*
   *********************************************************************************************************************
@@ -2926,8 +3042,9 @@ TXNNewFontMenuObject(
  */
 EXTERN_API_C( OSStatus )
 TXNGetFontMenuHandle(
-    TXNFontMenuObject iTXNFontMenuObject,
-    MenuRef *         oFontMenuHandle );
+  TXNFontMenuObject   iTXNFontMenuObject,
+  MenuRef *           oFontMenuHandle);
+
 
 #define TXNGetFontMenuRef TXNGetFontMenuHandle
 
@@ -2950,7 +3067,9 @@ TXNGetFontMenuHandle(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-TXNDisposeFontMenuObject( TXNFontMenuObject iTXNFontMenuObject );
+TXNDisposeFontMenuObject(TXNFontMenuObject iTXNFontMenuObject);
+
+
 
 /*
   *********************************************************************************************************************
@@ -2977,10 +3096,12 @@ TXNDisposeFontMenuObject( TXNFontMenuObject iTXNFontMenuObject );
  */
 EXTERN_API_C( OSStatus )
 TXNDoFontMenuSelection(
-    TXNObject         iTXNObject,
-    TXNFontMenuObject iTXNFontMenuObject,
-    SInt16            iMenuID,
-    SInt16            iMenuItem );
+  TXNObject           iTXNObject,
+  TXNFontMenuObject   iTXNFontMenuObject,
+  SInt16              iMenuID,
+  SInt16              iMenuItem);
+
+
 
 /*
  *  TXNPrepareFontMenu()
@@ -3014,8 +3135,10 @@ TXNDoFontMenuSelection(
  */
 EXTERN_API_C( OSStatus )
 TXNPrepareFontMenu(
-    TXNObject         iTXNObject, /* can be NULL */
-    TXNFontMenuObject iTXNFontMenuObject );
+  TXNObject           iTXNObject,               /* can be NULL */
+  TXNFontMenuObject   iTXNFontMenuObject);
+
+
 
 /*
   **********************************************************************************************************************
@@ -3043,7 +3166,9 @@ TXNPrepareFontMenu(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( TXNVersionValue )
-TXNVersionInformation( TXNFeatureBits *oFeatureFlags );
+TXNVersionInformation(TXNFeatureBits * oFeatureFlags);
+
+
 
 /*
  *  TXNIsObjectAttachedToSpecificWindow()
@@ -3074,9 +3199,10 @@ TXNVersionInformation( TXNFeatureBits *oFeatureFlags );
  */
 EXTERN_API_C( OSStatus )
 TXNIsObjectAttachedToSpecificWindow(
-    TXNObject iTXNObject,
-    WindowRef iWindow,
-    Boolean * oAttached );
+  TXNObject   iTXNObject,
+  WindowRef   iWindow,
+  Boolean *   oAttached);
+
 
 /*
  *  TXNSetRectBounds()
@@ -3115,10 +3241,11 @@ TXNIsObjectAttachedToSpecificWindow(
  */
 EXTERN_API_C( void )
 TXNSetRectBounds(
-    TXNObject          iTXNObject,
-    const Rect *       iViewRect, /* can be NULL */
-    const TXNLongRect *iDestinationRect, /* can be NULL */
-    Boolean            iUpdate );
+  TXNObject            iTXNObject,
+  const Rect *         iViewRect,              /* can be NULL */
+  const TXNLongRect *  iDestinationRect,       /* can be NULL */
+  Boolean              iUpdate);
+
 
 /*
  *  TXNGetRectBounds()
@@ -3159,10 +3286,12 @@ TXNSetRectBounds(
  */
 EXTERN_API_C( OSStatus )
 TXNGetRectBounds(
-    TXNObject    iTXNObject,
-    Rect *       oViewRect, /* can be NULL */
-    TXNLongRect *oDestinationRect, /* can be NULL */
-    TXNLongRect *oTextRect ); /* can be NULL */
+  TXNObject      iTXNObject,
+  Rect *         oViewRect,              /* can be NULL */
+  TXNLongRect *  oDestinationRect,       /* can be NULL */
+  TXNLongRect *  oTextRect);             /* can be NULL */
+
+
 
 /*
  *  TXNRecalcTextLayout()
@@ -3188,7 +3317,10 @@ TXNGetRectBounds(
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-TXNRecalcTextLayout( TXNObject iTXNObject );
+TXNRecalcTextLayout(TXNObject iTXNObject);
+
+
+
 
 /*
  *  TXNScroll()
@@ -3248,11 +3380,13 @@ TXNRecalcTextLayout( TXNObject iTXNObject );
  */
 EXTERN_API_C( OSStatus )
 TXNScroll(
-    TXNObject     iTXNObject,
-    TXNScrollUnit iVerticalScrollUnit,
-    TXNScrollUnit iHorizontalScrollUnit,
-    SInt32 *      ioVerticalDelta,
-    SInt32 *      ioHorizontalDelta );
+  TXNObject       iTXNObject,
+  TXNScrollUnit   iVerticalScrollUnit,
+  TXNScrollUnit   iHorizontalScrollUnit,
+  SInt32 *        ioVerticalDelta,
+  SInt32 *        ioHorizontalDelta);
+
+
 
 /*
  *  TXNRegisterScrollInfoProc()
@@ -3287,9 +3421,13 @@ TXNScroll(
  */
 EXTERN_API_C( void )
 TXNRegisterScrollInfoProc(
-    TXNObject        iTXNObject,
-    TXNScrollInfoUPP iTXNScrollInfoUPP,
-    SInt32           iRefCon );
+  TXNObject          iTXNObject,
+  TXNScrollInfoUPP   iTXNScrollInfoUPP,
+  SInt32             iRefCon);
+
+
+
+
 
 /*
  *  TXNClearUndo()
@@ -3308,14 +3446,16 @@ TXNRegisterScrollInfoProc(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-TXNClearUndo( TXNObject iTXNObject );
+TXNClearUndo(TXNObject iTXNObject);
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -3329,3 +3469,4 @@ TXNClearUndo( TXNObject iTXNObject );
 #endif
 
 #endif /* __MACTEXTEDITOR__ */
+

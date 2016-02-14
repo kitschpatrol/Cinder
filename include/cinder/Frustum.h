@@ -31,25 +31,20 @@
 #pragma once
 
 #if defined( CINDER_MSW ) || defined( CINDER_WINRT )
-#pragma push_macro( "NEAR" )
-#undef NEAR
-#pragma push_macro( "FAR" )
-#undef FAR
+	#pragma push_macro( "NEAR" )
+	#undef NEAR
+	#pragma push_macro( "FAR" )
+	#undef FAR
 #endif
 
 namespace cinder {
 
-template <typename T>
+template<typename T>
 class FrustumT {
   public:
-	enum FrustumSection { NEAR,
-		FAR,
-		LEFT,
-		RIGHT,
-		TOP,
-		BOTTOM };
+	enum FrustumSection { NEAR, FAR, LEFT, RIGHT, TOP, BOTTOM };
 
-	typedef glm::tvec3<T, glm::defaultp>   Vec3T;
+	typedef glm::tvec3<T, glm::defaultp> Vec3T;
 	typedef glm::tmat4x4<T, glm::defaultp> Mat4T;
 
   public:
@@ -93,18 +88,19 @@ class FrustumT {
 	bool intersects( const AxisAlignedBox &box ) const;
 
 	//! Returns a const reference to the Plane associated with /a section of the Frustum.
-	const PlaneT<T> &getPlane( FrustumSection section ) const { return mFrustumPlanes[section]; }
+	const PlaneT<T>& getPlane( FrustumSection section ) const { return mFrustumPlanes[section]; }
+	
   protected:
-	PlaneT<T> mFrustumPlanes[6];
+	PlaneT<T>	mFrustumPlanes[6];
 };
 
-typedef FrustumT<float>  Frustum;
-typedef FrustumT<float>  Frustumf;
-typedef FrustumT<double> Frustumd;
+typedef FrustumT<float>		Frustum;
+typedef FrustumT<float>		Frustumf;
+typedef FrustumT<double>	Frustumd;
 
 #if defined( CINDER_MSW )
-#pragma pop_macro( "FAR" )
-#pragma pop_macro( "NEAR" )
+	#pragma pop_macro( "FAR" )
+	#pragma pop_macro( "NEAR" )
 #endif
 
 } // namespace cinder

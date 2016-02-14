@@ -36,6 +36,8 @@
 #include <Quickdraw.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -49,11 +51,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,11 +68,12 @@ extern "C" {
  */
 enum {
 
-	/*
+  /*
    * Events related to font selection or handling.
    */
-	kEventClassFont = FOUR_CHAR_CODE( 'font' )
+  kEventClassFont               = FOUR_CHAR_CODE('font')
 };
+
 
 /*
  *  Summary:
@@ -78,13 +81,13 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * The state of the Font Panel should be toggled, displaying it or
    * hiding it as necessary. If the user closes the Font Panel directly
    * from the window, the application will receive a
    * kEventFontPanelClosed event.
    */
-	kHICommandShowHideFontPanel = FOUR_CHAR_CODE( 'shfp' )
+  kHICommandShowHideFontPanel   = FOUR_CHAR_CODE('shfp')
 };
 
 /* Font Events */
@@ -110,13 +113,13 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * The Font Panel has been closed. The application should update its
    * corresponding UI element (e.g., a menu item) accordingly.
    */
-	kEventFontPanelClosed = 1,
+  kEventFontPanelClosed         = 1,
 
-	/*
+  /*
    * The user has specified font settings in the Font Panel. The
    * application can obtain these settings from the event, in which
    * they are stored as parameters. Not all parameters are guaranteed
@@ -124,7 +127,7 @@ enum {
    * recognizes and apply the ones found as appropriate to the target
    * text.
    */
-	kEventFontSelection = 2
+  kEventFontSelection           = 2
 };
 
 /*
@@ -141,19 +144,20 @@ enum {
         -->     kEventParamFontColor                typeFontColor
 */
 enum {
-	typeATSUFontID = typeUInt32, /* ATSUI font ID.*/
-	typeATSUSize = typeFixed, /* ATSUI font size.*/
-	typeFMFontFamily = typeSInt16, /* Font family reference.*/
-	typeFMFontStyle = typeSInt16, /* Quickdraw font style*/
-	typeFMFontSize = typeSInt16, /* Integer font size.*/
-	typeFontColor = typeRGBColor, /* Font color spec (optional).*/
-	kEventParamATSUFontID = FOUR_CHAR_CODE( 'auid' ), /* typeATSUFontID*/
-	kEventParamATSUFontSize = FOUR_CHAR_CODE( 'ausz' ), /* typeATSUSize*/
-	kEventParamFMFontFamily = FOUR_CHAR_CODE( 'fmfm' ), /* typeFMFontFamily*/
-	kEventParamFMFontStyle = FOUR_CHAR_CODE( 'fmst' ), /* typeFMFontStyle*/
-	kEventParamFMFontSize = FOUR_CHAR_CODE( 'fmsz' ), /* typeFMFontSize*/
-	kEventParamFontColor = FOUR_CHAR_CODE( 'fclr' ) /* typeFontColor*/
+  typeATSUFontID                = typeUInt32, /* ATSUI font ID.*/
+  typeATSUSize                  = typeFixed, /* ATSUI font size.*/
+  typeFMFontFamily              = typeSInt16, /* Font family reference.*/
+  typeFMFontStyle               = typeSInt16, /* Quickdraw font style*/
+  typeFMFontSize                = typeSInt16, /* Integer font size.*/
+  typeFontColor                 = typeRGBColor, /* Font color spec (optional).*/
+  kEventParamATSUFontID         = FOUR_CHAR_CODE('auid'), /* typeATSUFontID*/
+  kEventParamATSUFontSize       = FOUR_CHAR_CODE('ausz'), /* typeATSUSize*/
+  kEventParamFMFontFamily       = FOUR_CHAR_CODE('fmfm'), /* typeFMFontFamily*/
+  kEventParamFMFontStyle        = FOUR_CHAR_CODE('fmst'), /* typeFMFontStyle*/
+  kEventParamFMFontSize         = FOUR_CHAR_CODE('fmsz'), /* typeFMFontSize*/
+  kEventParamFontColor          = FOUR_CHAR_CODE('fclr') /* typeFontColor*/
 };
+
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Other Font Panel Constants
@@ -162,9 +166,9 @@ enum {
 Error codes (Font Panel codes in range [-8880,-8899]).
 */
 enum {
-	fontPanelShowErr = -8880, /* Can't display the Font Panel.*/
-	fontPanelSelectionStyleErr = -8881, /* Bad font selection style info.*/
-	fontPanelFontSelectionQDStyleVersionErr = -8882 /* Unsupported record version.*/
+  fontPanelShowErr              = -8880, /* Can't display the Font Panel.*/
+  fontPanelSelectionStyleErr    = -8881, /* Bad font selection style info.*/
+  fontPanelFontSelectionQDStyleVersionErr = -8882 /* Unsupported record version.*/
 };
 
 /*
@@ -173,8 +177,8 @@ sending ATSUI style data, it specifies kFontSelectionATSUIType; if it is
 sending Quickdraw style data, it specifies kFontSelectionQDType.
 */
 enum {
-	kFontSelectionATSUIType = FOUR_CHAR_CODE( 'astl' ), /* Use ATSUIStyle collection.*/
-	kFontSelectionQDType = FOUR_CHAR_CODE( 'qstl' ) /* Use FontSelectionQDStyle record.*/
+  kFontSelectionATSUIType       = FOUR_CHAR_CODE('astl'), /* Use ATSUIStyle collection.*/
+  kFontSelectionQDType          = FOUR_CHAR_CODE('qstl') /* Use FontSelectionQDStyle record.*/
 };
 
 /*
@@ -182,8 +186,9 @@ Supported versions of the FontSelectionQDStyle record. Clients should always set
 the <version> field to one of these values.
 */
 enum {
-	kFontSelectionQDStyleVersionZero = 0
+  kFontSelectionQDStyleVersionZero = 0
 };
+
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Font Panel Types
@@ -194,15 +199,15 @@ Panel. This record is used if the client is sending Quickdraw style data
 (i.e., it specified kFontSelectionQDType in SetFontPanelInfo()).
 */
 struct FontSelectionQDStyle {
-	UInt32               version; /* Version number of struct.*/
-	FMFontFamilyInstance instance; /* Font instance data.*/
-	FMFontSize           size; /* Size of font in points.*/
-	Boolean              hasColor; /* true if color info supplied.*/
-	UInt8                reserved; /* Filler byte.*/
-	RGBColor             color; /* Color specification for font.*/
+  UInt32              version;                /* Version number of struct.*/
+  FMFontFamilyInstance  instance;             /* Font instance data.*/
+  FMFontSize          size;                   /* Size of font in points.*/
+  Boolean             hasColor;               /* true if color info supplied.*/
+  UInt8               reserved;               /* Filler byte.*/
+  RGBColor            color;                  /* Color specification for font.*/
 };
-typedef struct FontSelectionQDStyle FontSelectionQDStyle;
-typedef FontSelectionQDStyle *      FontSelectionQDStylePtr;
+typedef struct FontSelectionQDStyle     FontSelectionQDStyle;
+typedef FontSelectionQDStyle *          FontSelectionQDStylePtr;
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Font Panel Functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -215,7 +220,8 @@ typedef FontSelectionQDStyle *      FontSelectionQDStylePtr;
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-FPIsFontPanelVisible( void );
+FPIsFontPanelVisible(void);
+
 
 /*
  *  FPShowHideFontPanel()
@@ -226,7 +232,8 @@ FPIsFontPanelVisible( void );
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-FPShowHideFontPanel( void );
+FPShowHideFontPanel(void);
+
 
 /*
  *  SetFontInfoForSelection()
@@ -238,17 +245,19 @@ FPShowHideFontPanel( void );
  */
 EXTERN_API_C( OSStatus )
 SetFontInfoForSelection(
-    OSType      iStyleType,
-    UInt32      iNumStyles,
-    void *      iStyles,
-    HIObjectRef iFPEventTarget );
+  OSType        iStyleType,
+  UInt32        iNumStyles,
+  void *        iStyles,
+  HIObjectRef   iFPEventTarget);
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -262,3 +271,4 @@ SetFontInfoForSelection(
 #endif
 
 #endif /* __FONTPANEL__ */
+

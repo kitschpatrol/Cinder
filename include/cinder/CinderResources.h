@@ -25,28 +25,26 @@
 #pragma once
 
 #ifdef RC_INVOKED
-#define WORKING_DIR "./"
-#define QUOTE_PATH( x ) #x
-#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) \
-	ID TYPE QUOTE_PATH(./ ##LOCALPREFIX##PATH )
-#elif defined( _WIN32 ) || defined( __WIN32__ ) || defined( WIN32 )
-#include <winapifamily.h>
+	#define WORKING_DIR "./"
+	#define QUOTE_PATH(x) #x
+	#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) \
+	ID		TYPE 	QUOTE_PATH( ./##LOCALPREFIX##PATH )
+#elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
+	#include <winapifamily.h>
 
-#if defined( WINAPI_PARTITION_DESKTOP ) // MSW RESOURCE
-#if WINAPI_FAMILY_PARTITION( WINAPI_PARTITION_DESKTOP )
-#define QUOTE_PATH( x ) #x
-#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) \
-	QUOTE_PATH( LOCALPREFIX##PATH )                    \
-	, ID, #TYPE
-#else // WINRT RESOURCE
-#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) #PATH
-#endif
-#else // MSW RESOURCE
-#define QUOTE_PATH( x ) #x
-#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) \
-	QUOTE_PATH( LOCALPREFIX##PATH )                    \
-	, ID, #TYPE
-#endif
+	#if defined(WINAPI_PARTITION_DESKTOP) // MSW RESOURCE
+		#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+			#define QUOTE_PATH(x) #x
+			#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) \
+			QUOTE_PATH(LOCALPREFIX##PATH),ID,#TYPE
+		#else // WINRT RESOURCE
+			#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) #PATH
+		#endif
+	#else // MSW RESOURCE
+		#define QUOTE_PATH(x) #x
+		#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) \
+		QUOTE_PATH(LOCALPREFIX##PATH),ID,#TYPE
+	#endif
 #else // MAC or iOS RESOURCE
-#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) #PATH
+	#define CINDER_RESOURCE( LOCALPREFIX, PATH, ID, TYPE ) #PATH
 #endif

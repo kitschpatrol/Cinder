@@ -21,9 +21,9 @@
  POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "cinder/Capture.h"
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
+#include "cinder/Capture.h"
 #import <AVFoundation/AVFoundation.h>
 #include <vector>
 
@@ -33,37 +33,37 @@ class CaptureImplAvFoundationDevice : public Capture::Device {
   public:
 	CaptureImplAvFoundationDevice( AVCaptureDevice *device );
 	~CaptureImplAvFoundationDevice();
-
-	bool                      checkAvailable() const;
-	bool                      isConnected() const;
-	Capture::DeviceIdentifier getUniqueId() const { return mUniqueId; }
-	bool                      isFrontFacing() const { return mFrontFacing; }
-	void *                    getNative() const { return mNativeDevice; }
+	
+	bool						checkAvailable() const;
+	bool						isConnected() const;
+	Capture::DeviceIdentifier	getUniqueId() const { return mUniqueId; }
+	bool						isFrontFacing() const { return mFrontFacing; }
+	void*						getNative() const { return mNativeDevice; }
   private:
-	Capture::DeviceIdentifier mUniqueId;
-	AVCaptureDevice *         mNativeDevice;
-	bool                      mFrontFacing;
+	Capture::DeviceIdentifier	mUniqueId;
+	AVCaptureDevice				*mNativeDevice;
+	bool						mFrontFacing;
 };
 
 } //namespace
 
-@interface CaptureImplAvFoundation : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate> {
-	AVCaptureSession *   mSession;
-	CVPixelBufferRef     mWorkingPixelBuffer;
-	cinder::Surface8uRef mCurrentFrame;
-	NSString *           mDeviceUniqueId;
-
-	cinder::Capture::DeviceRef mDevice;
-	bool                       mHasNewFrame;
-	bool                       mIsCapturing;
-	int32_t                    mWidth, mHeight;
-	int32_t                    mSurfaceChannelOrderCode;
-	int32_t                    mExposedFrameBytesPerRow;
-	int32_t                    mExposedFrameHeight;
-	int32_t                    mExposedFrameWidth;
+@interface CaptureImplAvFoundation : NSObject<AVCaptureVideoDataOutputSampleBufferDelegate> {
+	AVCaptureSession				*mSession;
+	CVPixelBufferRef				mWorkingPixelBuffer;
+	cinder::Surface8uRef			mCurrentFrame;
+	NSString						*mDeviceUniqueId;
+	
+	cinder::Capture::DeviceRef		mDevice;
+	bool							mHasNewFrame;
+	bool							mIsCapturing;
+	int32_t							mWidth, mHeight;
+	int32_t							mSurfaceChannelOrderCode;
+	int32_t							mExposedFrameBytesPerRow;
+	int32_t							mExposedFrameHeight;
+	int32_t							mExposedFrameWidth;
 }
 
-+ (const std::vector<cinder::Capture::DeviceRef> &)getDevices:(BOOL)forceRefresh;
++ (const std::vector<cinder::Capture::DeviceRef>&)getDevices:(BOOL)forceRefresh;
 
 - (id)initWithDevice:(const cinder::Capture::DeviceRef)device width:(int)width height:(int)height;
 - (bool)prepareStartCapture;

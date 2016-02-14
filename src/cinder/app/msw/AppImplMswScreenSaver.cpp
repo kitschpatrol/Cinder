@@ -22,28 +22,27 @@
 */
 
 #include "cinder/app/msw/AppImplMswScreenSaver.h"
-#include "cinder/Unicode.h"
 #include "cinder/Utilities.h"
+#include "cinder/Unicode.h"
 
 #include <Shellapi.h>
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 static const int TIMER_ID = 1;
 
 AppImplMswScreenSaver::AppImplMswScreenSaver( AppScreenSaver *app, HWND wnd, const AppScreenSaver::Settings &settings )
-    : AppImplMsw( app ), mApp( app )
+	: AppImplMsw( app ), mApp( app )
 {
 	// determine if this is a preview, which will be signified by /p:(HWND as integer)
-	LPWSTR *                 szArglist;
-	int                      nArgs;
+	LPWSTR *szArglist;
+	int nArgs;
 	std::vector<std::string> utf8Args;
-	szArglist = ::CommandLineToArgvW(::GetCommandLineW(), &nArgs );
+	szArglist = ::CommandLineToArgvW( ::GetCommandLineW(), &nArgs );
 	if( szArglist && nArgs ) {
 		OutputDebugStringA( "args: " );
 		for( int i = 0; i < nArgs; ++i ) {
-			utf8Args.push_back( toUtf8( (char16_t *)szArglist[i] ) );
+			utf8Args.push_back( toUtf8( (char16_t*)szArglist[i] ) );
 			OutputDebugStringA( utf8Args.back().c_str() );
 		}
 		OutputDebugStringA( "}" );
@@ -71,7 +70,7 @@ AppImplMswScreenSaver::AppImplMswScreenSaver( AppScreenSaver *app, HWND wnd, con
 					style &= ~WS_POPUP;
 					style |= WS_OVERLAPPEDWINDOW;
 					::SetWindowLongA( wnd, GWL_STYLE, style );
-					::SetWindowLongA( wnd, GWL_EXSTYLE, ::GetWindowLongA( wnd, GWL_EXSTYLE ) & ( ~WS_EX_TOPMOST ) );
+					::SetWindowLongA( wnd, GWL_EXSTYLE, ::GetWindowLongA( wnd, GWL_EXSTYLE ) & (~WS_EX_TOPMOST) );
 					::SetWindowPos( wnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE );
 					Area displayArea = Display::getMainDisplay()->getBounds();
 					::SetWindowPos( wnd, NULL, displayArea.getX1() + 5, displayArea.getY1() + 5, displayArea.getWidth() - 5, displayArea.getHeight() - 5, SWP_NOOWNERZORDER );
@@ -89,9 +88,9 @@ void AppImplMswScreenSaver::run()
 
 	// initial resize
 	for( auto winIt = mWindows.begin(); winIt != mWindows.end(); ++winIt )
-		( *winIt )->getWindow()->emitResize();
-
-	::SetTimer( mWindows.back()->mWnd, TIMER_ID, ( UINT )( 1000 / mFrameRate ), NULL );
+		(*winIt)->getWindow()->emitResize();
+	
+	::SetTimer( mWindows.back()->mWnd, TIMER_ID, (UINT)(1000 / mFrameRate), NULL );
 }
 
 WindowRef AppImplMswScreenSaver::getWindow() const
@@ -108,10 +107,10 @@ WindowRef AppImplMswScreenSaver::getWindowIndex( size_t index ) const
 {
 	if( index >= mWindows.size() )
 		return cinder::app::WindowRef();
-
+	
 	auto iter = mWindows.begin();
 	std::advance( iter, index );
-	return ( *iter )->mWindowRef;
+	return (*iter)->mWindowRef;
 }
 
 bool AppImplMswScreenSaver::isPreview() const
@@ -122,43 +121,43 @@ bool AppImplMswScreenSaver::isPreview() const
 LRESULT AppImplMswScreenSaver::eventHandler( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	switch( message ) {
-	case WM_TIMER:
-		setWindow( mWindows.front()->getWindow() );
-		mApp->privateUpdate__();
-		for( auto winIt = mWindows.begin(); winIt != mWindows.end(); ++winIt ) {
-			( *winIt )->draw();
-		}
-		return 0;
+		case WM_TIMER:
+			setWindow( mWindows.front()->getWindow() );
+			mApp->privateUpdate__();
+			for( auto winIt = mWindows.begin(); winIt != mWindows.end(); ++winIt ) {
+				(*winIt)->draw();
+			}
+			return 0;
 		break;
-	case WM_DESTROY:
-		for( auto winIt = mWindows.begin(); winIt != mWindows.end(); ++winIt )
-			( *winIt )->getWindow()->emitClose();
-		mApp->emitCleanup();
-		/*			mApp->getRenderer()->kill();
+		case WM_DESTROY:
+			for( auto winIt = mWindows.begin(); winIt != mWindows.end(); ++winIt )
+				(*winIt)->getWindow()->emitClose();
+			mApp->emitCleanup();
+/*			mApp->getRenderer()->kill();
 			::KillTimer( mWnd, TIMER_ID );
 			::ReleaseDC( mWnd, mDC );*/
-		return 0;
-		break;
-	case WM_MOUSEMOVE:
-	case WM_KEYDOWN:
-	case WM_ACTIVATE:
-	case WM_ACTIVATEAPP:
-	case WM_NCACTIVATE:
-		if( mDebugMode ) // in debug mode we capture these events so that they don't close the screensaver
 			return 0;
-		else
-			return ::DefScreenSaverProc( hWnd, message, wParam, lParam );
 		break;
-	default:
-		return ::DefScreenSaverProc( hWnd, message, wParam, lParam );
+		case WM_MOUSEMOVE:
+		case WM_KEYDOWN:
+		case WM_ACTIVATE:
+		case WM_ACTIVATEAPP:
+		case WM_NCACTIVATE:
+			if( mDebugMode ) // in debug mode we capture these events so that they don't close the screensaver
+				return 0;
+			else
+				return ::DefScreenSaverProc( hWnd, message, wParam, lParam );
+		break;
+		default:
+			return ::DefScreenSaverProc( hWnd, message, wParam, lParam );
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+// 
 void WindowImplMswScreenSaver::setFullScreen( bool fullScreen, const app::FullScreenOptions &options )
 {
 	// no-op
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

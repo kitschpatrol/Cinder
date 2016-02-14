@@ -23,35 +23,34 @@
 // Concrete implementation of VAO using "software" emulation
 
 #include "cinder/gl/Vao.h"
-#include "cinder/gl/Context.h"
 #include "cinder/gl/Vbo.h"
+#include "cinder/gl/Context.h"
 
 #include <map>
 using namespace std;
 
-namespace cinder {
-namespace gl {
+namespace cinder { namespace gl {
 
 class VaoImplSoftware : public Vao {
   public:
 	virtual ~VaoImplSoftware();
-
+	
 	VaoImplSoftware();
 
 	// Does the actual "work" of binding the VAO; called by Context
-	void bindImpl( Context *context ) override;
-	void unbindImpl( Context *context ) override;
-	void enableVertexAttribArrayImpl( GLuint index ) override;
-	void disableVertexAttribArrayImpl( GLuint index ) override;
-	void vertexAttribPointerImpl( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer ) override;
-	void vertexAttribIPointerImpl( GLuint index, GLint size, GLenum type, GLsizei stride, const GLvoid *pointer ) override;
-	void vertexAttribDivisorImpl( GLuint index, GLuint divisor ) override;
-	void reflectBindBufferImpl( GLenum target, GLuint buffer ) override;
+	void	bindImpl( Context *context ) override;
+	void	unbindImpl( Context *context ) override;
+	void	enableVertexAttribArrayImpl( GLuint index ) override;
+	void	disableVertexAttribArrayImpl( GLuint index ) override;
+	void	vertexAttribPointerImpl( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer ) override;
+	void	vertexAttribIPointerImpl( GLuint index, GLint size, GLenum type, GLsizei stride, const GLvoid *pointer ) override;
+	void	vertexAttribDivisorImpl( GLuint index, GLuint divisor ) override;	
+	void	reflectBindBufferImpl( GLenum target, GLuint buffer ) override;
 
-	void reassignContext( Context *newContext ) override;
+	void	reassignContext( Context *newContext ) override;
 
   protected:
-	static size_t sIdCounter;
+	static size_t	sIdCounter;
 
 	friend class Context;
 };
@@ -63,7 +62,7 @@ VaoRef createVaoImplSoftware()
 {
 	return VaoRef( new VaoImplSoftware );
 }
-
+	
 VaoImplSoftware::VaoImplSoftware()
 {
 	mId = (GLuint)++sIdCounter; // is this adequate? 4billion VAO allocations seems remote; the ID is not really necessary except for debugging
@@ -75,7 +74,7 @@ VaoImplSoftware::~VaoImplSoftware()
 
 void VaoImplSoftware::enableVertexAttribArrayImpl( GLuint index )
 {
-	if( !mLayout.isVertexAttribArrayEnabled( index ) ) {
+	if( ! mLayout.isVertexAttribArrayEnabled( index ) ) {
 		mLayout.enableVertexAttribArray( index );
 		glEnableVertexAttribArray( index );
 	}
@@ -90,7 +89,7 @@ void VaoImplSoftware::disableVertexAttribArrayImpl( GLuint index )
 
 void VaoImplSoftware::bindImpl( Context *context )
 {
-	if( !context )
+	if( ! context )
 		return;
 
 	auto oldBuffer = context->getBufferBinding( GL_ARRAY_BUFFER );
@@ -102,7 +101,7 @@ void VaoImplSoftware::bindImpl( Context *context )
 			if( attribIt->second.mPointerType == VertexAttrib::FLOAT )
 				glVertexAttribPointer( attribIt->first, attribIt->second.mSize, attribIt->second.mType, attribIt->second.mNormalized, attribIt->second.mStride, attribIt->second.mPointer );
 			else
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 				glVertexAttribIPointer( attribIt->first, attribIt->second.mSize, attribIt->second.mType, attribIt->second.mStride, attribIt->second.mPointer );
 #else
 				; // should we throw here?
@@ -121,7 +120,7 @@ void VaoImplSoftware::unbindImpl( Context *context )
 			glDisableVertexAttribArray( attribIt->first );
 		}
 	}
-
+	
 	mCtx->invalidateBufferBindingCache( GL_ELEMENT_ARRAY_BUFFER );
 }
 
@@ -136,8 +135,8 @@ void VaoImplSoftware::vertexAttribIPointerImpl( GLuint index, GLint size, GLenum
 {
 	mLayout.vertexAttribIPointer( index, size, type, stride, pointer );
 
-#if !defined( CINDER_GL_ES )
-	glVertexAttribIPointer( index, size, type, stride, pointer );
+#if ! defined( CINDER_GL_ES )
+	glVertexAttribIPointer( index, size, type, stride, pointer );	
 #endif
 }
 
@@ -145,7 +144,7 @@ void VaoImplSoftware::vertexAttribDivisorImpl( GLuint index, GLuint divisor )
 {
 	mLayout.vertexAttribDivisor( index, divisor );
 
-#if !defined( CINDER_GL_ES )
+#if ! defined( CINDER_GL_ES )
 	glVertexAttribDivisor( index, divisor );
 #endif
 }
@@ -161,5 +160,5 @@ void VaoImplSoftware::reassignContext( Context *newContext )
 {
 	mCtx = newContext;
 }
-}
-}
+
+} }

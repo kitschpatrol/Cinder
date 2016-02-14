@@ -58,9 +58,7 @@ using namespace cinder::app;
 }
 
 - (CinderViewMac *)initWithFrame:(NSRect)frame renderer:(RendererRef)renderer sharedRenderer:(RendererRef)sharedRenderer
-               appReceivesEvents:(BOOL)appReceivesEvents
-              highDensityDisplay:(BOOL)highDensityDisplay
-                enableMultiTouch:(BOOL)enableMultiTouch
+			appReceivesEvents:(BOOL)appReceivesEvents highDensityDisplay:(BOOL)highDensityDisplay enableMultiTouch:(BOOL)enableMultiTouch
 {
 	self = [super initWithFrame:frame];
 	mRenderer = renderer;
@@ -74,7 +72,7 @@ using namespace cinder::app;
 	mDelegate = nil;
 
 	[self setupRendererWithFrame:frame renderer:renderer sharedRenderer:sharedRenderer];
-
+	
 	return self;
 }
 
@@ -93,13 +91,13 @@ using namespace cinder::app;
 	if( mDelegate && mMultiTouchEnabled ) {
 		[self setAcceptsTouchEvents:YES];
 		[self setWantsRestingTouches:YES];
-		if( !mTouchIdMap )
+		if( ! mTouchIdMap )
 			mTouchIdMap = [[NSMutableDictionary alloc] initWithCapacity:10];
 	}
 
 	// listen to window fullscreen notifications so we can keep state consistent when user is manipulating the window mode via system controls
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( windowDidEnterFullScreen: ) name:NSWindowDidEnterFullScreenNotification object:[self window]];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( windowDidExitFullScreen: ) name:NSWindowDidExitFullScreenNotification object:[self window]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidEnterFullScreen:) name:NSWindowDidEnterFullScreenNotification object:[self window]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidExitFullScreen:) name:NSWindowDidExitFullScreenNotification object:[self window]];
 }
 
 - (float)contentScaleFactor
@@ -128,44 +126,44 @@ using namespace cinder::app;
 	if( fullScreen == mFullScreen )
 		return;
 
-	// ignore kiosk mode flag if exiting fullscreen and use stored setting
-	mFullScreenModeKiosk = ( fullScreen ? options->isKioskModeEnabled() : mFullScreenModeKiosk );
-	if( !mFullScreenModeKiosk ) {
+    // ignore kiosk mode flag if exiting fullscreen and use stored setting
+    mFullScreenModeKiosk = ( fullScreen ? options->isKioskModeEnabled() : mFullScreenModeKiosk );
+	if( ! mFullScreenModeKiosk ) {
 		bool hasFullScreenButton = [[self window] collectionBehavior] & NSWindowCollectionBehaviorFullScreenPrimary;
-		if( !hasFullScreenButton ) {
+		if( ! hasFullScreenButton ) {
 			[[self window] setCollectionBehavior:NSWindowCollectionBehaviorFullScreenPrimary | NSWindowCollectionBehaviorIgnoresCycle];
 		}
 		if( fullScreen ) { // we need to force the window to be resizable if entering fullscreen
-			[[self window] setStyleMask:( [[self window] styleMask] | NSResizableWindowMask )];
+			[[self window] setStyleMask:([[self window] styleMask] | NSResizableWindowMask)];
 		}
 		[[self window] toggleFullScreen:nil];
 	}
 	else if( fullScreen ) {
-		// Kiosk Mode
-		NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-		if( !options->isSecondaryDisplayBlankingEnabled() )
-			[dict setObject:[NSNumber numberWithBool:NO] forKey:NSFullScreenModeAllScreens];
-		if( !options->isExclusive() )
+        // Kiosk Mode
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        if( ! options->isSecondaryDisplayBlankingEnabled() )
+            [dict setObject:[NSNumber numberWithBool:NO] forKey:NSFullScreenModeAllScreens];
+		if( ! options->isExclusive() )
 			[dict setObject:[NSNumber numberWithUnsignedInteger:( NSApplicationPresentationHideMenuBar | NSApplicationPresentationHideDock )] forKey:NSFullScreenModeApplicationPresentationOptions];
 
-		cinder::DisplayMac *displayMac = dynamic_cast<cinder::DisplayMac *>( options->getDisplay().get() );
-		NSScreen *screen = ( displayMac ? displayMac->getNsScreen() : [[self window] screen] );
-		[[self window] setCollectionBehavior:NSWindowCollectionBehaviorIgnoresCycle | NSWindowCollectionBehaviorTransient];
-		[self enterFullScreenMode:screen withOptions:dict];
-	}
-	else {
+		cinder::DisplayMac *displayMac = dynamic_cast<cinder::DisplayMac*>( options->getDisplay().get() );
+        NSScreen *screen = ( displayMac ? displayMac->getNsScreen() : [[self window] screen] );
+		[[self window] setCollectionBehavior:NSWindowCollectionBehaviorIgnoresCycle | NSWindowCollectionBehaviorTransient];		
+        [self enterFullScreenMode:screen withOptions:dict];
+    }
+    else {
 		// Exit kiosk
-		[self exitFullScreenModeWithOptions:nil];
-		[[self window] becomeKeyWindow];
-		[[self window] makeFirstResponder:self];
-	}
-
+        [self exitFullScreenModeWithOptions:nil];
+        [[self window] becomeKeyWindow];
+        [[self window] makeFirstResponder:self];
+    }
+    
 	mFullScreen = fullScreen;
 }
 
 - (void)draw
 {
-	if( !mReadyToDraw )
+	if( ! mReadyToDraw )
 		return;
 
 	[self drawRect:[self bounds]];
@@ -180,7 +178,7 @@ using namespace cinder::app;
 {
 	[super drawRect:rect];
 
-	if( !mReadyToDraw )
+	if( ! mReadyToDraw )
 		return;
 
 	mRenderer->startDraw();
@@ -232,219 +230,221 @@ using namespace cinder::app;
 }
 
 - (int)prepMouseEventModifiers:(NSEvent *)evt
-{
+{	
 	unsigned int result = 0;
 	if( [evt modifierFlags] & NSControlKeyMask ) result |= cinder::app::MouseEvent::CTRL_DOWN;
 	if( [evt modifierFlags] & NSShiftKeyMask ) result |= cinder::app::MouseEvent::SHIFT_DOWN;
 	if( [evt modifierFlags] & NSAlternateKeyMask ) result |= cinder::app::MouseEvent::ALT_DOWN;
 	if( [evt modifierFlags] & NSCommandKeyMask ) result |= cinder::app::MouseEvent::META_DOWN;
-
+	
 	return result;
 }
 
 - (int)prepKeyEventModifiers:(NSEvent *)evt
 {
 	unsigned int result = 0;
-
+	
 	if( [evt modifierFlags] & NSShiftKeyMask ) result |= cinder::app::KeyEvent::SHIFT_DOWN;
 	if( [evt modifierFlags] & NSAlternateKeyMask ) result |= cinder::app::KeyEvent::ALT_DOWN;
 	if( [evt modifierFlags] & NSCommandKeyMask ) result |= cinder::app::KeyEvent::META_DOWN;
 	if( [evt modifierFlags] & NSControlKeyMask ) result |= cinder::app::KeyEvent::CTRL_DOWN;
-
+	
 	return result;
 }
 
-- (void)keyDown:(NSEvent *)theEvent
+- (void)keyDown:(NSEvent*)theEvent
 {
 	NSString *chars = [theEvent characters];
-	uint32_t c32 = ( [chars length] > 0 ) ? [chars characterAtIndex:0] : 0;
-	NSString *charsNoMods = [theEvent charactersIgnoringModifiers];
-	char c = ( [charsNoMods length] > 0 ) ? [charsNoMods characterAtIndex:0] : 0;
-
-	int code = [theEvent keyCode];
-	int mods = [self prepKeyEventModifiers:theEvent];
-
-	cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ), c32, c, mods, code );
+	uint32_t c32	= ([chars length] > 0 ) ? [chars characterAtIndex:0] : 0;
+	NSString *charsNoMods	= [theEvent charactersIgnoringModifiers];
+	char c					= ([charsNoMods length] > 0 ) ? [charsNoMods characterAtIndex:0] : 0;
+	
+	int code	= [theEvent keyCode];
+	int mods	= [self prepKeyEventModifiers:theEvent];
+	
+	cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ), c32,
+									c, mods, code);	
 	[mDelegate keyDown:&keyEvent];
 }
 
-- (void)keyUp:(NSEvent *)theEvent
+- (void)keyUp:(NSEvent*)theEvent
 {
 	NSString *chars = [theEvent characters];
-	uint32_t c32 = ( [chars length] > 0 ) ? [chars characterAtIndex:0] : 0;
-	NSString *charsNoMods = [theEvent charactersIgnoringModifiers];
-	char c = ( [charsNoMods length] > 0 ) ? [charsNoMods characterAtIndex:0] : 0;
+	uint32_t c32	= ([chars length] > 0 ) ? [chars characterAtIndex:0] : 0;
+	NSString *charsNoMods	= [theEvent charactersIgnoringModifiers];
+	char c					= ([charsNoMods length] > 0 ) ? [charsNoMods characterAtIndex:0] : 0;
 
-	int code = [theEvent keyCode];
-	int mods = [self prepKeyEventModifiers:theEvent];
-
-	cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ), c32, c, mods, code );
+	int code	= [theEvent keyCode];
+	int mods	= [self prepKeyEventModifiers:theEvent];
+	
+	cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ),
+									c32, c, mods, code );
 	[mDelegate keyUp:&keyEvent];
 }
 
-- (void)flagsChanged:(NSEvent *)theEvent
+- (void)flagsChanged:(NSEvent*)theEvent
 {
 	int code = [theEvent keyCode];
 	int mods = [self prepKeyEventModifiers:theEvent];
-
-	if( mods == 0 ) {
-		cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ), 0, 0, mods, code );
+	
+    if (mods == 0) {
+		cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ), 0, 0, mods, code);
 		[mDelegate keyUp:&keyEvent];
-	}
-	else {
-		cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ), 0, 0, mods, code );
+    }
+    else {
+		cinder::app::KeyEvent keyEvent( [mDelegate getWindowRef], cinder::app::KeyEvent::translateNativeKeyCode( code ), 0, 0, mods, code);
 		[mDelegate keyDown:&keyEvent];
-	}
+    }
 }
 
-- (void)mouseDown:(NSEvent *)theEvent
+- (void)mouseDown:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::LEFT_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::LEFT_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::LEFT_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseDown:&mouseEvent];
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::RIGHT_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::RIGHT_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::RIGHT_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseDown:&mouseEvent];
 }
 
 - (void)otherMouseDown:(NSEvent *)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::MIDDLE_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::MIDDLE_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+ 	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::MIDDLE_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseDown:&mouseEvent];
 }
 
-- (void)mouseUp:(NSEvent *)theEvent
+- (void)mouseUp:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::LEFT_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::LEFT_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::LEFT_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseUp:&mouseEvent];
 }
 
-- (void)rightMouseUp:(NSEvent *)theEvent
+- (void)rightMouseUp:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::RIGHT_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::RIGHT_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::RIGHT_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseUp:&mouseEvent];
 }
 
-- (void)otherMouseUp:(NSEvent *)theEvent
+- (void)otherMouseUp:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::MIDDLE_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::MIDDLE_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::MIDDLE_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseUp:&mouseEvent];
 }
 
-- (void)mouseMoved:(NSEvent *)theEvent
+- (void)mouseMoved:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], 0, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], 0, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseMove:&mouseEvent];
 }
 
-- (void)rightMouseDragged:(NSEvent *)theEvent
+- (void)rightMouseDragged:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::RIGHT_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::RIGHT_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::RIGHT_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseDrag:&mouseEvent];
 }
 
-- (void)otherMouseDragged:(NSEvent *)theEvent
+- (void)otherMouseDragged:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::MIDDLE_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::MIDDLE_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::MIDDLE_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseDrag:&mouseEvent];
 }
 
-- (void)mouseDragged:(NSEvent *)theEvent
+- (void)mouseDragged:(NSEvent*)theEvent
 {
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
 	mods |= cinder::app::MouseEvent::LEFT_DOWN;
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::LEFT_DOWN, x, y, mods, 0.0f, ( uint32_t )[theEvent modifierFlags] );
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], cinder::app::MouseEvent::LEFT_DOWN, x, y, mods, 0.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseDrag:&mouseEvent];
 }
 
-- (void)scrollWheel:(NSEvent *)theEvent
+- (void)scrollWheel:(NSEvent*)theEvent
 {
-	float wheelDelta = [theEvent deltaX] + [theEvent deltaY];
-	NSPoint curPoint = [theEvent locationInWindow];
-	int x = ( curPoint.x - [self frame].origin.x );
-	int y = ( [self frame].size.height - ( curPoint.y - [self frame].origin.y ) );
-	int mods = [self prepMouseEventModifiers:theEvent];
-
-	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], 0, x, y, mods, wheelDelta / 4.0f, ( uint32_t )[theEvent modifierFlags] );
+	float wheelDelta		= [theEvent deltaX] + [theEvent deltaY];
+	NSPoint curPoint		= [theEvent locationInWindow];
+	int x					= (curPoint.x - [self frame].origin.x);
+	int y					= ([self frame].size.height - ( curPoint.y - [self frame].origin.y ));
+	int mods				= [self prepMouseEventModifiers:theEvent];
+	
+	cinder::app::MouseEvent mouseEvent( [mDelegate getWindowRef], 0, x, y, mods, wheelDelta / 4.0f, (uint32_t)[theEvent modifierFlags] );
 	[mDelegate mouseWheel:&mouseEvent];
 }
 
-- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
 	return NSDragOperationCopy;
 }
 
-- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender
+- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender
 {
 	return YES;
 }
 
-- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
-	NSPasteboard *pboard = [sender draggingPasteboard];
-
-	if( [[pboard types] containsObject:NSFilenamesPboardType] ) {
-		NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-		size_t numberOfFiles = [files count];
+    NSPasteboard *pboard = [sender draggingPasteboard];
+	
+    if( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+        NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
+        size_t numberOfFiles = [files count];
 		std::vector<cinder::fs::path> paths;
 		for( size_t i = 0; i < numberOfFiles; ++i )
 			paths.push_back( cinder::fs::path( [[files objectAtIndex:i] UTF8String] ) );
@@ -455,18 +455,18 @@ using namespace cinder::app;
 		[mDelegate fileDrop:&fileDropEvent];
 	}
 
-	return YES;
+    return YES;
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification
 {
-	std::vector<cinder::app::TouchEvent::Touch> touchList;
-	double                                      eventTime = cinder::app::getElapsedSeconds();
+   	std::vector<cinder::app::TouchEvent::Touch> touchList;
+	double eventTime = cinder::app::getElapsedSeconds();
 	for( const auto &prevPt : mTouchPrevPointMap ) {
 		touchList.push_back( cinder::app::TouchEvent::Touch( prevPt.second, prevPt.second, prevPt.first, eventTime, nil ) );
 	}
 
-	if( !touchList.empty() ) {
+	if( ! touchList.empty() ) {
 		cinder::app::TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 		[mDelegate touchesEnded:&touchEvent];
 	}
@@ -487,7 +487,7 @@ using namespace cinder::app;
 	mDelegate = delegate;
 	if( delegate && mMultiTouchEnabled ) {
 		[self setAcceptsTouchEvents:YES];
-		if( !mTouchIdMap )
+		if( ! mTouchIdMap )
 			mTouchIdMap = [[NSMutableDictionary alloc] initWithCapacity:10];
 	}
 	else {
@@ -505,7 +505,7 @@ using namespace cinder::app;
 		if( [currentValues indexOfObjectIdenticalTo:[NSNumber numberWithInt:candidateId]] == NSNotFound )
 			found = false;
 	}
-
+	
 	[mTouchIdMap setObject:[NSNumber numberWithInt:candidateId] forKey:[touch identity]];
 	mTouchPrevPointMap[candidateId] = point;
 	return candidateId;
@@ -519,21 +519,21 @@ using namespace cinder::app;
 	mTouchPrevPointMap.erase( curId );
 }
 
-- (std::pair<uint32_t, cinder::vec2>)updateTouch:(NSTouch *)touch withPoint:(cinder::vec2)point
+- (std::pair<uint32_t,cinder::vec2>)updateTouch:(NSTouch *)touch withPoint:(cinder::vec2)point
 {
-	uint32_t  curId = 0;
+	uint32_t curId = 0;
 	NSNumber *num = [mTouchIdMap objectForKey:[touch identity]];
 	if( num ) {
 		curId = [num unsignedIntValue];
 		cinder::vec2 prevPt = mTouchPrevPointMap[curId];
 		mTouchPrevPointMap[curId] = point;
-		return std::make_pair( curId, prevPt );
+		return std::make_pair( curId, prevPt );		
 	}
 	else {
 		// sometimes we will get a move event for a touch we have no record of
 		// this can happen when the app resigns and the user never ends the touch
 		return std::make_pair( [self addTouchToMap:touch withPoint:point], point );
-	}
+	}	
 }
 
 - (void)updateActiveTouches:(NSEvent *)event
@@ -546,12 +546,12 @@ using namespace cinder::app;
 	for( NSTouch *touch in touches ) {
 		NSPoint rawPt = [touch normalizedPosition];
 		cinder::vec2 pt( rawPt.x * width, height - rawPt.y * height );
-		std::pair<uint32_t, cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
+		std::pair<uint32_t,cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
 		mActiveTouches.push_back( cinder::app::TouchEvent::Touch( pt, prev.second, prev.first, eventTime, touch ) );
 	}
 }
 
-- (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches
+- (const std::vector<cinder::app::TouchEvent::Touch>&)getActiveTouches
 {
 	return mActiveTouches;
 }
@@ -559,7 +559,7 @@ using namespace cinder::app;
 - (void)touchesBeganWithEvent:(NSEvent *)event
 {
 	std::vector<cinder::app::TouchEvent::Touch> touchList;
-	NSSet *                                     touches = [event touchesMatchingPhase:NSTouchPhaseBegan inView:self];
+	NSSet *touches = [event touchesMatchingPhase:NSTouchPhaseBegan inView:self];
 	float width = [self frame].size.width;
 	float height = [self frame].size.height;
 	double eventTime = [event timestamp];
@@ -569,7 +569,7 @@ using namespace cinder::app;
 		touchList.push_back( cinder::app::TouchEvent::Touch( pt, pt, [self addTouchToMap:touch withPoint:pt], eventTime, touch ) );
 	}
 	[self updateActiveTouches:event];
-	if( mDelegate && ( !touchList.empty() ) ) {
+	if( mDelegate && ( ! touchList.empty() ) ) {
 		cinder::app::TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 		[mDelegate touchesBegan:&touchEvent];
 	}
@@ -577,19 +577,19 @@ using namespace cinder::app;
 
 - (void)touchesMovedWithEvent:(NSEvent *)event
 {
-	std::vector<cinder::app::TouchEvent::Touch> touchList;
-	NSSet *                                     touches = [event touchesMatchingPhase:NSTouchPhaseMoved inView:self];
+   	std::vector<cinder::app::TouchEvent::Touch> touchList;
+	NSSet *touches = [event touchesMatchingPhase:NSTouchPhaseMoved inView:self];
 	float width = [self frame].size.width;
 	float height = [self frame].size.height;
 	double eventTime = [event timestamp];
 	for( NSTouch *touch in touches ) {
 		NSPoint rawPt = [touch normalizedPosition];
 		cinder::vec2 pt( rawPt.x * width, height - rawPt.y * height );
-		std::pair<uint32_t, cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
+		std::pair<uint32_t,cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
 		touchList.push_back( cinder::app::TouchEvent::Touch( pt, prev.second, prev.first, eventTime, touch ) );
 	}
 	[self updateActiveTouches:event];
-	if( mDelegate && ( !touchList.empty() ) ) {
+	if( mDelegate && ( ! touchList.empty() ) ) {
 		cinder::app::TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 		[mDelegate touchesMoved:&touchEvent];
 	}
@@ -597,43 +597,43 @@ using namespace cinder::app;
 
 - (void)touchesEndedWithEvent:(NSEvent *)event
 {
-	std::vector<cinder::app::TouchEvent::Touch> touchList;
-	NSSet *                                     touches = [event touchesMatchingPhase:NSTouchPhaseEnded inView:self];
+   	std::vector<cinder::app::TouchEvent::Touch> touchList;
+	NSSet *touches = [event touchesMatchingPhase:NSTouchPhaseEnded inView:self];
 	float width = [self frame].size.width;
 	float height = [self frame].size.height;
 	double eventTime = [event timestamp];
 	for( NSTouch *touch in touches ) {
 		NSPoint rawPt = [touch normalizedPosition];
 		cinder::vec2 pt( rawPt.x * width, height - rawPt.y * height );
-		std::pair<uint32_t, cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
+		std::pair<uint32_t,cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
 		touchList.push_back( cinder::app::TouchEvent::Touch( pt, prev.second, prev.first, eventTime, touch ) );
 		[self removeTouchFromMap:touch];
 	}
 
 	[self updateActiveTouches:event];
-	if( mDelegate && ( !touchList.empty() ) ) {
+	if( mDelegate && ( ! touchList.empty() ) ) {
 		cinder::app::TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 		[mDelegate touchesEnded:&touchEvent];
 	}
 }
-
+ 
 - (void)touchesCancelledWithEvent:(NSEvent *)event
 {
-	std::vector<cinder::app::TouchEvent::Touch> touchList;
-	NSSet *                                     touches = [event touchesMatchingPhase:NSTouchPhaseCancelled inView:self];
+   	std::vector<cinder::app::TouchEvent::Touch> touchList;
+	NSSet *touches = [event touchesMatchingPhase:NSTouchPhaseCancelled inView:self];
 	float width = [self frame].size.width;
 	float height = [self frame].size.height;
 	double eventTime = [event timestamp];
 	for( NSTouch *touch in touches ) {
 		NSPoint rawPt = [touch normalizedPosition];
 		cinder::vec2 pt( rawPt.x * width, height - rawPt.y * height );
-		std::pair<uint32_t, cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
+		std::pair<uint32_t,cinder::vec2> prev = [self updateTouch:touch withPoint:pt];
 		touchList.push_back( cinder::app::TouchEvent::Touch( pt, prev.second, prev.first, eventTime, touch ) );
 		[self removeTouchFromMap:touch];
 	}
 
 	[self updateActiveTouches:event];
-	if( mDelegate && ( !touchList.empty() ) ) {
+	if( mDelegate && ( ! touchList.empty() ) ) {
 		cinder::app::TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 		[mDelegate touchesEnded:&touchEvent];
 	}

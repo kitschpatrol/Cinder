@@ -22,12 +22,12 @@
  */
 
 #include "cinder/audio/dsp/Converter.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/audio/dsp/ConverterR8brain.h"
 #include "cinder/audio/dsp/Dsp.h"
+#include "cinder/audio/dsp/ConverterR8brain.h"
+#include "cinder/CinderAssert.h"
 
 #if defined( CINDER_COCOA )
-#include "cinder/audio/cocoa/CinderCoreAudio.h"
+	#include "cinder/audio/cocoa/CinderCoreAudio.h"
 #endif
 
 #include <algorithm>
@@ -35,9 +35,7 @@
 using namespace ci;
 using namespace std;
 
-namespace cinder {
-namespace audio {
-namespace dsp {
+namespace cinder { namespace audio { namespace dsp {
 
 unique_ptr<Converter> Converter::create( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock )
 {
@@ -49,13 +47,13 @@ unique_ptr<Converter> Converter::create( size_t sourceSampleRate, size_t destSam
 }
 
 Converter::Converter( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock )
-    : mSourceSampleRate( sourceSampleRate ), mDestSampleRate( destSampleRate ), mSourceNumChannels( sourceNumChannels ), mDestNumChannels( destNumChannels ), mSourceMaxFramesPerBlock( sourceMaxFramesPerBlock )
+	: mSourceSampleRate( sourceSampleRate ), mDestSampleRate( destSampleRate ), mSourceNumChannels( sourceNumChannels ), mDestNumChannels( destNumChannels ), mSourceMaxFramesPerBlock( sourceMaxFramesPerBlock )
 {
 	CI_ASSERT( mSourceSampleRate && mSourceNumChannels && mSourceMaxFramesPerBlock );
 
-	if( !mDestSampleRate )
+	if( ! mDestSampleRate )
 		mDestSampleRate = mSourceSampleRate;
-	if( !mDestNumChannels )
+	if( ! mDestNumChannels )
 		mDestNumChannels = mSourceNumChannels;
 
 	mDestMaxFramesPerBlock = (size_t)ceil( (float)mSourceMaxFramesPerBlock * (float)mDestSampleRate / (float)mSourceSampleRate );
@@ -77,7 +75,7 @@ void mixBuffers( const Buffer *sourceBuffer, Buffer *destBuffer, size_t numFrame
 	else if( destChannels == 1 ) {
 		// down-mix mono destBuffer to sourceChannels, multiply by an equal-power normalizer to help prevent clipping
 		const float downMixNormalizer = 1.0f / std::sqrt( 2.0f );
-		float *     destChannel0 = destBuffer->getChannel( 0 );
+		float *destChannel0 = destBuffer->getChannel( 0 );
 		destBuffer->zero();
 		for( size_t c = 0; c < sourceChannels; c++ )
 			addMul( destChannel0, sourceBuffer->getChannel( c ), downMixNormalizer, destChannel0, numFrames );
@@ -118,7 +116,7 @@ void sumBuffers( const Buffer *sourceBuffer, Buffer *destBuffer, size_t numFrame
 	else if( destChannels == 1 ) {
 		// down-mix mono destBuffer to sourceChannels, multiply by an equal-power normalizer to help prevent clipping
 		const float downMixNormalizer = 1.0f / std::sqrt( 2.0f );
-		float *     destChannel0 = destBuffer->getChannel( 0 );
+		float *destChannel0 = destBuffer->getChannel( 0 );
 		for( size_t c = 0; c < sourceChannels; c++ )
 			addMul( destChannel0, sourceBuffer->getChannel( c ), downMixNormalizer, destChannel0, numFrames );
 	}
@@ -135,6 +133,5 @@ void sumBuffers( const Buffer *sourceBuffer, Buffer *destBuffer, size_t numFrame
 	else
 		CI_ASSERT_NOT_REACHABLE();
 }
-}
-}
-} // namespace cinder::audio::dsp
+
+} } } // namespace cinder::audio::dsp

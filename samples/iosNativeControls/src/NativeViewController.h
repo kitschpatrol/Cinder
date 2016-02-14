@@ -9,6 +9,6 @@
 - (void)addCinderViewToFront;
 - (void)addCinderViewAsBarButton;
 
-@property ( nonatomic ) std::function<void()> infoButtonCallback;
+@property (nonatomic) std::function<void()> infoButtonCallback;
 
 @end

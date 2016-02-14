@@ -22,15 +22,14 @@
  */
 
 #include "cinder/app/msw/AppMsw.h"
-#include "cinder/CinderAssert.h"
-#include "cinder/Unicode.h"
 #include "cinder/app/msw/AppImplMswBasic.h"
 #include "cinder/app/msw/PlatformMsw.h"
+#include "cinder/Unicode.h"
+#include "cinder/CinderAssert.h"
 
 using namespace std;
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 void AppMsw::Settings::pushBackCommandLineArg( const std::string &arg )
 {
@@ -62,12 +61,12 @@ void AppMsw::initialize( Settings *settings, const RendererRef &defaultRenderer,
 
 	// MSW sends it arguments as wide strings, so convert them to utf8 and store those in settings
 	LPWSTR *szArglist;
-	int     nArgs;
+	int nArgs;
 
-	szArglist = ::CommandLineToArgvW(::GetCommandLineW(), &nArgs );
+	szArglist = ::CommandLineToArgvW( ::GetCommandLineW(), &nArgs );
 	if( szArglist && nArgs ) {
 		for( int i = 0; i < nArgs; ++i )
-			settings->pushBackCommandLineArg( toUtf8( (char16_t *)szArglist[i] ) );
+			settings->pushBackCommandLineArg( toUtf8( (char16_t*) szArglist[i] ) );
 	}
 
 	// Free memory allocated for CommandLineToArgvW arguments.
@@ -160,5 +159,5 @@ ivec2 AppMsw::getMousePos() const
 
 	return ivec2( point.x, point.y );
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

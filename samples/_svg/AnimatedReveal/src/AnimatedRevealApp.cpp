@@ -1,14 +1,14 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/cairo/Cairo.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
 #include "cinder/svg/Svg.h"
+#include "cinder/cairo/Cairo.h"
 
 // enable this to automatically write a quicktime to your home directory
 #if 0
-#define RECORD_MOVIE
-#include "cinder/qtime/MovieWriter.h"
+	#define RECORD_MOVIE
+	#include "cinder/qtime/MovieWriter.h"
 #endif
 
 using namespace ci;
@@ -21,14 +21,14 @@ class AnimatedRevealApp : public App {
 	void draw();
 	void fileDrop( FileDropEvent event );
 	void load( const fs::path &path );
-
-	svg::DocRef    mDoc;
-	gl::TextureRef mTex;
-	int            mMinRenderElement;
-	bool           mDone;
-
+	
+	svg::DocRef		mDoc;
+	gl::TextureRef	mTex;
+	int				mMinRenderElement;
+	bool			mDone;
+	
 #if defined( RECORD_MOVIE )
-	qtime::MovieWriter mMovie;
+	qtime::MovieWriter		mMovie;
 #endif
 };
 
@@ -52,12 +52,12 @@ Surface renderCairo( svg::DocRef doc, const svg::RenderVisitor &visitor )
 void AnimatedRevealApp::load( const fs::path &path )
 {
 	mMinRenderElement = 0;
-	try {
+	try { 
 		if( path.extension() == ".svgz" ) // compressed
 			mDoc = svg::Doc::createFromSvgz( loadFile( path ) );
 		else
 			mDoc = svg::Doc::create( loadFile( path ) );
-
+			
 		mDone = false;
 #if defined( RECORD_MOVIE )
 		mMovie = qtime::MovieWriter( fs::path( getHomeDirectory() + "AnimatedReveal.mov" ), mDoc->getWidth(), mDoc->getHeight() );
@@ -82,8 +82,8 @@ void AnimatedRevealApp::fileDrop( FileDropEvent event )
 // At the end of the render, *resultMinIdx contains the index of the last filled item
 struct SlowFillVisitor {
 	SlowFillVisitor( int minIdx, size_t minPixelArea, int *resultMinIdx, bool *resultDone )
-	    : mMinIdx( minIdx ), mMinPixelArea( minPixelArea ),
-	      mResultMinIdx( resultMinIdx ), mResultDone( resultDone )
+		: mMinIdx( minIdx ), mMinPixelArea( minPixelArea ),
+			mResultMinIdx( resultMinIdx ), mResultDone( resultDone )
 	{
 		mCurrentPixelArea = 0;
 		mCurIdx = 0;
@@ -109,15 +109,15 @@ struct SlowFillVisitor {
 			return false;
 		}
 	}
-
-	int    mCurIdx, mMinIdx, *mResultMinIdx;
-	bool * mResultDone;
-	size_t mMinPixelArea, mCurrentPixelArea;
+	
+	int		mCurIdx, mMinIdx, *mResultMinIdx;
+	bool	*mResultDone;
+	size_t	mMinPixelArea, mCurrentPixelArea;
 };
 
 void AnimatedRevealApp::update()
 {
-	if( ( !mDoc ) || mDone )
+	if( ( ! mDoc ) || mDone )
 		return;
 
 	// we'll stop drawing filled after we've drawn new pixels that are 1% of the size of the image
@@ -142,11 +142,12 @@ void AnimatedRevealApp::update()
 void AnimatedRevealApp::draw()
 {
 	gl::enableAlphaBlending();
-	gl::clear();
+	gl::clear(); 
 	if( mTex )
 		gl::draw( mTex );
 	else
 		gl::drawStringCentered( "Drag & Drop an SVG file", getWindowCenter() );
 }
+
 
 CINDER_APP( AnimatedRevealApp, RendererGl )

@@ -23,16 +23,15 @@
 
 #pragma once
 
-#include "cinder/audio/Device.h"
 #include "cinder/audio/Node.h"
 #include "cinder/audio/Param.h"
+#include "cinder/audio/Device.h"
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
-typedef std::shared_ptr<class InputNode>             InputNodeRef;
-typedef std::shared_ptr<class InputDeviceNode>       InputDeviceNodeRef;
-typedef std::shared_ptr<class CallbackProcessorNode> CallbackProcessorNodeRef;
+typedef std::shared_ptr<class InputNode>				InputNodeRef;
+typedef std::shared_ptr<class InputDeviceNode>			InputDeviceNodeRef;
+typedef std::shared_ptr<class CallbackProcessorNode>	CallbackProcessorNodeRef;
 
 //! \brief InputNode is the base class for Node's that produce audio. It cannot have any inputs.
 //!
@@ -44,7 +43,6 @@ class InputNode : public Node {
 
   protected:
 	InputNode( const Format &format );
-
   private:
 	// InputNode's cannot have any sources, overridden to assert this method isn't called
 	void connectInput( const NodeRef &input ) override;
@@ -59,7 +57,8 @@ class InputDeviceNode : public InputNode {
 	virtual ~InputDeviceNode();
 
 	//! Returns the associated \a Device.
-	const DeviceRef &getDevice() const { return mDevice; }
+	const DeviceRef& getDevice() const		{ return mDevice; }
+
 	//! Returns the frame of the last buffer underrun or 0 if none since the last time this method was called.
 	uint64_t getLastUnderrun() const;
 	//! Returns the frame of the last buffer overrun or 0 if none since the last time this method was called.
@@ -74,8 +73,8 @@ class InputDeviceNode : public InputNode {
 	void markOverrun();
 
   private:
-	DeviceRef                     mDevice;
-	mutable std::atomic<uint64_t> mLastOverrun, mLastUnderrun;
+	DeviceRef						mDevice;
+	mutable std::atomic<uint64_t>	mLastOverrun, mLastUnderrun;
 };
 
 //! Callback used to allow simple audio processing without subclassing a Node. First parameter is the Buffer to which to write samples, second parameter is the samplerate.
@@ -86,11 +85,12 @@ class CallbackProcessorNode : public InputNode {
   public:
 	CallbackProcessorNode( const CallbackProcessorFn &callbackFn, const Format &format = Format() );
 	virtual ~CallbackProcessorNode() {}
+
   protected:
 	void process( Buffer *buffer ) override;
 
   private:
 	CallbackProcessorFn mCallbackFn;
 };
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

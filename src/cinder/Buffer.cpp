@@ -24,43 +24,43 @@
 #include "cinder/Buffer.h"
 #include "cinder/DataSource.h"
 #include "cinder/DataTarget.h"
+#include <zlib.h>
 #include <cmath>
 #include <iostream>
-#include <zlib.h>
 
 namespace cinder {
 
 Buffer::Buffer()
-    : mData( nullptr ), mAllocatedSize( 0 ), mDataSize( 0 ), mOwnsData( false )
+	: mData( nullptr ), mAllocatedSize( 0 ), mDataSize( 0 ), mOwnsData( false )
 {
 }
 
 Buffer::Buffer( void *data, size_t size )
-    : mData( data ), mAllocatedSize( size ), mDataSize( size ), mOwnsData( false )
+	: mData( data ), mAllocatedSize( size ), mDataSize( size ), mOwnsData( false )
 {
 }
 
 Buffer::Buffer( size_t size )
-    : mData( malloc( size ) ), mAllocatedSize( size ), mDataSize( size ), mOwnsData( true )
+	: mData( malloc( size ) ), mAllocatedSize( size ), mDataSize( size ), mOwnsData( true )
 {
 }
 
 Buffer::Buffer( const Buffer &rhs )
-    : mData( malloc( rhs.mAllocatedSize ) ), mAllocatedSize( rhs.mAllocatedSize ), mDataSize( rhs.mDataSize ), mOwnsData( true )
+	: mData( malloc( rhs.mAllocatedSize ) ), mAllocatedSize( rhs.mAllocatedSize ), mDataSize( rhs.mDataSize ), mOwnsData( true )
 {
 	memcpy( mData, rhs.mData, rhs.mDataSize );
 }
 
 Buffer::Buffer( Buffer &&rhs )
-    : mData( rhs.mData ), mAllocatedSize( rhs.mAllocatedSize ), mDataSize( rhs.mDataSize ), mOwnsData( rhs.mOwnsData )
+	: mData( rhs.mData ), mAllocatedSize( rhs.mAllocatedSize ), mDataSize( rhs.mDataSize ), mOwnsData( rhs.mOwnsData )
 {
 	rhs.mOwnsData = false;
 }
 
-Buffer &Buffer::operator=( const Buffer &rhs )
+Buffer&	Buffer::operator=( const Buffer &rhs )
 {
 	mDataSize = rhs.mDataSize;
-
+	
 	mData = malloc( mDataSize );
 	memcpy( mData, rhs.mData, mDataSize );
 
@@ -70,7 +70,7 @@ Buffer &Buffer::operator=( const Buffer &rhs )
 	return *this;
 }
 
-Buffer &Buffer::operator=( Buffer &&rhs )
+Buffer&	Buffer::operator=( Buffer &&rhs )
 {
 	mData = rhs.mData;
 	mAllocatedSize = rhs.mAllocatedSize;
@@ -82,9 +82,9 @@ Buffer &Buffer::operator=( Buffer &&rhs )
 }
 
 Buffer::Buffer( const DataSourceRef &dataSource )
-    : mOwnsData( true )
+	: mOwnsData( true )
 {
-	BufferRef    otherBuffer = dataSource->getBuffer();
+	BufferRef otherBuffer = dataSource->getBuffer();
 	const size_t size = otherBuffer->getSize();
 
 	mData = malloc( size );
@@ -129,25 +129,25 @@ void Buffer::write( const DataTargetRef &dataTarget )
 Buffer compressBuffer( const Buffer &buffer, int8_t compressionLevel, bool resizeResult )
 {
 	/*Initial output buffer size needs to be 0.1% larger than source buffer + 12 bytes*/
-	size_t outSize = ( size_t )( ( buffer.getSize() * 1.001f ) + 12 );
+	size_t outSize = (size_t)(( buffer.getSize() * 1.001f ) + 12);
 	Buffer outBuffer = Buffer( outSize );
-
-	int err = compress2( (Bytef *)outBuffer.getData(), (uLongf *)&outSize, (Bytef *)buffer.getData(), (uLongf)buffer.getSize(), compressionLevel );
+	
+	int err = compress2( (Bytef *)outBuffer.getData(), (uLongf*)&outSize, (Bytef *)buffer.getData(), (uLongf)buffer.getSize(), compressionLevel );
 	if( err != Z_OK ) {
 		//TODO: throw
 	}
-
+	
 	outBuffer.setSize( outSize );
 	if( resizeResult ) {
 		outBuffer.resize( outSize );
 	}
-
+	
 	return outBuffer;
 }
 
 Buffer decompressBuffer( const Buffer &buffer, bool resizeResult, bool useGZip )
 {
-	int      err;
+	int err;
 	z_stream strm;
 
 	strm.zalloc = Z_NULL;
@@ -158,37 +158,37 @@ Buffer decompressBuffer( const Buffer &buffer, bool resizeResult, bool useGZip )
 	err = useGZip ? inflateInit2( &strm, 16 + MAX_WBITS ) : inflateInit( &strm );
 	if( err != Z_OK ) {
 		//cleanup stream
-		(void)inflateEnd( &strm );
+		(void)inflateEnd(&strm);
 		//throw
 	}
-
-	size_t         inOffset = 0;
+	
+	size_t inOffset = 0;
 	const uint32_t chunkSize = 16384;
-	size_t         inBufferSize = buffer.getSize();
-	uint8_t *      inPtr = (uint8_t *)buffer.getData();
-
-	size_t   outBufferSize = chunkSize;
-	size_t   outOffset = 0;
-	Buffer   outBuffer = Buffer( outBufferSize );
-	uint8_t *outPtr = (uint8_t *)outBuffer.getData();
-
+	size_t inBufferSize = buffer.getSize();
+	uint8_t * inPtr = (uint8_t *)buffer.getData();
+	
+	size_t outBufferSize = chunkSize;
+	size_t outOffset = 0;
+	Buffer outBuffer = Buffer( outBufferSize );
+	uint8_t * outPtr = (uint8_t *)outBuffer.getData();
+	
 	do {
 		strm.avail_in = chunkSize;
 		if( inOffset + chunkSize > inBufferSize ) {
-			strm.avail_in = ( uInt )( inBufferSize - inOffset );
+			strm.avail_in = (uInt)(inBufferSize - inOffset);
 		}
-
+		
 		if( strm.avail_in == 0 ) break;
-
+		
 		strm.next_in = &inPtr[inOffset];
 		inOffset += strm.avail_in;
-
+		
 		do {
 			//expand the output buffer if neccessary
 			if( outOffset + chunkSize > outBufferSize ) {
 				// increase the size of the buffer by 50%
 				while( outBufferSize < outOffset + chunkSize )
-					outBufferSize = ( size_t )( outBufferSize * 1.5f + 1 );
+					outBufferSize = (size_t)(outBufferSize * 1.5f + 1);
 				outBuffer.resize( outBufferSize );
 				outPtr = (uint8_t *)outBuffer.getData();
 			}
@@ -196,25 +196,26 @@ Buffer decompressBuffer( const Buffer &buffer, bool resizeResult, bool useGZip )
 			strm.next_out = &outPtr[outOffset];
 			err = inflate( &strm, Z_NO_FLUSH );
 			switch( err ) {
-			case Z_NEED_DICT:
-			case Z_DATA_ERROR:
-			case Z_MEM_ERROR:
-				(void)inflateEnd( &strm );
-				//throw
+				case Z_NEED_DICT:
+				case Z_DATA_ERROR:
+				case Z_MEM_ERROR:
+					(void)inflateEnd(&strm);
+					//throw
 			}
-
-			outOffset += ( chunkSize - strm.avail_out );
+			
+			outOffset += (chunkSize - strm.avail_out);			
 		} while( strm.avail_out == 0 );
-
+		
+		
 	} while( err != Z_STREAM_END );
-
-	(void)inflateEnd( &strm );
-
+	
+	(void)inflateEnd(&strm);
+	
 	outBuffer.setSize( outOffset );
 	if( resizeResult ) {
 		outBuffer.resize( outOffset );
 	}
-
+	
 	return outBuffer;
 }
 

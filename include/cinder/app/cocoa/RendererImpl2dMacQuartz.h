@@ -27,16 +27,17 @@
 @class AppImplCocoaMac;
 @class CinderViewMac;
 
-@interface RendererImpl2dMacQuartz : NSObject {
-	CGContextRef       currentRef;
-	NSView *           view;
-	NSGraphicsContext *currentGraphicsContext;
+@interface RendererImpl2dMacQuartz : NSObject
+{
+	CGContextRef				currentRef;
+	NSView						*view;
+	NSGraphicsContext			*currentGraphicsContext;
 }
 
 - (id)initWithFrame:(NSRect)frame cinderView:(NSView *)cinderView;
-- (NSView *)view;
+- (NSView*)view;
 
-- (NSBitmapImageRep *)getContents:(cinder::Area)area;
+- (NSBitmapImageRep*)getContents:(cinder::Area)area;
 
 - (void)startDraw;
 - (void)finishDraw;

@@ -23,32 +23,32 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/Exception.h"
 #include "cinder/ImageIo.h"
+#include "cinder/Exception.h"
 #include "cinder/cocoa/CinderCocoa.h"
 
 typedef struct CGImage *CGImageRef;
 
 namespace cinder {
 
-typedef std::shared_ptr<class ImageSourceFileQuartz> ImageSourceFileQuartzRef;
+typedef std::shared_ptr<class ImageSourceFileQuartz>	ImageSourceFileQuartzRef;
 
 class ImageSourceFileQuartz : public cocoa::ImageSourceCgImage {
   public:
-	static ImageSourceRef createRef( DataSourceRef dataSourceRef, ImageSource::Options options ) { return createFileQuartzRef( dataSourceRef, options ); }
-	static ImageSourceFileQuartzRef createFileQuartzRef( DataSourceRef dataSourceRef, ImageSource::Options options );
+	static ImageSourceRef			createRef( DataSourceRef dataSourceRef, ImageSource::Options options ) { return createFileQuartzRef( dataSourceRef, options ); }
+	static ImageSourceFileQuartzRef	createFileQuartzRef( DataSourceRef dataSourceRef, ImageSource::Options options );
 
 	//! Returns a CFDictionaryRef of properties returned by Quartz ImageIO. Result should not be freed.
-	CFDictionaryRef getQuartzProperties() const;
+	CFDictionaryRef	getQuartzProperties() const;
 	//! Returns a CFDictionaryRef of properties returned by Quartz ImageIO specific to the particular image index optionally passed in ImageSource::Options, such as a particular frame of an animated GIF. Result should not be freed.
-	CFDictionaryRef getQuartzIndexProperties() const;
+	CFDictionaryRef	getQuartzIndexProperties() const;
 
-	static void registerSelf();
+	static void		registerSelf();
 
   protected:
 	ImageSourceFileQuartz( CGImageRef imageRef, ImageSource::Options options, std::shared_ptr<const struct __CFDictionary> imageProperties, std::shared_ptr<const struct __CFDictionary> imageIndexProps, int32_t numFrames );
-
-	std::shared_ptr<const struct __CFDictionary> mImageProperties, mImageIndexProperties;
+	
+	std::shared_ptr<const struct __CFDictionary>		mImageProperties, mImageIndexProperties;
 };
 
 class ImageSourceFileQuartzExceptionUnsupportedData : public ImageIoException {

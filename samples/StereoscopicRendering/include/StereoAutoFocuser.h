@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include "cinder/gl/Fbo.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Fbo.h"
 
 // forward declarations
 namespace cinder {
@@ -36,58 +36,57 @@ class CameraStereo;
 } // namespace cinder
 
 class StereoAutoFocuser {
-  public:
+public:
 	StereoAutoFocuser()
-	    : mSpeed( 1.0f ), mDepth( 1.0f ) {}
+		: mSpeed( 1.0f ), mDepth( 1.0f ) {}
+
 	/** Attempts to set an ideal convergence and eye separation.
 		\a cam is the CameraStereo you use to render the scene and which should be auto-focussed.
 		\a area is the area that you want to sample.
 		If your autoFocusSpeed is less than 1.0, repeatedly call this function from your update() method.
 		*/
-	void autoFocus( ci::CameraStereo *cam, const ci::Area &area ) { autoFocus( cam, area, GL_NONE ); }
+	void					autoFocus( ci::CameraStereo *cam, const ci::Area &area ) { autoFocus( cam, area, GL_NONE ); }
 	/** Attempts to set an ideal convergence and eye separation.
 		\a cam is the CameraStereo you use to render the scene and which should be auto-focussed.
 		\a buffer is the FBO depth buffer you want to sample.
 		If your autoFocusSpeed is less than 1.0, repeatedly call this function from your update() method.
 		*/
-	void autoFocus( ci::CameraStereo *cam, const ci::gl::FboRef &buffer ) { autoFocus( cam, buffer->getBounds(), buffer->getId() ); }
+	void					autoFocus( ci::CameraStereo *cam, const ci::gl::FboRef& buffer ) { autoFocus( cam, buffer->getBounds(), buffer->getId() ); }
 	//! Returns the speed at which auto-focussing takes place.
-	float getSpeed() const { return mSpeed; }
+	float					getSpeed() const { return mSpeed; }
 	/** Sets the speed at which auto-focussing takes place. A value of 1.0 will immediately focus on the measured value.
 		Lower values will gradually adjust the convergence.
 		If your autoFocusSpeed is less than 1.0, repeatedly call the autoFocus() function from your update() method. */
-	void setSpeed( float factor ) { mSpeed = ci::math<float>::clamp( factor, 0.01f, 1.0f ); }
-	//! Returns the auto-focus depth, which influences the parallax effect.
-	float getDepth() const { return mDepth; }
+	void					setSpeed( float factor ) { mSpeed = ci::math<float>::clamp( factor, 0.01f, 1.0f ); }
+	//! Returns the auto-focus depth, which influences the parallax effect.  
+	float					getDepth() const { return mDepth; }
 	/** Sets the auto-focus depth. A value of 1.0 will adjust the convergence in such a way that the nearest objects
 		are at the plane of the screen and cause no parallax. Lower values will cause the nearest objects to appear behind your
 		screen (positive parallax). Values greater than 1.0 will cause objects to appear in front of your screen (negative parallax).
 		Avoid values much greater than 2.0 to reduce eye strain. */
-	void setDepth( float factor ) { mDepth = ci::math<float>::max( factor, 0.01f ); }
+	void					setDepth( float factor ) { mDepth = ci::math<float>::max( factor, 0.01f ); }
+
 	//! Draws a visualizer, showing the sample area and the location of the nearest pixel.
-	void draw();
+	void					draw();
+private:
+	void					createBuffers( const ci::Area &area );
 
-  private:
-	void createBuffers( const ci::Area &area );
+	//! Perform auto focus by sampling the specified area of the specified depth buffer 
+	void					autoFocus( ci::CameraStereo *cam, const ci::Area &area, GLuint buffer );
+public:
+	//! width and height of the auto focus sample 
+	static const int		AF_WIDTH = 64;
+	static const int		AF_HEIGHT = 64;
+private:
+	float					mSpeed;
+	float					mDepth;
 
-	//! Perform auto focus by sampling the specified area of the specified depth buffer
-	void autoFocus( ci::CameraStereo *cam, const ci::Area &area, GLuint buffer );
+	ci::Area				mArea;
 
-  public:
-	//! width and height of the auto focus sample
-	static const int AF_WIDTH = 64;
-	static const int AF_HEIGHT = 64;
-
-  private:
-	float mSpeed;
-	float mDepth;
-
-	ci::Area mArea;
-
-	ci::gl::FboRef       mFboSmall;
-	ci::gl::FboRef       mFboLarge;
-	std::vector<GLfloat> mBuffer;
+	ci::gl::FboRef			mFboSmall;
+	ci::gl::FboRef			mFboLarge;
+	std::vector<GLfloat>	mBuffer;
 
 	//! keeps track of the nearest depth and pixel
-	ci::vec3 mNearest;
+	ci::vec3				mNearest;
 };

@@ -23,24 +23,24 @@
 */
 
 #include "cinder/TimelineItem.h"
-#include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
+#include "cinder/CinderMath.h"
 
 #include <algorithm>
 
 namespace cinder {
 
 TimelineItem::TimelineItem( class Timeline *parent )
-    : mParent( parent ), mTarget( 0 ), mStartTime( 0 ), mDirtyDuration( false ), mDuration( 0 ), mInvDuration( 0 ), mHasStarted( false ), mHasReverseStarted( false ),
-      mComplete( false ), mReverseComplete( false ), mMarkedForRemoval( false ), mAutoRemove( true ),
-      mInfinite( false ), mLoop( false ), mPingPong( false ), mLastLoopIteration( -1 ), mUseAbsoluteTime( false )
+	: mParent( parent ), mTarget( 0 ), mStartTime( 0 ), mDirtyDuration( false ), mDuration( 0 ), mInvDuration( 0 ), mHasStarted( false ), mHasReverseStarted( false ),
+		mComplete( false ), mReverseComplete( false ), mMarkedForRemoval( false ), mAutoRemove( true ),
+		mInfinite( false ), mLoop( false ), mPingPong( false ), mLastLoopIteration( -1 ), mUseAbsoluteTime( false )
 {
 }
 
 TimelineItem::TimelineItem( Timeline *parent, void *target, float startTime, float duration )
-    : mParent( parent ), mTarget( target ), mStartTime( startTime ), mDirtyDuration( false ), mDuration( std::max( duration, 0.0f ) ), mInvDuration( duration <= 0 ? 0 : ( 1 / duration ) ),
-      mHasStarted( false ), mHasReverseStarted( false ), mComplete( false ), mReverseComplete( false ), mMarkedForRemoval( false ), mAutoRemove( true ),
-      mInfinite( false ), mLoop( false ), mPingPong( false ), mLastLoopIteration( -1 ), mUseAbsoluteTime( false )
+	: mParent( parent ), mTarget( target ), mStartTime( startTime ), mDirtyDuration( false ), mDuration( std::max( duration, 0.0f ) ), mInvDuration( duration <= 0 ? 0 : (1 / duration) ),
+		mHasStarted( false ), mHasReverseStarted( false ), mComplete( false ), mReverseComplete( false ), mMarkedForRemoval( false ), mAutoRemove( true ),
+		mInfinite( false ), mLoop( false ), mPingPong( false ), mLastLoopIteration( -1 ), mUseAbsoluteTime( false )
 {
 }
 
@@ -59,14 +59,14 @@ void TimelineItem::stepTo( float newTime, bool reverse )
 	const float absTime = newTime - mStartTime;
 	const float endTime = mStartTime + mDuration;
 
-	if( ( !mHasReverseStarted ) && reverse && ( newTime < mStartTime ) ) {
+	if( ( ! mHasReverseStarted ) && reverse && ( newTime < mStartTime ) ) {
 		// first update the current time to be the start time
 		update( ( mUseAbsoluteTime ) ? mStartTime : 0 );
 		// then issue reverse start
 		mHasReverseStarted = true;
 		mHasStarted = false;
 		start( true );
-	}
+	}	
 	else if( newTime >= mStartTime ) {
 		float relTime;
 		if( mPingPong ) {
@@ -79,19 +79,19 @@ void TimelineItem::stepTo( float newTime, bool reverse )
 		}
 		else
 			relTime = math<float>::min( absTime * mInvDuration, 1 );
-
-		if( ( !mHasStarted ) && ( !reverse ) ) {
+		
+		if( ( ! mHasStarted ) && ( ! reverse ) ) {
 			mHasStarted = true;
 			mHasReverseStarted = false;
 			mLastLoopIteration = 0;
 			loopStart();
 			start( false );
 		}
-
+		
 		float time = ( mUseAbsoluteTime ) ? absTime : relTime;
 
 		// accommodate a tween with a duration <= 0
-		if( ( !mUseAbsoluteTime ) && ( mInvDuration <= 0 ) )
+		if( ( ! mUseAbsoluteTime ) && ( mInvDuration <= 0 ) )
 			time = 1.0f;
 
 		if( mLoop || mPingPong ) {
@@ -109,14 +109,14 @@ void TimelineItem::stepTo( float newTime, bool reverse )
 	}
 
 	if( newTime < endTime ) {
-		if( ( !mReverseComplete ) && reverse ) {
+		if( ( ! mReverseComplete ) && reverse ) {
 			mReverseComplete = true;
 			mComplete = false;
 			complete( true );
 		}
 	}
-	else if( ( !mLoop ) && ( !mInfinite ) ) { // newTime >= endTime
-		if( ( !mComplete ) && ( !reverse ) ) {
+	else if( ( ! mLoop ) && ( ! mInfinite ) ) { // newTime >= endTime
+		if( ( ! mComplete ) && ( ! reverse ) ) {
 			mComplete = true;
 			mReverseComplete = false;
 			complete( false );
@@ -151,7 +151,7 @@ void TimelineItem::setDuration( float duration )
 float TimelineItem::loopTime( float absTime )
 {
 	float result = absTime;
-
+	
 	if( mPingPong ) {
 		result = math<float>::fmod( result * mInvDuration, 2 ); // varies from 0-2
 		if( result <= 1 )

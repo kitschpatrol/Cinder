@@ -36,6 +36,9 @@
 #include <Events.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -49,12 +52,13 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
+
 
 /*
  *  HIPoint
@@ -71,7 +75,7 @@ extern "C" {
  *    transparent to applications. HIPoints are in screen space, i.e.
  *    the top left of the screen is 0, 0.
  */
-typedef CGPoint HIPoint;
+typedef CGPoint                         HIPoint;
 
 /*
  *  HISize
@@ -80,7 +84,7 @@ typedef CGPoint HIPoint;
  *    HISize is a floating point-based type to help express dimensions
  *    in a much richer fashion than the classic QuickDraw coordinates.
  */
-typedef CGSize HISize;
+typedef CGSize                          HISize;
 
 /*
  *  HIRect
@@ -92,16 +96,16 @@ typedef CGSize HISize;
  *    Toolbox. HIRects are in screen space, i.e. the top left of the
  *    screen is 0, 0.
  */
-typedef CGRect HIRect;
+typedef CGRect                          HIRect;
 /*
   _________________________________________________________________________________________________________
       
    o DRAG MANAGER DATA TYPES
   _________________________________________________________________________________________________________
 */
-typedef struct OpaqueDragRef *DragRef;
-typedef UInt32                DragItemRef;
-typedef OSType                FlavorType;
+typedef struct OpaqueDragRef*           DragRef;
+typedef UInt32                          DragItemRef;
+typedef OSType                          FlavorType;
 /*
   _________________________________________________________________________________________________________
       
@@ -110,9 +114,9 @@ typedef OSType                FlavorType;
 */
 typedef UInt32 DragAttributes;
 enum {
-	kDragHasLeftSenderWindow = ( 1L << 0 ), /* drag has left the source window since TrackDrag*/
-	kDragInsideSenderApplication = ( 1L << 1 ), /* drag is occurring within the sender application*/
-	kDragInsideSenderWindow = ( 1L << 2 ) /* drag is occurring within the sender window*/
+  kDragHasLeftSenderWindow      = (1L << 0), /* drag has left the source window since TrackDrag*/
+  kDragInsideSenderApplication  = (1L << 1), /* drag is occurring within the sender application*/
+  kDragInsideSenderWindow       = (1L << 2) /* drag is occurring within the sender window*/
 };
 
 /*
@@ -123,8 +127,8 @@ enum {
 */
 typedef UInt32 DragBehaviors;
 enum {
-	kDragBehaviorNone = 0,
-	kDragBehaviorZoomBackAnimation = ( 1L << 0 ) /* do zoomback animation for failed drags (normally enabled).*/
+  kDragBehaviorNone             = 0,
+  kDragBehaviorZoomBackAnimation = (1L << 0) /* do zoomback animation for failed drags (normally enabled).*/
 };
 
 /*
@@ -135,7 +139,7 @@ enum {
 */
 typedef UInt32 DragImageFlags;
 enum {
-	kDragRegionAndImage = ( 1L << 4 ) /* drag region and image*/
+  kDragRegionAndImage           = (1L << 4) /* drag region and image*/
 };
 
 /*
@@ -146,10 +150,10 @@ enum {
 */
 
 enum {
-	kDragStandardTranslucency = 0L, /* 65% image translucency (standard)*/
-	kDragDarkTranslucency = 1L, /* 50% image translucency*/
-	kDragDarkerTranslucency = 2L, /* 25% image translucency*/
-	kDragOpaqueTranslucency = 3L /* 0% image translucency (opaque)*/
+  kDragStandardTranslucency     = 0L,   /* 65% image translucency (standard)*/
+  kDragDarkTranslucency         = 1L,   /* 50% image translucency*/
+  kDragDarkerTranslucency       = 2L,   /* 25% image translucency*/
+  kDragOpaqueTranslucency       = 3L    /* 0% image translucency (opaque)*/
 };
 
 /*
@@ -161,11 +165,11 @@ enum {
 
 typedef SInt16 DragRegionMessage;
 enum {
-	kDragRegionBegin = 1, /* initialize drawing*/
-	kDragRegionDraw = 2, /* draw drag feedback*/
-	kDragRegionHide = 3, /* hide drag feedback*/
-	kDragRegionIdle = 4, /* drag feedback idle time*/
-	kDragRegionEnd = 5 /* end of drawing*/
+  kDragRegionBegin              = 1,    /* initialize drawing*/
+  kDragRegionDraw               = 2,    /* draw drag feedback*/
+  kDragRegionHide               = 3,    /* hide drag feedback*/
+  kDragRegionIdle               = 4,    /* drag feedback idle time*/
+  kDragRegionEnd                = 5     /* end of drawing*/
 };
 
 /*
@@ -177,9 +181,9 @@ enum {
 
 typedef SInt16 ZoomAcceleration;
 enum {
-	kZoomNoAcceleration = 0, /* use linear interpolation*/
-	kZoomAccelerate = 1, /* ramp up step size*/
-	kZoomDecelerate = 2 /* ramp down step size*/
+  kZoomNoAcceleration           = 0,    /* use linear interpolation*/
+  kZoomAccelerate               = 1,    /* ramp up step size*/
+  kZoomDecelerate               = 2     /* ramp down step size*/
 };
 
 /*
@@ -191,11 +195,11 @@ enum {
 
 typedef UInt32 FlavorFlags;
 enum {
-	flavorSenderOnly = ( 1 << 0 ), /* flavor is available to sender only*/
-	flavorSenderTranslated = ( 1 << 1 ), /* flavor is translated by sender*/
-	flavorNotSaved = ( 1 << 2 ), /* flavor should not be saved*/
-	flavorSystemTranslated = ( 1 << 8 ), /* flavor is translated by system*/
-	flavorDataPromised = ( 1 << 9 ) /* flavor data is promised by sender*/
+  flavorSenderOnly              = (1 << 0), /* flavor is available to sender only*/
+  flavorSenderTranslated        = (1 << 1), /* flavor is translated by sender*/
+  flavorNotSaved                = (1 << 2), /* flavor should not be saved*/
+  flavorSystemTranslated        = (1 << 8), /* flavor is translated by system*/
+  flavorDataPromised            = (1 << 9) /* flavor data is promised by sender*/
 };
 
 /*
@@ -206,21 +210,21 @@ enum {
 */
 
 enum {
-	kDragFlavorTypeHFS = FOUR_CHAR_CODE( 'hfs ' ), /* flavor type for HFS data*/
-	kDragFlavorTypePromiseHFS = FOUR_CHAR_CODE( 'phfs' ), /* flavor type for promised HFS data*/
-	flavorTypeHFS = kDragFlavorTypeHFS, /* old name*/
-	flavorTypePromiseHFS = kDragFlavorTypePromiseHFS /* old name*/
+  kDragFlavorTypeHFS            = FOUR_CHAR_CODE('hfs '), /* flavor type for HFS data*/
+  kDragFlavorTypePromiseHFS     = FOUR_CHAR_CODE('phfs'), /* flavor type for promised HFS data*/
+  flavorTypeHFS                 = kDragFlavorTypeHFS, /* old name*/
+  flavorTypePromiseHFS          = kDragFlavorTypePromiseHFS /* old name*/
 };
 
 enum {
-	kDragPromisedFlavorFindFile = FOUR_CHAR_CODE( 'rWm1' ), /* promisedFlavor value for Find File*/
-	kDragPromisedFlavor = FOUR_CHAR_CODE( 'fssP' ) /* promisedFlavor value for everything else*/
+  kDragPromisedFlavorFindFile   = FOUR_CHAR_CODE('rWm1'), /* promisedFlavor value for Find File*/
+  kDragPromisedFlavor           = FOUR_CHAR_CODE('fssP') /* promisedFlavor value for everything else*/
 };
 
 enum {
-	kDragPseudoCreatorVolumeOrDirectory = FOUR_CHAR_CODE( 'MACS' ), /* "creator code" for volume or directory*/
-	kDragPseudoFileTypeVolume = FOUR_CHAR_CODE( 'disk' ), /* "file type" for volume*/
-	kDragPseudoFileTypeDirectory = FOUR_CHAR_CODE( 'fold' ) /* "file type" for directory*/
+  kDragPseudoCreatorVolumeOrDirectory = FOUR_CHAR_CODE('MACS'), /* "creator code" for volume or directory*/
+  kDragPseudoFileTypeVolume     = FOUR_CHAR_CODE('disk'), /* "file type" for volume*/
+  kDragPseudoFileTypeDirectory  = FOUR_CHAR_CODE('fold') /* "file type" for directory*/
 };
 
 /*
@@ -231,7 +235,7 @@ enum {
 */
 
 enum {
-	flavorTypeDirectory = FOUR_CHAR_CODE( 'diry' ) /* flavor type for AOCE directories*/
+  flavorTypeDirectory           = FOUR_CHAR_CODE('diry') /* flavor type for AOCE directories*/
 };
 
 /*
@@ -242,12 +246,12 @@ enum {
 */
 
 enum {
-	kFlavorTypeClippingName = FOUR_CHAR_CODE( 'clnm' ), /* name hint for clipping file (preferred over 'clfn')*/
-	kFlavorTypeClippingFilename = FOUR_CHAR_CODE( 'clfn' ), /* name for clipping file*/
-	kFlavorTypeUnicodeClippingName = FOUR_CHAR_CODE( 'ucln' ), /* unicode name hint for clipping file (preferred over 'uclf')*/
-	kFlavorTypeUnicodeClippingFilename = FOUR_CHAR_CODE( 'uclf' ), /* unicode name for clipping file*/
-	kFlavorTypeDragToTrashOnly = FOUR_CHAR_CODE( 'fdtt' ), /* for apps that want to allow dragging private data to the trash*/
-	kFlavorTypeFinderNoTrackingBehavior = FOUR_CHAR_CODE( 'fntb' ) /* Finder completely ignores any drag containing this flavor*/
+  kFlavorTypeClippingName       = FOUR_CHAR_CODE('clnm'), /* name hint for clipping file (preferred over 'clfn')*/
+  kFlavorTypeClippingFilename   = FOUR_CHAR_CODE('clfn'), /* name for clipping file*/
+  kFlavorTypeUnicodeClippingName = FOUR_CHAR_CODE('ucln'), /* unicode name hint for clipping file (preferred over 'uclf')*/
+  kFlavorTypeUnicodeClippingFilename = FOUR_CHAR_CODE('uclf'), /* unicode name for clipping file*/
+  kFlavorTypeDragToTrashOnly    = FOUR_CHAR_CODE('fdtt'), /* for apps that want to allow dragging private data to the trash*/
+  kFlavorTypeFinderNoTrackingBehavior = FOUR_CHAR_CODE('fntb') /* Finder completely ignores any drag containing this flavor*/
 };
 
 /*
@@ -259,11 +263,11 @@ enum {
 
 typedef SInt16 DragTrackingMessage;
 enum {
-	kDragTrackingEnterHandler = 1, /* drag has entered handler*/
-	kDragTrackingEnterWindow = 2, /* drag has entered window*/
-	kDragTrackingInWindow = 3, /* drag is moving within window*/
-	kDragTrackingLeaveWindow = 4, /* drag has exited window*/
-	kDragTrackingLeaveHandler = 5 /* drag has exited handler*/
+  kDragTrackingEnterHandler     = 1,    /* drag has entered handler*/
+  kDragTrackingEnterWindow      = 2,    /* drag has entered window*/
+  kDragTrackingInWindow         = 3,    /* drag is moving within window*/
+  kDragTrackingLeaveWindow      = 4,    /* drag has exited window*/
+  kDragTrackingLeaveHandler     = 5     /* drag has exited handler*/
 };
 
 /*
@@ -271,6 +275,7 @@ enum {
    o STANDARD DROP LOCATIONS
   ---------------------------------------------------------------------------------------------------------
 */
+
 
 /*
  *  Summary:
@@ -281,21 +286,21 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * The drop location was in the trash.  This is set when a drag is
    * dropped on the trash icon.  Setting this standard drop location
    * sets the traditional drop location to an alias to the trash folder
    * automatically.
    */
-	kDragStandardDropLocationTrash = FOUR_CHAR_CODE( 'trsh' ),
+  kDragStandardDropLocationTrash = FOUR_CHAR_CODE('trsh'),
 
-	/*
+  /*
    * The receiver did not specify a drop lcoation. This is the default.
    */
-	kDragStandardDropLocationUnknown = FOUR_CHAR_CODE( 'unkn' )
+  kDragStandardDropLocationUnknown = FOUR_CHAR_CODE('unkn')
 };
 
-typedef OSType StandardDropLocation;
+typedef OSType                          StandardDropLocation;
 /*
   _________________________________________________________________________________________________________
       
@@ -318,52 +323,52 @@ typedef OSType StandardDropLocation;
  */
 enum {
 
-	/*
+  /*
    * Suggests nothing should be/was done with the data in a drag.  When
    * set as an allowable action for remote drags, the drag will not be
    * sent to apps other than the sender.
    */
-	kDragActionNothing = 0L,
+  kDragActionNothing            = 0L,
 
-	/*
+  /*
    * Suggests the data contained within the drag can be/was copied.
    */
-	kDragActionCopy = 1L,
+  kDragActionCopy               = 1L,
 
-	/*
+  /*
    * Suggests the data contained within the drag can be/is shared.
    */
-	kDragActionAlias = ( 1L << 1 ),
+  kDragActionAlias              = (1L << 1),
 
-	/*
+  /*
    * Suggests the drag action is can be defined by the drag destination
    * or was not defined by the drag destination.
    */
-	kDragActionGeneric = ( 1L << 2 ),
+  kDragActionGeneric            = (1L << 2),
 
-	/*
+  /*
    * Suggests the drag action should be negotiated privately between
    * the drag source and destination.
    */
-	kDragActionPrivate = ( 1L << 3 ),
+  kDragActionPrivate            = (1L << 3),
 
-	/*
+  /*
    * Description forthcoming.
    */
-	kDragActionMove = ( 1L << 4 ),
+  kDragActionMove               = (1L << 4),
 
-	/*
+  /*
    * Description forthcoming.
    */
-	kDragActionDelete = ( 1L << 5 ),
+  kDragActionDelete             = (1L << 5),
 
-	/*
+  /*
    * All of the above drag actions are allowed.
    */
-	kDragActionAll = (long)0xFFFFFFFF
+  kDragActionAll                = (long)0xFFFFFFFF
 };
 
-typedef UInt32 DragActions;
+typedef UInt32                          DragActions;
 /*
   _________________________________________________________________________________________________________
       
@@ -371,29 +376,29 @@ typedef UInt32 DragActions;
   _________________________________________________________________________________________________________
 */
 struct HFSFlavor {
-	OSType fileType; /* file type */
-	OSType fileCreator; /* file creator */
-	UInt16 fdFlags; /* Finder flags */
-	FSSpec fileSpec; /* file system specification */
+  OSType              fileType;               /* file type */
+  OSType              fileCreator;            /* file creator */
+  UInt16              fdFlags;                /* Finder flags */
+  FSSpec              fileSpec;               /* file system specification */
 };
-typedef struct HFSFlavor HFSFlavor;
+typedef struct HFSFlavor                HFSFlavor;
 struct PromiseHFSFlavor {
-	OSType     fileType; /* file type */
-	OSType     fileCreator; /* file creator */
-	UInt16     fdFlags; /* Finder flags */
-	FlavorType promisedFlavor; /* promised flavor containing an FSSpec */
+  OSType              fileType;               /* file type */
+  OSType              fileCreator;            /* file creator */
+  UInt16              fdFlags;                /* Finder flags */
+  FlavorType          promisedFlavor;         /* promised flavor containing an FSSpec */
 };
-typedef struct PromiseHFSFlavor PromiseHFSFlavor;
+typedef struct PromiseHFSFlavor         PromiseHFSFlavor;
 /*
   _________________________________________________________________________________________________________
       
    o APPLICATION-DEFINED DRAG HANDLER ROUTINES
   _________________________________________________________________________________________________________
 */
-typedef CALLBACK_API( OSErr, DragTrackingHandlerProcPtr )( DragTrackingMessage message, WindowRef theWindow, void *handlerRefCon, DragRef theDrag );
-typedef CALLBACK_API( OSErr, DragReceiveHandlerProcPtr )( WindowRef theWindow, void *handlerRefCon, DragRef theDrag );
-typedef STACK_UPP_TYPE( DragTrackingHandlerProcPtr ) DragTrackingHandlerUPP;
-typedef STACK_UPP_TYPE( DragReceiveHandlerProcPtr ) DragReceiveHandlerUPP;
+typedef CALLBACK_API( OSErr , DragTrackingHandlerProcPtr )(DragTrackingMessage message, WindowRef theWindow, void *handlerRefCon, DragRef theDrag);
+typedef CALLBACK_API( OSErr , DragReceiveHandlerProcPtr )(WindowRef theWindow, void *handlerRefCon, DragRef theDrag);
+typedef STACK_UPP_TYPE(DragTrackingHandlerProcPtr)              DragTrackingHandlerUPP;
+typedef STACK_UPP_TYPE(DragReceiveHandlerProcPtr)               DragReceiveHandlerUPP;
 /*
  *  NewDragTrackingHandlerUPP()
  *  
@@ -403,17 +408,14 @@ typedef STACK_UPP_TYPE( DragReceiveHandlerProcPtr ) DragReceiveHandlerUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DragTrackingHandlerUPP )
-NewDragTrackingHandlerUPP( DragTrackingHandlerProcPtr userRoutine );
+NewDragTrackingHandlerUPP(DragTrackingHandlerProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDragTrackingHandlerProcInfo = 0x00003FA0 }; /* pascal 2_bytes Func(2_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DragTrackingHandlerUPP ) NewDragTrackingHandlerUPP( DragTrackingHandlerProcPtr userRoutine )
-{
-	return (DragTrackingHandlerUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragTrackingHandlerProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewDragTrackingHandlerUPP( userRoutine ) ( DragTrackingHandlerUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragTrackingHandlerProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppDragTrackingHandlerProcInfo = 0x00003FA0 };  /* pascal 2_bytes Func(2_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DragTrackingHandlerUPP) NewDragTrackingHandlerUPP(DragTrackingHandlerProcPtr userRoutine) { return (DragTrackingHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragTrackingHandlerProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewDragTrackingHandlerUPP(userRoutine) (DragTrackingHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragTrackingHandlerProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -425,17 +427,14 @@ inline DEFINE_API_C( DragTrackingHandlerUPP ) NewDragTrackingHandlerUPP( DragTra
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DragReceiveHandlerUPP )
-NewDragReceiveHandlerUPP( DragReceiveHandlerProcPtr userRoutine );
+NewDragReceiveHandlerUPP(DragReceiveHandlerProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDragReceiveHandlerProcInfo = 0x00000FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DragReceiveHandlerUPP ) NewDragReceiveHandlerUPP( DragReceiveHandlerProcPtr userRoutine )
-{
-	return (DragReceiveHandlerUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragReceiveHandlerProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewDragReceiveHandlerUPP( userRoutine ) ( DragReceiveHandlerUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragReceiveHandlerProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppDragReceiveHandlerProcInfo = 0x00000FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DragReceiveHandlerUPP) NewDragReceiveHandlerUPP(DragReceiveHandlerProcPtr userRoutine) { return (DragReceiveHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragReceiveHandlerProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewDragReceiveHandlerUPP(userRoutine) (DragReceiveHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragReceiveHandlerProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -447,16 +446,13 @@ inline DEFINE_API_C( DragReceiveHandlerUPP ) NewDragReceiveHandlerUPP( DragRecei
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDragTrackingHandlerUPP( DragTrackingHandlerUPP userUPP );
+DisposeDragTrackingHandlerUPP(DragTrackingHandlerUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDragTrackingHandlerUPP( DragTrackingHandlerUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeDragTrackingHandlerUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDragTrackingHandlerUPP(DragTrackingHandlerUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeDragTrackingHandlerUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -468,16 +464,13 @@ inline DEFINE_API_C( void ) DisposeDragTrackingHandlerUPP( DragTrackingHandlerUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDragReceiveHandlerUPP( DragReceiveHandlerUPP userUPP );
+DisposeDragReceiveHandlerUPP(DragReceiveHandlerUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDragReceiveHandlerUPP( DragReceiveHandlerUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeDragReceiveHandlerUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDragReceiveHandlerUPP(DragReceiveHandlerUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeDragReceiveHandlerUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -490,20 +483,17 @@ inline DEFINE_API_C( void ) DisposeDragReceiveHandlerUPP( DragReceiveHandlerUPP 
  */
 EXTERN_API_C( OSErr )
 InvokeDragTrackingHandlerUPP(
-    DragTrackingMessage    message,
-    WindowRef              theWindow,
-    void *                 handlerRefCon,
-    DragRef                theDrag,
-    DragTrackingHandlerUPP userUPP );
+  DragTrackingMessage     message,
+  WindowRef               theWindow,
+  void *                  handlerRefCon,
+  DragRef                 theDrag,
+  DragTrackingHandlerUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeDragTrackingHandlerUPP( DragTrackingMessage message, WindowRef theWindow, void *handlerRefCon, DragRef theDrag, DragTrackingHandlerUPP userUPP )
-{
-	return (OSErr)CALL_FOUR_PARAMETER_UPP( userUPP, uppDragTrackingHandlerProcInfo, message, theWindow, handlerRefCon, theDrag );
-}
-#else
-#define InvokeDragTrackingHandlerUPP( message, theWindow, handlerRefCon, theDrag, userUPP ) ( OSErr ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppDragTrackingHandlerProcInfo, ( message ), ( theWindow ), ( handlerRefCon ), ( theDrag ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeDragTrackingHandlerUPP(DragTrackingMessage message, WindowRef theWindow, void * handlerRefCon, DragRef theDrag, DragTrackingHandlerUPP userUPP) { return (OSErr)CALL_FOUR_PARAMETER_UPP(userUPP, uppDragTrackingHandlerProcInfo, message, theWindow, handlerRefCon, theDrag); }
+  #else
+    #define InvokeDragTrackingHandlerUPP(message, theWindow, handlerRefCon, theDrag, userUPP) (OSErr)CALL_FOUR_PARAMETER_UPP((userUPP), uppDragTrackingHandlerProcInfo, (message), (theWindow), (handlerRefCon), (theDrag))
+  #endif
 #endif
 
 /*
@@ -516,27 +506,24 @@ inline DEFINE_API_C( OSErr ) InvokeDragTrackingHandlerUPP( DragTrackingMessage m
  */
 EXTERN_API_C( OSErr )
 InvokeDragReceiveHandlerUPP(
-    WindowRef             theWindow,
-    void *                handlerRefCon,
-    DragRef               theDrag,
-    DragReceiveHandlerUPP userUPP );
+  WindowRef              theWindow,
+  void *                 handlerRefCon,
+  DragRef                theDrag,
+  DragReceiveHandlerUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeDragReceiveHandlerUPP( WindowRef theWindow, void *handlerRefCon, DragRef theDrag, DragReceiveHandlerUPP userUPP )
-{
-	return (OSErr)CALL_THREE_PARAMETER_UPP( userUPP, uppDragReceiveHandlerProcInfo, theWindow, handlerRefCon, theDrag );
-}
-#else
-#define InvokeDragReceiveHandlerUPP( theWindow, handlerRefCon, theDrag, userUPP ) ( OSErr ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppDragReceiveHandlerProcInfo, ( theWindow ), ( handlerRefCon ), ( theDrag ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeDragReceiveHandlerUPP(WindowRef theWindow, void * handlerRefCon, DragRef theDrag, DragReceiveHandlerUPP userUPP) { return (OSErr)CALL_THREE_PARAMETER_UPP(userUPP, uppDragReceiveHandlerProcInfo, theWindow, handlerRefCon, theDrag); }
+  #else
+    #define InvokeDragReceiveHandlerUPP(theWindow, handlerRefCon, theDrag, userUPP) (OSErr)CALL_THREE_PARAMETER_UPP((userUPP), uppDragReceiveHandlerProcInfo, (theWindow), (handlerRefCon), (theDrag))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewDragTrackingHandlerProc( userRoutine ) NewDragTrackingHandlerUPP( userRoutine )
-#define NewDragReceiveHandlerProc( userRoutine ) NewDragReceiveHandlerUPP( userRoutine )
-#define CallDragTrackingHandlerProc( userRoutine, message, theWindow, handlerRefCon, theDrag ) InvokeDragTrackingHandlerUPP( message, theWindow, handlerRefCon, theDrag, userRoutine )
-#define CallDragReceiveHandlerProc( userRoutine, theWindow, handlerRefCon, theDrag ) InvokeDragReceiveHandlerUPP( theWindow, handlerRefCon, theDrag, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewDragTrackingHandlerProc(userRoutine)             NewDragTrackingHandlerUPP(userRoutine)
+    #define NewDragReceiveHandlerProc(userRoutine)              NewDragReceiveHandlerUPP(userRoutine)
+    #define CallDragTrackingHandlerProc(userRoutine, message, theWindow, handlerRefCon, theDrag) InvokeDragTrackingHandlerUPP(message, theWindow, handlerRefCon, theDrag, userRoutine)
+    #define CallDragReceiveHandlerProc(userRoutine, theWindow, handlerRefCon, theDrag) InvokeDragReceiveHandlerUPP(theWindow, handlerRefCon, theDrag, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -545,12 +532,12 @@ inline DEFINE_API_C( OSErr ) InvokeDragReceiveHandlerUPP( WindowRef theWindow, v
    o APPLICATION-DEFINED ROUTINES
   _________________________________________________________________________________________________________
 */
-typedef CALLBACK_API( OSErr, DragSendDataProcPtr )( FlavorType theType, void *dragSendRefCon, DragItemRef theItemRef, DragRef theDrag );
-typedef CALLBACK_API( OSErr, DragInputProcPtr )( Point *mouse, SInt16 *modifiers, void *dragInputRefCon, DragRef theDrag );
-typedef CALLBACK_API( OSErr, DragDrawingProcPtr )( DragRegionMessage message, RgnHandle showRegion, Point showOrigin, RgnHandle hideRegion, Point hideOrigin, void *dragDrawingRefCon, DragRef theDrag );
-typedef STACK_UPP_TYPE( DragSendDataProcPtr ) DragSendDataUPP;
-typedef STACK_UPP_TYPE( DragInputProcPtr ) DragInputUPP;
-typedef STACK_UPP_TYPE( DragDrawingProcPtr ) DragDrawingUPP;
+typedef CALLBACK_API( OSErr , DragSendDataProcPtr )(FlavorType theType, void *dragSendRefCon, DragItemRef theItemRef, DragRef theDrag);
+typedef CALLBACK_API( OSErr , DragInputProcPtr )(Point *mouse, SInt16 *modifiers, void *dragInputRefCon, DragRef theDrag);
+typedef CALLBACK_API( OSErr , DragDrawingProcPtr )(DragRegionMessage message, RgnHandle showRegion, Point showOrigin, RgnHandle hideRegion, Point hideOrigin, void *dragDrawingRefCon, DragRef theDrag);
+typedef STACK_UPP_TYPE(DragSendDataProcPtr)                     DragSendDataUPP;
+typedef STACK_UPP_TYPE(DragInputProcPtr)                        DragInputUPP;
+typedef STACK_UPP_TYPE(DragDrawingProcPtr)                      DragDrawingUPP;
 /*
  *  NewDragSendDataUPP()
  *  
@@ -560,17 +547,14 @@ typedef STACK_UPP_TYPE( DragDrawingProcPtr ) DragDrawingUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DragSendDataUPP )
-NewDragSendDataUPP( DragSendDataProcPtr userRoutine );
+NewDragSendDataUPP(DragSendDataProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDragSendDataProcInfo = 0x00003FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DragSendDataUPP ) NewDragSendDataUPP( DragSendDataProcPtr userRoutine )
-{
-	return (DragSendDataUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragSendDataProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewDragSendDataUPP( userRoutine ) ( DragSendDataUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragSendDataProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppDragSendDataProcInfo = 0x00003FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DragSendDataUPP) NewDragSendDataUPP(DragSendDataProcPtr userRoutine) { return (DragSendDataUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragSendDataProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewDragSendDataUPP(userRoutine) (DragSendDataUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragSendDataProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -582,17 +566,14 @@ inline DEFINE_API_C( DragSendDataUPP ) NewDragSendDataUPP( DragSendDataProcPtr u
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DragInputUPP )
-NewDragInputUPP( DragInputProcPtr userRoutine );
+NewDragInputUPP(DragInputProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDragInputProcInfo = 0x00003FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DragInputUPP ) NewDragInputUPP( DragInputProcPtr userRoutine )
-{
-	return (DragInputUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragInputProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewDragInputUPP( userRoutine ) ( DragInputUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragInputProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppDragInputProcInfo = 0x00003FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DragInputUPP) NewDragInputUPP(DragInputProcPtr userRoutine) { return (DragInputUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragInputProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewDragInputUPP(userRoutine) (DragInputUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragInputProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -604,17 +585,14 @@ inline DEFINE_API_C( DragInputUPP ) NewDragInputUPP( DragInputProcPtr userRoutin
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DragDrawingUPP )
-NewDragDrawingUPP( DragDrawingProcPtr userRoutine );
+NewDragDrawingUPP(DragDrawingProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDragDrawingProcInfo = 0x000FFFA0 }; /* pascal 2_bytes Func(2_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DragDrawingUPP ) NewDragDrawingUPP( DragDrawingProcPtr userRoutine )
-{
-	return (DragDrawingUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragDrawingProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewDragDrawingUPP( userRoutine ) ( DragDrawingUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDragDrawingProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppDragDrawingProcInfo = 0x000FFFA0 };  /* pascal 2_bytes Func(2_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DragDrawingUPP) NewDragDrawingUPP(DragDrawingProcPtr userRoutine) { return (DragDrawingUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragDrawingProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewDragDrawingUPP(userRoutine) (DragDrawingUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDragDrawingProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -626,16 +604,13 @@ inline DEFINE_API_C( DragDrawingUPP ) NewDragDrawingUPP( DragDrawingProcPtr user
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDragSendDataUPP( DragSendDataUPP userUPP );
+DisposeDragSendDataUPP(DragSendDataUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDragSendDataUPP( DragSendDataUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeDragSendDataUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDragSendDataUPP(DragSendDataUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeDragSendDataUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -647,16 +622,13 @@ inline DEFINE_API_C( void ) DisposeDragSendDataUPP( DragSendDataUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDragInputUPP( DragInputUPP userUPP );
+DisposeDragInputUPP(DragInputUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDragInputUPP( DragInputUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeDragInputUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDragInputUPP(DragInputUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeDragInputUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -668,16 +640,13 @@ inline DEFINE_API_C( void ) DisposeDragInputUPP( DragInputUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDragDrawingUPP( DragDrawingUPP userUPP );
+DisposeDragDrawingUPP(DragDrawingUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDragDrawingUPP( DragDrawingUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeDragDrawingUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDragDrawingUPP(DragDrawingUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeDragDrawingUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -690,20 +659,17 @@ inline DEFINE_API_C( void ) DisposeDragDrawingUPP( DragDrawingUPP userUPP )
  */
 EXTERN_API_C( OSErr )
 InvokeDragSendDataUPP(
-    FlavorType      theType,
-    void *          dragSendRefCon,
-    DragItemRef     theItemRef,
-    DragRef         theDrag,
-    DragSendDataUPP userUPP );
+  FlavorType       theType,
+  void *           dragSendRefCon,
+  DragItemRef      theItemRef,
+  DragRef          theDrag,
+  DragSendDataUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeDragSendDataUPP( FlavorType theType, void *dragSendRefCon, DragItemRef theItemRef, DragRef theDrag, DragSendDataUPP userUPP )
-{
-	return (OSErr)CALL_FOUR_PARAMETER_UPP( userUPP, uppDragSendDataProcInfo, theType, dragSendRefCon, theItemRef, theDrag );
-}
-#else
-#define InvokeDragSendDataUPP( theType, dragSendRefCon, theItemRef, theDrag, userUPP ) ( OSErr ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppDragSendDataProcInfo, ( theType ), ( dragSendRefCon ), ( theItemRef ), ( theDrag ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeDragSendDataUPP(FlavorType theType, void * dragSendRefCon, DragItemRef theItemRef, DragRef theDrag, DragSendDataUPP userUPP) { return (OSErr)CALL_FOUR_PARAMETER_UPP(userUPP, uppDragSendDataProcInfo, theType, dragSendRefCon, theItemRef, theDrag); }
+  #else
+    #define InvokeDragSendDataUPP(theType, dragSendRefCon, theItemRef, theDrag, userUPP) (OSErr)CALL_FOUR_PARAMETER_UPP((userUPP), uppDragSendDataProcInfo, (theType), (dragSendRefCon), (theItemRef), (theDrag))
+  #endif
 #endif
 
 /*
@@ -716,20 +682,17 @@ inline DEFINE_API_C( OSErr ) InvokeDragSendDataUPP( FlavorType theType, void *dr
  */
 EXTERN_API_C( OSErr )
 InvokeDragInputUPP(
-    Point *      mouse,
-    SInt16 *     modifiers,
-    void *       dragInputRefCon,
-    DragRef      theDrag,
-    DragInputUPP userUPP );
+  Point *       mouse,
+  SInt16 *      modifiers,
+  void *        dragInputRefCon,
+  DragRef       theDrag,
+  DragInputUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeDragInputUPP( Point *mouse, SInt16 *modifiers, void *dragInputRefCon, DragRef theDrag, DragInputUPP userUPP )
-{
-	return (OSErr)CALL_FOUR_PARAMETER_UPP( userUPP, uppDragInputProcInfo, mouse, modifiers, dragInputRefCon, theDrag );
-}
-#else
-#define InvokeDragInputUPP( mouse, modifiers, dragInputRefCon, theDrag, userUPP ) ( OSErr ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppDragInputProcInfo, ( mouse ), ( modifiers ), ( dragInputRefCon ), ( theDrag ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeDragInputUPP(Point * mouse, SInt16 * modifiers, void * dragInputRefCon, DragRef theDrag, DragInputUPP userUPP) { return (OSErr)CALL_FOUR_PARAMETER_UPP(userUPP, uppDragInputProcInfo, mouse, modifiers, dragInputRefCon, theDrag); }
+  #else
+    #define InvokeDragInputUPP(mouse, modifiers, dragInputRefCon, theDrag, userUPP) (OSErr)CALL_FOUR_PARAMETER_UPP((userUPP), uppDragInputProcInfo, (mouse), (modifiers), (dragInputRefCon), (theDrag))
+  #endif
 #endif
 
 /*
@@ -742,33 +705,30 @@ inline DEFINE_API_C( OSErr ) InvokeDragInputUPP( Point *mouse, SInt16 *modifiers
  */
 EXTERN_API_C( OSErr )
 InvokeDragDrawingUPP(
-    DragRegionMessage message,
-    RgnHandle         showRegion,
-    Point             showOrigin,
-    RgnHandle         hideRegion,
-    Point             hideOrigin,
-    void *            dragDrawingRefCon,
-    DragRef           theDrag,
-    DragDrawingUPP    userUPP );
+  DragRegionMessage  message,
+  RgnHandle          showRegion,
+  Point              showOrigin,
+  RgnHandle          hideRegion,
+  Point              hideOrigin,
+  void *             dragDrawingRefCon,
+  DragRef            theDrag,
+  DragDrawingUPP     userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeDragDrawingUPP( DragRegionMessage message, RgnHandle showRegion, Point showOrigin, RgnHandle hideRegion, Point hideOrigin, void *dragDrawingRefCon, DragRef theDrag, DragDrawingUPP userUPP )
-{
-	return (OSErr)CALL_SEVEN_PARAMETER_UPP( userUPP, uppDragDrawingProcInfo, message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag );
-}
-#else
-#define InvokeDragDrawingUPP( message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag, userUPP ) ( OSErr ) CALL_SEVEN_PARAMETER_UPP( ( userUPP ), uppDragDrawingProcInfo, ( message ), ( showRegion ), ( showOrigin ), ( hideRegion ), ( hideOrigin ), ( dragDrawingRefCon ), ( theDrag ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeDragDrawingUPP(DragRegionMessage message, RgnHandle showRegion, Point showOrigin, RgnHandle hideRegion, Point hideOrigin, void * dragDrawingRefCon, DragRef theDrag, DragDrawingUPP userUPP) { return (OSErr)CALL_SEVEN_PARAMETER_UPP(userUPP, uppDragDrawingProcInfo, message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag); }
+  #else
+    #define InvokeDragDrawingUPP(message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag, userUPP) (OSErr)CALL_SEVEN_PARAMETER_UPP((userUPP), uppDragDrawingProcInfo, (message), (showRegion), (showOrigin), (hideRegion), (hideOrigin), (dragDrawingRefCon), (theDrag))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewDragSendDataProc( userRoutine ) NewDragSendDataUPP( userRoutine )
-#define NewDragInputProc( userRoutine ) NewDragInputUPP( userRoutine )
-#define NewDragDrawingProc( userRoutine ) NewDragDrawingUPP( userRoutine )
-#define CallDragSendDataProc( userRoutine, theType, dragSendRefCon, theItemRef, theDrag ) InvokeDragSendDataUPP( theType, dragSendRefCon, theItemRef, theDrag, userRoutine )
-#define CallDragInputProc( userRoutine, mouse, modifiers, dragInputRefCon, theDrag ) InvokeDragInputUPP( mouse, modifiers, dragInputRefCon, theDrag, userRoutine )
-#define CallDragDrawingProc( userRoutine, message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag ) InvokeDragDrawingUPP( message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewDragSendDataProc(userRoutine)                    NewDragSendDataUPP(userRoutine)
+    #define NewDragInputProc(userRoutine)                       NewDragInputUPP(userRoutine)
+    #define NewDragDrawingProc(userRoutine)                     NewDragDrawingUPP(userRoutine)
+    #define CallDragSendDataProc(userRoutine, theType, dragSendRefCon, theItemRef, theDrag) InvokeDragSendDataUPP(theType, dragSendRefCon, theItemRef, theDrag, userRoutine)
+    #define CallDragInputProc(userRoutine, mouse, modifiers, dragInputRefCon, theDrag) InvokeDragInputUPP(mouse, modifiers, dragInputRefCon, theDrag, userRoutine)
+    #define CallDragDrawingProc(userRoutine, message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag) InvokeDragDrawingUPP(message, showRegion, showOrigin, hideRegion, hideOrigin, dragDrawingRefCon, theDrag, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -788,9 +748,10 @@ inline DEFINE_API_C( OSErr ) InvokeDragDrawingUPP( DragRegionMessage message, Rg
  */
 EXTERN_API( OSErr )
 InstallTrackingHandler(
-    DragTrackingHandlerUPP trackingHandler,
-    WindowRef              theWindow,
-    void *                 handlerRefCon ) TWOWORDINLINE( 0x7001, 0xABED );
+  DragTrackingHandlerUPP   trackingHandler,
+  WindowRef                theWindow,
+  void *                   handlerRefCon)                     TWOWORDINLINE(0x7001, 0xABED);
+
 
 /*
  *  InstallReceiveHandler()
@@ -802,9 +763,10 @@ InstallTrackingHandler(
  */
 EXTERN_API( OSErr )
 InstallReceiveHandler(
-    DragReceiveHandlerUPP receiveHandler,
-    WindowRef             theWindow,
-    void *                handlerRefCon ) TWOWORDINLINE( 0x7002, 0xABED );
+  DragReceiveHandlerUPP   receiveHandler,
+  WindowRef               theWindow,
+  void *                  handlerRefCon)                      TWOWORDINLINE(0x7002, 0xABED);
+
 
 /*
  *  RemoveTrackingHandler()
@@ -816,8 +778,9 @@ InstallReceiveHandler(
  */
 EXTERN_API( OSErr )
 RemoveTrackingHandler(
-    DragTrackingHandlerUPP trackingHandler,
-    WindowRef              theWindow ) TWOWORDINLINE( 0x7003, 0xABED );
+  DragTrackingHandlerUPP   trackingHandler,
+  WindowRef                theWindow)                         TWOWORDINLINE(0x7003, 0xABED);
+
 
 /*
  *  RemoveReceiveHandler()
@@ -829,8 +792,9 @@ RemoveTrackingHandler(
  */
 EXTERN_API( OSErr )
 RemoveReceiveHandler(
-    DragReceiveHandlerUPP receiveHandler,
-    WindowRef             theWindow ) TWOWORDINLINE( 0x7004, 0xABED );
+  DragReceiveHandlerUPP   receiveHandler,
+  WindowRef               theWindow)                          TWOWORDINLINE(0x7004, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -848,7 +812,8 @@ RemoveReceiveHandler(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-NewDrag( DragRef *theDrag ) TWOWORDINLINE( 0x7005, 0xABED );
+NewDrag(DragRef * theDrag)                                    TWOWORDINLINE(0x7005, 0xABED);
+
 
 /*
  *  DisposeDrag()
@@ -859,7 +824,8 @@ NewDrag( DragRef *theDrag ) TWOWORDINLINE( 0x7005, 0xABED );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-DisposeDrag( DragRef theDrag ) TWOWORDINLINE( 0x7006, 0xABED );
+DisposeDrag(DragRef theDrag)                                  TWOWORDINLINE(0x7006, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -886,12 +852,13 @@ DisposeDrag( DragRef theDrag ) TWOWORDINLINE( 0x7006, 0xABED );
  */
 EXTERN_API( OSErr )
 AddDragItemFlavor(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    FlavorType  theType,
-    const void *dataPtr,
-    Size        dataSize,
-    FlavorFlags theFlags ) TWOWORDINLINE( 0x7007, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  FlavorType    theType,
+  const void *  dataPtr,
+  Size          dataSize,
+  FlavorFlags   theFlags)                                     TWOWORDINLINE(0x7007, 0xABED);
+
 
 /*
  *  SetDragItemFlavorData()
@@ -903,12 +870,13 @@ AddDragItemFlavor(
  */
 EXTERN_API( OSErr )
 SetDragItemFlavorData(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    FlavorType  theType,
-    const void *dataPtr,
-    Size        dataSize,
-    UInt32      dataOffset ) TWOWORDINLINE( 0x7009, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  FlavorType    theType,
+  const void *  dataPtr,
+  Size          dataSize,
+  UInt32        dataOffset)                                   TWOWORDINLINE(0x7009, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -927,9 +895,11 @@ SetDragItemFlavorData(
  */
 EXTERN_API( OSErr )
 SetDragSendProc(
-    DragRef         theDrag,
-    DragSendDataUPP sendProc,
-    void *          dragSendRefCon ) TWOWORDINLINE( 0x700A, 0xABED );
+  DragRef           theDrag,
+  DragSendDataUPP   sendProc,
+  void *            dragSendRefCon)                           TWOWORDINLINE(0x700A, 0xABED);
+
+
 
 /*
  *  SetDragInputProc()
@@ -941,9 +911,10 @@ SetDragSendProc(
  */
 EXTERN_API( OSErr )
 SetDragInputProc(
-    DragRef      theDrag,
-    DragInputUPP inputProc,
-    void *       dragInputRefCon ) TWOWORDINLINE( 0x700B, 0xABED );
+  DragRef        theDrag,
+  DragInputUPP   inputProc,
+  void *         dragInputRefCon)                             TWOWORDINLINE(0x700B, 0xABED);
+
 
 /*
  *  SetDragDrawingProc()
@@ -955,9 +926,10 @@ SetDragInputProc(
  */
 EXTERN_API( OSErr )
 SetDragDrawingProc(
-    DragRef        theDrag,
-    DragDrawingUPP drawingProc,
-    void *         dragDrawingRefCon ) TWOWORDINLINE( 0x700C, 0xABED );
+  DragRef          theDrag,
+  DragDrawingUPP   drawingProc,
+  void *           dragDrawingRefCon)                         TWOWORDINLINE(0x700C, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -976,11 +948,12 @@ SetDragDrawingProc(
  */
 EXTERN_API( OSErr )
 SetDragImage(
-    DragRef        theDrag,
-    PixMapHandle   imagePixMap,
-    RgnHandle      imageRgn,
-    Point          imageOffsetPt,
-    DragImageFlags theImageFlags ) TWOWORDINLINE( 0x7027, 0xABED );
+  DragRef          theDrag,
+  PixMapHandle     imagePixMap,
+  RgnHandle        imageRgn,
+  Point            imageOffsetPt,
+  DragImageFlags   theImageFlags)                             TWOWORDINLINE(0x7027, 0xABED);
+
 
 /*
  *  SetDragImageWithCGImage()
@@ -1022,10 +995,11 @@ SetDragImage(
  */
 EXTERN_API_C( OSStatus )
 SetDragImageWithCGImage(
-    DragRef        inDrag,
-    CGImageRef     inCGImage,
-    const HIPoint *inImageOffsetPt,
-    DragImageFlags inImageFlags );
+  DragRef          inDrag,
+  CGImageRef       inCGImage,
+  const HIPoint *  inImageOffsetPt,
+  DragImageFlags   inImageFlags);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1043,9 +1017,10 @@ SetDragImageWithCGImage(
  */
 EXTERN_API( OSErr )
 ChangeDragBehaviors(
-    DragRef       theDrag,
-    DragBehaviors inBehaviorsToSet,
-    DragBehaviors inBehaviorsToClear ) TWOWORDINLINE( 0x7028, 0xABED );
+  DragRef         theDrag,
+  DragBehaviors   inBehaviorsToSet,
+  DragBehaviors   inBehaviorsToClear)                         TWOWORDINLINE(0x7028, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1063,9 +1038,11 @@ ChangeDragBehaviors(
  */
 EXTERN_API( OSErr )
 TrackDrag(
-    DragRef            theDrag,
-    const EventRecord *theEvent,
-    RgnHandle          theRegion ) TWOWORDINLINE( 0x700D, 0xABED );
+  DragRef              theDrag,
+  const EventRecord *  theEvent,
+  RgnHandle            theRegion)                             TWOWORDINLINE(0x700D, 0xABED);
+
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1084,8 +1061,9 @@ TrackDrag(
  */
 EXTERN_API( OSErr )
 CountDragItems(
-    DragRef theDrag,
-    UInt16 *numItems ) TWOWORDINLINE( 0x700E, 0xABED );
+  DragRef   theDrag,
+  UInt16 *  numItems)                                         TWOWORDINLINE(0x700E, 0xABED);
+
 
 /*
  *  GetDragItemReferenceNumber()
@@ -1097,9 +1075,10 @@ CountDragItems(
  */
 EXTERN_API( OSErr )
 GetDragItemReferenceNumber(
-    DragRef      theDrag,
-    UInt16       index,
-    DragItemRef *theItemRef ) TWOWORDINLINE( 0x700F, 0xABED );
+  DragRef        theDrag,
+  UInt16         index,
+  DragItemRef *  theItemRef)                                  TWOWORDINLINE(0x700F, 0xABED);
+
 
 /*
  *  CountDragItemFlavors()
@@ -1111,9 +1090,10 @@ GetDragItemReferenceNumber(
  */
 EXTERN_API( OSErr )
 CountDragItemFlavors(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    UInt16 *    numFlavors ) TWOWORDINLINE( 0x7010, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  UInt16 *      numFlavors)                                   TWOWORDINLINE(0x7010, 0xABED);
+
 
 /*
  *  GetFlavorType()
@@ -1125,10 +1105,11 @@ CountDragItemFlavors(
  */
 EXTERN_API( OSErr )
 GetFlavorType(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    UInt16      index,
-    FlavorType *theType ) TWOWORDINLINE( 0x7011, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  UInt16        index,
+  FlavorType *  theType)                                      TWOWORDINLINE(0x7011, 0xABED);
+
 
 /*
  *  GetFlavorFlags()
@@ -1140,10 +1121,11 @@ GetFlavorType(
  */
 EXTERN_API( OSErr )
 GetFlavorFlags(
-    DragRef      theDrag,
-    DragItemRef  theItemRef,
-    FlavorType   theType,
-    FlavorFlags *theFlags ) TWOWORDINLINE( 0x7012, 0xABED );
+  DragRef        theDrag,
+  DragItemRef    theItemRef,
+  FlavorType     theType,
+  FlavorFlags *  theFlags)                                    TWOWORDINLINE(0x7012, 0xABED);
+
 
 /*
  *  GetFlavorDataSize()
@@ -1155,10 +1137,11 @@ GetFlavorFlags(
  */
 EXTERN_API( OSErr )
 GetFlavorDataSize(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    FlavorType  theType,
-    Size *      dataSize ) TWOWORDINLINE( 0x7013, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  FlavorType    theType,
+  Size *        dataSize)                                     TWOWORDINLINE(0x7013, 0xABED);
+
 
 /*
  *  GetFlavorData()
@@ -1170,12 +1153,13 @@ GetFlavorDataSize(
  */
 EXTERN_API( OSErr )
 GetFlavorData(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    FlavorType  theType,
-    void *      dataPtr,
-    Size *      dataSize,
-    UInt32      dataOffset ) TWOWORDINLINE( 0x7014, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  FlavorType    theType,
+  void *        dataPtr,
+  Size *        dataSize,
+  UInt32        dataOffset)                                   TWOWORDINLINE(0x7014, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1194,9 +1178,10 @@ GetFlavorData(
  */
 EXTERN_API( OSErr )
 GetDragItemBounds(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    Rect *      itemBounds ) TWOWORDINLINE( 0x7015, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  Rect *        itemBounds)                                   TWOWORDINLINE(0x7015, 0xABED);
+
 
 /*
  *  SetDragItemBounds()
@@ -1208,9 +1193,10 @@ GetDragItemBounds(
  */
 EXTERN_API( OSErr )
 SetDragItemBounds(
-    DragRef     theDrag,
-    DragItemRef theItemRef,
-    const Rect *itemBounds ) TWOWORDINLINE( 0x7016, 0xABED );
+  DragRef       theDrag,
+  DragItemRef   theItemRef,
+  const Rect *  itemBounds)                                   TWOWORDINLINE(0x7016, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1229,8 +1215,9 @@ SetDragItemBounds(
  */
 EXTERN_API( OSErr )
 GetDropLocation(
-    DragRef theDrag,
-    AEDesc *dropLocation ) TWOWORDINLINE( 0x7017, 0xABED );
+  DragRef   theDrag,
+  AEDesc *  dropLocation)                                     TWOWORDINLINE(0x7017, 0xABED);
+
 
 /*
  *  SetDropLocation()
@@ -1242,8 +1229,9 @@ GetDropLocation(
  */
 EXTERN_API( OSErr )
 SetDropLocation(
-    DragRef       theDrag,
-    const AEDesc *dropLocation ) TWOWORDINLINE( 0x7018, 0xABED );
+  DragRef         theDrag,
+  const AEDesc *  dropLocation)                               TWOWORDINLINE(0x7018, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1278,8 +1266,9 @@ SetDropLocation(
  */
 EXTERN_API_C( OSStatus )
 GetStandardDropLocation(
-    DragRef               theDrag,
-    StandardDropLocation *outDropLocation ) TWOWORDINLINE( 0x7017, 0xABED );
+  DragRef                 theDrag,
+  StandardDropLocation *  outDropLocation)                    TWOWORDINLINE(0x7017, 0xABED);
+
 
 /*
  *  SetStandardDropLocation()
@@ -1308,8 +1297,9 @@ GetStandardDropLocation(
  */
 EXTERN_API_C( OSStatus )
 SetStandardDropLocation(
-    DragRef              theDrag,
-    StandardDropLocation dropLocation ) TWOWORDINLINE( 0x7018, 0xABED );
+  DragRef                theDrag,
+  StandardDropLocation   dropLocation)                        TWOWORDINLINE(0x7018, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1328,8 +1318,9 @@ SetStandardDropLocation(
  */
 EXTERN_API( OSErr )
 GetDragAttributes(
-    DragRef         theDrag,
-    DragAttributes *flags ) TWOWORDINLINE( 0x7019, 0xABED );
+  DragRef           theDrag,
+  DragAttributes *  flags)                                    TWOWORDINLINE(0x7019, 0xABED);
+
 
 /*
  *  GetDragMouse()
@@ -1341,9 +1332,10 @@ GetDragAttributes(
  */
 EXTERN_API( OSErr )
 GetDragMouse(
-    DragRef theDrag,
-    Point * mouse,
-    Point * globalPinnedMouse ) TWOWORDINLINE( 0x701A, 0xABED );
+  DragRef   theDrag,
+  Point *   mouse,
+  Point *   globalPinnedMouse)                                TWOWORDINLINE(0x701A, 0xABED);
+
 
 /*
  *  SetDragMouse()
@@ -1355,8 +1347,9 @@ GetDragMouse(
  */
 EXTERN_API( OSErr )
 SetDragMouse(
-    DragRef theDrag,
-    Point   globalPinnedMouse ) TWOWORDINLINE( 0x701B, 0xABED );
+  DragRef   theDrag,
+  Point     globalPinnedMouse)                                TWOWORDINLINE(0x701B, 0xABED);
+
 
 /*
  *  GetDragOrigin()
@@ -1368,8 +1361,9 @@ SetDragMouse(
  */
 EXTERN_API( OSErr )
 GetDragOrigin(
-    DragRef theDrag,
-    Point * globalInitialMouse ) TWOWORDINLINE( 0x701C, 0xABED );
+  DragRef   theDrag,
+  Point *   globalInitialMouse)                               TWOWORDINLINE(0x701C, 0xABED);
+
 
 /*
  *  GetDragModifiers()
@@ -1381,10 +1375,11 @@ GetDragOrigin(
  */
 EXTERN_API( OSErr )
 GetDragModifiers(
-    DragRef theDrag,
-    SInt16 *modifiers,
-    SInt16 *mouseDownModifiers,
-    SInt16 *mouseUpModifiers ) TWOWORDINLINE( 0x701D, 0xABED );
+  DragRef   theDrag,
+  SInt16 *  modifiers,
+  SInt16 *  mouseDownModifiers,
+  SInt16 *  mouseUpModifiers)                                 TWOWORDINLINE(0x701D, 0xABED);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1422,8 +1417,9 @@ GetDragModifiers(
  */
 EXTERN_API_C( OSStatus )
 GetDragAllowableActions(
-    DragRef      theDrag,
-    DragActions *outActions );
+  DragRef        theDrag,
+  DragActions *  outActions);
+
 
 /*
  *  SetDragAllowableActions()
@@ -1458,9 +1454,10 @@ GetDragAllowableActions(
  */
 EXTERN_API_C( OSStatus )
 SetDragAllowableActions(
-    DragRef     theDrag,
-    DragActions inActions,
-    Boolean     isLocal );
+  DragRef       theDrag,
+  DragActions   inActions,
+  Boolean       isLocal);
+
 
 /*
  *  GetDragDropAction()
@@ -1488,8 +1485,9 @@ SetDragAllowableActions(
  */
 EXTERN_API_C( OSStatus )
 GetDragDropAction(
-    DragRef      theDrag,
-    DragActions *outAction );
+  DragRef        theDrag,
+  DragActions *  outAction);
+
 
 /*
  *  SetDragDropAction()
@@ -1516,8 +1514,9 @@ GetDragDropAction(
  */
 EXTERN_API_C( OSStatus )
 SetDragDropAction(
-    DragRef     theDrag,
-    DragActions inAction );
+  DragRef       theDrag,
+  DragActions   inAction);
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1536,9 +1535,10 @@ SetDragDropAction(
  */
 EXTERN_API( OSErr )
 ShowDragHilite(
-    DragRef   theDrag,
-    RgnHandle hiliteFrame,
-    Boolean   inside ) TWOWORDINLINE( 0x701E, 0xABED );
+  DragRef     theDrag,
+  RgnHandle   hiliteFrame,
+  Boolean     inside)                                         TWOWORDINLINE(0x701E, 0xABED);
+
 
 /*
  *  HideDragHilite()
@@ -1549,7 +1549,8 @@ ShowDragHilite(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-HideDragHilite( DragRef theDrag ) TWOWORDINLINE( 0x701F, 0xABED );
+HideDragHilite(DragRef theDrag)                               TWOWORDINLINE(0x701F, 0xABED);
+
 
 /*
  *  DragPreScroll()
@@ -1561,9 +1562,10 @@ HideDragHilite( DragRef theDrag ) TWOWORDINLINE( 0x701F, 0xABED );
  */
 EXTERN_API( OSErr )
 DragPreScroll(
-    DragRef theDrag,
-    SInt16  dH,
-    SInt16  dV ) TWOWORDINLINE( 0x7020, 0xABED );
+  DragRef   theDrag,
+  SInt16    dH,
+  SInt16    dV)                                               TWOWORDINLINE(0x7020, 0xABED);
+
 
 /*
  *  DragPostScroll()
@@ -1574,7 +1576,8 @@ DragPreScroll(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-DragPostScroll( DragRef theDrag ) TWOWORDINLINE( 0x7021, 0xABED );
+DragPostScroll(DragRef theDrag)                               TWOWORDINLINE(0x7021, 0xABED);
+
 
 /*
  *  UpdateDragHilite()
@@ -1586,8 +1589,9 @@ DragPostScroll( DragRef theDrag ) TWOWORDINLINE( 0x7021, 0xABED );
  */
 EXTERN_API( OSErr )
 UpdateDragHilite(
-    DragRef   theDrag,
-    RgnHandle updateRgn ) TWOWORDINLINE( 0x7022, 0xABED );
+  DragRef     theDrag,
+  RgnHandle   updateRgn)                                      TWOWORDINLINE(0x7022, 0xABED);
+
 
 /*
  *  GetDragHiliteColor()
@@ -1599,8 +1603,10 @@ UpdateDragHilite(
  */
 EXTERN_API( OSErr )
 GetDragHiliteColor(
-    WindowRef window,
-    RGBColor *color ) TWOWORDINLINE( 0x7026, 0xABED );
+  WindowRef   window,
+  RGBColor *  color)                                          TWOWORDINLINE(0x7026, 0xABED);
+
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1608,6 +1614,7 @@ GetDragHiliteColor(
    o UTILITIES
   _________________________________________________________________________________________________________
 */
+
 
 /*
  *  WaitMouseMoved()
@@ -1618,7 +1625,9 @@ GetDragHiliteColor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-WaitMouseMoved( Point initialGlobalMouse ) TWOWORDINLINE( 0x7023, 0xABED );
+WaitMouseMoved(Point initialGlobalMouse)                      TWOWORDINLINE(0x7023, 0xABED);
+
+
 
 /*
  *  ZoomRects()
@@ -1630,10 +1639,11 @@ WaitMouseMoved( Point initialGlobalMouse ) TWOWORDINLINE( 0x7023, 0xABED );
  */
 EXTERN_API( OSErr )
 ZoomRects(
-    const Rect *     fromRect,
-    const Rect *     toRect,
-    SInt16           zoomSteps,
-    ZoomAcceleration acceleration ) TWOWORDINLINE( 0x7024, 0xABED );
+  const Rect *       fromRect,
+  const Rect *       toRect,
+  SInt16             zoomSteps,
+  ZoomAcceleration   acceleration)                            TWOWORDINLINE(0x7024, 0xABED);
+
 
 /*
  *  ZoomRegion()
@@ -1645,10 +1655,12 @@ ZoomRects(
  */
 EXTERN_API( OSErr )
 ZoomRegion(
-    RgnHandle        region,
-    Point            zoomDistance,
-    SInt16           zoomSteps,
-    ZoomAcceleration acceleration ) TWOWORDINLINE( 0x7025, 0xABED );
+  RgnHandle          region,
+  Point              zoomDistance,
+  SInt16             zoomSteps,
+  ZoomAcceleration   acceleration)                            TWOWORDINLINE(0x7025, 0xABED);
+
+
 
 /*
   _________________________________________________________________________________________________________
@@ -1658,52 +1670,54 @@ ZoomRegion(
   _________________________________________________________________________________________________________
 */
 
-typedef DragRef     DragReference;
-typedef DragItemRef ItemReference;
+
+typedef DragRef                         DragReference;
+typedef DragItemRef                     ItemReference;
 #if OLDROUTINENAMES
 enum {
-	dragHasLeftSenderWindow = kDragHasLeftSenderWindow, /* drag has left the source window since TrackDrag */
-	dragInsideSenderApplication = kDragInsideSenderApplication, /* drag is occurring within the sender application */
-	dragInsideSenderWindow = kDragInsideSenderWindow /* drag is occurring within the sender window */
+  dragHasLeftSenderWindow       = kDragHasLeftSenderWindow, /* drag has left the source window since TrackDrag */
+  dragInsideSenderApplication   = kDragInsideSenderApplication, /* drag is occurring within the sender application */
+  dragInsideSenderWindow        = kDragInsideSenderWindow /* drag is occurring within the sender window */
 };
 
 enum {
-	dragTrackingEnterHandler = kDragTrackingEnterHandler, /* drag has entered handler */
-	dragTrackingEnterWindow = kDragTrackingEnterWindow, /* drag has entered window */
-	dragTrackingInWindow = kDragTrackingInWindow, /* drag is moving within window */
-	dragTrackingLeaveWindow = kDragTrackingLeaveWindow, /* drag has exited window */
-	dragTrackingLeaveHandler = kDragTrackingLeaveHandler /* drag has exited handler */
+  dragTrackingEnterHandler      = kDragTrackingEnterHandler, /* drag has entered handler */
+  dragTrackingEnterWindow       = kDragTrackingEnterWindow, /* drag has entered window */
+  dragTrackingInWindow          = kDragTrackingInWindow, /* drag is moving within window */
+  dragTrackingLeaveWindow       = kDragTrackingLeaveWindow, /* drag has exited window */
+  dragTrackingLeaveHandler      = kDragTrackingLeaveHandler /* drag has exited handler */
 };
 
 enum {
-	dragRegionBegin = kDragRegionBegin, /* initialize drawing */
-	dragRegionDraw = kDragRegionDraw, /* draw drag feedback */
-	dragRegionHide = kDragRegionHide, /* hide drag feedback */
-	dragRegionIdle = kDragRegionIdle, /* drag feedback idle time */
-	dragRegionEnd = kDragRegionEnd /* end of drawing */
+  dragRegionBegin               = kDragRegionBegin, /* initialize drawing */
+  dragRegionDraw                = kDragRegionDraw, /* draw drag feedback */
+  dragRegionHide                = kDragRegionHide, /* hide drag feedback */
+  dragRegionIdle                = kDragRegionIdle, /* drag feedback idle time */
+  dragRegionEnd                 = kDragRegionEnd /* end of drawing */
 };
 
 enum {
-	zoomNoAcceleration = kZoomNoAcceleration, /* use linear interpolation */
-	zoomAccelerate = kZoomAccelerate, /* ramp up step size */
-	zoomDecelerate = kZoomDecelerate /* ramp down step size */
+  zoomNoAcceleration            = kZoomNoAcceleration, /* use linear interpolation */
+  zoomAccelerate                = kZoomAccelerate, /* ramp up step size */
+  zoomDecelerate                = kZoomDecelerate /* ramp down step size */
 };
 
 enum {
-	kDragStandardImage = kDragStandardTranslucency, /* 65% image translucency (standard)*/
-	kDragDarkImage = kDragDarkTranslucency, /* 50% image translucency*/
-	kDragDarkerImage = kDragDarkerTranslucency, /* 25% image translucency*/
-	kDragOpaqueImage = kDragOpaqueTranslucency /* 0% image translucency (opaque)*/
+  kDragStandardImage            = kDragStandardTranslucency, /* 65% image translucency (standard)*/
+  kDragDarkImage                = kDragDarkTranslucency, /* 50% image translucency*/
+  kDragDarkerImage              = kDragDarkerTranslucency, /* 25% image translucency*/
+  kDragOpaqueImage              = kDragOpaqueTranslucency /* 0% image translucency (opaque)*/
 };
 
-#endif /* OLDROUTINENAMES */
+#endif  /* OLDROUTINENAMES */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1717,3 +1731,4 @@ enum {
 #endif
 
 #endif /* __DRAG__ */
+

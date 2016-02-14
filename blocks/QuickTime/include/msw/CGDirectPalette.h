@@ -20,6 +20,9 @@
 #include <CGDirectDisplay.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -33,14 +36,14 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
-typedef float CGPaletteBlendFraction;
+typedef float                           CGPaletteBlendFraction;
 /*
  * Convenient device color representation
  *
@@ -48,17 +51,17 @@ typedef float CGPaletteBlendFraction;
  * is full on for each channel.
  */
 struct CGDeviceColor {
-	float red;
-	float green;
-	float blue;
+  float               red;
+  float               green;
+  float               blue;
 };
-typedef struct CGDeviceColor CGDeviceColor;
+typedef struct CGDeviceColor            CGDeviceColor;
 struct CGDeviceByteColor {
-	CGByteValue red;
-	CGByteValue green;
-	CGByteValue blue;
+  CGByteValue         red;
+  CGByteValue         green;
+  CGByteValue         blue;
 };
-typedef struct CGDeviceByteColor CGDeviceByteColor;
+typedef struct CGDeviceByteColor        CGDeviceByteColor;
 /*
  * Create a new palette object representing the default 8 bit color palette.
  * Release the palette using CGPaletteRelease().
@@ -72,7 +75,8 @@ typedef struct CGDeviceByteColor CGDeviceByteColor;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDirectPaletteRef )
-CGPaletteCreateDefaultColorPalette( void );
+CGPaletteCreateDefaultColorPalette(void);
+
 
 /*
  * Create a copy of the display's current palette, if any.
@@ -88,7 +92,8 @@ CGPaletteCreateDefaultColorPalette( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDirectPaletteRef )
-CGPaletteCreateWithDisplay( CGDirectDisplayID display );
+CGPaletteCreateWithDisplay(CGDirectDisplayID display);
+
 
 /*
  * Create a new palette with a capacity as specified.  Entries are initialized from
@@ -103,7 +108,8 @@ CGPaletteCreateWithDisplay( CGDirectDisplayID display );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDirectPaletteRef )
-CGPaletteCreateWithCapacity( CGTableCount capacity );
+CGPaletteCreateWithCapacity(CGTableCount capacity);
+
 
 /*
  * Create a new palette with a capacity and contents as specified.
@@ -119,8 +125,9 @@ CGPaletteCreateWithCapacity( CGTableCount capacity );
  */
 EXTERN_API_C( CGDirectPaletteRef )
 CGPaletteCreateWithSamples(
-    CGDeviceColor *sampleTable,
-    CGTableCount   sampleCount );
+  CGDeviceColor *  sampleTable,
+  CGTableCount     sampleCount);
+
 
 /*
  * Convenience function:
@@ -137,8 +144,9 @@ CGPaletteCreateWithSamples(
  */
 EXTERN_API_C( CGDirectPaletteRef )
 CGPaletteCreateWithByteSamples(
-    CGDeviceByteColor *sampleTable,
-    CGTableCount       sampleCount );
+  CGDeviceByteColor *  sampleTable,
+  CGTableCount         sampleCount);
+
 
 /*
  * Release a palette
@@ -152,7 +160,8 @@ CGPaletteCreateWithByteSamples(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGPaletteRelease( CGDirectPaletteRef palette );
+CGPaletteRelease(CGDirectPaletteRef palette);
+
 
 /*
  * Get the color value at the specified index
@@ -167,8 +176,9 @@ CGPaletteRelease( CGDirectPaletteRef palette );
  */
 EXTERN_API_C( CGDeviceColor )
 CGPaletteGetColorAtIndex(
-    CGDirectPaletteRef palette,
-    CGTableCount       index );
+  CGDirectPaletteRef   palette,
+  CGTableCount         index);
+
 
 /*
  * Get the index for the specified color value
@@ -185,8 +195,9 @@ CGPaletteGetColorAtIndex(
  */
 EXTERN_API_C( CGTableCount )
 CGPaletteGetIndexForColor(
-    CGDirectPaletteRef palette,
-    CGDeviceColor      color );
+  CGDirectPaletteRef   palette,
+  CGDeviceColor        color);
+
 
 /*
  * Get the number of samples in the palette
@@ -200,7 +211,9 @@ CGPaletteGetIndexForColor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGTableCount )
-CGPaletteGetNumberOfSamples( CGDirectPaletteRef palette );
+CGPaletteGetNumberOfSamples(CGDirectPaletteRef palette);
+
+
 
 /*
  * Set the color value at the specified index
@@ -215,9 +228,10 @@ CGPaletteGetNumberOfSamples( CGDirectPaletteRef palette );
  */
 EXTERN_API_C( void )
 CGPaletteSetColorAtIndex(
-    CGDirectPaletteRef palette,
-    CGDeviceColor      color,
-    CGTableCount       index );
+  CGDirectPaletteRef   palette,
+  CGDeviceColor        color,
+  CGTableCount         index);
+
 
 /*
  * Copy a palette
@@ -231,7 +245,8 @@ CGPaletteSetColorAtIndex(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDirectPaletteRef )
-CGPaletteCreateCopy( CGDirectPaletteRef palette );
+CGPaletteCreateCopy(CGDirectPaletteRef palette);
+
 
 /*
  * Compare two palettes
@@ -246,8 +261,9 @@ CGPaletteCreateCopy( CGDirectPaletteRef palette );
  */
 EXTERN_API_C( Boolean )
 CGPaletteIsEqualToPalette(
-    CGDirectPaletteRef palette1,
-    CGDirectPaletteRef palette2 );
+  CGDirectPaletteRef   palette1,
+  CGDirectPaletteRef   palette2);
+
 
 /*
  * Create a new palette blended with a fraction of a device color.
@@ -263,16 +279,18 @@ CGPaletteIsEqualToPalette(
  */
 EXTERN_API_C( CGDirectPaletteRef )
 CGPaletteCreateFromPaletteBlendedWithColor(
-    CGDirectPaletteRef     palette,
-    CGPaletteBlendFraction fraction,
-    CGDeviceColor          color );
+  CGDirectPaletteRef       palette,
+  CGPaletteBlendFraction   fraction,
+  CGDeviceColor            color);
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -286,3 +304,4 @@ CGPaletteCreateFromPaletteBlendedWithColor(
 #endif
 
 #endif /* CGDIRECTPALETTE_H_ */
+

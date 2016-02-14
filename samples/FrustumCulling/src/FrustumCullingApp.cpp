@@ -26,11 +26,11 @@
 #include "cinder/gl/gl.h"
 
 #include "cinder/AxisAlignedBox.h"
-#include "cinder/CameraUi.h"
 #include "cinder/Frustum.h"
+#include "cinder/CameraUi.h"
 #include "cinder/ObjLoader.h"
-#include "cinder/Rand.h"
 #include "cinder/Text.h"
+#include "cinder/Rand.h"
 #include "cinder/Timeline.h"
 #include "cinder/Utilities.h"
 
@@ -43,7 +43,7 @@ using namespace ci::app;
 using namespace std;
 
 class FrustumCullingReduxApp : public App {
-  public:
+public:
 	static void prepareSettings( Settings *settings );
 
 	void setup();
@@ -57,42 +57,42 @@ class FrustumCullingReduxApp : public App {
 
 	void resize() override;
 
-  protected:
+protected:
 	//! Load the heart shaped mesh.
 	void loadObject();
 	//! Renders the help menu.
 	void renderHelpToTexture();
 
-  protected:
+protected:
 	// keep track of time
-	double mCurrentSeconds;
+	double  mCurrentSeconds;
 
 	// flags
-	bool mPerformCulling;
-	bool mCullWithSpheres;
-	bool mDrawWorldSpaceBounds;
-	bool mDrawObjectSpaceBounds;
-	bool mShowRevealingFov;
-	bool mShowHelp;
+	bool  mPerformCulling;
+	bool  mCullWithSpheres;
+	bool  mDrawWorldSpaceBounds;
+	bool  mDrawObjectSpaceBounds;
+	bool  mShowRevealingFov;
+	bool  mShowHelp;
 
-	Anim<float> mCullingFov;
+	Anim<float>                     mCullingFov;
 
-	ci::TriMeshRef mTriMesh;
-	gl::BatchRef   mBatch, mSphereBatch, mBoxBatch, mGridBatch;
+	ci::TriMeshRef                  mTriMesh;
+	gl::BatchRef                    mBatch, mSphereBatch, mBoxBatch, mGridBatch;
 
 	// caches the heart's bounding box and sphere in object space coordinates
-	AxisAlignedBox mObjectBoundingBox;
-	Sphere         mObjectBoundingSphere;
+	AxisAlignedBox                mObjectBoundingBox;
+	Sphere                          mObjectBoundingSphere;
 
 	// objects
-	std::vector<CullableObjectRef> mObjects;
+	std::vector<CullableObjectRef>  mObjects;
 
 	// camera
-	CameraUi    mCamUi;
-	CameraPersp mRenderCam;
+	CameraUi                        mCamUi;
+	CameraPersp                     mRenderCam;
 
 	// help text
-	gl::Texture2dRef mHelp;
+	gl::Texture2dRef                mHelp;
 };
 
 void FrustumCullingReduxApp::prepareSettings( Settings *settings )
@@ -122,13 +122,13 @@ void FrustumCullingReduxApp::setup()
 	loadObject();
 
 	// Create a few hearts.
-	int sz = (int)math<double>::sqrt( NUM_OBJECTS );
+	int sz = (int) math<double>::sqrt( NUM_OBJECTS );
 
 	Rand::randomize();
 	mObjects.resize( NUM_OBJECTS );
 	for( int i = 0; i < NUM_OBJECTS; ++i ) {
-		vec3  pos = 100.0f * vec3( i % sz - sz / 2, 0, i / sz - sz / 2 );
-		vec3  rot = vec3( 0, Rand::randFloat( -360, 360 ), 0 );
+		vec3 pos = 100.0f * vec3( i % sz - sz / 2, 0, i / sz - sz / 2 );
+		vec3 rot = vec3( 0, Rand::randFloat( -360, 360 ), 0 );
 		float scale = 50.0f;
 
 		auto &obj = mObjects[i];
@@ -162,7 +162,7 @@ void FrustumCullingReduxApp::update()
 
 	// perform frustum culling **********************************************************************************
 
-	// Save the current culling field of view. If mShowRevealingFov = true,
+	// Save the current culling field of view. If mShowRevealingFov = true, 
 	// this will narrow the camera's FOV so that you can see the culling effect.
 	float originalFov = mRenderCam.getFov();
 	mRenderCam.setFov( mCullingFov );
@@ -173,7 +173,7 @@ void FrustumCullingReduxApp::update()
 	// Restore FOV to original
 	mRenderCam.setFov( originalFov );
 
-	for( auto &obj : mObjects ) {
+	for( auto & obj : mObjects ) {
 		// Update object (so it rotates slowly around its axis).
 		obj->update( elapsed );
 
@@ -200,7 +200,7 @@ void FrustumCullingReduxApp::update()
 
 	// Update window title.
 	if( getElapsedFrames() % 60 == 0 )
-		getWindow()->setTitle( "Frustum Culling Redux - " + toString( (int)getAverageFps() ) + " FPS" );
+		getWindow()->setTitle( "Frustum Culling Redux - " + toString( (int) getAverageFps() ) + " FPS" );
 }
 
 void FrustumCullingReduxApp::draw()
@@ -218,12 +218,12 @@ void FrustumCullingReduxApp::draw()
 		gl::enableDepthWrite();
 
 		// Draw all objects.
-		for( auto &obj : mObjects )
+		for( auto & obj : mObjects )
 			obj->draw();
 
 		// Draw bounding volumes.
 		if( mDrawWorldSpaceBounds ) {
-			for( auto &obj : mObjects ) {
+			for( auto & obj : mObjects ) {
 				// Use cyan bounds if not culled, orange bounds if culled.
 				if( !obj->isCulled() )
 					gl::color( Color( 0, 1, 1 ) );

@@ -24,6 +24,10 @@
 #include <Components.h>
 #endif
 
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,22 +41,22 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
-typedef CALLBACK_API_C( UInt32, DCResponseHandler )( UInt32 fwCommandObjectID, Ptr responseBuffer, UInt32 responseLength );
+typedef CALLBACK_API_C( UInt32 , DCResponseHandler )(UInt32 fwCommandObjectID, Ptr responseBuffer, UInt32 responseLength);
 struct DVCTransactionParams {
-	Ptr                commandBufferPtr;
-	UInt32             commandLength;
-	Ptr                responseBufferPtr;
-	UInt32             responseBufferSize;
-	DCResponseHandler *responseHandler;
+  Ptr                 commandBufferPtr;
+  UInt32              commandLength;
+  Ptr                 responseBufferPtr;
+  UInt32              responseBufferSize;
+  DCResponseHandler * responseHandler;
 };
-typedef struct DVCTransactionParams DVCTransactionParams;
+typedef struct DVCTransactionParams     DVCTransactionParams;
 /*
  *  DeviceControlDoAVCTransaction()
  *  
@@ -63,20 +67,23 @@ typedef struct DVCTransactionParams DVCTransactionParams;
  */
 EXTERN_API( ComponentResult )
 DeviceControlDoAVCTransaction(
-    ComponentInstance     instance,
-    DVCTransactionParams *params ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0001, 0x7000, 0xA82A );
+  ComponentInstance       instance,
+  DVCTransactionParams *  params)                             FIVEWORDINLINE(0x2F3C, 0x0004, 0x0001, 0x7000, 0xA82A);
+
+
+
 
 /* selectors for component calls */
 enum {
-	kDeviceControlDoAVCTransactionSelect = 0x0001
+    kDeviceControlDoAVCTransactionSelect       = 0x0001
 };
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -90,3 +97,4 @@ enum {
 #endif
 
 #endif /* __DEVICECONTROL__ */
+

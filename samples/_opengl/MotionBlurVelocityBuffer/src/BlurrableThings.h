@@ -33,7 +33,8 @@
 //
 // Previous and current transform stored together.
 //
-class BlurrableTransform {
+class BlurrableTransform
+{
   public:
 	BlurrableTransform() = default;
 
@@ -44,18 +45,20 @@ class BlurrableTransform {
 	void update( const ci::vec3 &pos, const ci::quat &orientation, const ci::vec3 &scale );
 
 	//! Returns the current transformation matrix. Matches the last values sent to update.
-	const ci::mat4 &getTransform() const { return mTransform; }
+	const ci::mat4& getTransform() const { return mTransform; }
+
 	//! Returns the previous transformation matrix. Matches the penultimate values sent to update.
-	const ci::mat4 &getPreviousTransform() const { return mPreviousTransform; }
+	const ci::mat4& getPreviousTransform() const { return mPreviousTransform; }
   private:
-	ci::mat4 mTransform;
-	ci::mat4 mPreviousTransform;
+	ci::mat4	mTransform;
+	ci::mat4	mPreviousTransform;
 };
 
 //
 // A test object that moves around and keeps track of previous and current transformations.
 //
-class BlurrableMesh {
+class BlurrableMesh
+{
   public:
 	BlurrableMesh( ci::gl::VboMeshRef mesh, const ci::vec3 &pos );
 
@@ -63,13 +66,14 @@ class BlurrableMesh {
 	void update( float dt );
 
 	//! Get the current transform.
-	const ci::mat4 &getTransform() const { return mTransform.getTransform(); }
+	const ci::mat4&	getTransform() const { return mTransform.getTransform(); }
 	//! Get last frame's transform.
-	const ci::mat4 &getPreviousTransform() const { return mTransform.getPreviousTransform(); }
+	const ci::mat4&	getPreviousTransform() const { return mTransform.getPreviousTransform(); }
 	//! Get the target render color.
-	const ci::ColorA &getColor() const { return mColor; }
+	const ci::ColorA& getColor() const { return mColor; }
 	//! Get the mesh to render.
-	ci::gl::VboMeshRef getMesh() const { return mMesh; }
+	ci::gl::VboMeshRef	getMesh() const { return mMesh; }
+
 	void setAxis( const ci::vec3 &axis ) { mAxis = axis; }
 	void setScale( const ci::vec3 &scale ) { mScale = scale; }
 	void setOscillation( const ci::vec3 &osc ) { mOscillation = osc; }
@@ -77,19 +81,19 @@ class BlurrableMesh {
 	void setTheta( float t ) { mTheta = t; }
   private:
 	// Transform data.
-	BlurrableTransform mTransform;
+	BlurrableTransform	mTransform;
 
 	// Renderable mesh.
-	ci::gl::VboMeshRef mMesh;
+	ci::gl::VboMeshRef	mMesh;
 
 	// Animation parameters for some motion.
-	float      mSpin = 0.0f;
-	ci::vec3   mAxis = ci::vec3( 0.7f, 0.5f, 0.3f );
-	ci::vec3   mPosition;
-	ci::vec3   mOscillation = ci::vec3( 10.0f, 1.0f, 1.0f );
-	ci::vec3   mScale = ci::vec3( 1.0f, 1.0f, 1.0f );
-	ci::ColorA mColor = ci::ColorA( 1.0f, 1.0f, 0.0f, 1.0f );
-	float      mTheta = 0.0f;
+	float				mSpin = 0.0f;
+	ci::vec3			mAxis = ci::vec3( 0.7f, 0.5f, 0.3f );
+	ci::vec3			mPosition;
+	ci::vec3			mOscillation = ci::vec3( 10.0f, 1.0f, 1.0f );
+	ci::vec3			mScale = ci::vec3( 1.0f, 1.0f, 1.0f );
+	ci::ColorA			mColor = ci::ColorA( 1.0f, 1.0f, 0.0f, 1.0f );
+	float				mTheta = 0.0f;
 };
 
 typedef std::shared_ptr<BlurrableMesh> BlurrableMeshRef;

@@ -40,6 +40,8 @@
 #include <IconStorage.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -53,243 +55,244 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /* The following are icons for which there are both icon suites and SICNs. */
 /* Avoid using icon resources if possible. Use IconServices instead. */
 enum {
-	kGenericDocumentIconResource = -4000,
-	kGenericStationeryIconResource = -3985,
-	kGenericEditionFileIconResource = -3989,
-	kGenericApplicationIconResource = -3996,
-	kGenericDeskAccessoryIconResource = -3991,
-	kGenericFolderIconResource = -3999,
-	kPrivateFolderIconResource = -3994,
-	kFloppyIconResource = -3998,
-	kTrashIconResource = -3993,
-	kGenericRAMDiskIconResource = -3988,
-	kGenericCDROMIconResource = -3987
+  kGenericDocumentIconResource  = -4000,
+  kGenericStationeryIconResource = -3985,
+  kGenericEditionFileIconResource = -3989,
+  kGenericApplicationIconResource = -3996,
+  kGenericDeskAccessoryIconResource = -3991,
+  kGenericFolderIconResource    = -3999,
+  kPrivateFolderIconResource    = -3994,
+  kFloppyIconResource           = -3998,
+  kTrashIconResource            = -3993,
+  kGenericRAMDiskIconResource   = -3988,
+  kGenericCDROMIconResource     = -3987
 };
 
 /* The following are icons for which there are SICNs only. */
 /* Avoid using icon resources if possible. Use IconServices instead. */
 enum {
-	kDesktopIconResource = -3992,
-	kOpenFolderIconResource = -3997,
-	kGenericHardDiskIconResource = -3995,
-	kGenericFileServerIconResource = -3972,
-	kGenericSuitcaseIconResource = -3970,
-	kGenericMoverObjectIconResource = -3969
+  kDesktopIconResource          = -3992,
+  kOpenFolderIconResource       = -3997,
+  kGenericHardDiskIconResource  = -3995,
+  kGenericFileServerIconResource = -3972,
+  kGenericSuitcaseIconResource  = -3970,
+  kGenericMoverObjectIconResource = -3969
 };
 
 /* The following are icons for which there are icon suites only. */
 /* Avoid using icon resources if possible. Use IconServices instead. */
 enum {
-	kGenericPreferencesIconResource = -3971,
-	kGenericQueryDocumentIconResource = -16506,
-	kGenericExtensionIconResource = -16415,
-	kSystemFolderIconResource = -3983,
-	kHelpIconResource = -20271,
-	kAppleMenuFolderIconResource = -3982
+  kGenericPreferencesIconResource = -3971,
+  kGenericQueryDocumentIconResource = -16506,
+  kGenericExtensionIconResource = -16415,
+  kSystemFolderIconResource     = -3983,
+  kHelpIconResource             = -20271,
+  kAppleMenuFolderIconResource  = -3982
 };
 
 /* Obsolete. Use named constants defined above. */
 enum {
-	genericDocumentIconResource = kGenericDocumentIconResource,
-	genericStationeryIconResource = kGenericStationeryIconResource,
-	genericEditionFileIconResource = kGenericEditionFileIconResource,
-	genericApplicationIconResource = kGenericApplicationIconResource,
-	genericDeskAccessoryIconResource = kGenericDeskAccessoryIconResource,
-	genericFolderIconResource = kGenericFolderIconResource,
-	privateFolderIconResource = kPrivateFolderIconResource,
-	floppyIconResource = kFloppyIconResource,
-	trashIconResource = kTrashIconResource,
-	genericRAMDiskIconResource = kGenericRAMDiskIconResource,
-	genericCDROMIconResource = kGenericCDROMIconResource,
-	desktopIconResource = kDesktopIconResource,
-	openFolderIconResource = kOpenFolderIconResource,
-	genericHardDiskIconResource = kGenericHardDiskIconResource,
-	genericFileServerIconResource = kGenericFileServerIconResource,
-	genericSuitcaseIconResource = kGenericSuitcaseIconResource,
-	genericMoverObjectIconResource = kGenericMoverObjectIconResource,
-	genericPreferencesIconResource = kGenericPreferencesIconResource,
-	genericQueryDocumentIconResource = kGenericQueryDocumentIconResource,
-	genericExtensionIconResource = kGenericExtensionIconResource,
-	systemFolderIconResource = kSystemFolderIconResource,
-	appleMenuFolderIconResource = kAppleMenuFolderIconResource
+  genericDocumentIconResource   = kGenericDocumentIconResource,
+  genericStationeryIconResource = kGenericStationeryIconResource,
+  genericEditionFileIconResource = kGenericEditionFileIconResource,
+  genericApplicationIconResource = kGenericApplicationIconResource,
+  genericDeskAccessoryIconResource = kGenericDeskAccessoryIconResource,
+  genericFolderIconResource     = kGenericFolderIconResource,
+  privateFolderIconResource     = kPrivateFolderIconResource,
+  floppyIconResource            = kFloppyIconResource,
+  trashIconResource             = kTrashIconResource,
+  genericRAMDiskIconResource    = kGenericRAMDiskIconResource,
+  genericCDROMIconResource      = kGenericCDROMIconResource,
+  desktopIconResource           = kDesktopIconResource,
+  openFolderIconResource        = kOpenFolderIconResource,
+  genericHardDiskIconResource   = kGenericHardDiskIconResource,
+  genericFileServerIconResource = kGenericFileServerIconResource,
+  genericSuitcaseIconResource   = kGenericSuitcaseIconResource,
+  genericMoverObjectIconResource = kGenericMoverObjectIconResource,
+  genericPreferencesIconResource = kGenericPreferencesIconResource,
+  genericQueryDocumentIconResource = kGenericQueryDocumentIconResource,
+  genericExtensionIconResource  = kGenericExtensionIconResource,
+  systemFolderIconResource      = kSystemFolderIconResource,
+  appleMenuFolderIconResource   = kAppleMenuFolderIconResource
 };
 
 /* Avoid using icon resources if possible. Use IconServices instead. */
 enum {
-	kStartupFolderIconResource = -3981,
-	kOwnedFolderIconResource = -3980,
-	kDropFolderIconResource = -3979,
-	kSharedFolderIconResource = -3978,
-	kMountedFolderIconResource = -3977,
-	kControlPanelFolderIconResource = -3976,
-	kPrintMonitorFolderIconResource = -3975,
-	kPreferencesFolderIconResource = -3974,
-	kExtensionsFolderIconResource = -3973,
-	kFontsFolderIconResource = -3968,
-	kFullTrashIconResource = -3984
+  kStartupFolderIconResource    = -3981,
+  kOwnedFolderIconResource      = -3980,
+  kDropFolderIconResource       = -3979,
+  kSharedFolderIconResource     = -3978,
+  kMountedFolderIconResource    = -3977,
+  kControlPanelFolderIconResource = -3976,
+  kPrintMonitorFolderIconResource = -3975,
+  kPreferencesFolderIconResource = -3974,
+  kExtensionsFolderIconResource = -3973,
+  kFontsFolderIconResource      = -3968,
+  kFullTrashIconResource        = -3984
 };
 
 /* Obsolete. Use named constants defined above. */
 enum {
-	startupFolderIconResource = kStartupFolderIconResource,
-	ownedFolderIconResource = kOwnedFolderIconResource,
-	dropFolderIconResource = kDropFolderIconResource,
-	sharedFolderIconResource = kSharedFolderIconResource,
-	mountedFolderIconResource = kMountedFolderIconResource,
-	controlPanelFolderIconResource = kControlPanelFolderIconResource,
-	printMonitorFolderIconResource = kPrintMonitorFolderIconResource,
-	preferencesFolderIconResource = kPreferencesFolderIconResource,
-	extensionsFolderIconResource = kExtensionsFolderIconResource,
-	fontsFolderIconResource = kFontsFolderIconResource,
-	fullTrashIconResource = kFullTrashIconResource
+  startupFolderIconResource     = kStartupFolderIconResource,
+  ownedFolderIconResource       = kOwnedFolderIconResource,
+  dropFolderIconResource        = kDropFolderIconResource,
+  sharedFolderIconResource      = kSharedFolderIconResource,
+  mountedFolderIconResource     = kMountedFolderIconResource,
+  controlPanelFolderIconResource = kControlPanelFolderIconResource,
+  printMonitorFolderIconResource = kPrintMonitorFolderIconResource,
+  preferencesFolderIconResource = kPreferencesFolderIconResource,
+  extensionsFolderIconResource  = kExtensionsFolderIconResource,
+  fontsFolderIconResource       = kFontsFolderIconResource,
+  fullTrashIconResource         = kFullTrashIconResource
 };
 
 /* Alignment type values. */
 enum {
-	kAlignNone = 0x00,
-	kAlignVerticalCenter = 0x01,
-	kAlignTop = 0x02,
-	kAlignBottom = 0x03,
-	kAlignHorizontalCenter = 0x04,
-	kAlignAbsoluteCenter = kAlignVerticalCenter | kAlignHorizontalCenter,
-	kAlignCenterTop = kAlignTop | kAlignHorizontalCenter,
-	kAlignCenterBottom = kAlignBottom | kAlignHorizontalCenter,
-	kAlignLeft = 0x08,
-	kAlignCenterLeft = kAlignVerticalCenter | kAlignLeft,
-	kAlignTopLeft = kAlignTop | kAlignLeft,
-	kAlignBottomLeft = kAlignBottom | kAlignLeft,
-	kAlignRight = 0x0C,
-	kAlignCenterRight = kAlignVerticalCenter | kAlignRight,
-	kAlignTopRight = kAlignTop | kAlignRight,
-	kAlignBottomRight = kAlignBottom | kAlignRight
+  kAlignNone                    = 0x00,
+  kAlignVerticalCenter          = 0x01,
+  kAlignTop                     = 0x02,
+  kAlignBottom                  = 0x03,
+  kAlignHorizontalCenter        = 0x04,
+  kAlignAbsoluteCenter          = kAlignVerticalCenter | kAlignHorizontalCenter,
+  kAlignCenterTop               = kAlignTop | kAlignHorizontalCenter,
+  kAlignCenterBottom            = kAlignBottom | kAlignHorizontalCenter,
+  kAlignLeft                    = 0x08,
+  kAlignCenterLeft              = kAlignVerticalCenter | kAlignLeft,
+  kAlignTopLeft                 = kAlignTop | kAlignLeft,
+  kAlignBottomLeft              = kAlignBottom | kAlignLeft,
+  kAlignRight                   = 0x0C,
+  kAlignCenterRight             = kAlignVerticalCenter | kAlignRight,
+  kAlignTopRight                = kAlignTop | kAlignRight,
+  kAlignBottomRight             = kAlignBottom | kAlignRight
 };
 
 /* Obsolete. Use names defined above. */
 enum {
-	atNone = kAlignNone,
-	atVerticalCenter = kAlignVerticalCenter,
-	atTop = kAlignTop,
-	atBottom = kAlignBottom,
-	atHorizontalCenter = kAlignHorizontalCenter,
-	atAbsoluteCenter = kAlignAbsoluteCenter,
-	atCenterTop = kAlignCenterTop,
-	atCenterBottom = kAlignCenterBottom,
-	atLeft = kAlignLeft,
-	atCenterLeft = kAlignCenterLeft,
-	atTopLeft = kAlignTopLeft,
-	atBottomLeft = kAlignBottomLeft,
-	atRight = kAlignRight,
-	atCenterRight = kAlignCenterRight,
-	atTopRight = kAlignTopRight,
-	atBottomRight = kAlignBottomRight
+  atNone                        = kAlignNone,
+  atVerticalCenter              = kAlignVerticalCenter,
+  atTop                         = kAlignTop,
+  atBottom                      = kAlignBottom,
+  atHorizontalCenter            = kAlignHorizontalCenter,
+  atAbsoluteCenter              = kAlignAbsoluteCenter,
+  atCenterTop                   = kAlignCenterTop,
+  atCenterBottom                = kAlignCenterBottom,
+  atLeft                        = kAlignLeft,
+  atCenterLeft                  = kAlignCenterLeft,
+  atTopLeft                     = kAlignTopLeft,
+  atBottomLeft                  = kAlignBottomLeft,
+  atRight                       = kAlignRight,
+  atCenterRight                 = kAlignCenterRight,
+  atTopRight                    = kAlignTopRight,
+  atBottomRight                 = kAlignBottomRight
 };
 
-typedef SInt16 IconAlignmentType;
+typedef SInt16                          IconAlignmentType;
 /* Transform type values. */
 enum {
-	kTransformNone = 0x00,
-	kTransformDisabled = 0x01,
-	kTransformOffline = 0x02,
-	kTransformOpen = 0x03,
-	kTransformLabel1 = 0x0100,
-	kTransformLabel2 = 0x0200,
-	kTransformLabel3 = 0x0300,
-	kTransformLabel4 = 0x0400,
-	kTransformLabel5 = 0x0500,
-	kTransformLabel6 = 0x0600,
-	kTransformLabel7 = 0x0700,
-	kTransformSelected = 0x4000,
-	kTransformSelectedDisabled = kTransformSelected | kTransformDisabled,
-	kTransformSelectedOffline = kTransformSelected | kTransformOffline,
-	kTransformSelectedOpen = kTransformSelected | kTransformOpen
+  kTransformNone                = 0x00,
+  kTransformDisabled            = 0x01,
+  kTransformOffline             = 0x02,
+  kTransformOpen                = 0x03,
+  kTransformLabel1              = 0x0100,
+  kTransformLabel2              = 0x0200,
+  kTransformLabel3              = 0x0300,
+  kTransformLabel4              = 0x0400,
+  kTransformLabel5              = 0x0500,
+  kTransformLabel6              = 0x0600,
+  kTransformLabel7              = 0x0700,
+  kTransformSelected            = 0x4000,
+  kTransformSelectedDisabled    = kTransformSelected | kTransformDisabled,
+  kTransformSelectedOffline     = kTransformSelected | kTransformOffline,
+  kTransformSelectedOpen        = kTransformSelected | kTransformOpen
 };
 
 /* Obsolete. Use names defined above. */
 enum {
-	ttNone = kTransformNone,
-	ttDisabled = kTransformDisabled,
-	ttOffline = kTransformOffline,
-	ttOpen = kTransformOpen,
-	ttLabel1 = kTransformLabel1,
-	ttLabel2 = kTransformLabel2,
-	ttLabel3 = kTransformLabel3,
-	ttLabel4 = kTransformLabel4,
-	ttLabel5 = kTransformLabel5,
-	ttLabel6 = kTransformLabel6,
-	ttLabel7 = kTransformLabel7,
-	ttSelected = kTransformSelected,
-	ttSelectedDisabled = kTransformSelectedDisabled,
-	ttSelectedOffline = kTransformSelectedOffline,
-	ttSelectedOpen = kTransformSelectedOpen
+  ttNone                        = kTransformNone,
+  ttDisabled                    = kTransformDisabled,
+  ttOffline                     = kTransformOffline,
+  ttOpen                        = kTransformOpen,
+  ttLabel1                      = kTransformLabel1,
+  ttLabel2                      = kTransformLabel2,
+  ttLabel3                      = kTransformLabel3,
+  ttLabel4                      = kTransformLabel4,
+  ttLabel5                      = kTransformLabel5,
+  ttLabel6                      = kTransformLabel6,
+  ttLabel7                      = kTransformLabel7,
+  ttSelected                    = kTransformSelected,
+  ttSelectedDisabled            = kTransformSelectedDisabled,
+  ttSelectedOffline             = kTransformSelectedOffline,
+  ttSelectedOpen                = kTransformSelectedOpen
 };
 
-typedef SInt16 IconTransformType;
+typedef SInt16                          IconTransformType;
 /* Selector mask values. */
 enum {
-	kSelectorLarge1Bit = 0x00000001,
-	kSelectorLarge4Bit = 0x00000002,
-	kSelectorLarge8Bit = 0x00000004,
-	kSelectorLarge32Bit = 0x00000008,
-	kSelectorLarge8BitMask = 0x00000010,
-	kSelectorSmall1Bit = 0x00000100,
-	kSelectorSmall4Bit = 0x00000200,
-	kSelectorSmall8Bit = 0x00000400,
-	kSelectorSmall32Bit = 0x00000800,
-	kSelectorSmall8BitMask = 0x00001000,
-	kSelectorMini1Bit = 0x00010000,
-	kSelectorMini4Bit = 0x00020000,
-	kSelectorMini8Bit = 0x00040000,
-	kSelectorHuge1Bit = 0x01000000,
-	kSelectorHuge4Bit = 0x02000000,
-	kSelectorHuge8Bit = 0x04000000,
-	kSelectorHuge32Bit = 0x08000000,
-	kSelectorHuge8BitMask = 0x10000000,
-	kSelectorAllLargeData = 0x000000FF,
-	kSelectorAllSmallData = 0x0000FF00,
-	kSelectorAllMiniData = 0x00FF0000,
-	kSelectorAllHugeData = (long)0xFF000000,
-	kSelectorAll1BitData = kSelectorLarge1Bit | kSelectorSmall1Bit | kSelectorMini1Bit | kSelectorHuge1Bit,
-	kSelectorAll4BitData = kSelectorLarge4Bit | kSelectorSmall4Bit | kSelectorMini4Bit | kSelectorHuge4Bit,
-	kSelectorAll8BitData = kSelectorLarge8Bit | kSelectorSmall8Bit | kSelectorMini8Bit | kSelectorHuge8Bit,
-	kSelectorAll32BitData = kSelectorLarge32Bit | kSelectorSmall32Bit | kSelectorHuge32Bit,
-	kSelectorAllAvailableData = (long)0xFFFFFFFF
+  kSelectorLarge1Bit            = 0x00000001,
+  kSelectorLarge4Bit            = 0x00000002,
+  kSelectorLarge8Bit            = 0x00000004,
+  kSelectorLarge32Bit           = 0x00000008,
+  kSelectorLarge8BitMask        = 0x00000010,
+  kSelectorSmall1Bit            = 0x00000100,
+  kSelectorSmall4Bit            = 0x00000200,
+  kSelectorSmall8Bit            = 0x00000400,
+  kSelectorSmall32Bit           = 0x00000800,
+  kSelectorSmall8BitMask        = 0x00001000,
+  kSelectorMini1Bit             = 0x00010000,
+  kSelectorMini4Bit             = 0x00020000,
+  kSelectorMini8Bit             = 0x00040000,
+  kSelectorHuge1Bit             = 0x01000000,
+  kSelectorHuge4Bit             = 0x02000000,
+  kSelectorHuge8Bit             = 0x04000000,
+  kSelectorHuge32Bit            = 0x08000000,
+  kSelectorHuge8BitMask         = 0x10000000,
+  kSelectorAllLargeData         = 0x000000FF,
+  kSelectorAllSmallData         = 0x0000FF00,
+  kSelectorAllMiniData          = 0x00FF0000,
+  kSelectorAllHugeData          = (long)0xFF000000,
+  kSelectorAll1BitData          = kSelectorLarge1Bit | kSelectorSmall1Bit | kSelectorMini1Bit | kSelectorHuge1Bit,
+  kSelectorAll4BitData          = kSelectorLarge4Bit | kSelectorSmall4Bit | kSelectorMini4Bit | kSelectorHuge4Bit,
+  kSelectorAll8BitData          = kSelectorLarge8Bit | kSelectorSmall8Bit | kSelectorMini8Bit | kSelectorHuge8Bit,
+  kSelectorAll32BitData         = kSelectorLarge32Bit | kSelectorSmall32Bit | kSelectorHuge32Bit,
+  kSelectorAllAvailableData     = (long)0xFFFFFFFF
 };
+
 
 /* Obsolete. Use names defined above. */
 enum {
-	svLarge1Bit = kSelectorLarge1Bit,
-	svLarge4Bit = kSelectorLarge4Bit,
-	svLarge8Bit = kSelectorLarge8Bit,
-	svSmall1Bit = kSelectorSmall1Bit,
-	svSmall4Bit = kSelectorSmall4Bit,
-	svSmall8Bit = kSelectorSmall8Bit,
-	svMini1Bit = kSelectorMini1Bit,
-	svMini4Bit = kSelectorMini4Bit,
-	svMini8Bit = kSelectorMini8Bit,
-	svAllLargeData = kSelectorAllLargeData,
-	svAllSmallData = kSelectorAllSmallData,
-	svAllMiniData = kSelectorAllMiniData,
-	svAll1BitData = kSelectorAll1BitData,
-	svAll4BitData = kSelectorAll4BitData,
-	svAll8BitData = kSelectorAll8BitData,
-	svAllAvailableData = kSelectorAllAvailableData
+  svLarge1Bit                   = kSelectorLarge1Bit,
+  svLarge4Bit                   = kSelectorLarge4Bit,
+  svLarge8Bit                   = kSelectorLarge8Bit,
+  svSmall1Bit                   = kSelectorSmall1Bit,
+  svSmall4Bit                   = kSelectorSmall4Bit,
+  svSmall8Bit                   = kSelectorSmall8Bit,
+  svMini1Bit                    = kSelectorMini1Bit,
+  svMini4Bit                    = kSelectorMini4Bit,
+  svMini8Bit                    = kSelectorMini8Bit,
+  svAllLargeData                = kSelectorAllLargeData,
+  svAllSmallData                = kSelectorAllSmallData,
+  svAllMiniData                 = kSelectorAllMiniData,
+  svAll1BitData                 = kSelectorAll1BitData,
+  svAll4BitData                 = kSelectorAll4BitData,
+  svAll8BitData                 = kSelectorAll8BitData,
+  svAllAvailableData            = kSelectorAllAvailableData
 };
 
-typedef UInt32 IconSelectorValue;
-typedef CALLBACK_API( OSErr, IconActionProcPtr )( ResType theType, Handle *theIcon, void *yourDataPtr );
-typedef CALLBACK_API( Handle, IconGetterProcPtr )( ResType theType, void *yourDataPtr );
-typedef STACK_UPP_TYPE( IconActionProcPtr ) IconActionUPP;
-typedef STACK_UPP_TYPE( IconGetterProcPtr ) IconGetterUPP;
+typedef UInt32                          IconSelectorValue;
+typedef CALLBACK_API( OSErr , IconActionProcPtr )(ResType theType, Handle *theIcon, void *yourDataPtr);
+typedef CALLBACK_API( Handle , IconGetterProcPtr )(ResType theType, void *yourDataPtr);
+typedef STACK_UPP_TYPE(IconActionProcPtr)                       IconActionUPP;
+typedef STACK_UPP_TYPE(IconGetterProcPtr)                       IconGetterUPP;
 /*
  *  NewIconActionUPP()
  *  
@@ -299,17 +302,14 @@ typedef STACK_UPP_TYPE( IconGetterProcPtr ) IconGetterUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( IconActionUPP )
-NewIconActionUPP( IconActionProcPtr userRoutine );
+NewIconActionUPP(IconActionProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppIconActionProcInfo = 0x00000FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( IconActionUPP ) NewIconActionUPP( IconActionProcPtr userRoutine )
-{
-	return (IconActionUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppIconActionProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewIconActionUPP( userRoutine ) ( IconActionUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppIconActionProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppIconActionProcInfo = 0x00000FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(IconActionUPP) NewIconActionUPP(IconActionProcPtr userRoutine) { return (IconActionUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppIconActionProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewIconActionUPP(userRoutine) (IconActionUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppIconActionProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -321,17 +321,14 @@ inline DEFINE_API_C( IconActionUPP ) NewIconActionUPP( IconActionProcPtr userRou
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( IconGetterUPP )
-NewIconGetterUPP( IconGetterProcPtr userRoutine );
+NewIconGetterUPP(IconGetterProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppIconGetterProcInfo = 0x000003F0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( IconGetterUPP ) NewIconGetterUPP( IconGetterProcPtr userRoutine )
-{
-	return (IconGetterUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppIconGetterProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewIconGetterUPP( userRoutine ) ( IconGetterUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppIconGetterProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppIconGetterProcInfo = 0x000003F0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(IconGetterUPP) NewIconGetterUPP(IconGetterProcPtr userRoutine) { return (IconGetterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppIconGetterProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewIconGetterUPP(userRoutine) (IconGetterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppIconGetterProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -343,16 +340,13 @@ inline DEFINE_API_C( IconGetterUPP ) NewIconGetterUPP( IconGetterProcPtr userRou
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeIconActionUPP( IconActionUPP userUPP );
+DisposeIconActionUPP(IconActionUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeIconActionUPP( IconActionUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeIconActionUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeIconActionUPP(IconActionUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeIconActionUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -364,16 +358,13 @@ inline DEFINE_API_C( void ) DisposeIconActionUPP( IconActionUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeIconGetterUPP( IconGetterUPP userUPP );
+DisposeIconGetterUPP(IconGetterUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeIconGetterUPP( IconGetterUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeIconGetterUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeIconGetterUPP(IconGetterUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeIconGetterUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -386,19 +377,16 @@ inline DEFINE_API_C( void ) DisposeIconGetterUPP( IconGetterUPP userUPP )
  */
 EXTERN_API_C( OSErr )
 InvokeIconActionUPP(
-    ResType       theType,
-    Handle *      theIcon,
-    void *        yourDataPtr,
-    IconActionUPP userUPP );
+  ResType        theType,
+  Handle *       theIcon,
+  void *         yourDataPtr,
+  IconActionUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSErr ) InvokeIconActionUPP( ResType theType, Handle *theIcon, void *yourDataPtr, IconActionUPP userUPP )
-{
-	return (OSErr)CALL_THREE_PARAMETER_UPP( userUPP, uppIconActionProcInfo, theType, theIcon, yourDataPtr );
-}
-#else
-#define InvokeIconActionUPP( theType, theIcon, yourDataPtr, userUPP ) ( OSErr ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppIconActionProcInfo, ( theType ), ( theIcon ), ( yourDataPtr ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSErr) InvokeIconActionUPP(ResType theType, Handle * theIcon, void * yourDataPtr, IconActionUPP userUPP) { return (OSErr)CALL_THREE_PARAMETER_UPP(userUPP, uppIconActionProcInfo, theType, theIcon, yourDataPtr); }
+  #else
+    #define InvokeIconActionUPP(theType, theIcon, yourDataPtr, userUPP) (OSErr)CALL_THREE_PARAMETER_UPP((userUPP), uppIconActionProcInfo, (theType), (theIcon), (yourDataPtr))
+  #endif
 #endif
 
 /*
@@ -411,41 +399,38 @@ inline DEFINE_API_C( OSErr ) InvokeIconActionUPP( ResType theType, Handle *theIc
  */
 EXTERN_API_C( Handle )
 InvokeIconGetterUPP(
-    ResType       theType,
-    void *        yourDataPtr,
-    IconGetterUPP userUPP );
+  ResType        theType,
+  void *         yourDataPtr,
+  IconGetterUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Handle ) InvokeIconGetterUPP( ResType theType, void *yourDataPtr, IconGetterUPP userUPP )
-{
-	return (Handle)CALL_TWO_PARAMETER_UPP( userUPP, uppIconGetterProcInfo, theType, yourDataPtr );
-}
-#else
-#define InvokeIconGetterUPP( theType, yourDataPtr, userUPP ) ( Handle ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppIconGetterProcInfo, ( theType ), ( yourDataPtr ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Handle) InvokeIconGetterUPP(ResType theType, void * yourDataPtr, IconGetterUPP userUPP) { return (Handle)CALL_TWO_PARAMETER_UPP(userUPP, uppIconGetterProcInfo, theType, yourDataPtr); }
+  #else
+    #define InvokeIconGetterUPP(theType, yourDataPtr, userUPP) (Handle)CALL_TWO_PARAMETER_UPP((userUPP), uppIconGetterProcInfo, (theType), (yourDataPtr))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewIconActionProc( userRoutine ) NewIconActionUPP( userRoutine )
-#define NewIconGetterProc( userRoutine ) NewIconGetterUPP( userRoutine )
-#define CallIconActionProc( userRoutine, theType, theIcon, yourDataPtr ) InvokeIconActionUPP( theType, theIcon, yourDataPtr, userRoutine )
-#define CallIconGetterProc( userRoutine, theType, yourDataPtr ) InvokeIconGetterUPP( theType, yourDataPtr, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewIconActionProc(userRoutine)                      NewIconActionUPP(userRoutine)
+    #define NewIconGetterProc(userRoutine)                      NewIconGetterUPP(userRoutine)
+    #define CallIconActionProc(userRoutine, theType, theIcon, yourDataPtr) InvokeIconActionUPP(theType, theIcon, yourDataPtr, userRoutine)
+    #define CallIconGetterProc(userRoutine, theType, yourDataPtr) InvokeIconGetterUPP(theType, yourDataPtr, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
-typedef IconGetterProcPtr IconGetter;
-typedef IconActionProcPtr IconAction;
+typedef IconGetterProcPtr               IconGetter;
+typedef IconActionProcPtr               IconAction;
 /* CIconHandle, GetCIcon(), PlotCIcon(), and DisposeCIcon() moved here from Quickdraw.h*/
 struct CIcon {
-	PixMap iconPMap; /*the icon's pixMap*/
-	BitMap iconMask; /*the icon's mask*/
-	BitMap iconBMap; /*the icon's bitMap*/
-	Handle iconData; /*the icon's data*/
-	SInt16 iconMaskData[1]; /*icon's mask and BitMap data*/
+  PixMap              iconPMap;               /*the icon's pixMap*/
+  BitMap              iconMask;               /*the icon's mask*/
+  BitMap              iconBMap;               /*the icon's bitMap*/
+  Handle              iconData;               /*the icon's data*/
+  SInt16              iconMaskData[1];        /*icon's mask and BitMap data*/
 };
-typedef struct CIcon CIcon;
-typedef CIcon *      CIconPtr;
-typedef CIconPtr *   CIconHandle;
+typedef struct CIcon                    CIcon;
+typedef CIcon *                         CIconPtr;
+typedef CIconPtr *                      CIconHandle;
 /*
  *  GetCIcon()
  *  
@@ -455,7 +440,8 @@ typedef CIconPtr *   CIconHandle;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( CIconHandle )
-GetCIcon( SInt16 iconID ) ONEWORDINLINE( 0xAA1E );
+GetCIcon(SInt16 iconID)                                       ONEWORDINLINE(0xAA1E);
+
 
 /*
  *  PlotCIcon()
@@ -467,8 +453,9 @@ GetCIcon( SInt16 iconID ) ONEWORDINLINE( 0xAA1E );
  */
 EXTERN_API( void )
 PlotCIcon(
-    const Rect *theRect,
-    CIconHandle theIcon ) ONEWORDINLINE( 0xAA1F );
+  const Rect *  theRect,
+  CIconHandle   theIcon)                                      ONEWORDINLINE(0xAA1F);
+
 
 /*
  *  DisposeCIcon()
@@ -479,7 +466,9 @@ PlotCIcon(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisposeCIcon( CIconHandle theIcon ) ONEWORDINLINE( 0xAA25 );
+DisposeCIcon(CIconHandle theIcon)                             ONEWORDINLINE(0xAA25);
+
+
 
 /* GetIcon and PlotIcon moved here from ToolUtils*/
 /*
@@ -491,7 +480,8 @@ DisposeCIcon( CIconHandle theIcon ) ONEWORDINLINE( 0xAA25 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Handle )
-GetIcon( SInt16 iconID ) ONEWORDINLINE( 0xA9BB );
+GetIcon(SInt16 iconID)                                        ONEWORDINLINE(0xA9BB);
+
 
 /*
  *  PlotIcon()
@@ -503,17 +493,20 @@ GetIcon( SInt16 iconID ) ONEWORDINLINE( 0xA9BB );
  */
 EXTERN_API( void )
 PlotIcon(
-    const Rect *theRect,
-    Handle      theIcon ) ONEWORDINLINE( 0xA94B );
+  const Rect *  theRect,
+  Handle        theIcon)                                      ONEWORDINLINE(0xA94B);
+
+
+
 
 /*
     Note:   IconSuiteRef and IconCacheRef should be an abstract types, 
             but too much source code already relies on them being of type Handle.
 */
-typedef Handle IconSuiteRef;
-typedef Handle IconCacheRef;
+typedef Handle                          IconSuiteRef;
+typedef Handle                          IconCacheRef;
 /* IconRefs are 32-bit values identifying cached icon data. IconRef 0 is invalid.*/
-typedef struct OpaqueIconRef *IconRef;
+typedef struct OpaqueIconRef*           IconRef;
 /*
  *  PlotIconID()
  *  
@@ -524,10 +517,11 @@ typedef struct OpaqueIconRef *IconRef;
  */
 EXTERN_API( OSErr )
 PlotIconID(
-    const Rect *      theRect,
-    IconAlignmentType align,
-    IconTransformType transform,
-    SInt16            theResID ) THREEWORDINLINE( 0x303C, 0x0500, 0xABC9 );
+  const Rect *        theRect,
+  IconAlignmentType   align,
+  IconTransformType   transform,
+  SInt16              theResID)                               THREEWORDINLINE(0x303C, 0x0500, 0xABC9);
+
 
 /*
  *  NewIconSuite()
@@ -538,7 +532,8 @@ PlotIconID(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-NewIconSuite( IconSuiteRef *theIconSuite ) THREEWORDINLINE( 0x303C, 0x0207, 0xABC9 );
+NewIconSuite(IconSuiteRef * theIconSuite)                     THREEWORDINLINE(0x303C, 0x0207, 0xABC9);
+
 
 /*
  *  AddIconToSuite()
@@ -550,9 +545,10 @@ NewIconSuite( IconSuiteRef *theIconSuite ) THREEWORDINLINE( 0x303C, 0x0207, 0xAB
  */
 EXTERN_API( OSErr )
 AddIconToSuite(
-    Handle       theIconData,
-    IconSuiteRef theSuite,
-    ResType      theType ) THREEWORDINLINE( 0x303C, 0x0608, 0xABC9 );
+  Handle         theIconData,
+  IconSuiteRef   theSuite,
+  ResType        theType)                                     THREEWORDINLINE(0x303C, 0x0608, 0xABC9);
+
 
 /*
  *  GetIconFromSuite()
@@ -564,9 +560,10 @@ AddIconToSuite(
  */
 EXTERN_API( OSErr )
 GetIconFromSuite(
-    Handle *     theIconData,
-    IconSuiteRef theSuite,
-    ResType      theType ) THREEWORDINLINE( 0x303C, 0x0609, 0xABC9 );
+  Handle *       theIconData,
+  IconSuiteRef   theSuite,
+  ResType        theType)                                     THREEWORDINLINE(0x303C, 0x0609, 0xABC9);
+
 
 /*
  *  ForEachIconDo()
@@ -578,10 +575,11 @@ GetIconFromSuite(
  */
 EXTERN_API( OSErr )
 ForEachIconDo(
-    IconSuiteRef      theSuite,
-    IconSelectorValue selector,
-    IconActionUPP     action,
-    void *            yourDataPtr ) THREEWORDINLINE( 0x303C, 0x080A, 0xABC9 );
+  IconSuiteRef        theSuite,
+  IconSelectorValue   selector,
+  IconActionUPP       action,
+  void *              yourDataPtr)                            THREEWORDINLINE(0x303C, 0x080A, 0xABC9);
+
 
 /*
  *  GetIconSuite()
@@ -593,9 +591,10 @@ ForEachIconDo(
  */
 EXTERN_API( OSErr )
 GetIconSuite(
-    IconSuiteRef *    theIconSuite,
-    SInt16            theResID,
-    IconSelectorValue selector ) THREEWORDINLINE( 0x303C, 0x0501, 0xABC9 );
+  IconSuiteRef *      theIconSuite,
+  SInt16              theResID,
+  IconSelectorValue   selector)                               THREEWORDINLINE(0x303C, 0x0501, 0xABC9);
+
 
 /*
  *  DisposeIconSuite()
@@ -607,8 +606,9 @@ GetIconSuite(
  */
 EXTERN_API( OSErr )
 DisposeIconSuite(
-    IconSuiteRef theIconSuite,
-    Boolean      disposeData ) THREEWORDINLINE( 0x303C, 0x0302, 0xABC9 );
+  IconSuiteRef   theIconSuite,
+  Boolean        disposeData)                                 THREEWORDINLINE(0x303C, 0x0302, 0xABC9);
+
 
 /*
  *  PlotIconSuite()
@@ -620,10 +620,11 @@ DisposeIconSuite(
  */
 EXTERN_API( OSErr )
 PlotIconSuite(
-    const Rect *      theRect,
-    IconAlignmentType align,
-    IconTransformType transform,
-    IconSuiteRef      theIconSuite ) THREEWORDINLINE( 0x303C, 0x0603, 0xABC9 );
+  const Rect *        theRect,
+  IconAlignmentType   align,
+  IconTransformType   transform,
+  IconSuiteRef        theIconSuite)                           THREEWORDINLINE(0x303C, 0x0603, 0xABC9);
+
 
 /*
  *  MakeIconCache()
@@ -635,9 +636,10 @@ PlotIconSuite(
  */
 EXTERN_API( OSErr )
 MakeIconCache(
-    IconCacheRef *theCache,
-    IconGetterUPP makeIcon,
-    void *        yourDataPtr ) THREEWORDINLINE( 0x303C, 0x0604, 0xABC9 );
+  IconCacheRef *  theCache,
+  IconGetterUPP   makeIcon,
+  void *          yourDataPtr)                                THREEWORDINLINE(0x303C, 0x0604, 0xABC9);
+
 
 /*
  *  LoadIconCache()
@@ -649,10 +651,11 @@ MakeIconCache(
  */
 EXTERN_API( OSErr )
 LoadIconCache(
-    const Rect *      theRect,
-    IconAlignmentType align,
-    IconTransformType transform,
-    IconCacheRef      theIconCache ) THREEWORDINLINE( 0x303C, 0x0606, 0xABC9 );
+  const Rect *        theRect,
+  IconAlignmentType   align,
+  IconTransformType   transform,
+  IconCacheRef        theIconCache)                           THREEWORDINLINE(0x303C, 0x0606, 0xABC9);
+
 
 /*
  *  PlotIconMethod()
@@ -664,11 +667,12 @@ LoadIconCache(
  */
 EXTERN_API( OSErr )
 PlotIconMethod(
-    const Rect *      theRect,
-    IconAlignmentType align,
-    IconTransformType transform,
-    IconGetterUPP     theMethod,
-    void *            yourDataPtr ) THREEWORDINLINE( 0x303C, 0x0805, 0xABC9 );
+  const Rect *        theRect,
+  IconAlignmentType   align,
+  IconTransformType   transform,
+  IconGetterUPP       theMethod,
+  void *              yourDataPtr)                            THREEWORDINLINE(0x303C, 0x0805, 0xABC9);
+
 
 /*
  *  GetLabel()
@@ -680,9 +684,10 @@ PlotIconMethod(
  */
 EXTERN_API( OSErr )
 GetLabel(
-    SInt16    labelNumber,
-    RGBColor *labelColor,
-    Str255    labelString ) THREEWORDINLINE( 0x303C, 0x050B, 0xABC9 );
+  SInt16      labelNumber,
+  RGBColor *  labelColor,
+  Str255      labelString)                                    THREEWORDINLINE(0x303C, 0x050B, 0xABC9);
+
 
 /*
  *  PtInIconID()
@@ -694,10 +699,11 @@ GetLabel(
  */
 EXTERN_API( Boolean )
 PtInIconID(
-    Point             testPt,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    SInt16            iconID ) THREEWORDINLINE( 0x303C, 0x060D, 0xABC9 );
+  Point               testPt,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  SInt16              iconID)                                 THREEWORDINLINE(0x303C, 0x060D, 0xABC9);
+
 
 /*
  *  PtInIconSuite()
@@ -709,10 +715,11 @@ PtInIconID(
  */
 EXTERN_API( Boolean )
 PtInIconSuite(
-    Point             testPt,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    IconSuiteRef      theIconSuite ) THREEWORDINLINE( 0x303C, 0x070E, 0xABC9 );
+  Point               testPt,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  IconSuiteRef        theIconSuite)                           THREEWORDINLINE(0x303C, 0x070E, 0xABC9);
+
 
 /*
  *  PtInIconMethod()
@@ -724,11 +731,12 @@ PtInIconSuite(
  */
 EXTERN_API( Boolean )
 PtInIconMethod(
-    Point             testPt,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    IconGetterUPP     theMethod,
-    void *            yourDataPtr ) THREEWORDINLINE( 0x303C, 0x090F, 0xABC9 );
+  Point               testPt,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  IconGetterUPP       theMethod,
+  void *              yourDataPtr)                            THREEWORDINLINE(0x303C, 0x090F, 0xABC9);
+
 
 /*
  *  RectInIconID()
@@ -740,10 +748,11 @@ PtInIconMethod(
  */
 EXTERN_API( Boolean )
 RectInIconID(
-    const Rect *      testRect,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    SInt16            iconID ) THREEWORDINLINE( 0x303C, 0x0610, 0xABC9 );
+  const Rect *        testRect,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  SInt16              iconID)                                 THREEWORDINLINE(0x303C, 0x0610, 0xABC9);
+
 
 /*
  *  RectInIconSuite()
@@ -755,10 +764,11 @@ RectInIconID(
  */
 EXTERN_API( Boolean )
 RectInIconSuite(
-    const Rect *      testRect,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    IconSuiteRef      theIconSuite ) THREEWORDINLINE( 0x303C, 0x0711, 0xABC9 );
+  const Rect *        testRect,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  IconSuiteRef        theIconSuite)                           THREEWORDINLINE(0x303C, 0x0711, 0xABC9);
+
 
 /*
  *  RectInIconMethod()
@@ -770,11 +780,12 @@ RectInIconSuite(
  */
 EXTERN_API( Boolean )
 RectInIconMethod(
-    const Rect *      testRect,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    IconGetterUPP     theMethod,
-    void *            yourDataPtr ) THREEWORDINLINE( 0x303C, 0x0912, 0xABC9 );
+  const Rect *        testRect,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  IconGetterUPP       theMethod,
+  void *              yourDataPtr)                            THREEWORDINLINE(0x303C, 0x0912, 0xABC9);
+
 
 /*
  *  IconIDToRgn()
@@ -786,10 +797,11 @@ RectInIconMethod(
  */
 EXTERN_API( OSErr )
 IconIDToRgn(
-    RgnHandle         theRgn,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    SInt16            iconID ) THREEWORDINLINE( 0x303C, 0x0613, 0xABC9 );
+  RgnHandle           theRgn,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  SInt16              iconID)                                 THREEWORDINLINE(0x303C, 0x0613, 0xABC9);
+
 
 /*
  *  IconSuiteToRgn()
@@ -801,10 +813,11 @@ IconIDToRgn(
  */
 EXTERN_API( OSErr )
 IconSuiteToRgn(
-    RgnHandle         theRgn,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    IconSuiteRef      theIconSuite ) THREEWORDINLINE( 0x303C, 0x0714, 0xABC9 );
+  RgnHandle           theRgn,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  IconSuiteRef        theIconSuite)                           THREEWORDINLINE(0x303C, 0x0714, 0xABC9);
+
 
 /*
  *  IconMethodToRgn()
@@ -816,11 +829,12 @@ IconSuiteToRgn(
  */
 EXTERN_API( OSErr )
 IconMethodToRgn(
-    RgnHandle         theRgn,
-    const Rect *      iconRect,
-    IconAlignmentType align,
-    IconGetterUPP     theMethod,
-    void *            yourDataPtr ) THREEWORDINLINE( 0x303C, 0x0915, 0xABC9 );
+  RgnHandle           theRgn,
+  const Rect *        iconRect,
+  IconAlignmentType   align,
+  IconGetterUPP       theMethod,
+  void *              yourDataPtr)                            THREEWORDINLINE(0x303C, 0x0915, 0xABC9);
+
 
 /*
  *  SetSuiteLabel()
@@ -832,8 +846,9 @@ IconMethodToRgn(
  */
 EXTERN_API( OSErr )
 SetSuiteLabel(
-    IconSuiteRef theSuite,
-    SInt16       theLabel ) THREEWORDINLINE( 0x303C, 0x0316, 0xABC9 );
+  IconSuiteRef   theSuite,
+  SInt16         theLabel)                                    THREEWORDINLINE(0x303C, 0x0316, 0xABC9);
+
 
 /*
  *  GetSuiteLabel()
@@ -844,7 +859,8 @@ SetSuiteLabel(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-GetSuiteLabel( IconSuiteRef theSuite ) THREEWORDINLINE( 0x303C, 0x0217, 0xABC9 );
+GetSuiteLabel(IconSuiteRef theSuite)                          THREEWORDINLINE(0x303C, 0x0217, 0xABC9);
+
 
 /*
  *  GetIconCacheData()
@@ -856,8 +872,9 @@ GetSuiteLabel( IconSuiteRef theSuite ) THREEWORDINLINE( 0x303C, 0x0217, 0xABC9 )
  */
 EXTERN_API( OSErr )
 GetIconCacheData(
-    IconCacheRef theCache,
-    void **      theData ) THREEWORDINLINE( 0x303C, 0x0419, 0xABC9 );
+  IconCacheRef   theCache,
+  void **        theData)                                     THREEWORDINLINE(0x303C, 0x0419, 0xABC9);
+
 
 /*
  *  SetIconCacheData()
@@ -869,8 +886,9 @@ GetIconCacheData(
  */
 EXTERN_API( OSErr )
 SetIconCacheData(
-    IconCacheRef theCache,
-    void *       theData ) THREEWORDINLINE( 0x303C, 0x041A, 0xABC9 );
+  IconCacheRef   theCache,
+  void *         theData)                                     THREEWORDINLINE(0x303C, 0x041A, 0xABC9);
+
 
 /*
  *  GetIconCacheProc()
@@ -882,8 +900,9 @@ SetIconCacheData(
  */
 EXTERN_API( OSErr )
 GetIconCacheProc(
-    IconCacheRef   theCache,
-    IconGetterUPP *theProc ) THREEWORDINLINE( 0x303C, 0x041B, 0xABC9 );
+  IconCacheRef     theCache,
+  IconGetterUPP *  theProc)                                   THREEWORDINLINE(0x303C, 0x041B, 0xABC9);
+
 
 /*
  *  SetIconCacheProc()
@@ -895,8 +914,9 @@ GetIconCacheProc(
  */
 EXTERN_API( OSErr )
 SetIconCacheProc(
-    IconCacheRef  theCache,
-    IconGetterUPP theProc ) THREEWORDINLINE( 0x303C, 0x041C, 0xABC9 );
+  IconCacheRef    theCache,
+  IconGetterUPP   theProc)                                    THREEWORDINLINE(0x303C, 0x041C, 0xABC9);
+
 
 /*
  *  PlotIconHandle()
@@ -908,10 +928,11 @@ SetIconCacheProc(
  */
 EXTERN_API( OSErr )
 PlotIconHandle(
-    const Rect *      theRect,
-    IconAlignmentType align,
-    IconTransformType transform,
-    Handle            theIcon ) THREEWORDINLINE( 0x303C, 0x061D, 0xABC9 );
+  const Rect *        theRect,
+  IconAlignmentType   align,
+  IconTransformType   transform,
+  Handle              theIcon)                                THREEWORDINLINE(0x303C, 0x061D, 0xABC9);
+
 
 /*
  *  PlotSICNHandle()
@@ -923,10 +944,11 @@ PlotIconHandle(
  */
 EXTERN_API( OSErr )
 PlotSICNHandle(
-    const Rect *      theRect,
-    IconAlignmentType align,
-    IconTransformType transform,
-    Handle            theSICN ) THREEWORDINLINE( 0x303C, 0x061E, 0xABC9 );
+  const Rect *        theRect,
+  IconAlignmentType   align,
+  IconTransformType   transform,
+  Handle              theSICN)                                THREEWORDINLINE(0x303C, 0x061E, 0xABC9);
+
 
 /*
  *  PlotCIconHandle()
@@ -938,10 +960,21 @@ PlotSICNHandle(
  */
 EXTERN_API( OSErr )
 PlotCIconHandle(
-    const Rect *      theRect,
-    IconAlignmentType align,
-    IconTransformType transform,
-    CIconHandle       theCIcon ) THREEWORDINLINE( 0x303C, 0x061F, 0xABC9 );
+  const Rect *        theRect,
+  IconAlignmentType   align,
+  IconTransformType   transform,
+  CIconHandle         theCIcon)                               THREEWORDINLINE(0x303C, 0x061F, 0xABC9);
+
+
+
+
+
+
+
+
+
+
+
 
 /*
    IconServices is an efficient mechanism to share icon data amongst multiple 
@@ -963,8 +996,9 @@ PlotCIconHandle(
    Note that all lowercase creators are reserved by Apple.
 */
 enum {
-	kSystemIconsCreator = FOUR_CHAR_CODE( 'macs' )
+  kSystemIconsCreator           = FOUR_CHAR_CODE('macs')
 };
+
 
 /*
    Type of the predefined/generic icons. For example, the call:
@@ -974,216 +1008,220 @@ enum {
 
 /* Generic Finder icons */
 enum {
-	kClipboardIcon = FOUR_CHAR_CODE( 'CLIP' ),
-	kClippingUnknownTypeIcon = FOUR_CHAR_CODE( 'clpu' ),
-	kClippingPictureTypeIcon = FOUR_CHAR_CODE( 'clpp' ),
-	kClippingTextTypeIcon = FOUR_CHAR_CODE( 'clpt' ),
-	kClippingSoundTypeIcon = FOUR_CHAR_CODE( 'clps' ),
-	kDesktopIcon = FOUR_CHAR_CODE( 'desk' ),
-	kFinderIcon = FOUR_CHAR_CODE( 'FNDR' ),
-	kFontSuitcaseIcon = FOUR_CHAR_CODE( 'FFIL' ),
-	kFullTrashIcon = FOUR_CHAR_CODE( 'ftrh' ),
-	kGenericApplicationIcon = FOUR_CHAR_CODE( 'APPL' ),
-	kGenericCDROMIcon = FOUR_CHAR_CODE( 'cddr' ),
-	kGenericControlPanelIcon = FOUR_CHAR_CODE( 'APPC' ),
-	kGenericControlStripModuleIcon = FOUR_CHAR_CODE( 'sdev' ),
-	kGenericComponentIcon = FOUR_CHAR_CODE( 'thng' ),
-	kGenericDeskAccessoryIcon = FOUR_CHAR_CODE( 'APPD' ),
-	kGenericDocumentIcon = FOUR_CHAR_CODE( 'docu' ),
-	kGenericEditionFileIcon = FOUR_CHAR_CODE( 'edtf' ),
-	kGenericExtensionIcon = FOUR_CHAR_CODE( 'INIT' ),
-	kGenericFileServerIcon = FOUR_CHAR_CODE( 'srvr' ),
-	kGenericFontIcon = FOUR_CHAR_CODE( 'ffil' ),
-	kGenericFontScalerIcon = FOUR_CHAR_CODE( 'sclr' ),
-	kGenericFloppyIcon = FOUR_CHAR_CODE( 'flpy' ),
-	kGenericHardDiskIcon = FOUR_CHAR_CODE( 'hdsk' ),
-	kGenericIDiskIcon = FOUR_CHAR_CODE( 'idsk' ),
-	kGenericRemovableMediaIcon = FOUR_CHAR_CODE( 'rmov' ),
-	kGenericMoverObjectIcon = FOUR_CHAR_CODE( 'movr' ),
-	kGenericPCCardIcon = FOUR_CHAR_CODE( 'pcmc' ),
-	kGenericPreferencesIcon = FOUR_CHAR_CODE( 'pref' ),
-	kGenericQueryDocumentIcon = FOUR_CHAR_CODE( 'qery' ),
-	kGenericRAMDiskIcon = FOUR_CHAR_CODE( 'ramd' ),
-	kGenericSharedLibaryIcon = FOUR_CHAR_CODE( 'shlb' ),
-	kGenericStationeryIcon = FOUR_CHAR_CODE( 'sdoc' ),
-	kGenericSuitcaseIcon = FOUR_CHAR_CODE( 'suit' ),
-	kGenericURLIcon = FOUR_CHAR_CODE( 'gurl' ),
-	kGenericWORMIcon = FOUR_CHAR_CODE( 'worm' ),
-	kInternationalResourcesIcon = FOUR_CHAR_CODE( 'ifil' ),
-	kKeyboardLayoutIcon = FOUR_CHAR_CODE( 'kfil' ),
-	kSoundFileIcon = FOUR_CHAR_CODE( 'sfil' ),
-	kSystemSuitcaseIcon = FOUR_CHAR_CODE( 'zsys' ),
-	kTrashIcon = FOUR_CHAR_CODE( 'trsh' ),
-	kTrueTypeFontIcon = FOUR_CHAR_CODE( 'tfil' ),
-	kTrueTypeFlatFontIcon = FOUR_CHAR_CODE( 'sfnt' ),
-	kTrueTypeMultiFlatFontIcon = FOUR_CHAR_CODE( 'ttcf' ),
-	kUserIDiskIcon = FOUR_CHAR_CODE( 'udsk' ),
-	kUnknownFSObjectIcon = FOUR_CHAR_CODE( 'unfs' ),
-	kInternationResourcesIcon = kInternationalResourcesIcon /* old name*/
+  kClipboardIcon                = FOUR_CHAR_CODE('CLIP'),
+  kClippingUnknownTypeIcon      = FOUR_CHAR_CODE('clpu'),
+  kClippingPictureTypeIcon      = FOUR_CHAR_CODE('clpp'),
+  kClippingTextTypeIcon         = FOUR_CHAR_CODE('clpt'),
+  kClippingSoundTypeIcon        = FOUR_CHAR_CODE('clps'),
+  kDesktopIcon                  = FOUR_CHAR_CODE('desk'),
+  kFinderIcon                   = FOUR_CHAR_CODE('FNDR'),
+  kFontSuitcaseIcon             = FOUR_CHAR_CODE('FFIL'),
+  kFullTrashIcon                = FOUR_CHAR_CODE('ftrh'),
+  kGenericApplicationIcon       = FOUR_CHAR_CODE('APPL'),
+  kGenericCDROMIcon             = FOUR_CHAR_CODE('cddr'),
+  kGenericControlPanelIcon      = FOUR_CHAR_CODE('APPC'),
+  kGenericControlStripModuleIcon = FOUR_CHAR_CODE('sdev'),
+  kGenericComponentIcon         = FOUR_CHAR_CODE('thng'),
+  kGenericDeskAccessoryIcon     = FOUR_CHAR_CODE('APPD'),
+  kGenericDocumentIcon          = FOUR_CHAR_CODE('docu'),
+  kGenericEditionFileIcon       = FOUR_CHAR_CODE('edtf'),
+  kGenericExtensionIcon         = FOUR_CHAR_CODE('INIT'),
+  kGenericFileServerIcon        = FOUR_CHAR_CODE('srvr'),
+  kGenericFontIcon              = FOUR_CHAR_CODE('ffil'),
+  kGenericFontScalerIcon        = FOUR_CHAR_CODE('sclr'),
+  kGenericFloppyIcon            = FOUR_CHAR_CODE('flpy'),
+  kGenericHardDiskIcon          = FOUR_CHAR_CODE('hdsk'),
+  kGenericIDiskIcon             = FOUR_CHAR_CODE('idsk'),
+  kGenericRemovableMediaIcon    = FOUR_CHAR_CODE('rmov'),
+  kGenericMoverObjectIcon       = FOUR_CHAR_CODE('movr'),
+  kGenericPCCardIcon            = FOUR_CHAR_CODE('pcmc'),
+  kGenericPreferencesIcon       = FOUR_CHAR_CODE('pref'),
+  kGenericQueryDocumentIcon     = FOUR_CHAR_CODE('qery'),
+  kGenericRAMDiskIcon           = FOUR_CHAR_CODE('ramd'),
+  kGenericSharedLibaryIcon      = FOUR_CHAR_CODE('shlb'),
+  kGenericStationeryIcon        = FOUR_CHAR_CODE('sdoc'),
+  kGenericSuitcaseIcon          = FOUR_CHAR_CODE('suit'),
+  kGenericURLIcon               = FOUR_CHAR_CODE('gurl'),
+  kGenericWORMIcon              = FOUR_CHAR_CODE('worm'),
+  kInternationalResourcesIcon   = FOUR_CHAR_CODE('ifil'),
+  kKeyboardLayoutIcon           = FOUR_CHAR_CODE('kfil'),
+  kSoundFileIcon                = FOUR_CHAR_CODE('sfil'),
+  kSystemSuitcaseIcon           = FOUR_CHAR_CODE('zsys'),
+  kTrashIcon                    = FOUR_CHAR_CODE('trsh'),
+  kTrueTypeFontIcon             = FOUR_CHAR_CODE('tfil'),
+  kTrueTypeFlatFontIcon         = FOUR_CHAR_CODE('sfnt'),
+  kTrueTypeMultiFlatFontIcon    = FOUR_CHAR_CODE('ttcf'),
+  kUserIDiskIcon                = FOUR_CHAR_CODE('udsk'),
+  kUnknownFSObjectIcon          = FOUR_CHAR_CODE('unfs'),
+  kInternationResourcesIcon     = kInternationalResourcesIcon /* old name*/
 };
 
 /* Internet locations */
 enum {
-	kInternetLocationHTTPIcon = FOUR_CHAR_CODE( 'ilht' ),
-	kInternetLocationFTPIcon = FOUR_CHAR_CODE( 'ilft' ),
-	kInternetLocationAppleShareIcon = FOUR_CHAR_CODE( 'ilaf' ),
-	kInternetLocationAppleTalkZoneIcon = FOUR_CHAR_CODE( 'ilat' ),
-	kInternetLocationFileIcon = FOUR_CHAR_CODE( 'ilfi' ),
-	kInternetLocationMailIcon = FOUR_CHAR_CODE( 'ilma' ),
-	kInternetLocationNewsIcon = FOUR_CHAR_CODE( 'ilnw' ),
-	kInternetLocationNSLNeighborhoodIcon = FOUR_CHAR_CODE( 'ilns' ),
-	kInternetLocationGenericIcon = FOUR_CHAR_CODE( 'ilge' )
+  kInternetLocationHTTPIcon     = FOUR_CHAR_CODE('ilht'),
+  kInternetLocationFTPIcon      = FOUR_CHAR_CODE('ilft'),
+  kInternetLocationAppleShareIcon = FOUR_CHAR_CODE('ilaf'),
+  kInternetLocationAppleTalkZoneIcon = FOUR_CHAR_CODE('ilat'),
+  kInternetLocationFileIcon     = FOUR_CHAR_CODE('ilfi'),
+  kInternetLocationMailIcon     = FOUR_CHAR_CODE('ilma'),
+  kInternetLocationNewsIcon     = FOUR_CHAR_CODE('ilnw'),
+  kInternetLocationNSLNeighborhoodIcon = FOUR_CHAR_CODE('ilns'),
+  kInternetLocationGenericIcon  = FOUR_CHAR_CODE('ilge')
 };
 
 /* Folders */
 enum {
-	kGenericFolderIcon = FOUR_CHAR_CODE( 'fldr' ),
-	kDropFolderIcon = FOUR_CHAR_CODE( 'dbox' ),
-	kMountedFolderIcon = FOUR_CHAR_CODE( 'mntd' ),
-	kOpenFolderIcon = FOUR_CHAR_CODE( 'ofld' ),
-	kOwnedFolderIcon = FOUR_CHAR_CODE( 'ownd' ),
-	kPrivateFolderIcon = FOUR_CHAR_CODE( 'prvf' ),
-	kSharedFolderIcon = FOUR_CHAR_CODE( 'shfl' )
+  kGenericFolderIcon            = FOUR_CHAR_CODE('fldr'),
+  kDropFolderIcon               = FOUR_CHAR_CODE('dbox'),
+  kMountedFolderIcon            = FOUR_CHAR_CODE('mntd'),
+  kOpenFolderIcon               = FOUR_CHAR_CODE('ofld'),
+  kOwnedFolderIcon              = FOUR_CHAR_CODE('ownd'),
+  kPrivateFolderIcon            = FOUR_CHAR_CODE('prvf'),
+  kSharedFolderIcon             = FOUR_CHAR_CODE('shfl')
 };
 
 /* Sharing Privileges icons */
 enum {
-	kSharingPrivsNotApplicableIcon = FOUR_CHAR_CODE( 'shna' ),
-	kSharingPrivsReadOnlyIcon = FOUR_CHAR_CODE( 'shro' ),
-	kSharingPrivsReadWriteIcon = FOUR_CHAR_CODE( 'shrw' ),
-	kSharingPrivsUnknownIcon = FOUR_CHAR_CODE( 'shuk' ),
-	kSharingPrivsWritableIcon = FOUR_CHAR_CODE( 'writ' )
+  kSharingPrivsNotApplicableIcon = FOUR_CHAR_CODE('shna'),
+  kSharingPrivsReadOnlyIcon     = FOUR_CHAR_CODE('shro'),
+  kSharingPrivsReadWriteIcon    = FOUR_CHAR_CODE('shrw'),
+  kSharingPrivsUnknownIcon      = FOUR_CHAR_CODE('shuk'),
+  kSharingPrivsWritableIcon     = FOUR_CHAR_CODE('writ')
 };
+
 
 /* Users and Groups icons */
 enum {
-	kUserFolderIcon = FOUR_CHAR_CODE( 'ufld' ),
-	kWorkgroupFolderIcon = FOUR_CHAR_CODE( 'wfld' ),
-	kGuestUserIcon = FOUR_CHAR_CODE( 'gusr' ),
-	kUserIcon = FOUR_CHAR_CODE( 'user' ),
-	kOwnerIcon = FOUR_CHAR_CODE( 'susr' ),
-	kGroupIcon = FOUR_CHAR_CODE( 'grup' )
+  kUserFolderIcon               = FOUR_CHAR_CODE('ufld'),
+  kWorkgroupFolderIcon          = FOUR_CHAR_CODE('wfld'),
+  kGuestUserIcon                = FOUR_CHAR_CODE('gusr'),
+  kUserIcon                     = FOUR_CHAR_CODE('user'),
+  kOwnerIcon                    = FOUR_CHAR_CODE('susr'),
+  kGroupIcon                    = FOUR_CHAR_CODE('grup')
 };
 
 /* Special folders */
 enum {
-	kAppearanceFolderIcon = FOUR_CHAR_CODE( 'appr' ),
-	kAppleExtrasFolderIcon = 0x616578C4,
-	kAppleMenuFolderIcon = FOUR_CHAR_CODE( 'amnu' ),
-	kApplicationsFolderIcon = FOUR_CHAR_CODE( 'apps' ),
-	kApplicationSupportFolderIcon = FOUR_CHAR_CODE( 'asup' ),
-	kAssistantsFolderIcon = 0x617374C4,
-	kColorSyncFolderIcon = FOUR_CHAR_CODE( 'prof' ),
-	kContextualMenuItemsFolderIcon = FOUR_CHAR_CODE( 'cmnu' ),
-	kControlPanelDisabledFolderIcon = FOUR_CHAR_CODE( 'ctrD' ),
-	kControlPanelFolderIcon = FOUR_CHAR_CODE( 'ctrl' ),
-	kControlStripModulesFolderIcon = 0x736476C4,
-	kDocumentsFolderIcon = FOUR_CHAR_CODE( 'docs' ),
-	kExtensionsDisabledFolderIcon = FOUR_CHAR_CODE( 'extD' ),
-	kExtensionsFolderIcon = FOUR_CHAR_CODE( 'extn' ),
-	kFavoritesFolderIcon = FOUR_CHAR_CODE( 'favs' ),
-	kFontsFolderIcon = FOUR_CHAR_CODE( 'font' ),
-	kHelpFolderIcon = 0xC4686C70,
-	kInternetFolderIcon = 0x696E74C4,
-	kInternetPlugInFolderIcon = 0xC46E6574,
-	kInternetSearchSitesFolderIcon = FOUR_CHAR_CODE( 'issf' ),
-	kLocalesFolderIcon = 0xC46C6F63,
-	kMacOSReadMeFolderIcon = 0x6D6F72C4,
-	kPublicFolderIcon = FOUR_CHAR_CODE( 'pubf' ),
-	kPreferencesFolderIcon = 0x707266C4,
-	kPrinterDescriptionFolderIcon = FOUR_CHAR_CODE( 'ppdf' ),
-	kPrinterDriverFolderIcon = 0xC4707264,
-	kPrintMonitorFolderIcon = FOUR_CHAR_CODE( 'prnt' ),
-	kRecentApplicationsFolderIcon = FOUR_CHAR_CODE( 'rapp' ),
-	kRecentDocumentsFolderIcon = FOUR_CHAR_CODE( 'rdoc' ),
-	kRecentServersFolderIcon = FOUR_CHAR_CODE( 'rsrv' ),
-	kScriptingAdditionsFolderIcon = 0xC4736372,
-	kSharedLibrariesFolderIcon = 0xC46C6962,
-	kScriptsFolderIcon = 0x736372C4,
-	kShutdownItemsDisabledFolderIcon = FOUR_CHAR_CODE( 'shdD' ),
-	kShutdownItemsFolderIcon = FOUR_CHAR_CODE( 'shdf' ),
-	kSpeakableItemsFolder = FOUR_CHAR_CODE( 'spki' ),
-	kStartupItemsDisabledFolderIcon = FOUR_CHAR_CODE( 'strD' ),
-	kStartupItemsFolderIcon = FOUR_CHAR_CODE( 'strt' ),
-	kSystemExtensionDisabledFolderIcon = FOUR_CHAR_CODE( 'macD' ),
-	kSystemFolderIcon = FOUR_CHAR_CODE( 'macs' ),
-	kTextEncodingsFolderIcon = 0xC4746578,
-	kUsersFolderIcon = 0x757372C4,
-	kUtilitiesFolderIcon = 0x757469C4,
-	kVoicesFolderIcon = FOUR_CHAR_CODE( 'fvoc' )
+  kAppearanceFolderIcon         = FOUR_CHAR_CODE('appr'),
+  kAppleExtrasFolderIcon        = 0x616578C4,
+  kAppleMenuFolderIcon          = FOUR_CHAR_CODE('amnu'),
+  kApplicationsFolderIcon       = FOUR_CHAR_CODE('apps'),
+  kApplicationSupportFolderIcon = FOUR_CHAR_CODE('asup'),
+  kAssistantsFolderIcon         = 0x617374C4,
+  kColorSyncFolderIcon          = FOUR_CHAR_CODE('prof'),
+  kContextualMenuItemsFolderIcon = FOUR_CHAR_CODE('cmnu'),
+  kControlPanelDisabledFolderIcon = FOUR_CHAR_CODE('ctrD'),
+  kControlPanelFolderIcon       = FOUR_CHAR_CODE('ctrl'),
+  kControlStripModulesFolderIcon = 0x736476C4,
+  kDocumentsFolderIcon          = FOUR_CHAR_CODE('docs'),
+  kExtensionsDisabledFolderIcon = FOUR_CHAR_CODE('extD'),
+  kExtensionsFolderIcon         = FOUR_CHAR_CODE('extn'),
+  kFavoritesFolderIcon          = FOUR_CHAR_CODE('favs'),
+  kFontsFolderIcon              = FOUR_CHAR_CODE('font'),
+  kHelpFolderIcon               = 0xC4686C70,
+  kInternetFolderIcon           = 0x696E74C4,
+  kInternetPlugInFolderIcon     = 0xC46E6574,
+  kInternetSearchSitesFolderIcon = FOUR_CHAR_CODE('issf'),
+  kLocalesFolderIcon            = 0xC46C6F63,
+  kMacOSReadMeFolderIcon        = 0x6D6F72C4,
+  kPublicFolderIcon             = FOUR_CHAR_CODE('pubf'),
+  kPreferencesFolderIcon        = 0x707266C4,
+  kPrinterDescriptionFolderIcon = FOUR_CHAR_CODE('ppdf'),
+  kPrinterDriverFolderIcon      = 0xC4707264,
+  kPrintMonitorFolderIcon       = FOUR_CHAR_CODE('prnt'),
+  kRecentApplicationsFolderIcon = FOUR_CHAR_CODE('rapp'),
+  kRecentDocumentsFolderIcon    = FOUR_CHAR_CODE('rdoc'),
+  kRecentServersFolderIcon      = FOUR_CHAR_CODE('rsrv'),
+  kScriptingAdditionsFolderIcon = 0xC4736372,
+  kSharedLibrariesFolderIcon    = 0xC46C6962,
+  kScriptsFolderIcon            = 0x736372C4,
+  kShutdownItemsDisabledFolderIcon = FOUR_CHAR_CODE('shdD'),
+  kShutdownItemsFolderIcon      = FOUR_CHAR_CODE('shdf'),
+  kSpeakableItemsFolder         = FOUR_CHAR_CODE('spki'),
+  kStartupItemsDisabledFolderIcon = FOUR_CHAR_CODE('strD'),
+  kStartupItemsFolderIcon       = FOUR_CHAR_CODE('strt'),
+  kSystemExtensionDisabledFolderIcon = FOUR_CHAR_CODE('macD'),
+  kSystemFolderIcon             = FOUR_CHAR_CODE('macs'),
+  kTextEncodingsFolderIcon      = 0xC4746578,
+  kUsersFolderIcon              = 0x757372C4,
+  kUtilitiesFolderIcon          = 0x757469C4,
+  kVoicesFolderIcon             = FOUR_CHAR_CODE('fvoc')
 };
 
 /* Badges */
 enum {
-	kAppleScriptBadgeIcon = FOUR_CHAR_CODE( 'scrp' ),
-	kLockedBadgeIcon = FOUR_CHAR_CODE( 'lbdg' ),
-	kMountedBadgeIcon = FOUR_CHAR_CODE( 'mbdg' ),
-	kSharedBadgeIcon = FOUR_CHAR_CODE( 'sbdg' ),
-	kAliasBadgeIcon = FOUR_CHAR_CODE( 'abdg' ),
-	kAlertCautionBadgeIcon = FOUR_CHAR_CODE( 'cbdg' )
+  kAppleScriptBadgeIcon         = FOUR_CHAR_CODE('scrp'),
+  kLockedBadgeIcon              = FOUR_CHAR_CODE('lbdg'),
+  kMountedBadgeIcon             = FOUR_CHAR_CODE('mbdg'),
+  kSharedBadgeIcon              = FOUR_CHAR_CODE('sbdg'),
+  kAliasBadgeIcon               = FOUR_CHAR_CODE('abdg'),
+  kAlertCautionBadgeIcon        = FOUR_CHAR_CODE('cbdg')
 };
 
 /* Alert icons */
 enum {
-	kAlertNoteIcon = FOUR_CHAR_CODE( 'note' ),
-	kAlertCautionIcon = FOUR_CHAR_CODE( 'caut' ),
-	kAlertStopIcon = FOUR_CHAR_CODE( 'stop' )
+  kAlertNoteIcon                = FOUR_CHAR_CODE('note'),
+  kAlertCautionIcon             = FOUR_CHAR_CODE('caut'),
+  kAlertStopIcon                = FOUR_CHAR_CODE('stop')
 };
 
 /* Networking icons */
 enum {
-	kAppleTalkIcon = FOUR_CHAR_CODE( 'atlk' ),
-	kAppleTalkZoneIcon = FOUR_CHAR_CODE( 'atzn' ),
-	kAFPServerIcon = FOUR_CHAR_CODE( 'afps' ),
-	kFTPServerIcon = FOUR_CHAR_CODE( 'ftps' ),
-	kHTTPServerIcon = FOUR_CHAR_CODE( 'htps' ),
-	kGenericNetworkIcon = FOUR_CHAR_CODE( 'gnet' ),
-	kIPFileServerIcon = FOUR_CHAR_CODE( 'isrv' )
+  kAppleTalkIcon                = FOUR_CHAR_CODE('atlk'),
+  kAppleTalkZoneIcon            = FOUR_CHAR_CODE('atzn'),
+  kAFPServerIcon                = FOUR_CHAR_CODE('afps'),
+  kFTPServerIcon                = FOUR_CHAR_CODE('ftps'),
+  kHTTPServerIcon               = FOUR_CHAR_CODE('htps'),
+  kGenericNetworkIcon           = FOUR_CHAR_CODE('gnet'),
+  kIPFileServerIcon             = FOUR_CHAR_CODE('isrv')
 };
 
 /* Toolbar icons */
 enum {
-	kToolbarCustomizeIcon = FOUR_CHAR_CODE( 'tcus' ),
-	kToolbarDeleteIcon = FOUR_CHAR_CODE( 'tdel' ),
-	kToolbarFavoritesIcon = FOUR_CHAR_CODE( 'tfav' ),
-	kToolbarHomeIcon = FOUR_CHAR_CODE( 'thom' )
+  kToolbarCustomizeIcon         = FOUR_CHAR_CODE('tcus'),
+  kToolbarDeleteIcon            = FOUR_CHAR_CODE('tdel'),
+  kToolbarFavoritesIcon         = FOUR_CHAR_CODE('tfav'),
+  kToolbarHomeIcon              = FOUR_CHAR_CODE('thom')
 };
 
 /* Other icons */
 enum {
-	kAppleLogoIcon = FOUR_CHAR_CODE( 'capl' ),
-	kAppleMenuIcon = FOUR_CHAR_CODE( 'sapl' ),
-	kBackwardArrowIcon = FOUR_CHAR_CODE( 'baro' ),
-	kFavoriteItemsIcon = FOUR_CHAR_CODE( 'favr' ),
-	kForwardArrowIcon = FOUR_CHAR_CODE( 'faro' ),
-	kGridIcon = FOUR_CHAR_CODE( 'grid' ),
-	kHelpIcon = FOUR_CHAR_CODE( 'help' ),
-	kKeepArrangedIcon = FOUR_CHAR_CODE( 'arng' ),
-	kLockedIcon = FOUR_CHAR_CODE( 'lock' ),
-	kNoFilesIcon = FOUR_CHAR_CODE( 'nfil' ),
-	kNoFolderIcon = FOUR_CHAR_CODE( 'nfld' ),
-	kNoWriteIcon = FOUR_CHAR_CODE( 'nwrt' ),
-	kProtectedApplicationFolderIcon = FOUR_CHAR_CODE( 'papp' ),
-	kProtectedSystemFolderIcon = FOUR_CHAR_CODE( 'psys' ),
-	kRecentItemsIcon = FOUR_CHAR_CODE( 'rcnt' ),
-	kShortcutIcon = FOUR_CHAR_CODE( 'shrt' ),
-	kSortAscendingIcon = FOUR_CHAR_CODE( 'asnd' ),
-	kSortDescendingIcon = FOUR_CHAR_CODE( 'dsnd' ),
-	kUnlockedIcon = FOUR_CHAR_CODE( 'ulck' ),
-	kConnectToIcon = FOUR_CHAR_CODE( 'cnct' ),
-	kGenericWindowIcon = FOUR_CHAR_CODE( 'gwin' ),
-	kQuestionMarkIcon = FOUR_CHAR_CODE( 'ques' ),
-	kDeleteAliasIcon = FOUR_CHAR_CODE( 'dali' ),
-	kEjectMediaIcon = FOUR_CHAR_CODE( 'ejec' ),
-	kBurningIcon = FOUR_CHAR_CODE( 'burn' ),
-	kRightContainerArrowIcon = FOUR_CHAR_CODE( 'rcar' )
+  kAppleLogoIcon                = FOUR_CHAR_CODE('capl'),
+  kAppleMenuIcon                = FOUR_CHAR_CODE('sapl'),
+  kBackwardArrowIcon            = FOUR_CHAR_CODE('baro'),
+  kFavoriteItemsIcon            = FOUR_CHAR_CODE('favr'),
+  kForwardArrowIcon             = FOUR_CHAR_CODE('faro'),
+  kGridIcon                     = FOUR_CHAR_CODE('grid'),
+  kHelpIcon                     = FOUR_CHAR_CODE('help'),
+  kKeepArrangedIcon             = FOUR_CHAR_CODE('arng'),
+  kLockedIcon                   = FOUR_CHAR_CODE('lock'),
+  kNoFilesIcon                  = FOUR_CHAR_CODE('nfil'),
+  kNoFolderIcon                 = FOUR_CHAR_CODE('nfld'),
+  kNoWriteIcon                  = FOUR_CHAR_CODE('nwrt'),
+  kProtectedApplicationFolderIcon = FOUR_CHAR_CODE('papp'),
+  kProtectedSystemFolderIcon    = FOUR_CHAR_CODE('psys'),
+  kRecentItemsIcon              = FOUR_CHAR_CODE('rcnt'),
+  kShortcutIcon                 = FOUR_CHAR_CODE('shrt'),
+  kSortAscendingIcon            = FOUR_CHAR_CODE('asnd'),
+  kSortDescendingIcon           = FOUR_CHAR_CODE('dsnd'),
+  kUnlockedIcon                 = FOUR_CHAR_CODE('ulck'),
+  kConnectToIcon                = FOUR_CHAR_CODE('cnct'),
+  kGenericWindowIcon            = FOUR_CHAR_CODE('gwin'),
+  kQuestionMarkIcon             = FOUR_CHAR_CODE('ques'),
+  kDeleteAliasIcon              = FOUR_CHAR_CODE('dali'),
+  kEjectMediaIcon               = FOUR_CHAR_CODE('ejec'),
+  kBurningIcon                  = FOUR_CHAR_CODE('burn'),
+  kRightContainerArrowIcon      = FOUR_CHAR_CODE('rcar')
 };
 
+
+
 /*  IconServicesUsageFlags */
-typedef UInt32 IconServicesUsageFlags;
+typedef UInt32                          IconServicesUsageFlags;
 enum {
-	kIconServicesNormalUsageFlag = 0
+  kIconServicesNormalUsageFlag  = 0
 };
+
 
 /*
   kIconServicesCatalogInfoMask - Minimal bitmask for use with
@@ -1191,8 +1229,9 @@ enum {
     before calling GetIconRefFromFileInfo().
 */
 enum {
-	kIconServicesCatalogInfoMask = ( kFSCatInfoNodeID | kFSCatInfoParentDirID | kFSCatInfoVolume | kFSCatInfoNodeFlags | kFSCatInfoFinderInfo | kFSCatInfoFinderXInfo | kFSCatInfoUserAccess )
+  kIconServicesCatalogInfoMask  = (kFSCatInfoNodeID | kFSCatInfoParentDirID | kFSCatInfoVolume | kFSCatInfoNodeFlags | kFSCatInfoFinderInfo | kFSCatInfoFinderXInfo | kFSCatInfoUserAccess)
 };
+
 
 /*
  *  PlotIconRefFlags
@@ -1203,21 +1242,24 @@ enum {
 typedef UInt32 PlotIconRefFlags;
 enum {
 
-	/*
+  /*
    * Draw the icon image and alpha channel.
    */
-	kPlotIconRefNormalFlags = 0L,
+  kPlotIconRefNormalFlags       = 0L,
 
-	/*
+  /*
    * Only draw the alpha channel.
    */
-	kPlotIconRefNoImage = ( 1 << 1 ),
+  kPlotIconRefNoImage           = (1 << 1),
 
-	/*
+  /*
    * Only draw the image.
    */
-	kPlotIconRefNoMask = ( 1 << 2 )
+  kPlotIconRefNoMask            = (1 << 2)
 };
+
+
+
 
 /*
   ==============================================================================
@@ -1242,7 +1284,9 @@ enum {
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-IconServicesInit( CFragInitBlockPtr initBlockPtr ) TWOWORDINLINE( 0x7015, 0xAA75 );
+IconServicesInit(CFragInitBlockPtr initBlockPtr)              TWOWORDINLINE(0x7015, 0xAA75);
+
+
 
 /*
    IconServicesTerminate:
@@ -1260,15 +1304,17 @@ IconServicesInit( CFragInitBlockPtr initBlockPtr ) TWOWORDINLINE( 0x7015, 0xAA75
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-IconServicesTerminate( void ) TWOWORDINLINE( 0x7016, 0xAA75 );
+IconServicesTerminate(void)                                   TWOWORDINLINE(0x7016, 0xAA75);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
   ==============================================================================
    Converting data structures
   ==============================================================================
 */
+
 
 /*
    IconRefToIconFamily
@@ -1286,9 +1332,11 @@ IconServicesTerminate( void ) TWOWORDINLINE( 0x7016, 0xAA75 );
  */
 EXTERN_API( OSErr )
 IconRefToIconFamily(
-    IconRef           theIconRef,
-    IconSelectorValue whichIcons,
-    IconFamilyHandle *iconFamily ) TWOWORDINLINE( 0x7024, 0xAA75 );
+  IconRef             theIconRef,
+  IconSelectorValue   whichIcons,
+  IconFamilyHandle *  iconFamily)                             TWOWORDINLINE(0x7024, 0xAA75);
+
+
 
 /*
    IconFamilyToIconSuite
@@ -1305,9 +1353,11 @@ IconRefToIconFamily(
  */
 EXTERN_API( OSErr )
 IconFamilyToIconSuite(
-    IconFamilyHandle  iconFamily,
-    IconSelectorValue whichIcons,
-    IconSuiteRef *    iconSuite ) TWOWORDINLINE( 0x7025, 0xAA75 );
+  IconFamilyHandle    iconFamily,
+  IconSelectorValue   whichIcons,
+  IconSuiteRef *      iconSuite)                              TWOWORDINLINE(0x7025, 0xAA75);
+
+
 
 /*
    IconSuiteToIconFamily
@@ -1324,9 +1374,11 @@ IconFamilyToIconSuite(
  */
 EXTERN_API( OSErr )
 IconSuiteToIconFamily(
-    IconSuiteRef      iconSuite,
-    IconSelectorValue whichIcons,
-    IconFamilyHandle *iconFamily ) TWOWORDINLINE( 0x7026, 0xAA75 );
+  IconSuiteRef        iconSuite,
+  IconSelectorValue   whichIcons,
+  IconFamilyHandle *  iconFamily)                             TWOWORDINLINE(0x7026, 0xAA75);
+
+
 
 /*
    SetIconFamilyData
@@ -1345,9 +1397,11 @@ IconSuiteToIconFamily(
  */
 EXTERN_API( OSErr )
 SetIconFamilyData(
-    IconFamilyHandle iconFamily,
-    OSType           iconType,
-    Handle           h ) TWOWORDINLINE( 0x7030, 0xAA75 );
+  IconFamilyHandle   iconFamily,
+  OSType             iconType,
+  Handle             h)                                       TWOWORDINLINE(0x7030, 0xAA75);
+
+
 
 /*
    GetIconFamilyData
@@ -1368,15 +1422,18 @@ SetIconFamilyData(
  */
 EXTERN_API( OSErr )
 GetIconFamilyData(
-    IconFamilyHandle iconFamily,
-    OSType           iconType,
-    Handle           h ) TWOWORDINLINE( 0x7031, 0xAA75 );
+  IconFamilyHandle   iconFamily,
+  OSType             iconType,
+  Handle             h)                                       TWOWORDINLINE(0x7031, 0xAA75);
+
+
 
 /*
   ==============================================================================
    Reference counting
   ==============================================================================
 */
+
 
 /*
    GetIconRefOwners
@@ -1396,8 +1453,10 @@ GetIconFamilyData(
  */
 EXTERN_API( OSErr )
 GetIconRefOwners(
-    IconRef theIconRef,
-    UInt16 *owners ) TWOWORDINLINE( 0x700B, 0xAA75 );
+  IconRef   theIconRef,
+  UInt16 *  owners)                                           TWOWORDINLINE(0x700B, 0xAA75);
+
+
 
 /*
    AcquireIconRef
@@ -1413,7 +1472,10 @@ GetIconRefOwners(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-AcquireIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7027, 0xAA75 );
+AcquireIconRef(IconRef theIconRef)                            TWOWORDINLINE(0x7027, 0xAA75);
+
+
+
 
 /*
    ReleaseIconRef
@@ -1433,13 +1495,17 @@ AcquireIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7027, 0xAA75 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-ReleaseIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7028, 0xAA75 );
+ReleaseIconRef(IconRef theIconRef)                            TWOWORDINLINE(0x7028, 0xAA75);
+
+
+
 
 /*
   ==============================================================================
    Getting an IconRef
   ==============================================================================
 */
+
 
 /*
    GetIconRefFromFile
@@ -1467,9 +1533,12 @@ ReleaseIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7028, 0xAA75 );
  */
 EXTERN_API( OSErr )
 GetIconRefFromFile(
-    const FSSpec *theFile,
-    IconRef *     theIconRef,
-    SInt16 *      theLabel ) TWOWORDINLINE( 0x7002, 0xAA75 );
+  const FSSpec *  theFile,
+  IconRef *       theIconRef,
+  SInt16 *        theLabel)                                   TWOWORDINLINE(0x7002, 0xAA75);
+
+
+
 
 /*
    GetIconRef
@@ -1494,10 +1563,13 @@ GetIconRefFromFile(
  */
 EXTERN_API( OSErr )
 GetIconRef(
-    SInt16   vRefNum,
-    OSType   creator,
-    OSType   iconType,
-    IconRef *theIconRef ) TWOWORDINLINE( 0x7021, 0xAA75 );
+  SInt16     vRefNum,
+  OSType     creator,
+  OSType     iconType,
+  IconRef *  theIconRef)                                      TWOWORDINLINE(0x7021, 0xAA75);
+
+
+
 
 /*
    GetIconRefFromFolder
@@ -1521,12 +1593,13 @@ GetIconRef(
  */
 EXTERN_API( OSErr )
 GetIconRefFromFolder(
-    SInt16   vRefNum,
-    SInt32   parentFolderID,
-    SInt32   folderID,
-    SInt8    attributes,
-    SInt8    accessPrivileges,
-    IconRef *theIconRef ) TWOWORDINLINE( 0x7022, 0xAA75 );
+  SInt16     vRefNum,
+  SInt32     parentFolderID,
+  SInt32     folderID,
+  SInt8      attributes,
+  SInt8      accessPrivileges,
+  IconRef *  theIconRef)                                      TWOWORDINLINE(0x7022, 0xAA75);
+
 
 /* GetIconRefFromFileInfo*/
 /*
@@ -1577,20 +1650,22 @@ GetIconRefFromFolder(
  */
 EXTERN_API( OSStatus )
 GetIconRefFromFileInfo(
-    const FSRef *          inRef,
-    UniCharCount           inFileNameLength,
-    const UniChar *        inFileName, /* can be NULL */
-    FSCatalogInfoBitmap    inWhichInfo,
-    const FSCatalogInfo *  inCatalogInfo, /* can be NULL */
-    IconServicesUsageFlags inUsageFlags,
-    IconRef *              outIconRef,
-    SInt16 *               outLabel );
+  const FSRef *            inRef,
+  UniCharCount             inFileNameLength,
+  const UniChar *          inFileName,             /* can be NULL */
+  FSCatalogInfoBitmap      inWhichInfo,
+  const FSCatalogInfo *    inCatalogInfo,          /* can be NULL */
+  IconServicesUsageFlags   inUsageFlags,
+  IconRef *                outIconRef,
+  SInt16 *                 outLabel);
+
 
 /*
   ==============================================================================
    Adding and modifying IconRef
   ==============================================================================
 */
+
 
 /*
    RegisterIconRefFromIconFamily
@@ -1614,10 +1689,12 @@ GetIconRefFromFileInfo(
  */
 EXTERN_API( OSErr )
 RegisterIconRefFromIconFamily(
-    OSType           creator,
-    OSType           iconType,
-    IconFamilyHandle iconFamily,
-    IconRef *        theIconRef ) TWOWORDINLINE( 0x701C, 0xAA75 );
+  OSType             creator,
+  OSType             iconType,
+  IconFamilyHandle   iconFamily,
+  IconRef *          theIconRef)                              TWOWORDINLINE(0x701C, 0xAA75);
+
+
 
 /*
    RegisterIconRefFromResource
@@ -1640,11 +1717,12 @@ RegisterIconRefFromIconFamily(
  */
 EXTERN_API( OSErr )
 RegisterIconRefFromResource(
-    OSType        creator,
-    OSType        iconType,
-    const FSSpec *resourceFile,
-    SInt16        resourceID,
-    IconRef *     theIconRef ) TWOWORDINLINE( 0x7023, 0xAA75 );
+  OSType          creator,
+  OSType          iconType,
+  const FSSpec *  resourceFile,
+  SInt16          resourceID,
+  IconRef *       theIconRef)                                 TWOWORDINLINE(0x7023, 0xAA75);
+
 
 /* RegisterIconRefFromFSRef*/
 /*
@@ -1675,10 +1753,11 @@ RegisterIconRefFromResource(
  */
 EXTERN_API( OSStatus )
 RegisterIconRefFromFSRef(
-    OSType       creator,
-    OSType       iconType,
-    const FSRef *iconFile,
-    IconRef *    theIconRef );
+  OSType         creator,
+  OSType         iconType,
+  const FSRef *  iconFile,
+  IconRef *      theIconRef);
+
 
 /*
    UnregisterIconRef
@@ -1698,8 +1777,11 @@ RegisterIconRefFromFSRef(
  */
 EXTERN_API( OSErr )
 UnregisterIconRef(
-    OSType creator,
-    OSType iconType ) TWOWORDINLINE( 0x7008, 0xAA75 );
+  OSType   creator,
+  OSType   iconType)                                          TWOWORDINLINE(0x7008, 0xAA75);
+
+
+
 
 /*
    UpdateIconRef
@@ -1722,7 +1804,10 @@ UnregisterIconRef(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-UpdateIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7009, 0xAA75 );
+UpdateIconRef(IconRef theIconRef)                             TWOWORDINLINE(0x7009, 0xAA75);
+
+
+
 
 /*
    OverrideIconRefFromResource
@@ -1741,9 +1826,12 @@ UpdateIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7009, 0xAA75 );
  */
 EXTERN_API( OSErr )
 OverrideIconRefFromResource(
-    IconRef       theIconRef,
-    const FSSpec *resourceFile,
-    SInt16        resourceID ) TWOWORDINLINE( 0x702A, 0xAA75 );
+  IconRef         theIconRef,
+  const FSSpec *  resourceFile,
+  SInt16          resourceID)                                 TWOWORDINLINE(0x702A, 0xAA75);
+
+
+
 
 /*
    OverrideIconRef
@@ -1762,8 +1850,10 @@ OverrideIconRefFromResource(
  */
 EXTERN_API( OSErr )
 OverrideIconRef(
-    IconRef oldIconRef,
-    IconRef newIconRef ) TWOWORDINLINE( 0x702B, 0xAA75 );
+  IconRef   oldIconRef,
+  IconRef   newIconRef)                                       TWOWORDINLINE(0x702B, 0xAA75);
+
+
 
 /*
    RemoveIconRefOverride
@@ -1780,13 +1870,17 @@ OverrideIconRef(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-RemoveIconRefOverride( IconRef theIconRef ) TWOWORDINLINE( 0x701E, 0xAA75 );
+RemoveIconRefOverride(IconRef theIconRef)                     TWOWORDINLINE(0x701E, 0xAA75);
+
+
+
 
 /*
   ==============================================================================
    Creating composite IconRef
   ==============================================================================
 */
+
 
 /*
    CompositeIconRef
@@ -1804,9 +1898,11 @@ RemoveIconRefOverride( IconRef theIconRef ) TWOWORDINLINE( 0x701E, 0xAA75 );
  */
 EXTERN_API( OSErr )
 CompositeIconRef(
-    IconRef  backgroundIconRef,
-    IconRef  foregroundIconRef,
-    IconRef *compositeIconRef ) TWOWORDINLINE( 0x7014, 0xAA75 );
+  IconRef    backgroundIconRef,
+  IconRef    foregroundIconRef,
+  IconRef *  compositeIconRef)                                TWOWORDINLINE(0x7014, 0xAA75);
+
+
 
 /*
    IsIconRefComposite
@@ -1824,9 +1920,12 @@ CompositeIconRef(
  */
 EXTERN_API( OSErr )
 IsIconRefComposite(
-    IconRef  compositeIconRef,
-    IconRef *backgroundIconRef,
-    IconRef *foregroundIconRef ) TWOWORDINLINE( 0x701A, 0xAA75 );
+  IconRef    compositeIconRef,
+  IconRef *  backgroundIconRef,
+  IconRef *  foregroundIconRef)                               TWOWORDINLINE(0x701A, 0xAA75);
+
+
+
 
 /*
   ==============================================================================
@@ -1848,7 +1947,9 @@ IsIconRefComposite(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsValidIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7032, 0xAA75 );
+IsValidIconRef(IconRef theIconRef)                            TWOWORDINLINE(0x7032, 0xAA75);
+
+
 
 /*
    PlotIconRef
@@ -1868,11 +1969,13 @@ IsValidIconRef( IconRef theIconRef ) TWOWORDINLINE( 0x7032, 0xAA75 );
  */
 EXTERN_API( OSErr )
 PlotIconRef(
-    const Rect *           theRect,
-    IconAlignmentType      align,
-    IconTransformType      transform,
-    IconServicesUsageFlags theIconServicesUsageFlags,
-    IconRef                theIconRef ) TWOWORDINLINE( 0x700E, 0xAA75 );
+  const Rect *             theRect,
+  IconAlignmentType        align,
+  IconTransformType        transform,
+  IconServicesUsageFlags   theIconServicesUsageFlags,
+  IconRef                  theIconRef)                        TWOWORDINLINE(0x700E, 0xAA75);
+
+
 
 /* PlotIconRefInContext*/
 /*
@@ -1911,13 +2014,15 @@ PlotIconRef(
  */
 EXTERN_API( OSStatus )
 PlotIconRefInContext(
-    CGContextRef      inContext,
-    const CGRect *    inRect,
-    IconAlignmentType inAlign,
-    IconTransformType inTransform,
-    const RGBColor *  inLabelColor,
-    PlotIconRefFlags  inFlags,
-    IconRef           inIconRef );
+  CGContextRef        inContext,
+  const CGRect *      inRect,
+  IconAlignmentType   inAlign,
+  IconTransformType   inTransform,
+  const RGBColor *    inLabelColor,
+  PlotIconRefFlags    inFlags,
+  IconRef             inIconRef);
+
+
 
 /*
    PtInIconRef
@@ -1926,6 +2031,7 @@ PlotIconRefInContext(
    It mostly takes the same parameters as PtInIconSuite.
    Pass kIconServicesNormalUsageFlag as a default value for IconServicesUsageFlags.
 */
+
 
 /*
  *  PtInIconRef()
@@ -1937,11 +2043,13 @@ PlotIconRefInContext(
  */
 EXTERN_API( Boolean )
 PtInIconRef(
-    const Point *          testPt,
-    const Rect *           iconRect,
-    IconAlignmentType      align,
-    IconServicesUsageFlags theIconServicesUsageFlags,
-    IconRef                theIconRef ) TWOWORDINLINE( 0x700F, 0xAA75 );
+  const Point *            testPt,
+  const Rect *             iconRect,
+  IconAlignmentType        align,
+  IconServicesUsageFlags   theIconServicesUsageFlags,
+  IconRef                  theIconRef)                        TWOWORDINLINE(0x700F, 0xAA75);
+
+
 
 /*
    RectInIconRef
@@ -1950,6 +2058,7 @@ PtInIconRef(
    It mostly takes the same parameters as RectInIconSuite.
    Pass kIconServicesNormalUsageFlag as a default value for IconServicesUsageFlags.
 */
+
 
 /*
  *  RectInIconRef()
@@ -1961,11 +2070,13 @@ PtInIconRef(
  */
 EXTERN_API( Boolean )
 RectInIconRef(
-    const Rect *           testRect,
-    const Rect *           iconRect,
-    IconAlignmentType      align,
-    IconServicesUsageFlags iconServicesUsageFlags,
-    IconRef                theIconRef ) TWOWORDINLINE( 0x7010, 0xAA75 );
+  const Rect *             testRect,
+  const Rect *             iconRect,
+  IconAlignmentType        align,
+  IconServicesUsageFlags   iconServicesUsageFlags,
+  IconRef                  theIconRef)                        TWOWORDINLINE(0x7010, 0xAA75);
+
+
 
 /*
    IconRefToRgn
@@ -1985,11 +2096,13 @@ RectInIconRef(
  */
 EXTERN_API( OSErr )
 IconRefToRgn(
-    RgnHandle              theRgn,
-    const Rect *           iconRect,
-    IconAlignmentType      align,
-    IconServicesUsageFlags iconServicesUsageFlags,
-    IconRef                theIconRef ) TWOWORDINLINE( 0x7011, 0xAA75 );
+  RgnHandle                theRgn,
+  const Rect *             iconRect,
+  IconAlignmentType        align,
+  IconServicesUsageFlags   iconServicesUsageFlags,
+  IconRef                  theIconRef)                        TWOWORDINLINE(0x7011, 0xAA75);
+
+
 
 /*
    GetIconSizesFromIconRef
@@ -2018,16 +2131,20 @@ IconRefToRgn(
  */
 EXTERN_API( OSErr )
 GetIconSizesFromIconRef(
-    IconSelectorValue      iconSelectorInput,
-    IconSelectorValue *    iconSelectorOutputPtr,
-    IconServicesUsageFlags iconServicesUsageFlags,
-    IconRef                theIconRef ) TWOWORDINLINE( 0x7012, 0xAA75 );
+  IconSelectorValue        iconSelectorInput,
+  IconSelectorValue *      iconSelectorOutputPtr,
+  IconServicesUsageFlags   iconServicesUsageFlags,
+  IconRef                  theIconRef)                        TWOWORDINLINE(0x7012, 0xAA75);
+
+
+
 
 /*
   ==============================================================================
    Flushing IconRef data
   ==============================================================================
 */
+
 
 /*
    FlushIconRefs
@@ -2047,8 +2164,10 @@ GetIconSizesFromIconRef(
  */
 EXTERN_API( OSErr )
 FlushIconRefs(
-    OSType creator,
-    OSType iconType ) TWOWORDINLINE( 0x7029, 0xAA75 );
+  OSType   creator,
+  OSType   iconType)                                          TWOWORDINLINE(0x7029, 0xAA75);
+
+
 
 /*
    FlushIconRefsByVolume
@@ -2067,13 +2186,17 @@ FlushIconRefs(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-FlushIconRefsByVolume( SInt16 vRefNum ) TWOWORDINLINE( 0x7018, 0xAA75 );
+FlushIconRefsByVolume(SInt16 vRefNum)                         TWOWORDINLINE(0x7018, 0xAA75);
+
+
+
 
 /*
   ==============================================================================
    Controling custom icons
   ==============================================================================
 */
+
 
 /*
    SetCustomIconsEnabled
@@ -2091,8 +2214,10 @@ FlushIconRefsByVolume( SInt16 vRefNum ) TWOWORDINLINE( 0x7018, 0xAA75 );
  */
 EXTERN_API( OSErr )
 SetCustomIconsEnabled(
-    SInt16  vRefNum,
-    Boolean enableCustomIcons ) TWOWORDINLINE( 0x701F, 0xAA75 );
+  SInt16    vRefNum,
+  Boolean   enableCustomIcons)                                TWOWORDINLINE(0x701F, 0xAA75);
+
+
 
 /*
    GetCustomIconsEnabled
@@ -2110,8 +2235,10 @@ SetCustomIconsEnabled(
  */
 EXTERN_API( OSErr )
 GetCustomIconsEnabled(
-    SInt16   vRefNum,
-    Boolean *customIconsEnabled ) TWOWORDINLINE( 0x7020, 0xAA75 );
+  SInt16     vRefNum,
+  Boolean *  customIconsEnabled)                              TWOWORDINLINE(0x7020, 0xAA75);
+
+
 
 /*
    IsIconRefMaskEmpty
@@ -2127,7 +2254,9 @@ GetCustomIconsEnabled(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsIconRefMaskEmpty( IconRef iconRef ) TWOWORDINLINE( 0x7033, 0xAA75 );
+IsIconRefMaskEmpty(IconRef iconRef)                           TWOWORDINLINE(0x7033, 0xAA75);
+
+
 
 /*
    GetIconRefVariant
@@ -2150,15 +2279,19 @@ IsIconRefMaskEmpty( IconRef iconRef ) TWOWORDINLINE( 0x7033, 0xAA75 );
  */
 EXTERN_API( IconRef )
 GetIconRefVariant(
-    IconRef            inIconRef,
-    OSType             inVariant,
-    IconTransformType *outTransform ) TWOWORDINLINE( 0x7034, 0xAA75 );
+  IconRef              inIconRef,
+  OSType               inVariant,
+  IconTransformType *  outTransform)                          TWOWORDINLINE(0x7034, 0xAA75);
+
+
+
 
 /*
   ==============================================================================
    Icon files (.icns files)
   ==============================================================================
 */
+
 
 /*
    RegisterIconRefFromIconFile
@@ -2182,10 +2315,12 @@ GetIconRefVariant(
  */
 EXTERN_API( OSErr )
 RegisterIconRefFromIconFile(
-    OSType        creator,
-    OSType        iconType,
-    const FSSpec *iconFile,
-    IconRef *     theIconRef ) TWOWORDINLINE( 0x7035, 0xAA75 );
+  OSType          creator,
+  OSType          iconType,
+  const FSSpec *  iconFile,
+  IconRef *       theIconRef)                                 TWOWORDINLINE(0x7035, 0xAA75);
+
+
 
 /*
    ReadIconFile
@@ -2203,8 +2338,9 @@ RegisterIconRefFromIconFile(
  */
 EXTERN_API( OSErr )
 ReadIconFile(
-    const FSSpec *    iconFile,
-    IconFamilyHandle *iconFamily ) TWOWORDINLINE( 0x7036, 0xAA75 );
+  const FSSpec *      iconFile,
+  IconFamilyHandle *  iconFamily)                             TWOWORDINLINE(0x7036, 0xAA75);
+
 
 /* ReadIconFromFSRef*/
 /*
@@ -2228,8 +2364,10 @@ ReadIconFile(
  */
 EXTERN_API( OSStatus )
 ReadIconFromFSRef(
-    const FSRef *     ref,
-    IconFamilyHandle *iconFamily );
+  const FSRef *       ref,
+  IconFamilyHandle *  iconFamily);
+
+
 
 /*
    WriteIconFile
@@ -2246,15 +2384,18 @@ ReadIconFromFSRef(
  */
 EXTERN_API( OSErr )
 WriteIconFile(
-    IconFamilyHandle iconFamily,
-    const FSSpec *   iconFile ) TWOWORDINLINE( 0x7037, 0xAA75 );
+  IconFamilyHandle   iconFamily,
+  const FSSpec *     iconFile)                                TWOWORDINLINE(0x7037, 0xAA75);
+
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2268,3 +2409,4 @@ WriteIconFile(
 #endif
 
 #endif /* __ICONS__ */
+

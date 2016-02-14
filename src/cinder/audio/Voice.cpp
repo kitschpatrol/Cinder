@@ -31,8 +31,7 @@
 using namespace std;
 using namespace ci;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - MixerImpl
@@ -43,42 +42,43 @@ namespace audio {
 // and performs the gain / pan as a post-processing step
 
 class MixerImpl {
-  public:
+public:
+
 	static MixerImpl *get();
 
 	//! returns the number of connected busses.
-	void setBusVolume( size_t busId, float volume );
-	float getBusVolume( size_t busId );
-	void setBusPan( size_t busId, float pos );
-	float getBusPan( size_t busId );
+	void	setBusVolume( size_t busId, float volume );
+	float	getBusVolume( size_t busId );
+	void	setBusPan( size_t busId, float pos );
+	float	getBusPan( size_t busId );
 	NodeRef getOutputNode( size_t busId ) const;
 
-	void addVoice( const VoiceRef &source, const Voice::Options &options );
-	void removeVoice( size_t busId );
+	void	addVoice( const VoiceRef &source, const Voice::Options &options );
+	void	removeVoice( size_t busId );
 
 	BufferRef loadBuffer( const SourceFileRef &sourceFile );
 	// clears the cache of all previously loaded audio file buffers stored in mBufferCache
 	void clearBufferCache();
 
-  private:
+private:
 	MixerImpl();
 
 	struct Bus {
-		weak_ptr<Voice> mVoice; // stored as weak reference so that when the user's VoiceRef goes out of scope, it will be removed.
-		GainNodeRef     mGain;
-		Pan2dNodeRef    mPan;
+		weak_ptr<Voice>		mVoice; // stored as weak reference so that when the user's VoiceRef goes out of scope, it will be removed.
+		GainNodeRef			mGain;
+		Pan2dNodeRef		mPan;
 	};
 
 	size_t getFirstAvailableBusId() const;
 
-	map<size_t, Bus>              mBusses; // key is bus id
-	map<SourceFileRef, BufferRef> mBufferCache; // key is the source file
+	map<size_t, Bus> mBusses;							// key is bus id
+	map<SourceFileRef, BufferRef> mBufferCache;		// key is the source file
 };
 
-MixerImpl *MixerImpl::get()
+MixerImpl* MixerImpl::get()
 {
 	static unique_ptr<MixerImpl> sMixer;
-	if( !sMixer )
+	if( ! sMixer )
 		sMixer.reset( new MixerImpl );
 
 	return sMixer.get();
@@ -127,7 +127,7 @@ BufferRef MixerImpl::loadBuffer( const SourceFileRef &sourceFile )
 		return result;
 	}
 }
-
+	
 void MixerImpl::clearBufferCache()
 {
 	mBufferCache.clear();
@@ -206,7 +206,7 @@ Voice::~Voice()
 {
 	MixerImpl::get()->removeVoice( mBusId );
 }
-
+	
 void Voice::clearBufferCache()
 {
 	MixerImpl::get()->clearBufferCache();
@@ -262,16 +262,15 @@ NodeRef Voice::getOutputNode() const
 // ----------------------------------------------------------------------------------------------------
 
 VoiceSamplePlayerNode::VoiceSamplePlayerNode( const SourceFileRef &sourceFile, const Options &options )
-    : Voice()
+	: Voice()
 {
-	size_t        requiredSampleRate = audio::master()->getSampleRate();
+	size_t requiredSampleRate = audio::master()->getSampleRate();
 	SourceFileRef sf = requiredSampleRate == sourceFile->getSampleRate() ? sourceFile : sourceFile->cloneWithSampleRate( requiredSampleRate );
 
 	if( sf->getNumFrames() <= options.getMaxFramesForBufferPlayback() ) {
 		BufferRef buffer = MixerImpl::get()->loadBuffer( sf );
 		mNode = Context::master()->makeNode( new BufferPlayerNode( buffer ) );
-	}
-	else
+	} else
 		mNode = Context::master()->makeNode( new FilePlayerNode( sf ) );
 }
 
@@ -293,9 +292,9 @@ void VoiceSamplePlayerNode::stop()
 // ----------------------------------------------------------------------------------------------------
 
 VoiceCallbackProcessor::VoiceCallbackProcessor( const CallbackProcessorFn &callbackFn, const Options &options )
-    : Voice()
+	: Voice()
 {
 	mNode = Context::master()->makeNode( new CallbackProcessorNode( callbackFn, Node::Format().channels( options.getChannels() ) ) );
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

@@ -24,6 +24,8 @@
 #include <MacTypes.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,46 +39,46 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 struct DSPComplex {
-	float real;
-	float imag;
+  float               real;
+  float               imag;
 };
-typedef struct DSPComplex DSPComplex;
+typedef struct DSPComplex               DSPComplex;
 struct DSPSplitComplex {
-	float *realp;
-	float *imagp;
+  float *             realp;
+  float *             imagp;
 };
-typedef struct DSPSplitComplex DSPSplitComplex;
+typedef struct DSPSplitComplex          DSPSplitComplex;
 struct DSPDoubleComplex {
-	double real;
-	double imag;
+  double              real;
+  double              imag;
 };
-typedef struct DSPDoubleComplex DSPDoubleComplex;
+typedef struct DSPDoubleComplex         DSPDoubleComplex;
 struct DSPDoubleSplitComplex {
-	double *realp;
-	double *imagp;
+  double *            realp;
+  double *            imagp;
 };
-typedef struct DSPDoubleSplitComplex DSPDoubleSplitComplex;
-typedef struct OpaqueFFTSetup *      FFTSetup;
-typedef struct OpaqueFFTSetupD *     FFTSetupD;
-typedef SInt32                       FFTDirection;
+typedef struct DSPDoubleSplitComplex    DSPDoubleSplitComplex;
+typedef struct OpaqueFFTSetup*          FFTSetup;
+typedef struct OpaqueFFTSetupD*         FFTSetupD;
+typedef SInt32 FFTDirection;
 enum {
-	kFFTDirection_Forward = 1,
-	kFFTDirection_Inverse = -1
+  kFFTDirection_Forward         = 1,
+  kFFTDirection_Inverse         = -1
 };
 
 typedef SInt32 FFTRadix;
 enum {
-	kFFTRadix2 = 0,
-	kFFTRadix3 = 1,
-	kFFTRadix5 = 2
+  kFFTRadix2                    = 0,
+  kFFTRadix3                    = 1,
+  kFFTRadix5                    = 2
 };
 
 /*
@@ -105,8 +107,9 @@ enum {
  */
 EXTERN_API_C( FFTSetup )
 create_fftsetup(
-    UInt32   log2n,
-    FFTRadix radix );
+  UInt32     log2n,
+  FFTRadix   radix);
+
 
 /*
  *  destroy_fftsetup()
@@ -117,7 +120,8 @@ create_fftsetup(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-destroy_fftsetup( FFTSetup setup );
+destroy_fftsetup(FFTSetup setup);
+
 
 /*
  *  create_fftsetupD()
@@ -129,8 +133,9 @@ destroy_fftsetup( FFTSetup setup );
  */
 EXTERN_API_C( FFTSetupD )
 create_fftsetupD(
-    UInt32   log2n,
-    FFTRadix radix );
+  UInt32     log2n,
+  FFTRadix   radix);
+
 
 /*
  *  destroy_fftsetupD()
@@ -141,7 +146,9 @@ create_fftsetupD(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( void )
-destroy_fftsetupD( FFTSetupD setup );
+destroy_fftsetupD(FFTSetupD setup);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -168,11 +175,12 @@ destroy_fftsetupD( FFTSetupD setup );
  */
 EXTERN_API_C( void )
 ctoz(
-    const DSPComplex C[],
-    SInt32           strideC,
-    DSPSplitComplex *Z,
-    SInt32           strideZ,
-    UInt32           size );
+  const DSPComplex   C[],
+  SInt32             strideC,
+  DSPSplitComplex *  Z,
+  SInt32             strideZ,
+  UInt32             size);
+
 
 /*
  *  ztoc()
@@ -184,11 +192,12 @@ ctoz(
  */
 EXTERN_API_C( void )
 ztoc(
-    const DSPSplitComplex *Z,
-    SInt32                 strideZ,
-    DSPComplex             C[],
-    SInt32                 strideC,
-    UInt32                 size );
+  const DSPSplitComplex *  Z,
+  SInt32                   strideZ,
+  DSPComplex               C[],
+  SInt32                   strideC,
+  UInt32                   size);
+
 
 /*
  *  ctozD()
@@ -200,11 +209,12 @@ ztoc(
  */
 EXTERN_API_C( void )
 ctozD(
-    const DSPDoubleComplex C[],
-    SInt32                 strideC,
-    DSPDoubleSplitComplex *Z,
-    SInt32                 strideZ,
-    UInt32                 size );
+  const DSPDoubleComplex   C[],
+  SInt32                   strideC,
+  DSPDoubleSplitComplex *  Z,
+  SInt32                   strideZ,
+  UInt32                   size);
+
 
 /*
  *  ztocD()
@@ -216,11 +226,13 @@ ctozD(
  */
 EXTERN_API_C( void )
 ztocD(
-    const DSPDoubleSplitComplex *Z,
-    SInt32                       strideZ,
-    DSPDoubleComplex             C[],
-    SInt32                       strideC,
-    UInt32                       size );
+  const DSPDoubleSplitComplex *  Z,
+  SInt32                         strideZ,
+  DSPDoubleComplex               C[],
+  SInt32                         strideC,
+  UInt32                         size);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -252,11 +264,12 @@ ztocD(
  */
 EXTERN_API_C( void )
 fft_zip(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           stride,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             stride,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zipt()
@@ -268,12 +281,13 @@ fft_zip(
  */
 EXTERN_API_C( void )
 fft_zipt(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           stride,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             stride,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zipD()
@@ -285,11 +299,12 @@ fft_zipt(
  */
 EXTERN_API_C( void )
 fft_zipD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 stride,
-    UInt32                 log2n,
-    FFTDirection           direction );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   stride,
+  UInt32                   log2n,
+  FFTDirection             direction);
+
 
 /*
  *  fft_ziptD()
@@ -301,12 +316,14 @@ fft_zipD(
  */
 EXTERN_API_C( void )
 fft_ziptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 stride,
-    DSPDoubleSplitComplex *bufferTemp,
-    UInt32                 log2n,
-    FFTDirection           direction );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   stride,
+  DSPDoubleSplitComplex *  bufferTemp,
+  UInt32                   log2n,
+  FFTDirection             direction);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -341,13 +358,14 @@ fft_ziptD(
  */
 EXTERN_API_C( void )
 fft_zop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zopt()
@@ -359,14 +377,15 @@ fft_zop(
  */
 EXTERN_API_C( void )
 fft_zopt(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zopD()
@@ -378,13 +397,14 @@ fft_zopt(
  */
 EXTERN_API_C( void )
 fft_zopD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 log2n,
-    FFTDirection           direction );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   log2n,
+  FFTDirection             direction);
+
 
 /*
  *  fft_zoptD()
@@ -396,14 +416,16 @@ fft_zopD(
  */
 EXTERN_API_C( void )
 fft_zoptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    DSPDoubleSplitComplex *bufferTemp,
-    UInt32                 log2n,
-    FFTDirection           direction );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  DSPDoubleSplitComplex *  bufferTemp,
+  UInt32                   log2n,
+  FFTDirection             direction);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -434,11 +456,12 @@ fft_zoptD(
  */
 EXTERN_API_C( void )
 fft_zrip(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           stride,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             stride,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zript()
@@ -450,12 +473,13 @@ fft_zrip(
  */
 EXTERN_API_C( void )
 fft_zript(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           stride,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             stride,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zripD()
@@ -467,11 +491,12 @@ fft_zript(
  */
 EXTERN_API_C( void )
 fft_zripD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 stride,
-    UInt32                 log2n,
-    FFTDirection           flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   stride,
+  UInt32                   log2n,
+  FFTDirection             flag);
+
 
 /*
  *  fft_zriptD()
@@ -483,12 +508,14 @@ fft_zripD(
  */
 EXTERN_API_C( void )
 fft_zriptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 stride,
-    DSPDoubleSplitComplex *bufferTemp,
-    UInt32                 log2n,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   stride,
+  DSPDoubleSplitComplex *  bufferTemp,
+  UInt32                   log2n,
+  SInt32                   flag);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -521,13 +548,14 @@ fft_zriptD(
  */
 EXTERN_API_C( void )
 fft_zrop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zropt()
@@ -539,14 +567,15 @@ fft_zrop(
  */
 EXTERN_API_C( void )
 fft_zropt(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2n,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2n,
+  FFTDirection       direction);
+
 
 /*
  *  fft_zropD()
@@ -558,13 +587,14 @@ fft_zropt(
  */
 EXTERN_API_C( void )
 fft_zropD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 log2n,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   log2n,
+  SInt32                   flag);
+
 
 /*
  *  fft_zroptD()
@@ -576,14 +606,16 @@ fft_zropD(
  */
 EXTERN_API_C( void )
 fft_zroptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    DSPDoubleSplitComplex *bufferTemp,
-    UInt32                 log2n,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  DSPDoubleSplitComplex *  bufferTemp,
+  UInt32                   log2n,
+  SInt32                   flag);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -617,13 +649,14 @@ fft_zroptD(
  */
 EXTERN_API_C( void )
 fft2d_zip(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           strideInRow,
-    SInt32           strideInCol,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             strideInRow,
+  SInt32             strideInCol,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  FFTDirection       direction);
+
 
 /*
  *  fft2d_zipt()
@@ -635,14 +668,15 @@ fft2d_zip(
  */
 EXTERN_API_C( void )
 fft2d_zipt(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           strideInRow,
-    SInt32           strideInCol,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             strideInRow,
+  SInt32             strideInCol,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  FFTDirection       direction);
+
 
 /*
  *  fft2d_zipD()
@@ -654,13 +688,14 @@ fft2d_zipt(
  */
 EXTERN_API_C( void )
 fft2d_zipD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 strideInRow,
-    SInt32                 strideInCol,
-    UInt32                 log2nInCol,
-    UInt32                 log2nInRow,
-    FFTDirection           direction );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   strideInRow,
+  SInt32                   strideInCol,
+  UInt32                   log2nInCol,
+  UInt32                   log2nInRow,
+  FFTDirection             direction);
+
 
 /*
  *  fft2d_ziptD()
@@ -672,14 +707,16 @@ fft2d_zipD(
  */
 EXTERN_API_C( void )
 fft2d_ziptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 strideInRow,
-    SInt32                 strideInCol,
-    DSPDoubleSplitComplex *bufferTemp,
-    UInt32                 log2nInCol,
-    UInt32                 log2nInRow,
-    FFTDirection           direction );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   strideInRow,
+  SInt32                   strideInCol,
+  DSPDoubleSplitComplex *  bufferTemp,
+  UInt32                   log2nInCol,
+  UInt32                   log2nInRow,
+  FFTDirection             direction);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -717,16 +754,17 @@ fft2d_ziptD(
  */
 EXTERN_API_C( void )
 fft2d_zop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStrideInRow,
-    SInt32           signalStrideInCol,
-    DSPSplitComplex *result,
-    SInt32           strideResultInRow,
-    SInt32           strideResultInCol,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStrideInRow,
+  SInt32             signalStrideInCol,
+  DSPSplitComplex *  result,
+  SInt32             strideResultInRow,
+  SInt32             strideResultInCol,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  SInt32             flag);
+
 
 /*
  *  fft2d_zopt()
@@ -738,17 +776,18 @@ fft2d_zop(
  */
 EXTERN_API_C( void )
 fft2d_zopt(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStrideInRow,
-    SInt32           signalStrideInCol,
-    DSPSplitComplex *result,
-    SInt32           strideResultInRow,
-    SInt32           strideResultInCol,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStrideInRow,
+  SInt32             signalStrideInCol,
+  DSPSplitComplex *  result,
+  SInt32             strideResultInRow,
+  SInt32             strideResultInCol,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  SInt32             flag);
+
 
 /*
  *  fft2d_zopD()
@@ -760,16 +799,17 @@ fft2d_zopt(
  */
 EXTERN_API_C( void )
 fft2d_zopD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStrideInRow,
-    SInt32                 signalStrideInCol,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResultInRow,
-    SInt32                 strideResultInCol,
-    UInt32                 log2nInCol,
-    UInt32                 log2nInRow,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStrideInRow,
+  SInt32                   signalStrideInCol,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResultInRow,
+  SInt32                   strideResultInCol,
+  UInt32                   log2nInCol,
+  UInt32                   log2nInRow,
+  SInt32                   flag);
+
 
 /*
  *  fft2d_zoptD()
@@ -781,17 +821,19 @@ fft2d_zopD(
  */
 EXTERN_API_C( void )
 fft2d_zoptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStrideInRow,
-    SInt32                 signalStrideInCol,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResultInRow,
-    SInt32                 strideResultInCol,
-    DSPDoubleSplitComplex *bufferTemp,
-    UInt32                 log2nInCol,
-    UInt32                 log2nInRow,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStrideInRow,
+  SInt32                   signalStrideInCol,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResultInRow,
+  SInt32                   strideResultInCol,
+  DSPDoubleSplitComplex *  bufferTemp,
+  UInt32                   log2nInCol,
+  UInt32                   log2nInRow,
+  SInt32                   flag);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -825,13 +867,14 @@ fft2d_zoptD(
  */
 EXTERN_API_C( void )
 fft2d_zrip(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           strideInRow,
-    SInt32           strideInCol,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             strideInRow,
+  SInt32             strideInCol,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  FFTDirection       direction);
+
 
 /*
  *  fft2d_zript()
@@ -843,14 +886,15 @@ fft2d_zrip(
  */
 EXTERN_API_C( void )
 fft2d_zript(
-    FFTSetup         setup,
-    DSPSplitComplex *ioData,
-    SInt32           strideInRow,
-    SInt32           strideInCol,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    FFTDirection     direction );
+  FFTSetup           setup,
+  DSPSplitComplex *  ioData,
+  SInt32             strideInRow,
+  SInt32             strideInCol,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  FFTDirection       direction);
+
 
 /*
  *  fft2d_zripD()
@@ -862,13 +906,14 @@ fft2d_zript(
  */
 EXTERN_API_C( void )
 fft2d_zripD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 strideInRow,
-    SInt32                 strideInCol,
-    UInt32                 log2nInCol,
-    UInt32                 log2nInRow,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   strideInRow,
+  SInt32                   strideInCol,
+  UInt32                   log2nInCol,
+  UInt32                   log2nInRow,
+  SInt32                   flag);
+
 
 /*
  *  fft2d_zriptD()
@@ -880,14 +925,16 @@ fft2d_zripD(
  */
 EXTERN_API_C( void )
 fft2d_zriptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 strideInRow,
-    SInt32                 strideInCol,
-    DSPDoubleSplitComplex *bufferTemp,
-    UInt32                 log2nInCol,
-    UInt32                 log2nInRow,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   strideInRow,
+  SInt32                   strideInCol,
+  DSPDoubleSplitComplex *  bufferTemp,
+  UInt32                   log2nInCol,
+  UInt32                   log2nInRow,
+  SInt32                   flag);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -924,16 +971,17 @@ fft2d_zriptD(
  */
 EXTERN_API_C( void )
 fft2d_zrop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStrideInRow,
-    SInt32           signalStrideInCol,
-    DSPSplitComplex *result,
-    SInt32           strideResultInRow,
-    SInt32           strideResultInCol,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStrideInRow,
+  SInt32             signalStrideInCol,
+  DSPSplitComplex *  result,
+  SInt32             strideResultInRow,
+  SInt32             strideResultInCol,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  SInt32             flag);
+
 
 /*
  *  fft2d_zropt()
@@ -945,17 +993,18 @@ fft2d_zrop(
  */
 EXTERN_API_C( void )
 fft2d_zropt(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStrideInRow,
-    SInt32           signalStrideInCol,
-    DSPSplitComplex *result,
-    SInt32           strideResultInRow,
-    SInt32           strideResultInCol,
-    DSPSplitComplex *bufferTemp,
-    UInt32           log2nInCol,
-    UInt32           log2nInRow,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStrideInRow,
+  SInt32             signalStrideInCol,
+  DSPSplitComplex *  result,
+  SInt32             strideResultInRow,
+  SInt32             strideResultInCol,
+  DSPSplitComplex *  bufferTemp,
+  UInt32             log2nInCol,
+  UInt32             log2nInRow,
+  SInt32             flag);
+
 
 /*
  *  fft2d_zropD()
@@ -967,16 +1016,17 @@ fft2d_zropt(
  */
 EXTERN_API_C( void )
 fft2d_zropD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 Kr,
-    SInt32                 Kc,
-    DSPDoubleSplitComplex *ioData2,
-    SInt32                 Ir,
-    SInt32                 Ic,
-    UInt32                 log2nc,
-    UInt32                 log2nr,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   Kr,
+  SInt32                   Kc,
+  DSPDoubleSplitComplex *  ioData2,
+  SInt32                   Ir,
+  SInt32                   Ic,
+  UInt32                   log2nc,
+  UInt32                   log2nr,
+  SInt32                   flag);
+
 
 /*
  *  fft2d_zroptD()
@@ -988,17 +1038,19 @@ fft2d_zropD(
  */
 EXTERN_API_C( void )
 fft2d_zroptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 Kr,
-    SInt32                 Kc,
-    DSPDoubleSplitComplex *ioData2,
-    SInt32                 Ir,
-    SInt32                 Ic,
-    DSPDoubleSplitComplex *temp,
-    UInt32                 log2nc,
-    UInt32                 log2nr,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   Kr,
+  SInt32                   Kc,
+  DSPDoubleSplitComplex *  ioData2,
+  SInt32                   Ir,
+  SInt32                   Ic,
+  DSPDoubleSplitComplex *  temp,
+  UInt32                   log2nc,
+  UInt32                   log2nr,
+  SInt32                   flag);
+
+
 
 /*
 ________________________________________________________________________________
@@ -1029,13 +1081,14 @@ ________________________________________________________________________________
  */
 EXTERN_API_C( void )
 fftm_zip(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zipt()
@@ -1047,14 +1100,15 @@ fftm_zip(
  */
 EXTERN_API_C( void )
 fftm_zipt(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    DSPSplitComplex *temp,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  DSPSplitComplex *  temp,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zipD()
@@ -1066,13 +1120,14 @@ fftm_zipt(
  */
 EXTERN_API_C( void )
 fftm_zipD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
 
 /*
  *  fftm_ziptD()
@@ -1084,14 +1139,16 @@ fftm_zipD(
  */
 EXTERN_API_C( void )
 fftm_ziptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    DSPDoubleSplitComplex *temp,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  DSPDoubleSplitComplex *  temp,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
+
 
 /*
 ________________________________________________________________________________
@@ -1125,16 +1182,17 @@ ________________________________________________________________________________
  */
 EXTERN_API_C( void )
 fftm_zop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    DSPSplitComplex *result,
-    SInt32           resultStride,
-    SInt32           rfftStride,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  DSPSplitComplex *  result,
+  SInt32             resultStride,
+  SInt32             rfftStride,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zopt()
@@ -1146,17 +1204,18 @@ fftm_zop(
  */
 EXTERN_API_C( void )
 fftm_zopt(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    DSPSplitComplex *result,
-    SInt32           resultStride,
-    SInt32           rfftStride,
-    DSPSplitComplex *temp,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  DSPSplitComplex *  result,
+  SInt32             resultStride,
+  SInt32             rfftStride,
+  DSPSplitComplex *  temp,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zopD()
@@ -1168,16 +1227,17 @@ fftm_zopt(
  */
 EXTERN_API_C( void )
 fftm_zopD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 resultStride,
-    SInt32                 rfftStride,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   resultStride,
+  SInt32                   rfftStride,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
 
 /*
  *  fftm_zoptD()
@@ -1189,17 +1249,19 @@ fftm_zopD(
  */
 EXTERN_API_C( void )
 fftm_zoptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 resultStride,
-    SInt32                 rfftStride,
-    DSPDoubleSplitComplex *temp,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   resultStride,
+  SInt32                   rfftStride,
+  DSPDoubleSplitComplex *  temp,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
+
 
 /*
 ________________________________________________________________________________
@@ -1229,13 +1291,14 @@ ________________________________________________________________________________
  */
 EXTERN_API_C( void )
 fftm_zrip(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zript()
@@ -1247,14 +1310,15 @@ fftm_zrip(
  */
 EXTERN_API_C( void )
 fftm_zript(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    DSPSplitComplex *temp,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  DSPSplitComplex *  temp,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zripD()
@@ -1266,13 +1330,14 @@ fftm_zript(
  */
 EXTERN_API_C( void )
 fftm_zripD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
 
 /*
  *  fftm_zriptD()
@@ -1284,14 +1349,16 @@ fftm_zripD(
  */
 EXTERN_API_C( void )
 fftm_zriptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    DSPDoubleSplitComplex *temp,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  DSPDoubleSplitComplex *  temp,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
+
 
 /*
 ________________________________________________________________________________
@@ -1325,16 +1392,17 @@ ________________________________________________________________________________
  */
 EXTERN_API_C( void )
 fftm_zrop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    DSPSplitComplex *result,
-    SInt32           resultStride,
-    SInt32           rfftStride,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  DSPSplitComplex *  result,
+  SInt32             resultStride,
+  SInt32             rfftStride,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zropt()
@@ -1346,17 +1414,18 @@ fftm_zrop(
  */
 EXTERN_API_C( void )
 fftm_zropt(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    SInt32           fftStride,
-    DSPSplitComplex *result,
-    SInt32           resultStride,
-    SInt32           rfftStride,
-    DSPSplitComplex *temp,
-    UInt32           log2n,
-    UInt32           numFFT,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  SInt32             fftStride,
+  DSPSplitComplex *  result,
+  SInt32             resultStride,
+  SInt32             rfftStride,
+  DSPSplitComplex *  temp,
+  UInt32             log2n,
+  UInt32             numFFT,
+  SInt32             flag);
+
 
 /*
  *  fftm_zropD()
@@ -1368,16 +1437,17 @@ fftm_zropt(
  */
 EXTERN_API_C( void )
 fftm_zropD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 resultStride,
-    SInt32                 rfftStride,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   resultStride,
+  SInt32                   rfftStride,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
 
 /*
  *  fftm_zroptD()
@@ -1389,17 +1459,19 @@ fftm_zropD(
  */
 EXTERN_API_C( void )
 fftm_zroptD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    SInt32                 fftStride,
-    DSPDoubleSplitComplex *result,
-    SInt32                 resultStride,
-    SInt32                 rfftStride,
-    DSPDoubleSplitComplex *temp,
-    UInt32                 log2n,
-    UInt32                 numFFT,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  SInt32                   fftStride,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   resultStride,
+  SInt32                   rfftStride,
+  DSPDoubleSplitComplex *  temp,
+  UInt32                   log2n,
+  UInt32                   numFFT,
+  SInt32                   flag);
+
+
 
 /*
 ________________________________________________________________________________
@@ -1430,13 +1502,14 @@ ________________________________________________________________________________
  */
 EXTERN_API_C( void )
 fft3_zop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    DSPSplitComplex *result,
-    SInt32           resultStride,
-    UInt32           log2n,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  DSPSplitComplex *  result,
+  SInt32             resultStride,
+  UInt32             log2n,
+  SInt32             flag);
+
 
 /*
  *  fft5_zop()
@@ -1448,13 +1521,14 @@ fft3_zop(
  */
 EXTERN_API_C( void )
 fft5_zop(
-    FFTSetup         setup,
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    DSPSplitComplex *result,
-    SInt32           resultStride,
-    UInt32           log2n,
-    SInt32           flag );
+  FFTSetup           setup,
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  DSPSplitComplex *  result,
+  SInt32             resultStride,
+  UInt32             log2n,
+  SInt32             flag);
+
 
 /*
  *  fft3_zopD()
@@ -1466,13 +1540,14 @@ fft5_zop(
  */
 EXTERN_API_C( void )
 fft3_zopD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 K,
-    DSPDoubleSplitComplex *ioData2,
-    SInt32                 L,
-    UInt32                 log2n,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   K,
+  DSPDoubleSplitComplex *  ioData2,
+  SInt32                   L,
+  UInt32                   log2n,
+  SInt32                   flag);
+
 
 /*
  *  fft5_zopD()
@@ -1484,13 +1559,15 @@ fft3_zopD(
  */
 EXTERN_API_C( void )
 fft5_zopD(
-    FFTSetupD              setup,
-    DSPDoubleSplitComplex *ioData,
-    SInt32                 K,
-    DSPDoubleSplitComplex *ioData2,
-    SInt32                 L,
-    UInt32                 log2n,
-    SInt32                 flag );
+  FFTSetupD                setup,
+  DSPDoubleSplitComplex *  ioData,
+  SInt32                   K,
+  DSPDoubleSplitComplex *  ioData2,
+  SInt32                   L,
+  UInt32                   log2n,
+  SInt32                   flag);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -1521,14 +1598,15 @@ fft5_zopD(
  */
 EXTERN_API_C( void )
 conv(
-    const float signal[],
-    SInt32      signalStride,
-    const float filter[],
-    SInt32      strideFilter,
-    float       result[],
-    SInt32      strideResult,
-    SInt32      lenResult,
-    SInt32      lenFilter );
+  const float   signal[],
+  SInt32        signalStride,
+  const float   filter[],
+  SInt32        strideFilter,
+  float         result[],
+  SInt32        strideResult,
+  SInt32        lenResult,
+  SInt32        lenFilter);
+
 
 /*
  *  convD()
@@ -1540,14 +1618,15 @@ conv(
  */
 EXTERN_API_C( void )
 convD(
-    const double signal[],
-    SInt32       signalStride,
-    const double filter[],
-    SInt32       strideFilter,
-    double       result[],
-    SInt32       strideResult,
-    SInt32       lenResult,
-    SInt32       lenFilter );
+  const double   signal[],
+  SInt32         signalStride,
+  const double   filter[],
+  SInt32         strideFilter,
+  double         result[],
+  SInt32         strideResult,
+  SInt32         lenResult,
+  SInt32         lenFilter);
+
 
 /*
 _______________________________________________________________________________
@@ -1577,11 +1656,12 @@ _______________________________________________________________________________
  */
 EXTERN_API_C( void )
 f3x3(
-    float *signal,
-    SInt32 rowStride,
-    SInt32 colStride,
-    float *filter,
-    float *result );
+  float *  signal,
+  SInt32   rowStride,
+  SInt32   colStride,
+  float *  filter,
+  float *  result);
+
 
 /*
  *  f3x3D()
@@ -1593,11 +1673,12 @@ f3x3(
  */
 EXTERN_API_C( void )
 f3x3D(
-    double *signal,
-    SInt32  rowStride,
-    SInt32  colStride,
-    double *filter,
-    double *result );
+  double *  signal,
+  SInt32    rowStride,
+  SInt32    colStride,
+  double *  filter,
+  double *  result);
+
 
 /*
  *  f5x5()
@@ -1609,11 +1690,12 @@ f3x3D(
  */
 EXTERN_API_C( void )
 f5x5(
-    float *signal,
-    SInt32 rowStride,
-    SInt32 colStride,
-    float *filter,
-    float *result );
+  float *  signal,
+  SInt32   rowStride,
+  SInt32   colStride,
+  float *  filter,
+  float *  result);
+
 
 /*
  *  f5x5D()
@@ -1625,11 +1707,12 @@ f5x5(
  */
 EXTERN_API_C( void )
 f5x5D(
-    double *signal,
-    SInt32  rowStride,
-    SInt32  colStride,
-    double *filter,
-    double *result );
+  double *  signal,
+  SInt32    rowStride,
+  SInt32    colStride,
+  double *  filter,
+  double *  result);
+
 
 /*
  *  imgfir()
@@ -1641,13 +1724,14 @@ f5x5D(
  */
 EXTERN_API_C( void )
 imgfir(
-    float *signal,
-    SInt32 numRow,
-    SInt32 numCol,
-    float *filter,
-    float *result,
-    SInt32 fnumRow,
-    SInt32 fnumCol );
+  float *  signal,
+  SInt32   numRow,
+  SInt32   numCol,
+  float *  filter,
+  float *  result,
+  SInt32   fnumRow,
+  SInt32   fnumCol);
+
 
 /*
  *  imgfirD()
@@ -1659,13 +1743,15 @@ imgfir(
  */
 EXTERN_API_C( void )
 imgfirD(
-    double *signal,
-    SInt32  numRow,
-    SInt32  numCol,
-    double *filter,
-    double *result,
-    SInt32  fnumRow,
-    SInt32  fnumCol );
+  double *  signal,
+  SInt32    numRow,
+  SInt32    numCol,
+  double *  filter,
+  double *  result,
+  SInt32    fnumRow,
+  SInt32    fnumCol);
+
+
 
 /*
 _______________________________________________________________________________
@@ -1693,12 +1779,13 @@ _______________________________________________________________________________
  */
 EXTERN_API_C( void )
 mtrans(
-    float *a,
-    SInt32 aStride,
-    float *c,
-    SInt32 cStride,
-    SInt32 M,
-    SInt32 N );
+  float *  a,
+  SInt32   aStride,
+  float *  c,
+  SInt32   cStride,
+  SInt32   M,
+  SInt32   N);
+
 
 /*
  *  mtransD()
@@ -1710,12 +1797,13 @@ mtrans(
  */
 EXTERN_API_C( void )
 mtransD(
-    double *a,
-    SInt32  aStride,
-    double *c,
-    SInt32  cStride,
-    SInt32  M,
-    SInt32  N );
+  double *  a,
+  SInt32    aStride,
+  double *  c,
+  SInt32    cStride,
+  SInt32    M,
+  SInt32    N);
+
 
 /*
 _______________________________________________________________________________
@@ -1744,15 +1832,16 @@ _______________________________________________________________________________
  */
 EXTERN_API_C( void )
 mmul(
-    float *a,
-    SInt32 aStride,
-    float *b,
-    SInt32 bStride,
-    float *c,
-    SInt32 cStride,
-    SInt32 M,
-    SInt32 N,
-    SInt32 P );
+  float *  a,
+  SInt32   aStride,
+  float *  b,
+  SInt32   bStride,
+  float *  c,
+  SInt32   cStride,
+  SInt32   M,
+  SInt32   N,
+  SInt32   P);
+
 
 /*
  *  mmulD()
@@ -1764,15 +1853,16 @@ mmul(
  */
 EXTERN_API_C( void )
 mmulD(
-    double *a,
-    SInt32  aStride,
-    double *b,
-    SInt32  bStride,
-    double *c,
-    SInt32  cStride,
-    SInt32  M,
-    SInt32  N,
-    SInt32  P );
+  double *  a,
+  SInt32    aStride,
+  double *  b,
+  SInt32    bStride,
+  double *  c,
+  SInt32    cStride,
+  SInt32    M,
+  SInt32    N,
+  SInt32    P);
+
 
 /*
 _______________________________________________________________________________
@@ -1802,17 +1892,18 @@ _______________________________________________________________________________
  */
 EXTERN_API_C( void )
 zmma(
-    DSPSplitComplex *a,
-    SInt32           i,
-    DSPSplitComplex *b,
-    SInt32           j,
-    DSPSplitComplex *c,
-    SInt32           k,
-    DSPSplitComplex *d,
-    SInt32           l,
-    SInt32           M,
-    SInt32           N,
-    SInt32           P );
+  DSPSplitComplex *  a,
+  SInt32             i,
+  DSPSplitComplex *  b,
+  SInt32             j,
+  DSPSplitComplex *  c,
+  SInt32             k,
+  DSPSplitComplex *  d,
+  SInt32             l,
+  SInt32             M,
+  SInt32             N,
+  SInt32             P);
+
 
 /*
  *  zmmaD()
@@ -1824,17 +1915,18 @@ zmma(
  */
 EXTERN_API_C( void )
 zmmaD(
-    DSPDoubleSplitComplex *a,
-    SInt32                 i,
-    DSPDoubleSplitComplex *b,
-    SInt32                 j,
-    DSPDoubleSplitComplex *c,
-    SInt32                 k,
-    DSPDoubleSplitComplex *d,
-    SInt32                 l,
-    SInt32                 M,
-    SInt32                 N,
-    SInt32                 P );
+  DSPDoubleSplitComplex *  a,
+  SInt32                   i,
+  DSPDoubleSplitComplex *  b,
+  SInt32                   j,
+  DSPDoubleSplitComplex *  c,
+  SInt32                   k,
+  DSPDoubleSplitComplex *  d,
+  SInt32                   l,
+  SInt32                   M,
+  SInt32                   N,
+  SInt32                   P);
+
 
 /*
  *  zmms()
@@ -1846,17 +1938,18 @@ zmmaD(
  */
 EXTERN_API_C( void )
 zmms(
-    DSPSplitComplex *a,
-    SInt32           i,
-    DSPSplitComplex *b,
-    SInt32           j,
-    DSPSplitComplex *c,
-    SInt32           k,
-    DSPSplitComplex *d,
-    SInt32           l,
-    SInt32           M,
-    SInt32           N,
-    SInt32           P );
+  DSPSplitComplex *  a,
+  SInt32             i,
+  DSPSplitComplex *  b,
+  SInt32             j,
+  DSPSplitComplex *  c,
+  SInt32             k,
+  DSPSplitComplex *  d,
+  SInt32             l,
+  SInt32             M,
+  SInt32             N,
+  SInt32             P);
+
 
 /*
  *  zmmsD()
@@ -1868,17 +1961,18 @@ zmms(
  */
 EXTERN_API_C( void )
 zmmsD(
-    DSPDoubleSplitComplex *a,
-    SInt32                 i,
-    DSPDoubleSplitComplex *b,
-    SInt32                 j,
-    DSPDoubleSplitComplex *c,
-    SInt32                 k,
-    DSPDoubleSplitComplex *d,
-    SInt32                 l,
-    SInt32                 M,
-    SInt32                 N,
-    SInt32                 P );
+  DSPDoubleSplitComplex *  a,
+  SInt32                   i,
+  DSPDoubleSplitComplex *  b,
+  SInt32                   j,
+  DSPDoubleSplitComplex *  c,
+  SInt32                   k,
+  DSPDoubleSplitComplex *  d,
+  SInt32                   l,
+  SInt32                   M,
+  SInt32                   N,
+  SInt32                   P);
+
 
 /*
  *  zmsm()
@@ -1890,17 +1984,18 @@ zmmsD(
  */
 EXTERN_API_C( void )
 zmsm(
-    DSPSplitComplex *a,
-    SInt32           i,
-    DSPSplitComplex *b,
-    SInt32           j,
-    DSPSplitComplex *c,
-    SInt32           k,
-    DSPSplitComplex *d,
-    SInt32           l,
-    SInt32           M,
-    SInt32           N,
-    SInt32           P );
+  DSPSplitComplex *  a,
+  SInt32             i,
+  DSPSplitComplex *  b,
+  SInt32             j,
+  DSPSplitComplex *  c,
+  SInt32             k,
+  DSPSplitComplex *  d,
+  SInt32             l,
+  SInt32             M,
+  SInt32             N,
+  SInt32             P);
+
 
 /*
  *  zmsmD()
@@ -1912,17 +2007,18 @@ zmsm(
  */
 EXTERN_API_C( void )
 zmsmD(
-    DSPDoubleSplitComplex *a,
-    SInt32                 i,
-    DSPDoubleSplitComplex *b,
-    SInt32                 j,
-    DSPDoubleSplitComplex *c,
-    SInt32                 k,
-    DSPDoubleSplitComplex *d,
-    SInt32                 l,
-    SInt32                 M,
-    SInt32                 N,
-    SInt32                 P );
+  DSPDoubleSplitComplex *  a,
+  SInt32                   i,
+  DSPDoubleSplitComplex *  b,
+  SInt32                   j,
+  DSPDoubleSplitComplex *  c,
+  SInt32                   k,
+  DSPDoubleSplitComplex *  d,
+  SInt32                   l,
+  SInt32                   M,
+  SInt32                   N,
+  SInt32                   P);
+
 
 /*
  *  zmmul()
@@ -1934,15 +2030,16 @@ zmsmD(
  */
 EXTERN_API_C( void )
 zmmul(
-    DSPSplitComplex *a,
-    SInt32           i,
-    DSPSplitComplex *b,
-    SInt32           j,
-    DSPSplitComplex *c,
-    SInt32           k,
-    SInt32           M,
-    SInt32           N,
-    SInt32           P );
+  DSPSplitComplex *  a,
+  SInt32             i,
+  DSPSplitComplex *  b,
+  SInt32             j,
+  DSPSplitComplex *  c,
+  SInt32             k,
+  SInt32             M,
+  SInt32             N,
+  SInt32             P);
+
 
 /*
  *  zmmulD()
@@ -1954,15 +2051,16 @@ zmmul(
  */
 EXTERN_API_C( void )
 zmmulD(
-    DSPDoubleSplitComplex *a,
-    SInt32                 i,
-    DSPDoubleSplitComplex *b,
-    SInt32                 j,
-    DSPDoubleSplitComplex *c,
-    SInt32                 k,
-    SInt32                 M,
-    SInt32                 N,
-    SInt32                 P );
+  DSPDoubleSplitComplex *  a,
+  SInt32                   i,
+  DSPDoubleSplitComplex *  b,
+  SInt32                   j,
+  DSPDoubleSplitComplex *  c,
+  SInt32                   k,
+  SInt32                   M,
+  SInt32                   N,
+  SInt32                   P);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -1992,13 +2090,14 @@ zmmulD(
  */
 EXTERN_API_C( void )
 vadd(
-    const float input1[],
-    SInt32      stride1,
-    const float input2[],
-    SInt32      stride2,
-    float       result[],
-    SInt32      strideResult,
-    UInt32      size );
+  const float   input1[],
+  SInt32        stride1,
+  const float   input2[],
+  SInt32        stride2,
+  float         result[],
+  SInt32        strideResult,
+  UInt32        size);
+
 
 /*
  *  vaddD()
@@ -2010,13 +2109,14 @@ vadd(
  */
 EXTERN_API_C( void )
 vaddD(
-    const double input1[],
-    SInt32       stride1,
-    const double input2[],
-    SInt32       stride2,
-    double       result[],
-    SInt32       strideResult,
-    UInt32       size );
+  const double   input1[],
+  SInt32         stride1,
+  const double   input2[],
+  SInt32         stride2,
+  double         result[],
+  SInt32         strideResult,
+  UInt32         size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2046,13 +2146,14 @@ vaddD(
  */
 EXTERN_API_C( void )
 vsub(
-    const float input1[],
-    SInt32      stride1,
-    const float input2[],
-    SInt32      stride2,
-    float       result[],
-    SInt32      strideResult,
-    UInt32      size );
+  const float   input1[],
+  SInt32        stride1,
+  const float   input2[],
+  SInt32        stride2,
+  float         result[],
+  SInt32        strideResult,
+  UInt32        size);
+
 
 /*
  *  vsubD()
@@ -2064,13 +2165,14 @@ vsub(
  */
 EXTERN_API_C( void )
 vsubD(
-    const double input1[],
-    SInt32       stride1,
-    const double input2[],
-    SInt32       stride2,
-    double       result[],
-    SInt32       strideResult,
-    UInt32       size );
+  const double   input1[],
+  SInt32         stride1,
+  const double   input2[],
+  SInt32         stride2,
+  double         result[],
+  SInt32         strideResult,
+  UInt32         size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2100,13 +2202,14 @@ vsubD(
  */
 EXTERN_API_C( void )
 vmul(
-    const float input1[],
-    SInt32      stride1,
-    const float input2[],
-    SInt32      stride2,
-    float       result[],
-    SInt32      strideResult,
-    UInt32      size );
+  const float   input1[],
+  SInt32        stride1,
+  const float   input2[],
+  SInt32        stride2,
+  float         result[],
+  SInt32        strideResult,
+  UInt32        size);
+
 
 /*
  *  vmulD()
@@ -2118,13 +2221,14 @@ vmul(
  */
 EXTERN_API_C( void )
 vmulD(
-    const double input1[],
-    SInt32       stride1,
-    const double input2[],
-    SInt32       stride2,
-    double       result[],
-    SInt32       strideResult,
-    UInt32       size );
+  const double   input1[],
+  SInt32         stride1,
+  const double   input2[],
+  SInt32         stride2,
+  double         result[],
+  SInt32         strideResult,
+  UInt32         size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2153,12 +2257,13 @@ vmulD(
  */
 EXTERN_API_C( void )
 vsmul(
-    const float  input1[],
-    SInt32       stride1,
-    const float *input2,
-    float        result[],
-    SInt32       strideResult,
-    UInt32       size );
+  const float    input1[],
+  SInt32         stride1,
+  const float *  input2,
+  float          result[],
+  SInt32         strideResult,
+  UInt32         size);
+
 
 /*
  *  vsmulD()
@@ -2170,12 +2275,14 @@ vsmul(
  */
 EXTERN_API_C( void )
 vsmulD(
-    const double  input1[],
-    SInt32        stride1,
-    const double *input2,
-    double        result[],
-    SInt32        strideResult,
-    UInt32        size );
+  const double    input1[],
+  SInt32          stride1,
+  const double *  input2,
+  double          result[],
+  SInt32          strideResult,
+  UInt32          size);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2204,11 +2311,12 @@ vsmulD(
  */
 EXTERN_API_C( void )
 vsq(
-    const float input[],
-    SInt32      strideInput,
-    float       result[],
-    SInt32      strideResult,
-    UInt32      size );
+  const float   input[],
+  SInt32        strideInput,
+  float         result[],
+  SInt32        strideResult,
+  UInt32        size);
+
 
 /*
  *  vsqD()
@@ -2220,11 +2328,13 @@ vsq(
  */
 EXTERN_API_C( void )
 vsqD(
-    const double input[],
-    SInt32       strideInput,
-    double       result[],
-    SInt32       strideResult,
-    UInt32       size );
+  const double   input[],
+  SInt32         strideInput,
+  double         result[],
+  SInt32         strideResult,
+  UInt32         size);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2253,11 +2363,12 @@ vsqD(
  */
 EXTERN_API_C( void )
 vssq(
-    const float input[],
-    SInt32      strideInput,
-    float       result[],
-    SInt32      strideResult,
-    UInt32      size );
+  const float   input[],
+  SInt32        strideInput,
+  float         result[],
+  SInt32        strideResult,
+  UInt32        size);
+
 
 /*
  *  vssqD()
@@ -2269,11 +2380,12 @@ vssq(
  */
 EXTERN_API_C( void )
 vssqD(
-    const double input[],
-    SInt32       strideInput,
-    double       result[],
-    SInt32       strideResult,
-    UInt32       size );
+  const double   input[],
+  SInt32         strideInput,
+  double         result[],
+  SInt32         strideResult,
+  UInt32         size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2302,12 +2414,13 @@ vssqD(
  */
 EXTERN_API_C( void )
 dotpr(
-    const float input1[],
-    SInt32      stride1,
-    const float input2[],
-    SInt32      stride2,
-    float *     result,
-    UInt32      size );
+  const float   input1[],
+  SInt32        stride1,
+  const float   input2[],
+  SInt32        stride2,
+  float *       result,
+  UInt32        size);
+
 
 /*
  *  dotprD()
@@ -2319,12 +2432,13 @@ dotpr(
  */
 EXTERN_API_C( void )
 dotprD(
-    const double input1[],
-    SInt32       stride1,
-    const double input2[],
-    SInt32       stride2,
-    double *     result,
-    UInt32       size );
+  const double   input1[],
+  SInt32         stride1,
+  const double   input2[],
+  SInt32         stride2,
+  double *       result,
+  UInt32         size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2355,15 +2469,16 @@ dotprD(
  */
 EXTERN_API_C( void )
 vam(
-    const float input1[],
-    SInt32      stride1,
-    const float input2[],
-    SInt32      stride2,
-    const float input3[],
-    SInt32      stride3,
-    float       result[],
-    SInt32      strideResult,
-    UInt32      size );
+  const float   input1[],
+  SInt32        stride1,
+  const float   input2[],
+  SInt32        stride2,
+  const float   input3[],
+  SInt32        stride3,
+  float         result[],
+  SInt32        strideResult,
+  UInt32        size);
+
 
 /*
  *  vamD()
@@ -2375,15 +2490,16 @@ vam(
  */
 EXTERN_API_C( void )
 vamD(
-    const double input1[],
-    SInt32       stride1,
-    const double input2[],
-    SInt32       stride2,
-    const double input3[],
-    SInt32       stride3,
-    double       result[],
-    SInt32       strideResult,
-    UInt32       size );
+  const double   input1[],
+  SInt32         stride1,
+  const double   input2[],
+  SInt32         stride2,
+  const double   input3[],
+  SInt32         stride3,
+  double         result[],
+  SInt32         strideResult,
+  UInt32         size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2415,14 +2531,15 @@ vamD(
  */
 EXTERN_API_C( void )
 zconv(
-    DSPSplitComplex *signal,
-    SInt32           signalStride,
-    DSPSplitComplex *filter,
-    SInt32           strideFilter,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    SInt32           lenResult,
-    SInt32           lenFilter );
+  DSPSplitComplex *  signal,
+  SInt32             signalStride,
+  DSPSplitComplex *  filter,
+  SInt32             strideFilter,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  SInt32             lenResult,
+  SInt32             lenFilter);
+
 
 /*
  *  zconvD()
@@ -2434,14 +2551,15 @@ zconv(
  */
 EXTERN_API_C( void )
 zconvD(
-    DSPDoubleSplitComplex *signal,
-    SInt32                 signalStride,
-    DSPDoubleSplitComplex *filter,
-    SInt32                 strideFilter,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    SInt32                 lenResult,
-    SInt32                 lenFilter );
+  DSPDoubleSplitComplex *  signal,
+  SInt32                   signalStride,
+  DSPDoubleSplitComplex *  filter,
+  SInt32                   strideFilter,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  SInt32                   lenResult,
+  SInt32                   lenFilter);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2472,13 +2590,14 @@ zconvD(
  */
 EXTERN_API_C( void )
 zvadd(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    DSPSplitComplex *input2,
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  DSPSplitComplex *  input2,
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             size);
+
 
 /*
  *  zvaddD()
@@ -2490,13 +2609,14 @@ zvadd(
  */
 EXTERN_API_C( void )
 zvaddD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    DSPDoubleSplitComplex *input2,
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  DSPDoubleSplitComplex *  input2,
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2527,13 +2647,14 @@ zvaddD(
  */
 EXTERN_API_C( void )
 zvsub(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    DSPSplitComplex *input2,
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  DSPSplitComplex *  input2,
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             size);
+
 
 /*
  *  zvsubD()
@@ -2545,13 +2666,14 @@ zvsub(
  */
 EXTERN_API_C( void )
 zvsubD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    DSPDoubleSplitComplex *input2,
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  DSPDoubleSplitComplex *  input2,
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2582,14 +2704,15 @@ zvsubD(
  */
 EXTERN_API_C( void )
 zvmul(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    DSPSplitComplex *input2,
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           size,
-    SInt32           conjugate );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  DSPSplitComplex *  input2,
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             size,
+  SInt32             conjugate);
+
 
 /*
  *  zvmulD()
@@ -2601,14 +2724,15 @@ zvmul(
  */
 EXTERN_API_C( void )
 zvmulD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    DSPDoubleSplitComplex *input2,
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 size,
-    SInt32                 conjugate );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  DSPDoubleSplitComplex *  input2,
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   size,
+  SInt32                   conjugate);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2638,12 +2762,13 @@ zvmulD(
  */
 EXTERN_API_C( void )
 zdotpr(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    DSPSplitComplex *input2,
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  DSPSplitComplex *  input2,
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  UInt32             size);
+
 
 /*
  *  zdotprD()
@@ -2655,12 +2780,13 @@ zdotpr(
  */
 EXTERN_API_C( void )
 zdotprD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    DSPDoubleSplitComplex *input2,
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  DSPDoubleSplitComplex *  input2,
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  UInt32                   size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2690,12 +2816,13 @@ zdotprD(
  */
 EXTERN_API_C( void )
 zidotpr(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    DSPSplitComplex *input2,
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  DSPSplitComplex *  input2,
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  UInt32             size);
+
 
 /*
  *  zidotprD()
@@ -2707,12 +2834,14 @@ zidotpr(
  */
 EXTERN_API_C( void )
 zidotprD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    DSPDoubleSplitComplex *input2,
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  DSPDoubleSplitComplex *  input2,
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  UInt32                   size);
+
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2741,12 +2870,13 @@ zidotprD(
  */
 EXTERN_API_C( void )
 zrdotpr(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    const float      input2[],
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  const float        input2[],
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  UInt32             size);
+
 
 /*
  *  zrdotprD()
@@ -2758,12 +2888,13 @@ zrdotpr(
  */
 EXTERN_API_C( void )
 zrdotprD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    const double           input2[],
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  const double             input2[],
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  UInt32                   size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2796,15 +2927,16 @@ zrdotprD(
  */
 EXTERN_API_C( void )
 zvcma(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    DSPSplitComplex *input2,
-    SInt32           stride2,
-    DSPSplitComplex *input3,
-    SInt32           stride3,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  DSPSplitComplex *  input2,
+  SInt32             stride2,
+  DSPSplitComplex *  input3,
+  SInt32             stride3,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             size);
+
 
 /*
  *  zvcmaD()
@@ -2816,15 +2948,16 @@ zvcma(
  */
 EXTERN_API_C( void )
 zvcmaD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    DSPDoubleSplitComplex *input2,
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *input3,
-    SInt32                 stride3,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  DSPDoubleSplitComplex *  input2,
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  input3,
+  SInt32                   stride3,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2855,13 +2988,14 @@ zvcmaD(
  */
 EXTERN_API_C( void )
 zrvadd(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    const float      input2[],
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  const float        input2[],
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             size);
+
 
 /*
  *  zrvaddD()
@@ -2873,13 +3007,14 @@ zrvadd(
  */
 EXTERN_API_C( void )
 zrvaddD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    const double           input2[],
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  const double             input2[],
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2910,13 +3045,14 @@ zrvaddD(
  */
 EXTERN_API_C( void )
 zrvsub(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    const float      input2[],
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  const float        input2[],
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             size);
+
 
 /*
  *  zrvsubD()
@@ -2928,13 +3064,14 @@ zrvsub(
  */
 EXTERN_API_C( void )
 zrvsubD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    const double           input2[],
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  const double             input2[],
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   size);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -2965,13 +3102,14 @@ zrvsubD(
  */
 EXTERN_API_C( void )
 zrvmul(
-    DSPSplitComplex *input1,
-    SInt32           stride1,
-    const float      input2[],
-    SInt32           stride2,
-    DSPSplitComplex *result,
-    SInt32           strideResult,
-    UInt32           size );
+  DSPSplitComplex *  input1,
+  SInt32             stride1,
+  const float        input2[],
+  SInt32             stride2,
+  DSPSplitComplex *  result,
+  SInt32             strideResult,
+  UInt32             size);
+
 
 /*
  *  zrvmulD()
@@ -2983,42 +3121,46 @@ zrvmul(
  */
 EXTERN_API_C( void )
 zrvmulD(
-    DSPDoubleSplitComplex *input1,
-    SInt32                 stride1,
-    const double           input2[],
-    SInt32                 stride2,
-    DSPDoubleSplitComplex *result,
-    SInt32                 strideResult,
-    UInt32                 size );
+  DSPDoubleSplitComplex *  input1,
+  SInt32                   stride1,
+  const double             input2[],
+  SInt32                   stride2,
+  DSPDoubleSplitComplex *  result,
+  SInt32                   strideResult,
+  UInt32                   size);
+
+
 
 #ifndef USE_NON_APPLE_STANDARD_DATATYPES
 #define USE_NON_APPLE_STANDARD_DATATYPES 1
-#endif /* !defined(USE_NON_APPLE_STANDARD_DATATYPES) */
+#endif  /* !defined(USE_NON_APPLE_STANDARD_DATATYPES) */
 
 #if USE_NON_APPLE_STANDARD_DATATYPES
 enum {
-	FFT_FORWARD = kFFTDirection_Forward,
-	FFT_INVERSE = kFFTDirection_Inverse
+  FFT_FORWARD                   = kFFTDirection_Forward,
+  FFT_INVERSE                   = kFFTDirection_Inverse
 };
 
 enum {
-	FFT_RADIX2 = kFFTRadix2,
-	FFT_RADIX3 = kFFTRadix3,
-	FFT_RADIX5 = kFFTRadix5
+  FFT_RADIX2                    = kFFTRadix2,
+  FFT_RADIX3                    = kFFTRadix3,
+  FFT_RADIX5                    = kFFTRadix5
 };
 
-typedef DSPComplex            COMPLEX;
-typedef DSPSplitComplex       COMPLEX_SPLIT;
-typedef DSPDoubleComplex      DOUBLE_COMPLEX;
-typedef DSPDoubleSplitComplex DOUBLE_COMPLEX_SPLIT;
-#endif /* USE_NON_APPLE_STANDARD_DATATYPES */
+
+typedef DSPComplex                      COMPLEX;
+typedef DSPSplitComplex                 COMPLEX_SPLIT;
+typedef DSPDoubleComplex                DOUBLE_COMPLEX;
+typedef DSPDoubleSplitComplex           DOUBLE_COMPLEX_SPLIT;
+#endif  /* USE_NON_APPLE_STANDARD_DATATYPES */
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -3032,3 +3174,4 @@ typedef DSPDoubleSplitComplex DOUBLE_COMPLEX_SPLIT;
 #endif
 
 #endif /* __VDSP__ */
+

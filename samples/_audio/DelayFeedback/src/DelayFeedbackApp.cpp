@@ -6,13 +6,13 @@
  */
 
 #include "cinder/app/App.h"
-#include "cinder/Log.h"
-#include "cinder/Perlin.h"
-#include "cinder/Rand.h"
-#include "cinder/Timeline.h"
-#include "cinder/TriMesh.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/Rand.h"
+#include "cinder/Perlin.h"
 #include "cinder/gl/GlslProg.h"
+#include "cinder/Timeline.h"
+#include "cinder/Log.h"
+#include "cinder/TriMesh.h"
 #include "cinder/gl/gl.h"
 
 #include "cinder/audio/Context.h"
@@ -22,44 +22,44 @@
 
 #include "Resources.h"
 
-const float  MAX_VOLUME = 0.6f;
-const size_t MAX_SPLASHES = 200;
-const float  MAX_RADIUS = 300;
-const float  MAX_PITCH_MIDI = 80;
-const float  MIN_PITCH_MIDI = 40;
+const float MAX_VOLUME		= 0.6f;
+const size_t MAX_SPLASHES	= 200;
+const float MAX_RADIUS		= 300;
+const float MAX_PITCH_MIDI	= 80;
+const float	MIN_PITCH_MIDI	= 40;
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 struct Splash {
-	vec2        mCenter;
-	vec3        mColorHsv;
-	Anim<float> mRadius, mAlpha;
+	vec2		mCenter;
+	vec3		mColorHsv;
+	Anim<float>	mRadius, mAlpha;
 };
 
 class DelayFeedback : public App {
-  public:
+public:
 	void setup() override;
 	void mouseDrag( MouseEvent event ) override;
 	void mouseUp( MouseEvent event ) override;
-	void keyDown( KeyEvent event ) override;
+	void keyDown( KeyEvent event )	override;
 	void update() override;
 	void draw() override;
 
-	void setVariableDelayMod();
-	void addSplash( const vec2 &pos );
-	float quantizePitch( const vec2 &pos );
-	void loadBatch();
+	void	setVariableDelayMod();
+	void	addSplash( const vec2 &pos );
+	float	quantizePitch( const vec2 &pos );
+	void	loadBatch();
 
-	audio::GenOscNodeRef mOsc;
-	audio::DelayNodeRef  mDelay;
-	audio::GainNodeRef   mGain;
+	audio::GenOscNodeRef	mOsc;
+	audio::DelayNodeRef		mDelay;
+	audio::GainNodeRef		mGain;
 
-	std::list<Splash> mSplashes;
-	Perlin            mPerlin;
+	std::list<Splash>		mSplashes;
+	Perlin					mPerlin;
 
-	gl::BatchRef mBatch;
+	gl::BatchRef			mBatch;
 };
 
 void DelayFeedback::setup()
@@ -69,7 +69,7 @@ void DelayFeedback::setup()
 
 	// The basic audio::Node's used here are an oscillator with a triangle waveform, a gain, and a delay.
 	// The complexity in the sound comes from how they are connected and controlled.
-
+	
 	auto ctx = audio::master();
 	mOsc = ctx->makeNode( new audio::GenOscNode );
 	mGain = ctx->makeNode( new audio::GainNode( 0 ) );
@@ -128,7 +128,7 @@ void DelayFeedback::addSplash( const vec2 &pos )
 	timeline().apply( &splash.mRadius, endRadius, 7, EaseOutExpo() );
 	timeline().apply( &splash.mAlpha, 0.0f, 7 );
 
-	float h = math<float>::min( 1, mPerlin.fBm( normalize( pos ) ) * 7 );
+	float h = math<float>::min( 1,  mPerlin.fBm( normalize( pos ) ) * 7 );
 	splash.mColorHsv = vec3( fabsf( h ), 1, 1 );
 }
 
@@ -136,12 +136,12 @@ void DelayFeedback::addSplash( const vec2 &pos )
 float DelayFeedback::quantizePitch( const vec2 &pos )
 {
 	const size_t scaleLength = 7;
-	float        scale[scaleLength] = { 0, 2, 4, 6, 7, 9, 10 };
+	float scale[scaleLength] = { 0, 2, 4, 6, 7, 9, 10 };
 
 	int pitchMidi = lroundf( lmap( pos.x, 0.0f, (float)getWindowWidth(), MIN_PITCH_MIDI, MAX_PITCH_MIDI ) );
 
 	bool quantized = false;
-	while( !quantized ) {
+	while( ! quantized ) {
 		int note = pitchMidi % 12;
 		for( size_t i = 0; i < scaleLength; i++ ) {
 			if( note == scale[i] ) {
@@ -149,7 +149,7 @@ float DelayFeedback::quantizePitch( const vec2 &pos )
 				break;
 			}
 		}
-		if( !quantized )
+		if( ! quantized )
 			pitchMidi--;
 	}
 
@@ -177,7 +177,7 @@ void DelayFeedback::mouseUp( MouseEvent event )
 void DelayFeedback::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'f' )
-		setFullScreen( !isFullScreen() );
+		setFullScreen( ! isFullScreen() );
 }
 
 void DelayFeedback::update()
@@ -194,7 +194,7 @@ void DelayFeedback::draw()
 {
 	gl::clear();
 
-	if( !mBatch )
+	if( ! mBatch )
 		return;
 
 	gl::ScopedGlslProg glslScope( mBatch->getGlslProg() );
@@ -224,7 +224,7 @@ void DelayFeedback::loadBatch()
 		return;
 	}
 
-	Rectf boundingBox( -MAX_RADIUS, -MAX_RADIUS, MAX_RADIUS, MAX_RADIUS );
+	Rectf boundingBox( - MAX_RADIUS, - MAX_RADIUS, MAX_RADIUS, MAX_RADIUS );
 
 	TriMesh mesh( TriMesh::Format().positions( 2 ).texCoords( 2 ) );
 

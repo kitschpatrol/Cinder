@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "VoronoiGpu.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/ip/Hdr.h"
+#include "cinder/gl/gl.h"
+#include "VoronoiGpu.h"
 
 #include <vector>
 
@@ -11,18 +11,18 @@ using namespace ci::app;
 using namespace std;
 
 class VoronoiGpuApp : public App {
-  public:
+ public:
 	void setup();
 	void calculateVoronoiTexture();
-
+	
 	void mouseDown( MouseEvent event );
 	void keyDown( KeyEvent event );
-
+	
 	void draw();
 
-	vector<ivec2>    mPoints;
-	gl::Texture2dRef mTexture;
-	bool             mShowDistance;
+	vector<ivec2>		mPoints;
+	gl::Texture2dRef	mTexture;
+	bool				mShowDistance;
 };
 
 void VoronoiGpuApp::setup()
@@ -30,7 +30,7 @@ void VoronoiGpuApp::setup()
 	mShowDistance = false;
 	// register window changed display callback
 	getWindow()->getSignalDisplayChange().connect( [this] { calculateVoronoiTexture(); } );
-
+	
 	mPoints.push_back( toPixels( ivec2( 100, 100 ) ) );
 	mPoints.push_back( toPixels( ivec2( 200, 120 ) ) );
 	mPoints.push_back( toPixels( ivec2( 130, 140 ) ) );
@@ -62,7 +62,7 @@ void VoronoiGpuApp::mouseDown( MouseEvent event )
 void VoronoiGpuApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'd' ) {
-		mShowDistance = !mShowDistance;
+		mShowDistance = ! mShowDistance;
 		calculateVoronoiTexture();
 	}
 	else if( event.getChar() == 'x' ) {
@@ -75,17 +75,17 @@ void VoronoiGpuApp::draw()
 {
 	gl::clear();
 	gl::setMatricesWindow( getWindowSize() );
-
+	
 	gl::color( Color( 1, 1, 1 ) );
 	if( mTexture ) {
 		gl::draw( mTexture, toPoints( mTexture->getBounds() ) );
 	}
-
+	
 	// draw the voronoi sites in yellow
-	gl::color( Color( 1.0f, 1.0f, 0.0f ) );
+	gl::color( Color( 1.0f, 1.0f, 0.0f ) );	
 	for( vector<ivec2>::const_iterator ptIt = mPoints.begin(); ptIt != mPoints.end(); ++ptIt )
 		gl::drawSolidCircle( toPoints( vec2( *ptIt ) ), 2.0f );
-
+	
 	gl::enableAlphaBlending();
 	gl::drawStringRight( "Click to add a point", vec2( getWindowWidth() - toPixels( 10 ), getWindowHeight() - toPixels( 20 ) ), Color( 1, 0.3, 0 ), Font( "Arial", toPixels( 12 ) ) );
 	gl::disableAlphaBlending();

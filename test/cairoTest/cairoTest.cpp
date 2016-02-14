@@ -8,9 +8,9 @@ using boost::shared_ptr;
 
 #include "Resources.h"
 
-#include "flint/Fill.h"
 #include "flint/app/App.h"
 #include "flint/cairo/Cairo.h"
+#include "flint/Fill.h"	
 
 #define TEST_SVG
 #define TEST_PDF
@@ -19,18 +19,17 @@ using boost::shared_ptr;
 using namespace fli;
 
 struct TestBase {
-	virtual void run( fli::cairo::Context &ctx ) = 0;
+ virtual void run( fli::cairo::Context &ctx ) = 0;
 };
 
 // Arc
 struct TestArc : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		double xc = 128.0;
 		double yc = 128.0;
 		double radius = 100.0;
-		double angle1 = 45.0 * ( M_PI / 180.0 ); /* angles are specified */
-		double angle2 = 180.0 * ( M_PI / 180.0 ); /* in radians           */
+		double angle1 = 45.0  * ( M_PI / 180.0 );  /* angles are specified */
+		double angle2 = 180.0 * ( M_PI / 180.0 );  /* in radians           */
 
 		ctx.setLineWidth( 10.0 );
 		ctx.arc( xc, yc, radius, angle1, angle2 );
@@ -40,11 +39,11 @@ struct TestArc : public TestBase {
 		ctx.setSourceRgba( 1, 0.2, 0.2, 0.6 );
 		ctx.setLineWidth( 6.0 );
 
-		ctx.arc( xc, yc, 10.0, 0, 2 * M_PI );
+		ctx.arc( xc, yc, 10.0, 0, 2*M_PI );
 		ctx.fill();
 
 		ctx.arc( xc, yc, radius, angle1, angle1 );
-		ctx.lineTo( xc, yc );
+		ctx.lineTo( xc, yc);
 		ctx.arc( xc, yc, radius, angle2, angle2 );
 		ctx.lineTo( xc, yc );
 		ctx.stroke();
@@ -53,13 +52,12 @@ struct TestArc : public TestBase {
 
 // Arc Negative
 struct TestArcNegative : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		double xc = 128.0;
 		double yc = 128.0;
 		double radius = 100.0;
-		double angle1 = 45.0 * ( M_PI / 180.0 ); /* angles are specified */
-		double angle2 = 180.0 * ( M_PI / 180.0 ); /* in radians           */
+		double angle1 = 45.0  * ( M_PI / 180.0 );  /* angles are specified */
+		double angle2 = 180.0 * ( M_PI / 180.0 );  /* in radians           */
 
 		ctx.setSourceRgb( 0.0, 0.0, 0.0 );
 		ctx.setLineWidth( 10.0 );
@@ -70,11 +68,11 @@ struct TestArcNegative : public TestBase {
 		ctx.setSourceRgba( 1, 0.2, 0.2, 0.6 );
 		ctx.setLineWidth( 6.0 );
 
-		ctx.arc( xc, yc, 10.0, 0, 2 * M_PI );
+		ctx.arc( xc, yc, 10.0, 0, 2*M_PI );
 		ctx.fill();
 
 		ctx.arc( xc, yc, radius, angle1, angle1 );
-		ctx.lineTo( xc, yc );
+		ctx.lineTo( xc, yc);
 		ctx.arc( xc, yc, radius, angle2, angle2 );
 		ctx.lineTo( xc, yc );
 		ctx.stroke();
@@ -83,13 +81,12 @@ struct TestArcNegative : public TestBase {
 
 // clip
 struct TestClip : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		ctx.setSourceRgb( 0, 0, 0 );
 		ctx.arc( 128.0, 128.0, 76.8, 0, 2 * M_PI );
 		ctx.clip();
 
-		ctx.newPath(); // current path is not consumed by ctx.clip()
+		ctx.newPath();  // current path is not consumed by ctx.clip()
 		ctx.rectangle( 0, 0, 256, 256 );
 		ctx.fill();
 		ctx.setSourceRgb( 0, 1, 0 );
@@ -104,16 +101,15 @@ struct TestClip : public TestBase {
 
 // clip image
 struct TestClipImage : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		int w, h;
 
 		ctx.arc( 128.0, 128.0, 76.8, 0, 2 * M_PI );
 		ctx.clip();
 		ctx.newPath(); // path not consumed by clip()
 
-		//		fli::shared_ptr<fli::cairo::SurfaceImage> image( fli::cairo::SurfaceImage::createFromPng( "/Users/andrewfb/Code/dt/libdt_2.0/test/fullCairoTest/data/romedalen.png" ) );
-		Surface                                   beyonceSurface( loadImage( app::App::loadResource( "romedalen.png", RES_ROMEDALEN_PNG, "PNG" ) ), SurfaceConstraintsCairo() );
+//		fli::shared_ptr<fli::cairo::SurfaceImage> image( fli::cairo::SurfaceImage::createFromPng( "/Users/andrewfb/Code/dt/libdt_2.0/test/fullCairoTest/data/romedalen.png" ) );
+		Surface beyonceSurface( loadImage( app::App::loadResource( "romedalen.png", RES_ROMEDALEN_PNG, "PNG" ) ), SurfaceConstraintsCairo() );
 		fli::shared_ptr<fli::cairo::SurfaceImage> image( new cairo::SurfaceImage( beyonceSurface ) );
 		w = image->getWidth();
 		h = image->getHeight();
@@ -127,26 +123,25 @@ struct TestClipImage : public TestBase {
 
 // curve rectangle
 struct TestCurveRectangle : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		double x0 = 25.6, y0 = 25.6, rect_width = 204.8, rect_height = 204.8, radius = 102.4;
-
-		double x1, y1;
+		
+		double x1,y1;
 		x1 = x0 + rect_width;
 		y1 = y0 + rect_height;
-		if( ( !rect_width ) || ( !rect_height ) )
+		if( ( ! rect_width ) || ( ! rect_height ) )
 			return;
-
+		
 		ctx.moveTo( x0, y0 + radius );
-		ctx.curveTo( x0, y0, x0, y0, x0 + radius, y0 );
-		ctx.lineTo( x1 - radius, y0 );
-		ctx.curveTo( x1, y0, x1, y0, x1, y0 + radius );
-		ctx.lineTo( x1, y1 - radius );
-		ctx.curveTo( x1, y1, x1, y1, x1 - radius, y1 );
-		ctx.lineTo( x0 + radius, y1 );
-		ctx.curveTo( x0, y1, x0, y1, x0, y1 - radius );
-
-		ctx.closePath();
+        ctx.curveTo( x0 , y0, x0 , y0, x0 + radius, y0 );
+        ctx.lineTo( x1 - radius, y0 );
+        ctx.curveTo( x1, y0, x1, y0, x1, y0 + radius );
+        ctx.lineTo( x1 , y1 - radius );
+        ctx.curveTo( x1, y1, x1, y1, x1 - radius, y1 );
+        ctx.lineTo( x0 + radius, y1 );
+        ctx.curveTo( x0, y1, x0, y1, x0, y1- radius );
+        
+        ctx.closePath();
 
 		ctx.setSourceRgb( 0.5, 0.5, 1 );
 		ctx.fillPreserve();
@@ -158,10 +153,9 @@ struct TestCurveRectangle : public TestBase {
 
 // curve to
 struct TestCurveTo : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
-		double x = 25.6, y = 128.0;
-		double x1 = 102.4, y1 = 230.4, x2 = 153.6, y2 = 25.6, x3 = 230.4, y3 = 128.0;
+	virtual void run( fli::cairo::Context &ctx ) {
+		double x=25.6, y=128.0;
+		double x1=102.4, y1=230.4, x2=153.6, y2=25.6, x3=230.4, y3=128.0;
 
 		ctx.moveTo( x, y );
 		ctx.curveTo( x1, y1, x2, y2, x3, y3 );
@@ -181,10 +175,9 @@ struct TestCurveTo : public TestBase {
 
 // dash
 struct TestDash : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
-		double dashes[] = { 50.0, /* ink */ 10.0, /* skip */ 10.0, /* ink */ 10.0 /* skip*/ };
-		int    ndash = sizeof( dashes ) / sizeof( dashes[0] );
+	virtual void run( fli::cairo::Context &ctx ) {
+		double dashes[] = {50.0,  /* ink */ 10.0,  /* skip */ 10.0,  /* ink */ 10.0   /* skip*/ };
+		int ndash  = sizeof( dashes ) / sizeof( dashes[0] );
 		double offset = -50.0;
 
 		ctx.setDash( dashes, ndash, offset );
@@ -201,8 +194,7 @@ struct TestDash : public TestBase {
 
 // fill and stroke
 struct TestFillAndStroke : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		ctx.moveTo( 128.0, 25.6 );
 		ctx.lineTo( 230.4, 230.4 );
 		ctx.relLineTo( -102.4, 0.0 );
@@ -225,8 +217,7 @@ struct TestFillAndStroke : public TestBase {
 
 // fill style
 struct TestFillStyle : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		ctx.setLineWidth( 6 );
 
 		ctx.rectangle( 12, 12, 232, 70 );
@@ -249,22 +240,21 @@ struct TestFillStyle : public TestBase {
 		ctx.arcNegative( 192, 64, 40, 0, -2 * M_PI );
 
 		ctx.setFillRule( fli::cairo::FILL_RULE_WINDING );
-		ctx.setSourceRgb( 0, 0, 0.9 );
+		ctx.setSourceRgb( 0, 0, 0.9);
 		ctx.fillPreserve();
-		ctx.setSourceRgb( 0, 0, 0 );
+		ctx.setSourceRgb( 0, 0, 0);
 		ctx.stroke();
 	}
 };
 
 // gradient
 struct TestGradient : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		shared_ptr<fli::cairo::Pattern> pat;
 
 		pat = shared_ptr<fli::cairo::Pattern>( fli::cairo::Pattern::createLinear( 0.0, 0.0, 0.0, 256.0 ) );
 		pat->addColorStopRgba( 1, 0, 0, 0, 1 );
-		pat->addColorStopRgba( 0, 1, 1, 1, 1 );
+		pat->addColorStopRgba( 0, 1, 1, 1, 1);
 		ctx.rectangle( 0, 0, 256, 256 );
 		ctx.setSource( pat.get() );
 		ctx.fill();
@@ -280,10 +270,10 @@ struct TestGradient : public TestBase {
 
 // image
 struct TestImage : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
-		Surface                                   beyonceSurface( loadImage( app::App::loadResource( "Beyonce.jpg", RES_BEYONCE_JPG, "JPG" ) ), SurfaceConstraintsCairo() );
+	virtual void run( fli::cairo::Context &ctx ) {
+		Surface beyonceSurface( loadImage( app::App::loadResource( "Beyonce.jpg", RES_BEYONCE_JPG, "JPG" ) ), SurfaceConstraintsCairo() );
 		fli::shared_ptr<fli::cairo::SurfaceImage> image( new cairo::SurfaceImage( beyonceSurface ) );
+
 
 		ctx.translate( 128.0, 128.0 );
 		ctx.rotate( 45 * M_PI / 180 );
@@ -297,11 +287,10 @@ struct TestImage : public TestBase {
 
 // image pattern
 struct TestImagePattern : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
-		Surface                                   beyonceSurface( loadImage( app::App::loadResource( "Beyonce.jpg", RES_BEYONCE_JPG, "JPG" ) ), SurfaceConstraintsCairo() );
+	virtual void run( fli::cairo::Context &ctx ) {
+		Surface beyonceSurface( loadImage( app::App::loadResource( "Beyonce.jpg", RES_BEYONCE_JPG, "JPG" ) ), SurfaceConstraintsCairo() );
 		fli::shared_ptr<fli::cairo::SurfaceImage> image( new cairo::SurfaceImage( beyonceSurface ) );
-		fli::shared_ptr<fli::cairo::Pattern>      pattern( fli::cairo::Pattern::createForSurface( image.get() ) );
+		fli::shared_ptr<fli::cairo::Pattern> pattern( fli::cairo::Pattern::createForSurface( image.get() ) );		
 		pattern->setExtend( fli::cairo::EXTEND_REPEAT );
 
 		ctx.translate( 128.0, 128.0 );
@@ -312,7 +301,7 @@ struct TestImagePattern : public TestBase {
 		fli::cairo::Matrix mtx;
 		mtx.initScale( image->getWidth() / 256.0 * 5.0, image->getHeight() / 256.0 * 5.0 );
 		pattern->setMatrix( &mtx );
-
+		
 		ctx.setSource( pattern.get() );
 		ctx.rectangle( 0, 0, 256.0, 256.0 );
 		ctx.fill();
@@ -321,8 +310,7 @@ struct TestImagePattern : public TestBase {
 
 // multi segment caps
 struct TestMultiSegmentCaps : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		ctx.moveTo( 50.0, 75.0 );
 		ctx.lineTo( 200.0, 75.0 );
 
@@ -340,8 +328,7 @@ struct TestMultiSegmentCaps : public TestBase {
 
 // set line cap
 struct TestSetLineCap : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		ctx.setLineWidth( 30.0 );
 		ctx.setLineCap( fli::cairo::LINE_CAP_BUTT ); /* default */
 		ctx.moveTo( 64.0, 50.0 );
@@ -371,8 +358,7 @@ struct TestSetLineCap : public TestBase {
 
 // set line join
 struct TestSetLineJoin : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		ctx.setLineWidth( 40.96 );
 		ctx.moveTo( 76.8, 84.48 );
 		ctx.relLineTo( 51.2, -51.2 );
@@ -396,8 +382,7 @@ struct TestSetLineJoin : public TestBase {
 
 // text
 struct TestText : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		ctx.selectFontFace( "Batang", fli::cairo::FONT_SLANT_NORMAL, fli::cairo::FONT_WEIGHT_BOLD );
 		ctx.setFontSize( 90.0 );
 
@@ -406,9 +391,9 @@ struct TestText : public TestBase {
 
 		ctx.moveTo( 70.0, 165.0 );
 
-		// This code crashes PDF on the Mac
-		//	fli::cairo::FontFace *otherFont = new fli::cairo::FontFace( "Baskerville" );
-		//		cairo_set_font_face( ctx.getCairo(), cf );
+// This code crashes PDF on the Mac
+//	fli::cairo::FontFace *otherFont = new fli::cairo::FontFace( "Baskerville" );
+//		cairo_set_font_face( ctx.getCairo(), cf );
 
 		ctx.textPath( "World" );
 		ctx.setSourceRgb( 0.5, 0.5, 1 );
@@ -428,10 +413,9 @@ struct TestText : public TestBase {
 
 // text align center
 struct TestTextAlignCenter : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		const std::string text = "cairo";
-		double            x, y;
+		double x,y;
 
 		ctx.selectFontFace( "Sans", fli::cairo::FONT_SLANT_NORMAL, fli::cairo::FONT_WEIGHT_NORMAL );
 
@@ -458,10 +442,9 @@ struct TestTextAlignCenter : public TestBase {
 
 // text extents
 struct TestTextExtents : public TestBase {
-	virtual void run( fli::cairo::Context &ctx )
-	{
+	virtual void run( fli::cairo::Context &ctx ) {
 		const std::string text = "cairo";
-		double            x, y;
+		double x,y;
 
 		ctx.selectFontFace( "Sans", fli::cairo::FONT_SLANT_NORMAL, fli::cairo::FONT_WEIGHT_NORMAL );
 
@@ -486,10 +469,10 @@ struct TestTextExtents : public TestBase {
 	}
 };
 
-int main( int argc, char **argv )
+int main( int argc, char **argv ) 
 {
-	map<string, TestBase *> tests;
-
+	map<string,TestBase*> tests;
+	
 	tests["arc"] = new TestArc();
 	tests["arc_negative"] = new TestArcNegative();
 	tests["clip"] = new TestClip();
@@ -512,7 +495,7 @@ int main( int argc, char **argv )
 	{
 		std::cout << "-= Testing PNG =-" << std::endl;
 		fli::cairo::SurfaceImage surface( 512, 512 );
-		for( map<string, TestBase *>::const_iterator it = tests.begin(); it != tests.end(); ++it ) {
+		for( map<string,TestBase*>::const_iterator it = tests.begin(); it != tests.end(); ++it ) {
 			fli::cairo::Context ctx( &surface );
 			std::cout << "Running test: " << it->first << std::endl;
 			fli::fill( &surface.getSurface(), fli::Color8u( 255, 255, 255 ) );
@@ -526,9 +509,9 @@ int main( int argc, char **argv )
 	{
 		std::cout << "-= Testing PDF =-" << std::endl;
 		fli::cairo::SurfacePDF surface( "tests.pdf", 512, 512 );
-		fli::cairo::Context    ctx( &surface );
+		fli::cairo::Context ctx( &surface );
 		ctx.save();
-		for( map<string, TestBase *>::const_iterator it = tests.begin(); it != tests.end(); ++it ) {
+		for( map<string,TestBase*>::const_iterator it = tests.begin(); it != tests.end(); ++it ) {
 			std::cout << "Running test: " << it->first << std::endl;
 			it->second->run( ctx );
 			ctx.showPage();
@@ -541,9 +524,9 @@ int main( int argc, char **argv )
 #if defined( TEST_SVG )
 	{
 		std::cout << "-= Testing SVG =-" << std::endl;
-		for( map<string, TestBase *>::const_iterator it = tests.begin(); it != tests.end(); ++it ) {
+		for( map<string,TestBase*>::const_iterator it = tests.begin(); it != tests.end(); ++it ) {
 			fli::cairo::SurfaceSVG surface( ( it->first + ".svg" ).c_str(), 512, 512 );
-			fli::cairo::Context    ctx( &surface );
+			fli::cairo::Context ctx( &surface );
 			std::cout << "Running test: " << it->first << std::endl;
 			it->second->run( ctx );
 			ctx.showPage();

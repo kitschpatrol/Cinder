@@ -23,18 +23,18 @@
 
 #pragma once
 
-#include "cinder/Quaternion.h"
 #include "cinder/Vector.h"
+#include "cinder/Quaternion.h"
 #include "cinder/app/cocoa/AppCocoaTouch.h"
 
 #include "MotionManager.h"
 
 #if defined( __OBJC__ )
-@class CMMotionManager;
-@class NSOperationQueue;
+	@class CMMotionManager;
+	@class NSOperationQueue;
 #else
-class CMMotionManager;
-class NSOperationQueue;
+	class CMMotionManager;
+	class NSOperationQueue;
 #endif
 
 namespace cinder {
@@ -42,34 +42,36 @@ namespace cinder {
 class MotionImplCoreMotion {
   public:
 	MotionImplCoreMotion();
-	~MotionImplCoreMotion();
+    ~MotionImplCoreMotion();
 
-	bool isMotionUpdatesActive();
+    bool isMotionUpdatesActive();
 	bool isMotionDataAvailable();
 	bool isGyroAvailable();
 	bool isAccelAvailable();
 	bool isNorthReliable();
-	void startMotionUpdates();
-	void stopMotionUpdates();
+    void startMotionUpdates();
+    void stopMotionUpdates();
 	void setSensorMode( MotionManager::SensorMode mode );
-	MotionManager::SensorMode getSensorMode() { return mSensorMode; }
+	MotionManager::SensorMode	getSensorMode() { return mSensorMode; }
+	
 	void setUpdateFrequency( float updateFrequency );
 	void setShowsCalibrationView( bool shouldShow );
 
-	ci::vec3 getGravityDirection( app::InterfaceOrientation orientation );
-	ci::quat getRotation( app::InterfaceOrientation orientation );
-	ci::vec3 getRotationRate( app::InterfaceOrientation orientation );
-	ci::vec3 getAcceleration( app::InterfaceOrientation orientation );
+	ci::vec3	getGravityDirection( app::InterfaceOrientation orientation );
+    ci::quat	getRotation( app::InterfaceOrientation orientation );
+	ci::vec3	getRotationRate( app::InterfaceOrientation orientation );
+	ci::vec3	getAcceleration( app::InterfaceOrientation orientation );
 
-	float getAccelFilter() const { return mAccelFilter; }
-	void setAccelFilter( float filtering ) { mAccelFilter = filtering; }
+	float		getAccelFilter() const { return mAccelFilter; }
+	void		setAccelFilter( float filtering ) { mAccelFilter = filtering; }
+
   private:
-	CMMotionManager *         mMotionManager;
-	MotionManager::SensorMode mSensorMode;
+	CMMotionManager				*mMotionManager;
+	MotionManager::SensorMode	mSensorMode;
 
-	ci::vec3 mLastAccel;
-	float    mAccelFilter;
-	bool     mLastAccelValid;
+	ci::vec3					mLastAccel;
+	float						mAccelFilter;
+	bool						mLastAccelValid;
 };
 
 } // namespace cinder

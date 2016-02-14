@@ -23,22 +23,21 @@
 
 #include "cinder/audio/OutputNode.h"
 #include "cinder/audio/Context.h"
-#include "cinder/audio/Exception.h"
 #include "cinder/audio/Utilities.h"
+#include "cinder/audio/Exception.h"
 
 #include <string>
 
 using namespace std;
 
-namespace cinder {
-namespace audio {
+namespace cinder { namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - OutputNode
 // ----------------------------------------------------------------------------------------------------
 
 OutputNode::OutputNode( const Format &format )
-    : Node( format ), mClipDetectionEnabled( true ), mClipThreshold( 2 ), mLastClip( 0 )
+	: Node( format ), mClipDetectionEnabled( true ), mClipThreshold( 2 ), mLastClip( 0 )
 {
 	if( boost::indeterminate( format.getAutoEnable() ) )
 		setAutoEnabled( false );
@@ -73,7 +72,7 @@ bool OutputNode::checkNotClipping()
 			return true;
 		}
 	}
-
+	
 	return false;
 }
 
@@ -82,7 +81,7 @@ bool OutputNode::checkNotClipping()
 // ----------------------------------------------------------------------------------------------------
 
 OutputDeviceNode::OutputDeviceNode( const DeviceRef &device, const Format &format )
-    : OutputNode( format ), mDevice( device )
+	: OutputNode( format ), mDevice( device )
 {
 	CI_ASSERT( mDevice );
 
@@ -117,5 +116,5 @@ void OutputDeviceNode::deviceParamsDidChange()
 
 	getContext()->setEnabled( mWasEnabledBeforeParamsChange );
 }
-}
-} // namespace cinder::audio
+
+} } // namespace cinder::audio

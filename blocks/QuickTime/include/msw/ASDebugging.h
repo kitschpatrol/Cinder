@@ -36,6 +36,9 @@
 #include <AppleScript.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -49,11 +52,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /**************************************************************************
@@ -65,26 +68,26 @@ extern "C" {
     a current binding doesn't already exist. 
 */
 enum {
-	kOSAModeDontDefine = 0x0001
+  kOSAModeDontDefine            = 0x0001
 };
 
 /**************************************************************************
     Component Selectors
 **************************************************************************/
 enum {
-	kASSelectSetPropertyObsolete = 0x1101,
-	kASSelectGetPropertyObsolete = 0x1102,
-	kASSelectSetHandlerObsolete = 0x1103,
-	kASSelectGetHandlerObsolete = 0x1104,
-	kASSelectGetAppTerminologyObsolete = 0x1105,
-	kASSelectSetProperty = 0x1106,
-	kASSelectGetProperty = 0x1107,
-	kASSelectSetHandler = 0x1108,
-	kASSelectGetHandler = 0x1109,
-	kASSelectGetAppTerminology = 0x110A,
-	kASSelectGetSysTerminology = 0x110B,
-	kASSelectGetPropertyNames = 0x110C,
-	kASSelectGetHandlerNames = 0x110D
+  kASSelectSetPropertyObsolete  = 0x1101,
+  kASSelectGetPropertyObsolete  = 0x1102,
+  kASSelectSetHandlerObsolete   = 0x1103,
+  kASSelectGetHandlerObsolete   = 0x1104,
+  kASSelectGetAppTerminologyObsolete = 0x1105,
+  kASSelectSetProperty          = 0x1106,
+  kASSelectGetProperty          = 0x1107,
+  kASSelectSetHandler           = 0x1108,
+  kASSelectGetHandler           = 0x1109,
+  kASSelectGetAppTerminology    = 0x110A,
+  kASSelectGetSysTerminology    = 0x110B,
+  kASSelectGetPropertyNames     = 0x110C,
+  kASSelectGetHandlerNames      = 0x110D
 };
 
 /**************************************************************************
@@ -100,11 +103,12 @@ enum {
  */
 EXTERN_API( OSAError )
 OSASetProperty(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    OSAID             contextID,
-    const AEDesc *    variableName,
-    OSAID             scriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x1106, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  OSAID               contextID,
+  const AEDesc *      variableName,
+  OSAID               scriptValueID)                          FIVEWORDINLINE(0x2F3C, 0x0010, 0x1106, 0x7000, 0xA82A);
+
 
 /*
  *  OSAGetProperty()
@@ -116,11 +120,12 @@ OSASetProperty(
  */
 EXTERN_API( OSAError )
 OSAGetProperty(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    OSAID             contextID,
-    const AEDesc *    variableName,
-    OSAID *           resultingScriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x1107, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  OSAID               contextID,
+  const AEDesc *      variableName,
+  OSAID *             resultingScriptValueID)                 FIVEWORDINLINE(0x2F3C, 0x0010, 0x1107, 0x7000, 0xA82A);
+
 
 /*
  *  OSAGetPropertyNames()
@@ -132,10 +137,11 @@ OSAGetProperty(
  */
 EXTERN_API( OSAError )
 OSAGetPropertyNames(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    OSAID             contextID,
-    AEDescList *      resultingPropertyNames ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x110C, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  OSAID               contextID,
+  AEDescList *        resultingPropertyNames)                 FIVEWORDINLINE(0x2F3C, 0x000C, 0x110C, 0x7000, 0xA82A);
+
 
 /*
  *  OSASetHandler()
@@ -147,11 +153,12 @@ OSAGetPropertyNames(
  */
 EXTERN_API( OSAError )
 OSASetHandler(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    OSAID             contextID,
-    const AEDesc *    handlerName,
-    OSAID             compiledScriptID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x1108, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  OSAID               contextID,
+  const AEDesc *      handlerName,
+  OSAID               compiledScriptID)                       FIVEWORDINLINE(0x2F3C, 0x0010, 0x1108, 0x7000, 0xA82A);
+
 
 /*
  *  OSAGetHandler()
@@ -163,11 +170,12 @@ OSASetHandler(
  */
 EXTERN_API( OSAError )
 OSAGetHandler(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    OSAID             contextID,
-    const AEDesc *    handlerName,
-    OSAID *           resultingCompiledScriptID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x1109, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  OSAID               contextID,
+  const AEDesc *      handlerName,
+  OSAID *             resultingCompiledScriptID)              FIVEWORDINLINE(0x2F3C, 0x0010, 0x1109, 0x7000, 0xA82A);
+
 
 /*
  *  OSAGetHandlerNames()
@@ -179,10 +187,11 @@ OSAGetHandler(
  */
 EXTERN_API( OSAError )
 OSAGetHandlerNames(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    OSAID             contextID,
-    AEDescList *      resultingHandlerNames ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x110D, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  OSAID               contextID,
+  AEDescList *        resultingHandlerNames)                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x110D, 0x7000, 0xA82A);
+
 
 /*
  *  OSAGetAppTerminology()
@@ -194,12 +203,13 @@ OSAGetHandlerNames(
  */
 EXTERN_API( OSAError )
 OSAGetAppTerminology(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    FSSpec *          fileSpec,
-    short             terminologyID,
-    Boolean *         didLaunch,
-    AEDesc *          terminologyList ) FIVEWORDINLINE( 0x2F3C, 0x0012, 0x110A, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  FSSpec *            fileSpec,
+  short               terminologyID,
+  Boolean *           didLaunch,
+  AEDesc *            terminologyList)                        FIVEWORDINLINE(0x2F3C, 0x0012, 0x110A, 0x7000, 0xA82A);
+
 
 /* Errors:
        errOSASystemError        operation failed
@@ -214,10 +224,11 @@ OSAGetAppTerminology(
  */
 EXTERN_API( OSAError )
 OSAGetSysTerminology(
-    ComponentInstance scriptingComponent,
-    long              modeFlags,
-    short             terminologyID,
-    AEDesc *          terminologyList ) FIVEWORDINLINE( 0x2F3C, 0x000A, 0x110B, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  long                modeFlags,
+  short               terminologyID,
+  AEDesc *            terminologyList)                        FIVEWORDINLINE(0x2F3C, 0x000A, 0x110B, 0x7000, 0xA82A);
+
 
 /* Errors:
        errOSASystemError        operation failed
@@ -242,10 +253,11 @@ OSAGetSysTerminology(
  */
 EXTERN_API( OSAError )
 ASSetProperty(
-    ComponentInstance scriptingComponent,
-    OSAID             contextID,
-    const AEDesc *    variableName,
-    OSAID             scriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x1101, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  OSAID               contextID,
+  const AEDesc *      variableName,
+  OSAID               scriptValueID)                          FIVEWORDINLINE(0x2F3C, 0x000C, 0x1101, 0x7000, 0xA82A);
+
 
 /*
  *  ASGetProperty()
@@ -257,10 +269,11 @@ ASSetProperty(
  */
 EXTERN_API( OSAError )
 ASGetProperty(
-    ComponentInstance scriptingComponent,
-    OSAID             contextID,
-    const AEDesc *    variableName,
-    OSAID *           resultingScriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x1102, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  OSAID               contextID,
+  const AEDesc *      variableName,
+  OSAID *             resultingScriptValueID)                 FIVEWORDINLINE(0x2F3C, 0x000C, 0x1102, 0x7000, 0xA82A);
+
 
 /*
  *  ASSetHandler()
@@ -272,10 +285,11 @@ ASGetProperty(
  */
 EXTERN_API( OSAError )
 ASSetHandler(
-    ComponentInstance scriptingComponent,
-    OSAID             contextID,
-    const AEDesc *    handlerName,
-    OSAID             compiledScriptID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x1103, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  OSAID               contextID,
+  const AEDesc *      handlerName,
+  OSAID               compiledScriptID)                       FIVEWORDINLINE(0x2F3C, 0x000C, 0x1103, 0x7000, 0xA82A);
+
 
 /*
  *  ASGetHandler()
@@ -287,10 +301,11 @@ ASSetHandler(
  */
 EXTERN_API( OSAError )
 ASGetHandler(
-    ComponentInstance scriptingComponent,
-    OSAID             contextID,
-    const AEDesc *    handlerName,
-    OSAID *           resultingCompiledScriptID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x1104, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  OSAID               contextID,
+  const AEDesc *      handlerName,
+  OSAID *             resultingCompiledScriptID)              FIVEWORDINLINE(0x2F3C, 0x000C, 0x1104, 0x7000, 0xA82A);
+
 
 /*
  *  ASGetAppTerminology()
@@ -302,23 +317,26 @@ ASGetHandler(
  */
 EXTERN_API( OSAError )
 ASGetAppTerminology(
-    ComponentInstance scriptingComponent,
-    FSSpec *          fileSpec,
-    short             terminologID,
-    Boolean *         didLaunch,
-    AEDesc *          terminologyList ) FIVEWORDINLINE( 0x2F3C, 0x000E, 0x1105, 0x7000, 0xA82A );
+  ComponentInstance   scriptingComponent,
+  FSSpec *            fileSpec,
+  short               terminologID,
+  Boolean *           didLaunch,
+  AEDesc *            terminologyList)                        FIVEWORDINLINE(0x2F3C, 0x000E, 0x1105, 0x7000, 0xA82A);
+
 
 /* Errors:
         errOSASystemError       operation failed
     */
 /**************************************************************************/
 
+
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -332,3 +350,4 @@ ASGetAppTerminology(
 #endif
 
 #endif /* __ASDEBUGGING__ */
+

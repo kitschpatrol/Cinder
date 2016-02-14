@@ -24,16 +24,15 @@
 
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
-#define max( a, b ) ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
-#define min( a, b ) ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#define min(a, b) (((a) < (b)) ? (a) : (b))
 #include <Windows.h>
-#include <gdiplus.h>
 #include <objidl.h>
+#include <gdiplus.h>
 #undef min
 #undef max
 
-namespace cinder {
-namespace msw {
+namespace cinder { namespace msw {
 
 /** Copies the contents of a Gdiplus::Bitmap to a new Surface8u. **/
 Surface8u convertGdiplusBitmap( Gdiplus::Bitmap &bitmap );
@@ -45,20 +44,15 @@ Gdiplus::PixelFormat surfaceChannelOrderToGdiplusPixelFormat( const SurfaceChann
 void gdiplusPixelFormatToSurfaceChannelOrder( Gdiplus::PixelFormat format, SurfaceChannelOrder *resultChannelOrder, bool *resultPremultiplied );
 
 /** Creates a Gdiplus::Bitmap which wraps a Surface8u. Requires \a surface to confrom to SurfaceConstraintsGdiPlus and throw SurfaceConstraintsExc if it does not. Caller is responsible for deleting the result.**/
-Gdiplus::Bitmap *createGdiplusBitmap( const Surface8u &surface );
-}
-} // namespace cinder::msw
+Gdiplus::Bitmap* createGdiplusBitmap( const Surface8u &surface );
+
+} } // namespace cinder::msw
 
 namespace cinder {
 
 class SurfaceConstraintsGdiPlus : public SurfaceConstraints {
 	virtual SurfaceChannelOrder getChannelOrder( bool alpha ) const { return ( alpha ) ? SurfaceChannelOrder::BGRA : SurfaceChannelOrder::BGR; }
-	virtual int32_t getRowBytes( int requestedWidth, const SurfaceChannelOrder &sco, int elementSize ) const
-	{
-		int32_t result = requestedWidth * elementSize * sco.getPixelInc();
-		result += ( result & 3 ) ? ( 4 - ( result & 3 ) ) : 0;
-		return result;
-	}
+	virtual int32_t				getRowBytes( int requestedWidth, const SurfaceChannelOrder &sco, int elementSize ) const { int32_t result = requestedWidth * elementSize * sco.getPixelInc(); result += ( result & 3 ) ? ( 4 - (result&3) ) : 0; return result; }
 };
 
 } // namespace cinder

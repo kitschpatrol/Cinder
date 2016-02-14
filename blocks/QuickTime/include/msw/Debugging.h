@@ -33,6 +33,8 @@
 #include <Gestalt.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -95,49 +97,52 @@ extern "C" {
  */
 
 #ifndef kComponentSignatureString
-#define kComponentSignatureString "Third Party Client"
+ #define kComponentSignatureString "Third Party Client"
 #endif
 #ifndef COMPONENT_SIGNATURE
-#define COMPONENT_SIGNATURE '?*?*'
+  #define COMPONENT_SIGNATURE '?*?*'
 #endif
-#define QuoteExceptionString( x ) #x
+#define QuoteExceptionString(x) #x
+
 
 /*
  *  The DEBUGLEVEL's
  */
 #define DEBUG_LEVEL_PRODUCTION 0
-#define DEBUG_LEVEL_BREAK_ONLY 1
-#define DEBUG_LEVEL_EXTERNAL 3
-#define DEBUG_LEVEL_INTERNAL 4
-#define DEBUGFULL DEBUG_LEVEL_INTERNAL
+#define DEBUG_LEVEL_BREAK_ONLY    1
+#define DEBUG_LEVEL_EXTERNAL  3
+#define DEBUG_LEVEL_INTERNAL  4
+#define DEBUGFULL             DEBUG_LEVEL_INTERNAL
 
 /*
  * define DEBUGLEVEL
  */
 #if DEBUG
-#if PRODUCTION
-#define DEBUGLEVEL DEBUG_LEVEL_PRODUCTION
-#elif PERFORMANCE
-#define DEBUGLEVEL DEBUG_LEVEL_PRODUCTION
-#elif DEBUG_BREAK_ONLY
-#define DEBUGLEVEL DEBUG_LEVEL_BREAK_ONLY
-#elif DEBUG_EXTERNAL
-#define DEBUGLEVEL DEBUG_LEVEL_EXTERNAL
-#elif DEBUG_INTERNAL
-#define DEBUGLEVEL DEBUG_LEVEL_INTERNAL
-#else
-/* default to DEBUG_LEVEL_INTERNAL */
-#define DEBUGLEVEL DEBUG_LEVEL_INTERNAL
-#endif
+    #if PRODUCTION
+     #define DEBUGLEVEL DEBUG_LEVEL_PRODUCTION
+  #elif PERFORMANCE
+      #define DEBUGLEVEL DEBUG_LEVEL_PRODUCTION
+  #elif DEBUG_BREAK_ONLY
+     #define DEBUGLEVEL DEBUG_LEVEL_BREAK_ONLY
+  #elif DEBUG_EXTERNAL
+       #define DEBUGLEVEL DEBUG_LEVEL_EXTERNAL
+    #elif DEBUG_INTERNAL
+       #define DEBUGLEVEL DEBUG_LEVEL_INTERNAL
+    #else
+      /* default to DEBUG_LEVEL_INTERNAL */
+      #define DEBUGLEVEL DEBUG_LEVEL_INTERNAL
+    #endif
 #endif
 #ifndef DEBUGLEVEL
 #define DEBUGLEVEL DEBUG_LEVEL_PRODUCTION
 #endif
 
+
+
 /*
  *  The options parameter to DebugAssert and DEBUGASSERTMSG is currently reserved (must be zero).
  */
-#define DEBUG_NO_OPTIONS 0
+#define DEBUG_NO_OPTIONS      0
 
 /*
  *  DEBUGASSERTMSG()
@@ -183,22 +188,22 @@ extern "C" {
  */
 
 #ifndef DEBUGASSERTMSG
-#if DEBUGLEVEL == DEBUG_LEVEL_PRODUCTION
-/* no debugger message */
-#define DEBUGASSERTMSG( componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value )
-#elif DEBUGLEVEL == DEBUG_LEVEL_BREAK_ONLY
-/* call Debugger() if it is available */
-#define DEBUGASSERTMSG( componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value ) \
-	Debugger()
-#elif DEBUGLEVEL == DEBUG_LEVEL_EXTERNAL
-/* exclude fileName and lineNumber */
-#define DEBUGASSERTMSG( componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value ) \
-	DebugAssert( componentSignature, options, assertionString, exceptionLabelString, errorString, 0, 0, (void *)value )
-#else
-/* include all info */
-#define DEBUGASSERTMSG( componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value ) \
-	DebugAssert( componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, (void *)value )
-#endif
+    #if DEBUGLEVEL == DEBUG_LEVEL_PRODUCTION
+       /* no debugger message */
+      #define DEBUGASSERTMSG(componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value)
+   #elif DEBUGLEVEL == DEBUG_LEVEL_BREAK_ONLY
+     /* call Debugger() if it is available */
+       #define DEBUGASSERTMSG(componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value) \
+         Debugger()
+ #elif DEBUGLEVEL == DEBUG_LEVEL_EXTERNAL
+       /* exclude fileName and lineNumber */
+      #define DEBUGASSERTMSG(componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value) \
+         DebugAssert(componentSignature, options, assertionString, exceptionLabelString, errorString, 0, 0, (void*)value)
+   #else
+      /* include all info */
+     #define DEBUGASSERTMSG(componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value) \
+         DebugAssert(componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, (void*)value)
+   #endif
 #endif
 
 /*
@@ -206,14 +211,14 @@ extern "C" {
  */
 
 #ifndef DEBUG_ASSERT_COMPONENT_NAME_STRING
-#define DEBUG_ASSERT_COMPONENT_NAME_STRING kComponentSignatureString
+    #define DEBUG_ASSERT_COMPONENT_NAME_STRING kComponentSignatureString
 #endif
 #ifndef DEBUG_ASSERT_PRODUCTION_CODE
-#define DEBUG_ASSERT_PRODUCTION_CODE ( DEBUGLEVEL == 0 )
+   #define DEBUG_ASSERT_PRODUCTION_CODE (DEBUGLEVEL==0)
 #endif
 #ifndef DEBUG_ASSERT_MESSAGE
-#define DEBUG_ASSERT_MESSAGE( componentNameString, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value ) \
-	DEBUGASSERTMSG( COMPONENT_SIGNATURE, DEBUG_NO_OPTIONS, componentNameString ": " assertionString, exceptionLabelString, errorString, fileName, lineNumber, value )
+   #define DEBUG_ASSERT_MESSAGE(componentNameString, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value) \
+       DEBUGASSERTMSG(COMPONENT_SIGNATURE, DEBUG_NO_OPTIONS, componentNameString ": " assertionString, exceptionLabelString, errorString, fileName, lineNumber, value)
 #endif
 
 /*
@@ -224,38 +229,48 @@ extern "C" {
  *  The following check, verify, and require macros assert that TaskLevel is 0.
  */
 
-#define ATTASKLEVEL0() \
-	( TaskLevel() == 0 )
+#define ATTASKLEVEL0()                                                         \
+  (TaskLevel() == 0)
 
-#define check_tasklevel0() \
-	check( ATTASKLEVEL0() )
 
-#define check_tasklevel0_string( cstring ) \
-	check_string( ATTASKLEVEL0(), cstring )
+#define check_tasklevel0()                                                     \
+  check(ATTASKLEVEL0())
 
-#define verify_tasklevel0() \
-	verify( ATTASKLEVEL0() )
 
-#define verify_tasklevel0_string( cstring ) \
-	verify_string( ATTASKLEVEL0(), cstring )
+#define check_tasklevel0_string(cstring)                                       \
+  check_string(ATTASKLEVEL0(), cstring)
 
-#define require_tasklevel0( exceptionLabel ) \
-	require( ATTASKLEVEL0(), exceptionLabel )
 
-#define require_tasklevel0_action( exceptionLabel, action ) \
-	require_action( ATTASKLEVEL0(), exceptionLabel, action )
+#define verify_tasklevel0()                                                        \
+  verify(ATTASKLEVEL0())
 
-#define require_tasklevel0_quiet( exceptionLabel ) \
-	require_quiet( ATTASKLEVEL0(), exceptionLabel )
 
-#define require_tasklevel0_action_quiet( exceptionLabel, action ) \
-	require_action_quiet( ATTASKLEVEL0(), exceptionLabel, action )
+#define verify_tasklevel0_string(cstring)                                      \
+  verify_string(ATTASKLEVEL0(), cstring)
 
-#define require_tasklevel0_string( exceptionLabel, cstring ) \
-	require_string( ATTASKLEVEL0(), exceptionLabel, cstring )
 
-#define require_tasklevel0_action_string( exceptionLabel, action, cstring ) \
-	require_action_string( ATTASKLEVEL0(), exceptionLabel, action, cstring )
+#define require_tasklevel0(exceptionLabel)                                     \
+  require(ATTASKLEVEL0(), exceptionLabel)
+
+
+#define require_tasklevel0_action(exceptionLabel, action)                      \
+  require_action(ATTASKLEVEL0(), exceptionLabel, action)
+
+
+#define require_tasklevel0_quiet(exceptionLabel)                               \
+  require_quiet(ATTASKLEVEL0(), exceptionLabel)
+
+
+#define require_tasklevel0_action_quiet(exceptionLabel, action)                    \
+  require_action_quiet(ATTASKLEVEL0(), exceptionLabel, action)
+
+
+#define require_tasklevel0_string(exceptionLabel, cstring)                     \
+  require_string(ATTASKLEVEL0(), exceptionLabel, cstring)
+
+
+#define require_tasklevel0_action_string(exceptionLabel, action, cstring)      \
+  require_action_string(ATTASKLEVEL0(), exceptionLabel, action, cstring)
 
 /*
  *  SafeDebugger and SafeDebugStr work like Debugger and DebugStr in both
@@ -264,53 +279,80 @@ extern "C" {
  */
 
 #if CALL_NOT_IN_CARBON
-/* Make sure a low level debugger is installed on Mac OS 8 or 9 */
-#define SafeDebugger()                                                                                                                                                                                                                         \
-	do {                                                                                                                                                                                                                                       \
-		if( ( ( *( (UInt8 *)0x0BFF ) ) != (UInt8)0xff ) && ( ( ( *( (UInt8 *)0x0BFF ) ) & (UInt8)0xe0 ) == (UInt8)0x60 ) && ( ( *( (unsigned long *)0x0120 ) ) != 0 ) && ( ( *( (unsigned long *)0x0120 ) ) != (unsigned long)0xffffffff ) ) { \
-			Debugger();                                                                                                                                                                                                                        \
-		}                                                                                                                                                                                                                                      \
-	} while( false )
+    /* Make sure a low level debugger is installed on Mac OS 8 or 9 */
+ #define SafeDebugger()                                                      \
+      do                                                                      \
+      {                                                                       \
+          if ( ((*((UInt8 *)0x0BFF)) != (UInt8)0xff) &&                       \
+               (((*((UInt8 *)0x0BFF)) & (UInt8)0xe0) == (UInt8)0x60) &&       \
+               ((*((unsigned long *)0x0120)) != 0) &&                         \
+               ((*((unsigned long *)0x0120)) != (unsigned long)0xffffffff) )  \
+          {                                                                   \
+              Debugger();                                                     \
+          }                                                                   \
+      } while ( false )
 #else
-/* Debugger() is always safe on Carbon under Mac OS X */
-/* Otherwise we must make sure a low level debugger is installed */
-#define SafeDebugger()                                                                                                                                                                                                                             \
-	do {                                                                                                                                                                                                                                           \
-		long response;                                                                                                                                                                                                                             \
-		if( ( Gestalt( gestaltSystemVersion, &response ) == noErr ) && ( response >= 0x1000 ) ) {                                                                                                                                                  \
-			Debugger();                                                                                                                                                                                                                            \
-		}                                                                                                                                                                                                                                          \
-		else {                                                                                                                                                                                                                                     \
-			if( ( ( *( (UInt8 *)0x0BFF ) ) != (UInt8)0xff ) && ( ( ( *( (UInt8 *)0x0BFF ) ) & (UInt8)0xe0 ) == (UInt8)0x60 ) && ( ( *( (unsigned long *)0x0120 ) ) != 0 ) && ( ( *( (unsigned long *)0x0120 ) ) != (unsigned long)0xffffffff ) ) { \
-				Debugger();                                                                                                                                                                                                                        \
-			}                                                                                                                                                                                                                                      \
-		}                                                                                                                                                                                                                                          \
-	} while( false )
+    /* Debugger() is always safe on Carbon under Mac OS X */
+   /* Otherwise we must make sure a low level debugger is installed */
+    #define SafeDebugger()                                                      \
+      do                                                                      \
+      {                                                                       \
+          long response;                                                      \
+          if ( (Gestalt(gestaltSystemVersion, &response) == noErr) &&         \
+               (response >= 0x1000) )                                         \
+          {                                                                   \
+              Debugger();                                                     \
+          }                                                                   \
+          else                                                                \
+          {                                                                   \
+              if ( ((*((UInt8 *)0x0BFF)) != (UInt8)0xff) &&                   \
+                   (((*((UInt8 *)0x0BFF)) & (UInt8)0xe0) == (UInt8)0x60) &&   \
+                   ((*((unsigned long *)0x0120)) != 0) &&                     \
+                   ((*((unsigned long *)0x0120)) != (unsigned long)0xffffffff) ) \
+               {                                                               \
+                  Debugger();                                                 \
+              }                                                               \
+          }                                                                   \
+      } while ( false )
 #endif
 
+
 #if CALL_NOT_IN_CARBON
-/* Make sure low level debugger is installed on Mac OS 8 or 9 */
-#define SafeDebugStr( str )                                                                                                                                                                                                                    \
-	do {                                                                                                                                                                                                                                       \
-		if( ( ( *( (UInt8 *)0x0BFF ) ) != (UInt8)0xff ) && ( ( ( *( (UInt8 *)0x0BFF ) ) & (UInt8)0xe0 ) == (UInt8)0x60 ) && ( ( *( (unsigned long *)0x0120 ) ) != 0 ) && ( ( *( (unsigned long *)0x0120 ) ) != (unsigned long)0xffffffff ) ) { \
-			DebugStr( str );                                                                                                                                                                                                                   \
-		}                                                                                                                                                                                                                                      \
-	} while( false )
+    /* Make sure low level debugger is installed on Mac OS 8 or 9 */
+   #define SafeDebugStr(str)                                                   \
+      do                                                                      \
+      {                                                                       \
+          if ( ((*((UInt8 *)0x0BFF)) != (UInt8)0xff) &&                       \
+               (((*((UInt8 *)0x0BFF)) & (UInt8)0xe0) == (UInt8)0x60) &&       \
+               ((*((unsigned long *)0x0120)) != 0) &&                         \
+               ((*((unsigned long *)0x0120)) != (unsigned long)0xffffffff) )  \
+          {                                                                   \
+              DebugStr(str);                                                  \
+          }                                                                   \
+      } while ( false )
 #else
-/* DebugStr() is always safe on Carbon under Mac OS X */
-/* Otherwise we must make sure a low level debugger is installed */
-#define SafeDebugStr( str )                                                                                                                                                                                                                        \
-	do {                                                                                                                                                                                                                                           \
-		long response;                                                                                                                                                                                                                             \
-		if( ( Gestalt( gestaltSystemVersion, &response ) == noErr ) && ( response >= 0x1000 ) ) {                                                                                                                                                  \
-			DebugStr( str );                                                                                                                                                                                                                       \
-		}                                                                                                                                                                                                                                          \
-		else {                                                                                                                                                                                                                                     \
-			if( ( ( *( (UInt8 *)0x0BFF ) ) != (UInt8)0xff ) && ( ( ( *( (UInt8 *)0x0BFF ) ) & (UInt8)0xe0 ) == (UInt8)0x60 ) && ( ( *( (unsigned long *)0x0120 ) ) != 0 ) && ( ( *( (unsigned long *)0x0120 ) ) != (unsigned long)0xffffffff ) ) { \
-				DebugStr( str );                                                                                                                                                                                                                   \
-			}                                                                                                                                                                                                                                      \
-		}                                                                                                                                                                                                                                          \
-	} while( false )
+    /* DebugStr() is always safe on Carbon under Mac OS X */
+   /* Otherwise we must make sure a low level debugger is installed */
+    #define SafeDebugStr(str)                                                   \
+      do                                                                      \
+      {                                                                       \
+          long response;                                                      \
+          if ( (Gestalt(gestaltSystemVersion, &response) == noErr) &&         \
+               (response >= 0x1000) )                                         \
+          {                                                                   \
+              DebugStr(str);                                                  \
+          }                                                                   \
+          else                                                                \
+          {                                                                   \
+              if ( ((*((UInt8 *)0x0BFF)) != (UInt8)0xff) &&                   \
+                   (((*((UInt8 *)0x0BFF)) & (UInt8)0xe0) == (UInt8)0x60) &&   \
+                   ((*((unsigned long *)0x0120)) != 0) &&                     \
+                   ((*((unsigned long *)0x0120)) != (unsigned long)0xffffffff) ) \
+               {                                                               \
+                  DebugStr(str);                                              \
+              }                                                               \
+          }                                                                   \
+      } while ( false )
 #endif
 
 /*
@@ -322,21 +364,21 @@ extern "C" {
  */
 
 #ifndef DEBUGGER
-#if DEBUG
-#define DEBUGGER() \
-	SafeDebugger()
-#else
-#define DEBUGGER()
-#endif
+  #if DEBUG
+      #define DEBUGGER()                                                      \
+          SafeDebugger()
+ #else
+      #define DEBUGGER()
+ #endif
 #endif
 
 #ifndef DEBUGSTR
-#if DEBUG
-#define DEBUGSTR( str ) \
-	SafeDebugStr( str )
-#else
-#define DEBUGSTR( str )
-#endif
+    #if DEBUG
+      #define DEBUGSTR(str)                                                       \
+          SafeDebugStr(str)
+  #else
+      #define DEBUGSTR(str)
+  #endif
 #endif
 
 /*
@@ -344,23 +386,28 @@ extern "C" {
  *  only if the Caps Lock key is down.
  */
 
-#define CapsLockDebugger()                          \
-	do {                                            \
-		KeyMap theKeys;                             \
-		GetKeys( theKeys );                         \
-		if( ( ( theKeys[1] >> 1 ) & 0x01 ) != 0 ) { \
-			SafeDebugger();                         \
-		}                                           \
-	} while( false )
+#define CapsLockDebugger()                                                     \
+  do                                                                          \
+  {                                                                           \
+      KeyMap theKeys;                                                         \
+      GetKeys(theKeys);                                                       \
+      if ( ((theKeys[1] >> 1) & 0x01) != 0 )                                  \
+      {                                                                       \
+          SafeDebugger();                                                     \
+      }                                                                       \
+  } while ( false )
 
-#define CapsLockDebugStr( str )                     \
-	do {                                            \
-		KeyMap theKeys;                             \
-		GetKeys( theKeys );                         \
-		if( ( ( theKeys[1] >> 1 ) & 0x01 ) != 0 ) { \
-			SafeDebugStr( str );                    \
-		}                                           \
-	} while( false )
+
+#define CapsLockDebugStr(str)                                                  \
+  do                                                                          \
+  {                                                                           \
+      KeyMap theKeys;                                                         \
+      GetKeys(theKeys);                                                       \
+      if ( ((theKeys[1] >> 1) & 0x01) != 0 )                                  \
+      {                                                                       \
+          SafeDebugStr(str);                                                  \
+      }                                                                       \
+  } while ( false )
 
 /*
  *  ISCAPSLOCKKEYDOWN and ISLOWLEVELDEBUGGERCALLABLE are convenience macros
@@ -373,15 +420,18 @@ extern "C" {
  */
 
 #if CALL_NOT_IN_CARBON
-#ifndef ISCAPSLOCKKEYDOWN
-#define ISCAPSLOCKKEYDOWN() \
-	( ( ( (UInt16 *)( 0x0174 ) )[3] & 0x0002 ) == 0x0002 )
-#endif
-
-#ifndef ISLOWLEVELDEBUGGERCALLABLE
-#define ISLOWLEVELDEBUGGERCALLABLE() \
-	( ( ( *( (UInt8 *)0x0BFF ) ) != (UInt8)0xff ) && ( ( ( *( (UInt8 *)0x0BFF ) ) & (UInt8)0xe0 ) == (UInt8)0x60 ) && ( ( *( (unsigned long *)0x0120 ) ) != 0 ) && ( ( *( (unsigned long *)0x0120 ) ) != (unsigned long)0xffffffff ) )
-#endif
+    #ifndef ISCAPSLOCKKEYDOWN
+      #define ISCAPSLOCKKEYDOWN()                                             \
+          ((((UInt16 *)(0x0174))[3] & 0x0002) == 0x0002)
+ #endif
+ 
+   #ifndef ISLOWLEVELDEBUGGERCALLABLE
+     #define ISLOWLEVELDEBUGGERCALLABLE()                                    \
+          ( ((*((UInt8 *)0x0BFF)) != (UInt8)0xff) &&                          \
+            (((*((UInt8 *)0x0BFF)) & (UInt8)0xe0) == (UInt8)0x60) &&          \
+            ((*((unsigned long *)0x0120)) != 0) &&                            \
+            ((*((unsigned long *)0x0120)) != (unsigned long)0xffffffff) )
+    #endif
 #endif
 
 /*
@@ -401,12 +451,11 @@ extern "C" {
  */
 
 #if DEBUG
-#define DPRINTF( x ) dprintf x
+    #define DPRINTF(x)   dprintf x
 #else
-#define DPRINTF( x ) \
-	{                \
-	}
+    #define DPRINTF(x)  { }
 #endif
+
 
 /*
  *  kBlessedBusErrorBait is an address that will never be mapped by
@@ -420,7 +469,7 @@ extern "C" {
  *  for user code.
  */
 enum {
-	kBlessedBusErrorBait = 0x68F168F1
+  kBlessedBusErrorBait          = 0x68F168F1
 };
 
 /*
@@ -467,24 +516,25 @@ enum {
  */
 EXTERN_API( void )
 DebugAssert(
-    OSType      componentSignature,
-    UInt32      options,
-    const char *assertionString,
-    const char *exceptionLabelString,
-    const char *errorString,
-    const char *fileName,
-    long        lineNumber,
-    void *      value ) TWOWORDINLINE( 0x7000, 0xAA7E );
+  OSType        componentSignature,
+  UInt32        options,
+  const char *  assertionString,
+  const char *  exceptionLabelString,
+  const char *  errorString,
+  const char *  fileName,
+  long          lineNumber,
+  void *        value)                                        TWOWORDINLINE(0x7000, 0xAA7E);
+
 
 /*
  *  TaskLevel masks
  */
 enum {
-	k68kInterruptLevelMask = 0x00000007, /* 68K interrupt levels 0 through 7 */
-	kInVBLTaskMask = 0x00000010, /* VBLs are executing */
-	kInDeferredTaskMask = 0x00000020, /* Deferred tasks are executing */
-	kInSecondaryIntHandlerMask = 0x00000040, /* Secondary interrupt handlers are executing */
-	kInNestedInterruptMask = 0x00000080 /* The system is handling an interrupt */
+  k68kInterruptLevelMask        = 0x00000007, /* 68K interrupt levels 0 through 7 */
+  kInVBLTaskMask                = 0x00000010, /* VBLs are executing */
+  kInDeferredTaskMask           = 0x00000020, /* Deferred tasks are executing */
+  kInSecondaryIntHandlerMask    = 0x00000040, /* Secondary interrupt handlers are executing */
+  kInNestedInterruptMask        = 0x00000080 /* The system is handling an interrupt */
 };
 
 /*
@@ -505,19 +555,21 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt32 )
-TaskLevel( void ) TWOWORDINLINE( 0x7001, 0xAA7E );
+TaskLevel(void)                                               TWOWORDINLINE(0x7001, 0xAA7E);
+
 
 /*
  *  Constants used by the DebugComponent functions
  */
 enum {
-	kComponentDebugOption = 0 /* optionSelectorNum to turn breaks for component On or Off*/
+  kComponentDebugOption         = 0     /* optionSelectorNum to turn breaks for component On or Off*/
 };
 
 enum {
-	kGetDebugOption = 1, /* get current debug option setting*/
-	kSetDebugOption = 2 /* set debug option*/
+  kGetDebugOption               = 1,    /* get current debug option setting*/
+  kSetDebugOption               = 2     /* set debug option*/
 };
+
 
 /*
  *  DebugComponentCallbackProcPtr
@@ -543,8 +595,8 @@ enum {
  *      is kGetDebugOption; the new debug option if command is 
  *      kSetDebugOption
  */
-typedef CALLBACK_API( void, DebugComponentCallbackProcPtr )( SInt32 optionSelectorNum, UInt32 command, Boolean *optionSetting );
-typedef STACK_UPP_TYPE( DebugComponentCallbackProcPtr ) DebugComponentCallbackUPP;
+typedef CALLBACK_API( void , DebugComponentCallbackProcPtr )(SInt32 optionSelectorNum, UInt32 command, Boolean *optionSetting);
+typedef STACK_UPP_TYPE(DebugComponentCallbackProcPtr)           DebugComponentCallbackUPP;
 /*
  *  NewDebugComponent()
  *  
@@ -574,9 +626,10 @@ typedef STACK_UPP_TYPE( DebugComponentCallbackProcPtr ) DebugComponentCallbackUP
  */
 EXTERN_API( OSStatus )
 NewDebugComponent(
-    OSType                    componentSignature,
-    ConstStr255Param          componentName,
-    DebugComponentCallbackUPP componentCallback ) TWOWORDINLINE( 0x7002, 0xAA7E );
+  OSType                      componentSignature,
+  ConstStr255Param            componentName,
+  DebugComponentCallbackUPP   componentCallback)              TWOWORDINLINE(0x7002, 0xAA7E);
+
 
 /*
  *  NewDebugOption()
@@ -608,9 +661,10 @@ NewDebugComponent(
  */
 EXTERN_API( OSStatus )
 NewDebugOption(
-    OSType           componentSignature,
-    SInt32           optionSelectorNum,
-    ConstStr255Param optionName ) TWOWORDINLINE( 0x7003, 0xAA7E );
+  OSType             componentSignature,
+  SInt32             optionSelectorNum,
+  ConstStr255Param   optionName)                              TWOWORDINLINE(0x7003, 0xAA7E);
+
 
 /*
  *  DisposeDebugComponent()
@@ -634,7 +688,8 @@ NewDebugOption(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-DisposeDebugComponent( OSType componentSignature ) TWOWORDINLINE( 0x7004, 0xAA7E );
+DisposeDebugComponent(OSType componentSignature)              TWOWORDINLINE(0x7004, 0xAA7E);
+
 
 /*
  *  GetDebugComponentInfo()
@@ -666,9 +721,10 @@ DisposeDebugComponent( OSType componentSignature ) TWOWORDINLINE( 0x7004, 0xAA7E
  */
 EXTERN_API( OSStatus )
 GetDebugComponentInfo(
-    UInt32  index,
-    OSType *componentSignature,
-    Str255  componentName ) TWOWORDINLINE( 0x7005, 0xAA7E );
+  UInt32    index,
+  OSType *  componentSignature,
+  Str255    componentName)                                    TWOWORDINLINE(0x7005, 0xAA7E);
+
 
 /*
  *  GetDebugOptionInfo()
@@ -709,11 +765,12 @@ GetDebugComponentInfo(
  */
 EXTERN_API( OSStatus )
 GetDebugOptionInfo(
-    UInt32   index,
-    OSType   componentSignature,
-    SInt32 * optionSelectorNum,
-    Str255   optionName,
-    Boolean *optionSetting ) TWOWORDINLINE( 0x7006, 0xAA7E );
+  UInt32     index,
+  OSType     componentSignature,
+  SInt32 *   optionSelectorNum,
+  Str255     optionName,
+  Boolean *  optionSetting)                                   TWOWORDINLINE(0x7006, 0xAA7E);
+
 
 /*
  *  SetDebugOptionValue()
@@ -743,9 +800,11 @@ GetDebugOptionInfo(
  */
 EXTERN_API( OSStatus )
 SetDebugOptionValue(
-    OSType  componentSignature,
-    SInt32  optionSelectorNum,
-    Boolean newOptionSetting ) TWOWORDINLINE( 0x7007, 0xAA7E );
+  OSType    componentSignature,
+  SInt32    optionSelectorNum,
+  Boolean   newOptionSetting)                                 TWOWORDINLINE(0x7007, 0xAA7E);
+
+
 
 /*
  *  DebugAssertOutputHandlerProcPtr
@@ -788,8 +847,8 @@ SetDebugOptionValue(
  *      The string DebugAssert build which would normally be passed to
  *      DebugStr if a DebugAssertOutputHandler isn't installed.
  */
-typedef CALLBACK_API( void, DebugAssertOutputHandlerProcPtr )( OSType componentSignature, UInt32 options, const char *assertionString, const char *exceptionLabelString, const char *errorString, const char *fileName, long lineNumber, void *value, ConstStr255Param outputMsg );
-typedef STACK_UPP_TYPE( DebugAssertOutputHandlerProcPtr ) DebugAssertOutputHandlerUPP;
+typedef CALLBACK_API( void , DebugAssertOutputHandlerProcPtr )(OSType componentSignature, UInt32 options, const char *assertionString, const char *exceptionLabelString, const char *errorString, const char *fileName, long lineNumber, void *value, ConstStr255Param outputMsg);
+typedef STACK_UPP_TYPE(DebugAssertOutputHandlerProcPtr)         DebugAssertOutputHandlerUPP;
 /*
  *  InstallDebugAssertOutputHandler()
  *  
@@ -810,7 +869,8 @@ typedef STACK_UPP_TYPE( DebugAssertOutputHandlerProcPtr ) DebugAssertOutputHandl
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-InstallDebugAssertOutputHandler( DebugAssertOutputHandlerUPP handler ) TWOWORDINLINE( 0x7008, 0xAA7E );
+InstallDebugAssertOutputHandler(DebugAssertOutputHandlerUPP handler) TWOWORDINLINE(0x7008, 0xAA7E);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -835,7 +895,8 @@ InstallDebugAssertOutputHandler( DebugAssertOutputHandlerUPP handler ) TWOWORDIN
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-dprintf( const char *format, ... ) SIXWORDINLINE( 0x2057, 0x43EF, 0x0004, 0x303C, 0x000A, 0xAA7E );
+dprintf(const char * format, ...)                             SIXWORDINLINE(0x2057, 0x43EF, 0x0004, 0x303C, 0x000A, 0xAA7E);
+
 
 /*
  *  vdprintf()
@@ -859,10 +920,11 @@ dprintf( const char *format, ... ) SIXWORDINLINE( 0x2057, 0x43EF, 0x0004, 0x303C
  */
 EXTERN_API( void )
 vdprintf(
-    const char *format,
-    char *      va_args_list ) TWOWORDINLINE( 0x7009, 0xAA7E );
+  const char *  format,
+  char *        va_args_list)                                 TWOWORDINLINE(0x7009, 0xAA7E);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  NewDebugComponentCallbackUPP()
@@ -873,17 +935,14 @@ vdprintf(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DebugComponentCallbackUPP )
-NewDebugComponentCallbackUPP( DebugComponentCallbackProcPtr userRoutine );
+NewDebugComponentCallbackUPP(DebugComponentCallbackProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDebugComponentCallbackProcInfo = 0x00000FC0 }; /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DebugComponentCallbackUPP ) NewDebugComponentCallbackUPP( DebugComponentCallbackProcPtr userRoutine )
-{
-	return (DebugComponentCallbackUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDebugComponentCallbackProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewDebugComponentCallbackUPP( userRoutine ) ( DebugComponentCallbackUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDebugComponentCallbackProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppDebugComponentCallbackProcInfo = 0x00000FC0 };  /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DebugComponentCallbackUPP) NewDebugComponentCallbackUPP(DebugComponentCallbackProcPtr userRoutine) { return (DebugComponentCallbackUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDebugComponentCallbackProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewDebugComponentCallbackUPP(userRoutine) (DebugComponentCallbackUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDebugComponentCallbackProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -895,17 +954,14 @@ inline DEFINE_API_C( DebugComponentCallbackUPP ) NewDebugComponentCallbackUPP( D
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( DebugAssertOutputHandlerUPP )
-NewDebugAssertOutputHandlerUPP( DebugAssertOutputHandlerProcPtr userRoutine );
+NewDebugAssertOutputHandlerUPP(DebugAssertOutputHandlerProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDebugAssertOutputHandlerProcInfo = 0x00FFFFC0 }; /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DebugAssertOutputHandlerUPP ) NewDebugAssertOutputHandlerUPP( DebugAssertOutputHandlerProcPtr userRoutine )
-{
-	return (DebugAssertOutputHandlerUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDebugAssertOutputHandlerProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewDebugAssertOutputHandlerUPP( userRoutine ) ( DebugAssertOutputHandlerUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDebugAssertOutputHandlerProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppDebugAssertOutputHandlerProcInfo = 0x00FFFFC0 };  /* pascal no_return_value Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DebugAssertOutputHandlerUPP) NewDebugAssertOutputHandlerUPP(DebugAssertOutputHandlerProcPtr userRoutine) { return (DebugAssertOutputHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDebugAssertOutputHandlerProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewDebugAssertOutputHandlerUPP(userRoutine) (DebugAssertOutputHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDebugAssertOutputHandlerProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -917,16 +973,13 @@ inline DEFINE_API_C( DebugAssertOutputHandlerUPP ) NewDebugAssertOutputHandlerUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDebugComponentCallbackUPP( DebugComponentCallbackUPP userUPP );
+DisposeDebugComponentCallbackUPP(DebugComponentCallbackUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDebugComponentCallbackUPP( DebugComponentCallbackUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeDebugComponentCallbackUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDebugComponentCallbackUPP(DebugComponentCallbackUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeDebugComponentCallbackUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -938,16 +991,13 @@ inline DEFINE_API_C( void ) DisposeDebugComponentCallbackUPP( DebugComponentCall
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeDebugAssertOutputHandlerUPP( DebugAssertOutputHandlerUPP userUPP );
+DisposeDebugAssertOutputHandlerUPP(DebugAssertOutputHandlerUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDebugAssertOutputHandlerUPP( DebugAssertOutputHandlerUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeDebugAssertOutputHandlerUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDebugAssertOutputHandlerUPP(DebugAssertOutputHandlerUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeDebugAssertOutputHandlerUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -960,19 +1010,16 @@ inline DEFINE_API_C( void ) DisposeDebugAssertOutputHandlerUPP( DebugAssertOutpu
  */
 EXTERN_API_C( void )
 InvokeDebugComponentCallbackUPP(
-    SInt32                    optionSelectorNum,
-    UInt32                    command,
-    Boolean *                 optionSetting,
-    DebugComponentCallbackUPP userUPP );
+  SInt32                     optionSelectorNum,
+  UInt32                     command,
+  Boolean *                  optionSetting,
+  DebugComponentCallbackUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeDebugComponentCallbackUPP( SInt32 optionSelectorNum, UInt32 command, Boolean *optionSetting, DebugComponentCallbackUPP userUPP )
-{
-	CALL_THREE_PARAMETER_UPP( userUPP, uppDebugComponentCallbackProcInfo, optionSelectorNum, command, optionSetting );
-}
-#else
-#define InvokeDebugComponentCallbackUPP( optionSelectorNum, command, optionSetting, userUPP ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppDebugComponentCallbackProcInfo, ( optionSelectorNum ), ( command ), ( optionSetting ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeDebugComponentCallbackUPP(SInt32 optionSelectorNum, UInt32 command, Boolean * optionSetting, DebugComponentCallbackUPP userUPP) { CALL_THREE_PARAMETER_UPP(userUPP, uppDebugComponentCallbackProcInfo, optionSelectorNum, command, optionSetting); }
+  #else
+    #define InvokeDebugComponentCallbackUPP(optionSelectorNum, command, optionSetting, userUPP) CALL_THREE_PARAMETER_UPP((userUPP), uppDebugComponentCallbackProcInfo, (optionSelectorNum), (command), (optionSetting))
+  #endif
 #endif
 
 /*
@@ -985,34 +1032,32 @@ inline DEFINE_API_C( void ) InvokeDebugComponentCallbackUPP( SInt32 optionSelect
  */
 EXTERN_API_C( void )
 InvokeDebugAssertOutputHandlerUPP(
-    OSType                      componentSignature,
-    UInt32                      options,
-    const char *                assertionString,
-    const char *                exceptionLabelString,
-    const char *                errorString,
-    const char *                fileName,
-    long                        lineNumber,
-    void *                      value,
-    ConstStr255Param            outputMsg,
-    DebugAssertOutputHandlerUPP userUPP );
+  OSType                       componentSignature,
+  UInt32                       options,
+  const char *                 assertionString,
+  const char *                 exceptionLabelString,
+  const char *                 errorString,
+  const char *                 fileName,
+  long                         lineNumber,
+  void *                       value,
+  ConstStr255Param             outputMsg,
+  DebugAssertOutputHandlerUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeDebugAssertOutputHandlerUPP( OSType componentSignature, UInt32 options, const char *assertionString, const char *exceptionLabelString, const char *errorString, const char *fileName, long lineNumber, void *value, ConstStr255Param outputMsg, DebugAssertOutputHandlerUPP userUPP )
-{
-	CALL_NINE_PARAMETER_UPP( userUPP, uppDebugAssertOutputHandlerProcInfo, componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg );
-}
-#else
-#define InvokeDebugAssertOutputHandlerUPP( componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg, userUPP ) CALL_NINE_PARAMETER_UPP( ( userUPP ), uppDebugAssertOutputHandlerProcInfo, ( componentSignature ), ( options ), ( assertionString ), ( exceptionLabelString ), ( errorString ), ( fileName ), ( lineNumber ), ( value ), ( outputMsg ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeDebugAssertOutputHandlerUPP(OSType componentSignature, UInt32 options, const char * assertionString, const char * exceptionLabelString, const char * errorString, const char * fileName, long lineNumber, void * value, ConstStr255Param outputMsg, DebugAssertOutputHandlerUPP userUPP) { CALL_NINE_PARAMETER_UPP(userUPP, uppDebugAssertOutputHandlerProcInfo, componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg); }
+  #else
+    #define InvokeDebugAssertOutputHandlerUPP(componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg, userUPP) CALL_NINE_PARAMETER_UPP((userUPP), uppDebugAssertOutputHandlerProcInfo, (componentSignature), (options), (assertionString), (exceptionLabelString), (errorString), (fileName), (lineNumber), (value), (outputMsg))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewDebugComponentCallbackProc( userRoutine ) NewDebugComponentCallbackUPP( userRoutine )
-#define NewDebugAssertOutputHandlerProc( userRoutine ) NewDebugAssertOutputHandlerUPP( userRoutine )
-#define CallDebugComponentCallbackProc( userRoutine, optionSelectorNum, command, optionSetting ) InvokeDebugComponentCallbackUPP( optionSelectorNum, command, optionSetting, userRoutine )
-#define CallDebugAssertOutputHandlerProc( userRoutine, componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg ) InvokeDebugAssertOutputHandlerUPP( componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewDebugComponentCallbackProc(userRoutine)          NewDebugComponentCallbackUPP(userRoutine)
+    #define NewDebugAssertOutputHandlerProc(userRoutine)        NewDebugAssertOutputHandlerUPP(userRoutine)
+    #define CallDebugComponentCallbackProc(userRoutine, optionSelectorNum, command, optionSetting) InvokeDebugComponentCallbackUPP(optionSelectorNum, command, optionSetting, userRoutine)
+    #define CallDebugAssertOutputHandlerProc(userRoutine, componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg) InvokeDebugAssertOutputHandlerUPP(componentSignature, options, assertionString, exceptionLabelString, errorString, fileName, lineNumber, value, outputMsg, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -1025,3 +1070,4 @@ inline DEFINE_API_C( void ) InvokeDebugAssertOutputHandlerUPP( OSType componentS
 #endif
 
 #endif /* __DEBUGGING__ */
+

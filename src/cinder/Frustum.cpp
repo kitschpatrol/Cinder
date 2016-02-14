@@ -26,32 +26,32 @@
 #include "cinder/Frustum.h"
 
 #if defined( CINDER_MSW )
-#undef NEAR
-#undef FAR
+	#undef NEAR
+	#undef FAR
 #endif
 
 namespace cinder {
 
-template <typename T>
+template<typename T>
 FrustumT<T>::FrustumT( const Camera &cam )
 {
 	// set planes using camera
 	set( cam );
 }
-
-template <typename T>
+	
+template<typename T>
 FrustumT<T>::FrustumT( const Vec3T &ntl, const Vec3T &ntr, const Vec3T &nbl, const Vec3T &nbr, const Vec3T &ftl, const Vec3T &ftr, const Vec3T &fbl, const Vec3T &fbr )
 {
 	set( ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr );
 }
 
-template <typename T>
+template<typename T>
 FrustumT<T>::FrustumT( const Mat4T &mat )
 {
 	set( mat );
 }
 
-template <typename T>
+template<typename T>
 void FrustumT<T>::set( const Camera &cam )
 {
 	vec3 ntl, ntr, nbl, nbr;
@@ -59,25 +59,25 @@ void FrustumT<T>::set( const Camera &cam )
 
 	vec3 ftl, ftr, fbl, fbr;
 	cam.getFarClipCoordinates( &ftl, &ftr, &fbl, &fbr );
-
+	
 	set( ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr );
 }
 
-template <typename T>
+template<typename T>
 void FrustumT<T>::set( const Camera &cam, const Vec3T &ntl, const Vec3T &ntr, const Vec3T &nbl, const Vec3T &nbr )
 {
 	Vec3T eye = Vec3T( cam.getEyePoint() );
-	T     farClip = cam.getFarClip();
+	T farClip = cam.getFarClip();
 
 	Vec3T ftl = normalize( ntl - eye ) * farClip;
 	Vec3T ftr = normalize( ntr - eye ) * farClip;
 	Vec3T fbl = normalize( nbl - eye ) * farClip;
 	Vec3T fbr = normalize( nbr - eye ) * farClip;
-
+	
 	set( ntl, ntr, nbl, nbr, ftl, ftr, fbl, fbr );
 }
-
-template <typename T>
+	
+template<typename T>
 void FrustumT<T>::set( const Vec3T &ntl, const Vec3T &ntr, const Vec3T &nbl, const Vec3T &nbr, const Vec3T &ftl, const Vec3T &ftr, const Vec3T &fbl, const Vec3T &fbr )
 {
 	mFrustumPlanes[TOP].set( ntr, ntl, ftl );
@@ -88,7 +88,7 @@ void FrustumT<T>::set( const Vec3T &ntl, const Vec3T &ntr, const Vec3T &nbl, con
 	mFrustumPlanes[FAR].set( ftr, ftl, fbl );
 }
 
-template <typename T>
+template<typename T>
 void FrustumT<T>::set( const Mat4T &mat )
 {
 	// Based on: Fast Extraction of Viewing Frustum Planes from the WorldView-Projection Matrix
@@ -101,18 +101,18 @@ void FrustumT<T>::set( const Mat4T &mat )
 	mFrustumPlanes[FAR].set( mat[0][3] - mat[0][2], mat[1][3] - mat[1][2], mat[2][3] - mat[2][2], -mat[3][3] + mat[3][2] );
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::contains( const Vec3T &loc ) const
 {
 	for( size_t i = 0; i < 6; ++i ) {
-		if( mFrustumPlanes[i].distance( loc ) < 0 )
+		if( mFrustumPlanes[i].distance(loc) < 0 )
 			return false;
 	}
 
 	return true;
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::contains( const Vec3T &center, T radius ) const
 {
 	T distance;
@@ -125,21 +125,21 @@ bool FrustumT<T>::contains( const Vec3T &center, T radius ) const
 	return true;
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::contains( const Vec3T &center, const Vec3T &size ) const
 {
-	vec3           halfSize = vec3( size ) * 0.5f;
+	vec3 halfSize = vec3( size ) * 0.5f;
 	AxisAlignedBox box( vec3( center ) - halfSize, vec3( center ) + halfSize );
 	return contains( box );
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::contains( const Sphere &sphere ) const
 {
 	return contains( Vec3T( sphere.getCenter() ), (T)sphere.getRadius() );
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::contains( const AxisAlignedBox &box ) const
 {
 	for( size_t i = 0; i < 6; ++i ) {
@@ -152,13 +152,13 @@ bool FrustumT<T>::contains( const AxisAlignedBox &box ) const
 	return true;
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::intersects( const Vec3T &loc ) const
 {
 	return contains( loc );
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::intersects( const Vec3T &center, T radius ) const
 {
 	T distance;
@@ -171,21 +171,21 @@ bool FrustumT<T>::intersects( const Vec3T &center, T radius ) const
 	return true;
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::intersects( const Vec3T &center, const Vec3T &size ) const
 {
-	vec3           halfSize = vec3( size ) * 0.5f;
+	vec3 halfSize = vec3( size ) * 0.5f;
 	AxisAlignedBox box( vec3( center ) - halfSize, vec3( center ) + halfSize );
 	return intersects( box );
 };
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::intersects( const Sphere &sphere ) const
 {
 	return intersects( Vec3T( sphere.getCenter() ), (T)sphere.getRadius() );
 }
 
-template <typename T>
+template<typename T>
 bool FrustumT<T>::intersects( const AxisAlignedBox &box ) const
 {
 	for( size_t i = 0; i < 6; ++i ) {

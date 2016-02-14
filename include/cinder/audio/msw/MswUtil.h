@@ -25,18 +25,15 @@
 
 #include "cinder/Stream.h"
 
-#include <Objidl.h>
 #include <memory>
+#include <Objidl.h>
 
 struct tWAVEFORMATEX;
 typedef struct tWAVEFORMATEX WAVEFORMATEX;
 
-namespace cinder {
-namespace audio {
-namespace msw {
+namespace cinder { namespace audio { namespace msw {
 
 //! return pointer type is actually a WAVEFORMATEXTENSIBLE, identifiable by the wFormat tag
 std::shared_ptr<::WAVEFORMATEX> interleavedFloatWaveFormat( size_t sampleRate, size_t numChannels );
-}
-}
-} // namespace cinder::audio::msw
+
+} } } // namespace cinder::audio::msw

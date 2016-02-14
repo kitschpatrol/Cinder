@@ -24,6 +24,9 @@
 #include <MacErrors.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,12 +40,13 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
+
 
 /*
    -------------------------------------------------------------------------------------------------
@@ -50,34 +54,34 @@ extern "C" {
    -------------------------------------------------------------------------------------------------
 */
 
-typedef struct OpaqueLocaleRef *LocaleRef;
-typedef UInt32                  LocalePartMask;
+typedef struct OpaqueLocaleRef*         LocaleRef;
+typedef UInt32                          LocalePartMask;
 enum {
-	/* bit set requests the following:*/
-	kLocaleLanguageMask = 1L << 0, /* ISO 639-1 or -2 language code (2 or 3 letters)*/
-	kLocaleLanguageVariantMask = 1L << 1, /* custom string for language variant*/
-	kLocaleScriptMask = 1L << 2, /* ISO 15924 script code (2 letters)*/
-	kLocaleScriptVariantMask = 1L << 3, /* custom string for script variant*/
-	kLocaleRegionMask = 1L << 4, /* ISO 3166 country/region code (2 letters)*/
-	kLocaleRegionVariantMask = 1L << 5, /* custom string for region variant*/
-	kLocaleAllPartsMask = 0x0000003F /* all of the above*/
+                                        /* bit set requests the following:*/
+  kLocaleLanguageMask           = 1L << 0, /* ISO 639-1 or -2 language code (2 or 3 letters)*/
+  kLocaleLanguageVariantMask    = 1L << 1, /* custom string for language variant*/
+  kLocaleScriptMask             = 1L << 2, /* ISO 15924 script code (2 letters)*/
+  kLocaleScriptVariantMask      = 1L << 3, /* custom string for script variant*/
+  kLocaleRegionMask             = 1L << 4, /* ISO 3166 country/region code (2 letters)*/
+  kLocaleRegionVariantMask      = 1L << 5, /* custom string for region variant*/
+  kLocaleAllPartsMask           = 0x0000003F /* all of the above*/
 };
 
-typedef FourCharCode LocaleOperationClass;
+typedef FourCharCode                    LocaleOperationClass;
 /* constants for LocaleOperationClass are in UnicodeUtilities interfaces*/
-typedef FourCharCode LocaleOperationVariant;
+typedef FourCharCode                    LocaleOperationVariant;
 struct LocaleAndVariant {
-	LocaleRef              locale;
-	LocaleOperationVariant opVariant;
+  LocaleRef           locale;
+  LocaleOperationVariant  opVariant;
 };
-typedef struct LocaleAndVariant LocaleAndVariant;
+typedef struct LocaleAndVariant         LocaleAndVariant;
 
-typedef UInt32 LocaleNameMask;
+typedef UInt32                          LocaleNameMask;
 enum {
-	/* bit set requests the following:*/
-	kLocaleNameMask = 1L << 0, /* name of locale*/
-	kLocaleOperationVariantNameMask = 1L << 1, /* name of LocaleOperationVariant*/
-	kLocaleAndVariantNameMask = 0x00000003 /* all of the above*/
+                                        /* bit set requests the following:*/
+  kLocaleNameMask               = 1L << 0, /* name of locale*/
+  kLocaleOperationVariantNameMask = 1L << 1, /* name of LocaleOperationVariant*/
+  kLocaleAndVariantNameMask     = 0x00000003 /* all of the above*/
 };
 
 /*
@@ -98,9 +102,10 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 LocaleRefFromLangOrRegionCode(
-    LangCode   lang,
-    RegionCode region,
-    LocaleRef *locale );
+  LangCode     lang,
+  RegionCode   region,
+  LocaleRef *  locale);
+
 
 /*
  *  LocaleRefFromLocaleString()
@@ -112,8 +117,9 @@ LocaleRefFromLangOrRegionCode(
  */
 EXTERN_API_C( OSStatus )
 LocaleRefFromLocaleString(
-    const char localeString[],
-    LocaleRef *locale );
+  const char   localeString[],
+  LocaleRef *  locale);
+
 
 /*
  *  LocaleRefGetPartString()
@@ -125,10 +131,11 @@ LocaleRefFromLocaleString(
  */
 EXTERN_API_C( OSStatus )
 LocaleRefGetPartString(
-    LocaleRef      locale,
-    LocalePartMask partMask,
-    ByteCount      maxStringLen,
-    char           partString[] );
+  LocaleRef        locale,
+  LocalePartMask   partMask,
+  ByteCount        maxStringLen,
+  char             partString[]);
+
 
 /*
  *  LocaleStringToLangAndRegionCodes()
@@ -140,9 +147,10 @@ LocaleRefGetPartString(
  */
 EXTERN_API_C( OSStatus )
 LocaleStringToLangAndRegionCodes(
-    const char  localeString[],
-    LangCode *  lang,
-    RegionCode *region );
+  const char    localeString[],
+  LangCode *    lang,
+  RegionCode *  region);
+
 
 /* Enumerate locales for a LocaleOperationClass */
 /*
@@ -155,8 +163,9 @@ LocaleStringToLangAndRegionCodes(
  */
 EXTERN_API_C( OSStatus )
 LocaleOperationCountLocales(
-    LocaleOperationClass opClass,
-    ItemCount *          localeCount );
+  LocaleOperationClass   opClass,
+  ItemCount *            localeCount);
+
 
 /*
  *  LocaleOperationGetLocales()
@@ -168,10 +177,11 @@ LocaleOperationCountLocales(
  */
 EXTERN_API_C( OSStatus )
 LocaleOperationGetLocales(
-    LocaleOperationClass opClass,
-    ItemCount            maxLocaleCount,
-    ItemCount *          actualLocaleCount,
-    LocaleAndVariant     localeVariantList[] );
+  LocaleOperationClass   opClass,
+  ItemCount              maxLocaleCount,
+  ItemCount *            actualLocaleCount,
+  LocaleAndVariant       localeVariantList[]);
+
 
 /* Get names for a locale (or a region's language)*/
 
@@ -185,13 +195,14 @@ LocaleOperationGetLocales(
  */
 EXTERN_API_C( OSStatus )
 LocaleGetName(
-    LocaleRef              locale,
-    LocaleOperationVariant opVariant,
-    LocaleNameMask         nameMask,
-    LocaleRef              displayLocale,
-    UniCharCount           maxNameLen,
-    UniCharCount *         actualNameLen,
-    UniChar                displayName[] );
+  LocaleRef                locale,
+  LocaleOperationVariant   opVariant,
+  LocaleNameMask           nameMask,
+  LocaleRef                displayLocale,
+  UniCharCount             maxNameLen,
+  UniCharCount *           actualNameLen,
+  UniChar                  displayName[]);
+
 
 /*
  *  LocaleCountNames()
@@ -203,10 +214,11 @@ LocaleGetName(
  */
 EXTERN_API_C( OSStatus )
 LocaleCountNames(
-    LocaleRef              locale,
-    LocaleOperationVariant opVariant,
-    LocaleNameMask         nameMask,
-    ItemCount *            nameCount );
+  LocaleRef                locale,
+  LocaleOperationVariant   opVariant,
+  LocaleNameMask           nameMask,
+  ItemCount *              nameCount);
+
 
 /*
  *  LocaleGetIndName()
@@ -218,14 +230,15 @@ LocaleCountNames(
  */
 EXTERN_API_C( OSStatus )
 LocaleGetIndName(
-    LocaleRef              locale,
-    LocaleOperationVariant opVariant,
-    LocaleNameMask         nameMask,
-    ItemCount              nameIndex,
-    UniCharCount           maxNameLen,
-    UniCharCount *         actualNameLen,
-    UniChar                displayName[],
-    LocaleRef *            displayLocale );
+  LocaleRef                locale,
+  LocaleOperationVariant   opVariant,
+  LocaleNameMask           nameMask,
+  ItemCount                nameIndex,
+  UniCharCount             maxNameLen,
+  UniCharCount *           actualNameLen,
+  UniChar                  displayName[],
+  LocaleRef *              displayLocale);
+
 
 /*
  *  LocaleGetRegionLanguageName()
@@ -237,8 +250,9 @@ LocaleGetIndName(
  */
 EXTERN_API_C( OSStatus )
 LocaleGetRegionLanguageName(
-    RegionCode region,
-    Str255     languageName );
+  RegionCode   region,
+  Str255       languageName);
+
 
 /* Get names for a LocaleOperationClass*/
 /*
@@ -251,11 +265,12 @@ LocaleGetRegionLanguageName(
  */
 EXTERN_API_C( OSStatus )
 LocaleOperationGetName(
-    LocaleOperationClass opClass,
-    LocaleRef            displayLocale,
-    UniCharCount         maxNameLen,
-    UniCharCount *       actualNameLen,
-    UniChar              displayName[] );
+  LocaleOperationClass   opClass,
+  LocaleRef              displayLocale,
+  UniCharCount           maxNameLen,
+  UniCharCount *         actualNameLen,
+  UniChar                displayName[]);
+
 
 /*
  *  LocaleOperationCountNames()
@@ -267,8 +282,9 @@ LocaleOperationGetName(
  */
 EXTERN_API_C( OSStatus )
 LocaleOperationCountNames(
-    LocaleOperationClass opClass,
-    ItemCount *          nameCount );
+  LocaleOperationClass   opClass,
+  ItemCount *            nameCount);
+
 
 /*
  *  LocaleOperationGetIndName()
@@ -280,19 +296,21 @@ LocaleOperationCountNames(
  */
 EXTERN_API_C( OSStatus )
 LocaleOperationGetIndName(
-    LocaleOperationClass opClass,
-    ItemCount            nameIndex,
-    UniCharCount         maxNameLen,
-    UniCharCount *       actualNameLen,
-    UniChar              displayName[],
-    LocaleRef *          displayLocale );
+  LocaleOperationClass   opClass,
+  ItemCount              nameIndex,
+  UniCharCount           maxNameLen,
+  UniCharCount *         actualNameLen,
+  UniChar                displayName[],
+  LocaleRef *            displayLocale);
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -306,3 +324,4 @@ LocaleOperationGetIndName(
 #endif
 
 #endif /* __MACLOCALES__ */
+

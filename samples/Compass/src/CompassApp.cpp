@@ -1,10 +1,10 @@
 #include "cinder/app/App.h"
-#include "cinder/Camera.h"
-#include "cinder/Log.h"
-#include "cinder/MotionManager.h"
-#include "cinder/Utilities.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Camera.h"
+#include "cinder/MotionManager.h"
+#include "cinder/Utilities.h"
+#include "cinder/Log.h"
 
 #include <map>
 
@@ -29,22 +29,22 @@ class CompassApp : public App {
 
 	void drawFps();
 
-	CameraPersp    mCam;
-	gl::TextureRef mCardinalTex;
-	map<char, ivec2> mCardinalPositions;
-	ivec2 mCardinalSize;
+	CameraPersp			mCam;
+	gl::TextureRef		mCardinalTex;
+	map<char, ivec2>	mCardinalPositions;
+	ivec2				mCardinalSize;
 
-	gl::BatchRef mSphereBatch;
+	gl::BatchRef		mSphereBatch;
 };
 
 void CompassApp::setup()
 {
 	getSignalSupportedOrientations().connect( [] { return InterfaceOrientation::All; } );
 
-	if( !MotionManager::isNorthReliable() )
+	if( ! MotionManager::isNorthReliable() )
 		CI_LOG_W( "North is not dependable on your device." );
 
-	MotionManager::enable( 60.0f );
+    MotionManager::enable( 60.0f );
 
 	mCam.setEyePoint( vec3( 0 ) );
 
@@ -67,11 +67,11 @@ void CompassApp::setup()
 
 void CompassApp::resize()
 {
-	bool  isPortrait = getWindowHeight() > getWindowWidth();
-	float adjustedViewWidth = ( isPortrait ? kHorizontalSize : ( kHorizontalSize / kTargetSize ) * getWindowAspectRatio() );
+	bool isPortrait = getWindowHeight() > getWindowWidth();
+	float adjustedViewWidth = ( isPortrait ? kHorizontalSize : (kHorizontalSize / kTargetSize) * getWindowAspectRatio() );
 	float theta = 2.0f * math<float>::atan2( adjustedViewWidth / 2.0f, kTargetDistance );
 
-	mCam.setPerspective( toDegrees( theta ), getWindowAspectRatio(), 1, 1000 );
+	mCam.setPerspective( toDegrees( theta ) , getWindowAspectRatio(), 1, 1000 );
 }
 
 void CompassApp::update()
@@ -84,18 +84,18 @@ void CompassApp::draw()
 	gl::clear();
 	gl::color( Color::white() );
 
-	gl::pushMatrices();
-	gl::setMatrices( mCam );
+    gl::pushMatrices();
+    gl::setMatrices( mCam );
 
 	mSphereBatch->draw();
 
 	static const float kD = kTargetDistance;
-	drawCardinalTex( 'N', vec3( 0, 0, -kD ), vec3( 0, M_PI, 0 ) );
-	drawCardinalTex( 'S', vec3( 0, 0, kD ), vec3( 0, 0, 0 ) );
-	drawCardinalTex( 'E', vec3( kD, 0, 0 ), vec3( 0, M_PI / 2, 0 ) );
-	drawCardinalTex( 'W', vec3( -kD, 0, 0 ), vec3( 0, -M_PI / 2, 0 ) );
-	drawCardinalTex( 'U', vec3( 0, kD, 0 ), vec3( -M_PI / 2, 0, 0 ) );
-	drawCardinalTex( 'D', vec3( 0, -kD, 0 ), vec3( M_PI / 2, 0, 0 ) );
+	drawCardinalTex( 'N', vec3(  0,  0, -kD ),	vec3(  0,	  M_PI,	  0 ) );
+	drawCardinalTex( 'S', vec3(  0,  0,  kD ),	vec3(  0,	   0,	  0 ) );
+	drawCardinalTex( 'E', vec3(  kD, 0,  0 ),	vec3(  0,	  M_PI/2, 0 ) );
+	drawCardinalTex( 'W', vec3( -kD, 0,  0 ),	vec3(  0,	 -M_PI/2, 0 ) );
+	drawCardinalTex( 'U', vec3(  0,  kD, 0 ),	vec3( -M_PI/2, 0,     0 ) );
+	drawCardinalTex( 'D', vec3(  0, -kD, 0 ),	vec3(  M_PI/2, 0,     0 ) );
 
 	gl::popMatrices();
 
@@ -105,18 +105,18 @@ void CompassApp::draw()
 void CompassApp::drawCardinalTex( char d, const vec3 &location, const vec3 &localRotation )
 {
 	const float kRectHalfWidth = kTargetSize / 2.0f;
-	Rectf       destRect( kRectHalfWidth, kRectHalfWidth, -kRectHalfWidth, -kRectHalfWidth );
-	ivec2       texPos = mCardinalPositions[d];
-	Area        srcArea( texPos.x, texPos.y, texPos.x + mCardinalSize.x, texPos.y + mCardinalSize.y );
+	Rectf destRect( kRectHalfWidth, kRectHalfWidth, -kRectHalfWidth, -kRectHalfWidth );
+	ivec2 texPos = mCardinalPositions[d];
+	Area srcArea( texPos.x, texPos.y, texPos.x + mCardinalSize.x, texPos.y + mCardinalSize.y);
 
 	gl::pushModelView();
 
 	gl::translate( location );
 
 #if 1
-	gl::rotate( angleAxis( localRotation.x, vec3( 1, 0, 0 ) ) );
-	gl::rotate( angleAxis( localRotation.y, vec3( 0, 1, 0 ) ) );
-	gl::rotate( angleAxis( localRotation.z, vec3( 0, 0, 1 ) ) );
+	gl::rotate( angleAxis( localRotation.x, vec3(1,0,0) ) );
+	gl::rotate( angleAxis( localRotation.y, vec3(0,1,0) ) );
+	gl::rotate( angleAxis( localRotation.z, vec3(0,0,1) ) );
 #else
 	// draw billboarded, flip to face eye point
 	gl::rotate( mCam.getOrientation() );
@@ -131,7 +131,7 @@ void CompassApp::drawCardinalTex( char d, const vec3 &location, const vec3 &loca
 void CompassApp::drawFps()
 {
 	gl::enableAlphaBlending();
-	gl::drawStringRight( toString( floor( getAverageFps() ) ) + " fps", vec2( getWindowWidth(), 40.0f ), Color( 0, 0, 1 ), Font( "Helvetica", 30 ) );
+	gl::drawStringRight( toString( floor(getAverageFps()) ) + " fps", vec2( getWindowWidth(), 40.0f), Color( 0, 0, 1 ), Font( "Helvetica", 30 ) );
 	gl::disableAlphaBlending();
 }
 

@@ -1,26 +1,26 @@
 #include "cinder/app/App.h"
-#include "cinder/Camera.h"
-#include "cinder/Capture.h"
-#include "cinder/Log.h"
-#include "cinder/Surface.h"
-#include "cinder/Text.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Surface.h"
+#include "cinder/Capture.h"
+#include "cinder/Camera.h"
+#include "cinder/Text.h"
+#include "cinder/Log.h"
 
 using namespace ci;
 using namespace ci::app;
 
 class CaptureCubeApp : public App {
-  public:
-	void setup() override;
-	void resize() override;
-	void update() override;
-	void draw() override;
-
-	CameraPersp      mCam;
-	CaptureRef       mCapture;
-	gl::Texture2dRef mTexture;
-	mat4             mCubeRotation;
+  public:	
+	void	setup() override;
+	void	resize() override;
+	void	update() override;
+	void	draw() override;
+	
+	CameraPersp			mCam;
+	CaptureRef			mCapture;
+	gl::Texture2dRef	mTexture;
+	mat4				mCubeRotation;
 };
 
 void CaptureCubeApp::setup()
@@ -30,9 +30,9 @@ void CaptureCubeApp::setup()
 		mCapture->start();
 	}
 	catch( CaptureExc &exc ) {
-		CI_LOG_EXCEPTION( "failed to initialize the Capture: ", exc );
+	    CI_LOG_EXCEPTION( "failed to initialize the Capture: ", exc );
 
-		// create a warning texture
+	    // create a warning texture
 		TextLayout layout;
 		layout.clear( Color( 0.3f, 0.3f, 0.3f ) );
 		layout.setColor( Color( 1, 1, 1 ) );
@@ -41,7 +41,7 @@ void CaptureCubeApp::setup()
 		layout.addCenteredLine( "Detected" );
 		mTexture = gl::Texture2d::create( layout.render() );
 	}
-
+	
 	mCam.lookAt( vec3( 3, 2, -3 ), vec3( 0 ) );
 	gl::enableDepthRead();
 	gl::enableDepthWrite();
@@ -66,7 +66,7 @@ void CaptureCubeApp::draw()
 {
 	gl::clear( Color::black() );
 
-	if( !mTexture )
+	if( ! mTexture )
 		return;
 
 	gl::bindStockShader( gl::ShaderDef().texture() );

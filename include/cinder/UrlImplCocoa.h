@@ -26,12 +26,13 @@
 #include "cinder/Url.h"
 
 #if defined( __OBJC__ )
-@class NSThread;
-@class IStreamUrlImplCocoaDelegate;
+	@class NSThread;
+	@class IStreamUrlImplCocoaDelegate;
 #else
-class NSThread;
-class IStreamUrlImplCocoaDelegate;
+	class NSThread;
+	class IStreamUrlImplCocoaDelegate;
 #endif
+
 
 namespace cinder {
 
@@ -40,20 +41,20 @@ class IStreamUrlImplCocoa : public IStreamUrlImpl {
 	IStreamUrlImplCocoa( const std::string &url, const std::string &user, const std::string &password, const UrlOptions &options );
 	~IStreamUrlImplCocoa();
 
-	virtual size_t readDataAvailable( void *dest, size_t maxSize );
-	virtual void seekAbsolute( off_t absoluteOffset );
-	virtual void seekRelative( off_t relativeOffset );
-	virtual off_t tell() const;
-	virtual off_t size() const;
-
-	virtual bool isEof() const;
-	virtual void IORead( void *t, size_t size );
+	virtual size_t		readDataAvailable( void *dest, size_t maxSize );
+	virtual void		seekAbsolute( off_t absoluteOffset );
+	virtual void		seekRelative( off_t relativeOffset );
+	virtual off_t		tell() const;
+	virtual off_t		size() const;
+	
+	virtual bool		isEof() const;
+	virtual void		IORead( void *t, size_t size );
 
   private:
-	void fillBuffer( int wantBytes ) const;
+	void				fillBuffer( int wantBytes ) const;
 
-	NSThread *                   mThread;
-	IStreamUrlImplCocoaDelegate *mDelegate;
+	NSThread						*mThread;
+	IStreamUrlImplCocoaDelegate		*mDelegate;	
 };
 
 } // namespace cinder

@@ -28,6 +28,9 @@
 #include <MixedMode.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,79 +44,80 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /* Unicode conversion contexts: */
-typedef struct OpaqueTextToUnicodeInfo *   TextToUnicodeInfo;
-typedef struct OpaqueUnicodeToTextInfo *   UnicodeToTextInfo;
-typedef struct OpaqueUnicodeToTextRunInfo *UnicodeToTextRunInfo;
-typedef const TextToUnicodeInfo            ConstTextToUnicodeInfo;
-typedef const UnicodeToTextInfo            ConstUnicodeToTextInfo;
+typedef struct OpaqueTextToUnicodeInfo*  TextToUnicodeInfo;
+typedef struct OpaqueUnicodeToTextInfo*  UnicodeToTextInfo;
+typedef struct OpaqueUnicodeToTextRunInfo*  UnicodeToTextRunInfo;
+typedef const TextToUnicodeInfo         ConstTextToUnicodeInfo;
+typedef const UnicodeToTextInfo         ConstUnicodeToTextInfo;
 /* UnicodeMapVersion type & values */
-typedef SInt32 UnicodeMapVersion;
+typedef SInt32                          UnicodeMapVersion;
 enum {
-	kUnicodeUseLatestMapping = -1,
-	kUnicodeUseHFSPlusMapping = 4
+  kUnicodeUseLatestMapping      = -1,
+  kUnicodeUseHFSPlusMapping     = 4
 };
 
 /* Types used in conversion */
 struct UnicodeMapping {
-	TextEncoding      unicodeEncoding;
-	TextEncoding      otherEncoding;
-	UnicodeMapVersion mappingVersion;
+  TextEncoding        unicodeEncoding;
+  TextEncoding        otherEncoding;
+  UnicodeMapVersion   mappingVersion;
 };
-typedef struct UnicodeMapping UnicodeMapping;
-typedef UnicodeMapping *      UnicodeMappingPtr;
-typedef const UnicodeMapping *ConstUnicodeMappingPtr;
+typedef struct UnicodeMapping           UnicodeMapping;
+typedef UnicodeMapping *                UnicodeMappingPtr;
+typedef const UnicodeMapping *          ConstUnicodeMappingPtr;
 /* Control flags for ConvertFromUnicodeToText and ConvertFromTextToUnicode */
 enum {
-	kUnicodeUseFallbacksBit = 0,
-	kUnicodeKeepInfoBit = 1,
-	kUnicodeDirectionalityBits = 2,
-	kUnicodeVerticalFormBit = 4,
-	kUnicodeLooseMappingsBit = 5,
-	kUnicodeStringUnterminatedBit = 6,
-	kUnicodeTextRunBit = 7,
-	kUnicodeKeepSameEncodingBit = 8,
-	kUnicodeForceASCIIRangeBit = 9,
-	kUnicodeNoHalfwidthCharsBit = 10,
-	kUnicodeTextRunHeuristicsBit = 11,
-	kUnicodeMapLineFeedToReturnBit = 12
+  kUnicodeUseFallbacksBit       = 0,
+  kUnicodeKeepInfoBit           = 1,
+  kUnicodeDirectionalityBits    = 2,
+  kUnicodeVerticalFormBit       = 4,
+  kUnicodeLooseMappingsBit      = 5,
+  kUnicodeStringUnterminatedBit = 6,
+  kUnicodeTextRunBit            = 7,
+  kUnicodeKeepSameEncodingBit   = 8,
+  kUnicodeForceASCIIRangeBit    = 9,
+  kUnicodeNoHalfwidthCharsBit   = 10,
+  kUnicodeTextRunHeuristicsBit  = 11,
+  kUnicodeMapLineFeedToReturnBit = 12
 };
 
 enum {
-	kUnicodeUseFallbacksMask = 1L << kUnicodeUseFallbacksBit,
-	kUnicodeKeepInfoMask = 1L << kUnicodeKeepInfoBit,
-	kUnicodeDirectionalityMask = 3L << kUnicodeDirectionalityBits,
-	kUnicodeVerticalFormMask = 1L << kUnicodeVerticalFormBit,
-	kUnicodeLooseMappingsMask = 1L << kUnicodeLooseMappingsBit,
-	kUnicodeStringUnterminatedMask = 1L << kUnicodeStringUnterminatedBit,
-	kUnicodeTextRunMask = 1L << kUnicodeTextRunBit,
-	kUnicodeKeepSameEncodingMask = 1L << kUnicodeKeepSameEncodingBit,
-	kUnicodeForceASCIIRangeMask = 1L << kUnicodeForceASCIIRangeBit,
-	kUnicodeNoHalfwidthCharsMask = 1L << kUnicodeNoHalfwidthCharsBit,
-	kUnicodeTextRunHeuristicsMask = 1L << kUnicodeTextRunHeuristicsBit,
-	kUnicodeMapLineFeedToReturnMask = 1L << kUnicodeMapLineFeedToReturnBit
+  kUnicodeUseFallbacksMask      = 1L << kUnicodeUseFallbacksBit,
+  kUnicodeKeepInfoMask          = 1L << kUnicodeKeepInfoBit,
+  kUnicodeDirectionalityMask    = 3L << kUnicodeDirectionalityBits,
+  kUnicodeVerticalFormMask      = 1L << kUnicodeVerticalFormBit,
+  kUnicodeLooseMappingsMask     = 1L << kUnicodeLooseMappingsBit,
+  kUnicodeStringUnterminatedMask = 1L << kUnicodeStringUnterminatedBit,
+  kUnicodeTextRunMask           = 1L << kUnicodeTextRunBit,
+  kUnicodeKeepSameEncodingMask  = 1L << kUnicodeKeepSameEncodingBit,
+  kUnicodeForceASCIIRangeMask   = 1L << kUnicodeForceASCIIRangeBit,
+  kUnicodeNoHalfwidthCharsMask  = 1L << kUnicodeNoHalfwidthCharsBit,
+  kUnicodeTextRunHeuristicsMask = 1L << kUnicodeTextRunHeuristicsBit,
+  kUnicodeMapLineFeedToReturnMask = 1L << kUnicodeMapLineFeedToReturnBit
 };
 
 /* Values for kUnicodeDirectionality field */
 enum {
-	kUnicodeDefaultDirection = 0,
-	kUnicodeLeftToRight = 1,
-	kUnicodeRightToLeft = 2
+  kUnicodeDefaultDirection      = 0,
+  kUnicodeLeftToRight           = 1,
+  kUnicodeRightToLeft           = 2
 };
 
 /* Directionality masks for control flags */
 enum {
-	kUnicodeDefaultDirectionMask = kUnicodeDefaultDirection << kUnicodeDirectionalityBits,
-	kUnicodeLeftToRightMask = kUnicodeLeftToRight << kUnicodeDirectionalityBits,
-	kUnicodeRightToLeftMask = kUnicodeRightToLeft << kUnicodeDirectionalityBits
+  kUnicodeDefaultDirectionMask  = kUnicodeDefaultDirection << kUnicodeDirectionalityBits,
+  kUnicodeLeftToRightMask       = kUnicodeLeftToRight << kUnicodeDirectionalityBits,
+  kUnicodeRightToLeftMask       = kUnicodeRightToLeft << kUnicodeDirectionalityBits
 };
+
 
 /* Control flags for TruncateForUnicodeToText: */
 /*
@@ -137,44 +141,45 @@ enum {
 
 /* Filter bits for filter field in QueryUnicodeMappings and CountUnicodeMappings: */
 enum {
-	kUnicodeMatchUnicodeBaseBit = 0,
-	kUnicodeMatchUnicodeVariantBit = 1,
-	kUnicodeMatchUnicodeFormatBit = 2,
-	kUnicodeMatchOtherBaseBit = 3,
-	kUnicodeMatchOtherVariantBit = 4,
-	kUnicodeMatchOtherFormatBit = 5
+  kUnicodeMatchUnicodeBaseBit   = 0,
+  kUnicodeMatchUnicodeVariantBit = 1,
+  kUnicodeMatchUnicodeFormatBit = 2,
+  kUnicodeMatchOtherBaseBit     = 3,
+  kUnicodeMatchOtherVariantBit  = 4,
+  kUnicodeMatchOtherFormatBit   = 5
 };
 
 enum {
-	kUnicodeMatchUnicodeBaseMask = 1L << kUnicodeMatchUnicodeBaseBit,
-	kUnicodeMatchUnicodeVariantMask = 1L << kUnicodeMatchUnicodeVariantBit,
-	kUnicodeMatchUnicodeFormatMask = 1L << kUnicodeMatchUnicodeFormatBit,
-	kUnicodeMatchOtherBaseMask = 1L << kUnicodeMatchOtherBaseBit,
-	kUnicodeMatchOtherVariantMask = 1L << kUnicodeMatchOtherVariantBit,
-	kUnicodeMatchOtherFormatMask = 1L << kUnicodeMatchOtherFormatBit
+  kUnicodeMatchUnicodeBaseMask  = 1L << kUnicodeMatchUnicodeBaseBit,
+  kUnicodeMatchUnicodeVariantMask = 1L << kUnicodeMatchUnicodeVariantBit,
+  kUnicodeMatchUnicodeFormatMask = 1L << kUnicodeMatchUnicodeFormatBit,
+  kUnicodeMatchOtherBaseMask    = 1L << kUnicodeMatchOtherBaseBit,
+  kUnicodeMatchOtherVariantMask = 1L << kUnicodeMatchOtherVariantBit,
+  kUnicodeMatchOtherFormatMask  = 1L << kUnicodeMatchOtherFormatBit
 };
 
 /* Control flags for SetFallbackUnicodeToText */
 enum {
-	kUnicodeFallbackSequencingBits = 0
+  kUnicodeFallbackSequencingBits = 0
 };
 
 enum {
-	kUnicodeFallbackSequencingMask = 3L << kUnicodeFallbackSequencingBits,
-	kUnicodeFallbackInterruptSafeMask = 1L << 2 /* To indicate that caller fallback routine doesn't move memory*/
+  kUnicodeFallbackSequencingMask = 3L << kUnicodeFallbackSequencingBits,
+  kUnicodeFallbackInterruptSafeMask = 1L << 2 /* To indicate that caller fallback routine doesn't move memory*/
 };
 
 /* values for kUnicodeFallbackSequencing field */
 enum {
-	kUnicodeFallbackDefaultOnly = 0L,
-	kUnicodeFallbackCustomOnly = 1L,
-	kUnicodeFallbackDefaultFirst = 2L,
-	kUnicodeFallbackCustomFirst = 3L
+  kUnicodeFallbackDefaultOnly   = 0L,
+  kUnicodeFallbackCustomOnly    = 1L,
+  kUnicodeFallbackDefaultFirst  = 2L,
+  kUnicodeFallbackCustomFirst   = 3L
 };
 
+
 /* Caller-supplied entry point to a fallback handler */
-typedef CALLBACK_API( OSStatus, UnicodeToTextFallbackProcPtr )( UniChar *iSrcUniStr, ByteCount iSrcUniStrLen, ByteCount *oSrcConvLen, TextPtr oDestStr, ByteCount iDestStrLen, ByteCount *oDestConvLen, LogicalAddress iInfoPtr, ConstUnicodeMappingPtr iUnicodeMappingPtr );
-typedef STACK_UPP_TYPE( UnicodeToTextFallbackProcPtr ) UnicodeToTextFallbackUPP;
+typedef CALLBACK_API( OSStatus , UnicodeToTextFallbackProcPtr )(UniChar *iSrcUniStr, ByteCount iSrcUniStrLen, ByteCount *oSrcConvLen, TextPtr oDestStr, ByteCount iDestStrLen, ByteCount *oDestConvLen, LogicalAddress iInfoPtr, ConstUnicodeMappingPtr iUnicodeMappingPtr);
+typedef STACK_UPP_TYPE(UnicodeToTextFallbackProcPtr)            UnicodeToTextFallbackUPP;
 /*
  *  NewUnicodeToTextFallbackUPP()
  *  
@@ -184,17 +189,14 @@ typedef STACK_UPP_TYPE( UnicodeToTextFallbackProcPtr ) UnicodeToTextFallbackUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UnicodeToTextFallbackUPP )
-NewUnicodeToTextFallbackUPP( UnicodeToTextFallbackProcPtr userRoutine );
+NewUnicodeToTextFallbackUPP(UnicodeToTextFallbackProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppUnicodeToTextFallbackProcInfo = 0x003FFFF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( UnicodeToTextFallbackUPP ) NewUnicodeToTextFallbackUPP( UnicodeToTextFallbackProcPtr userRoutine )
-{
-	return (UnicodeToTextFallbackUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppUnicodeToTextFallbackProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewUnicodeToTextFallbackUPP( userRoutine ) ( UnicodeToTextFallbackUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppUnicodeToTextFallbackProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppUnicodeToTextFallbackProcInfo = 0x003FFFF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(UnicodeToTextFallbackUPP) NewUnicodeToTextFallbackUPP(UnicodeToTextFallbackProcPtr userRoutine) { return (UnicodeToTextFallbackUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppUnicodeToTextFallbackProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewUnicodeToTextFallbackUPP(userRoutine) (UnicodeToTextFallbackUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppUnicodeToTextFallbackProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -206,16 +208,13 @@ inline DEFINE_API_C( UnicodeToTextFallbackUPP ) NewUnicodeToTextFallbackUPP( Uni
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeUnicodeToTextFallbackUPP( UnicodeToTextFallbackUPP userUPP );
+DisposeUnicodeToTextFallbackUPP(UnicodeToTextFallbackUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeUnicodeToTextFallbackUPP( UnicodeToTextFallbackUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeUnicodeToTextFallbackUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeUnicodeToTextFallbackUPP(UnicodeToTextFallbackUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeUnicodeToTextFallbackUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -228,30 +227,27 @@ inline DEFINE_API_C( void ) DisposeUnicodeToTextFallbackUPP( UnicodeToTextFallba
  */
 EXTERN_API_C( OSStatus )
 InvokeUnicodeToTextFallbackUPP(
-    UniChar *                iSrcUniStr,
-    ByteCount                iSrcUniStrLen,
-    ByteCount *              oSrcConvLen,
-    TextPtr                  oDestStr,
-    ByteCount                iDestStrLen,
-    ByteCount *              oDestConvLen,
-    LogicalAddress           iInfoPtr,
-    ConstUnicodeMappingPtr   iUnicodeMappingPtr,
-    UnicodeToTextFallbackUPP userUPP );
+  UniChar *                 iSrcUniStr,
+  ByteCount                 iSrcUniStrLen,
+  ByteCount *               oSrcConvLen,
+  TextPtr                   oDestStr,
+  ByteCount                 iDestStrLen,
+  ByteCount *               oDestConvLen,
+  LogicalAddress            iInfoPtr,
+  ConstUnicodeMappingPtr    iUnicodeMappingPtr,
+  UnicodeToTextFallbackUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeUnicodeToTextFallbackUPP( UniChar *iSrcUniStr, ByteCount iSrcUniStrLen, ByteCount *oSrcConvLen, TextPtr oDestStr, ByteCount iDestStrLen, ByteCount *oDestConvLen, LogicalAddress iInfoPtr, ConstUnicodeMappingPtr iUnicodeMappingPtr, UnicodeToTextFallbackUPP userUPP )
-{
-	return (OSStatus)CALL_EIGHT_PARAMETER_UPP( userUPP, uppUnicodeToTextFallbackProcInfo, iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr );
-}
-#else
-#define InvokeUnicodeToTextFallbackUPP( iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr, userUPP ) ( OSStatus ) CALL_EIGHT_PARAMETER_UPP( ( userUPP ), uppUnicodeToTextFallbackProcInfo, ( iSrcUniStr ), ( iSrcUniStrLen ), ( oSrcConvLen ), ( oDestStr ), ( iDestStrLen ), ( oDestConvLen ), ( iInfoPtr ), ( iUnicodeMappingPtr ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeUnicodeToTextFallbackUPP(UniChar * iSrcUniStr, ByteCount iSrcUniStrLen, ByteCount * oSrcConvLen, TextPtr oDestStr, ByteCount iDestStrLen, ByteCount * oDestConvLen, LogicalAddress iInfoPtr, ConstUnicodeMappingPtr iUnicodeMappingPtr, UnicodeToTextFallbackUPP userUPP) { return (OSStatus)CALL_EIGHT_PARAMETER_UPP(userUPP, uppUnicodeToTextFallbackProcInfo, iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr); }
+  #else
+    #define InvokeUnicodeToTextFallbackUPP(iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr, userUPP) (OSStatus)CALL_EIGHT_PARAMETER_UPP((userUPP), uppUnicodeToTextFallbackProcInfo, (iSrcUniStr), (iSrcUniStrLen), (oSrcConvLen), (oDestStr), (iDestStrLen), (oDestConvLen), (iInfoPtr), (iUnicodeMappingPtr))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewUnicodeToTextFallbackProc( userRoutine ) NewUnicodeToTextFallbackUPP( userRoutine )
-#define CallUnicodeToTextFallbackProc( userRoutine, iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr ) InvokeUnicodeToTextFallbackUPP( iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewUnicodeToTextFallbackProc(userRoutine)           NewUnicodeToTextFallbackUPP(userRoutine)
+    #define CallUnicodeToTextFallbackProc(userRoutine, iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr) InvokeUnicodeToTextFallbackUPP(iSrcUniStr, iSrcUniStrLen, oSrcConvLen, oDestStr, iDestStrLen, oDestConvLen, iInfoPtr, iUnicodeMappingPtr, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
 /* Function prototypes */
@@ -270,7 +266,8 @@ inline DEFINE_API_C( OSStatus ) InvokeUnicodeToTextFallbackUPP( UniChar *iSrcUni
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-InitializeUnicodeConverter( StringPtr TECFileName );
+InitializeUnicodeConverter(StringPtr TECFileName);
+
 
 /*
  *  TerminateUnicodeConverter()
@@ -281,12 +278,13 @@ InitializeUnicodeConverter( StringPtr TECFileName );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-TerminateUnicodeConverter( void );
+TerminateUnicodeConverter(void);
+
 
 /* Note: the old names (InitializeUnicode, TerminateUnicode) for the above are still exported.*/
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
-#endif /* TARGET_CPU_68K && !TARGET_RT_MAC_CFM */
+#endif  /* TARGET_CPU_68K && !TARGET_RT_MAC_CFM */
 
 /*
  *  CreateTextToUnicodeInfo()
@@ -298,8 +296,9 @@ TerminateUnicodeConverter( void );
  */
 EXTERN_API( OSStatus )
 CreateTextToUnicodeInfo(
-    ConstUnicodeMappingPtr iUnicodeMapping,
-    TextToUnicodeInfo *    oTextToUnicodeInfo );
+  ConstUnicodeMappingPtr   iUnicodeMapping,
+  TextToUnicodeInfo *      oTextToUnicodeInfo);
+
 
 /*
  *  CreateTextToUnicodeInfoByEncoding()
@@ -311,8 +310,9 @@ CreateTextToUnicodeInfo(
  */
 EXTERN_API( OSStatus )
 CreateTextToUnicodeInfoByEncoding(
-    TextEncoding       iEncoding,
-    TextToUnicodeInfo *oTextToUnicodeInfo );
+  TextEncoding         iEncoding,
+  TextToUnicodeInfo *  oTextToUnicodeInfo);
+
 
 /*
  *  CreateUnicodeToTextInfo()
@@ -324,8 +324,9 @@ CreateTextToUnicodeInfoByEncoding(
  */
 EXTERN_API( OSStatus )
 CreateUnicodeToTextInfo(
-    ConstUnicodeMappingPtr iUnicodeMapping,
-    UnicodeToTextInfo *    oUnicodeToTextInfo );
+  ConstUnicodeMappingPtr   iUnicodeMapping,
+  UnicodeToTextInfo *      oUnicodeToTextInfo);
+
 
 /*
  *  CreateUnicodeToTextInfoByEncoding()
@@ -337,8 +338,9 @@ CreateUnicodeToTextInfo(
  */
 EXTERN_API( OSStatus )
 CreateUnicodeToTextInfoByEncoding(
-    TextEncoding       iEncoding,
-    UnicodeToTextInfo *oUnicodeToTextInfo );
+  TextEncoding         iEncoding,
+  UnicodeToTextInfo *  oUnicodeToTextInfo);
+
 
 /*
  *  CreateUnicodeToTextRunInfo()
@@ -350,9 +352,10 @@ CreateUnicodeToTextInfoByEncoding(
  */
 EXTERN_API( OSStatus )
 CreateUnicodeToTextRunInfo(
-    ItemCount             iNumberOfMappings,
-    const UnicodeMapping  iUnicodeMappings[],
-    UnicodeToTextRunInfo *oUnicodeToTextInfo );
+  ItemCount               iNumberOfMappings,
+  const UnicodeMapping    iUnicodeMappings[],
+  UnicodeToTextRunInfo *  oUnicodeToTextInfo);
+
 
 /*
  *  CreateUnicodeToTextRunInfoByEncoding()
@@ -364,9 +367,10 @@ CreateUnicodeToTextRunInfo(
  */
 EXTERN_API( OSStatus )
 CreateUnicodeToTextRunInfoByEncoding(
-    ItemCount             iNumberOfEncodings,
-    const TextEncoding    iEncodings[],
-    UnicodeToTextRunInfo *oUnicodeToTextInfo );
+  ItemCount               iNumberOfEncodings,
+  const TextEncoding      iEncodings[],
+  UnicodeToTextRunInfo *  oUnicodeToTextInfo);
+
 
 /*
  *  CreateUnicodeToTextRunInfoByScriptCode()
@@ -378,9 +382,10 @@ CreateUnicodeToTextRunInfoByEncoding(
  */
 EXTERN_API( OSStatus )
 CreateUnicodeToTextRunInfoByScriptCode(
-    ItemCount             iNumberOfScriptCodes,
-    const ScriptCode      iScripts[],
-    UnicodeToTextRunInfo *oUnicodeToTextInfo );
+  ItemCount               iNumberOfScriptCodes,
+  const ScriptCode        iScripts[],
+  UnicodeToTextRunInfo *  oUnicodeToTextInfo);
+
 
 /* Change the TextToUnicodeInfo to another mapping. */
 /*
@@ -393,8 +398,9 @@ CreateUnicodeToTextRunInfoByScriptCode(
  */
 EXTERN_API( OSStatus )
 ChangeTextToUnicodeInfo(
-    TextToUnicodeInfo      ioTextToUnicodeInfo,
-    ConstUnicodeMappingPtr iUnicodeMapping );
+  TextToUnicodeInfo        ioTextToUnicodeInfo,
+  ConstUnicodeMappingPtr   iUnicodeMapping);
+
 
 /* Change the UnicodeToTextInfo to another mapping. */
 /*
@@ -407,8 +413,10 @@ ChangeTextToUnicodeInfo(
  */
 EXTERN_API( OSStatus )
 ChangeUnicodeToTextInfo(
-    UnicodeToTextInfo      ioUnicodeToTextInfo,
-    ConstUnicodeMappingPtr iUnicodeMapping );
+  UnicodeToTextInfo        ioUnicodeToTextInfo,
+  ConstUnicodeMappingPtr   iUnicodeMapping);
+
+
 
 /*
  *  DisposeTextToUnicodeInfo()
@@ -419,7 +427,8 @@ ChangeUnicodeToTextInfo(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-DisposeTextToUnicodeInfo( TextToUnicodeInfo *ioTextToUnicodeInfo );
+DisposeTextToUnicodeInfo(TextToUnicodeInfo * ioTextToUnicodeInfo);
+
 
 /*
  *  DisposeUnicodeToTextInfo()
@@ -430,7 +439,8 @@ DisposeTextToUnicodeInfo( TextToUnicodeInfo *ioTextToUnicodeInfo );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-DisposeUnicodeToTextInfo( UnicodeToTextInfo *ioUnicodeToTextInfo );
+DisposeUnicodeToTextInfo(UnicodeToTextInfo * ioUnicodeToTextInfo);
+
 
 /*
  *  DisposeUnicodeToTextRunInfo()
@@ -441,7 +451,8 @@ DisposeUnicodeToTextInfo( UnicodeToTextInfo *ioUnicodeToTextInfo );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-DisposeUnicodeToTextRunInfo( UnicodeToTextRunInfo *ioUnicodeToTextRunInfo );
+DisposeUnicodeToTextRunInfo(UnicodeToTextRunInfo * ioUnicodeToTextRunInfo);
+
 
 /*
  *  ConvertFromTextToUnicode()
@@ -453,18 +464,19 @@ DisposeUnicodeToTextRunInfo( UnicodeToTextRunInfo *ioUnicodeToTextRunInfo );
  */
 EXTERN_API( OSStatus )
 ConvertFromTextToUnicode(
-    TextToUnicodeInfo   iTextToUnicodeInfo,
-    ByteCount           iSourceLen,
-    ConstLogicalAddress iSourceStr,
-    OptionBits          iControlFlags,
-    ItemCount           iOffsetCount,
-    ByteOffset          iOffsetArray[], /* can be NULL */
-    ItemCount *         oOffsetCount, /* can be NULL */
-    ByteOffset          oOffsetArray[], /* can be NULL */
-    ByteCount           iOutputBufLen,
-    ByteCount *         oSourceRead,
-    ByteCount *         oUnicodeLen,
-    UniChar             oUnicodeStr[] );
+  TextToUnicodeInfo     iTextToUnicodeInfo,
+  ByteCount             iSourceLen,
+  ConstLogicalAddress   iSourceStr,
+  OptionBits            iControlFlags,
+  ItemCount             iOffsetCount,
+  ByteOffset            iOffsetArray[],           /* can be NULL */
+  ItemCount *           oOffsetCount,             /* can be NULL */
+  ByteOffset            oOffsetArray[],           /* can be NULL */
+  ByteCount             iOutputBufLen,
+  ByteCount *           oSourceRead,
+  ByteCount *           oUnicodeLen,
+  UniChar               oUnicodeStr[]);
+
 
 /*
  *  ConvertFromUnicodeToText()
@@ -476,18 +488,19 @@ ConvertFromTextToUnicode(
  */
 EXTERN_API( OSStatus )
 ConvertFromUnicodeToText(
-    UnicodeToTextInfo iUnicodeToTextInfo,
-    ByteCount         iUnicodeLen,
-    const UniChar     iUnicodeStr[],
-    OptionBits        iControlFlags,
-    ItemCount         iOffsetCount,
-    ByteOffset        iOffsetArray[], /* can be NULL */
-    ItemCount *       oOffsetCount, /* can be NULL */
-    ByteOffset        oOffsetArray[], /* can be NULL */
-    ByteCount         iOutputBufLen,
-    ByteCount *       oInputRead,
-    ByteCount *       oOutputLen,
-    LogicalAddress    oOutputStr );
+  UnicodeToTextInfo   iUnicodeToTextInfo,
+  ByteCount           iUnicodeLen,
+  const UniChar       iUnicodeStr[],
+  OptionBits          iControlFlags,
+  ItemCount           iOffsetCount,
+  ByteOffset          iOffsetArray[],           /* can be NULL */
+  ItemCount *         oOffsetCount,             /* can be NULL */
+  ByteOffset          oOffsetArray[],           /* can be NULL */
+  ByteCount           iOutputBufLen,
+  ByteCount *         oInputRead,
+  ByteCount *         oOutputLen,
+  LogicalAddress      oOutputStr);
+
 
 /*
  *  ConvertFromUnicodeToTextRun()
@@ -499,21 +512,22 @@ ConvertFromUnicodeToText(
  */
 EXTERN_API( OSStatus )
 ConvertFromUnicodeToTextRun(
-    UnicodeToTextRunInfo iUnicodeToTextInfo,
-    ByteCount            iUnicodeLen,
-    const UniChar        iUnicodeStr[],
-    OptionBits           iControlFlags,
-    ItemCount            iOffsetCount,
-    ByteOffset           iOffsetArray[], /* can be NULL */
-    ItemCount *          oOffsetCount, /* can be NULL */
-    ByteOffset           oOffsetArray[], /* can be NULL */
-    ByteCount            iOutputBufLen,
-    ByteCount *          oInputRead,
-    ByteCount *          oOutputLen,
-    LogicalAddress       oOutputStr,
-    ItemCount            iEncodingRunBufLen,
-    ItemCount *          oEncodingRunOutLen,
-    TextEncodingRun      oEncodingRuns[] );
+  UnicodeToTextRunInfo   iUnicodeToTextInfo,
+  ByteCount              iUnicodeLen,
+  const UniChar          iUnicodeStr[],
+  OptionBits             iControlFlags,
+  ItemCount              iOffsetCount,
+  ByteOffset             iOffsetArray[],           /* can be NULL */
+  ItemCount *            oOffsetCount,             /* can be NULL */
+  ByteOffset             oOffsetArray[],           /* can be NULL */
+  ByteCount              iOutputBufLen,
+  ByteCount *            oInputRead,
+  ByteCount *            oOutputLen,
+  LogicalAddress         oOutputStr,
+  ItemCount              iEncodingRunBufLen,
+  ItemCount *            oEncodingRunOutLen,
+  TextEncodingRun        oEncodingRuns[]);
+
 
 /*
  *  ConvertFromUnicodeToScriptCodeRun()
@@ -525,21 +539,22 @@ ConvertFromUnicodeToTextRun(
  */
 EXTERN_API( OSStatus )
 ConvertFromUnicodeToScriptCodeRun(
-    UnicodeToTextRunInfo iUnicodeToTextInfo,
-    ByteCount            iUnicodeLen,
-    const UniChar        iUnicodeStr[],
-    OptionBits           iControlFlags,
-    ItemCount            iOffsetCount,
-    ByteOffset           iOffsetArray[], /* can be NULL */
-    ItemCount *          oOffsetCount, /* can be NULL */
-    ByteOffset           oOffsetArray[], /* can be NULL */
-    ByteCount            iOutputBufLen,
-    ByteCount *          oInputRead,
-    ByteCount *          oOutputLen,
-    LogicalAddress       oOutputStr,
-    ItemCount            iScriptRunBufLen,
-    ItemCount *          oScriptRunOutLen,
-    ScriptCodeRun        oScriptCodeRuns[] );
+  UnicodeToTextRunInfo   iUnicodeToTextInfo,
+  ByteCount              iUnicodeLen,
+  const UniChar          iUnicodeStr[],
+  OptionBits             iControlFlags,
+  ItemCount              iOffsetCount,
+  ByteOffset             iOffsetArray[],           /* can be NULL */
+  ItemCount *            oOffsetCount,             /* can be NULL */
+  ByteOffset             oOffsetArray[],           /* can be NULL */
+  ByteCount              iOutputBufLen,
+  ByteCount *            oInputRead,
+  ByteCount *            oOutputLen,
+  LogicalAddress         oOutputStr,
+  ItemCount              iScriptRunBufLen,
+  ItemCount *            oScriptRunOutLen,
+  ScriptCodeRun          oScriptCodeRuns[]);
+
 
 /* Truncate a multibyte string at a safe place. */
 /*
@@ -552,11 +567,12 @@ ConvertFromUnicodeToScriptCodeRun(
  */
 EXTERN_API( OSStatus )
 TruncateForTextToUnicode(
-    ConstTextToUnicodeInfo iTextToUnicodeInfo,
-    ByteCount              iSourceLen,
-    ConstLogicalAddress    iSourceStr,
-    ByteCount              iMaxLen,
-    ByteCount *            oTruncatedLen );
+  ConstTextToUnicodeInfo   iTextToUnicodeInfo,
+  ByteCount                iSourceLen,
+  ConstLogicalAddress      iSourceStr,
+  ByteCount                iMaxLen,
+  ByteCount *              oTruncatedLen);
+
 
 /* Truncate a Unicode string at a safe place. */
 /*
@@ -569,12 +585,13 @@ TruncateForTextToUnicode(
  */
 EXTERN_API( OSStatus )
 TruncateForUnicodeToText(
-    ConstUnicodeToTextInfo iUnicodeToTextInfo,
-    ByteCount              iSourceLen,
-    const UniChar          iSourceStr[],
-    OptionBits             iControlFlags,
-    ByteCount              iMaxLen,
-    ByteCount *            oTruncatedLen );
+  ConstUnicodeToTextInfo   iUnicodeToTextInfo,
+  ByteCount                iSourceLen,
+  const UniChar            iSourceStr[],
+  OptionBits               iControlFlags,
+  ByteCount                iMaxLen,
+  ByteCount *              oTruncatedLen);
+
 
 /* Convert a Pascal string to Unicode string. */
 /*
@@ -587,11 +604,12 @@ TruncateForUnicodeToText(
  */
 EXTERN_API( OSStatus )
 ConvertFromPStringToUnicode(
-    TextToUnicodeInfo iTextToUnicodeInfo,
-    ConstStr255Param  iPascalStr,
-    ByteCount         iOutputBufLen,
-    ByteCount *       oUnicodeLen,
-    UniChar           oUnicodeStr[] );
+  TextToUnicodeInfo   iTextToUnicodeInfo,
+  ConstStr255Param    iPascalStr,
+  ByteCount           iOutputBufLen,
+  ByteCount *         oUnicodeLen,
+  UniChar             oUnicodeStr[]);
+
 
 /* Convert a Unicode string to Pascal string. */
 /*
@@ -604,10 +622,11 @@ ConvertFromPStringToUnicode(
  */
 EXTERN_API( OSStatus )
 ConvertFromUnicodeToPString(
-    UnicodeToTextInfo iUnicodeToTextInfo,
-    ByteCount         iUnicodeLen,
-    const UniChar     iUnicodeStr[],
-    Str255            oPascalStr );
+  UnicodeToTextInfo   iUnicodeToTextInfo,
+  ByteCount           iUnicodeLen,
+  const UniChar       iUnicodeStr[],
+  Str255              oPascalStr);
+
 
 /* Count the available conversion mappings. */
 /*
@@ -620,9 +639,10 @@ ConvertFromUnicodeToPString(
  */
 EXTERN_API( OSStatus )
 CountUnicodeMappings(
-    OptionBits             iFilter,
-    ConstUnicodeMappingPtr iFindMapping,
-    ItemCount *            oActualCount );
+  OptionBits               iFilter,
+  ConstUnicodeMappingPtr   iFindMapping,
+  ItemCount *              oActualCount);
+
 
 /* Get a list of the available conversion mappings. */
 /*
@@ -635,11 +655,12 @@ CountUnicodeMappings(
  */
 EXTERN_API( OSStatus )
 QueryUnicodeMappings(
-    OptionBits             iFilter,
-    ConstUnicodeMappingPtr iFindMapping,
-    ItemCount              iMaxCount,
-    ItemCount *            oActualCount,
-    UnicodeMapping         oReturnedMappings[] );
+  OptionBits               iFilter,
+  ConstUnicodeMappingPtr   iFindMapping,
+  ItemCount                iMaxCount,
+  ItemCount *              oActualCount,
+  UnicodeMapping           oReturnedMappings[]);
+
 
 /* Setup the fallback handler for converting Unicode To Text. */
 /*
@@ -652,10 +673,11 @@ QueryUnicodeMappings(
  */
 EXTERN_API( OSStatus )
 SetFallbackUnicodeToText(
-    UnicodeToTextInfo        iUnicodeToTextInfo,
-    UnicodeToTextFallbackUPP iFallback,
-    OptionBits               iControlFlags,
-    LogicalAddress           iInfoPtr );
+  UnicodeToTextInfo          iUnicodeToTextInfo,
+  UnicodeToTextFallbackUPP   iFallback,
+  OptionBits                 iControlFlags,
+  LogicalAddress             iInfoPtr);
+
 
 /* Setup the fallback handler for converting Unicode To TextRuns. */
 /*
@@ -668,10 +690,11 @@ SetFallbackUnicodeToText(
  */
 EXTERN_API( OSStatus )
 SetFallbackUnicodeToTextRun(
-    UnicodeToTextRunInfo     iUnicodeToTextRunInfo,
-    UnicodeToTextFallbackUPP iFallback,
-    OptionBits               iControlFlags,
-    LogicalAddress           iInfoPtr );
+  UnicodeToTextRunInfo       iUnicodeToTextRunInfo,
+  UnicodeToTextFallbackUPP   iFallback,
+  OptionBits                 iControlFlags,
+  LogicalAddress             iInfoPtr);
+
 
 /* Re-initialize all state information kept by the context objects. */
 /*
@@ -683,7 +706,8 @@ SetFallbackUnicodeToTextRun(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ResetTextToUnicodeInfo( TextToUnicodeInfo ioTextToUnicodeInfo );
+ResetTextToUnicodeInfo(TextToUnicodeInfo ioTextToUnicodeInfo);
+
 
 /* Re-initialize all state information kept by the context objects. */
 /*
@@ -695,7 +719,8 @@ ResetTextToUnicodeInfo( TextToUnicodeInfo ioTextToUnicodeInfo );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ResetUnicodeToTextInfo( UnicodeToTextInfo ioUnicodeToTextInfo );
+ResetUnicodeToTextInfo(UnicodeToTextInfo ioUnicodeToTextInfo);
+
 
 /* Re-initialize all state information kept by the context objects in TextRun conversions. */
 /*
@@ -707,14 +732,17 @@ ResetUnicodeToTextInfo( UnicodeToTextInfo ioUnicodeToTextInfo );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ResetUnicodeToTextRunInfo( UnicodeToTextRunInfo ioUnicodeToTextRunInfo );
+ResetUnicodeToTextRunInfo(UnicodeToTextRunInfo ioUnicodeToTextRunInfo);
+
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -728,3 +756,4 @@ ResetUnicodeToTextRunInfo( UnicodeToTextRunInfo ioUnicodeToTextRunInfo );
 #endif
 
 #endif /* __UNICODECONVERTER__ */
+

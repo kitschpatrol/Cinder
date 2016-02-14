@@ -20,6 +20,9 @@
 #include <Events.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -33,28 +36,28 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 typedef SInt16 TSCode;
 enum {
-	tsPreviousSelectMode = -1,
-	tsNormalSelectMode = 0,
-	tsNextSelectMode = 1
+  tsPreviousSelectMode          = -1,
+  tsNormalSelectMode            = 0,
+  tsNextSelectMode              = 1
 };
 
 struct TypeSelectRecord {
-	unsigned long tsrLastKeyTime;
-	ScriptCode    tsrScript;
-	Str63         tsrKeyStrokes;
+  unsigned long       tsrLastKeyTime;
+  ScriptCode          tsrScript;
+  Str63               tsrKeyStrokes;
 };
-typedef struct TypeSelectRecord TypeSelectRecord;
-typedef CALLBACK_API( Boolean, IndexToStringProcPtr )( short item, ScriptCode *itemsScript, StringPtr *itemsStringPtr, void *yourDataPtr );
-typedef STACK_UPP_TYPE( IndexToStringProcPtr ) IndexToStringUPP;
+typedef struct TypeSelectRecord         TypeSelectRecord;
+typedef CALLBACK_API( Boolean , IndexToStringProcPtr )(short item, ScriptCode *itemsScript, StringPtr *itemsStringPtr, void *yourDataPtr);
+typedef STACK_UPP_TYPE(IndexToStringProcPtr)                    IndexToStringUPP;
 /*
  *  TypeSelectClear()
  *  
@@ -64,7 +67,8 @@ typedef STACK_UPP_TYPE( IndexToStringProcPtr ) IndexToStringUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-TypeSelectClear( TypeSelectRecord *tsr ) THREEWORDINLINE( 0x3F3C, 0x0028, 0xA9ED );
+TypeSelectClear(TypeSelectRecord * tsr)                       THREEWORDINLINE(0x3F3C, 0x0028, 0xA9ED);
+
 
 /*
         Long ago the implementation of TypeSelectNewKey had a bug that
@@ -82,8 +86,9 @@ TypeSelectClear( TypeSelectRecord *tsr ) THREEWORDINLINE( 0x3F3C, 0x0028, 0xA9ED
  */
 EXTERN_API( Boolean )
 TypeSelectNewKey(
-    const EventRecord *theEvent,
-    TypeSelectRecord * tsr ) FOURWORDINLINE( 0x7000, 0x3F3C, 0x002A, 0xA9ED );
+  const EventRecord *  theEvent,
+  TypeSelectRecord *   tsr)                                   FOURWORDINLINE(0x7000, 0x3F3C, 0x002A, 0xA9ED);
+
 
 /*
  *  TypeSelectFindItem()
@@ -95,11 +100,13 @@ TypeSelectNewKey(
  */
 EXTERN_API( short )
 TypeSelectFindItem(
-    const TypeSelectRecord *tsr,
-    short                   listSize,
-    TSCode                  selectMode,
-    IndexToStringUPP        getStringProc,
-    void *                  yourDataPtr ) THREEWORDINLINE( 0x3F3C, 0x002C, 0xA9ED );
+  const TypeSelectRecord *  tsr,
+  short                     listSize,
+  TSCode                    selectMode,
+  IndexToStringUPP          getStringProc,
+  void *                    yourDataPtr)                      THREEWORDINLINE(0x3F3C, 0x002C, 0xA9ED);
+
+
 
 /*
  *  TypeSelectCompare()
@@ -111,9 +118,10 @@ TypeSelectFindItem(
  */
 EXTERN_API( short )
 TypeSelectCompare(
-    const TypeSelectRecord *tsr,
-    ScriptCode              testStringScript,
-    StringPtr               testStringPtr ) THREEWORDINLINE( 0x3F3C, 0x002E, 0xA9ED );
+  const TypeSelectRecord *  tsr,
+  ScriptCode                testStringScript,
+  StringPtr                 testStringPtr)                    THREEWORDINLINE(0x3F3C, 0x002E, 0xA9ED);
+
 
 /*
  *  NewIndexToStringUPP()
@@ -124,17 +132,14 @@ TypeSelectCompare(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( IndexToStringUPP )
-NewIndexToStringUPP( IndexToStringProcPtr userRoutine );
+NewIndexToStringUPP(IndexToStringProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppIndexToStringProcInfo = 0x00003F90 }; /* pascal 1_byte Func(2_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( IndexToStringUPP ) NewIndexToStringUPP( IndexToStringProcPtr userRoutine )
-{
-	return (IndexToStringUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppIndexToStringProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewIndexToStringUPP( userRoutine ) ( IndexToStringUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppIndexToStringProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppIndexToStringProcInfo = 0x00003F90 };  /* pascal 1_byte Func(2_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(IndexToStringUPP) NewIndexToStringUPP(IndexToStringProcPtr userRoutine) { return (IndexToStringUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppIndexToStringProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewIndexToStringUPP(userRoutine) (IndexToStringUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppIndexToStringProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -146,16 +151,13 @@ inline DEFINE_API_C( IndexToStringUPP ) NewIndexToStringUPP( IndexToStringProcPt
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeIndexToStringUPP( IndexToStringUPP userUPP );
+DisposeIndexToStringUPP(IndexToStringUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeIndexToStringUPP( IndexToStringUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeIndexToStringUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeIndexToStringUPP(IndexToStringUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeIndexToStringUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -168,34 +170,35 @@ inline DEFINE_API_C( void ) DisposeIndexToStringUPP( IndexToStringUPP userUPP )
  */
 EXTERN_API_C( Boolean )
 InvokeIndexToStringUPP(
-    short            item,
-    ScriptCode *     itemsScript,
-    StringPtr *      itemsStringPtr,
-    void *           yourDataPtr,
-    IndexToStringUPP userUPP );
+  short             item,
+  ScriptCode *      itemsScript,
+  StringPtr *       itemsStringPtr,
+  void *            yourDataPtr,
+  IndexToStringUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeIndexToStringUPP( short item, ScriptCode *itemsScript, StringPtr *itemsStringPtr, void *yourDataPtr, IndexToStringUPP userUPP )
-{
-	return (Boolean)CALL_FOUR_PARAMETER_UPP( userUPP, uppIndexToStringProcInfo, item, itemsScript, itemsStringPtr, yourDataPtr );
-}
-#else
-#define InvokeIndexToStringUPP( item, itemsScript, itemsStringPtr, yourDataPtr, userUPP ) ( Boolean ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppIndexToStringProcInfo, ( item ), ( itemsScript ), ( itemsStringPtr ), ( yourDataPtr ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeIndexToStringUPP(short item, ScriptCode * itemsScript, StringPtr * itemsStringPtr, void * yourDataPtr, IndexToStringUPP userUPP) { return (Boolean)CALL_FOUR_PARAMETER_UPP(userUPP, uppIndexToStringProcInfo, item, itemsScript, itemsStringPtr, yourDataPtr); }
+  #else
+    #define InvokeIndexToStringUPP(item, itemsScript, itemsStringPtr, yourDataPtr, userUPP) (Boolean)CALL_FOUR_PARAMETER_UPP((userUPP), uppIndexToStringProcInfo, (item), (itemsScript), (itemsStringPtr), (yourDataPtr))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewIndexToStringProc( userRoutine ) NewIndexToStringUPP( userRoutine )
-#define CallIndexToStringProc( userRoutine, item, itemsScript, itemsStringPtr, yourDataPtr ) InvokeIndexToStringUPP( item, itemsScript, itemsStringPtr, yourDataPtr, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewIndexToStringProc(userRoutine)                   NewIndexToStringUPP(userRoutine)
+    #define CallIndexToStringProc(userRoutine, item, itemsScript, itemsStringPtr, yourDataPtr) InvokeIndexToStringUPP(item, itemsScript, itemsStringPtr, yourDataPtr, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
+
+
+
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -209,3 +212,4 @@ inline DEFINE_API_C( Boolean ) InvokeIndexToStringUPP( short item, ScriptCode *i
 #endif
 
 #endif /* __TYPESELECT__ */
+

@@ -24,6 +24,9 @@
 #include <CFURL.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,26 +40,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
-typedef struct CGDataConsumer *CGDataConsumerRef;
-typedef CALLBACK_API_C( size_t, CGPutBytesProcPtr )( void *info, const void *buffer, size_t count );
-typedef CALLBACK_API_C( void, CGReleaseConsumerProcPtr )( void *info );
+typedef struct CGDataConsumer*          CGDataConsumerRef;
+typedef CALLBACK_API_C( size_t , CGPutBytesProcPtr )(void *info, const void *buffer, size_t count);
+typedef CALLBACK_API_C( void , CGReleaseConsumerProcPtr )(void * info);
 /* Callbacks for accessing data.
  * `putBytes' copies `count' bytes from `buffer' to the consumer, and
  * returns the number of bytes copied.  It should return 0 if no more data
  * can be written to the consumer.
  * `releaseConsumer', if non-NULL, is called when the consumer is freed. */
 struct CGDataConsumerCallbacks {
-	CGPutBytesProcPtr        putBytes;
-	CGReleaseConsumerProcPtr releaseConsumer;
+  CGPutBytesProcPtr   putBytes;
+  CGReleaseConsumerProcPtr  releaseConsumer;
 };
-typedef struct CGDataConsumerCallbacks CGDataConsumerCallbacks;
+typedef struct CGDataConsumerCallbacks  CGDataConsumerCallbacks;
 /* Create a data consumer using `callbacks' to handle the data.  `info' is
  * passed to each of the callback functions. */
 /*
@@ -69,8 +72,9 @@ typedef struct CGDataConsumerCallbacks CGDataConsumerCallbacks;
  */
 EXTERN_API_C( CGDataConsumerRef )
 CGDataConsumerCreate(
-    void *                         info,
-    const CGDataConsumerCallbacks *callbacks );
+  void *                           info,
+  const CGDataConsumerCallbacks *  callbacks);
+
 
 /* Create a data consumer which writes data to `url'. */
 /*
@@ -82,7 +86,8 @@ CGDataConsumerCreate(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDataConsumerRef )
-CGDataConsumerCreateWithURL( CFURLRef url );
+CGDataConsumerCreateWithURL(CFURLRef url);
+
 
 /* Increment the retain count of `consumer' and return it.  All data
  * consumers are created with an initial retain count of 1. */
@@ -95,7 +100,8 @@ CGDataConsumerCreateWithURL( CFURLRef url );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDataConsumerRef )
-CGDataConsumerRetain( CGDataConsumerRef consumer );
+CGDataConsumerRetain(CGDataConsumerRef consumer);
+
 
 /* Decrement the retain count of `consumer'.  If the retain count reaches
  * 0, then release it and any associated resources. */
@@ -108,14 +114,16 @@ CGDataConsumerRetain( CGDataConsumerRef consumer );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGDataConsumerRelease( CGDataConsumerRef consumer );
+CGDataConsumerRelease(CGDataConsumerRef consumer);
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -129,3 +137,4 @@ CGDataConsumerRelease( CGDataConsumerRef consumer );
 #endif
 
 #endif /* CGDATACONSUMER_H_ */
+

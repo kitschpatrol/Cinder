@@ -48,6 +48,9 @@
 #include <CarbonEvents.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -61,61 +64,64 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 enum {
-	/* new, more standard names for dialog item types*/
-	kControlDialogItem = 4,
-	kButtonDialogItem = kControlDialogItem | 0,
-	kCheckBoxDialogItem = kControlDialogItem | 1,
-	kRadioButtonDialogItem = kControlDialogItem | 2,
-	kResourceControlDialogItem = kControlDialogItem | 3,
-	kStaticTextDialogItem = 8,
-	kEditTextDialogItem = 16,
-	kIconDialogItem = 32,
-	kPictureDialogItem = 64,
-	kUserDialogItem = 0,
-	kHelpDialogItem = 1,
-	kItemDisableBit = 128
+                                        /* new, more standard names for dialog item types*/
+  kControlDialogItem            = 4,
+  kButtonDialogItem             = kControlDialogItem | 0,
+  kCheckBoxDialogItem           = kControlDialogItem | 1,
+  kRadioButtonDialogItem        = kControlDialogItem | 2,
+  kResourceControlDialogItem    = kControlDialogItem | 3,
+  kStaticTextDialogItem         = 8,
+  kEditTextDialogItem           = 16,
+  kIconDialogItem               = 32,
+  kPictureDialogItem            = 64,
+  kUserDialogItem               = 0,
+  kHelpDialogItem               = 1,
+  kItemDisableBit               = 128
 };
 
 enum {
-	/* old names for dialog item types*/
-	ctrlItem = 4,
-	btnCtrl = 0,
-	chkCtrl = 1,
-	radCtrl = 2,
-	resCtrl = 3,
-	statText = 8,
-	editText = 16,
-	iconItem = 32,
-	picItem = 64,
-	userItem = 0,
-	itemDisable = 128
+                                        /* old names for dialog item types*/
+  ctrlItem                      = 4,
+  btnCtrl                       = 0,
+  chkCtrl                       = 1,
+  radCtrl                       = 2,
+  resCtrl                       = 3,
+  statText                      = 8,
+  editText                      = 16,
+  iconItem                      = 32,
+  picItem                       = 64,
+  userItem                      = 0,
+  itemDisable                   = 128
 };
 
 enum {
-	/* standard dialog item numbers*/
-	kStdOkItemIndex = 1,
-	kStdCancelItemIndex = 2, /* old names*/
-	ok = kStdOkItemIndex,
-	cancel = kStdCancelItemIndex
+                                        /* standard dialog item numbers*/
+  kStdOkItemIndex               = 1,
+  kStdCancelItemIndex           = 2,    /* old names*/
+  ok                            = kStdOkItemIndex,
+  cancel                        = kStdCancelItemIndex
 };
 
 enum {
-	/* standard icon resource id's    */
-	kStopIcon = 0,
-	kNoteIcon = 1,
-	kCautionIcon = 2, /* old names*/
-	stopIcon = kStopIcon,
-	noteIcon = kNoteIcon,
-	cautionIcon = kCautionIcon
+                                        /* standard icon resource id's    */
+  kStopIcon                     = 0,
+  kNoteIcon                     = 1,
+  kCautionIcon                  = 2,    /* old names*/
+  stopIcon                      = kStopIcon,
+  noteIcon                      = kNoteIcon,
+  cautionIcon                   = kCautionIcon
 };
+
+
+
 
 #if OLDROUTINENAMES
 /*
@@ -125,72 +131,72 @@ enum {
    anywhere you want in the DITL.
 */
 enum {
-	kOkItemIndex = 1,
-	kCancelItemIndex = 2
+  kOkItemIndex                  = 1,
+  kCancelItemIndex              = 2
 };
 
-#endif /* OLDROUTINENAMES */
+#endif  /* OLDROUTINENAMES */
 
 /*  Dialog Item List Manipulation Constants */
-typedef SInt16 DITLMethod;
+typedef SInt16                          DITLMethod;
 enum {
-	overlayDITL = 0,
-	appendDITLRight = 1,
-	appendDITLBottom = 2
+  overlayDITL                   = 0,
+  appendDITLRight               = 1,
+  appendDITLBottom              = 2
 };
 
-typedef SInt16 StageList;
+typedef SInt16                          StageList;
 /* DialogPtr is obsolete. Use DialogRef instead.*/
-typedef DialogPtr DialogRef;
+typedef DialogPtr                       DialogRef;
 #if !OPAQUE_TOOLBOX_STRUCTS
 struct DialogRecord {
-	WindowRecord window; /* in Carbon use GetDialogWindow or GetDialogPort*/
-	Handle       items; /* in Carbon use Get/SetDialogItem*/
-	TEHandle     textH; /* in Carbon use GetDialogTextEditHandle*/
-	SInt16       editField; /* in Carbon use SelectDialogItemText/GetDialogKeyboardFocusItem*/
-	SInt16       editOpen; /* not available in Carbon */
-	SInt16       aDefItem; /* in Carbon use Get/SetDialogDefaultItem*/
+  WindowRecord        window;                 /* in Carbon use GetDialogWindow or GetDialogPort*/
+  Handle              items;                  /* in Carbon use Get/SetDialogItem*/
+  TEHandle            textH;                  /* in Carbon use GetDialogTextEditHandle*/
+  SInt16              editField;              /* in Carbon use SelectDialogItemText/GetDialogKeyboardFocusItem*/
+  SInt16              editOpen;               /* not available in Carbon */
+  SInt16              aDefItem;               /* in Carbon use Get/SetDialogDefaultItem*/
 };
-typedef struct DialogRecord DialogRecord;
-typedef DialogRecord *      DialogPeek;
-#endif /* !OPAQUE_TOOLBOX_STRUCTS */
+typedef struct DialogRecord             DialogRecord;
+typedef DialogRecord *                  DialogPeek;
+#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
 
 struct DialogTemplate {
-	Rect    boundsRect;
-	SInt16  procID;
-	Boolean visible;
-	Boolean filler1;
-	Boolean goAwayFlag;
-	Boolean filler2;
-	SInt32  refCon;
-	SInt16  itemsID;
-	Str255  title;
+  Rect                boundsRect;
+  SInt16              procID;
+  Boolean             visible;
+  Boolean             filler1;
+  Boolean             goAwayFlag;
+  Boolean             filler2;
+  SInt32              refCon;
+  SInt16              itemsID;
+  Str255              title;
 };
-typedef struct DialogTemplate DialogTemplate;
-typedef DialogTemplate *      DialogTPtr;
-typedef DialogTPtr *          DialogTHndl;
+typedef struct DialogTemplate           DialogTemplate;
+typedef DialogTemplate *                DialogTPtr;
+typedef DialogTPtr *                    DialogTHndl;
 struct AlertTemplate {
-	Rect      boundsRect;
-	SInt16    itemsID;
-	StageList stages;
+  Rect                boundsRect;
+  SInt16              itemsID;
+  StageList           stages;
 };
-typedef struct AlertTemplate AlertTemplate;
-typedef AlertTemplate *      AlertTPtr;
-typedef AlertTPtr *          AlertTHndl;
+typedef struct AlertTemplate            AlertTemplate;
+typedef AlertTemplate *                 AlertTPtr;
+typedef AlertTPtr *                     AlertTHndl;
 /* new type abstractions for the dialog manager */
-typedef SInt16 DialogItemIndexZeroBased;
-typedef SInt16 DialogItemIndex;
-typedef SInt16 DialogItemType;
+typedef SInt16                          DialogItemIndexZeroBased;
+typedef SInt16                          DialogItemIndex;
+typedef SInt16                          DialogItemType;
 /* dialog manager callbacks */
-typedef CALLBACK_API( void, SoundProcPtr )( SInt16 soundNumber );
-typedef CALLBACK_API( Boolean, ModalFilterProcPtr )( DialogRef theDialog, EventRecord *theEvent, DialogItemIndex *itemHit );
+typedef CALLBACK_API( void , SoundProcPtr )(SInt16 soundNumber);
+typedef CALLBACK_API( Boolean , ModalFilterProcPtr )(DialogRef theDialog, EventRecord *theEvent, DialogItemIndex *itemHit);
 /* ModalFilterYDProcPtr was previously in StandardFile.h */
-typedef CALLBACK_API( Boolean, ModalFilterYDProcPtr )( DialogRef theDialog, EventRecord *theEvent, short *itemHit, void *yourDataPtr );
-typedef CALLBACK_API( void, UserItemProcPtr )( DialogRef theDialog, DialogItemIndex itemNo );
-typedef STACK_UPP_TYPE( SoundProcPtr ) SoundUPP;
-typedef STACK_UPP_TYPE( ModalFilterProcPtr ) ModalFilterUPP;
-typedef STACK_UPP_TYPE( ModalFilterYDProcPtr ) ModalFilterYDUPP;
-typedef STACK_UPP_TYPE( UserItemProcPtr ) UserItemUPP;
+typedef CALLBACK_API( Boolean , ModalFilterYDProcPtr )(DialogRef theDialog, EventRecord *theEvent, short *itemHit, void *yourDataPtr);
+typedef CALLBACK_API( void , UserItemProcPtr )(DialogRef theDialog, DialogItemIndex itemNo);
+typedef STACK_UPP_TYPE(SoundProcPtr)                            SoundUPP;
+typedef STACK_UPP_TYPE(ModalFilterProcPtr)                      ModalFilterUPP;
+typedef STACK_UPP_TYPE(ModalFilterYDProcPtr)                    ModalFilterYDUPP;
+typedef STACK_UPP_TYPE(UserItemProcPtr)                         UserItemUPP;
 #if CALL_NOT_IN_CARBON
 /*
  *  NewSoundUPP()
@@ -201,20 +207,17 @@ typedef STACK_UPP_TYPE( UserItemProcPtr ) UserItemUPP;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SoundUPP )
-NewSoundUPP( SoundProcPtr userRoutine );
+NewSoundUPP(SoundProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppSoundProcInfo = 0x00000080 }; /* pascal no_return_value Func(2_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( SoundUPP ) NewSoundUPP( SoundProcPtr userRoutine )
-{
-	return (SoundUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppSoundProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewSoundUPP( userRoutine ) ( SoundUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppSoundProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppSoundProcInfo = 0x00000080 };  /* pascal no_return_value Func(2_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(SoundUPP) NewSoundUPP(SoundProcPtr userRoutine) { return (SoundUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppSoundProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewSoundUPP(userRoutine) (SoundUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppSoundProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  NewModalFilterUPP()
@@ -225,17 +228,14 @@ inline DEFINE_API_C( SoundUPP ) NewSoundUPP( SoundProcPtr userRoutine )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ModalFilterUPP )
-NewModalFilterUPP( ModalFilterProcPtr userRoutine );
+NewModalFilterUPP(ModalFilterProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppModalFilterProcInfo = 0x00000FD0 }; /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ModalFilterUPP ) NewModalFilterUPP( ModalFilterProcPtr userRoutine )
-{
-	return (ModalFilterUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppModalFilterProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewModalFilterUPP( userRoutine ) ( ModalFilterUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppModalFilterProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppModalFilterProcInfo = 0x00000FD0 };  /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ModalFilterUPP) NewModalFilterUPP(ModalFilterProcPtr userRoutine) { return (ModalFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppModalFilterProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewModalFilterUPP(userRoutine) (ModalFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppModalFilterProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -247,17 +247,14 @@ inline DEFINE_API_C( ModalFilterUPP ) NewModalFilterUPP( ModalFilterProcPtr user
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ModalFilterYDUPP )
-NewModalFilterYDUPP( ModalFilterYDProcPtr userRoutine );
+NewModalFilterYDUPP(ModalFilterYDProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppModalFilterYDProcInfo = 0x00003FD0 }; /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ModalFilterYDUPP ) NewModalFilterYDUPP( ModalFilterYDProcPtr userRoutine )
-{
-	return (ModalFilterYDUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppModalFilterYDProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewModalFilterYDUPP( userRoutine ) ( ModalFilterYDUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppModalFilterYDProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppModalFilterYDProcInfo = 0x00003FD0 };  /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ModalFilterYDUPP) NewModalFilterYDUPP(ModalFilterYDProcPtr userRoutine) { return (ModalFilterYDUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppModalFilterYDProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewModalFilterYDUPP(userRoutine) (ModalFilterYDUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppModalFilterYDProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 /*
@@ -269,17 +266,14 @@ inline DEFINE_API_C( ModalFilterYDUPP ) NewModalFilterYDUPP( ModalFilterYDProcPt
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UserItemUPP )
-NewUserItemUPP( UserItemProcPtr userRoutine );
+NewUserItemUPP(UserItemProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppUserItemProcInfo = 0x000002C0 }; /* pascal no_return_value Func(4_bytes, 2_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( UserItemUPP ) NewUserItemUPP( UserItemProcPtr userRoutine )
-{
-	return (UserItemUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppUserItemProcInfo, GetCurrentArchitecture() );
-}
-#else
-#define NewUserItemUPP( userRoutine ) ( UserItemUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppUserItemProcInfo, GetCurrentArchitecture() )
-#endif
+  enum { uppUserItemProcInfo = 0x000002C0 };  /* pascal no_return_value Func(4_bytes, 2_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(UserItemUPP) NewUserItemUPP(UserItemProcPtr userRoutine) { return (UserItemUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppUserItemProcInfo, GetCurrentArchitecture()); }
+  #else
+    #define NewUserItemUPP(userRoutine) (UserItemUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppUserItemProcInfo, GetCurrentArchitecture())
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -292,19 +286,16 @@ inline DEFINE_API_C( UserItemUPP ) NewUserItemUPP( UserItemProcPtr userRoutine )
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeSoundUPP( SoundUPP userUPP );
+DisposeSoundUPP(SoundUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeSoundUPP( SoundUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeSoundUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeSoundUPP(SoundUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeSoundUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  DisposeModalFilterUPP()
@@ -315,16 +306,13 @@ inline DEFINE_API_C( void ) DisposeSoundUPP( SoundUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeModalFilterUPP( ModalFilterUPP userUPP );
+DisposeModalFilterUPP(ModalFilterUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeModalFilterUPP( ModalFilterUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeModalFilterUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeModalFilterUPP(ModalFilterUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeModalFilterUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -336,16 +324,13 @@ inline DEFINE_API_C( void ) DisposeModalFilterUPP( ModalFilterUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeModalFilterYDUPP( ModalFilterYDUPP userUPP );
+DisposeModalFilterYDUPP(ModalFilterYDUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeModalFilterYDUPP( ModalFilterYDUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeModalFilterYDUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeModalFilterYDUPP(ModalFilterYDUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeModalFilterYDUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 /*
@@ -357,16 +342,13 @@ inline DEFINE_API_C( void ) DisposeModalFilterYDUPP( ModalFilterYDUPP userUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeUserItemUPP( UserItemUPP userUPP );
+DisposeUserItemUPP(UserItemUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeUserItemUPP( UserItemUPP userUPP )
-{
-	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
-}
-#else
-#define DisposeUserItemUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeUserItemUPP(UserItemUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
+  #else
+      #define DisposeUserItemUPP(userUPP) DisposeRoutineDescriptor(userUPP)
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -380,20 +362,17 @@ inline DEFINE_API_C( void ) DisposeUserItemUPP( UserItemUPP userUPP )
  */
 EXTERN_API_C( void )
 InvokeSoundUPP(
-    SInt16   soundNumber,
-    SoundUPP userUPP );
+  SInt16    soundNumber,
+  SoundUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeSoundUPP( SInt16 soundNumber, SoundUPP userUPP )
-{
-	CALL_ONE_PARAMETER_UPP( userUPP, uppSoundProcInfo, soundNumber );
-}
-#else
-#define InvokeSoundUPP( soundNumber, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppSoundProcInfo, ( soundNumber ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeSoundUPP(SInt16 soundNumber, SoundUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppSoundProcInfo, soundNumber); }
+  #else
+    #define InvokeSoundUPP(soundNumber, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppSoundProcInfo, (soundNumber))
+  #endif
 #endif
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  InvokeModalFilterUPP()
@@ -405,19 +384,16 @@ inline DEFINE_API_C( void ) InvokeSoundUPP( SInt16 soundNumber, SoundUPP userUPP
  */
 EXTERN_API_C( Boolean )
 InvokeModalFilterUPP(
-    DialogRef        theDialog,
-    EventRecord *    theEvent,
-    DialogItemIndex *itemHit,
-    ModalFilterUPP   userUPP );
+  DialogRef          theDialog,
+  EventRecord *      theEvent,
+  DialogItemIndex *  itemHit,
+  ModalFilterUPP     userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeModalFilterUPP( DialogRef theDialog, EventRecord *theEvent, DialogItemIndex *itemHit, ModalFilterUPP userUPP )
-{
-	return (Boolean)CALL_THREE_PARAMETER_UPP( userUPP, uppModalFilterProcInfo, theDialog, theEvent, itemHit );
-}
-#else
-#define InvokeModalFilterUPP( theDialog, theEvent, itemHit, userUPP ) ( Boolean ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppModalFilterProcInfo, ( theDialog ), ( theEvent ), ( itemHit ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeModalFilterUPP(DialogRef theDialog, EventRecord * theEvent, DialogItemIndex * itemHit, ModalFilterUPP userUPP) { return (Boolean)CALL_THREE_PARAMETER_UPP(userUPP, uppModalFilterProcInfo, theDialog, theEvent, itemHit); }
+  #else
+    #define InvokeModalFilterUPP(theDialog, theEvent, itemHit, userUPP) (Boolean)CALL_THREE_PARAMETER_UPP((userUPP), uppModalFilterProcInfo, (theDialog), (theEvent), (itemHit))
+  #endif
 #endif
 
 /*
@@ -430,20 +406,17 @@ inline DEFINE_API_C( Boolean ) InvokeModalFilterUPP( DialogRef theDialog, EventR
  */
 EXTERN_API_C( Boolean )
 InvokeModalFilterYDUPP(
-    DialogRef        theDialog,
-    EventRecord *    theEvent,
-    short *          itemHit,
-    void *           yourDataPtr,
-    ModalFilterYDUPP userUPP );
+  DialogRef         theDialog,
+  EventRecord *     theEvent,
+  short *           itemHit,
+  void *            yourDataPtr,
+  ModalFilterYDUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeModalFilterYDUPP( DialogRef theDialog, EventRecord *theEvent, short *itemHit, void *yourDataPtr, ModalFilterYDUPP userUPP )
-{
-	return (Boolean)CALL_FOUR_PARAMETER_UPP( userUPP, uppModalFilterYDProcInfo, theDialog, theEvent, itemHit, yourDataPtr );
-}
-#else
-#define InvokeModalFilterYDUPP( theDialog, theEvent, itemHit, yourDataPtr, userUPP ) ( Boolean ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppModalFilterYDProcInfo, ( theDialog ), ( theEvent ), ( itemHit ), ( yourDataPtr ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeModalFilterYDUPP(DialogRef theDialog, EventRecord * theEvent, short * itemHit, void * yourDataPtr, ModalFilterYDUPP userUPP) { return (Boolean)CALL_FOUR_PARAMETER_UPP(userUPP, uppModalFilterYDProcInfo, theDialog, theEvent, itemHit, yourDataPtr); }
+  #else
+    #define InvokeModalFilterYDUPP(theDialog, theEvent, itemHit, yourDataPtr, userUPP) (Boolean)CALL_FOUR_PARAMETER_UPP((userUPP), uppModalFilterYDProcInfo, (theDialog), (theEvent), (itemHit), (yourDataPtr))
+  #endif
 #endif
 
 /*
@@ -456,35 +429,33 @@ inline DEFINE_API_C( Boolean ) InvokeModalFilterYDUPP( DialogRef theDialog, Even
  */
 EXTERN_API_C( void )
 InvokeUserItemUPP(
-    DialogRef       theDialog,
-    DialogItemIndex itemNo,
-    UserItemUPP     userUPP );
+  DialogRef        theDialog,
+  DialogItemIndex  itemNo,
+  UserItemUPP      userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) InvokeUserItemUPP( DialogRef theDialog, DialogItemIndex itemNo, UserItemUPP userUPP )
-{
-	CALL_TWO_PARAMETER_UPP( userUPP, uppUserItemProcInfo, theDialog, itemNo );
-}
-#else
-#define InvokeUserItemUPP( theDialog, itemNo, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppUserItemProcInfo, ( theDialog ), ( itemNo ) )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) InvokeUserItemUPP(DialogRef theDialog, DialogItemIndex itemNo, UserItemUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppUserItemProcInfo, theDialog, itemNo); }
+  #else
+    #define InvokeUserItemUPP(theDialog, itemNo, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppUserItemProcInfo, (theDialog), (itemNo))
+  #endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-#define NewSoundProc( userRoutine ) NewSoundUPP( userRoutine )
-#define NewModalFilterProc( userRoutine ) NewModalFilterUPP( userRoutine )
-#define NewModalFilterYDProc( userRoutine ) NewModalFilterYDUPP( userRoutine )
-#define NewUserItemProc( userRoutine ) NewUserItemUPP( userRoutine )
-#define CallSoundProc( userRoutine, soundNumber ) InvokeSoundUPP( soundNumber, userRoutine )
-#define CallModalFilterProc( userRoutine, theDialog, theEvent, itemHit ) InvokeModalFilterUPP( theDialog, theEvent, itemHit, userRoutine )
-#define CallModalFilterYDProc( userRoutine, theDialog, theEvent, itemHit, yourDataPtr ) InvokeModalFilterYDUPP( theDialog, theEvent, itemHit, yourDataPtr, userRoutine )
-#define CallUserItemProc( userRoutine, theDialog, itemNo ) InvokeUserItemUPP( theDialog, itemNo, userRoutine )
+    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+    #define NewSoundProc(userRoutine)                           NewSoundUPP(userRoutine)
+    #define NewModalFilterProc(userRoutine)                     NewModalFilterUPP(userRoutine)
+    #define NewModalFilterYDProc(userRoutine)                   NewModalFilterYDUPP(userRoutine)
+    #define NewUserItemProc(userRoutine)                        NewUserItemUPP(userRoutine)
+    #define CallSoundProc(userRoutine, soundNumber)             InvokeSoundUPP(soundNumber, userRoutine)
+    #define CallModalFilterProc(userRoutine, theDialog, theEvent, itemHit) InvokeModalFilterUPP(theDialog, theEvent, itemHit, userRoutine)
+    #define CallModalFilterYDProc(userRoutine, theDialog, theEvent, itemHit, yourDataPtr) InvokeModalFilterYDUPP(theDialog, theEvent, itemHit, yourDataPtr, userRoutine)
+    #define CallUserItemProc(userRoutine, theDialog, itemNo)    InvokeUserItemUPP(theDialog, itemNo, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
+
 
 #if !TARGET_OS_MAC
 /* QuickTime 3.0 */
-typedef CALLBACK_API_C( void, QTModelessCallbackProcPtr )( EventRecord *theEvent, DialogRef theDialog, DialogItemIndex itemHit );
+typedef CALLBACK_API_C( void , QTModelessCallbackProcPtr )(EventRecord *theEvent, DialogRef theDialog, DialogItemIndex itemHit);
 #if CALL_NOT_IN_CARBON
 /*
  *  SetModelessDialogCallbackProc()
@@ -496,12 +467,13 @@ typedef CALLBACK_API_C( void, QTModelessCallbackProcPtr )( EventRecord *theEvent
  */
 EXTERN_API( void )
 SetModelessDialogCallbackProc(
-    DialogRef                 theDialog,
-    QTModelessCallbackProcPtr callbackProc );
+  DialogRef                   theDialog,
+  QTModelessCallbackProcPtr   callbackProc);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-typedef QTModelessCallbackProcPtr QTModelessCallbackUPP;
+#endif  /* CALL_NOT_IN_CARBON */
+
+typedef QTModelessCallbackProcPtr       QTModelessCallbackUPP;
 #if CALL_NOT_IN_CARBON
 /*
  *  GetDialogControlNotificationProc()
@@ -512,7 +484,8 @@ typedef QTModelessCallbackProcPtr QTModelessCallbackUPP;
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-GetDialogControlNotificationProc( void *theProc );
+GetDialogControlNotificationProc(void * theProc);
+
 
 /*
  *  SetDialogMovableModal()
@@ -523,7 +496,8 @@ GetDialogControlNotificationProc( void *theProc );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-SetDialogMovableModal( DialogRef theDialog );
+SetDialogMovableModal(DialogRef theDialog);
+
 
 /*
  *  GetDialogParent()
@@ -534,11 +508,12 @@ SetDialogMovableModal( DialogRef theDialog );
  *    Mac OS X:         not available
  */
 EXTERN_API( void * )
-GetDialogParent( DialogRef theDialog );
+GetDialogParent(DialogRef theDialog);
 
-#endif /* CALL_NOT_IN_CARBON */
 
-#endif /* !TARGET_OS_MAC */
+#endif  /* CALL_NOT_IN_CARBON */
+
+#endif  /* !TARGET_OS_MAC */
 
 /*
   ---------------------------------------------------------------------------------------------------------
@@ -546,87 +521,88 @@ GetDialogParent( DialogRef theDialog );
   ---------------------------------------------------------------------------------------------------------
 */
 enum {
-	/* Alert types to pass into StandardAlert */
-	kAlertStopAlert = 0,
-	kAlertNoteAlert = 1,
-	kAlertCautionAlert = 2,
-	kAlertPlainAlert = 3
+                                        /* Alert types to pass into StandardAlert */
+  kAlertStopAlert               = 0,
+  kAlertNoteAlert               = 1,
+  kAlertCautionAlert            = 2,
+  kAlertPlainAlert              = 3
 };
 
-typedef SInt16 AlertType;
+typedef SInt16                          AlertType;
 enum {
-	kAlertDefaultOKText = -1, /* "OK"*/
-	kAlertDefaultCancelText = -1, /* "Cancel"*/
-	kAlertDefaultOtherText = -1 /* "Don't Save"*/
+  kAlertDefaultOKText           = -1,   /* "OK"*/
+  kAlertDefaultCancelText       = -1,   /* "Cancel"*/
+  kAlertDefaultOtherText        = -1    /* "Don't Save"*/
 };
 
 /* StandardAlert alert button numbers */
 enum {
-	kAlertStdAlertOKButton = 1,
-	kAlertStdAlertCancelButton = 2,
-	kAlertStdAlertOtherButton = 3,
-	kAlertStdAlertHelpButton = 4
+  kAlertStdAlertOKButton        = 1,
+  kAlertStdAlertCancelButton    = 2,
+  kAlertStdAlertOtherButton     = 3,
+  kAlertStdAlertHelpButton      = 4
 };
 
 enum {
-	/* Dialog Flags for use in NewFeaturesDialog or dlgx resource */
-	kDialogFlagsUseThemeBackground = ( 1 << 0 ),
-	kDialogFlagsUseControlHierarchy = ( 1 << 1 ),
-	kDialogFlagsHandleMovableModal = ( 1 << 2 ),
-	kDialogFlagsUseThemeControls = ( 1 << 3 )
+                                        /* Dialog Flags for use in NewFeaturesDialog or dlgx resource */
+  kDialogFlagsUseThemeBackground = (1 << 0),
+  kDialogFlagsUseControlHierarchy = (1 << 1),
+  kDialogFlagsHandleMovableModal = (1 << 2),
+  kDialogFlagsUseThemeControls  = (1 << 3)
 };
 
 enum {
-	/* Alert Flags for use in alrx resource */
-	kAlertFlagsUseThemeBackground = ( 1 << 0 ),
-	kAlertFlagsUseControlHierarchy = ( 1 << 1 ),
-	kAlertFlagsAlertIsMovable = ( 1 << 2 ),
-	kAlertFlagsUseThemeControls = ( 1 << 3 )
+                                        /* Alert Flags for use in alrx resource */
+  kAlertFlagsUseThemeBackground = (1 << 0),
+  kAlertFlagsUseControlHierarchy = (1 << 1),
+  kAlertFlagsAlertIsMovable     = (1 << 2),
+  kAlertFlagsUseThemeControls   = (1 << 3)
 };
 
 /* For dftb resource */
 enum {
-	kDialogFontNoFontStyle = 0,
-	kDialogFontUseFontMask = 0x0001,
-	kDialogFontUseFaceMask = 0x0002,
-	kDialogFontUseSizeMask = 0x0004,
-	kDialogFontUseForeColorMask = 0x0008,
-	kDialogFontUseBackColorMask = 0x0010,
-	kDialogFontUseModeMask = 0x0020,
-	kDialogFontUseJustMask = 0x0040,
-	kDialogFontUseAllMask = 0x00FF,
-	kDialogFontAddFontSizeMask = 0x0100,
-	kDialogFontUseFontNameMask = 0x0200,
-	kDialogFontAddToMetaFontMask = 0x0400
+  kDialogFontNoFontStyle        = 0,
+  kDialogFontUseFontMask        = 0x0001,
+  kDialogFontUseFaceMask        = 0x0002,
+  kDialogFontUseSizeMask        = 0x0004,
+  kDialogFontUseForeColorMask   = 0x0008,
+  kDialogFontUseBackColorMask   = 0x0010,
+  kDialogFontUseModeMask        = 0x0020,
+  kDialogFontUseJustMask        = 0x0040,
+  kDialogFontUseAllMask         = 0x00FF,
+  kDialogFontAddFontSizeMask    = 0x0100,
+  kDialogFontUseFontNameMask    = 0x0200,
+  kDialogFontAddToMetaFontMask  = 0x0400
 };
 
 /* Also for dftb resource. This one is available in Mac OS X or later. */
 /* It corresponds directly to kControlUseThemeFontIDMask from Controls.h. */
 enum {
-	kDialogFontUseThemeFontIDMask = 0x0080
+  kDialogFontUseThemeFontIDMask = 0x0080
 };
 
 struct AlertStdAlertParamRec {
-	Boolean        movable; /* Make alert movable modal */
-	Boolean        helpButton; /* Is there a help button? */
-	ModalFilterUPP filterProc; /* Event filter */
-	ConstStringPtr defaultText; /* Text for button in OK position */
-	ConstStringPtr cancelText; /* Text for button in cancel position */
-	ConstStringPtr otherText; /* Text for button in left position */
-	SInt16         defaultButton; /* Which button behaves as the default */
-	SInt16         cancelButton; /* Which one behaves as cancel (can be 0) */
-	UInt16         position; /* Position (kWindowDefaultPosition in this case */
-	/* equals kWindowAlertPositionParentWindowScreen) */
+  Boolean             movable;                /* Make alert movable modal */
+  Boolean             helpButton;             /* Is there a help button? */
+  ModalFilterUPP      filterProc;             /* Event filter */
+  ConstStringPtr      defaultText;            /* Text for button in OK position */
+  ConstStringPtr      cancelText;             /* Text for button in cancel position */
+  ConstStringPtr      otherText;              /* Text for button in left position */
+  SInt16              defaultButton;          /* Which button behaves as the default */
+  SInt16              cancelButton;           /* Which one behaves as cancel (can be 0) */
+  UInt16              position;               /* Position (kWindowDefaultPosition in this case */
+                                              /* equals kWindowAlertPositionParentWindowScreen) */
 };
-typedef struct AlertStdAlertParamRec AlertStdAlertParamRec;
-typedef AlertStdAlertParamRec *      AlertStdAlertParamPtr;
+typedef struct AlertStdAlertParamRec    AlertStdAlertParamRec;
+typedef AlertStdAlertParamRec *         AlertStdAlertParamPtr;
 enum {
-	kHICommandOther = FOUR_CHAR_CODE( 'othr' ) /* sent by standard sheet dialogs when the "other" button is pressed */
+  kHICommandOther               = FOUR_CHAR_CODE('othr') /* sent by standard sheet dialogs when the "other" button is pressed */
 };
 
 enum {
-	kStdCFStringAlertVersionOne = 1 /* current version of AlertStdCFStringAlertParamRec */
+  kStdCFStringAlertVersionOne   = 1     /* current version of AlertStdCFStringAlertParamRec */
 };
+
 
 /*
  *  Summary:
@@ -635,51 +611,52 @@ enum {
  */
 enum {
 
-	/*
+  /*
    * Applies to StandardSheet only. Do not dispose of the sheet window
    * after closing it; allows the sheet to be re-used again in a later
    * call to ShowSheetWindow.
    */
-	kStdAlertDoNotDisposeSheet = 1 << 0,
+  kStdAlertDoNotDisposeSheet    = 1 << 0,
 
-	/*
+  /*
    * Applies to StandardSheet only. Causes the sheet window to be
    * hidden immediately without animation effects when the default
    * button is chosen by the user.
    */
-	kStdAlertDoNotAnimateOnDefault = 1 << 1,
+  kStdAlertDoNotAnimateOnDefault = 1 << 1,
 
-	/*
+  /*
    * Applies to StandardSheet only. Causes the sheet window to be
    * hidden immediately without animation effects when the cancel
    * button is chosen by the user.
    */
-	kStdAlertDoNotAnimateOnCancel = 1 << 2,
+  kStdAlertDoNotAnimateOnCancel = 1 << 2,
 
-	/*
+  /*
    * Applies to StandardSheet only. Causes the sheet window to be
    * hidden immediately without animation effects when the other button
    * is chosen by the user.
    */
-	kStdAlertDoNotAnimateOnOther = 1 << 3
+  kStdAlertDoNotAnimateOnOther  = 1 << 3
 };
 
 struct AlertStdCFStringAlertParamRec {
-	UInt32      version; /* kStdCFStringAlertVersionOne */
-	Boolean     movable; /* Make alert movable modal */
-	Boolean     helpButton; /* Is there a help button? */
-	CFStringRef defaultText; /* Text for button in OK position */
-	CFStringRef cancelText; /* Text for button in cancel position */
-	CFStringRef otherText; /* Text for button in left position */
-	SInt16      defaultButton; /* Which button behaves as the default */
-	SInt16      cancelButton; /* Which one behaves as cancel (can be 0) */
-	UInt16      position; /* Position (kWindowDefaultPosition in this case */
-	/* equals kWindowAlertPositionParentWindowScreen) */
-	OptionBits flags; /* Options for the behavior of the alert or sheet */
+  UInt32              version;                /* kStdCFStringAlertVersionOne */
+  Boolean             movable;                /* Make alert movable modal */
+  Boolean             helpButton;             /* Is there a help button? */
+  CFStringRef         defaultText;            /* Text for button in OK position */
+  CFStringRef         cancelText;             /* Text for button in cancel position */
+  CFStringRef         otherText;              /* Text for button in left position */
+  SInt16              defaultButton;          /* Which button behaves as the default */
+  SInt16              cancelButton;           /* Which one behaves as cancel (can be 0) */
+  UInt16              position;               /* Position (kWindowDefaultPosition in this case */
+                                              /* equals kWindowAlertPositionParentWindowScreen) */
+  OptionBits          flags;                  /* Options for the behavior of the alert or sheet */
 };
 typedef struct AlertStdCFStringAlertParamRec AlertStdCFStringAlertParamRec;
-typedef AlertStdCFStringAlertParamRec *      AlertStdCFStringAlertParamPtr;
+typedef AlertStdCFStringAlertParamRec * AlertStdCFStringAlertParamPtr;
 /* --- end Appearance 1.0 or later stuff*/
+
 
 /*
     NOTE: Code running under MultiFinder or System 7.0 or newer
@@ -695,7 +672,8 @@ typedef AlertStdCFStringAlertParamRec *      AlertStdCFStringAlertParamPtr;
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InitDialogs( void *ignored ) ONEWORDINLINE( 0xA97B );
+InitDialogs(void * ignored)                                   ONEWORDINLINE(0xA97B);
+
 
 /*
  *  ErrorSound()
@@ -706,9 +684,10 @@ InitDialogs( void *ignored ) ONEWORDINLINE( 0xA97B );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-ErrorSound( SoundUPP soundProc ) ONEWORDINLINE( 0xA98C );
+ErrorSound(SoundUPP soundProc)                                ONEWORDINLINE(0xA98C);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  NewDialog()
@@ -720,15 +699,16 @@ ErrorSound( SoundUPP soundProc ) ONEWORDINLINE( 0xA98C );
  */
 EXTERN_API( DialogRef )
 NewDialog(
-    void *           dStorage,
-    const Rect *     boundsRect,
-    ConstStr255Param title,
-    Boolean          visible,
-    SInt16           procID,
-    WindowRef        behind,
-    Boolean          goAwayFlag,
-    SInt32           refCon,
-    Handle           items ) ONEWORDINLINE( 0xA97D );
+  void *             dStorage,
+  const Rect *       boundsRect,
+  ConstStr255Param   title,
+  Boolean            visible,
+  SInt16             procID,
+  WindowRef          behind,
+  Boolean            goAwayFlag,
+  SInt32             refCon,
+  Handle             items)                                   ONEWORDINLINE(0xA97D);
+
 
 /*
  *  GetNewDialog()
@@ -740,9 +720,10 @@ NewDialog(
  */
 EXTERN_API( DialogRef )
 GetNewDialog(
-    SInt16    dialogID,
-    void *    dStorage,
-    WindowRef behind ) ONEWORDINLINE( 0xA97C );
+  SInt16      dialogID,
+  void *      dStorage,
+  WindowRef   behind)                                         ONEWORDINLINE(0xA97C);
+
 
 /*
  *  NewColorDialog()
@@ -754,15 +735,16 @@ GetNewDialog(
  */
 EXTERN_API( DialogRef )
 NewColorDialog(
-    void *           dStorage,
-    const Rect *     boundsRect,
-    ConstStr255Param title,
-    Boolean          visible,
-    SInt16           procID,
-    WindowRef        behind,
-    Boolean          goAwayFlag,
-    SInt32           refCon,
-    Handle           items ) ONEWORDINLINE( 0xAA4B );
+  void *             dStorage,
+  const Rect *       boundsRect,
+  ConstStr255Param   title,
+  Boolean            visible,
+  SInt16             procID,
+  WindowRef          behind,
+  Boolean            goAwayFlag,
+  SInt32             refCon,
+  Handle             items)                                   ONEWORDINLINE(0xAA4B);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -774,9 +756,10 @@ NewColorDialog(
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-CloseDialog( DialogRef theDialog ) ONEWORDINLINE( 0xA982 );
+CloseDialog(DialogRef theDialog)                              ONEWORDINLINE(0xA982);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  DisposeDialog()
@@ -787,7 +770,8 @@ CloseDialog( DialogRef theDialog ) ONEWORDINLINE( 0xA982 );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisposeDialog( DialogRef theDialog ) ONEWORDINLINE( 0xA983 );
+DisposeDialog(DialogRef theDialog)                            ONEWORDINLINE(0xA983);
+
 
 /*
  *  ModalDialog()
@@ -799,8 +783,9 @@ DisposeDialog( DialogRef theDialog ) ONEWORDINLINE( 0xA983 );
  */
 EXTERN_API( void )
 ModalDialog(
-    ModalFilterUPP   modalFilter,
-    DialogItemIndex *itemHit ) ONEWORDINLINE( 0xA991 );
+  ModalFilterUPP     modalFilter,
+  DialogItemIndex *  itemHit)                                 ONEWORDINLINE(0xA991);
+
 
 /*
  *  IsDialogEvent()
@@ -811,7 +796,8 @@ ModalDialog(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsDialogEvent( const EventRecord *theEvent ) ONEWORDINLINE( 0xA97F );
+IsDialogEvent(const EventRecord * theEvent)                   ONEWORDINLINE(0xA97F);
+
 
 /*
  *  DialogSelect()
@@ -823,9 +809,10 @@ IsDialogEvent( const EventRecord *theEvent ) ONEWORDINLINE( 0xA97F );
  */
 EXTERN_API( Boolean )
 DialogSelect(
-    const EventRecord *theEvent,
-    DialogRef *        theDialog,
-    DialogItemIndex *  itemHit ) ONEWORDINLINE( 0xA980 );
+  const EventRecord *  theEvent,
+  DialogRef *          theDialog,
+  DialogItemIndex *    itemHit)                               ONEWORDINLINE(0xA980);
+
 
 /*
  *  DrawDialog()
@@ -836,7 +823,8 @@ DialogSelect(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DrawDialog( DialogRef theDialog ) ONEWORDINLINE( 0xA981 );
+DrawDialog(DialogRef theDialog)                               ONEWORDINLINE(0xA981);
+
 
 /*
  *  UpdateDialog()
@@ -848,8 +836,9 @@ DrawDialog( DialogRef theDialog ) ONEWORDINLINE( 0xA981 );
  */
 EXTERN_API( void )
 UpdateDialog(
-    DialogRef theDialog,
-    RgnHandle updateRgn ) ONEWORDINLINE( 0xA978 );
+  DialogRef   theDialog,
+  RgnHandle   updateRgn)                                      ONEWORDINLINE(0xA978);
+
 
 /*
  *  HideDialogItem()
@@ -861,8 +850,9 @@ UpdateDialog(
  */
 EXTERN_API( void )
 HideDialogItem(
-    DialogRef       theDialog,
-    DialogItemIndex itemNo ) ONEWORDINLINE( 0xA827 );
+  DialogRef         theDialog,
+  DialogItemIndex   itemNo)                                   ONEWORDINLINE(0xA827);
+
 
 /*
  *  ShowDialogItem()
@@ -874,8 +864,9 @@ HideDialogItem(
  */
 EXTERN_API( void )
 ShowDialogItem(
-    DialogRef       theDialog,
-    DialogItemIndex itemNo ) ONEWORDINLINE( 0xA828 );
+  DialogRef         theDialog,
+  DialogItemIndex   itemNo)                                   ONEWORDINLINE(0xA828);
+
 
 /*
  *  FindDialogItem()
@@ -887,8 +878,9 @@ ShowDialogItem(
  */
 EXTERN_API( DialogItemIndexZeroBased )
 FindDialogItem(
-    DialogRef theDialog,
-    Point     thePt ) ONEWORDINLINE( 0xA984 );
+  DialogRef   theDialog,
+  Point       thePt)                                          ONEWORDINLINE(0xA984);
+
 
 /*
  *  DialogCut()
@@ -899,7 +891,8 @@ FindDialogItem(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DialogCut( DialogRef theDialog );
+DialogCut(DialogRef theDialog);
+
 
 /*
  *  DialogPaste()
@@ -910,7 +903,8 @@ DialogCut( DialogRef theDialog );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DialogPaste( DialogRef theDialog );
+DialogPaste(DialogRef theDialog);
+
 
 /*
  *  DialogCopy()
@@ -921,7 +915,8 @@ DialogPaste( DialogRef theDialog );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DialogCopy( DialogRef theDialog );
+DialogCopy(DialogRef theDialog);
+
 
 /*
  *  DialogDelete()
@@ -932,7 +927,8 @@ DialogCopy( DialogRef theDialog );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DialogDelete( DialogRef theDialog );
+DialogDelete(DialogRef theDialog);
+
 
 /*
  *  Alert()
@@ -944,8 +940,9 @@ DialogDelete( DialogRef theDialog );
  */
 EXTERN_API( DialogItemIndex )
 Alert(
-    SInt16         alertID,
-    ModalFilterUPP modalFilter ) ONEWORDINLINE( 0xA985 );
+  SInt16           alertID,
+  ModalFilterUPP   modalFilter)                               ONEWORDINLINE(0xA985);
+
 
 /*
  *  StopAlert()
@@ -957,8 +954,9 @@ Alert(
  */
 EXTERN_API( DialogItemIndex )
 StopAlert(
-    SInt16         alertID,
-    ModalFilterUPP modalFilter ) ONEWORDINLINE( 0xA986 );
+  SInt16           alertID,
+  ModalFilterUPP   modalFilter)                               ONEWORDINLINE(0xA986);
+
 
 /*
  *  NoteAlert()
@@ -970,8 +968,9 @@ StopAlert(
  */
 EXTERN_API( DialogItemIndex )
 NoteAlert(
-    SInt16         alertID,
-    ModalFilterUPP modalFilter ) ONEWORDINLINE( 0xA987 );
+  SInt16           alertID,
+  ModalFilterUPP   modalFilter)                               ONEWORDINLINE(0xA987);
+
 
 /*
  *  CautionAlert()
@@ -983,8 +982,9 @@ NoteAlert(
  */
 EXTERN_API( DialogItemIndex )
 CautionAlert(
-    SInt16         alertID,
-    ModalFilterUPP modalFilter ) ONEWORDINLINE( 0xA988 );
+  SInt16           alertID,
+  ModalFilterUPP   modalFilter)                               ONEWORDINLINE(0xA988);
+
 
 /*
  *  GetDialogItem()
@@ -996,11 +996,12 @@ CautionAlert(
  */
 EXTERN_API( void )
 GetDialogItem(
-    DialogRef       theDialog,
-    DialogItemIndex itemNo,
-    DialogItemType *itemType,
-    Handle *        item,
-    Rect *          box ) ONEWORDINLINE( 0xA98D );
+  DialogRef         theDialog,
+  DialogItemIndex   itemNo,
+  DialogItemType *  itemType,
+  Handle *          item,
+  Rect *            box)                                      ONEWORDINLINE(0xA98D);
+
 
 /*
  *  SetDialogItem()
@@ -1012,11 +1013,12 @@ GetDialogItem(
  */
 EXTERN_API( void )
 SetDialogItem(
-    DialogRef       theDialog,
-    DialogItemIndex itemNo,
-    DialogItemType  itemType,
-    Handle          item,
-    const Rect *    box ) ONEWORDINLINE( 0xA98E );
+  DialogRef         theDialog,
+  DialogItemIndex   itemNo,
+  DialogItemType    itemType,
+  Handle            item,
+  const Rect *      box)                                      ONEWORDINLINE(0xA98E);
+
 
 /*
  *  ParamText()
@@ -1028,10 +1030,11 @@ SetDialogItem(
  */
 EXTERN_API( void )
 ParamText(
-    ConstStr255Param param0,
-    ConstStr255Param param1,
-    ConstStr255Param param2,
-    ConstStr255Param param3 ) ONEWORDINLINE( 0xA98B );
+  ConstStr255Param   param0,
+  ConstStr255Param   param1,
+  ConstStr255Param   param2,
+  ConstStr255Param   param3)                                  ONEWORDINLINE(0xA98B);
+
 
 /*
  *  SelectDialogItemText()
@@ -1043,10 +1046,11 @@ ParamText(
  */
 EXTERN_API( void )
 SelectDialogItemText(
-    DialogRef       theDialog,
-    DialogItemIndex itemNo,
-    SInt16          strtSel,
-    SInt16          endSel ) ONEWORDINLINE( 0xA97E );
+  DialogRef         theDialog,
+  DialogItemIndex   itemNo,
+  SInt16            strtSel,
+  SInt16            endSel)                                   ONEWORDINLINE(0xA97E);
+
 
 /*
  *  GetDialogItemText()
@@ -1058,8 +1062,9 @@ SelectDialogItemText(
  */
 EXTERN_API( void )
 GetDialogItemText(
-    Handle item,
-    Str255 text ) ONEWORDINLINE( 0xA990 );
+  Handle   item,
+  Str255   text)                                              ONEWORDINLINE(0xA990);
+
 
 /*
  *  SetDialogItemText()
@@ -1071,8 +1076,9 @@ GetDialogItemText(
  */
 EXTERN_API( void )
 SetDialogItemText(
-    Handle           item,
-    ConstStr255Param text ) ONEWORDINLINE( 0xA98F );
+  Handle             item,
+  ConstStr255Param   text)                                    ONEWORDINLINE(0xA98F);
+
 
 /*
  *  GetAlertStage()
@@ -1083,7 +1089,8 @@ SetDialogItemText(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-GetAlertStage( void ) TWOWORDINLINE( 0x3EB8, 0x0A9A );
+GetAlertStage(void)                                           TWOWORDINLINE(0x3EB8, 0x0A9A);
+
 
 /*
  *  SetDialogFont()
@@ -1094,7 +1101,8 @@ GetAlertStage( void ) TWOWORDINLINE( 0x3EB8, 0x0A9A );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetDialogFont( SInt16 fontNum ) TWOWORDINLINE( 0x31DF, 0x0AFA );
+SetDialogFont(SInt16 fontNum)                                 TWOWORDINLINE(0x31DF, 0x0AFA);
+
 
 /*
  *  ResetAlertStage()
@@ -1105,7 +1113,8 @@ SetDialogFont( SInt16 fontNum ) TWOWORDINLINE( 0x31DF, 0x0AFA );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-ResetAlertStage( void ) TWOWORDINLINE( 0x4278, 0x0A9A );
+ResetAlertStage(void)                                         TWOWORDINLINE(0x4278, 0x0A9A);
+
 
 /* APIs in Carbon*/
 /*
@@ -1118,10 +1127,12 @@ ResetAlertStage( void ) TWOWORDINLINE( 0x4278, 0x0A9A );
  */
 EXTERN_API( void )
 GetParamText(
-    StringPtr param0,
-    StringPtr param1,
-    StringPtr param2,
-    StringPtr param3 );
+  StringPtr   param0,
+  StringPtr   param1,
+  StringPtr   param2,
+  StringPtr   param3);
+
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1134,15 +1145,16 @@ GetParamText(
  */
 EXTERN_API_C( DialogRef )
 newdialog(
-    void *      dStorage,
-    const Rect *boundsRect,
-    const char *title,
-    Boolean     visible,
-    SInt16      procID,
-    WindowRef   behind,
-    Boolean     goAwayFlag,
-    SInt32      refCon,
-    Handle      items );
+  void *        dStorage,
+  const Rect *  boundsRect,
+  const char *  title,
+  Boolean       visible,
+  SInt16        procID,
+  WindowRef     behind,
+  Boolean       goAwayFlag,
+  SInt32        refCon,
+  Handle        items);
+
 
 /*
  *  newcolordialog()
@@ -1154,15 +1166,16 @@ newdialog(
  */
 EXTERN_API_C( DialogRef )
 newcolordialog(
-    void *      dStorage,
-    const Rect *boundsRect,
-    const char *title,
-    Boolean     visible,
-    SInt16      procID,
-    WindowRef   behind,
-    Boolean     goAwayFlag,
-    SInt32      refCon,
-    Handle      items );
+  void *        dStorage,
+  const Rect *  boundsRect,
+  const char *  title,
+  Boolean       visible,
+  SInt16        procID,
+  WindowRef     behind,
+  Boolean       goAwayFlag,
+  SInt32        refCon,
+  Handle        items);
+
 
 /*
  *  paramtext()
@@ -1174,10 +1187,11 @@ newcolordialog(
  */
 EXTERN_API_C( void )
 paramtext(
-    const char *param0,
-    const char *param1,
-    const char *param2,
-    const char *param3 );
+  const char *  param0,
+  const char *  param1,
+  const char *  param2,
+  const char *  param3);
+
 
 /*
  *  getdialogitemtext()
@@ -1189,8 +1203,9 @@ paramtext(
  */
 EXTERN_API_C( void )
 getdialogitemtext(
-    Handle item,
-    char * text );
+  Handle   item,
+  char *   text);
+
 
 /*
  *  setdialogitemtext()
@@ -1202,8 +1217,9 @@ getdialogitemtext(
  */
 EXTERN_API_C( void )
 setdialogitemtext(
-    Handle      item,
-    const char *text );
+  Handle        item,
+  const char *  text);
+
 
 /*
  *  finddialogitem()
@@ -1215,10 +1231,11 @@ setdialogitemtext(
  */
 EXTERN_API_C( DialogItemIndexZeroBased )
 finddialogitem(
-    DialogRef theDialog,
-    Point *   thePt );
+  DialogRef   theDialog,
+  Point *     thePt);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  AppendDITL()
@@ -1230,9 +1247,10 @@ finddialogitem(
  */
 EXTERN_API( void )
 AppendDITL(
-    DialogRef  theDialog,
-    Handle     theHandle,
-    DITLMethod method );
+  DialogRef    theDialog,
+  Handle       theHandle,
+  DITLMethod   method);
+
 
 /*
  *  CountDITL()
@@ -1243,7 +1261,8 @@ AppendDITL(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( DialogItemIndex )
-CountDITL( DialogRef theDialog );
+CountDITL(DialogRef theDialog);
+
 
 /*
  *  ShortenDITL()
@@ -1255,8 +1274,9 @@ CountDITL( DialogRef theDialog );
  */
 EXTERN_API( void )
 ShortenDITL(
-    DialogRef       theDialog,
-    DialogItemIndex numberItems );
+  DialogRef         theDialog,
+  DialogItemIndex   numberItems);
+
 
 /*
  *  InsertDialogItem()
@@ -1268,11 +1288,12 @@ ShortenDITL(
  */
 EXTERN_API( OSStatus )
 InsertDialogItem(
-    DialogRef       theDialog,
-    DialogItemIndex afterItem,
-    DialogItemType  itemType,
-    Handle          itemHandle,
-    const Rect *    box );
+  DialogRef         theDialog,
+  DialogItemIndex   afterItem,
+  DialogItemType    itemType,
+  Handle            itemHandle,
+  const Rect *      box);
+
 
 /*
  *  RemoveDialogItems()
@@ -1284,10 +1305,11 @@ InsertDialogItem(
  */
 EXTERN_API( OSStatus )
 RemoveDialogItems(
-    DialogRef       theDialog,
-    DialogItemIndex itemNo,
-    DialogItemIndex amountToRemove,
-    Boolean         disposeItemData );
+  DialogRef         theDialog,
+  DialogItemIndex   itemNo,
+  DialogItemIndex   amountToRemove,
+  Boolean           disposeItemData);
+
 
 /*
  *  StdFilterProc()
@@ -1299,9 +1321,10 @@ RemoveDialogItems(
  */
 EXTERN_API( Boolean )
 StdFilterProc(
-    DialogRef        theDialog,
-    EventRecord *    event,
-    DialogItemIndex *itemHit );
+  DialogRef          theDialog,
+  EventRecord *      event,
+  DialogItemIndex *  itemHit);
+
 
 /*
  *  GetStdFilterProc()
@@ -1312,7 +1335,8 @@ StdFilterProc(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-GetStdFilterProc( ModalFilterUPP *theProc ) THREEWORDINLINE( 0x303C, 0x0203, 0xAA68 );
+GetStdFilterProc(ModalFilterUPP * theProc)                    THREEWORDINLINE(0x303C, 0x0203, 0xAA68);
+
 
 /*
  *  SetDialogDefaultItem()
@@ -1324,8 +1348,9 @@ GetStdFilterProc( ModalFilterUPP *theProc ) THREEWORDINLINE( 0x303C, 0x0203, 0xA
  */
 EXTERN_API( OSErr )
 SetDialogDefaultItem(
-    DialogRef       theDialog,
-    DialogItemIndex newItem ) THREEWORDINLINE( 0x303C, 0x0304, 0xAA68 );
+  DialogRef         theDialog,
+  DialogItemIndex   newItem)                                  THREEWORDINLINE(0x303C, 0x0304, 0xAA68);
+
 
 /*
  *  SetDialogCancelItem()
@@ -1337,8 +1362,9 @@ SetDialogDefaultItem(
  */
 EXTERN_API( OSErr )
 SetDialogCancelItem(
-    DialogRef       theDialog,
-    DialogItemIndex newItem ) THREEWORDINLINE( 0x303C, 0x0305, 0xAA68 );
+  DialogRef         theDialog,
+  DialogItemIndex   newItem)                                  THREEWORDINLINE(0x303C, 0x0305, 0xAA68);
+
 
 /*
  *  SetDialogTracksCursor()
@@ -1350,8 +1376,11 @@ SetDialogCancelItem(
  */
 EXTERN_API( OSErr )
 SetDialogTracksCursor(
-    DialogRef theDialog,
-    Boolean   tracks ) THREEWORDINLINE( 0x303C, 0x0306, 0xAA68 );
+  DialogRef   theDialog,
+  Boolean     tracks)                                         THREEWORDINLINE(0x303C, 0x0306, 0xAA68);
+
+
+
 
 /*
   ---------------------------------------------------------------------------------------------------------
@@ -1369,16 +1398,17 @@ SetDialogTracksCursor(
  */
 EXTERN_API( DialogRef )
 NewFeaturesDialog(
-    void *           inStorage,
-    const Rect *     inBoundsRect,
-    ConstStr255Param inTitle,
-    Boolean          inIsVisible,
-    SInt16           inProcID,
-    WindowRef        inBehind,
-    Boolean          inGoAwayFlag,
-    SInt32           inRefCon,
-    Handle           inItemListHandle,
-    UInt32           inFlags ) THREEWORDINLINE( 0x303C, 0x110C, 0xAA68 );
+  void *             inStorage,
+  const Rect *       inBoundsRect,
+  ConstStr255Param   inTitle,
+  Boolean            inIsVisible,
+  SInt16             inProcID,
+  WindowRef          inBehind,
+  Boolean            inGoAwayFlag,
+  SInt32             inRefCon,
+  Handle             inItemListHandle,
+  UInt32             inFlags)                                 THREEWORDINLINE(0x303C, 0x110C, 0xAA68);
+
 
 /*
  *  AutoSizeDialog()
@@ -1389,7 +1419,8 @@ NewFeaturesDialog(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-AutoSizeDialog( DialogRef inDialog ) THREEWORDINLINE( 0x303C, 0x020D, 0xAA68 );
+AutoSizeDialog(DialogRef inDialog)                            THREEWORDINLINE(0x303C, 0x020D, 0xAA68);
+
 
 /*
     Regarding StandardAlert and constness:
@@ -1406,11 +1437,12 @@ AutoSizeDialog( DialogRef inDialog ) THREEWORDINLINE( 0x303C, 0x020D, 0xAA68 );
  */
 EXTERN_API( OSErr )
 StandardAlert(
-    AlertType                    inAlertType,
-    ConstStr255Param             inError,
-    ConstStr255Param             inExplanation,
-    const AlertStdAlertParamRec *inAlertParam, /* can be NULL */
-    SInt16 *                     outItemHit ) THREEWORDINLINE( 0x303C, 0x090E, 0xAA68 );
+  AlertType                      inAlertType,
+  ConstStr255Param               inError,
+  ConstStr255Param               inExplanation,
+  const AlertStdAlertParamRec *  inAlertParam,        /* can be NULL */
+  SInt16 *                       outItemHit)                  THREEWORDINLINE(0x303C, 0x090E, 0xAA68);
+
 
 /* CFString-based StandardAlert and StandardSheet APIs are only available on Mac OS X and later*/
 
@@ -1437,8 +1469,9 @@ StandardAlert(
  */
 EXTERN_API( OSStatus )
 GetStandardAlertDefaultParams(
-    AlertStdCFStringAlertParamPtr param,
-    UInt32                        version );
+  AlertStdCFStringAlertParamPtr   param,
+  UInt32                          version);
+
 
 /*
  *  CreateStandardAlert()
@@ -1491,11 +1524,12 @@ GetStandardAlertDefaultParams(
  */
 EXTERN_API( OSStatus )
 CreateStandardAlert(
-    AlertType                            alertType,
-    CFStringRef                          error,
-    CFStringRef                          explanation, /* can be NULL */
-    const AlertStdCFStringAlertParamRec *param, /* can be NULL */
-    DialogRef *                          outAlert );
+  AlertType                              alertType,
+  CFStringRef                            error,
+  CFStringRef                            explanation,       /* can be NULL */
+  const AlertStdCFStringAlertParamRec *  param,             /* can be NULL */
+  DialogRef *                            outAlert);
+
 
 /*
  *  RunStandardAlert()
@@ -1535,9 +1569,10 @@ CreateStandardAlert(
  */
 EXTERN_API( OSStatus )
 RunStandardAlert(
-    DialogRef        inAlert,
-    ModalFilterUPP   filterProc, /* can be NULL */
-    DialogItemIndex *outItemHit );
+  DialogRef          inAlert,
+  ModalFilterUPP     filterProc,       /* can be NULL */
+  DialogItemIndex *  outItemHit);
+
 
 /*
  *  CreateStandardSheet()
@@ -1600,12 +1635,13 @@ RunStandardAlert(
  */
 EXTERN_API( OSStatus )
 CreateStandardSheet(
-    AlertType                            alertType,
-    CFStringRef                          error,
-    CFStringRef                          explanation, /* can be NULL */
-    const AlertStdCFStringAlertParamRec *param, /* can be NULL */
-    EventTargetRef                       notifyTarget,
-    DialogRef *                          outSheet );
+  AlertType                              alertType,
+  CFStringRef                            error,
+  CFStringRef                            explanation,        /* can be NULL */
+  const AlertStdCFStringAlertParamRec *  param,              /* can be NULL */
+  EventTargetRef                         notifyTarget,
+  DialogRef *                            outSheet);
+
 
 /*
  *  CloseStandardSheet()
@@ -1645,8 +1681,9 @@ CreateStandardSheet(
  */
 EXTERN_API( OSStatus )
 CloseStandardSheet(
-    DialogRef inSheet,
-    UInt32    inResultCommand );
+  DialogRef   inSheet,
+  UInt32      inResultCommand);
+
 
 /*
  *  GetDialogItemAsControl()
@@ -1658,9 +1695,10 @@ CloseStandardSheet(
  */
 EXTERN_API( OSErr )
 GetDialogItemAsControl(
-    DialogRef   inDialog,
-    SInt16      inItemNo,
-    ControlRef *outControl ) THREEWORDINLINE( 0x303C, 0x050F, 0xAA68 );
+  DialogRef     inDialog,
+  SInt16        inItemNo,
+  ControlRef *  outControl)                                   THREEWORDINLINE(0x303C, 0x050F, 0xAA68);
+
 
 /*
  *  MoveDialogItem()
@@ -1672,10 +1710,11 @@ GetDialogItemAsControl(
  */
 EXTERN_API( OSErr )
 MoveDialogItem(
-    DialogRef inDialog,
-    SInt16    inItemNo,
-    SInt16    inHoriz,
-    SInt16    inVert ) THREEWORDINLINE( 0x303C, 0x0510, 0xAA68 );
+  DialogRef   inDialog,
+  SInt16      inItemNo,
+  SInt16      inHoriz,
+  SInt16      inVert)                                         THREEWORDINLINE(0x303C, 0x0510, 0xAA68);
+
 
 /*
  *  SizeDialogItem()
@@ -1687,10 +1726,11 @@ MoveDialogItem(
  */
 EXTERN_API( OSErr )
 SizeDialogItem(
-    DialogRef inDialog,
-    SInt16    inItemNo,
-    SInt16    inWidth,
-    SInt16    inHeight ) THREEWORDINLINE( 0x303C, 0x0511, 0xAA68 );
+  DialogRef   inDialog,
+  SInt16      inItemNo,
+  SInt16      inWidth,
+  SInt16      inHeight)                                       THREEWORDINLINE(0x303C, 0x0511, 0xAA68);
+
 
 /*
  *  AppendDialogItemList()
@@ -1702,9 +1742,10 @@ SizeDialogItem(
  */
 EXTERN_API( OSErr )
 AppendDialogItemList(
-    DialogRef  dialog,
-    SInt16     ditlID,
-    DITLMethod method ) THREEWORDINLINE( 0x303C, 0x0412, 0xAA68 );
+  DialogRef    dialog,
+  SInt16       ditlID,
+  DITLMethod   method)                                        THREEWORDINLINE(0x303C, 0x0412, 0xAA68);
+
 
 /*
   ---------------------------------------------------------------------------------------------------------
@@ -1754,9 +1795,10 @@ AppendDialogItemList(
  */
 EXTERN_API( OSStatus )
 SetDialogTimeout(
-    DialogRef inDialog,
-    SInt16    inButtonToPress,
-    UInt32    inSecondsToWait );
+  DialogRef   inDialog,
+  SInt16      inButtonToPress,
+  UInt32      inSecondsToWait);
+
 
 /*
  *  GetDialogTimeout()
@@ -1794,10 +1836,11 @@ SetDialogTimeout(
  */
 EXTERN_API( OSStatus )
 GetDialogTimeout(
-    DialogRef inDialog,
-    SInt16 *  outButtonToPress, /* can be NULL */
-    UInt32 *  outSecondsToWait, /* can be NULL */
-    UInt32 *  outSecondsRemaining ); /* can be NULL */
+  DialogRef   inDialog,
+  SInt16 *    outButtonToPress,          /* can be NULL */
+  UInt32 *    outSecondsToWait,          /* can be NULL */
+  UInt32 *    outSecondsRemaining);      /* can be NULL */
+
 
 /*
  *  SetModalDialogEventMask()
@@ -1809,8 +1852,9 @@ GetDialogTimeout(
  */
 EXTERN_API( OSStatus )
 SetModalDialogEventMask(
-    DialogRef inDialog,
-    EventMask inMask );
+  DialogRef   inDialog,
+  EventMask   inMask);
+
 
 /*
  *  GetModalDialogEventMask()
@@ -1822,14 +1866,18 @@ SetModalDialogEventMask(
  */
 EXTERN_API( OSStatus )
 GetModalDialogEventMask(
-    DialogRef  inDialog,
-    EventMask *outMask );
+  DialogRef    inDialog,
+  EventMask *  outMask);
+
+
+
 
 /*
   ---------------------------------------------------------------------------------------------------------
     o Accessor functions
   ---------------------------------------------------------------------------------------------------------
 */
+
 
 /*
  *  GetDialogWindow()
@@ -1840,17 +1888,16 @@ GetModalDialogEventMask(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( WindowRef )
-GetDialogWindow( DialogRef dialog );
+GetDialogWindow(DialogRef dialog);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( WindowRef ) GetDialogWindow( DialogRef dialog )
-{
-	return (WindowRef)dialog;
-}
-#else
-#define GetDialogWindow( dialog ) ( (WindowRef)dialog )
+  #ifdef __cplusplus
+    inline DEFINE_API(WindowRef ) GetDialogWindow(DialogRef dialog) { return (WindowRef)dialog; }
+  #else
+    #define GetDialogWindow(dialog) ((WindowRef)dialog)
+  #endif
 #endif
-#endif
+
+
 
 /*
  *  GetDialogTextEditHandle()
@@ -1861,17 +1908,16 @@ inline DEFINE_API( WindowRef ) GetDialogWindow( DialogRef dialog )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( TEHandle )
-GetDialogTextEditHandle( DialogRef dialog );
+GetDialogTextEditHandle(DialogRef dialog);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( TEHandle ) GetDialogTextEditHandle( DialogRef dialog )
-{
-	return ( (DialogPeek)dialog )->textH;
-}
-#else
-#define GetDialogTextEditHandle( dialog ) ( ( (DialogPeek)dialog )->textH )
+  #ifdef __cplusplus
+    inline DEFINE_API(TEHandle ) GetDialogTextEditHandle(DialogRef dialog) { return ((DialogPeek)dialog)->textH; }
+  #else
+    #define GetDialogTextEditHandle(dialog) (((DialogPeek)dialog)->textH)
+  #endif
 #endif
-#endif
+
+
 
 /*
  *  GetDialogDefaultItem()
@@ -1882,17 +1928,16 @@ inline DEFINE_API( TEHandle ) GetDialogTextEditHandle( DialogRef dialog )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-GetDialogDefaultItem( DialogRef dialog );
+GetDialogDefaultItem(DialogRef dialog);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( SInt16 ) GetDialogDefaultItem( DialogRef dialog )
-{
-	return ( (DialogPeek)dialog )->aDefItem;
-}
-#else
-#define GetDialogDefaultItem( dialog ) ( ( (DialogPeek)dialog )->aDefItem )
+  #ifdef __cplusplus
+    inline DEFINE_API(SInt16 ) GetDialogDefaultItem(DialogRef dialog) { return ((DialogPeek)dialog)->aDefItem; }
+  #else
+    #define GetDialogDefaultItem(dialog) (((DialogPeek)dialog)->aDefItem)
+  #endif
 #endif
-#endif
+
+
 
 /*
  *  GetDialogCancelItem()
@@ -1903,17 +1948,16 @@ inline DEFINE_API( SInt16 ) GetDialogDefaultItem( DialogRef dialog )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-GetDialogCancelItem( DialogRef dialog );
+GetDialogCancelItem(DialogRef dialog);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( SInt16 ) GetDialogCancelItem( DialogRef dialog )
-{
-	return ( (DialogPeek)dialog )->editOpen;
-}
-#else
-#define GetDialogCancelItem( dialog ) ( ( (DialogPeek)dialog )->editOpen )
+  #ifdef __cplusplus
+    inline DEFINE_API(SInt16 ) GetDialogCancelItem(DialogRef dialog) { return ((DialogPeek)dialog)->editOpen; }
+  #else
+    #define GetDialogCancelItem(dialog) (((DialogPeek)dialog)->editOpen)
+  #endif
 #endif
-#endif
+
+
 
 /*
  *  GetDialogKeyboardFocusItem()
@@ -1924,17 +1968,16 @@ inline DEFINE_API( SInt16 ) GetDialogCancelItem( DialogRef dialog )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-GetDialogKeyboardFocusItem( DialogRef dialog );
+GetDialogKeyboardFocusItem(DialogRef dialog);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( SInt16 ) GetDialogKeyboardFocusItem( DialogRef dialog )
-{
-	return ( (DialogPeek)dialog )->editField < 0 ? (short)( -1 ) : (short)( ( (DialogPeek)dialog )->editField + 1 );
-}
-#else
-#define GetDialogKeyboardFocusItem( dialog ) ( ( (DialogPeek)dialog )->editField < 0 ? (short)( -1 ) : (short)( ( (DialogPeek)dialog )->editField + 1 ) )
+  #ifdef __cplusplus
+    inline DEFINE_API(SInt16 ) GetDialogKeyboardFocusItem(DialogRef dialog) { return ((DialogPeek)dialog)->editField < 0 ? (short)(-1): (short)(((DialogPeek)dialog)->editField + 1); }
+  #else
+    #define GetDialogKeyboardFocusItem(dialog) (((DialogPeek)dialog)->editField < 0 ? (short)(-1): (short)(((DialogPeek)dialog)->editField + 1))
+  #endif
 #endif
-#endif
+
+
 
 /*
  *  SetPortDialogPort()
@@ -1945,17 +1988,16 @@ inline DEFINE_API( SInt16 ) GetDialogKeyboardFocusItem( DialogRef dialog )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetPortDialogPort( DialogRef dialog );
+SetPortDialogPort(DialogRef dialog);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( void ) SetPortDialogPort( DialogRef dialog )
-{
-	MacSetPort( (GrafPtr)dialog );
-}
-#else
-#define SetPortDialogPort( dialog ) ( MacSetPort( (GrafPtr)dialog ) )
+  #ifdef __cplusplus
+    inline DEFINE_API(void) SetPortDialogPort(DialogRef dialog) { MacSetPort((GrafPtr)dialog); }
+  #else
+    #define SetPortDialogPort(dialog) (MacSetPort((GrafPtr)dialog))
+  #endif
 #endif
-#endif
+
+
 
 /*
  *  GetDialogPort()
@@ -1966,17 +2008,16 @@ inline DEFINE_API( void ) SetPortDialogPort( DialogRef dialog )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( CGrafPtr )
-GetDialogPort( DialogRef dialog );
+GetDialogPort(DialogRef dialog);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( CGrafPtr ) GetDialogPort( DialogRef dialog )
-{
-	return (CGrafPtr)dialog;
-}
-#else
-#define GetDialogPort( dialog ) ( (CGrafPtr)dialog )
+  #ifdef __cplusplus
+    inline DEFINE_API(CGrafPtr ) GetDialogPort(DialogRef dialog) { return (CGrafPtr)dialog; }
+  #else
+    #define GetDialogPort(dialog) ((CGrafPtr)dialog)
+  #endif
 #endif
-#endif
+
+
 
 /*
  *  GetDialogFromWindow()
@@ -1987,17 +2028,17 @@ inline DEFINE_API( CGrafPtr ) GetDialogPort( DialogRef dialog )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( DialogRef )
-GetDialogFromWindow( WindowRef window );
+GetDialogFromWindow(WindowRef window);
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-#ifdef __cplusplus
-inline DEFINE_API( DialogRef ) GetDialogFromWindow( WindowRef window )
-{
-	return (DialogRef)window;
-}
-#else
-#define GetDialogFromWindow( window ) ( (DialogRef)window )
+  #ifdef __cplusplus
+    inline DEFINE_API(DialogRef ) GetDialogFromWindow(WindowRef window) { return (DialogRef)window; }
+  #else
+    #define GetDialogFromWindow(window) ((DialogRef)window)
+  #endif
 #endif
-#endif
+
+
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -2009,7 +2050,8 @@ inline DEFINE_API( DialogRef ) GetDialogFromWindow( WindowRef window )
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-CouldDialog( SInt16 dialogID ) ONEWORDINLINE( 0xA979 );
+CouldDialog(SInt16 dialogID)                                  ONEWORDINLINE(0xA979);
+
 
 /*
  *  FreeDialog()
@@ -2020,7 +2062,8 @@ CouldDialog( SInt16 dialogID ) ONEWORDINLINE( 0xA979 );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-FreeDialog( SInt16 dialogID ) ONEWORDINLINE( 0xA97A );
+FreeDialog(SInt16 dialogID)                                   ONEWORDINLINE(0xA97A);
+
 
 /*
  *  CouldAlert()
@@ -2031,7 +2074,8 @@ FreeDialog( SInt16 dialogID ) ONEWORDINLINE( 0xA97A );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-CouldAlert( SInt16 alertID ) ONEWORDINLINE( 0xA989 );
+CouldAlert(SInt16 alertID)                                    ONEWORDINLINE(0xA989);
+
 
 /*
  *  FreeAlert()
@@ -2042,52 +2086,65 @@ CouldAlert( SInt16 alertID ) ONEWORDINLINE( 0xA989 );
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-FreeAlert( SInt16 alertID ) ONEWORDINLINE( 0xA98A );
+FreeAlert(SInt16 alertID)                                     ONEWORDINLINE(0xA98A);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 #if OLDROUTINENAMES
-#define DisposDialog( theDialog ) DisposeDialog( theDialog )
-#define UpdtDialog( theDialog, updateRgn ) UpdateDialog( theDialog, updateRgn )
-#define GetDItem( theDialog, itemNo, itemType, item, box ) GetDialogItem( theDialog, itemNo, itemType, item, box )
-#define SetDItem( theDialog, itemNo, itemType, item, box ) SetDialogItem( theDialog, itemNo, itemType, item, box )
-#define HideDItem( theDialog, itemNo ) HideDialogItem( theDialog, itemNo )
-#define ShowDItem( theDialog, itemNo ) ShowDialogItem( theDialog, itemNo )
-#define SelIText( theDialog, itemNo, strtSel, endSel ) SelectDialogItemText( theDialog, itemNo, strtSel, endSel )
-#define GetIText( item, text ) GetDialogItemText( item, text )
-#define SetIText( item, text ) SetDialogItemText( item, text )
-#define FindDItem( theDialog, thePt ) FindDialogItem( theDialog, thePt )
-#define NewCDialog( dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items ) \
-	NewColorDialog( dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items )
+#define DisposDialog(theDialog) DisposeDialog(theDialog)
+#define UpdtDialog(theDialog, updateRgn) UpdateDialog(theDialog, updateRgn)
+#define GetDItem(theDialog, itemNo, itemType, item, box) GetDialogItem(theDialog, itemNo, itemType, item, box)
+#define SetDItem(theDialog, itemNo, itemType, item, box) SetDialogItem(theDialog, itemNo, itemType, item, box)
+#define HideDItem(theDialog, itemNo) HideDialogItem(theDialog, itemNo)
+#define ShowDItem(theDialog, itemNo) ShowDialogItem(theDialog, itemNo)
+#define SelIText(theDialog, itemNo, strtSel, endSel) SelectDialogItemText(theDialog, itemNo, strtSel, endSel)
+#define GetIText(item, text) GetDialogItemText(item, text)
+#define SetIText(item, text) SetDialogItemText(item, text)
+#define FindDItem(theDialog, thePt) FindDialogItem(theDialog, thePt)
+#define NewCDialog(dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items) \
+NewColorDialog(dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items)
 #define GetAlrtStage() GetAlertStage()
 #define ResetAlrtStage() ResetAlertStage()
-#define DlgCut( theDialog ) DialogCut( theDialog )
-#define DlgPaste( theDialog ) DialogPaste( theDialog )
-#define DlgCopy( theDialog ) DialogCopy( theDialog )
-#define DlgDelete( theDialog ) DialogDelete( theDialog )
-#define SetDAFont( fontNum ) SetDialogFont( fontNum )
-#define SetGrafPortOfDialog( dialog ) SetPortDialogPort( dialog )
+#define DlgCut(theDialog) DialogCut(theDialog)
+#define DlgPaste(theDialog) DialogPaste(theDialog)
+#define DlgCopy(theDialog) DialogCopy(theDialog)
+#define DlgDelete(theDialog) DialogDelete(theDialog)
+#define SetDAFont(fontNum) SetDialogFont(fontNum)
+#define SetGrafPortOfDialog(dialog) SetPortDialogPort(dialog)
 #if CGLUESUPPORTED
-#define newcdialog( dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items ) \
-	newcolordialog( dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items )
-#define getitext( item, text ) getdialogitemtext( item, text )
-#define setitext( item, text ) setdialogitemtext( item, text )
-#define findditem( theDialog, thePt ) finddialogitem( theDialog, thePt )
+#define newcdialog(dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items) \
+newcolordialog(dStorage, boundsRect, title, visible, procID, behind, goAwayFlag, refCon, items)
+#define getitext(item, text) getdialogitemtext(item, text)
+#define setitext(item, text) setdialogitemtext(item, text)
+#define findditem(theDialog, thePt) finddialogitem(theDialog, thePt)
 #endif
-#endif /* OLDROUTINENAMES */
+#endif  /* OLDROUTINENAMES */
+
+
+
+
+
 
 #if TARGET_OS_MAC
-#endif /* TARGET_OS_MAC */
+#endif  /* TARGET_OS_MAC */
 
 #if !TARGET_OS_MAC
-#endif /* !TARGET_OS_MAC */
+#endif  /* !TARGET_OS_MAC */
+
+
+
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2101,3 +2158,4 @@ FreeAlert( SInt16 alertID ) ONEWORDINLINE( 0xA98A );
 #endif
 
 #endif /* __DIALOGS__ */
+

@@ -53,6 +53,9 @@
 #include <ATSTypes.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -66,11 +69,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 /********************************/
@@ -87,7 +90,7 @@ extern "C" {
     used in QuickDraw Text.  This provides exact outline metrics and
     line specifications such as line width, ascent, descent, and so on.  
 */
-typedef Fixed ATSUTextMeasurement;
+typedef Fixed                           ATSUTextMeasurement;
 /*
     ATSUFontID indicates a particular font family and face.  
     ATSUFontID's are not guaranteed to remain constant across 
@@ -95,37 +98,37 @@ typedef Fixed ATSUTextMeasurement;
     get a font token to store in documents which is 
     guaranteed to remain constant across reboots. 
 */
-typedef FMFont ATSUFontID;
+typedef FMFont                          ATSUFontID;
 /*
     ATSUFontFeatureType and ATSUFontFeatureSelector are used 
     to identify font features.  
 */
-typedef UInt16 ATSUFontFeatureType;
-typedef UInt16 ATSUFontFeatureSelector;
+typedef UInt16                          ATSUFontFeatureType;
+typedef UInt16                          ATSUFontFeatureSelector;
 /*
     ATSUFontVariationAxis and ATSUFontVariationValue are used 
     in connection with font variations.  
 */
-typedef FourCharCode ATSUFontVariationAxis;
-typedef Fixed        ATSUFontVariationValue;
+typedef FourCharCode                    ATSUFontVariationAxis;
+typedef Fixed                           ATSUFontVariationValue;
 /*
     ATSUTextLayout is used to store the attribute information 
     associated with a contiguous block of UniChar's (UInt16's) 
     in memory.  It's typed to be an opaque structure.  
 */
-typedef struct OpaqueATSUTextLayout *ATSUTextLayout;
+typedef struct OpaqueATSUTextLayout*    ATSUTextLayout;
 /*
     ATSUStyle is used to store a set of individual attributes, 
     font features, and font variations.  It's typed to be 
     an opaque structure.  
 */
-typedef struct OpaqueATSUStyle *ATSUStyle;
+typedef struct OpaqueATSUStyle*         ATSUStyle;
 /*
     ATSUFontFallbacks is used to store the desired font fallback 
     list and associated fallback cache information.  It's typed
     to be an opaque structure.  
 */
-typedef struct OpaqueATSUFontFallbacks *ATSUFontFallbacks;
+typedef struct OpaqueATSUFontFallbacks*  ATSUFontFallbacks;
 /*
     ATSUAttributeTag is used to indicate the particular type 
     of attribute under consideration:  font, size, color, 
@@ -138,118 +141,118 @@ typedef struct OpaqueATSUFontFallbacks *ATSUFontFallbacks;
 */
 typedef UInt32 ATSUAttributeTag;
 enum {
-	/*    Layout and Line Control Attribute Tags*/
-	kATSULineWidthTag = 1L, /*    Type:       ATSUTextMeasurement >= 0*/
-	/*    Default value: 0*/
-	kATSULineRotationTag = 2L, /*    Type:       Fixed (fixed value in degrees in right-handed coordinate system)*/
-	/*    Default value: 0*/
-	kATSULineDirectionTag = 3L, /*    Type:       Boolean; values 0 or 1 (see below for value identities)*/
-	/*    Default value: GetSysDirection() ? kATSURightToLeftBaseDirection : kATSULeftToRightBaseDirection*/
-	kATSULineJustificationFactorTag = 4L, /*    Type:       Fract between 0 and 1*/
-	/*    Default value: kATSUNoJustification*/
-	kATSULineFlushFactorTag = 5L, /*    Type:       Fract between 0 and 1 */
-	/*    Default value: kATSUStartAlignment*/
-	kATSULineBaselineValuesTag = 6L, /*    Type:       BslnBaselineRecord*/
-	/*    Default value: All zeros.  Calculated from other style attributes (e.g., font and point size)*/
-	kATSULineLayoutOptionsTag = 7L, /*    Type:       ATSLineLayoutOptions (see ATSLayoutTypes.h)*/
-	/*    Default value: kATSLineNoLayoutOptions - other options listed in ATSLayoutTypes.h*/
-	kATSULineAscentTag = 8L, /*    Type:       ATSUTextMeasurement >= 0*/
-	/*    Default value: Maximum typographical ascent of all fonts used on line or textLayout*/
-	kATSULineDescentTag = 9L, /*    Type:       ATSUTextMeasurement >= 0*/
-	/*    Default value: Maximum typographical descent+leading of all fonts used on line or textLayout*/
-	kATSULineLangRegionTag = 10L, /*    Type:       RegionCode - region values listed in script.h interface file*/
-	/*    Default value: kTextRegionDontCare*/
-	kATSULineTextLocatorTag = 11L, /*    Type:       TextBreakLocatorRef*/
-	/*    Default value: NULL - set Region derived locator or the default Text Utilities locator*/
-	kATSULineTruncationTag = 12L, /*    Type:       ATSULineTruncation*/
-	/*    Default value: kATSUTruncateNone                                                       */
-	kATSULineFontFallbacksTag = 13L, /*    Type:       ATSUFontFallbacks*/
-	/*    Default value: globally set font fallbacks using the ATSUSetFontFallbacks                                                     */
-	kATSULayoutOperationOverrideTag = 15L, /*    Type:       ATSULayoutOperationOverrideSpecifier (MacOS 10.2 or later) */
-	/*    Default value:     NULL*/
-	kATSUMaxLineTag = 16L, /*    This is just for convenience - the upper limit of the ATSUTextLayout attribute tags*/
-	/* Obsolete layout tags */
-	kATSULineLanguageTag = 10L, /*    Use kATSULineLangRegionTag           */
-	/* Special layout tags */
-	kATSUCGContextTag = 32767L, /*    Type:       CGContextRef (MacOS X systems only)*/
-	/*    Default value: NULL*/
-	/*    Run Style Attribute Tags*/
-	/* QuickDraw compatibility tags */
-	kATSUQDBoldfaceTag = 256L, /*    Type:       Boolean    */
-	/*    Default value: false*/
-	kATSUQDItalicTag = 257L, /*    Type:       Boolean       */
-	/*    Default value: false*/
-	kATSUQDUnderlineTag = 258L, /*    Type:       Boolean    */
-	/*    Default value: false*/
-	kATSUQDCondensedTag = 259L, /*    Type:       Boolean    */
-	/*    Default value: false*/
-	kATSUQDExtendedTag = 260L, /*    Type:       Boolean    */
-	/*    Default value: false*/
-	/* Common run tags */
-	kATSUFontTag = 261L, /*    Type:       ATSUFontID */
-	/*    Default value: GetScriptVariable( smSystemScript, smScriptAppFond )*/
-	kATSUSizeTag = 262L, /*    Type:       Fixed  */
-	/*    Default value: GetScriptVariable( smSystemScript, smScriptAppFondSize )    */
-	kATSUColorTag = 263L, /*    Type:       RGBColor*/
-	/*    Default value: (0, 0, 0)*/
-	/*    Less common run tags */
-	kATSULangRegionTag = 264L, /*    Type:       RegionCode - region values listed in script.h interface file*/
-	/*    Default value: GetScriptManagerVariable( smRegionCode )*/
-	kATSUVerticalCharacterTag = 265L, /*    Type:       ATSUVerticalCharacterType  */
-	/*    Default value: kATSUStronglyHorizontal*/
-	kATSUImposeWidthTag = 266L, /*    Type:       ATSUTextMeasurement >= 0*/
-	/*    Default value: kATSUseGlyphAdvance - all glyphs use their own font defined advance widths*/
-	kATSUBeforeWithStreamShiftTag = 267L, /*    Type:       Fixed*/
-	/*    Default value: 0*/
-	kATSUAfterWithStreamShiftTag = 268L, /*    Type:       Fixed*/
-	/*    Default value: 0*/
-	kATSUCrossStreamShiftTag = 269L, /*    Type:       Fixed*/
-	/*    Default value: 0*/
-	kATSUTrackingTag = 270L, /*    Type:       Fixed*/
-	/*    Default value: kATSNoTracking*/
-	kATSUHangingInhibitFactorTag = 271L, /*    Type:       Fract between 0 and 1*/
-	/*    Default value: 0*/
-	kATSUKerningInhibitFactorTag = 272L, /*    Type:       Fract between 0 and 1*/
-	/*    Default value: 0*/
-	kATSUDecompositionFactorTag = 273L, /*    Type:       Fixed (-1.0 -> 1.0)*/
-	/*    Default value: 0*/
-	kATSUBaselineClassTag = 274L, /*    Type:       BslnBaselineClass  (see SFNTLayoutTypes.h)*/
-	/*    Default value: kBSLNRomanBaseline - set to kBSLNNoBaselineOverride to use intrinsic baselines*/
-	kATSUPriorityJustOverrideTag = 275L, /*    Type:       ATSJustPriorityWidthDeltaOverrides (see ATSLayoutTypes.h)*/
-	/*    Default value: all zeros*/
-	kATSUNoLigatureSplitTag = 276L, /*    Type:       Boolean*/
-	/*    Default value: false - ligatures and compound characters have divisable components.*/
-	kATSUNoCaretAngleTag = 277L, /*    Type:       Boolean*/
-	/*    Default value: false - use the character's angularity to determine its boundaries*/
-	kATSUSuppressCrossKerningTag = 278L, /*    Type:       Boolean*/
-	/*    Default value: false - do not suppress automatic cross kerning (defined by font)*/
-	kATSUNoOpticalAlignmentTag = 279L, /*    Type:       Boolean*/
-	/*    Default value: false - do not suppress character's automatic optical positional alignment*/
-	kATSUForceHangingTag = 280L, /*    Type:       Boolean*/
-	/*    Default value: false - do not force the character's to hang beyond the line boundaries*/
-	kATSUNoSpecialJustificationTag = 281L, /*    Type:       Boolean*/
-	/*    Default value: false - perform post-compensation justification if needed*/
-	kATSUStyleTextLocatorTag = 282L, /*    Type:       TextBreakLocatorRef*/
-	/*    Default value: NULL - region derived locator or the default Text Utilities locator*/
-	kATSUStyleRenderingOptionsTag = 283L, /*    Type:       ATSStyleRenderingOptions (see ATSLayoutTypes.h)*/
-	/*    Default value: kATSStyleNoOptions - other options listed in ATSLayoutTypes.h*/
-	kATSUAscentTag = 284L, /*    Type:       ATSUTextMeasurement >= 0  (MacOS 10.2 or later)*/
-	/*    Default value: Ascent value of style's font with current pointSize*/
-	kATSUDescentTag = 285L, /*    Type:       ATSUTextMeasurement >= 0  (MacOS 10.2 or later)*/
-	/*    Default value: Descent value of style's font with current pointSize*/
-	kATSULeadingTag = 286L, /*    Type:       ATSUTextMeasurement >= 0  (MacOS 10.2 or later)*/
-	/*    Default value: Leading value of style's font with current pointSize (usually value 0)*/
-	kATSUGlyphSelectorTag = 287L, /*    Type:       ATSUGlyphSelector  (MacOS 10.2 or later)*/
-	/*    Default value: 0 - use the glyphs derived by ATSUI layout*/
-	kATSURGBAlphaColorTag = 288L, /*    Type:       ATSURGBAlphaColor  (MacOS 10.2 or later)*/
-	/*    Default value: (0, 0, 0, 1)*/
-	kATSUFontMatrixTag = 289L, /*    Type:       CGAffineTransform  (MacOS 10.2 or later)*/
-	/*    Default value: [1, 0, 0, 1, 0, 0] ==> CGAffineTransformIdentity*/
-	kATSUMaxStyleTag = 290L, /*    This is just for convenience - the upper limit of the ATSUStyle attribute tags */
-	/* obsolete style tags */
-	kATSULanguageTag = 264L, /*    use kATSULangRegionTag               */
-	/* max */
-	kATSUMaxATSUITagValue = 65535L /*    This is the maximum Apple ATSUI reserved tag value.  Client defined tags must be larger.*/
+                                        /*    Layout and Line Control Attribute Tags*/
+  kATSULineWidthTag             = 1L,   /*    Type:       ATSUTextMeasurement >= 0*/
+                                        /*    Default value: 0*/
+  kATSULineRotationTag          = 2L,   /*    Type:       Fixed (fixed value in degrees in right-handed coordinate system)*/
+                                        /*    Default value: 0*/
+  kATSULineDirectionTag         = 3L,   /*    Type:       Boolean; values 0 or 1 (see below for value identities)*/
+                                        /*    Default value: GetSysDirection() ? kATSURightToLeftBaseDirection : kATSULeftToRightBaseDirection*/
+  kATSULineJustificationFactorTag = 4L, /*    Type:       Fract between 0 and 1*/
+                                        /*    Default value: kATSUNoJustification*/
+  kATSULineFlushFactorTag       = 5L,   /*    Type:       Fract between 0 and 1 */
+                                        /*    Default value: kATSUStartAlignment*/
+  kATSULineBaselineValuesTag    = 6L,   /*    Type:       BslnBaselineRecord*/
+                                        /*    Default value: All zeros.  Calculated from other style attributes (e.g., font and point size)*/
+  kATSULineLayoutOptionsTag     = 7L,   /*    Type:       ATSLineLayoutOptions (see ATSLayoutTypes.h)*/
+                                        /*    Default value: kATSLineNoLayoutOptions - other options listed in ATSLayoutTypes.h*/
+  kATSULineAscentTag            = 8L,   /*    Type:       ATSUTextMeasurement >= 0*/
+                                        /*    Default value: Maximum typographical ascent of all fonts used on line or textLayout*/
+  kATSULineDescentTag           = 9L,   /*    Type:       ATSUTextMeasurement >= 0*/
+                                        /*    Default value: Maximum typographical descent+leading of all fonts used on line or textLayout*/
+  kATSULineLangRegionTag        = 10L,  /*    Type:       RegionCode - region values listed in script.h interface file*/
+                                        /*    Default value: kTextRegionDontCare*/
+  kATSULineTextLocatorTag       = 11L,  /*    Type:       TextBreakLocatorRef*/
+                                        /*    Default value: NULL - set Region derived locator or the default Text Utilities locator*/
+  kATSULineTruncationTag        = 12L,  /*    Type:       ATSULineTruncation*/
+                                        /*    Default value: kATSUTruncateNone                                                       */
+  kATSULineFontFallbacksTag     = 13L,  /*    Type:       ATSUFontFallbacks*/
+                                        /*    Default value: globally set font fallbacks using the ATSUSetFontFallbacks                                                     */
+  kATSULayoutOperationOverrideTag = 15L, /*    Type:       ATSULayoutOperationOverrideSpecifier (MacOS 10.2 or later) */
+                                        /*    Default value:     NULL*/
+  kATSUMaxLineTag               = 16L,  /*    This is just for convenience - the upper limit of the ATSUTextLayout attribute tags*/
+                                        /* Obsolete layout tags */
+  kATSULineLanguageTag          = 10L,  /*    Use kATSULineLangRegionTag           */
+                                        /* Special layout tags */
+  kATSUCGContextTag             = 32767L, /*    Type:       CGContextRef (MacOS X systems only)*/
+                                        /*    Default value: NULL*/
+                                        /*    Run Style Attribute Tags*/
+                                        /* QuickDraw compatibility tags */
+  kATSUQDBoldfaceTag            = 256L, /*    Type:       Boolean    */
+                                        /*    Default value: false*/
+  kATSUQDItalicTag              = 257L, /*    Type:       Boolean       */
+                                        /*    Default value: false*/
+  kATSUQDUnderlineTag           = 258L, /*    Type:       Boolean    */
+                                        /*    Default value: false*/
+  kATSUQDCondensedTag           = 259L, /*    Type:       Boolean    */
+                                        /*    Default value: false*/
+  kATSUQDExtendedTag            = 260L, /*    Type:       Boolean    */
+                                        /*    Default value: false*/
+                                        /* Common run tags */
+  kATSUFontTag                  = 261L, /*    Type:       ATSUFontID */
+                                        /*    Default value: GetScriptVariable( smSystemScript, smScriptAppFond )*/
+  kATSUSizeTag                  = 262L, /*    Type:       Fixed  */
+                                        /*    Default value: GetScriptVariable( smSystemScript, smScriptAppFondSize )    */
+  kATSUColorTag                 = 263L, /*    Type:       RGBColor*/
+                                        /*    Default value: (0, 0, 0)*/
+                                        /*    Less common run tags */
+  kATSULangRegionTag            = 264L, /*    Type:       RegionCode - region values listed in script.h interface file*/
+                                        /*    Default value: GetScriptManagerVariable( smRegionCode )*/
+  kATSUVerticalCharacterTag     = 265L, /*    Type:       ATSUVerticalCharacterType  */
+                                        /*    Default value: kATSUStronglyHorizontal*/
+  kATSUImposeWidthTag           = 266L, /*    Type:       ATSUTextMeasurement >= 0*/
+                                        /*    Default value: kATSUseGlyphAdvance - all glyphs use their own font defined advance widths*/
+  kATSUBeforeWithStreamShiftTag = 267L, /*    Type:       Fixed*/
+                                        /*    Default value: 0*/
+  kATSUAfterWithStreamShiftTag  = 268L, /*    Type:       Fixed*/
+                                        /*    Default value: 0*/
+  kATSUCrossStreamShiftTag      = 269L, /*    Type:       Fixed*/
+                                        /*    Default value: 0*/
+  kATSUTrackingTag              = 270L, /*    Type:       Fixed*/
+                                        /*    Default value: kATSNoTracking*/
+  kATSUHangingInhibitFactorTag  = 271L, /*    Type:       Fract between 0 and 1*/
+                                        /*    Default value: 0*/
+  kATSUKerningInhibitFactorTag  = 272L, /*    Type:       Fract between 0 and 1*/
+                                        /*    Default value: 0*/
+  kATSUDecompositionFactorTag   = 273L, /*    Type:       Fixed (-1.0 -> 1.0)*/
+                                        /*    Default value: 0*/
+  kATSUBaselineClassTag         = 274L, /*    Type:       BslnBaselineClass  (see SFNTLayoutTypes.h)*/
+                                        /*    Default value: kBSLNRomanBaseline - set to kBSLNNoBaselineOverride to use intrinsic baselines*/
+  kATSUPriorityJustOverrideTag  = 275L, /*    Type:       ATSJustPriorityWidthDeltaOverrides (see ATSLayoutTypes.h)*/
+                                        /*    Default value: all zeros*/
+  kATSUNoLigatureSplitTag       = 276L, /*    Type:       Boolean*/
+                                        /*    Default value: false - ligatures and compound characters have divisable components.*/
+  kATSUNoCaretAngleTag          = 277L, /*    Type:       Boolean*/
+                                        /*    Default value: false - use the character's angularity to determine its boundaries*/
+  kATSUSuppressCrossKerningTag  = 278L, /*    Type:       Boolean*/
+                                        /*    Default value: false - do not suppress automatic cross kerning (defined by font)*/
+  kATSUNoOpticalAlignmentTag    = 279L, /*    Type:       Boolean*/
+                                        /*    Default value: false - do not suppress character's automatic optical positional alignment*/
+  kATSUForceHangingTag          = 280L, /*    Type:       Boolean*/
+                                        /*    Default value: false - do not force the character's to hang beyond the line boundaries*/
+  kATSUNoSpecialJustificationTag = 281L, /*    Type:       Boolean*/
+                                        /*    Default value: false - perform post-compensation justification if needed*/
+  kATSUStyleTextLocatorTag      = 282L, /*    Type:       TextBreakLocatorRef*/
+                                        /*    Default value: NULL - region derived locator or the default Text Utilities locator*/
+  kATSUStyleRenderingOptionsTag = 283L, /*    Type:       ATSStyleRenderingOptions (see ATSLayoutTypes.h)*/
+                                        /*    Default value: kATSStyleNoOptions - other options listed in ATSLayoutTypes.h*/
+  kATSUAscentTag                = 284L, /*    Type:       ATSUTextMeasurement >= 0  (MacOS 10.2 or later)*/
+                                        /*    Default value: Ascent value of style's font with current pointSize*/
+  kATSUDescentTag               = 285L, /*    Type:       ATSUTextMeasurement >= 0  (MacOS 10.2 or later)*/
+                                        /*    Default value: Descent value of style's font with current pointSize*/
+  kATSULeadingTag               = 286L, /*    Type:       ATSUTextMeasurement >= 0  (MacOS 10.2 or later)*/
+                                        /*    Default value: Leading value of style's font with current pointSize (usually value 0)*/
+  kATSUGlyphSelectorTag         = 287L, /*    Type:       ATSUGlyphSelector  (MacOS 10.2 or later)*/
+                                        /*    Default value: 0 - use the glyphs derived by ATSUI layout*/
+  kATSURGBAlphaColorTag         = 288L, /*    Type:       ATSURGBAlphaColor  (MacOS 10.2 or later)*/
+                                        /*    Default value: (0, 0, 0, 1)*/
+  kATSUFontMatrixTag            = 289L, /*    Type:       CGAffineTransform  (MacOS 10.2 or later)*/
+                                        /*    Default value: [1, 0, 0, 1, 0, 0] ==> CGAffineTransformIdentity*/
+  kATSUMaxStyleTag              = 290L, /*    This is just for convenience - the upper limit of the ATSUStyle attribute tags */
+                                        /* obsolete style tags */
+  kATSULanguageTag              = 264L, /*    use kATSULangRegionTag               */
+                                        /* max */
+  kATSUMaxATSUITagValue         = 65535L /*    This is the maximum Apple ATSUI reserved tag value.  Client defined tags must be larger.*/
 };
 
 /*
@@ -257,8 +260,8 @@ enum {
     storage of attribute values, which vary in size.
     ConstATSUAttributeValuePtr is a pointer to a const attribute value.
 */
-typedef void *      ATSUAttributeValuePtr;
-typedef const void *ConstATSUAttributeValuePtr;
+typedef void *                          ATSUAttributeValuePtr;
+typedef const void *                    ConstATSUAttributeValuePtr;
 /*
     ATSUAttributeInfo is used to provide a tag/size pairing.  
     This makes it possible to provide the client information   
@@ -274,10 +277,10 @@ typedef const void *ConstATSUAttributeValuePtr;
     value is not included in the structure.  
 */
 struct ATSUAttributeInfo {
-	ATSUAttributeTag fTag;
-	ByteCount        fValueSize;
+  ATSUAttributeTag    fTag;
+  ByteCount           fValueSize;
 };
-typedef struct ATSUAttributeInfo ATSUAttributeInfo;
+typedef struct ATSUAttributeInfo        ATSUAttributeInfo;
 /*
     ATSUCaret contains the complete information needed to render a
     caret.  fX and fY is the position of one of the caret's ends
@@ -290,12 +293,12 @@ typedef struct ATSUAttributeInfo ATSUAttributeInfo;
     appearances.
 */
 struct ATSUCaret {
-	Fixed fX;
-	Fixed fY;
-	Fixed fDeltaX;
-	Fixed fDeltaY;
+  Fixed               fX;
+  Fixed               fY;
+  Fixed               fDeltaX;
+  Fixed               fDeltaY;
 };
-typedef struct ATSUCaret ATSUCaret;
+typedef struct ATSUCaret                ATSUCaret;
 /*
     ATSUCursorMovementType is used to indicate how much to move
     the cursor when using the ATSUI cusor movement routines. 
@@ -304,11 +307,11 @@ typedef struct ATSUCaret ATSUCaret;
 */
 typedef UInt16 ATSUCursorMovementType;
 enum {
-	kATSUByCharacter = 0,
-	kATSUByTypographicCluster = 1, /* clusters based on characters or ligatures*/
-	kATSUByWord = 2,
-	kATSUByCharacterCluster = 3, /* clusters based on characters only*/
-	kATSUByCluster = 1 /* obsolete name for kATSUByTypographicCluster*/
+  kATSUByCharacter              = 0,
+  kATSUByTypographicCluster     = 1,    /* clusters based on characters or ligatures*/
+  kATSUByWord                   = 2,
+  kATSUByCharacterCluster       = 3,    /* clusters based on characters only*/
+  kATSUByCluster                = 1     /* obsolete name for kATSUByTypographicCluster*/
 };
 
 /*
@@ -317,13 +320,13 @@ enum {
 */
 typedef UInt32 ATSULineTruncation;
 enum {
-	kATSUTruncateNone = 0, /* truncation specification - add to any desired truncFeat bit options listed below*/
-	kATSUTruncateStart = 1, /* for instance, kATSUTruncateEnd with kATSUTruncFeatNoSquishing is value 0x0000000A*/
-	kATSUTruncateEnd = 2,
-	kATSUTruncateMiddle = 3,
-	kATSUTruncateSpecificationMask = 0x00000007, /* these bits are reserved for the truncation specification (0 - 7)*/
-	/* the following bit-field options can be added to the chosen truncation specification*/
-	kATSUTruncFeatNoSquishing = 0x00000008 /* if specified, do not perform any negative justification in lieu of truncation*/
+  kATSUTruncateNone             = 0,    /* truncation specification - add to any desired truncFeat bit options listed below*/
+  kATSUTruncateStart            = 1,    /* for instance, kATSUTruncateEnd with kATSUTruncFeatNoSquishing is value 0x0000000A*/
+  kATSUTruncateEnd              = 2,
+  kATSUTruncateMiddle           = 3,
+  kATSUTruncateSpecificationMask = 0x00000007, /* these bits are reserved for the truncation specification (0 - 7)*/
+                                        /* the following bit-field options can be added to the chosen truncation specification*/
+  kATSUTruncFeatNoSquishing     = 0x00000008 /* if specified, do not perform any negative justification in lieu of truncation*/
 };
 
 /*
@@ -333,8 +336,8 @@ enum {
 */
 typedef UInt16 ATSUVerticalCharacterType;
 enum {
-	kATSUStronglyHorizontal = 0,
-	kATSUStronglyVertical = 1
+  kATSUStronglyHorizontal       = 0,
+  kATSUStronglyVertical         = 1
 };
 
 /*
@@ -345,10 +348,10 @@ enum {
 */
 typedef UInt16 ATSUStyleComparison;
 enum {
-	kATSUStyleUnequal = 0,
-	kATSUStyleContains = 1,
-	kATSUStyleEquals = 2,
-	kATSUStyleContainedBy = 3
+  kATSUStyleUnequal             = 0,
+  kATSUStyleContains            = 1,
+  kATSUStyleEquals              = 2,
+  kATSUStyleContainedBy         = 3
 };
 
 /*
@@ -360,10 +363,10 @@ enum {
 */
 typedef UInt16 ATSUFontFallbackMethod;
 enum {
-	kATSUDefaultFontFallbacks = 0,
-	kATSULastResortOnlyFallback = 1,
-	kATSUSequentialFallbacksPreferred = 2,
-	kATSUSequentialFallbacksExclusive = 3
+  kATSUDefaultFontFallbacks     = 0,
+  kATSULastResortOnlyFallback   = 1,
+  kATSUSequentialFallbacksPreferred = 2,
+  kATSUSequentialFallbacksExclusive = 3
 };
 
 /*
@@ -375,12 +378,12 @@ enum {
     about the tab stop.
 */
 
-typedef UInt16 ATSUTabType;
+typedef UInt16                          ATSUTabType;
 enum {
-	kATSULeftTab = 0,
-	kATSUCenterTab = 1,
-	kATSURightTab = 2,
-	kATSUNumberTabTypes = 3
+  kATSULeftTab                  = 0,
+  kATSUCenterTab                = 1,
+  kATSURightTab                 = 2,
+  kATSUNumberTabTypes           = 3
 };
 
 /*
@@ -389,25 +392,25 @@ enum {
     ATSUSetTabArray and returned through ATSUGetTabArray.
 */
 struct ATSUTab {
-	ATSUTextMeasurement tabPosition;
-	ATSUTabType         tabType;
+  ATSUTextMeasurement  tabPosition;
+  ATSUTabType         tabType;
 };
-typedef struct ATSUTab ATSUTab;
+typedef struct ATSUTab                  ATSUTab;
 /*
     GlyphCollection types represent the specific character collection.  If
     the value is zero, kGlyphCollectionGID, then this indicates that the
     glyph value represents the actual glyphID of a specific font.
 */
 
-typedef UInt16 GlyphCollection;
+typedef UInt16                          GlyphCollection;
 enum {
-	kGlyphCollectionGID = 0,
-	kGlyphCollectionAdobeCNS1 = 1,
-	kGlyphCollectionAdobeGB1 = 2,
-	kGlyphCollectionAdobeJapan1 = 3,
-	kGlyphCollectionAdobeJapan2 = 4,
-	kGlyphCollectionAdobeKorea1 = 5,
-	kGlyphCollectionUnspecified = 0xFF
+  kGlyphCollectionGID           = 0,
+  kGlyphCollectionAdobeCNS1     = 1,
+  kGlyphCollectionAdobeGB1      = 2,
+  kGlyphCollectionAdobeJapan1   = 3,
+  kGlyphCollectionAdobeJapan2   = 4,
+  kGlyphCollectionAdobeKorea1   = 5,
+  kGlyphCollectionUnspecified   = 0xFF
 };
 
 /*
@@ -416,10 +419,10 @@ enum {
     to the font used) or CID from a specfic collection defined by the collection entry.
 */
 struct ATSUGlyphSelector {
-	GlyphCollection collection; /* kGlyphCollectionXXX enum*/
-	GlyphID         glyphID; /* GID (when collection==0) or CID*/
+  GlyphCollection     collection;             /* kGlyphCollectionXXX enum*/
+  GlyphID             glyphID;                /* GID (when collection==0) or CID*/
 };
-typedef struct ATSUGlyphSelector ATSUGlyphSelector;
+typedef struct ATSUGlyphSelector        ATSUGlyphSelector;
 #if CALL_NOT_IN_CARBON
 /*
     ATSUMemoryCallbacks is a union struct that allows the ATSUI 
@@ -427,20 +430,20 @@ typedef struct ATSUGlyphSelector ATSUGlyphSelector;
     callbacks of which ATSUI is to use each time ATSUI performs a
     memory operation (alloc, grow, free).
 */
-typedef CALLBACK_API_C( void *, ATSUCustomAllocFunc )( void *refCon, ByteCount howMuch );
-typedef CALLBACK_API_C( void, ATSUCustomFreeFunc )( void *refCon, void *doomedBlock );
-typedef CALLBACK_API_C( void *, ATSUCustomGrowFunc )( void *refCon, void *oldBlock, ByteCount oldSize, ByteCount newSize );
+typedef CALLBACK_API_C( void *, ATSUCustomAllocFunc )(void *refCon, ByteCount howMuch);
+typedef CALLBACK_API_C( void , ATSUCustomFreeFunc )(void *refCon, void *doomedBlock);
+typedef CALLBACK_API_C( void *, ATSUCustomGrowFunc )(void *refCon, void *oldBlock, ByteCount oldSize, ByteCount newSize);
 union ATSUMemoryCallbacks {
-	struct {
-		ATSUCustomAllocFunc Alloc;
-		ATSUCustomFreeFunc  Free;
-		ATSUCustomGrowFunc  Grow;
-		void *              memoryRefCon;
-	} callbacks;
+  struct {
+    ATSUCustomAllocFunc  Alloc;
+    ATSUCustomFreeFunc  Free;
+    ATSUCustomGrowFunc  Grow;
+    void *              memoryRefCon;
+  }                       callbacks;
 
-	THz heapToUse;
+  THz                 heapToUse;
 };
-typedef union ATSUMemoryCallbacks ATSUMemoryCallbacks;
+typedef union ATSUMemoryCallbacks       ATSUMemoryCallbacks;
 /*
     ATSUHeapSpec provides the ATSUI client a means of specifying the heap
     from which ATSUI should allocate its dynamic memory or specifying
@@ -448,11 +451,12 @@ typedef union ATSUMemoryCallbacks ATSUMemoryCallbacks;
 */
 typedef UInt16 ATSUHeapSpec;
 enum {
-	kATSUUseCurrentHeap = 0,
-	kATSUUseAppHeap = 1,
-	kATSUUseSpecificHeap = 2,
-	kATSUUseCallbacks = 3
+  kATSUUseCurrentHeap           = 0,
+  kATSUUseAppHeap               = 1,
+  kATSUUseSpecificHeap          = 2,
+  kATSUUseCallbacks             = 3
 };
+
 
 /*
     ATSUMemorySetting is used to store the results from a ATSUSetMemoryAlloc
@@ -460,66 +464,72 @@ enum {
     current ATSUMemorySetting by passing it into the ATSUSetCurrentMemorySetting
     call.
 */
-typedef struct OpaqueATSUMemorySetting *ATSUMemorySetting;
-#endif /* CALL_NOT_IN_CARBON */
+typedef struct OpaqueATSUMemorySetting*  ATSUMemorySetting;
+#endif  /* CALL_NOT_IN_CARBON */
 
 /* Types for ATSUI Low Level API */
 struct ATSUGlyphInfo {
-	GlyphID            glyphID;
-	UInt16             reserved;
-	UInt32             layoutFlags;
-	UniCharArrayOffset charIndex;
-	ATSUStyle          style;
-	Float32            deltaY;
-	Float32            idealX;
-	SInt16             screenX;
-	SInt16             caretX;
+  GlyphID             glyphID;
+  UInt16              reserved;
+  UInt32              layoutFlags;
+  UniCharArrayOffset  charIndex;
+  ATSUStyle           style;
+  Float32             deltaY;
+  Float32             idealX;
+  SInt16              screenX;
+  SInt16              caretX;
 };
-typedef struct ATSUGlyphInfo ATSUGlyphInfo;
+typedef struct ATSUGlyphInfo            ATSUGlyphInfo;
 struct ATSUGlyphInfoArray {
-	ATSUTextLayout layout;
-	ItemCount      numGlyphs;
-	ATSUGlyphInfo  glyphs[1];
+  ATSUTextLayout      layout;
+  ItemCount           numGlyphs;
+  ATSUGlyphInfo       glyphs[1];
 };
-typedef struct ATSUGlyphInfoArray ATSUGlyphInfoArray;
+typedef struct ATSUGlyphInfoArray       ATSUGlyphInfoArray;
 /********************/
 /*  Other constants */
 /********************/
 /* Line direction types (used for kATSULineDirectionTag values) */
 enum {
-	kATSULeftToRightBaseDirection = 0, /*    Impose left-to-right or top-to-bottom dominant direction */
-	kATSURightToLeftBaseDirection = 1 /*    Impose right-to-left or bottom-to-top dominant direction */
+  kATSULeftToRightBaseDirection = 0,    /*    Impose left-to-right or top-to-bottom dominant direction */
+  kATSURightToLeftBaseDirection = 1     /*    Impose right-to-left or bottom-to-top dominant direction */
 };
 
 /* LineFlushFactor convenience defined values */
-#define kATSUStartAlignment ( (Fract)0x00000000L )
-#define kATSUEndAlignment ( (Fract)0x40000000L )
-#define kATSUCenterAlignment ( (Fract)0x20000000L )
+#define kATSUStartAlignment         ((Fract) 0x00000000L)
+#define kATSUEndAlignment           ((Fract) 0x40000000L)
+#define kATSUCenterAlignment        ((Fract) 0x20000000L)
 /* LineJustificationFactor convenience defined values */
-#define kATSUNoJustification ( (Fract)0x00000000L )
-#define kATSUFullJustification ( (Fract)0x40000000L )
+#define kATSUNoJustification        ((Fract) 0x00000000L)
+#define kATSUFullJustification      ((Fract) 0x40000000L)
 /* Other constants  */
 enum {
-	kATSUInvalidFontID = 0
+  kATSUInvalidFontID            = 0
 };
 
-enum {
-	kATSUUseLineControlWidth = 0x7FFFFFFF
-};
 
 enum {
-	kATSUNoSelector = 0x0000FFFF
+  kATSUUseLineControlWidth      = 0x7FFFFFFF
 };
 
-enum {
-	kATSUUseGrafPortPenLoc = (unsigned long)0xFFFFFFFF,
-	kATSUClearAll = (unsigned long)0xFFFFFFFF
-};
 
 enum {
-	kATSUFromTextBeginning = (unsigned long)0xFFFFFFFF,
-	kATSUToTextEnd = (unsigned long)0xFFFFFFFF
+  kATSUNoSelector               = 0x0000FFFF
 };
+
+
+enum {
+  kATSUUseGrafPortPenLoc        = (unsigned long)0xFFFFFFFF,
+  kATSUClearAll                 = (unsigned long)0xFFFFFFFF
+};
+
+
+enum {
+  kATSUFromTextBeginning        = (unsigned long)0xFFFFFFFF,
+  kATSUToTextEnd                = (unsigned long)0xFFFFFFFF
+};
+
+
 
 /****************/
 /*  Functions   */
@@ -543,8 +553,9 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 ATSUCopyToHandle(
-    ATSUStyle iStyle,
-    Handle    oStyleHandle );
+  ATSUStyle   iStyle,
+  Handle      oStyleHandle);
+
 
 /*
  *  ATSUPasteFromHandle()
@@ -556,8 +567,9 @@ ATSUCopyToHandle(
  */
 EXTERN_API_C( OSStatus )
 ATSUPasteFromHandle(
-    ATSUStyle iStyle,
-    Handle    iStyleHandle );
+  ATSUStyle   iStyle,
+  Handle      iStyleHandle);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Memory allocation specification functions (not in Carbon)                   */
@@ -573,9 +585,10 @@ ATSUPasteFromHandle(
  */
 EXTERN_API_C( OSStatus )
 ATSUCreateMemorySetting(
-    ATSUHeapSpec         iHeapSpec,
-    ATSUMemoryCallbacks *iMemoryCallbacks,
-    ATSUMemorySetting *  oMemorySetting );
+  ATSUHeapSpec           iHeapSpec,
+  ATSUMemoryCallbacks *  iMemoryCallbacks,
+  ATSUMemorySetting *    oMemorySetting);
+
 
 /*
  *  ATSUSetCurrentMemorySetting()
@@ -586,7 +599,8 @@ ATSUCreateMemorySetting(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-ATSUSetCurrentMemorySetting( ATSUMemorySetting iMemorySetting );
+ATSUSetCurrentMemorySetting(ATSUMemorySetting iMemorySetting);
+
 
 /*
  *  ATSUGetCurrentMemorySetting()
@@ -597,7 +611,8 @@ ATSUSetCurrentMemorySetting( ATSUMemorySetting iMemorySetting );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( ATSUMemorySetting )
-ATSUGetCurrentMemorySetting( void );
+ATSUGetCurrentMemorySetting(void);
+
 
 /*
  *  ATSUDisposeMemorySetting()
@@ -608,12 +623,13 @@ ATSUGetCurrentMemorySetting( void );
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-ATSUDisposeMemorySetting( ATSUMemorySetting iMemorySetting );
+ATSUDisposeMemorySetting(ATSUMemorySetting iMemorySetting);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font fallback object functions                                              */
 /* ---------------------------------------------------------------------------- */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  ATSUCreateFontFallbacks()
@@ -624,7 +640,8 @@ ATSUDisposeMemorySetting( ATSUMemorySetting iMemorySetting );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUCreateFontFallbacks( ATSUFontFallbacks *oFontFallback );
+ATSUCreateFontFallbacks(ATSUFontFallbacks * oFontFallback);
+
 
 /*
  *  ATSUDisposeFontFallbacks()
@@ -635,7 +652,8 @@ ATSUCreateFontFallbacks( ATSUFontFallbacks *oFontFallback );
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUDisposeFontFallbacks( ATSUFontFallbacks iFontFallbacks );
+ATSUDisposeFontFallbacks(ATSUFontFallbacks iFontFallbacks);
+
 
 /*
  *  ATSUSetObjFontFallbacks()
@@ -647,10 +665,11 @@ ATSUDisposeFontFallbacks( ATSUFontFallbacks iFontFallbacks );
  */
 EXTERN_API_C( OSStatus )
 ATSUSetObjFontFallbacks(
-    ATSUFontFallbacks      iFontFallbacks,
-    ItemCount              iFontFallbacksCount,
-    const ATSUFontID       iFonts[],
-    ATSUFontFallbackMethod iFontFallbackMethod );
+  ATSUFontFallbacks        iFontFallbacks,
+  ItemCount                iFontFallbacksCount,
+  const ATSUFontID         iFonts[],
+  ATSUFontFallbackMethod   iFontFallbackMethod);
+
 
 /*
  *  ATSUGetObjFontFallbacks()
@@ -662,11 +681,12 @@ ATSUSetObjFontFallbacks(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetObjFontFallbacks(
-    ATSUFontFallbacks       iFontFallbacks,
-    ItemCount               iMaxFontFallbacksCount,
-    ATSUFontID              oFonts[],
-    ATSUFontFallbackMethod *oFontFallbackMethod,
-    ItemCount *             oActualFallbacksCount );
+  ATSUFontFallbacks         iFontFallbacks,
+  ItemCount                 iMaxFontFallbacksCount,
+  ATSUFontID                oFonts[],
+  ATSUFontFallbackMethod *  oFontFallbackMethod,
+  ItemCount *               oActualFallbacksCount);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Basic style functions                                                       */
@@ -680,7 +700,8 @@ ATSUGetObjFontFallbacks(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUCreateStyle( ATSUStyle *oStyle );
+ATSUCreateStyle(ATSUStyle * oStyle);
+
 
 /*
  *  ATSUCreateAndCopyStyle()
@@ -692,8 +713,9 @@ ATSUCreateStyle( ATSUStyle *oStyle );
  */
 EXTERN_API_C( OSStatus )
 ATSUCreateAndCopyStyle(
-    ATSUStyle  iStyle,
-    ATSUStyle *oStyle );
+  ATSUStyle    iStyle,
+  ATSUStyle *  oStyle);
+
 
 /*
  *  ATSUDisposeStyle()
@@ -704,7 +726,8 @@ ATSUCreateAndCopyStyle(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUDisposeStyle( ATSUStyle iStyle );
+ATSUDisposeStyle(ATSUStyle iStyle);
+
 
 /*
  *  ATSUSetStyleRefCon()
@@ -716,8 +739,9 @@ ATSUDisposeStyle( ATSUStyle iStyle );
  */
 EXTERN_API_C( OSStatus )
 ATSUSetStyleRefCon(
-    ATSUStyle iStyle,
-    UInt32    iRefCon );
+  ATSUStyle   iStyle,
+  UInt32      iRefCon);
+
 
 /*
  *  ATSUGetStyleRefCon()
@@ -729,8 +753,9 @@ ATSUSetStyleRefCon(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetStyleRefCon(
-    ATSUStyle iStyle,
-    UInt32 *  oRefCon );
+  ATSUStyle   iStyle,
+  UInt32 *    oRefCon);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Style comparison                                                            */
@@ -745,9 +770,10 @@ ATSUGetStyleRefCon(
  */
 EXTERN_API_C( OSStatus )
 ATSUCompareStyles(
-    ATSUStyle            iFirstStyle,
-    ATSUStyle            iSecondStyle,
-    ATSUStyleComparison *oComparison );
+  ATSUStyle              iFirstStyle,
+  ATSUStyle              iSecondStyle,
+  ATSUStyleComparison *  oComparison);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Attribute manipulations                                                     */
@@ -762,8 +788,9 @@ ATSUCompareStyles(
  */
 EXTERN_API_C( OSStatus )
 ATSUCopyAttributes(
-    ATSUStyle iSourceStyle,
-    ATSUStyle iDestinationStyle );
+  ATSUStyle   iSourceStyle,
+  ATSUStyle   iDestinationStyle);
+
 
 /*
  *  ATSUOverwriteAttributes()
@@ -775,8 +802,9 @@ ATSUCopyAttributes(
  */
 EXTERN_API_C( OSStatus )
 ATSUOverwriteAttributes(
-    ATSUStyle iSourceStyle,
-    ATSUStyle iDestinationStyle );
+  ATSUStyle   iSourceStyle,
+  ATSUStyle   iDestinationStyle);
+
 
 /*
  *  ATSUUnderwriteAttributes()
@@ -788,8 +816,9 @@ ATSUOverwriteAttributes(
  */
 EXTERN_API_C( OSStatus )
 ATSUUnderwriteAttributes(
-    ATSUStyle iSourceStyle,
-    ATSUStyle iDestinationStyle );
+  ATSUStyle   iSourceStyle,
+  ATSUStyle   iDestinationStyle);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Empty styles                                                                */
@@ -803,7 +832,8 @@ ATSUUnderwriteAttributes(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUClearStyle( ATSUStyle iStyle );
+ATSUClearStyle(ATSUStyle iStyle);
+
 
 /*
  *  ATSUStyleIsEmpty()
@@ -815,8 +845,9 @@ ATSUClearStyle( ATSUStyle iStyle );
  */
 EXTERN_API_C( OSStatus )
 ATSUStyleIsEmpty(
-    ATSUStyle iStyle,
-    Boolean * oIsClear );
+  ATSUStyle   iStyle,
+  Boolean *   oIsClear);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Get and set attributes                                                      */
@@ -831,9 +862,10 @@ ATSUStyleIsEmpty(
  */
 EXTERN_API_C( OSStatus )
 ATSUCalculateBaselineDeltas(
-    ATSUStyle          iStyle,
-    BslnBaselineClass  iBaselineClass,
-    BslnBaselineRecord oBaselineDeltas );
+  ATSUStyle            iStyle,
+  BslnBaselineClass    iBaselineClass,
+  BslnBaselineRecord   oBaselineDeltas);
+
 
 /*
  *  ATSUSetAttributes()
@@ -845,11 +877,12 @@ ATSUCalculateBaselineDeltas(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetAttributes(
-    ATSUStyle                   iStyle,
-    ItemCount                   iAttributeCount,
-    const ATSUAttributeTag      iTag[],
-    const ByteCount             iValueSize[],
-    const ATSUAttributeValuePtr iValue[] );
+  ATSUStyle                     iStyle,
+  ItemCount                     iAttributeCount,
+  const ATSUAttributeTag        iTag[],
+  const ByteCount               iValueSize[],
+  const ATSUAttributeValuePtr   iValue[]);
+
 
 /*
  *  ATSUGetAttribute()
@@ -861,11 +894,12 @@ ATSUSetAttributes(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetAttribute(
-    ATSUStyle             iStyle,
-    ATSUAttributeTag      iTag,
-    ByteCount             iExpectedValueSize,
-    ATSUAttributeValuePtr oValue,
-    ByteCount *           oActualValueSize );
+  ATSUStyle               iStyle,
+  ATSUAttributeTag        iTag,
+  ByteCount               iExpectedValueSize,
+  ATSUAttributeValuePtr   oValue,
+  ByteCount *             oActualValueSize);
+
 
 /*
  *  ATSUGetAllAttributes()
@@ -877,10 +911,11 @@ ATSUGetAttribute(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetAllAttributes(
-    ATSUStyle         iStyle,
-    ATSUAttributeInfo oAttributeInfoArray[],
-    ItemCount         iTagValuePairArraySize,
-    ItemCount *       oTagValuePairCount );
+  ATSUStyle           iStyle,
+  ATSUAttributeInfo   oAttributeInfoArray[],
+  ItemCount           iTagValuePairArraySize,
+  ItemCount *         oTagValuePairCount);
+
 
 /*
  *  ATSUClearAttributes()
@@ -892,9 +927,10 @@ ATSUGetAllAttributes(
  */
 EXTERN_API_C( OSStatus )
 ATSUClearAttributes(
-    ATSUStyle              iStyle,
-    ItemCount              iTagCount,
-    const ATSUAttributeTag iTag[] );
+  ATSUStyle                iStyle,
+  ItemCount                iTagCount,
+  const ATSUAttributeTag   iTag[]);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font features                                                               */
@@ -909,10 +945,11 @@ ATSUClearAttributes(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetFontFeatures(
-    ATSUStyle                     iStyle,
-    ItemCount                     iFeatureCount,
-    const ATSUFontFeatureType     iType[],
-    const ATSUFontFeatureSelector iSelector[] );
+  ATSUStyle                       iStyle,
+  ItemCount                       iFeatureCount,
+  const ATSUFontFeatureType       iType[],
+  const ATSUFontFeatureSelector   iSelector[]);
+
 
 /*
  *  ATSUGetFontFeature()
@@ -924,10 +961,11 @@ ATSUSetFontFeatures(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontFeature(
-    ATSUStyle                iStyle,
-    ItemCount                iFeatureIndex,
-    ATSUFontFeatureType *    oFeatureType,
-    ATSUFontFeatureSelector *oFeatureSelector );
+  ATSUStyle                  iStyle,
+  ItemCount                  iFeatureIndex,
+  ATSUFontFeatureType *      oFeatureType,
+  ATSUFontFeatureSelector *  oFeatureSelector);
+
 
 /*
  *  ATSUGetAllFontFeatures()
@@ -939,11 +977,12 @@ ATSUGetFontFeature(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetAllFontFeatures(
-    ATSUStyle               iStyle,
-    ItemCount               iMaximumFeatureCount,
-    ATSUFontFeatureType     oFeatureType[],
-    ATSUFontFeatureSelector oFeatureSelector[],
-    ItemCount *             oActualFeatureCount );
+  ATSUStyle                 iStyle,
+  ItemCount                 iMaximumFeatureCount,
+  ATSUFontFeatureType       oFeatureType[],
+  ATSUFontFeatureSelector   oFeatureSelector[],
+  ItemCount *               oActualFeatureCount);
+
 
 /*
  *  ATSUClearFontFeatures()
@@ -955,10 +994,11 @@ ATSUGetAllFontFeatures(
  */
 EXTERN_API_C( OSStatus )
 ATSUClearFontFeatures(
-    ATSUStyle                     iStyle,
-    ItemCount                     iFeatureCount,
-    const ATSUFontFeatureType     iType[],
-    const ATSUFontFeatureSelector iSelector[] );
+  ATSUStyle                       iStyle,
+  ItemCount                       iFeatureCount,
+  const ATSUFontFeatureType       iType[],
+  const ATSUFontFeatureSelector   iSelector[]);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font variations                                                             */
@@ -973,10 +1013,11 @@ ATSUClearFontFeatures(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetVariations(
-    ATSUStyle                    iStyle,
-    ItemCount                    iVariationCount,
-    const ATSUFontVariationAxis  iAxes[],
-    const ATSUFontVariationValue iValue[] );
+  ATSUStyle                      iStyle,
+  ItemCount                      iVariationCount,
+  const ATSUFontVariationAxis    iAxes[],
+  const ATSUFontVariationValue   iValue[]);
+
 
 /*
  *  ATSUGetFontVariationValue()
@@ -988,9 +1029,10 @@ ATSUSetVariations(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontVariationValue(
-    ATSUStyle               iStyle,
-    ATSUFontVariationAxis   iFontVariationAxis,
-    ATSUFontVariationValue *oFontVariationValue );
+  ATSUStyle                 iStyle,
+  ATSUFontVariationAxis     iFontVariationAxis,
+  ATSUFontVariationValue *  oFontVariationValue);
+
 
 /*
  *  ATSUGetAllFontVariations()
@@ -1002,11 +1044,12 @@ ATSUGetFontVariationValue(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetAllFontVariations(
-    ATSUStyle              iStyle,
-    ItemCount              iVariationCount,
-    ATSUFontVariationAxis  oVariationAxes[],
-    ATSUFontVariationValue oFontVariationValues[],
-    ItemCount *            oActualVariationCount );
+  ATSUStyle                iStyle,
+  ItemCount                iVariationCount,
+  ATSUFontVariationAxis    oVariationAxes[],
+  ATSUFontVariationValue   oFontVariationValues[],
+  ItemCount *              oActualVariationCount);
+
 
 /*
  *  ATSUClearFontVariations()
@@ -1018,9 +1061,10 @@ ATSUGetAllFontVariations(
  */
 EXTERN_API_C( OSStatus )
 ATSUClearFontVariations(
-    ATSUStyle                   iStyle,
-    ItemCount                   iAxisCount,
-    const ATSUFontVariationAxis iAxis[] );
+  ATSUStyle                     iStyle,
+  ItemCount                     iAxisCount,
+  const ATSUFontVariationAxis   iAxis[]);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Basic text-layout functions                                                 */
@@ -1034,7 +1078,8 @@ ATSUClearFontVariations(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUCreateTextLayout( ATSUTextLayout *oTextLayout );
+ATSUCreateTextLayout(ATSUTextLayout * oTextLayout);
+
 
 /*
  *  ATSUCreateAndCopyTextLayout()
@@ -1046,8 +1091,9 @@ ATSUCreateTextLayout( ATSUTextLayout *oTextLayout );
  */
 EXTERN_API_C( OSStatus )
 ATSUCreateAndCopyTextLayout(
-    ATSUTextLayout  iTextLayout,
-    ATSUTextLayout *oTextLayout );
+  ATSUTextLayout    iTextLayout,
+  ATSUTextLayout *  oTextLayout);
+
 
 /*
  *  ATSUCreateTextLayoutWithTextPtr()
@@ -1059,14 +1105,15 @@ ATSUCreateAndCopyTextLayout(
  */
 EXTERN_API_C( OSStatus )
 ATSUCreateTextLayoutWithTextPtr(
-    ConstUniCharArrayPtr iText,
-    UniCharArrayOffset   iTextOffset,
-    UniCharCount         iTextLength,
-    UniCharCount         iTextTotalLength,
-    ItemCount            iNumberOfRuns,
-    const UniCharCount   iRunLengths[],
-    ATSUStyle            iStyles[],
-    ATSUTextLayout *     oTextLayout );
+  ConstUniCharArrayPtr   iText,
+  UniCharArrayOffset     iTextOffset,
+  UniCharCount           iTextLength,
+  UniCharCount           iTextTotalLength,
+  ItemCount              iNumberOfRuns,
+  const UniCharCount     iRunLengths[],
+  ATSUStyle              iStyles[],
+  ATSUTextLayout *       oTextLayout);
+
 
 /*
  *  ATSUCreateTextLayoutWithTextHandle()
@@ -1078,14 +1125,15 @@ ATSUCreateTextLayoutWithTextPtr(
  */
 EXTERN_API_C( OSStatus )
 ATSUCreateTextLayoutWithTextHandle(
-    UniCharArrayHandle iText,
-    UniCharArrayOffset iTextOffset,
-    UniCharCount       iTextLength,
-    UniCharCount       iTextTotalLength,
-    ItemCount          iNumberOfRuns,
-    const UniCharCount iRunLengths[],
-    ATSUStyle          iStyles[],
-    ATSUTextLayout *   oTextLayout );
+  UniCharArrayHandle   iText,
+  UniCharArrayOffset   iTextOffset,
+  UniCharCount         iTextLength,
+  UniCharCount         iTextTotalLength,
+  ItemCount            iNumberOfRuns,
+  const UniCharCount   iRunLengths[],
+  ATSUStyle            iStyles[],
+  ATSUTextLayout *     oTextLayout);
+
 
 /*
  *  ATSUClearLayoutCache()
@@ -1097,8 +1145,9 @@ ATSUCreateTextLayoutWithTextHandle(
  */
 EXTERN_API_C( OSStatus )
 ATSUClearLayoutCache(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iLineStart );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iLineStart);
+
 
 /*
  *  ATSUDisposeTextLayout()
@@ -1109,7 +1158,8 @@ ATSUClearLayoutCache(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUDisposeTextLayout( ATSUTextLayout iTextLayout );
+ATSUDisposeTextLayout(ATSUTextLayout iTextLayout);
+
 
 /*
  *  ATSUSetTextLayoutRefCon()
@@ -1121,8 +1171,9 @@ ATSUDisposeTextLayout( ATSUTextLayout iTextLayout );
  */
 EXTERN_API_C( OSStatus )
 ATSUSetTextLayoutRefCon(
-    ATSUTextLayout iTextLayout,
-    UInt32         iRefCon );
+  ATSUTextLayout   iTextLayout,
+  UInt32           iRefCon);
+
 
 /*
  *  ATSUGetTextLayoutRefCon()
@@ -1134,8 +1185,9 @@ ATSUSetTextLayoutRefCon(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetTextLayoutRefCon(
-    ATSUTextLayout iTextLayout,
-    UInt32 *       oRefCon );
+  ATSUTextLayout   iTextLayout,
+  UInt32 *         oRefCon);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Glyph bounds retrieval                                                      */
@@ -1150,15 +1202,16 @@ ATSUGetTextLayoutRefCon(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetGlyphBounds(
-    ATSUTextLayout      iTextLayout,
-    ATSUTextMeasurement iTextBasePointX,
-    ATSUTextMeasurement iTextBasePointY,
-    UniCharArrayOffset  iBoundsCharStart,
-    UniCharCount        iBoundsCharLength,
-    UInt16              iTypeOfBounds,
-    ItemCount           iMaxNumberOfBounds,
-    ATSTrapezoid        oGlyphBounds[],
-    ItemCount *         oActualNumberOfBounds );
+  ATSUTextLayout        iTextLayout,
+  ATSUTextMeasurement   iTextBasePointX,
+  ATSUTextMeasurement   iTextBasePointY,
+  UniCharArrayOffset    iBoundsCharStart,
+  UniCharCount          iBoundsCharLength,
+  UInt16                iTypeOfBounds,
+  ItemCount             iMaxNumberOfBounds,
+  ATSTrapezoid          oGlyphBounds[],
+  ItemCount *           oActualNumberOfBounds);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Idle processing                                                             */
@@ -1172,7 +1225,8 @@ ATSUGetGlyphBounds(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUIdle( ATSUTextLayout iTextLayout );
+ATSUIdle(ATSUTextLayout iTextLayout);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Text location                                                               */
@@ -1187,11 +1241,12 @@ ATSUIdle( ATSUTextLayout iTextLayout );
  */
 EXTERN_API_C( OSStatus )
 ATSUSetTextPointerLocation(
-    ATSUTextLayout       iTextLayout,
-    ConstUniCharArrayPtr iText,
-    UniCharArrayOffset   iTextOffset,
-    UniCharCount         iTextLength,
-    UniCharCount         iTextTotalLength );
+  ATSUTextLayout         iTextLayout,
+  ConstUniCharArrayPtr   iText,
+  UniCharArrayOffset     iTextOffset,
+  UniCharCount           iTextLength,
+  UniCharCount           iTextTotalLength);
+
 
 /*
  *  ATSUSetTextHandleLocation()
@@ -1203,11 +1258,12 @@ ATSUSetTextPointerLocation(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetTextHandleLocation(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayHandle iText,
-    UniCharArrayOffset iTextOffset,
-    UniCharCount       iTextLength,
-    UniCharCount       iTextTotalLength );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayHandle   iText,
+  UniCharArrayOffset   iTextOffset,
+  UniCharCount         iTextLength,
+  UniCharCount         iTextTotalLength);
+
 
 /*
  *  ATSUGetTextLocation()
@@ -1219,12 +1275,13 @@ ATSUSetTextHandleLocation(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetTextLocation(
-    ATSUTextLayout      iTextLayout,
-    void **             oText,
-    Boolean *           oTextIsStoredInHandle,
-    UniCharArrayOffset *oOffset,
-    UniCharCount *      oTextLength,
-    UniCharCount *      oTextTotalLength );
+  ATSUTextLayout        iTextLayout,
+  void **               oText,
+  Boolean *             oTextIsStoredInHandle,
+  UniCharArrayOffset *  oOffset,
+  UniCharCount *        oTextLength,
+  UniCharCount *        oTextTotalLength);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Text manipulation                                                           */
@@ -1239,9 +1296,10 @@ ATSUGetTextLocation(
  */
 EXTERN_API_C( OSStatus )
 ATSUTextDeleted(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iDeletedRangeStart,
-    UniCharCount       iDeletedRangeLength );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iDeletedRangeStart,
+  UniCharCount         iDeletedRangeLength);
+
 
 /*
  *  ATSUTextInserted()
@@ -1253,9 +1311,10 @@ ATSUTextDeleted(
  */
 EXTERN_API_C( OSStatus )
 ATSUTextInserted(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iInsertionLocation,
-    UniCharCount       iInsertionLength );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iInsertionLocation,
+  UniCharCount         iInsertionLength);
+
 
 /*
  *  ATSUTextMoved()
@@ -1267,8 +1326,9 @@ ATSUTextInserted(
  */
 EXTERN_API_C( OSStatus )
 ATSUTextMoved(
-    ATSUTextLayout       iTextLayout,
-    ConstUniCharArrayPtr iNewLocation );
+  ATSUTextLayout         iTextLayout,
+  ConstUniCharArrayPtr   iNewLocation);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Layout controls                                                             */
@@ -1283,8 +1343,9 @@ ATSUTextMoved(
  */
 EXTERN_API_C( OSStatus )
 ATSUCopyLayoutControls(
-    ATSUTextLayout iSourceTextLayout,
-    ATSUTextLayout iDestTextLayout );
+  ATSUTextLayout   iSourceTextLayout,
+  ATSUTextLayout   iDestTextLayout);
+
 
 /*
  *  ATSUSetLayoutControls()
@@ -1296,11 +1357,12 @@ ATSUCopyLayoutControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetLayoutControls(
-    ATSUTextLayout              iTextLayout,
-    ItemCount                   iAttributeCount,
-    const ATSUAttributeTag      iTag[],
-    const ByteCount             iValueSize[],
-    const ATSUAttributeValuePtr iValue[] );
+  ATSUTextLayout                iTextLayout,
+  ItemCount                     iAttributeCount,
+  const ATSUAttributeTag        iTag[],
+  const ByteCount               iValueSize[],
+  const ATSUAttributeValuePtr   iValue[]);
+
 
 /*
  *  ATSUGetLayoutControl()
@@ -1312,11 +1374,12 @@ ATSUSetLayoutControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetLayoutControl(
-    ATSUTextLayout        iTextLayout,
-    ATSUAttributeTag      iTag,
-    ByteCount             iExpectedValueSize,
-    ATSUAttributeValuePtr oValue,
-    ByteCount *           oActualValueSize );
+  ATSUTextLayout          iTextLayout,
+  ATSUAttributeTag        iTag,
+  ByteCount               iExpectedValueSize,
+  ATSUAttributeValuePtr   oValue,
+  ByteCount *             oActualValueSize);
+
 
 /*
  *  ATSUGetAllLayoutControls()
@@ -1328,10 +1391,11 @@ ATSUGetLayoutControl(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetAllLayoutControls(
-    ATSUTextLayout    iTextLayout,
-    ATSUAttributeInfo oAttributeInfoArray[],
-    ItemCount         iTagValuePairArraySize,
-    ItemCount *       oTagValuePairCount );
+  ATSUTextLayout      iTextLayout,
+  ATSUAttributeInfo   oAttributeInfoArray[],
+  ItemCount           iTagValuePairArraySize,
+  ItemCount *         oTagValuePairCount);
+
 
 /*
  *  ATSUClearLayoutControls()
@@ -1343,9 +1407,10 @@ ATSUGetAllLayoutControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUClearLayoutControls(
-    ATSUTextLayout         iTextLayout,
-    ItemCount              iTagCount,
-    const ATSUAttributeTag iTag[] );
+  ATSUTextLayout           iTextLayout,
+  ItemCount                iTagCount,
+  const ATSUAttributeTag   iTag[]);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Single line layout controls                                                 */
@@ -1360,10 +1425,11 @@ ATSUClearLayoutControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUCopyLineControls(
-    ATSUTextLayout     iSourceTextLayout,
-    UniCharArrayOffset iSourceLineStart,
-    ATSUTextLayout     iDestTextLayout,
-    UniCharArrayOffset iDestLineStart );
+  ATSUTextLayout       iSourceTextLayout,
+  UniCharArrayOffset   iSourceLineStart,
+  ATSUTextLayout       iDestTextLayout,
+  UniCharArrayOffset   iDestLineStart);
+
 
 /*
  *  ATSUSetLineControls()
@@ -1375,12 +1441,13 @@ ATSUCopyLineControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetLineControls(
-    ATSUTextLayout              iTextLayout,
-    UniCharArrayOffset          iLineStart,
-    ItemCount                   iAttributeCount,
-    const ATSUAttributeTag      iTag[],
-    const ByteCount             iValueSize[],
-    const ATSUAttributeValuePtr iValue[] );
+  ATSUTextLayout                iTextLayout,
+  UniCharArrayOffset            iLineStart,
+  ItemCount                     iAttributeCount,
+  const ATSUAttributeTag        iTag[],
+  const ByteCount               iValueSize[],
+  const ATSUAttributeValuePtr   iValue[]);
+
 
 /*
  *  ATSUGetLineControl()
@@ -1392,12 +1459,13 @@ ATSUSetLineControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetLineControl(
-    ATSUTextLayout        iTextLayout,
-    UniCharArrayOffset    iLineStart,
-    ATSUAttributeTag      iTag,
-    ByteCount             iExpectedValueSize,
-    ATSUAttributeValuePtr oValue,
-    ByteCount *           oActualValueSize );
+  ATSUTextLayout          iTextLayout,
+  UniCharArrayOffset      iLineStart,
+  ATSUAttributeTag        iTag,
+  ByteCount               iExpectedValueSize,
+  ATSUAttributeValuePtr   oValue,
+  ByteCount *             oActualValueSize);
+
 
 /*
  *  ATSUGetAllLineControls()
@@ -1409,11 +1477,12 @@ ATSUGetLineControl(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetAllLineControls(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iLineStart,
-    ATSUAttributeInfo  oAttributeInfoArray[],
-    ItemCount          iTagValuePairArraySize,
-    ItemCount *        oTagValuePairCount );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iLineStart,
+  ATSUAttributeInfo    oAttributeInfoArray[],
+  ItemCount            iTagValuePairArraySize,
+  ItemCount *          oTagValuePairCount);
+
 
 /*
  *  ATSUClearLineControls()
@@ -1425,10 +1494,11 @@ ATSUGetAllLineControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUClearLineControls(
-    ATSUTextLayout         iTextLayout,
-    UniCharArrayOffset     iLineStart,
-    ItemCount              iTagCount,
-    const ATSUAttributeTag iTag[] );
+  ATSUTextLayout           iTextLayout,
+  UniCharArrayOffset       iLineStart,
+  ItemCount                iTagCount,
+  const ATSUAttributeTag   iTag[]);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Style run processing                                                        */
@@ -1443,10 +1513,11 @@ ATSUClearLineControls(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetRunStyle(
-    ATSUTextLayout     iTextLayout,
-    ATSUStyle          iStyle,
-    UniCharArrayOffset iRunStart,
-    UniCharCount       iRunLength );
+  ATSUTextLayout       iTextLayout,
+  ATSUStyle            iStyle,
+  UniCharArrayOffset   iRunStart,
+  UniCharCount         iRunLength);
+
 
 /*
  *  ATSUGetRunStyle()
@@ -1458,11 +1529,12 @@ ATSUSetRunStyle(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetRunStyle(
-    ATSUTextLayout      iTextLayout,
-    UniCharArrayOffset  iOffset,
-    ATSUStyle *         oStyle,
-    UniCharArrayOffset *oRunStart,
-    UniCharCount *      oRunLength );
+  ATSUTextLayout        iTextLayout,
+  UniCharArrayOffset    iOffset,
+  ATSUStyle *           oStyle,
+  UniCharArrayOffset *  oRunStart,
+  UniCharCount *        oRunLength);
+
 
 /*
  *  ATSUGetContinuousAttributes()
@@ -1474,10 +1546,11 @@ ATSUGetRunStyle(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetContinuousAttributes(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iOffset,
-    UniCharCount       iLength,
-    ATSUStyle          oStyle );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iOffset,
+  UniCharCount         iLength,
+  ATSUStyle            oStyle);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Drawing and measuring                                                       */
@@ -1492,11 +1565,12 @@ ATSUGetContinuousAttributes(
  */
 EXTERN_API_C( OSStatus )
 ATSUDrawText(
-    ATSUTextLayout      iTextLayout,
-    UniCharArrayOffset  iLineOffset,
-    UniCharCount        iLineLength,
-    ATSUTextMeasurement iLocationX,
-    ATSUTextMeasurement iLocationY );
+  ATSUTextLayout        iTextLayout,
+  UniCharArrayOffset    iLineOffset,
+  UniCharCount          iLineLength,
+  ATSUTextMeasurement   iLocationX,
+  ATSUTextMeasurement   iLocationY);
+
 
 /*
     Warning: ATSUMeasureText has been deprecated
@@ -1512,13 +1586,14 @@ ATSUDrawText(
  */
 EXTERN_API_C( OSStatus )
 ATSUMeasureText(
-    ATSUTextLayout       iTextLayout,
-    UniCharArrayOffset   iLineStart,
-    UniCharCount         iLineLength,
-    ATSUTextMeasurement *oTextBefore,
-    ATSUTextMeasurement *oTextAfter,
-    ATSUTextMeasurement *oAscent,
-    ATSUTextMeasurement *oDescent );
+  ATSUTextLayout         iTextLayout,
+  UniCharArrayOffset     iLineStart,
+  UniCharCount           iLineLength,
+  ATSUTextMeasurement *  oTextBefore,
+  ATSUTextMeasurement *  oTextAfter,
+  ATSUTextMeasurement *  oAscent,
+  ATSUTextMeasurement *  oDescent);
+
 
 /*
  *  ATSUGetUnjustifiedBounds()
@@ -1530,13 +1605,14 @@ ATSUMeasureText(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetUnjustifiedBounds(
-    ATSUTextLayout       iTextLayout,
-    UniCharArrayOffset   iLineStart,
-    UniCharCount         iLineLength,
-    ATSUTextMeasurement *oTextBefore,
-    ATSUTextMeasurement *oTextAfter,
-    ATSUTextMeasurement *oAscent,
-    ATSUTextMeasurement *oDescent );
+  ATSUTextLayout         iTextLayout,
+  UniCharArrayOffset     iLineStart,
+  UniCharCount           iLineLength,
+  ATSUTextMeasurement *  oTextBefore,
+  ATSUTextMeasurement *  oTextAfter,
+  ATSUTextMeasurement *  oAscent,
+  ATSUTextMeasurement *  oDescent);
+
 
 /*
  *  ATSUMeasureTextImage()
@@ -1548,12 +1624,13 @@ ATSUGetUnjustifiedBounds(
  */
 EXTERN_API_C( OSStatus )
 ATSUMeasureTextImage(
-    ATSUTextLayout      iTextLayout,
-    UniCharArrayOffset  iLineOffset,
-    UniCharCount        iLineLength,
-    ATSUTextMeasurement iLocationX,
-    ATSUTextMeasurement iLocationY,
-    Rect *              oTextImageRect );
+  ATSUTextLayout        iTextLayout,
+  UniCharArrayOffset    iLineOffset,
+  UniCharCount          iLineLength,
+  ATSUTextMeasurement   iLocationX,
+  ATSUTextMeasurement   iLocationY,
+  Rect *                oTextImageRect);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Highlighting                                                                */
@@ -1568,11 +1645,12 @@ ATSUMeasureTextImage(
  */
 EXTERN_API_C( OSStatus )
 ATSUHighlightText(
-    ATSUTextLayout      iTextLayout,
-    ATSUTextMeasurement iTextBasePointX,
-    ATSUTextMeasurement iTextBasePointY,
-    UniCharArrayOffset  iHighlightStart,
-    UniCharCount        iHighlightLength );
+  ATSUTextLayout        iTextLayout,
+  ATSUTextMeasurement   iTextBasePointX,
+  ATSUTextMeasurement   iTextBasePointY,
+  UniCharArrayOffset    iHighlightStart,
+  UniCharCount          iHighlightLength);
+
 
 /*
  *  ATSUUnhighlightText()
@@ -1584,11 +1662,12 @@ ATSUHighlightText(
  */
 EXTERN_API_C( OSStatus )
 ATSUUnhighlightText(
-    ATSUTextLayout      iTextLayout,
-    ATSUTextMeasurement iTextBasePointX,
-    ATSUTextMeasurement iTextBasePointY,
-    UniCharArrayOffset  iHighlightStart,
-    UniCharCount        iHighlightLength );
+  ATSUTextLayout        iTextLayout,
+  ATSUTextMeasurement   iTextBasePointX,
+  ATSUTextMeasurement   iTextBasePointY,
+  UniCharArrayOffset    iHighlightStart,
+  UniCharCount          iHighlightLength);
+
 
 /*
  *  ATSUGetTextHighlight()
@@ -1600,12 +1679,13 @@ ATSUUnhighlightText(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetTextHighlight(
-    ATSUTextLayout      iTextLayout,
-    ATSUTextMeasurement iTextBasePointX,
-    ATSUTextMeasurement iTextBasePointY,
-    UniCharArrayOffset  iHighlightStart,
-    UniCharCount        iHighlightLength,
-    RgnHandle           oHighlightRegion );
+  ATSUTextLayout        iTextLayout,
+  ATSUTextMeasurement   iTextBasePointX,
+  ATSUTextMeasurement   iTextBasePointY,
+  UniCharArrayOffset    iHighlightStart,
+  UniCharCount          iHighlightLength,
+  RgnHandle             oHighlightRegion);
+
 
 /*
  *  ATSUHighlightInactiveText()
@@ -1617,11 +1697,12 @@ ATSUGetTextHighlight(
  */
 EXTERN_API_C( OSStatus )
 ATSUHighlightInactiveText(
-    ATSUTextLayout      iTextLayout,
-    ATSUTextMeasurement iTextBasePointX,
-    ATSUTextMeasurement iTextBasePointY,
-    UniCharArrayOffset  iHighlightStart,
-    UniCharCount        iHighlightLength );
+  ATSUTextLayout        iTextLayout,
+  ATSUTextMeasurement   iTextBasePointX,
+  ATSUTextMeasurement   iTextBasePointY,
+  UniCharArrayOffset    iHighlightStart,
+  UniCharCount          iHighlightLength);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Hit-testing                                                                 */
@@ -1636,12 +1717,13 @@ ATSUHighlightInactiveText(
  */
 EXTERN_API_C( OSStatus )
 ATSUPositionToOffset(
-    ATSUTextLayout      iTextLayout,
-    ATSUTextMeasurement iLocationX,
-    ATSUTextMeasurement iLocationY,
-    UniCharArrayOffset *ioPrimaryOffset,
-    Boolean *           oIsLeading,
-    UniCharArrayOffset *oSecondaryOffset );
+  ATSUTextLayout        iTextLayout,
+  ATSUTextMeasurement   iLocationX,
+  ATSUTextMeasurement   iLocationY,
+  UniCharArrayOffset *  ioPrimaryOffset,
+  Boolean *             oIsLeading,
+  UniCharArrayOffset *  oSecondaryOffset);
+
 
 /*
  *  ATSUOffsetToPosition()
@@ -1653,12 +1735,13 @@ ATSUPositionToOffset(
  */
 EXTERN_API_C( OSStatus )
 ATSUOffsetToPosition(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iOffset,
-    Boolean            iIsLeading,
-    ATSUCaret *        oMainCaret,
-    ATSUCaret *        oSecondCaret,
-    Boolean *          oCaretIsSplit );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iOffset,
+  Boolean              iIsLeading,
+  ATSUCaret *          oMainCaret,
+  ATSUCaret *          oSecondCaret,
+  Boolean *            oCaretIsSplit);
+
 
 /*
  *  ATSUPositionToCursorOffset()
@@ -1670,13 +1753,14 @@ ATSUOffsetToPosition(
  */
 EXTERN_API_C( OSStatus )
 ATSUPositionToCursorOffset(
-    ATSUTextLayout         iTextLayout,
-    ATSUTextMeasurement    iLocationX,
-    ATSUTextMeasurement    iLocationY,
-    ATSUCursorMovementType iMovementType,
-    UniCharArrayOffset *   ioPrimaryOffset,
-    Boolean *              oIsLeading,
-    UniCharArrayOffset *   oSecondaryOffset );
+  ATSUTextLayout           iTextLayout,
+  ATSUTextMeasurement      iLocationX,
+  ATSUTextMeasurement      iLocationY,
+  ATSUCursorMovementType   iMovementType,
+  UniCharArrayOffset *     ioPrimaryOffset,
+  Boolean *                oIsLeading,
+  UniCharArrayOffset *     oSecondaryOffset);
+
 
 /*
  *  ATSUOffsetToCursorPosition()
@@ -1688,13 +1772,14 @@ ATSUPositionToCursorOffset(
  */
 EXTERN_API_C( OSStatus )
 ATSUOffsetToCursorPosition(
-    ATSUTextLayout         iTextLayout,
-    UniCharArrayOffset     iOffset,
-    Boolean                iIsLeading,
-    ATSUCursorMovementType iMovementType,
-    ATSUCaret *            oMainCaret,
-    ATSUCaret *            oSecondCaret,
-    Boolean *              oCaretIsSplit );
+  ATSUTextLayout           iTextLayout,
+  UniCharArrayOffset       iOffset,
+  Boolean                  iIsLeading,
+  ATSUCursorMovementType   iMovementType,
+  ATSUCaret *              oMainCaret,
+  ATSUCaret *              oSecondCaret,
+  Boolean *                oCaretIsSplit);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Cursor movement                                                             */
@@ -1709,10 +1794,11 @@ ATSUOffsetToCursorPosition(
  */
 EXTERN_API_C( OSStatus )
 ATSUNextCursorPosition(
-    ATSUTextLayout         iTextLayout,
-    UniCharArrayOffset     iOldOffset,
-    ATSUCursorMovementType iMovementType,
-    UniCharArrayOffset *   oNewOffset );
+  ATSUTextLayout           iTextLayout,
+  UniCharArrayOffset       iOldOffset,
+  ATSUCursorMovementType   iMovementType,
+  UniCharArrayOffset *     oNewOffset);
+
 
 /*
  *  ATSUPreviousCursorPosition()
@@ -1724,10 +1810,11 @@ ATSUNextCursorPosition(
  */
 EXTERN_API_C( OSStatus )
 ATSUPreviousCursorPosition(
-    ATSUTextLayout         iTextLayout,
-    UniCharArrayOffset     iOldOffset,
-    ATSUCursorMovementType iMovementType,
-    UniCharArrayOffset *   oNewOffset );
+  ATSUTextLayout           iTextLayout,
+  UniCharArrayOffset       iOldOffset,
+  ATSUCursorMovementType   iMovementType,
+  UniCharArrayOffset *     oNewOffset);
+
 
 /*
  *  ATSURightwardCursorPosition()
@@ -1739,10 +1826,11 @@ ATSUPreviousCursorPosition(
  */
 EXTERN_API_C( OSStatus )
 ATSURightwardCursorPosition(
-    ATSUTextLayout         iTextLayout,
-    UniCharArrayOffset     iOldOffset,
-    ATSUCursorMovementType iMovementType,
-    UniCharArrayOffset *   oNewOffset );
+  ATSUTextLayout           iTextLayout,
+  UniCharArrayOffset       iOldOffset,
+  ATSUCursorMovementType   iMovementType,
+  UniCharArrayOffset *     oNewOffset);
+
 
 /*
  *  ATSULeftwardCursorPosition()
@@ -1754,10 +1842,11 @@ ATSURightwardCursorPosition(
  */
 EXTERN_API_C( OSStatus )
 ATSULeftwardCursorPosition(
-    ATSUTextLayout         iTextLayout,
-    UniCharArrayOffset     iOldOffset,
-    ATSUCursorMovementType iMovementType,
-    UniCharArrayOffset *   oNewOffset );
+  ATSUTextLayout           iTextLayout,
+  UniCharArrayOffset       iOldOffset,
+  ATSUCursorMovementType   iMovementType,
+  UniCharArrayOffset *     oNewOffset);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Line breaking                                                               */
@@ -1772,11 +1861,12 @@ ATSULeftwardCursorPosition(
  */
 EXTERN_API_C( OSStatus )
 ATSUBatchBreakLines(
-    ATSUTextLayout      iTextLayout,
-    UniCharArrayOffset  iRangeStart,
-    UniCharCount        iRangeLength,
-    ATSUTextMeasurement iLineWidth,
-    ItemCount *         oBreakCount );
+  ATSUTextLayout        iTextLayout,
+  UniCharArrayOffset    iRangeStart,
+  UniCharCount          iRangeLength,
+  ATSUTextMeasurement   iLineWidth,
+  ItemCount *           oBreakCount);
+
 
 /*
  *  ATSUBreakLine()
@@ -1788,11 +1878,12 @@ ATSUBatchBreakLines(
  */
 EXTERN_API_C( OSStatus )
 ATSUBreakLine(
-    ATSUTextLayout      iTextLayout,
-    UniCharArrayOffset  iLineStart,
-    ATSUTextMeasurement iLineWidth,
-    Boolean             iUseAsSoftLineBreak,
-    UniCharArrayOffset *oLineBreak );
+  ATSUTextLayout        iTextLayout,
+  UniCharArrayOffset    iLineStart,
+  ATSUTextMeasurement   iLineWidth,
+  Boolean               iUseAsSoftLineBreak,
+  UniCharArrayOffset *  oLineBreak);
+
 
 /*
  *  ATSUSetSoftLineBreak()
@@ -1804,8 +1895,9 @@ ATSUBreakLine(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetSoftLineBreak(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iLineBreak );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iLineBreak);
+
 
 /*
  *  ATSUGetSoftLineBreaks()
@@ -1817,12 +1909,13 @@ ATSUSetSoftLineBreak(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetSoftLineBreaks(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iRangeStart,
-    UniCharCount       iRangeLength,
-    ItemCount          iMaximumBreaks,
-    UniCharArrayOffset oBreaks[],
-    ItemCount *        oBreakCount );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iRangeStart,
+  UniCharCount         iRangeLength,
+  ItemCount            iMaximumBreaks,
+  UniCharArrayOffset   oBreaks[],
+  ItemCount *          oBreakCount);
+
 
 /*
  *  ATSUClearSoftLineBreaks()
@@ -1834,9 +1927,10 @@ ATSUGetSoftLineBreaks(
  */
 EXTERN_API_C( OSStatus )
 ATSUClearSoftLineBreaks(
-    ATSUTextLayout     iTextLayout,
-    UniCharArrayOffset iRangeStart,
-    UniCharCount       iRangeLength );
+  ATSUTextLayout       iTextLayout,
+  UniCharArrayOffset   iRangeStart,
+  UniCharCount         iRangeLength);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Tab support                                                                 */
@@ -1851,9 +1945,10 @@ ATSUClearSoftLineBreaks(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetTabArray(
-    ATSUTextLayout iTextLayout,
-    const ATSUTab  iTabs[],
-    ItemCount      iTabCount );
+  ATSUTextLayout   iTextLayout,
+  const ATSUTab    iTabs[],
+  ItemCount        iTabCount);
+
 
 /*
  *  ATSUGetTabArray()
@@ -1865,10 +1960,11 @@ ATSUSetTabArray(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetTabArray(
-    ATSUTextLayout iTextLayout,
-    ItemCount      iMaxTabCount,
-    ATSUTab        oTabs[],
-    ItemCount *    oTabCount );
+  ATSUTextLayout   iTextLayout,
+  ItemCount        iMaxTabCount,
+  ATSUTab          oTabs[],
+  ItemCount *      oTabCount);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font matching                                                               */
@@ -1883,9 +1979,10 @@ ATSUGetTabArray(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetFontFallbacks(
-    ItemCount              iFontFallbacksCount,
-    const ATSUFontID       iFontIDs[],
-    ATSUFontFallbackMethod iFontFallbackMethod );
+  ItemCount                iFontFallbacksCount,
+  const ATSUFontID         iFontIDs[],
+  ATSUFontFallbackMethod   iFontFallbackMethod);
+
 
 /*
  *  ATSUGetFontFallbacks()
@@ -1897,10 +1994,11 @@ ATSUSetFontFallbacks(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontFallbacks(
-    ItemCount               iMaxFontFallbacksCount,
-    ATSUFontID              oFontIDs[],
-    ATSUFontFallbackMethod *oFontFallbackMethod,
-    ItemCount *             oActualFallbacksCount );
+  ItemCount                 iMaxFontFallbacksCount,
+  ATSUFontID                oFontIDs[],
+  ATSUFontFallbackMethod *  oFontFallbackMethod,
+  ItemCount *               oActualFallbacksCount);
+
 
 /*
  *  ATSUMatchFontsToText()
@@ -1912,12 +2010,13 @@ ATSUGetFontFallbacks(
  */
 EXTERN_API_C( OSStatus )
 ATSUMatchFontsToText(
-    ATSUTextLayout      iTextLayout,
-    UniCharArrayOffset  iTextStart,
-    UniCharCount        iTextLength,
-    ATSUFontID *        oFontID,
-    UniCharArrayOffset *oChangedOffset,
-    UniCharCount *      oChangedLength );
+  ATSUTextLayout        iTextLayout,
+  UniCharArrayOffset    iTextStart,
+  UniCharCount          iTextLength,
+  ATSUFontID *          oFontID,
+  UniCharArrayOffset *  oChangedOffset,
+  UniCharCount *        oChangedLength);
+
 
 /*
  *  ATSUSetTransientFontMatching()
@@ -1929,8 +2028,9 @@ ATSUMatchFontsToText(
  */
 EXTERN_API_C( OSStatus )
 ATSUSetTransientFontMatching(
-    ATSUTextLayout iTextLayout,
-    Boolean        iTransientFontMatching );
+  ATSUTextLayout   iTextLayout,
+  Boolean          iTransientFontMatching);
+
 
 /*
  *  ATSUGetTransientFontMatching()
@@ -1942,8 +2042,9 @@ ATSUSetTransientFontMatching(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetTransientFontMatching(
-    ATSUTextLayout iTextLayout,
-    Boolean *      oTransientFontMatching );
+  ATSUTextLayout   iTextLayout,
+  Boolean *        oTransientFontMatching);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font ID's                                                                   */
@@ -1957,7 +2058,8 @@ ATSUGetTransientFontMatching(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSUFontCount( ItemCount *oFontCount );
+ATSUFontCount(ItemCount * oFontCount);
+
 
 /*
  *  ATSUGetFontIDs()
@@ -1969,9 +2071,10 @@ ATSUFontCount( ItemCount *oFontCount );
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontIDs(
-    ATSUFontID oFontIDs[],
-    ItemCount  iArraySize,
-    ItemCount *oFontCount );
+  ATSUFontID   oFontIDs[],
+  ItemCount    iArraySize,
+  ItemCount *  oFontCount);
+
 
 /*
  *  ATSUFONDtoFontID()
@@ -1983,9 +2086,10 @@ ATSUGetFontIDs(
  */
 EXTERN_API_C( OSStatus )
 ATSUFONDtoFontID(
-    short       iFONDNumber,
-    Style       iFONDStyle,
-    ATSUFontID *oFontID );
+  short         iFONDNumber,
+  Style         iFONDStyle,
+  ATSUFontID *  oFontID);
+
 
 /*
  *  ATSUFontIDtoFOND()
@@ -1997,9 +2101,10 @@ ATSUFONDtoFontID(
  */
 EXTERN_API_C( OSStatus )
 ATSUFontIDtoFOND(
-    ATSUFontID iFontID,
-    short *    oFONDNumber,
-    Style *    oFONDStyle );
+  ATSUFontID   iFontID,
+  short *      oFONDNumber,
+  Style *      oFONDStyle);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font names                                                                  */
@@ -2014,8 +2119,9 @@ ATSUFontIDtoFOND(
  */
 EXTERN_API_C( OSStatus )
 ATSUCountFontNames(
-    ATSUFontID iFontID,
-    ItemCount *oFontNameCount );
+  ATSUFontID   iFontID,
+  ItemCount *  oFontNameCount);
+
 
 /*
  *  ATSUGetIndFontName()
@@ -2027,15 +2133,16 @@ ATSUCountFontNames(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetIndFontName(
-    ATSUFontID        iFontID,
-    ItemCount         iFontNameIndex,
-    ByteCount         iMaximumNameLength,
-    Ptr               oName,
-    ByteCount *       oActualNameLength,
-    FontNameCode *    oFontNameCode,
-    FontPlatformCode *oFontNamePlatform,
-    FontScriptCode *  oFontNameScript,
-    FontLanguageCode *oFontNameLanguage );
+  ATSUFontID          iFontID,
+  ItemCount           iFontNameIndex,
+  ByteCount           iMaximumNameLength,
+  Ptr                 oName,
+  ByteCount *         oActualNameLength,
+  FontNameCode *      oFontNameCode,
+  FontPlatformCode *  oFontNamePlatform,
+  FontScriptCode *    oFontNameScript,
+  FontLanguageCode *  oFontNameLanguage);
+
 
 /*
  *  ATSUFindFontName()
@@ -2047,15 +2154,16 @@ ATSUGetIndFontName(
  */
 EXTERN_API_C( OSStatus )
 ATSUFindFontName(
-    ATSUFontID       iFontID,
-    FontNameCode     iFontNameCode,
-    FontPlatformCode iFontNamePlatform,
-    FontScriptCode   iFontNameScript,
-    FontLanguageCode iFontNameLanguage,
-    ByteCount        iMaximumNameLength,
-    Ptr              oName,
-    ByteCount *      oActualNameLength,
-    ItemCount *      oFontNameIndex );
+  ATSUFontID         iFontID,
+  FontNameCode       iFontNameCode,
+  FontPlatformCode   iFontNamePlatform,
+  FontScriptCode     iFontNameScript,
+  FontLanguageCode   iFontNameLanguage,
+  ByteCount          iMaximumNameLength,
+  Ptr                oName,
+  ByteCount *        oActualNameLength,
+  ItemCount *        oFontNameIndex);
+
 
 /*
  *  ATSUFindFontFromName()
@@ -2067,13 +2175,14 @@ ATSUFindFontName(
  */
 EXTERN_API_C( OSStatus )
 ATSUFindFontFromName(
-    Ptr              iName,
-    ByteCount        iNameLength,
-    FontNameCode     iFontNameCode,
-    FontPlatformCode iFontNamePlatform,
-    FontScriptCode   iFontNameScript,
-    FontLanguageCode iFontNameLanguage,
-    ATSUFontID *     oFontID );
+  Ptr                iName,
+  ByteCount          iNameLength,
+  FontNameCode       iFontNameCode,
+  FontPlatformCode   iFontNamePlatform,
+  FontScriptCode     iFontNameScript,
+  FontLanguageCode   iFontNameLanguage,
+  ATSUFontID *       oFontID);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font features                                                               */
@@ -2088,8 +2197,9 @@ ATSUFindFontFromName(
  */
 EXTERN_API_C( OSStatus )
 ATSUCountFontFeatureTypes(
-    ATSUFontID iFontID,
-    ItemCount *oTypeCount );
+  ATSUFontID   iFontID,
+  ItemCount *  oTypeCount);
+
 
 /*
  *  ATSUCountFontFeatureSelectors()
@@ -2101,9 +2211,10 @@ ATSUCountFontFeatureTypes(
  */
 EXTERN_API_C( OSStatus )
 ATSUCountFontFeatureSelectors(
-    ATSUFontID          iFontID,
-    ATSUFontFeatureType iType,
-    ItemCount *         oSelectorCount );
+  ATSUFontID            iFontID,
+  ATSUFontFeatureType   iType,
+  ItemCount *           oSelectorCount);
+
 
 /*
  *  ATSUGetFontFeatureTypes()
@@ -2115,10 +2226,11 @@ ATSUCountFontFeatureSelectors(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontFeatureTypes(
-    ATSUFontID          iFontID,
-    ItemCount           iMaximumTypes,
-    ATSUFontFeatureType oTypes[],
-    ItemCount *         oActualTypeCount );
+  ATSUFontID            iFontID,
+  ItemCount             iMaximumTypes,
+  ATSUFontFeatureType   oTypes[],
+  ItemCount *           oActualTypeCount);
+
 
 /*
  *  ATSUGetFontFeatureSelectors()
@@ -2130,13 +2242,14 @@ ATSUGetFontFeatureTypes(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontFeatureSelectors(
-    ATSUFontID              iFontID,
-    ATSUFontFeatureType     iType,
-    ItemCount               iMaximumSelectors,
-    ATSUFontFeatureSelector oSelectors[],
-    Boolean                 oSelectorIsOnByDefault[],
-    ItemCount *             oActualSelectorCount,
-    Boolean *               oIsMutuallyExclusive );
+  ATSUFontID                iFontID,
+  ATSUFontFeatureType       iType,
+  ItemCount                 iMaximumSelectors,
+  ATSUFontFeatureSelector   oSelectors[],
+  Boolean                   oSelectorIsOnByDefault[],
+  ItemCount *               oActualSelectorCount,
+  Boolean *                 oIsMutuallyExclusive);
+
 
 /*
  *  ATSUGetFontFeatureNameCode()
@@ -2148,10 +2261,11 @@ ATSUGetFontFeatureSelectors(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontFeatureNameCode(
-    ATSUFontID              iFontID,
-    ATSUFontFeatureType     iType,
-    ATSUFontFeatureSelector iSelector,
-    FontNameCode *          oNameCode );
+  ATSUFontID                iFontID,
+  ATSUFontFeatureType       iType,
+  ATSUFontFeatureSelector   iSelector,
+  FontNameCode *            oNameCode);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font tracking value & names                                                 */
@@ -2166,9 +2280,10 @@ ATSUGetFontFeatureNameCode(
  */
 EXTERN_API_C( OSStatus )
 ATSUCountFontTracking(
-    ATSUFontID                iFontID,
-    ATSUVerticalCharacterType iCharacterOrientation,
-    ItemCount *               oTrackingCount );
+  ATSUFontID                  iFontID,
+  ATSUVerticalCharacterType   iCharacterOrientation,
+  ItemCount *                 oTrackingCount);
+
 
 /*
  *  ATSUGetIndFontTracking()
@@ -2180,11 +2295,12 @@ ATSUCountFontTracking(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetIndFontTracking(
-    ATSUFontID                iFontID,
-    ATSUVerticalCharacterType iCharacterOrientation,
-    ItemCount                 iTrackIndex,
-    Fixed *                   oFontTrackingValue,
-    FontNameCode *            oNameCode );
+  ATSUFontID                  iFontID,
+  ATSUVerticalCharacterType   iCharacterOrientation,
+  ItemCount                   iTrackIndex,
+  Fixed *                     oFontTrackingValue,
+  FontNameCode *              oNameCode);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font variations                                                             */
@@ -2199,8 +2315,9 @@ ATSUGetIndFontTracking(
  */
 EXTERN_API_C( OSStatus )
 ATSUCountFontVariations(
-    ATSUFontID iFontID,
-    ItemCount *oVariationCount );
+  ATSUFontID   iFontID,
+  ItemCount *  oVariationCount);
+
 
 /*
  *  ATSUGetIndFontVariation()
@@ -2212,12 +2329,13 @@ ATSUCountFontVariations(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetIndFontVariation(
-    ATSUFontID              iFontID,
-    ItemCount               iVariationIndex,
-    ATSUFontVariationAxis * oATSUFontVariationAxis,
-    ATSUFontVariationValue *oMinimumValue,
-    ATSUFontVariationValue *oMaximumValue,
-    ATSUFontVariationValue *oDefaultValue );
+  ATSUFontID                iFontID,
+  ItemCount                 iVariationIndex,
+  ATSUFontVariationAxis *   oATSUFontVariationAxis,
+  ATSUFontVariationValue *  oMinimumValue,
+  ATSUFontVariationValue *  oMaximumValue,
+  ATSUFontVariationValue *  oDefaultValue);
+
 
 /*
  *  ATSUGetFontVariationNameCode()
@@ -2229,9 +2347,10 @@ ATSUGetIndFontVariation(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontVariationNameCode(
-    ATSUFontID            iFontID,
-    ATSUFontVariationAxis iAxis,
-    FontNameCode *        oNameCode );
+  ATSUFontID              iFontID,
+  ATSUFontVariationAxis   iAxis,
+  FontNameCode *          oNameCode);
+
 
 /* ---------------------------------------------------------------------------- */
 /*  Font Instances                                                              */
@@ -2246,8 +2365,9 @@ ATSUGetFontVariationNameCode(
  */
 EXTERN_API_C( OSStatus )
 ATSUCountFontInstances(
-    ATSUFontID iFontID,
-    ItemCount *oInstances );
+  ATSUFontID   iFontID,
+  ItemCount *  oInstances);
+
 
 /*
  *  ATSUGetFontInstance()
@@ -2259,12 +2379,13 @@ ATSUCountFontInstances(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontInstance(
-    ATSUFontID             iFontID,
-    ItemCount              iFontInstanceIndex,
-    ItemCount              iMaximumVariations,
-    ATSUFontVariationAxis  oAxes[],
-    ATSUFontVariationValue oValues[],
-    ItemCount *            oActualVariationCount );
+  ATSUFontID               iFontID,
+  ItemCount                iFontInstanceIndex,
+  ItemCount                iMaximumVariations,
+  ATSUFontVariationAxis    oAxes[],
+  ATSUFontVariationValue   oValues[],
+  ItemCount *              oActualVariationCount);
+
 
 /*
  *  ATSUGetFontInstanceNameCode()
@@ -2276,9 +2397,11 @@ ATSUGetFontInstance(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetFontInstanceNameCode(
-    ATSUFontID    iFontID,
-    ItemCount     iInstanceIndex,
-    FontNameCode *oNameCode );
+  ATSUFontID      iFontID,
+  ItemCount       iInstanceIndex,
+  FontNameCode *  oNameCode);
+
+
 
 /********************************************************************************/
 /* ATSUI Low-Level API.  For more low-level calls, see ATSUnicodeDirectAccess.h */
@@ -2296,11 +2419,12 @@ ATSUGetFontInstanceNameCode(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetGlyphInfo(
-    ATSUTextLayout      iTextLayout,
-    UniCharArrayOffset  iLineStart,
-    UniCharCount        iLineLength,
-    ByteCount *         ioBufferSize,
-    ATSUGlyphInfoArray *oGlyphInfoPtr );
+  ATSUTextLayout        iTextLayout,
+  UniCharArrayOffset    iLineStart,
+  UniCharCount          iLineLength,
+  ByteCount *           ioBufferSize,
+  ATSUGlyphInfoArray *  oGlyphInfoPtr);
+
 
 /*
  *  ATSUDrawGlyphInfo()
@@ -2312,8 +2436,9 @@ ATSUGetGlyphInfo(
  */
 EXTERN_API_C( OSStatus )
 ATSUDrawGlyphInfo(
-    ATSUGlyphInfoArray *iGlyphInfoArray,
-    Float32Point        iLocation );
+  ATSUGlyphInfoArray *  iGlyphInfoArray,
+  Float32Point          iLocation);
+
 
 /* ---------------------------------------------------------------------------- */
 /* Font Data Access                                                             */
@@ -2328,11 +2453,12 @@ ATSUDrawGlyphInfo(
  */
 EXTERN_API_C( OSStatus )
 ATSUGlyphGetIdealMetrics(
-    ATSUStyle            iATSUStyle,
-    ItemCount            iNumOfGlyphs,
-    GlyphID              iGlyphIDs[],
-    ByteOffset           iInputOffset,
-    ATSGlyphIdealMetrics oIdealMetrics[] );
+  ATSUStyle              iATSUStyle,
+  ItemCount              iNumOfGlyphs,
+  GlyphID                iGlyphIDs[],
+  ByteOffset             iInputOffset,
+  ATSGlyphIdealMetrics   oIdealMetrics[]);
+
 
 /*
  *  ATSUGetNativeCurveType()
@@ -2344,8 +2470,9 @@ ATSUGlyphGetIdealMetrics(
  */
 EXTERN_API_C( OSStatus )
 ATSUGetNativeCurveType(
-    ATSUStyle     iATSUStyle,
-    ATSCurveType *oCurveType );
+  ATSUStyle       iATSUStyle,
+  ATSCurveType *  oCurveType);
+
 
 /* ---------------------------------------------------------------------------- */
 /* Device specific routines                                                     */
@@ -2360,25 +2487,26 @@ ATSUGetNativeCurveType(
  */
 EXTERN_API_C( OSStatus )
 ATSUGlyphGetScreenMetrics(
-    ATSUStyle             iATSUStyle,
-    ItemCount             iNumOfGlyphs,
-    GlyphID               iGlyphIDs[],
-    ByteOffset            iInputOffset,
-    Boolean               iForcingAntiAlias,
-    Boolean               iAntiAliasSwitch,
-    ATSGlyphScreenMetrics oScreenMetrics[] );
+  ATSUStyle               iATSUStyle,
+  ItemCount               iNumOfGlyphs,
+  GlyphID                 iGlyphIDs[],
+  ByteOffset              iInputOffset,
+  Boolean                 iForcingAntiAlias,
+  Boolean                 iAntiAliasSwitch,
+  ATSGlyphScreenMetrics   oScreenMetrics[]);
+
 
 /* ---------------------------------------------------------------------------- */
 /* ATSUGlyphGetQuadraticPaths callbacks                                         */
 /* ---------------------------------------------------------------------------- */
-typedef CALLBACK_API( OSStatus, ATSQuadraticLineProcPtr )( const Float32Point *pt1, const Float32Point *pt2, void *callBackDataPtr );
-typedef CALLBACK_API( OSStatus, ATSQuadraticCurveProcPtr )( const Float32Point *pt1, const Float32Point *controlPt, const Float32Point *pt2, void *callBackDataPtr );
-typedef CALLBACK_API( OSStatus, ATSQuadraticNewPathProcPtr )( void *callBackDataPtr );
-typedef CALLBACK_API( OSStatus, ATSQuadraticClosePathProcPtr )( void *callBackDataPtr );
-typedef TVECTOR_UPP_TYPE( ATSQuadraticLineProcPtr ) ATSQuadraticLineUPP;
-typedef TVECTOR_UPP_TYPE( ATSQuadraticCurveProcPtr ) ATSQuadraticCurveUPP;
-typedef TVECTOR_UPP_TYPE( ATSQuadraticNewPathProcPtr ) ATSQuadraticNewPathUPP;
-typedef TVECTOR_UPP_TYPE( ATSQuadraticClosePathProcPtr ) ATSQuadraticClosePathUPP;
+typedef CALLBACK_API( OSStatus , ATSQuadraticLineProcPtr )(const Float32Point *pt1, const Float32Point *pt2, void *callBackDataPtr);
+typedef CALLBACK_API( OSStatus , ATSQuadraticCurveProcPtr )(const Float32Point *pt1, const Float32Point *controlPt, const Float32Point *pt2, void *callBackDataPtr);
+typedef CALLBACK_API( OSStatus , ATSQuadraticNewPathProcPtr )(void * callBackDataPtr);
+typedef CALLBACK_API( OSStatus , ATSQuadraticClosePathProcPtr )(void * callBackDataPtr);
+typedef TVECTOR_UPP_TYPE(ATSQuadraticLineProcPtr)               ATSQuadraticLineUPP;
+typedef TVECTOR_UPP_TYPE(ATSQuadraticCurveProcPtr)              ATSQuadraticCurveUPP;
+typedef TVECTOR_UPP_TYPE(ATSQuadraticNewPathProcPtr)            ATSQuadraticNewPathUPP;
+typedef TVECTOR_UPP_TYPE(ATSQuadraticClosePathProcPtr)          ATSQuadraticClosePathUPP;
 /*
  *  NewATSQuadraticLineUPP()
  *  
@@ -2388,17 +2516,14 @@ typedef TVECTOR_UPP_TYPE( ATSQuadraticClosePathProcPtr ) ATSQuadraticClosePathUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSQuadraticLineUPP )
-NewATSQuadraticLineUPP( ATSQuadraticLineProcPtr userRoutine );
+NewATSQuadraticLineUPP(ATSQuadraticLineProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSQuadraticLineProcInfo = 0x00000FF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSQuadraticLineUPP ) NewATSQuadraticLineUPP( ATSQuadraticLineProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSQuadraticLineUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSQuadraticLineProcInfo = 0x00000FF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSQuadraticLineUPP) NewATSQuadraticLineUPP(ATSQuadraticLineProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSQuadraticLineUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2410,17 +2535,14 @@ inline DEFINE_API_C( ATSQuadraticLineUPP ) NewATSQuadraticLineUPP( ATSQuadraticL
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSQuadraticCurveUPP )
-NewATSQuadraticCurveUPP( ATSQuadraticCurveProcPtr userRoutine );
+NewATSQuadraticCurveUPP(ATSQuadraticCurveProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSQuadraticCurveProcInfo = 0x00003FF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSQuadraticCurveUPP ) NewATSQuadraticCurveUPP( ATSQuadraticCurveProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSQuadraticCurveUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSQuadraticCurveProcInfo = 0x00003FF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSQuadraticCurveUPP) NewATSQuadraticCurveUPP(ATSQuadraticCurveProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSQuadraticCurveUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2432,17 +2554,14 @@ inline DEFINE_API_C( ATSQuadraticCurveUPP ) NewATSQuadraticCurveUPP( ATSQuadrati
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSQuadraticNewPathUPP )
-NewATSQuadraticNewPathUPP( ATSQuadraticNewPathProcPtr userRoutine );
+NewATSQuadraticNewPathUPP(ATSQuadraticNewPathProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSQuadraticNewPathProcInfo = 0x000000F0 }; /* pascal 4_bytes Func(4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSQuadraticNewPathUPP ) NewATSQuadraticNewPathUPP( ATSQuadraticNewPathProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSQuadraticNewPathUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSQuadraticNewPathProcInfo = 0x000000F0 };  /* pascal 4_bytes Func(4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSQuadraticNewPathUPP) NewATSQuadraticNewPathUPP(ATSQuadraticNewPathProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSQuadraticNewPathUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2454,17 +2573,14 @@ inline DEFINE_API_C( ATSQuadraticNewPathUPP ) NewATSQuadraticNewPathUPP( ATSQuad
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSQuadraticClosePathUPP )
-NewATSQuadraticClosePathUPP( ATSQuadraticClosePathProcPtr userRoutine );
+NewATSQuadraticClosePathUPP(ATSQuadraticClosePathProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSQuadraticClosePathProcInfo = 0x000000F0 }; /* pascal 4_bytes Func(4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSQuadraticClosePathUPP ) NewATSQuadraticClosePathUPP( ATSQuadraticClosePathProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSQuadraticClosePathUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSQuadraticClosePathProcInfo = 0x000000F0 };  /* pascal 4_bytes Func(4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSQuadraticClosePathUPP) NewATSQuadraticClosePathUPP(ATSQuadraticClosePathProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSQuadraticClosePathUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2476,15 +2592,13 @@ inline DEFINE_API_C( ATSQuadraticClosePathUPP ) NewATSQuadraticClosePathUPP( ATS
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSQuadraticLineUPP( ATSQuadraticLineUPP userUPP );
+DisposeATSQuadraticLineUPP(ATSQuadraticLineUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSQuadraticLineUPP( ATSQuadraticLineUPP )
-{
-}
-#else
-#define DisposeATSQuadraticLineUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSQuadraticLineUPP(ATSQuadraticLineUPP) {}
+  #else
+      #define DisposeATSQuadraticLineUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2496,15 +2610,13 @@ inline DEFINE_API_C( void ) DisposeATSQuadraticLineUPP( ATSQuadraticLineUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSQuadraticCurveUPP( ATSQuadraticCurveUPP userUPP );
+DisposeATSQuadraticCurveUPP(ATSQuadraticCurveUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSQuadraticCurveUPP( ATSQuadraticCurveUPP )
-{
-}
-#else
-#define DisposeATSQuadraticCurveUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSQuadraticCurveUPP(ATSQuadraticCurveUPP) {}
+  #else
+      #define DisposeATSQuadraticCurveUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2516,15 +2628,13 @@ inline DEFINE_API_C( void ) DisposeATSQuadraticCurveUPP( ATSQuadraticCurveUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSQuadraticNewPathUPP( ATSQuadraticNewPathUPP userUPP );
+DisposeATSQuadraticNewPathUPP(ATSQuadraticNewPathUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSQuadraticNewPathUPP( ATSQuadraticNewPathUPP )
-{
-}
-#else
-#define DisposeATSQuadraticNewPathUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSQuadraticNewPathUPP(ATSQuadraticNewPathUPP) {}
+  #else
+      #define DisposeATSQuadraticNewPathUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2536,15 +2646,13 @@ inline DEFINE_API_C( void ) DisposeATSQuadraticNewPathUPP( ATSQuadraticNewPathUP
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSQuadraticClosePathUPP( ATSQuadraticClosePathUPP userUPP );
+DisposeATSQuadraticClosePathUPP(ATSQuadraticClosePathUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSQuadraticClosePathUPP( ATSQuadraticClosePathUPP )
-{
-}
-#else
-#define DisposeATSQuadraticClosePathUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSQuadraticClosePathUPP(ATSQuadraticClosePathUPP) {}
+  #else
+      #define DisposeATSQuadraticClosePathUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2557,19 +2665,16 @@ inline DEFINE_API_C( void ) DisposeATSQuadraticClosePathUPP( ATSQuadraticClosePa
  */
 EXTERN_API_C( OSStatus )
 InvokeATSQuadraticLineUPP(
-    const Float32Point *pt1,
-    const Float32Point *pt2,
-    void *              callBackDataPtr,
-    ATSQuadraticLineUPP userUPP );
+  const Float32Point *  pt1,
+  const Float32Point *  pt2,
+  void *                callBackDataPtr,
+  ATSQuadraticLineUPP   userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticLineUPP( const Float32Point *pt1, const Float32Point *pt2, void *callBackDataPtr, ATSQuadraticLineUPP userUPP )
-{
-	return ( *userUPP )( pt1, pt2, callBackDataPtr );
-}
-#else
-#define InvokeATSQuadraticLineUPP( pt1, pt2, callBackDataPtr, userUPP ) ( *userUPP )( pt1, pt2, callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSQuadraticLineUPP(const Float32Point * pt1, const Float32Point * pt2, void * callBackDataPtr, ATSQuadraticLineUPP userUPP) { return (*userUPP)(pt1, pt2, callBackDataPtr); }
+  #else
+      #define InvokeATSQuadraticLineUPP(pt1, pt2, callBackDataPtr, userUPP) (*userUPP)(pt1, pt2, callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2582,20 +2687,17 @@ inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticLineUPP( const Float32Point *p
  */
 EXTERN_API_C( OSStatus )
 InvokeATSQuadraticCurveUPP(
-    const Float32Point * pt1,
-    const Float32Point * controlPt,
-    const Float32Point * pt2,
-    void *               callBackDataPtr,
-    ATSQuadraticCurveUPP userUPP );
+  const Float32Point *  pt1,
+  const Float32Point *  controlPt,
+  const Float32Point *  pt2,
+  void *                callBackDataPtr,
+  ATSQuadraticCurveUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticCurveUPP( const Float32Point *pt1, const Float32Point *controlPt, const Float32Point *pt2, void *callBackDataPtr, ATSQuadraticCurveUPP userUPP )
-{
-	return ( *userUPP )( pt1, controlPt, pt2, callBackDataPtr );
-}
-#else
-#define InvokeATSQuadraticCurveUPP( pt1, controlPt, pt2, callBackDataPtr, userUPP ) ( *userUPP )( pt1, controlPt, pt2, callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSQuadraticCurveUPP(const Float32Point * pt1, const Float32Point * controlPt, const Float32Point * pt2, void * callBackDataPtr, ATSQuadraticCurveUPP userUPP) { return (*userUPP)(pt1, controlPt, pt2, callBackDataPtr); }
+  #else
+      #define InvokeATSQuadraticCurveUPP(pt1, controlPt, pt2, callBackDataPtr, userUPP) (*userUPP)(pt1, controlPt, pt2, callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2608,17 +2710,14 @@ inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticCurveUPP( const Float32Point *
  */
 EXTERN_API_C( OSStatus )
 InvokeATSQuadraticNewPathUPP(
-    void *                 callBackDataPtr,
-    ATSQuadraticNewPathUPP userUPP );
+  void *                  callBackDataPtr,
+  ATSQuadraticNewPathUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticNewPathUPP( void *callBackDataPtr, ATSQuadraticNewPathUPP userUPP )
-{
-	return ( *userUPP )( callBackDataPtr );
-}
-#else
-#define InvokeATSQuadraticNewPathUPP( callBackDataPtr, userUPP ) ( *userUPP )( callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSQuadraticNewPathUPP(void * callBackDataPtr, ATSQuadraticNewPathUPP userUPP) { return (*userUPP)(callBackDataPtr); }
+  #else
+      #define InvokeATSQuadraticNewPathUPP(callBackDataPtr, userUPP) (*userUPP)(callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2631,17 +2730,14 @@ inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticNewPathUPP( void *callBackData
  */
 EXTERN_API_C( OSStatus )
 InvokeATSQuadraticClosePathUPP(
-    void *                   callBackDataPtr,
-    ATSQuadraticClosePathUPP userUPP );
+  void *                    callBackDataPtr,
+  ATSQuadraticClosePathUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticClosePathUPP( void *callBackDataPtr, ATSQuadraticClosePathUPP userUPP )
-{
-	return ( *userUPP )( callBackDataPtr );
-}
-#else
-#define InvokeATSQuadraticClosePathUPP( callBackDataPtr, userUPP ) ( *userUPP )( callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSQuadraticClosePathUPP(void * callBackDataPtr, ATSQuadraticClosePathUPP userUPP) { return (*userUPP)(callBackDataPtr); }
+  #else
+      #define InvokeATSQuadraticClosePathUPP(callBackDataPtr, userUPP) (*userUPP)(callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2654,24 +2750,25 @@ inline DEFINE_API_C( OSStatus ) InvokeATSQuadraticClosePathUPP( void *callBackDa
  */
 EXTERN_API_C( OSStatus )
 ATSUGlyphGetQuadraticPaths(
-    ATSUStyle                iATSUStyle,
-    GlyphID                  iGlyphID,
-    ATSQuadraticNewPathUPP   iNewPathProc,
-    ATSQuadraticLineUPP      iLineProc,
-    ATSQuadraticCurveUPP     iCurveProc,
-    ATSQuadraticClosePathUPP iClosePathProc,
-    void *                   iCallbackDataPtr,
-    OSStatus *               oCallbackResult );
+  ATSUStyle                  iATSUStyle,
+  GlyphID                    iGlyphID,
+  ATSQuadraticNewPathUPP     iNewPathProc,
+  ATSQuadraticLineUPP        iLineProc,
+  ATSQuadraticCurveUPP       iCurveProc,
+  ATSQuadraticClosePathUPP   iClosePathProc,
+  void *                     iCallbackDataPtr,
+  OSStatus *                 oCallbackResult);
+
 
 /* ATSUGlyphGetCubicPaths callbacks */
-typedef CALLBACK_API( OSStatus, ATSCubicMoveToProcPtr )( const Float32Point *pt, void *callBackDataPtr );
-typedef CALLBACK_API( OSStatus, ATSCubicLineToProcPtr )( const Float32Point *pt, void *callBackDataPtr );
-typedef CALLBACK_API( OSStatus, ATSCubicCurveToProcPtr )( const Float32Point *pt1, const Float32Point *pt2, const Float32Point *pt3, void *callBackDataPtr );
-typedef CALLBACK_API( OSStatus, ATSCubicClosePathProcPtr )( void *callBackDataPtr );
-typedef TVECTOR_UPP_TYPE( ATSCubicMoveToProcPtr ) ATSCubicMoveToUPP;
-typedef TVECTOR_UPP_TYPE( ATSCubicLineToProcPtr ) ATSCubicLineToUPP;
-typedef TVECTOR_UPP_TYPE( ATSCubicCurveToProcPtr ) ATSCubicCurveToUPP;
-typedef TVECTOR_UPP_TYPE( ATSCubicClosePathProcPtr ) ATSCubicClosePathUPP;
+typedef CALLBACK_API( OSStatus , ATSCubicMoveToProcPtr )(const Float32Point *pt, void *callBackDataPtr);
+typedef CALLBACK_API( OSStatus , ATSCubicLineToProcPtr )(const Float32Point *pt, void *callBackDataPtr);
+typedef CALLBACK_API( OSStatus , ATSCubicCurveToProcPtr )(const Float32Point *pt1, const Float32Point *pt2, const Float32Point *pt3, void *callBackDataPtr);
+typedef CALLBACK_API( OSStatus , ATSCubicClosePathProcPtr )(void * callBackDataPtr);
+typedef TVECTOR_UPP_TYPE(ATSCubicMoveToProcPtr)                 ATSCubicMoveToUPP;
+typedef TVECTOR_UPP_TYPE(ATSCubicLineToProcPtr)                 ATSCubicLineToUPP;
+typedef TVECTOR_UPP_TYPE(ATSCubicCurveToProcPtr)                ATSCubicCurveToUPP;
+typedef TVECTOR_UPP_TYPE(ATSCubicClosePathProcPtr)              ATSCubicClosePathUPP;
 /*
  *  NewATSCubicMoveToUPP()
  *  
@@ -2681,17 +2778,14 @@ typedef TVECTOR_UPP_TYPE( ATSCubicClosePathProcPtr ) ATSCubicClosePathUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSCubicMoveToUPP )
-NewATSCubicMoveToUPP( ATSCubicMoveToProcPtr userRoutine );
+NewATSCubicMoveToUPP(ATSCubicMoveToProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSCubicMoveToProcInfo = 0x000003F0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSCubicMoveToUPP ) NewATSCubicMoveToUPP( ATSCubicMoveToProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSCubicMoveToUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSCubicMoveToProcInfo = 0x000003F0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSCubicMoveToUPP) NewATSCubicMoveToUPP(ATSCubicMoveToProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSCubicMoveToUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2703,17 +2797,14 @@ inline DEFINE_API_C( ATSCubicMoveToUPP ) NewATSCubicMoveToUPP( ATSCubicMoveToPro
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSCubicLineToUPP )
-NewATSCubicLineToUPP( ATSCubicLineToProcPtr userRoutine );
+NewATSCubicLineToUPP(ATSCubicLineToProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSCubicLineToProcInfo = 0x000003F0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSCubicLineToUPP ) NewATSCubicLineToUPP( ATSCubicLineToProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSCubicLineToUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSCubicLineToProcInfo = 0x000003F0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSCubicLineToUPP) NewATSCubicLineToUPP(ATSCubicLineToProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSCubicLineToUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2725,17 +2816,14 @@ inline DEFINE_API_C( ATSCubicLineToUPP ) NewATSCubicLineToUPP( ATSCubicLineToPro
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSCubicCurveToUPP )
-NewATSCubicCurveToUPP( ATSCubicCurveToProcPtr userRoutine );
+NewATSCubicCurveToUPP(ATSCubicCurveToProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSCubicCurveToProcInfo = 0x00003FF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSCubicCurveToUPP ) NewATSCubicCurveToUPP( ATSCubicCurveToProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSCubicCurveToUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSCubicCurveToProcInfo = 0x00003FF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSCubicCurveToUPP) NewATSCubicCurveToUPP(ATSCubicCurveToProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSCubicCurveToUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2747,17 +2835,14 @@ inline DEFINE_API_C( ATSCubicCurveToUPP ) NewATSCubicCurveToUPP( ATSCubicCurveTo
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSCubicClosePathUPP )
-NewATSCubicClosePathUPP( ATSCubicClosePathProcPtr userRoutine );
+NewATSCubicClosePathUPP(ATSCubicClosePathProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppATSCubicClosePathProcInfo = 0x000000F0 }; /* pascal 4_bytes Func(4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( ATSCubicClosePathUPP ) NewATSCubicClosePathUPP( ATSCubicClosePathProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewATSCubicClosePathUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppATSCubicClosePathProcInfo = 0x000000F0 };  /* pascal 4_bytes Func(4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(ATSCubicClosePathUPP) NewATSCubicClosePathUPP(ATSCubicClosePathProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewATSCubicClosePathUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -2769,15 +2854,13 @@ inline DEFINE_API_C( ATSCubicClosePathUPP ) NewATSCubicClosePathUPP( ATSCubicClo
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSCubicMoveToUPP( ATSCubicMoveToUPP userUPP );
+DisposeATSCubicMoveToUPP(ATSCubicMoveToUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSCubicMoveToUPP( ATSCubicMoveToUPP )
-{
-}
-#else
-#define DisposeATSCubicMoveToUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSCubicMoveToUPP(ATSCubicMoveToUPP) {}
+  #else
+      #define DisposeATSCubicMoveToUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2789,15 +2872,13 @@ inline DEFINE_API_C( void ) DisposeATSCubicMoveToUPP( ATSCubicMoveToUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSCubicLineToUPP( ATSCubicLineToUPP userUPP );
+DisposeATSCubicLineToUPP(ATSCubicLineToUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSCubicLineToUPP( ATSCubicLineToUPP )
-{
-}
-#else
-#define DisposeATSCubicLineToUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSCubicLineToUPP(ATSCubicLineToUPP) {}
+  #else
+      #define DisposeATSCubicLineToUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2809,15 +2890,13 @@ inline DEFINE_API_C( void ) DisposeATSCubicLineToUPP( ATSCubicLineToUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSCubicCurveToUPP( ATSCubicCurveToUPP userUPP );
+DisposeATSCubicCurveToUPP(ATSCubicCurveToUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSCubicCurveToUPP( ATSCubicCurveToUPP )
-{
-}
-#else
-#define DisposeATSCubicCurveToUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSCubicCurveToUPP(ATSCubicCurveToUPP) {}
+  #else
+      #define DisposeATSCubicCurveToUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2829,15 +2908,13 @@ inline DEFINE_API_C( void ) DisposeATSCubicCurveToUPP( ATSCubicCurveToUPP )
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeATSCubicClosePathUPP( ATSCubicClosePathUPP userUPP );
+DisposeATSCubicClosePathUPP(ATSCubicClosePathUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeATSCubicClosePathUPP( ATSCubicClosePathUPP )
-{
-}
-#else
-#define DisposeATSCubicClosePathUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeATSCubicClosePathUPP(ATSCubicClosePathUPP) {}
+  #else
+      #define DisposeATSCubicClosePathUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -2850,18 +2927,15 @@ inline DEFINE_API_C( void ) DisposeATSCubicClosePathUPP( ATSCubicClosePathUPP )
  */
 EXTERN_API_C( OSStatus )
 InvokeATSCubicMoveToUPP(
-    const Float32Point *pt,
-    void *              callBackDataPtr,
-    ATSCubicMoveToUPP   userUPP );
+  const Float32Point *  pt,
+  void *                callBackDataPtr,
+  ATSCubicMoveToUPP     userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSCubicMoveToUPP( const Float32Point *pt, void *callBackDataPtr, ATSCubicMoveToUPP userUPP )
-{
-	return ( *userUPP )( pt, callBackDataPtr );
-}
-#else
-#define InvokeATSCubicMoveToUPP( pt, callBackDataPtr, userUPP ) ( *userUPP )( pt, callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSCubicMoveToUPP(const Float32Point * pt, void * callBackDataPtr, ATSCubicMoveToUPP userUPP) { return (*userUPP)(pt, callBackDataPtr); }
+  #else
+      #define InvokeATSCubicMoveToUPP(pt, callBackDataPtr, userUPP) (*userUPP)(pt, callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2874,18 +2948,15 @@ inline DEFINE_API_C( OSStatus ) InvokeATSCubicMoveToUPP( const Float32Point *pt,
  */
 EXTERN_API_C( OSStatus )
 InvokeATSCubicLineToUPP(
-    const Float32Point *pt,
-    void *              callBackDataPtr,
-    ATSCubicLineToUPP   userUPP );
+  const Float32Point *  pt,
+  void *                callBackDataPtr,
+  ATSCubicLineToUPP     userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSCubicLineToUPP( const Float32Point *pt, void *callBackDataPtr, ATSCubicLineToUPP userUPP )
-{
-	return ( *userUPP )( pt, callBackDataPtr );
-}
-#else
-#define InvokeATSCubicLineToUPP( pt, callBackDataPtr, userUPP ) ( *userUPP )( pt, callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSCubicLineToUPP(const Float32Point * pt, void * callBackDataPtr, ATSCubicLineToUPP userUPP) { return (*userUPP)(pt, callBackDataPtr); }
+  #else
+      #define InvokeATSCubicLineToUPP(pt, callBackDataPtr, userUPP) (*userUPP)(pt, callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2898,20 +2969,17 @@ inline DEFINE_API_C( OSStatus ) InvokeATSCubicLineToUPP( const Float32Point *pt,
  */
 EXTERN_API_C( OSStatus )
 InvokeATSCubicCurveToUPP(
-    const Float32Point *pt1,
-    const Float32Point *pt2,
-    const Float32Point *pt3,
-    void *              callBackDataPtr,
-    ATSCubicCurveToUPP  userUPP );
+  const Float32Point *  pt1,
+  const Float32Point *  pt2,
+  const Float32Point *  pt3,
+  void *                callBackDataPtr,
+  ATSCubicCurveToUPP    userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSCubicCurveToUPP( const Float32Point *pt1, const Float32Point *pt2, const Float32Point *pt3, void *callBackDataPtr, ATSCubicCurveToUPP userUPP )
-{
-	return ( *userUPP )( pt1, pt2, pt3, callBackDataPtr );
-}
-#else
-#define InvokeATSCubicCurveToUPP( pt1, pt2, pt3, callBackDataPtr, userUPP ) ( *userUPP )( pt1, pt2, pt3, callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSCubicCurveToUPP(const Float32Point * pt1, const Float32Point * pt2, const Float32Point * pt3, void * callBackDataPtr, ATSCubicCurveToUPP userUPP) { return (*userUPP)(pt1, pt2, pt3, callBackDataPtr); }
+  #else
+      #define InvokeATSCubicCurveToUPP(pt1, pt2, pt3, callBackDataPtr, userUPP) (*userUPP)(pt1, pt2, pt3, callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2924,17 +2992,14 @@ inline DEFINE_API_C( OSStatus ) InvokeATSCubicCurveToUPP( const Float32Point *pt
  */
 EXTERN_API_C( OSStatus )
 InvokeATSCubicClosePathUPP(
-    void *               callBackDataPtr,
-    ATSCubicClosePathUPP userUPP );
+  void *                callBackDataPtr,
+  ATSCubicClosePathUPP  userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( OSStatus ) InvokeATSCubicClosePathUPP( void *callBackDataPtr, ATSCubicClosePathUPP userUPP )
-{
-	return ( *userUPP )( callBackDataPtr );
-}
-#else
-#define InvokeATSCubicClosePathUPP( callBackDataPtr, userUPP ) ( *userUPP )( callBackDataPtr )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(OSStatus) InvokeATSCubicClosePathUPP(void * callBackDataPtr, ATSCubicClosePathUPP userUPP) { return (*userUPP)(callBackDataPtr); }
+  #else
+      #define InvokeATSCubicClosePathUPP(callBackDataPtr, userUPP) (*userUPP)(callBackDataPtr)
+  #endif
 #endif
 
 /*
@@ -2947,14 +3012,15 @@ inline DEFINE_API_C( OSStatus ) InvokeATSCubicClosePathUPP( void *callBackDataPt
  */
 EXTERN_API_C( OSStatus )
 ATSUGlyphGetCubicPaths(
-    ATSUStyle            iATSUStyle,
-    GlyphID              iGlyphID,
-    ATSCubicMoveToUPP    iMoveToProc,
-    ATSCubicLineToUPP    iLineToProc,
-    ATSCubicCurveToUPP   iCurveToProc,
-    ATSCubicClosePathUPP iClosePathProc,
-    void *               iCallbackDataPtr,
-    OSStatus *           oCallbackResult );
+  ATSUStyle              iATSUStyle,
+  GlyphID                iGlyphID,
+  ATSCubicMoveToUPP      iMoveToProc,
+  ATSCubicLineToUPP      iLineToProc,
+  ATSCubicCurveToUPP     iCurveToProc,
+  ATSCubicClosePathUPP   iClosePathProc,
+  void *                 iCallbackDataPtr,
+  OSStatus *             oCallbackResult);
+
 
 /*
  *  ATSUGlyphGetCurvePaths()
@@ -2966,17 +3032,20 @@ ATSUGlyphGetCubicPaths(
  */
 EXTERN_API_C( OSStatus )
 ATSUGlyphGetCurvePaths(
-    ATSUStyle       iATSUStyle,
-    GlyphID         iGlyphID,
-    ByteCount *     ioBufferSize,
-    ATSUCurvePaths *oPaths );
+  ATSUStyle         iATSUStyle,
+  GlyphID           iGlyphID,
+  ByteCount *       ioBufferSize,
+  ATSUCurvePaths *  oPaths);
+
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF

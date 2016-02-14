@@ -20,6 +20,7 @@
 #include <Carbon.h>
 #endif
 
+
 #ifndef __JAVAAPPLET__
 #include <JavaApplet.h>
 #endif
@@ -28,4 +29,8 @@
 #include <JavaControl.h>
 #endif
 
+
+
+
 #endif /* __JAVAEMBEDDING__ */
+

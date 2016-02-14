@@ -40,6 +40,8 @@
 #include <MacErrors.h>
 #endif
 
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -53,26 +55,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = power
+    #pragma options align=power
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-#if defined( __fourbyteints__ ) && !__fourbyteints__
-#define __DRAWSPROCKET__RESTORE_TWOBYTEINTS
-#pragma fourbyteints on
-#endif
-#pragma enumsalwaysint on
+    #if defined(__fourbyteints__) && !__fourbyteints__ 
+        #define __DRAWSPROCKET__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints on
+    #endif
+    #pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =int
+    #pragma option enum=int
 #elif PRAGMA_ENUM_PACK
-#if __option( pack_enums )
-#define __DRAWSPROCKET__RESTORE_PACKED_ENUMS
-#pragma options( !pack_enums )
-#endif
+    #if __option(pack_enums)
+        #define __DRAWSPROCKET__RESTORE_PACKED_ENUMS
+        #pragma options(!pack_enums)
+    #endif
 #endif
 
 /*
@@ -81,54 +83,54 @@ extern "C" {
 ********************************************************************************
 */
 enum DSpDepthMask {
-	kDSpDepthMask_1 = 1 << 0,
-	kDSpDepthMask_2 = 1 << 1,
-	kDSpDepthMask_4 = 1 << 2,
-	kDSpDepthMask_8 = 1 << 3,
-	kDSpDepthMask_16 = 1 << 4,
-	kDSpDepthMask_32 = 1 << 5,
-	kDSpDepthMask_All = -1L
+  kDSpDepthMask_1               = 1 << 0,
+  kDSpDepthMask_2               = 1 << 1,
+  kDSpDepthMask_4               = 1 << 2,
+  kDSpDepthMask_8               = 1 << 3,
+  kDSpDepthMask_16              = 1 << 4,
+  kDSpDepthMask_32              = 1 << 5,
+  kDSpDepthMask_All             = -1L
 };
 typedef enum DSpDepthMask DSpDepthMask;
 
 enum DSpColorNeeds {
-	kDSpColorNeeds_DontCare = 0L,
-	kDSpColorNeeds_Request = 1L,
-	kDSpColorNeeds_Require = 2L
+  kDSpColorNeeds_DontCare       = 0L,
+  kDSpColorNeeds_Request        = 1L,
+  kDSpColorNeeds_Require        = 2L
 };
 typedef enum DSpColorNeeds DSpColorNeeds;
 
 enum DSpContextState {
-	kDSpContextState_Active = 0L,
-	kDSpContextState_Paused = 1L,
-	kDSpContextState_Inactive = 2L
+  kDSpContextState_Active       = 0L,
+  kDSpContextState_Paused       = 1L,
+  kDSpContextState_Inactive     = 2L
 };
 typedef enum DSpContextState DSpContextState;
 
 /* kDSpContextOption_QD3DAccel not yet implemented */
 enum DSpContextOption {
-	/*    kDSpContextOption_QD3DAccel       = 1<<0,*/
-	kDSpContextOption_PageFlip = 1 << 1,
-	kDSpContextOption_DontSyncVBL = 1 << 2,
-	kDSpContextOption_Stereoscopic = 1 << 3
+                                        /*    kDSpContextOption_QD3DAccel       = 1<<0,*/
+  kDSpContextOption_PageFlip    = 1 << 1,
+  kDSpContextOption_DontSyncVBL = 1 << 2,
+  kDSpContextOption_Stereoscopic = 1 << 3
 };
 typedef enum DSpContextOption DSpContextOption;
 
 enum DSpAltBufferOption {
-	kDSpAltBufferOption_RowBytesEqualsWidth = 1 << 0
+  kDSpAltBufferOption_RowBytesEqualsWidth = 1 << 0
 };
 typedef enum DSpAltBufferOption DSpAltBufferOption;
 
 enum DSpBufferKind {
-	kDSpBufferKind_Normal = 0
+  kDSpBufferKind_Normal         = 0
 };
 typedef enum DSpBufferKind DSpBufferKind;
 
 enum DSpBlitMode {
-	kDSpBlitMode_Plain = 0,
-	kDSpBlitMode_SrcKey = 1 << 0,
-	kDSpBlitMode_DstKey = 1 << 1,
-	kDSpBlitMode_Interpolation = 1 << 2
+  kDSpBlitMode_Plain            = 0,
+  kDSpBlitMode_SrcKey           = 1 << 0,
+  kDSpBlitMode_DstKey           = 1 << 1,
+  kDSpBlitMode_Interpolation    = 1 << 2
 };
 typedef enum DSpBlitMode DSpBlitMode;
 
@@ -137,14 +139,14 @@ typedef enum DSpBlitMode DSpBlitMode;
 ** data types
 ********************************************************************************
 */
-typedef struct OpaqueDSpAltBufferReference *    DSpAltBufferReference;
-typedef struct OpaqueDSpContextReference *      DSpContextReference;
-typedef const struct OpaqueDSpContextReference *DSpContextReferenceConst;
-#define kDSpEveryContext ( (DSpContextReference)NULL )
-typedef CALLBACK_API_C( Boolean, DSpEventProcPtr )( EventRecord *inEvent );
-typedef CALLBACK_API_C( Boolean, DSpCallbackProcPtr )( DSpContextReference inContext, void *inRefCon );
-typedef TVECTOR_UPP_TYPE( DSpEventProcPtr ) DSpEventUPP;
-typedef TVECTOR_UPP_TYPE( DSpCallbackProcPtr ) DSpCallbackUPP;
+typedef struct OpaqueDSpAltBufferReference*  DSpAltBufferReference;
+typedef struct OpaqueDSpContextReference*  DSpContextReference;
+typedef const struct OpaqueDSpContextReference*  DSpContextReferenceConst;
+#define kDSpEveryContext ((DSpContextReference)NULL)
+typedef CALLBACK_API_C( Boolean , DSpEventProcPtr )(EventRecord * inEvent);
+typedef CALLBACK_API_C( Boolean , DSpCallbackProcPtr )(DSpContextReference inContext, void *inRefCon);
+typedef TVECTOR_UPP_TYPE(DSpEventProcPtr)                       DSpEventUPP;
+typedef TVECTOR_UPP_TYPE(DSpCallbackProcPtr)                    DSpCallbackUPP;
 #if CALL_NOT_IN_CARBON
 /*
  *  NewDSpEventUPP()
@@ -155,17 +157,14 @@ typedef TVECTOR_UPP_TYPE( DSpCallbackProcPtr ) DSpCallbackUPP;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( DSpEventUPP )
-NewDSpEventUPP( DSpEventProcPtr userRoutine );
+NewDSpEventUPP(DSpEventProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDSpEventProcInfo = 0x000000D1 }; /* 1_byte Func(4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DSpEventUPP ) NewDSpEventUPP( DSpEventProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewDSpEventUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppDSpEventProcInfo = 0x000000D1 };  /* 1_byte Func(4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DSpEventUPP) NewDSpEventUPP(DSpEventProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewDSpEventUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -177,17 +176,14 @@ inline DEFINE_API_C( DSpEventUPP ) NewDSpEventUPP( DSpEventProcPtr userRoutine )
  *    Mac OS X:         not available
  */
 EXTERN_API_C( DSpCallbackUPP )
-NewDSpCallbackUPP( DSpCallbackProcPtr userRoutine );
+NewDSpCallbackUPP(DSpCallbackProcPtr userRoutine);
 #if !OPAQUE_UPP_TYPES
-enum { uppDSpCallbackProcInfo = 0x000003D1 }; /* 1_byte Func(4_bytes, 4_bytes) */
-#ifdef __cplusplus
-inline DEFINE_API_C( DSpCallbackUPP ) NewDSpCallbackUPP( DSpCallbackProcPtr userRoutine )
-{
-	return userRoutine;
-}
-#else
-#define NewDSpCallbackUPP( userRoutine ) ( userRoutine )
-#endif
+  enum { uppDSpCallbackProcInfo = 0x000003D1 };  /* 1_byte Func(4_bytes, 4_bytes) */
+  #ifdef __cplusplus
+    inline DEFINE_API_C(DSpCallbackUPP) NewDSpCallbackUPP(DSpCallbackProcPtr userRoutine) { return userRoutine; }
+  #else
+    #define NewDSpCallbackUPP(userRoutine) (userRoutine)
+  #endif
 #endif
 
 /*
@@ -199,15 +195,13 @@ inline DEFINE_API_C( DSpCallbackUPP ) NewDSpCallbackUPP( DSpCallbackProcPtr user
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeDSpEventUPP( DSpEventUPP userUPP );
+DisposeDSpEventUPP(DSpEventUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDSpEventUPP( DSpEventUPP )
-{
-}
-#else
-#define DisposeDSpEventUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDSpEventUPP(DSpEventUPP) {}
+  #else
+      #define DisposeDSpEventUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -219,15 +213,13 @@ inline DEFINE_API_C( void ) DisposeDSpEventUPP( DSpEventUPP )
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeDSpCallbackUPP( DSpCallbackUPP userUPP );
+DisposeDSpCallbackUPP(DSpCallbackUPP userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( void ) DisposeDSpCallbackUPP( DSpCallbackUPP )
-{
-}
-#else
-#define DisposeDSpCallbackUPP( userUPP )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(void) DisposeDSpCallbackUPP(DSpCallbackUPP) {}
+  #else
+      #define DisposeDSpCallbackUPP(userUPP)
+  #endif
 #endif
 
 /*
@@ -240,17 +232,14 @@ inline DEFINE_API_C( void ) DisposeDSpCallbackUPP( DSpCallbackUPP )
  */
 EXTERN_API_C( Boolean )
 InvokeDSpEventUPP(
-    EventRecord *inEvent,
-    DSpEventUPP  userUPP );
+  EventRecord *  inEvent,
+  DSpEventUPP    userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeDSpEventUPP( EventRecord *inEvent, DSpEventUPP userUPP )
-{
-	return ( *userUPP )( inEvent );
-}
-#else
-#define InvokeDSpEventUPP( inEvent, userUPP ) ( *userUPP )( inEvent )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeDSpEventUPP(EventRecord * inEvent, DSpEventUPP userUPP) { return (*userUPP)(inEvent); }
+  #else
+      #define InvokeDSpEventUPP(inEvent, userUPP) (*userUPP)(inEvent)
+  #endif
 #endif
 
 /*
@@ -263,70 +252,68 @@ inline DEFINE_API_C( Boolean ) InvokeDSpEventUPP( EventRecord *inEvent, DSpEvent
  */
 EXTERN_API_C( Boolean )
 InvokeDSpCallbackUPP(
-    DSpContextReference inContext,
-    void *              inRefCon,
-    DSpCallbackUPP      userUPP );
+  DSpContextReference  inContext,
+  void *               inRefCon,
+  DSpCallbackUPP       userUPP);
 #if !OPAQUE_UPP_TYPES
-#ifdef __cplusplus
-inline DEFINE_API_C( Boolean ) InvokeDSpCallbackUPP( DSpContextReference inContext, void *inRefCon, DSpCallbackUPP userUPP )
-{
-	return ( *userUPP )( inContext, inRefCon );
-}
-#else
-#define InvokeDSpCallbackUPP( inContext, inRefCon, userUPP ) ( *userUPP )( inContext, inRefCon )
-#endif
+  #ifdef __cplusplus
+      inline DEFINE_API_C(Boolean) InvokeDSpCallbackUPP(DSpContextReference inContext, void * inRefCon, DSpCallbackUPP userUPP) { return (*userUPP)(inContext, inRefCon); }
+  #else
+      #define InvokeDSpCallbackUPP(inContext, inRefCon, userUPP) (*userUPP)(inContext, inRefCon)
+  #endif
 #endif
 
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 struct DSpContextAttributes {
-	Fixed      frequency;
-	UInt32     displayWidth;
-	UInt32     displayHeight;
-	UInt32     reserved1;
-	UInt32     reserved2;
-	UInt32     colorNeeds;
-	CTabHandle colorTable;
-	OptionBits contextOptions;
-	OptionBits backBufferDepthMask;
-	OptionBits displayDepthMask;
-	UInt32     backBufferBestDepth;
-	UInt32     displayBestDepth;
-	UInt32     pageCount;
-	char       filler[3];
-	Boolean    gameMustConfirmSwitch;
-	UInt32     reserved3[4];
+  Fixed               frequency;
+  UInt32              displayWidth;
+  UInt32              displayHeight;
+  UInt32              reserved1;
+  UInt32              reserved2;
+  UInt32              colorNeeds;
+  CTabHandle          colorTable;
+  OptionBits          contextOptions;
+  OptionBits          backBufferDepthMask;
+  OptionBits          displayDepthMask;
+  UInt32              backBufferBestDepth;
+  UInt32              displayBestDepth;
+  UInt32              pageCount;
+  char                filler[3];
+  Boolean             gameMustConfirmSwitch;
+  UInt32              reserved3[4];
 };
-typedef struct DSpContextAttributes DSpContextAttributes;
-typedef DSpContextAttributes *      DSpContextAttributesPtr;
+typedef struct DSpContextAttributes     DSpContextAttributes;
+typedef DSpContextAttributes *          DSpContextAttributesPtr;
 struct DSpAltBufferAttributes {
-	UInt32             width;
-	UInt32             height;
-	DSpAltBufferOption options;
-	UInt32             reserved[4];
+  UInt32              width;
+  UInt32              height;
+  DSpAltBufferOption  options;
+  UInt32              reserved[4];
 };
-typedef struct DSpAltBufferAttributes DSpAltBufferAttributes;
-typedef struct DSpBlitInfo            DSpBlitInfo;
-typedef CALLBACK_API_C( void, DSpBlitDoneProc )( DSpBlitInfo *info );
+typedef struct DSpAltBufferAttributes   DSpAltBufferAttributes;
+typedef struct DSpBlitInfo              DSpBlitInfo;
+typedef CALLBACK_API_C( void , DSpBlitDoneProc )(DSpBlitInfo * info);
 struct DSpBlitInfo {
-	Boolean             completionFlag;
-	char                filler[3];
-	DSpBlitDoneProc     completionProc;
-	DSpContextReference srcContext;
-	CGrafPtr            srcBuffer;
-	Rect                srcRect;
-	UInt32              srcKey;
+  Boolean             completionFlag;
+  char                filler[3];
+  DSpBlitDoneProc     completionProc;
+  DSpContextReference  srcContext;
+  CGrafPtr            srcBuffer;
+  Rect                srcRect;
+  UInt32              srcKey;
 
-	DSpContextReference dstContext;
-	CGrafPtr            dstBuffer;
-	Rect                dstRect;
-	UInt32              dstKey;
+  DSpContextReference  dstContext;
+  CGrafPtr            dstBuffer;
+  Rect                dstRect;
+  UInt32              dstKey;
 
-	DSpBlitMode mode;
-	UInt32      reserved[4];
+  DSpBlitMode         mode;
+  UInt32              reserved[4];
 };
 
-typedef DSpBlitInfo *DSpBlitInfoPtr;
+
+typedef DSpBlitInfo *                   DSpBlitInfoPtr;
 /*
 ********************************************************************************
 ** function prototypes
@@ -345,7 +332,8 @@ typedef DSpBlitInfo *DSpBlitInfoPtr;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-DSpStartup( void );
+DSpStartup(void);
+
 
 /*
  *  DSpShutdown()
@@ -356,7 +344,8 @@ DSpStartup( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-DSpShutdown( void );
+DSpShutdown(void);
+
 
 /*
  *  DSpGetVersion()
@@ -367,7 +356,8 @@ DSpShutdown( void );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( NumVersion )
-DSpGetVersion( void );
+DSpGetVersion(void);
+
 
 /*
  *  DSpGetFirstContext()
@@ -379,8 +369,9 @@ DSpGetVersion( void );
  */
 EXTERN_API_C( OSStatus )
 DSpGetFirstContext(
-    DisplayIDType        inDisplayID,
-    DSpContextReference *outContext );
+  DisplayIDType          inDisplayID,
+  DSpContextReference *  outContext);
+
 
 /*
  *  DSpGetNextContext()
@@ -392,8 +383,9 @@ DSpGetFirstContext(
  */
 EXTERN_API_C( OSStatus )
 DSpGetNextContext(
-    DSpContextReference  inCurrentContext,
-    DSpContextReference *outContext );
+  DSpContextReference    inCurrentContext,
+  DSpContextReference *  outContext);
+
 
 /*
  *  DSpGetCurrentContext()
@@ -405,8 +397,9 @@ DSpGetNextContext(
  */
 EXTERN_API_C( OSStatus )
 DSpGetCurrentContext(
-    DisplayIDType        inDisplayID,
-    DSpContextReference *outContext );
+  DisplayIDType          inDisplayID,
+  DSpContextReference *  outContext);
+
 
 /*
  *  DSpFindBestContext()
@@ -418,8 +411,9 @@ DSpGetCurrentContext(
  */
 EXTERN_API_C( OSStatus )
 DSpFindBestContext(
-    DSpContextAttributesPtr inDesiredAttributes,
-    DSpContextReference *   outContext );
+  DSpContextAttributesPtr   inDesiredAttributes,
+  DSpContextReference *     outContext);
+
 
 /*
  *  DSpFindBestContextOnDisplayID()
@@ -431,9 +425,10 @@ DSpFindBestContext(
  */
 EXTERN_API_C( OSStatus )
 DSpFindBestContextOnDisplayID(
-    DSpContextAttributesPtr inDesiredAttributes,
-    DSpContextReference *   outContext,
-    DisplayIDType           inDisplayID );
+  DSpContextAttributesPtr   inDesiredAttributes,
+  DSpContextReference *     outContext,
+  DisplayIDType             inDisplayID);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -446,8 +441,9 @@ DSpFindBestContextOnDisplayID(
  */
 EXTERN_API_C( OSStatus )
 DSpCanUserSelectContext(
-    DSpContextAttributesPtr inDesiredAttributes,
-    Boolean *               outUserCanSelectContext );
+  DSpContextAttributesPtr   inDesiredAttributes,
+  Boolean *                 outUserCanSelectContext);
+
 
 /*
  *  DSpUserSelectContext()
@@ -459,12 +455,13 @@ DSpCanUserSelectContext(
  */
 EXTERN_API_C( OSStatus )
 DSpUserSelectContext(
-    DSpContextAttributesPtr inDesiredAttributes,
-    DisplayIDType           inDialogDisplayLocation,
-    DSpEventUPP             inEventProc,
-    DSpContextReference *   outContext );
+  DSpContextAttributesPtr   inDesiredAttributes,
+  DisplayIDType             inDialogDisplayLocation,
+  DSpEventUPP               inEventProc,
+  DSpContextReference *     outContext);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  DSpProcessEvent()
@@ -476,8 +473,9 @@ DSpUserSelectContext(
  */
 EXTERN_API_C( OSStatus )
 DSpProcessEvent(
-    EventRecord *inEvent,
-    Boolean *    outEventWasProcessed );
+  EventRecord *  inEvent,
+  Boolean *      outEventWasProcessed);
+
 
 /*
  *  DSpSetBlankingColor()
@@ -488,7 +486,8 @@ DSpProcessEvent(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-DSpSetBlankingColor( const RGBColor *inRGBColor );
+DSpSetBlankingColor(const RGBColor * inRGBColor);
+
 
 /*
  *  DSpSetDebugMode()
@@ -499,7 +498,8 @@ DSpSetBlankingColor( const RGBColor *inRGBColor );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-DSpSetDebugMode( Boolean inDebugMode );
+DSpSetDebugMode(Boolean inDebugMode);
+
 
 /*
  *  DSpFindContextFromPoint()
@@ -511,8 +511,9 @@ DSpSetDebugMode( Boolean inDebugMode );
  */
 EXTERN_API_C( OSStatus )
 DSpFindContextFromPoint(
-    Point                inGlobalPoint,
-    DSpContextReference *outContext );
+  Point                  inGlobalPoint,
+  DSpContextReference *  outContext);
+
 
 /*
  *  DSpGetMouse()
@@ -523,7 +524,8 @@ DSpFindContextFromPoint(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-DSpGetMouse( Point *outGlobalPoint );
+DSpGetMouse(Point * outGlobalPoint);
+
 
 /*
 ** alternate buffer operations
@@ -539,10 +541,11 @@ DSpGetMouse( Point *outGlobalPoint );
  */
 EXTERN_API_C( OSStatus )
 DSpAltBuffer_New(
-    DSpContextReference     inContext,
-    Boolean                 inVRAMBuffer,
-    DSpAltBufferAttributes *inAttributes,
-    DSpAltBufferReference * outAltBuffer );
+  DSpContextReference       inContext,
+  Boolean                   inVRAMBuffer,
+  DSpAltBufferAttributes *  inAttributes,
+  DSpAltBufferReference *   outAltBuffer);
+
 
 /*
  *  DSpAltBuffer_Dispose()
@@ -553,7 +556,8 @@ DSpAltBuffer_New(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-DSpAltBuffer_Dispose( DSpAltBufferReference inAltBuffer );
+DSpAltBuffer_Dispose(DSpAltBufferReference inAltBuffer);
+
 
 /*
  *  DSpAltBuffer_InvalRect()
@@ -565,8 +569,9 @@ DSpAltBuffer_Dispose( DSpAltBufferReference inAltBuffer );
  */
 EXTERN_API_C( OSStatus )
 DSpAltBuffer_InvalRect(
-    DSpAltBufferReference inAltBuffer,
-    const Rect *          inInvalidRect );
+  DSpAltBufferReference   inAltBuffer,
+  const Rect *            inInvalidRect);
+
 
 /*
  *  DSpAltBuffer_GetCGrafPtr()
@@ -578,16 +583,17 @@ DSpAltBuffer_InvalRect(
  */
 EXTERN_API_C( OSStatus )
 DSpAltBuffer_GetCGrafPtr(
-    DSpAltBufferReference inAltBuffer,
-    DSpBufferKind         inBufferKind,
-    CGrafPtr *            outCGrafPtr,
-    GDHandle *            outGDevice );
+  DSpAltBufferReference   inAltBuffer,
+  DSpBufferKind           inBufferKind,
+  CGrafPtr *              outCGrafPtr,
+  GDHandle *              outGDevice);
+
 
 /*
 ** context operations
 */
 /* general */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  DSpContext_GetAttributes()
@@ -599,8 +605,9 @@ DSpAltBuffer_GetCGrafPtr(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetAttributes(
-    DSpContextReferenceConst inContext,
-    DSpContextAttributesPtr  outAttributes );
+  DSpContextReferenceConst   inContext,
+  DSpContextAttributesPtr    outAttributes);
+
 
 /*
  *  DSpContext_Reserve()
@@ -612,8 +619,9 @@ DSpContext_GetAttributes(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_Reserve(
-    DSpContextReference     inContext,
-    DSpContextAttributesPtr inDesiredAttributes );
+  DSpContextReference       inContext,
+  DSpContextAttributesPtr   inDesiredAttributes);
+
 
 /*
  *  DSpContext_Queue()
@@ -625,9 +633,10 @@ DSpContext_Reserve(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_Queue(
-    DSpContextReference     inParentContext,
-    DSpContextReference     inChildContext,
-    DSpContextAttributesPtr inDesiredAttributes );
+  DSpContextReference       inParentContext,
+  DSpContextReference       inChildContext,
+  DSpContextAttributesPtr   inDesiredAttributes);
+
 
 /*
  *  DSpContext_Switch()
@@ -639,8 +648,9 @@ DSpContext_Queue(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_Switch(
-    DSpContextReference inOldContext,
-    DSpContextReference inNewContext );
+  DSpContextReference   inOldContext,
+  DSpContextReference   inNewContext);
+
 
 /*
  *  DSpContext_Release()
@@ -651,7 +661,8 @@ DSpContext_Switch(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-DSpContext_Release( DSpContextReference inContext );
+DSpContext_Release(DSpContextReference inContext);
+
 
 /*
  *  DSpContext_Dispose()
@@ -662,7 +673,8 @@ DSpContext_Release( DSpContextReference inContext );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-DSpContext_Dispose( DSpContextReference inContext );
+DSpContext_Dispose(DSpContextReference inContext);
+
 
 /*
  *  DSpContext_GetDisplayID()
@@ -674,8 +686,9 @@ DSpContext_Dispose( DSpContextReference inContext );
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetDisplayID(
-    DSpContextReferenceConst inContext,
-    DisplayIDType *          outDisplayID );
+  DSpContextReferenceConst   inContext,
+  DisplayIDType *            outDisplayID);
+
 
 /*
  *  DSpContext_GlobalToLocal()
@@ -687,8 +700,9 @@ DSpContext_GetDisplayID(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GlobalToLocal(
-    DSpContextReferenceConst inContext,
-    Point *                  ioPoint );
+  DSpContextReferenceConst   inContext,
+  Point *                    ioPoint);
+
 
 /*
  *  DSpContext_LocalToGlobal()
@@ -700,8 +714,9 @@ DSpContext_GlobalToLocal(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_LocalToGlobal(
-    DSpContextReferenceConst inContext,
-    Point *                  ioPoint );
+  DSpContextReferenceConst   inContext,
+  Point *                    ioPoint);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -714,9 +729,10 @@ DSpContext_LocalToGlobal(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_SetVBLProc(
-    DSpContextReference inContext,
-    DSpCallbackUPP      inProcPtr,
-    void *              inRefCon );
+  DSpContextReference   inContext,
+  DSpCallbackUPP        inProcPtr,
+  void *                inRefCon);
+
 
 /*
  *  DSpContext_GetFlattenedSize()
@@ -728,8 +744,9 @@ DSpContext_SetVBLProc(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetFlattenedSize(
-    DSpContextReference inContext,
-    UInt32 *            outFlatContextSize );
+  DSpContextReference   inContext,
+  UInt32 *              outFlatContextSize);
+
 
 /*
  *  DSpContext_Flatten()
@@ -741,8 +758,9 @@ DSpContext_GetFlattenedSize(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_Flatten(
-    DSpContextReference inContext,
-    void *              outFlatContext );
+  DSpContextReference   inContext,
+  void *                outFlatContext);
+
 
 /*
  *  DSpContext_Restore()
@@ -754,10 +772,11 @@ DSpContext_Flatten(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_Restore(
-    void *               inFlatContext,
-    DSpContextReference *outRestoredContext );
+  void *                 inFlatContext,
+  DSpContextReference *  outRestoredContext);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  DSpContext_GetMonitorFrequency()
@@ -769,8 +788,9 @@ DSpContext_Restore(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetMonitorFrequency(
-    DSpContextReferenceConst inContext,
-    Fixed *                  outFrequency );
+  DSpContextReferenceConst   inContext,
+  Fixed *                    outFrequency);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -783,8 +803,9 @@ DSpContext_GetMonitorFrequency(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_SetMaxFrameRate(
-    DSpContextReference inContext,
-    UInt32              inMaxFPS );
+  DSpContextReference   inContext,
+  UInt32                inMaxFPS);
+
 
 /*
  *  DSpContext_GetMaxFrameRate()
@@ -796,10 +817,11 @@ DSpContext_SetMaxFrameRate(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetMaxFrameRate(
-    DSpContextReferenceConst inContext,
-    UInt32 *                 outMaxFPS );
+  DSpContextReferenceConst   inContext,
+  UInt32 *                   outMaxFPS);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  DSpContext_SetState()
@@ -811,8 +833,9 @@ DSpContext_GetMaxFrameRate(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_SetState(
-    DSpContextReference inContext,
-    DSpContextState     inState );
+  DSpContextReference   inContext,
+  DSpContextState       inState);
+
 
 /*
  *  DSpContext_GetState()
@@ -824,8 +847,9 @@ DSpContext_SetState(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetState(
-    DSpContextReferenceConst inContext,
-    DSpContextState *        outState );
+  DSpContextReferenceConst   inContext,
+  DSpContextState *          outState);
+
 
 /*
  *  DSpContext_IsBusy()
@@ -837,8 +861,9 @@ DSpContext_GetState(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_IsBusy(
-    DSpContextReferenceConst inContext,
-    Boolean *                outBusyFlag );
+  DSpContextReferenceConst   inContext,
+  Boolean *                  outBusyFlag);
+
 
 /* dirty rectangles */
 #if CALL_NOT_IN_CARBON
@@ -852,9 +877,10 @@ DSpContext_IsBusy(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_SetDirtyRectGridSize(
-    DSpContextReference inContext,
-    UInt32              inCellPixelWidth,
-    UInt32              inCellPixelHeight );
+  DSpContextReference   inContext,
+  UInt32                inCellPixelWidth,
+  UInt32                inCellPixelHeight);
+
 
 /*
  *  DSpContext_GetDirtyRectGridSize()
@@ -866,9 +892,10 @@ DSpContext_SetDirtyRectGridSize(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetDirtyRectGridSize(
-    DSpContextReferenceConst inContext,
-    UInt32 *                 outCellPixelWidth,
-    UInt32 *                 outCellPixelHeight );
+  DSpContextReferenceConst   inContext,
+  UInt32 *                   outCellPixelWidth,
+  UInt32 *                   outCellPixelHeight);
+
 
 /*
  *  DSpContext_GetDirtyRectGridUnits()
@@ -880,9 +907,10 @@ DSpContext_GetDirtyRectGridSize(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetDirtyRectGridUnits(
-    DSpContextReferenceConst inContext,
-    UInt32 *                 outCellPixelWidth,
-    UInt32 *                 outCellPixelHeight );
+  DSpContextReferenceConst   inContext,
+  UInt32 *                   outCellPixelWidth,
+  UInt32 *                   outCellPixelHeight);
+
 
 /*
  *  DSpContext_InvalBackBufferRect()
@@ -894,8 +922,9 @@ DSpContext_GetDirtyRectGridUnits(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_InvalBackBufferRect(
-    DSpContextReference inContext,
-    const Rect *        inRect );
+  DSpContextReference   inContext,
+  const Rect *          inRect);
+
 
 /* underlays */
 /*
@@ -908,8 +937,9 @@ DSpContext_InvalBackBufferRect(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_SetUnderlayAltBuffer(
-    DSpContextReference   inContext,
-    DSpAltBufferReference inNewUnderlay );
+  DSpContextReference     inContext,
+  DSpAltBufferReference   inNewUnderlay);
+
 
 /*
  *  DSpContext_GetUnderlayAltBuffer()
@@ -921,11 +951,12 @@ DSpContext_SetUnderlayAltBuffer(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetUnderlayAltBuffer(
-    DSpContextReferenceConst inContext,
-    DSpAltBufferReference *  outUnderlay );
+  DSpContextReferenceConst   inContext,
+  DSpAltBufferReference *    outUnderlay);
+
 
 /* gamma */
-#endif /* CALL_NOT_IN_CARBON */
+#endif  /* CALL_NOT_IN_CARBON */
 
 /*
  *  DSpContext_FadeGammaOut()
@@ -937,8 +968,9 @@ DSpContext_GetUnderlayAltBuffer(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_FadeGammaOut(
-    DSpContextReference inContext,
-    RGBColor *          inZeroIntensityColor );
+  DSpContextReference   inContext,
+  RGBColor *            inZeroIntensityColor);
+
 
 /*
  *  DSpContext_FadeGammaIn()
@@ -950,8 +982,9 @@ DSpContext_FadeGammaOut(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_FadeGammaIn(
-    DSpContextReference inContext,
-    RGBColor *          inZeroIntensityColor );
+  DSpContextReference   inContext,
+  RGBColor *            inZeroIntensityColor);
+
 
 /*
  *  DSpContext_FadeGamma()
@@ -963,9 +996,10 @@ DSpContext_FadeGammaIn(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_FadeGamma(
-    DSpContextReference inContext,
-    SInt32              inPercentOfOriginalIntensity,
-    RGBColor *          inZeroIntensityColor );
+  DSpContextReference   inContext,
+  SInt32                inPercentOfOriginalIntensity,
+  RGBColor *            inZeroIntensityColor);
+
 
 /* buffering */
 /*
@@ -978,9 +1012,10 @@ DSpContext_FadeGamma(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_SwapBuffers(
-    DSpContextReference inContext,
-    DSpCallbackUPP      inBusyProc,
-    void *              inUserRefCon );
+  DSpContextReference   inContext,
+  DSpCallbackUPP        inBusyProc,
+  void *                inUserRefCon);
+
 
 /*
  *  DSpContext_GetBackBuffer()
@@ -992,9 +1027,10 @@ DSpContext_SwapBuffers(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetBackBuffer(
-    DSpContextReference inContext,
-    DSpBufferKind       inBufferKind,
-    CGrafPtr *          outBackBuffer );
+  DSpContextReference   inContext,
+  DSpBufferKind         inBufferKind,
+  CGrafPtr *            outBackBuffer);
+
 
 /*
  *  DSpContext_GetFrontBuffer()
@@ -1006,8 +1042,9 @@ DSpContext_GetBackBuffer(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetFrontBuffer(
-    DSpContextReferenceConst inContext,
-    CGrafPtr *               outFrontBuffer );
+  DSpContextReferenceConst   inContext,
+  CGrafPtr *                 outFrontBuffer);
+
 
 /* clut operations */
 /*
@@ -1020,10 +1057,11 @@ DSpContext_GetFrontBuffer(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_SetCLUTEntries(
-    DSpContextReference inContext,
-    const ColorSpec *   inEntries,
-    UInt16              inStartingEntry,
-    UInt16              inLastEntry );
+  DSpContextReference   inContext,
+  const ColorSpec *     inEntries,
+  UInt16                inStartingEntry,
+  UInt16                inLastEntry);
+
 
 /*
  *  DSpContext_GetCLUTEntries()
@@ -1035,10 +1073,11 @@ DSpContext_SetCLUTEntries(
  */
 EXTERN_API_C( OSStatus )
 DSpContext_GetCLUTEntries(
-    DSpContextReferenceConst inContext,
-    ColorSpec *              outEntries,
-    UInt16                   inStartingEntry,
-    UInt16                   inLastEntry );
+  DSpContextReferenceConst   inContext,
+  ColorSpec *                outEntries,
+  UInt16                     inStartingEntry,
+  UInt16                     inLastEntry);
+
 
 /* blit operations */
 #if CALL_NOT_IN_CARBON
@@ -1052,8 +1091,9 @@ DSpContext_GetCLUTEntries(
  */
 EXTERN_API_C( OSStatus )
 DSpBlit_Faster(
-    DSpBlitInfoPtr inBlitInfo,
-    Boolean        inAsyncFlag );
+  DSpBlitInfoPtr   inBlitInfo,
+  Boolean          inAsyncFlag);
+
 
 /*
  *  DSpBlit_Fastest()
@@ -1065,28 +1105,31 @@ DSpBlit_Faster(
  */
 EXTERN_API_C( OSStatus )
 DSpBlit_Fastest(
-    DSpBlitInfoPtr inBlitInfo,
-    Boolean        inAsyncFlag );
+  DSpBlitInfoPtr   inBlitInfo,
+  Boolean          inAsyncFlag);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+
+#endif  /* CALL_NOT_IN_CARBON */
+
 
 #if PRAGMA_ENUM_ALWAYSINT
-#pragma enumsalwaysint reset
-#ifdef __DRAWSPROCKET__RESTORE_TWOBYTEINTS
-#pragma fourbyteints off
-#endif
+    #pragma enumsalwaysint reset
+    #ifdef __DRAWSPROCKET__RESTORE_TWOBYTEINTS
+        #pragma fourbyteints off
+    #endif
 #elif PRAGMA_ENUM_OPTIONS
-#pragma option enum =reset
-#elif defined( __DRAWSPROCKET__RESTORE_PACKED_ENUMS )
-#pragma options( pack_enums )
+    #pragma option enum=reset
+#elif defined(__DRAWSPROCKET__RESTORE_PACKED_ENUMS)
+    #pragma options(pack_enums)
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1100,3 +1143,4 @@ DSpBlit_Fastest(
 #endif
 
 #endif /* __DRAWSPROCKET__ */
+

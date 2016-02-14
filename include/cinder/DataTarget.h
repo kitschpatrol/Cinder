@@ -23,69 +23,74 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/Stream.h"
 #include "cinder/Url.h"
+#include "cinder/Stream.h"
 
 #include <string>
 
 namespace cinder {
 
-typedef std::shared_ptr<class DataTarget> DataTargetRef;
+typedef std::shared_ptr<class DataTarget>	DataTargetRef;
 
-class DataTarget {
+class DataTarget { 
   public:
-	virtual bool providesFilePath() = 0;
-	virtual bool providesUrl() = 0;
+	virtual bool	providesFilePath() = 0;
+	virtual bool	providesUrl() = 0;
+	
+	const fs::path&			getFilePath() const;
+	const Url&				getUrl() const;
+	const fs::path&			getFilePathHint() const;
 
-	const fs::path &getFilePath() const;
-	const Url &     getUrl() const;
-	const fs::path &getFilePathHint() const;
-
-	virtual OStreamRef getStream() = 0;
+	virtual OStreamRef		getStream() = 0;
 
   protected:
 	DataTarget( const fs::path &aFilePath, const Url &aUrl )
-	    : mFilePath( aFilePath ), mUrl( aUrl )
-	{
-	}
+		: mFilePath( aFilePath ), mUrl( aUrl ) 
+	{}
 	virtual ~DataTarget() {}
-	void setFilePathHint( const fs::path &aFilePathHint );
-
-	//	Buffer				mBuffer; // TODO: is this used? if not remove
-	fs::path mFilePath;
-	fs::path mFilePathHint;
-	Url      mUrl;
+	
+	void	setFilePathHint( const fs::path &aFilePathHint );
+	
+//	Buffer				mBuffer; // TODO: is this used? if not remove
+	fs::path			mFilePath;
+	fs::path			mFilePathHint;
+	Url					mUrl;
 };
 
-typedef std::shared_ptr<class DataTargetPath> DataTargetPathRef;
+
+typedef std::shared_ptr<class DataTargetPath>	DataTargetPathRef;
 
 class DataTargetPath : public DataTarget {
   public:
-	static DataTargetPathRef createRef( const fs::path &path );
-
-	virtual bool       providesFilePath() { return true; }
-	virtual bool       providesUrl() { return false; }
-	virtual OStreamRef getStream();
-
+	static DataTargetPathRef	createRef( const fs::path &path );
+	
+	virtual bool	providesFilePath() { return true; }
+	virtual bool	providesUrl() { return false; }
+	
+	virtual OStreamRef		getStream();
+	
   protected:
 	explicit DataTargetPath( const fs::path &path );
-
-	OStreamFileRef mStream;
+  
+	OStreamFileRef	mStream;  
 };
 
-typedef std::shared_ptr<class DataTargetStream> DataTargetStreamRef;
+
+typedef std::shared_ptr<class DataTargetStream>	DataTargetStreamRef;
 
 class DataTargetStream : public DataTarget {
   public:
-	static DataTargetStreamRef createRef( OStreamRef stream );
+	static DataTargetStreamRef	createRef( OStreamRef stream );
 
-	virtual bool       providesFilePath() { return false; }
-	virtual bool       providesUrl() { return false; }
-	virtual OStreamRef getStream() { return mStream; }
+	virtual bool	providesFilePath() { return false; }
+	virtual bool	providesUrl() { return false; }
+	
+	virtual OStreamRef		getStream() { return mStream; }
+	
   protected:
 	DataTargetStream( OStreamRef stream );
-
-	OStreamRef mStream;
+  
+	OStreamRef	mStream;  	
 };
 
 //! Returns a DataTarget to file path \a path, and optionally creates any necessary directories when \a createParents is \c true.

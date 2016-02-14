@@ -29,7 +29,7 @@ Exception::Exception()
 }
 
 Exception::Exception( const std::string &description )
-    : mDescription( description )
+	: mDescription( description )
 {
 }
 

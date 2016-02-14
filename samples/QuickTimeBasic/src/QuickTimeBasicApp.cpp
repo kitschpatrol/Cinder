@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/Surface.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Surface.h"
+#include "cinder/gl/Texture.h"
 #include "cinder/qtime/QuickTimeGl.h"
 
 using namespace ci;
@@ -21,14 +21,14 @@ class QuickTimeSampleApp : public App {
 
 	void loadMovieFile( const fs::path &path );
 
-	gl::TextureRef    mFrameTexture;
-	qtime::MovieGlRef mMovie;
+	gl::TextureRef			mFrameTexture;
+	qtime::MovieGlRef		mMovie;
 };
 
 void QuickTimeSampleApp::setup()
 {
 	fs::path moviePath = getOpenFilePath();
-	if( !moviePath.empty() )
+	if( ! moviePath.empty() )
 		loadMovieFile( moviePath );
 }
 
@@ -36,7 +36,7 @@ void QuickTimeSampleApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'o' ) {
 		fs::path moviePath = getOpenFilePath();
-		if( !moviePath.empty() )
+		if( ! moviePath.empty() )
 			loadMovieFile( moviePath );
 	}
 }

@@ -20,6 +20,9 @@
 #include <AppleEvents.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,8 +46,9 @@ extern "C" {
  */
 EXTERN_API( OSErr )
 CreateOffsetDescriptor(
-    long    theOffset,
-    AEDesc *theDescriptor );
+  long      theOffset,
+  AEDesc *  theDescriptor);
+
 
 /*
  *  CreateCompDescriptor()
@@ -56,11 +60,12 @@ CreateOffsetDescriptor(
  */
 EXTERN_API( OSErr )
 CreateCompDescriptor(
-    DescType comparisonOperator,
-    AEDesc * operand1,
-    AEDesc * operand2,
-    Boolean  disposeInputs,
-    AEDesc * theDescriptor );
+  DescType   comparisonOperator,
+  AEDesc *   operand1,
+  AEDesc *   operand2,
+  Boolean    disposeInputs,
+  AEDesc *   theDescriptor);
+
 
 /*
  *  CreateLogicalDescriptor()
@@ -72,10 +77,12 @@ CreateCompDescriptor(
  */
 EXTERN_API( OSErr )
 CreateLogicalDescriptor(
-    AEDescList *theLogicalTerms,
-    DescType    theLogicOperator,
-    Boolean     disposeInputs,
-    AEDesc *    theDescriptor );
+  AEDescList *  theLogicalTerms,
+  DescType      theLogicOperator,
+  Boolean       disposeInputs,
+  AEDesc *      theDescriptor);
+
+
 
 /*
  *  CreateObjSpecifier()
@@ -87,12 +94,13 @@ CreateLogicalDescriptor(
  */
 EXTERN_API( OSErr )
 CreateObjSpecifier(
-    DescType desiredClass,
-    AEDesc * theContainer,
-    DescType keyForm,
-    AEDesc * keyData,
-    Boolean  disposeInputs,
-    AEDesc * objSpecifier );
+  DescType   desiredClass,
+  AEDesc *   theContainer,
+  DescType   keyForm,
+  AEDesc *   keyData,
+  Boolean    disposeInputs,
+  AEDesc *   objSpecifier);
+
 
 /*
  *  CreateRangeDescriptor()
@@ -104,10 +112,12 @@ CreateObjSpecifier(
  */
 EXTERN_API( OSErr )
 CreateRangeDescriptor(
-    AEDesc *rangeStart,
-    AEDesc *rangeStop,
-    Boolean disposeInputs,
-    AEDesc *theDescriptor );
+  AEDesc *  rangeStart,
+  AEDesc *  rangeStop,
+  Boolean   disposeInputs,
+  AEDesc *  theDescriptor);
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -120,3 +130,4 @@ CreateRangeDescriptor(
 #endif
 
 #endif /* __AEPACKOBJECT__ */
+

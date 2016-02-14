@@ -103,13 +103,13 @@ using namespace cinder::app;
 	mSetupHasFired = NO;
 	mProximityStateIsClose = NO;
 	mIsUnplugged = NO;
-	mStatusBarShouldHide = !settings.isStatusBarEnabled();
+	mStatusBarShouldHide = ! settings.isStatusBarEnabled();
 	mBatteryLevel = -1.0f;
 
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-	[center addObserver:self selector:@selector( screenDidConnect: ) name:UIScreenDidConnectNotification object:nil];
-	[center addObserver:self selector:@selector( screenDidDisconnect: ) name:UIScreenDidDisconnectNotification object:nil];
-	[center addObserver:self selector:@selector( screenModeDidChange: ) name:UIScreenModeDidChangeNotification object:nil];
+	[center addObserver:self selector:@selector(screenDidConnect:) name:UIScreenDidConnectNotification object:nil];
+	[center addObserver:self selector:@selector(screenDidDisconnect:) name:UIScreenDidDisconnectNotification object:nil];
+	[center addObserver:self selector:@selector(screenModeDidChange:) name:	UIScreenModeDidChangeNotification object:nil];
 
 	mAnimationFrameInterval = std::max<float>( 1.0f, floor( 60.0f / settings.getFrameRate() + 0.5f ) );
 
@@ -119,7 +119,7 @@ using namespace cinder::app;
 		formats.push_back( settings.getDefaultWindowFormat() );
 
 	for( auto format : formats ) {
-		if( !format.getRenderer() )
+		if( ! format.getRenderer() )
 			format.setRenderer( mApp->getDefaultRenderer()->clone() );
 
 		RendererRef sharedRenderer = [self findSharedRenderer:format.getRenderer()];
@@ -138,7 +138,7 @@ using namespace cinder::app;
 {
 	// issue initial resizes if that's necessary (only once)
 	for( auto &win : mWindows ) {
-		if( !win->mResizeHasFired )
+		if( ! win->mResizeHasFired )
 			[win resize];
 	}
 
@@ -152,7 +152,7 @@ using namespace cinder::app;
 
 - (void)proximityStateChange:(NSNotificationCenter *)notification
 {
-	mProximityStateIsClose = ( [[UIDevice currentDevice] proximityState] == YES );
+	mProximityStateIsClose = ([[UIDevice currentDevice] proximityState] == YES);
 	mApp->emitSignalProximitySensor( mProximityStateIsClose );
 }
 
@@ -172,8 +172,8 @@ using namespace cinder::app;
 
 - (void)startAnimation
 {
-	if( !mAnimating ) {
-		mDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector( displayLinkDraw: )];
+	if( ! mAnimating ) {
+		mDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkDraw:)];
 		[mDisplayLink setFrameInterval:mAnimationFrameInterval];
 		[mDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 
@@ -193,25 +193,25 @@ using namespace cinder::app;
 
 - (void)screenDidConnect:(NSNotification *)notification
 {
-	DisplayRef connected = app::PlatformCocoa::get()->findDisplayFromUiScreen( (UIScreen *)[notification object] );
+	DisplayRef connected = app::PlatformCocoa::get()->findDisplayFromUiScreen( (UIScreen*)[notification object] );
 	app::PlatformCocoa::get()->addDisplay( connected );
 }
 
 - (void)screenDidDisconnect:(NSNotification *)notification
 {
-	DisplayRef disconnected = app::PlatformCocoa::get()->findDisplayFromUiScreen( (UIScreen *)[notification object] );
+	DisplayRef disconnected = app::PlatformCocoa::get()->findDisplayFromUiScreen( (UIScreen*)[notification object] );
 	app::PlatformCocoa::get()->removeDisplay( disconnected );
 }
 
 - (void)screenModeDidChange:(NSNotification *)notification
 {
-	NSLog( @"A screen got disconnected: %@", [notification object] );
+	NSLog(@"A screen got disconnected: %@", [notification object]);
 	//	cinder::Display::markDisplaysDirty();
 }
 
 - (void)updatePowerManagement
 {
-	if( !mApp->isPowerManagementEnabled() ) {
+	if( ! mApp->isPowerManagementEnabled() ) {
 		[UIApplication sharedApplication].idleTimerDisabled = NO; // setting to NO -> YES seems to be necessary rather than just direct to YES
 		[UIApplication sharedApplication].idleTimerDisabled = YES;
 	}
@@ -232,37 +232,37 @@ using namespace cinder::app;
 {
 	for( auto &win : mWindows ) {
 		RendererRef renderer = [win->mCinderView getRenderer];
-		if( typeid( renderer ) == typeid( match ) )
+		if( typeid(renderer) == typeid(match) )
 			return renderer;
 	}
 
 	return RendererRef();
 }
 
-- (WindowImplCocoaTouch *)getDeviceWindow
+- (WindowImplCocoaTouch*)getDeviceWindow
 {
 	for( auto &win : mWindows ) {
-		if( [win getDisplay] == cinder::Display::getMainDisplay() )
+		if ( [win getDisplay] == cinder::Display::getMainDisplay() )
 			return win;
 	}
-
+	
 	return nil;
 }
 
 - (WindowRef)createWindow:(Window::Format)format
 {
-	if( !format.getRenderer() )
+	if( ! format.getRenderer() )
 		format.setRenderer( mApp->getDefaultRenderer()->clone() );
 
 	RendererRef sharedRenderer = [self findSharedRenderer:format.getRenderer()];
 	mWindows.push_back( [[WindowImplCocoaTouch alloc] initWithFormat:format withAppImpl:self sharedRenderer:sharedRenderer] );
-
+	
 	[mWindows.back() finishLoad];
-
+	
 	return mWindows.back()->mWindowRef;
 }
 
-- (void)setActiveWindow:(WindowImplCocoaTouch *)win
+- (void)setActiveWindow:(WindowImplCocoaTouch*)win
 {
 	mActiveWindow = win;
 }
@@ -276,19 +276,19 @@ using namespace cinder::app;
 
 - (void)showKeyboard:(const AppCocoaTouch::KeyboardOptions &)options
 {
-	if( !mWindows.empty() )
+	if( ! mWindows.empty() )
 		[mWindows.front() showKeyboard:options];
 }
 
 - (void)hideKeyboard
 {
-	if( !mWindows.empty() )
+	if( ! mWindows.empty() )
 		[mWindows.front() hideKeyboard];
 }
 
 - (bool)isKeyboardVisible
 {
-	if( !mWindows.empty() )
+	if( ! mWindows.empty() )
 		[mWindows.front() hideKeyboard];
 
 	return false;
@@ -302,13 +302,13 @@ using namespace cinder::app;
 - (void)setKeyboardString:(const std::string &)keyboardString
 {
 	mKeyboardString = keyboardString;
-	if( !mWindows.empty() )
+	if( ! mWindows.empty() )
 		[mWindows.front() setKeyboardString:&keyboardString];
 }
 
 - (UITextView *)getKeyboardTextView
 {
-	if( !mWindows.empty() )
+	if( ! mWindows.empty() )
 		return mWindows.front().keyboardTextView;
 
 	return NULL;
@@ -335,16 +335,11 @@ using namespace cinder::app;
 - (InterfaceOrientation)convertInterfaceOrientation:(UIInterfaceOrientation)orientation
 {
 	switch( orientation ) {
-	case UIInterfaceOrientationPortrait:
-		return InterfaceOrientation::Portrait;
-	case UIInterfaceOrientationPortraitUpsideDown:
-		return InterfaceOrientation::PortraitUpsideDown;
-	case UIInterfaceOrientationLandscapeLeft:
-		return InterfaceOrientation::LandscapeLeft;
-	case UIInterfaceOrientationLandscapeRight:
-		return InterfaceOrientation::LandscapeRight;
-	default:
-		return InterfaceOrientation::Unknown;
+		case		UIInterfaceOrientationPortrait:				return InterfaceOrientation::Portrait;
+		case		UIInterfaceOrientationPortraitUpsideDown:	return InterfaceOrientation::PortraitUpsideDown;
+		case		UIInterfaceOrientationLandscapeLeft:		return InterfaceOrientation::LandscapeLeft;
+		case		UIInterfaceOrientationLandscapeRight:		return InterfaceOrientation::LandscapeRight;
+		default:												return InterfaceOrientation::Unknown;
 	}
 }
 
@@ -354,8 +349,7 @@ using namespace cinder::app;
 // MARK: - WindowImplCocoaTouch
 // ----------------------------------------------------------------------------------------------------
 
-@implementation WindowImplCocoaTouch
-;
+@implementation WindowImplCocoaTouch;
 
 @synthesize keyboardTextView = mKeyboardTextView;
 
@@ -372,11 +366,11 @@ using namespace cinder::app;
 	mRootViewController = format.getRootViewController() ? format.getRootViewController() : self;
 
 	mDisplay = format.getDisplay();
-	if( !mDisplay ) // a NULL display implies the main display
+	if( ! mDisplay ) // a NULL display implies the main display
 		mDisplay = cinder::Display::getMainDisplay();
 
 	cinder::Area screenBounds = mDisplay->getBounds();
-	CGRect       screenBoundsCgRect;
+	CGRect screenBoundsCgRect;
 	screenBoundsCgRect.origin.x = 0;
 	screenBoundsCgRect.origin.y = 0;
 	screenBoundsCgRect.size.width = screenBounds.getWidth();
@@ -432,12 +426,12 @@ using namespace cinder::app;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
 	// Only rotate after setup. On secondary monitors we don't support any rotation
-	if( !mAppImpl->mSetupHasFired || mDisplay != cinder::Display::getMainDisplay() ) {
+	if( ! mAppImpl->mSetupHasFired || mDisplay != cinder::Display::getMainDisplay() ) {
 		return ( toInterfaceOrientation == UIInterfaceOrientationPortrait );
 	}
 
 	InterfaceOrientation orientation = [mAppImpl convertInterfaceOrientation:toInterfaceOrientation];
-	uint32_t             supportedOrientations = mAppImpl->mApp->emitSupportedOrientations();
+	uint32_t supportedOrientations = mAppImpl->mApp->emitSupportedOrientations();
 
 	return ( ( supportedOrientations & orientation ) != 0 );
 }
@@ -447,11 +441,11 @@ using namespace cinder::app;
 - (NSUInteger)supportedInterfaceOrientations
 {
 	// Only rotate after setup. On secondary monitors we don't support any rotation
-	if( !mAppImpl->mSetupHasFired || mDisplay != cinder::Display::getMainDisplay() ) {
+	if( ! mAppImpl->mSetupHasFired || mDisplay != cinder::Display::getMainDisplay() ) {
 		return UIInterfaceOrientationMaskAll;
 	}
 
-	uint32_t   supportedOrientations = mAppImpl->mApp->emitSupportedOrientations();
+	uint32_t supportedOrientations = mAppImpl->mApp->emitSupportedOrientations();
 	NSUInteger result = 0;
 	if( supportedOrientations & InterfaceOrientation::Portrait )
 		result |= UIInterfaceOrientationMaskPortrait;
@@ -486,15 +480,10 @@ using namespace cinder::app;
 
 	using namespace cinder::app;
 
-	switch( options.getType() ) {
-	case AppCocoaTouch::KeyboardType::NUMERICAL:
-		self.keyboardTextView.keyboardType = UIKeyboardTypeDecimalPad;
-		break;
-	case AppCocoaTouch::KeyboardType::URL:
-		self.keyboardTextView.keyboardType = UIKeyboardTypeURL;
-		break;
-	default:
-		self.keyboardTextView.keyboardType = UIKeyboardTypeDefault;
+	switch ( options.getType() ) {
+		case AppCocoaTouch::KeyboardType::NUMERICAL:	self.keyboardTextView.keyboardType = UIKeyboardTypeDecimalPad; break;
+		case AppCocoaTouch::KeyboardType::URL:			self.keyboardTextView.keyboardType = UIKeyboardTypeURL; break;
+		default:										self.keyboardTextView.keyboardType = UIKeyboardTypeDefault;
 	}
 
 	[self setKeyboardString:&options.getInitialString()];
@@ -507,7 +496,7 @@ using namespace cinder::app;
 
 - (void)hideKeyboard
 {
-	if( !mKeyboardVisible )
+	if( ! mKeyboardVisible )
 		return;
 
 	mKeyboardVisible = NO;
@@ -539,7 +528,7 @@ using namespace cinder::app;
 // lazy loader for text field
 - (UITextView *)keyboardTextView
 {
-	if( !mKeyboardTextView ) {
+	if( ! mKeyboardTextView ) {
 		mKeyboardTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 		mKeyboardTextView.hidden = YES;
 		mKeyboardTextView.delegate = self;
@@ -549,8 +538,8 @@ using namespace cinder::app;
 
 		[mCinderView addSubview:mKeyboardTextView];
 
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( keyboardWillShow: ) name:UIKeyboardWillShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector( keyboardWillHide: ) name:UIKeyboardWillHideNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
 
 	return mKeyboardTextView;
@@ -578,7 +567,7 @@ using namespace cinder::app;
 		unichar c = [text characterAtIndex:i];
 
 		// For now, use ASCII key codes on iOS, which is already mapped out in KeyEvent's enum.
-		int      keyCode = ( c < 127 ? c : KeyEvent::KEY_UNKNOWN );
+		int keyCode = ( c < 127 ? c : KeyEvent::KEY_UNKNOWN );
 		KeyEvent keyEvent( mWindowRef, keyCode, c, c, 0, 0 );
 		[self keyDown:&keyEvent];
 	}
@@ -628,11 +617,11 @@ using namespace cinder::app;
 		[self keyDown:&keyEvent];
 	}
 	else {
-		for( int i = 0; i < [text length]; i++ ) {
+		for( int i = 0; i < [text length]; i++) {
 			unichar c = [text characterAtIndex:i];
 
 			// For now, use ASCII key codes on iOS, which is already mapped out in KeyEvent's enum.
-			int      keyCode = ( c < 127 ? c : KeyEvent::KEY_UNKNOWN );
+			int keyCode = ( c < 127 ? c : KeyEvent::KEY_UNKNOWN );
 			KeyEvent keyEvent( mWindowRef, keyCode, c, c, 0, 0 );
 			[self keyDown:&keyEvent];
 		}
@@ -726,7 +715,7 @@ using namespace cinder::app;
 	return [mCinderView getRenderer];
 }
 
-- (void *)getNative
+- (void*)getNative
 {
 	return mCinderView;
 }
@@ -740,6 +729,7 @@ using namespace cinder::app;
 {
 	return [mCinderView getActiveTouches];
 }
+
 
 // CinderViewCocoaTouchDelegate methods
 - (void)draw

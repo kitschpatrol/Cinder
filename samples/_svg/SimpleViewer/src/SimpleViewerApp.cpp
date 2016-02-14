@@ -1,11 +1,11 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/cairo/Cairo.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/gl.h"
-#include "cinder/ip/Fill.h"
+#include "cinder/gl/Texture.h"
 #include "cinder/svg/Svg.h"
+#include "cinder/ip/Fill.h"
 #include "cinder/svg/SvgGl.h"
+#include "cinder/cairo/Cairo.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,10 +19,11 @@ class SimpleViewerApp : public App {
 	void fileDrop( FileDropEvent event );
 	void load( fs::path path );
 
-	bool           mUseCairo;
-	svg::DocRef    mDoc;
-	gl::TextureRef mTex;
+	bool					mUseCairo;
+	svg::DocRef				mDoc;
+	gl::TextureRef			mTex;
 };
+
 
 void SimpleViewerApp::setup()
 {
@@ -31,7 +32,7 @@ void SimpleViewerApp::setup()
 
 void SimpleViewerApp::mouseDown( MouseEvent event )
 {
-	mUseCairo = !mUseCairo;
+	mUseCairo = ! mUseCairo;
 }
 
 void SimpleViewerApp::fileDrop( FileDropEvent event )
@@ -57,11 +58,11 @@ gl::TextureRef renderCairoToTexture( svg::DocRef doc )
 void SimpleViewerApp::load( fs::path path )
 {
 	try {
-		if( path.extension() != ".svgz" )
+		if( path.extension() != ".svgz" ) 
 			mDoc = svg::Doc::create( path );
 		else // compressed
 			mDoc = svg::Doc::createFromSvgz( loadFile( path ) );
-
+		
 		mTex = renderCairoToTexture( mDoc );
 	}
 	catch( ci::Exception &exc ) {
@@ -77,7 +78,7 @@ void SimpleViewerApp::draw()
 
 	if( mDoc ) {
 		gl::color( Color::white() );
-
+		
 		if( mTex ) {
 			if( mUseCairo )
 				gl::draw( mTex );
@@ -90,5 +91,6 @@ void SimpleViewerApp::draw()
 		gl::drawStringCentered( "Click to toggle between Cairo & OpenGL", getWindowCenter() + vec2( 0, 20 ) );
 	}
 }
+
 
 CINDER_APP( SimpleViewerApp, RendererGl )

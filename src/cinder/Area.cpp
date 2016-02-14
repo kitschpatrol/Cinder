@@ -40,7 +40,7 @@ Area::Area( const RectT<float> &r )
 
 void Area::set( int32_t aX1, int32_t aY1, int32_t aX2, int32_t aY2 )
 {
-	if( aX1 <= aX2 ) {
+	if ( aX1 <= aX2 ) {
 		x1 = aX1;
 		x2 = aX2;
 	}
@@ -49,7 +49,7 @@ void Area::set( int32_t aX1, int32_t aY1, int32_t aX2, int32_t aY2 )
 		x2 = aX1;
 	}
 
-	if( aY1 <= aY2 ) {
+	if ( aY1 <= aY2 ) {
 		y1 = aY1;
 		y2 = aY2;
 	}
@@ -61,22 +61,22 @@ void Area::set( int32_t aX1, int32_t aY1, int32_t aX2, int32_t aY2 )
 
 void Area::clipBy( const Area &clip )
 {
-	if( x1 < clip.x1 )
+	if ( x1 < clip.x1 )
 		x1 = clip.x1;
-	if( x2 < clip.x1 )
+	if ( x2 < clip.x1 )
 		x2 = clip.x1;
-	if( x1 > clip.x2 )
+	if ( x1 > clip.x2 )
 		x1 = clip.x2;
-	if( x2 > clip.x2 )
+	if ( x2 > clip.x2 )
 		x2 = clip.x2;
 
-	if( y1 < clip.y1 )
+	if ( y1 < clip.y1 )
 		y1 = clip.y1;
-	if( y2 < clip.y1 )
+	if ( y2 < clip.y1 )
 		y2 = clip.y1;
-	if( y1 > clip.y2 )
+	if ( y1 > clip.y2 )
 		y1 = clip.y2;
-	if( y2 > clip.y2 )
+	if ( y2 > clip.y2 )
 		y2 = clip.y2;
 }
 
@@ -145,11 +145,11 @@ void Area::include( const Area &area )
 
 bool Area::operator<( const Area &aArea ) const
 {
-	if( x1 != aArea.x1 ) return x1 < aArea.x1;
-	if( y1 != aArea.y1 ) return y1 < aArea.y1;
-	if( x2 != aArea.x2 ) return x2 < aArea.x2;
-	if( y2 != aArea.y2 ) return y2 < aArea.y2;
-
+	if ( x1 != aArea.x1 ) return x1 < aArea.x1;
+	if ( y1 != aArea.y1 ) return y1 < aArea.y1;
+	if ( x2 != aArea.x2 ) return x2 < aArea.x2;
+	if ( y2 != aArea.y2 ) return y2 < aArea.y2;
+	
 	return false;
 }
 
@@ -172,9 +172,9 @@ Area Area::proportionalFit( const Area &srcArea, const Area &dstArea, bool cente
 			resultHeight = resultWidth * srcArea.getHeight() / srcArea.getWidth();
 		}
 	}
-
+	
 	Area resultArea( 0, 0, resultWidth, resultHeight );
-	if( center )
+	if ( center )
 		resultArea.offset( ivec2( ( dstArea.getWidth() - resultWidth ) / 2, ( dstArea.getHeight() - resultHeight ) / 2 ) );
 	resultArea.offset( dstArea.getUL() );
 	return resultArea;
@@ -182,9 +182,9 @@ Area Area::proportionalFit( const Area &srcArea, const Area &dstArea, bool cente
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*** Returns a pair composed of the source area and the destination absolute offset ***/
-pair<Area, ivec2> clippedSrcDst( const Area &srcSurfaceBounds, const Area &srcArea, const Area &dstSurfaceBounds, const ivec2 &dstLT )
+pair<Area,ivec2> clippedSrcDst( const Area &srcSurfaceBounds, const Area &srcArea, const Area &dstSurfaceBounds, const ivec2 &dstLT )
 {
-	Area  clippedSrc = srcArea.getClipBy( srcSurfaceBounds );
+	Area clippedSrc = srcArea.getClipBy( srcSurfaceBounds );
 	ivec2 newDstLT = dstLT + ( clippedSrc.getUL() - srcArea.getUL() );
 	ivec2 oldSrcLT = clippedSrc.getUL();
 	clippedSrc.moveULTo( newDstLT );
@@ -198,7 +198,7 @@ pair<Area, ivec2> clippedSrcDst( const Area &srcSurfaceBounds, const Area &srcAr
 
 namespace {
 
-template <typename Vec2T>
+template<typename Vec2T>
 float calcDistanceSquared( const Area &area, const Vec2T &pt )
 {
 	float result = 0;
@@ -214,7 +214,7 @@ float calcDistanceSquared( const Area &area, const Vec2T &pt )
 	return result;
 }
 
-template <typename Vec2T>
+template<typename Vec2T>
 float calcDistance( const Area &area, const Vec2T &pt )
 {
 	float result = calcDistanceSquared( area, pt );
@@ -224,7 +224,7 @@ float calcDistance( const Area &area, const Vec2T &pt )
 		return 0;
 }
 
-template <typename Vec2T>
+template<typename Vec2T>
 Vec2T calcClosestPoint( const Area &area, const Vec2T &pt )
 {
 	typedef typename Vec2T::value_type ValueT;
@@ -243,44 +243,17 @@ Vec2T calcClosestPoint( const Area &area, const Vec2T &pt )
 
 } // anonymous namespace
 
-float Area::distance( const vec2 &pt ) const
-{
-	return calcDistance( *this, pt );
-}
-float Area::distance( const ivec2 &pt ) const
-{
-	return calcDistance( *this, pt );
-}
-float Area::distance( const dvec2 &pt ) const
-{
-	return calcDistance( *this, pt );
-}
+float Area::distance( const vec2 &pt ) const			{ return calcDistance( *this, pt ); }
+float Area::distance( const ivec2 &pt ) const			{ return calcDistance( *this, pt ); }
+float Area::distance( const dvec2 &pt ) const			{ return calcDistance( *this, pt ); }
 
-float Area::distanceSquared( const vec2 &pt ) const
-{
-	return calcDistanceSquared( *this, pt );
-}
-float Area::distanceSquared( const ivec2 &pt ) const
-{
-	return calcDistanceSquared( *this, pt );
-}
-float Area::distanceSquared( const dvec2 &pt ) const
-{
-	return calcDistanceSquared( *this, pt );
-}
+float Area::distanceSquared( const vec2 &pt ) const		{ return calcDistanceSquared( *this, pt ); }
+float Area::distanceSquared( const ivec2 &pt ) const	{ return calcDistanceSquared( *this, pt ); }
+float Area::distanceSquared( const dvec2 &pt ) const	{ return calcDistanceSquared( *this, pt ); }
 
-vec2 Area::closestPoint( const vec2 &pt ) const
-{
-	return calcClosestPoint( *this, pt );
-}
-ivec2 Area::closestPoint( const ivec2 &pt ) const
-{
-	return calcClosestPoint( *this, pt );
-}
-dvec2 Area::closestPoint( const dvec2 &pt ) const
-{
-	return calcClosestPoint( *this, pt );
-}
+vec2 Area::closestPoint( const vec2 &pt ) const			{ return calcClosestPoint( *this, pt ); }
+ivec2 Area::closestPoint( const ivec2 &pt ) const		{ return calcClosestPoint( *this, pt ); }
+dvec2 Area::closestPoint( const dvec2 &pt ) const		{ return calcClosestPoint( *this, pt ); }
 
 void Area::transform( const mat3 &matrix )
 {

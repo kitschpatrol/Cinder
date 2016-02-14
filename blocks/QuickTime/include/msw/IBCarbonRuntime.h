@@ -36,6 +36,10 @@
 #include <ControlDefinitions.h>
 #endif
 
+
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -49,13 +53,13 @@ extern "C" {
 #endif
 
 enum {
-	kIBCarbonRuntimeCantFindNibFile = -10960,
-	kIBCarbonRuntimeObjectNotOfRequestedType = -10961,
-	kIBCarbonRuntimeCantFindObject = -10962
+  kIBCarbonRuntimeCantFindNibFile = -10960,
+  kIBCarbonRuntimeObjectNotOfRequestedType = -10961,
+  kIBCarbonRuntimeCantFindObject = -10962
 };
 
 /* ----- typedef ------ */
-typedef struct OpaqueIBNibRef *IBNibRef;
+typedef struct OpaqueIBNibRef*          IBNibRef;
 /* ----- Create & Dispose NIB References ------ */
 /*
  *  CreateNibReference()
@@ -67,8 +71,9 @@ typedef struct OpaqueIBNibRef *IBNibRef;
  */
 EXTERN_API_C( OSStatus )
 CreateNibReference(
-    CFStringRef inNibName,
-    IBNibRef *  outNibRef );
+  CFStringRef   inNibName,
+  IBNibRef *    outNibRef);
+
 
 /*
  *  CreateNibReferenceWithCFBundle()
@@ -80,9 +85,10 @@ CreateNibReference(
  */
 EXTERN_API_C( OSStatus )
 CreateNibReferenceWithCFBundle(
-    CFBundleRef inBundle,
-    CFStringRef inNibName,
-    IBNibRef *  outNibRef );
+  CFBundleRef   inBundle,
+  CFStringRef   inNibName,
+  IBNibRef *    outNibRef);
+
 
 /*
  *  DisposeNibReference()
@@ -93,7 +99,8 @@ CreateNibReferenceWithCFBundle(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeNibReference( IBNibRef inNibRef );
+DisposeNibReference(IBNibRef inNibRef);
+
 
 /* ----- Window ------ */
 /*
@@ -106,9 +113,10 @@ DisposeNibReference( IBNibRef inNibRef );
  */
 EXTERN_API_C( OSStatus )
 CreateWindowFromNib(
-    IBNibRef    inNibRef,
-    CFStringRef inName,
-    WindowRef * outWindow );
+  IBNibRef      inNibRef,
+  CFStringRef   inName,
+  WindowRef *   outWindow);
+
 
 /* ----- Menu -----*/
 
@@ -122,9 +130,10 @@ CreateWindowFromNib(
  */
 EXTERN_API_C( OSStatus )
 CreateMenuFromNib(
-    IBNibRef    inNibRef,
-    CFStringRef inName,
-    MenuRef *   outMenuRef );
+  IBNibRef      inNibRef,
+  CFStringRef   inName,
+  MenuRef *     outMenuRef);
+
 
 /* ----- MenuBar ------*/
 
@@ -138,9 +147,10 @@ CreateMenuFromNib(
  */
 EXTERN_API_C( OSStatus )
 CreateMenuBarFromNib(
-    IBNibRef    inNibRef,
-    CFStringRef inName,
-    Handle *    outMenuBar );
+  IBNibRef      inNibRef,
+  CFStringRef   inName,
+  Handle *      outMenuBar);
+
 
 /*
  *  SetMenuBarFromNib()
@@ -152,8 +162,10 @@ CreateMenuBarFromNib(
  */
 EXTERN_API_C( OSStatus )
 SetMenuBarFromNib(
-    IBNibRef    inNibRef,
-    CFStringRef inName );
+  IBNibRef      inNibRef,
+  CFStringRef   inName);
+
+
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -166,3 +178,4 @@ SetMenuBarFromNib(
 #endif
 
 #endif /* __IBCARBONRUNTIME__ */
+

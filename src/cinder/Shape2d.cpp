@@ -84,7 +84,7 @@ void Shape2d::transform( const mat3 &matrix )
 		contIt->transform( matrix );
 }
 
-Shape2d Shape2d::transformed( const mat3 &matrix ) const
+Shape2d	Shape2d::transformed( const mat3 &matrix ) const
 {
 	Shape2d result;
 	for( vector<Path2d>::const_iterator contIt = mContours.begin(); contIt != mContours.end(); ++contIt )
@@ -98,7 +98,7 @@ Rectf Shape2d::calcBoundingBox() const
 
 	// find the first point and initialize the result with that
 	for( vector<Path2d>::const_iterator contIt = mContours.begin(); contIt != mContours.end(); ++contIt ) {
-		if( !contIt->mPoints.empty() ) {
+		if( ! contIt->mPoints.empty() ) {
 			result = Rectf( contIt->mPoints[0], contIt->mPoints[0] );
 			break;
 		}
@@ -108,7 +108,7 @@ Rectf Shape2d::calcBoundingBox() const
 	for( vector<Path2d>::const_iterator contIt = mContours.begin(); contIt != mContours.end(); ++contIt ) {
 		result.include( contIt->mPoints );
 	}
-
+	
 	return result;
 }
 
@@ -118,7 +118,7 @@ Rectf Shape2d::calcPreciseBoundingBox() const
 
 	// find the first point and initialize the result with that
 	for( vector<Path2d>::const_iterator contIt = mContours.begin(); contIt != mContours.end(); ++contIt ) {
-		if( !contIt->mPoints.empty() ) {
+		if( ! contIt->mPoints.empty() ) {
 			result = Rectf( contIt->mPoints[0], contIt->mPoints[0] );
 			break;
 		}
@@ -128,7 +128,7 @@ Rectf Shape2d::calcPreciseBoundingBox() const
 	for( vector<Path2d>::const_iterator contIt = mContours.begin(); contIt != mContours.end(); ++contIt ) {
 		result.include( contIt->calcPreciseBoundingBox() );
 	}
-
+	
 	return result;
 }
 
@@ -139,7 +139,7 @@ bool Shape2d::contains( const vec2 &pt ) const
 		if( contIt->contains( pt ) )
 			numPathsInside++;
 	}
-
+	
 	return ( numPathsInside % 2 ) == 1;
 }
 

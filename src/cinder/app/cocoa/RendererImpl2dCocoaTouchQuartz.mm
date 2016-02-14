@@ -22,18 +22,18 @@
 */
 
 #import "cinder/app/cocoa/RendererImpl2dCocoaTouchQuartz.h"
-#include "cinder/cocoa/CinderCocoa.h"
 #import <QuartzCore/QuartzCore.h>
+#include "cinder/cocoa/CinderCocoa.h"
 
 @implementation RendererImpl2dCocoaTouchQuartz
 
 - (id)initWithFrame:(CGRect)frame cinderView:(UIView *)cinderView
 {
 	self = [super init];
-
+	
 	view = cinderView;
 	mCurrentRef = nil;
-
+	
 	return self;
 }
 
@@ -42,12 +42,12 @@
 	[super dealloc];
 }
 
-- (UIView *)view
+- (UIView*)view
 {
 	return view;
 }
 
-- (UIImage *)getContents:(cinder::Area)area
+- (UIImage*)getContents:(cinder::Area)area
 {
 	::UIGraphicsBeginImageContext( cinder::cocoa::createCgSize( area.getSize() ) );
 	CALayer *layer = view.layer;
@@ -60,7 +60,7 @@
 - (void)makeCurrentContext
 {
 	mCurrentRef = ::UIGraphicsGetCurrentContext();
-	if( !mCurrentRef )
+	if( ! mCurrentRef )
 		return;
 
 	::CGContextRetain( mCurrentRef );

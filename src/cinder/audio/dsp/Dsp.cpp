@@ -26,14 +26,12 @@
 #include "cinder/CinderMath.h"
 
 #if defined( CINDER_AUDIO_VDSP )
-#include <Accelerate/Accelerate.h>
+	#include <Accelerate/Accelerate.h>
 #endif
 
 using namespace ci;
 
-namespace cinder {
-namespace audio {
-namespace dsp {
+namespace cinder { namespace audio { namespace dsp {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - Windowing functions
@@ -42,13 +40,13 @@ namespace dsp {
 void generateBlackmanWindow( float *window, size_t length )
 {
 	double alpha = 0.16;
-	double a0 = 0.5 * ( 1 - alpha );
+	double a0 = 0.5 * (1 - alpha);
 	double a1 = 0.5;
 	double a2 = 0.5 * alpha;
 	double oneOverN = 1.0 / static_cast<double>( length - 1 );
 
 	for( size_t i = 0; i < length; i++ ) {
-		double x = static_cast<double>( i ) * oneOverN;
+		double x = static_cast<double>(i) * oneOverN;
 		window[i] = float( a0 - a1 * cos( 2.0 * M_PI * x ) + a2 * cos( 4.0 * M_PI * x ) );
 	}
 }
@@ -56,11 +54,11 @@ void generateBlackmanWindow( float *window, size_t length )
 void generateHammingWindow( float *window, size_t length )
 {
 	double alpha = 0.53836;
-	double beta = 1.0 - alpha;
-	double oneOverN = 1.0 / static_cast<double>( length - 1 );
+	double beta	= 1.0 - alpha;
+	double oneOverN	= 1.0 / static_cast<double>( length - 1 );
 
 	for( size_t i = 0; i < length; i++ ) {
-		double x = static_cast<double>( i ) * oneOverN;
+		double x = static_cast<double>(i) * oneOverN;
 		window[i] = float( alpha - beta * cos( 2.0 * M_PI * x ) );
 	}
 }
@@ -68,10 +66,10 @@ void generateHammingWindow( float *window, size_t length )
 void generateHannWindow( float *window, size_t length )
 {
 	double alpha = 0.5;
-	double oneOverN = 1.0 / static_cast<double>( length - 1 );
+	double oneOverN	= 1.0 / static_cast<double>( length - 1 );
 
 	for( size_t i = 0; i < length; i++ ) {
-		double x = static_cast<double>( i ) * oneOverN;
+		double x  = static_cast<double>(i) * oneOverN;
 		window[i] = float( alpha * ( 1.0 - cos( 2.0 * M_PI * x ) ) );
 	}
 }
@@ -79,19 +77,19 @@ void generateHannWindow( float *window, size_t length )
 void generateWindow( WindowType windowType, float *window, size_t length )
 {
 	switch( windowType ) {
-	case WindowType::BLACKMAN:
-		generateBlackmanWindow( window, length );
-		break;
-	case WindowType::HAMMING:
-		generateHammingWindow( window, length );
-		break;
-	case WindowType::HANN:
-		generateHannWindow( window, length );
-		break;
-	case WindowType::RECT:
-	default:
-		fill( 1.0f, window, length );
-		break;
+		case WindowType::BLACKMAN:
+			generateBlackmanWindow( window, length );
+			break;
+		case WindowType::HAMMING:
+			generateHammingWindow( window, length );
+			break;
+		case WindowType::HANN:
+			generateHannWindow( window, length );
+			break;
+		case WindowType::RECT:
+		default:
+			fill( 1.0f, window, length );
+			break;
 	}
 }
 
@@ -260,6 +258,5 @@ void normalize( float *array, size_t length, float maxValue )
 		mul( array, maxValue / max, array, length );
 	}
 }
-}
-}
-} // namespace cinder::audio::dsp
+
+} } } // namespace cinder::audio::dsp

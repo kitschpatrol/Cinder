@@ -24,26 +24,26 @@
 
 #include "cinder/gl/BufferObj.h"
 
-#if !defined( CINDER_GL_ES_2 )
+#if ! defined( CINDER_GL_ES_2 )
 
-namespace cinder {
-namespace gl {
-
+namespace cinder { namespace gl {
+	
 typedef std::shared_ptr<class Ubo> UboRef;
 
-class Ubo : public BufferObj {
+class Ubo : public BufferObj 
+{
   public:
-	static UboRef create();
-	static UboRef create( GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_DYNAMIC_DRAW );
+	static UboRef	create();
+	static UboRef	create( GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_DYNAMIC_DRAW );
 
 	//! Analogous to glBindBufferBase( getTarget(), \a index, getId() )
-	void bindBufferBase( GLuint index );
+	void	bindBufferBase( GLuint index );
 
   protected:
 	Ubo();
 	Ubo( GLsizeiptr allocationSize, const void *data, GLenum usage );
 };
-}
-}
+
+} }
 
 #endif // ! defined( CINDER_GL_ES_2 )

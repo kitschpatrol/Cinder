@@ -22,16 +22,15 @@
  */
 
 #include "cinder/app/cocoa/AppMac.h"
-#include "cinder/Log.h"
 #include "cinder/app/cocoa/AppImplMac.h"
+#include "cinder/Log.h"
 
 using namespace std;
 
-namespace cinder {
-namespace app {
+namespace cinder { namespace app {
 
 AppMac::AppMac()
-    : AppBase()
+	: AppBase()
 {
 	const Settings *settings = dynamic_cast<Settings *>( sSettingsFromMain );
 	CI_ASSERT( settings );
@@ -59,7 +58,7 @@ void AppMac::enablePowerManagement( bool powerManagement )
 
 bool AppMac::isPowerManagementEnabled() const
 {
-	return [mImpl isPowerManagementEnabled];
+	return 	[mImpl isPowerManagementEnabled];
 }
 
 WindowRef AppMac::createWindow( const Window::Format &format )
@@ -127,5 +126,5 @@ ivec2 AppMac::getMousePos() const
 	NSPoint loc = [NSEvent mouseLocation];
 	return ivec2( loc.x, cinder::Display::getMainDisplay()->getHeight() - loc.y );
 }
-}
-} // namespace cinder::app
+
+} } // namespace cinder::app

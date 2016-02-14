@@ -24,6 +24,9 @@
 #include <TextCommon.h>
 #endif
 
+
+
+
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,35 +40,36 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
-typedef OSType TECPluginSignature;
-typedef UInt32 TECPluginVersion;
+typedef OSType                          TECPluginSignature;
+typedef UInt32                          TECPluginVersion;
 /* plugin signatures */
 enum {
-	kTECSignature = FOUR_CHAR_CODE( 'encv' ),
-	kTECUnicodePluginSignature = FOUR_CHAR_CODE( 'puni' ),
-	kTECJapanesePluginSignature = FOUR_CHAR_CODE( 'pjpn' ),
-	kTECChinesePluginSignature = FOUR_CHAR_CODE( 'pzho' ),
-	kTECKoreanPluginSignature = FOUR_CHAR_CODE( 'pkor' )
+  kTECSignature                 = FOUR_CHAR_CODE('encv'),
+  kTECUnicodePluginSignature    = FOUR_CHAR_CODE('puni'),
+  kTECJapanesePluginSignature   = FOUR_CHAR_CODE('pjpn'),
+  kTECChinesePluginSignature    = FOUR_CHAR_CODE('pzho'),
+  kTECKoreanPluginSignature     = FOUR_CHAR_CODE('pkor')
 };
 
+
 /* converter object reference */
-typedef struct OpaqueTECObjectRef *       TECObjectRef;
-typedef struct OpaqueTECSnifferObjectRef *TECSnifferObjectRef;
-typedef OSType                            TECPluginSig;
+typedef struct OpaqueTECObjectRef*      TECObjectRef;
+typedef struct OpaqueTECSnifferObjectRef*  TECSnifferObjectRef;
+typedef OSType                          TECPluginSig;
 struct TECConversionInfo {
-	TextEncoding sourceEncoding;
-	TextEncoding destinationEncoding;
-	UInt16       reserved1;
-	UInt16       reserved2;
+  TextEncoding        sourceEncoding;
+  TextEncoding        destinationEncoding;
+  UInt16              reserved1;
+  UInt16              reserved2;
 };
-typedef struct TECConversionInfo TECConversionInfo;
+typedef struct TECConversionInfo        TECConversionInfo;
 /* return number of encodings types supported by user's configuraton of the encoding converter */
 /*
  *  TECCountAvailableTextEncodings()
@@ -76,7 +80,8 @@ typedef struct TECConversionInfo TECConversionInfo;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-TECCountAvailableTextEncodings( ItemCount *numberEncodings );
+TECCountAvailableTextEncodings(ItemCount * numberEncodings);
+
 
 /* fill in an array of type TextEncoding passed in by the user with types of encodings the current configuration of the encoder can handle. */
 /*
@@ -89,9 +94,10 @@ TECCountAvailableTextEncodings( ItemCount *numberEncodings );
  */
 EXTERN_API( OSStatus )
 TECGetAvailableTextEncodings(
-    TextEncoding availableEncodings[],
-    ItemCount    maxAvailableEncodings,
-    ItemCount *  actualAvailableEncodings );
+  TextEncoding   availableEncodings[],
+  ItemCount      maxAvailableEncodings,
+  ItemCount *    actualAvailableEncodings);
+
 
 /* return number of from-to encoding conversion pairs supported  */
 /*
@@ -103,7 +109,8 @@ TECGetAvailableTextEncodings(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-TECCountDirectTextEncodingConversions( ItemCount *numberOfEncodings );
+TECCountDirectTextEncodingConversions(ItemCount * numberOfEncodings);
+
 
 /* fill in an array of type TextEncodingPair passed in by the user with types of encoding pairs the current configuration of the encoder can handle. */
 /*
@@ -116,9 +123,10 @@ TECCountDirectTextEncodingConversions( ItemCount *numberOfEncodings );
  */
 EXTERN_API( OSStatus )
 TECGetDirectTextEncodingConversions(
-    TECConversionInfo availableConversions[],
-    ItemCount         maxAvailableConversions,
-    ItemCount *       actualAvailableConversions );
+  TECConversionInfo   availableConversions[],
+  ItemCount           maxAvailableConversions,
+  ItemCount *         actualAvailableConversions);
+
 
 /* return number of encodings a given encoding can be converter into */
 /*
@@ -131,8 +139,9 @@ TECGetDirectTextEncodingConversions(
  */
 EXTERN_API( OSStatus )
 TECCountDestinationTextEncodings(
-    TextEncoding inputEncoding,
-    ItemCount *  numberOfEncodings );
+  TextEncoding   inputEncoding,
+  ItemCount *    numberOfEncodings);
+
 
 /* fill in an array of type TextEncodingPair passed in by the user with types of encodings pairs the current configuration of the encoder can handle. */
 /*
@@ -145,10 +154,11 @@ TECCountDestinationTextEncodings(
  */
 EXTERN_API( OSStatus )
 TECGetDestinationTextEncodings(
-    TextEncoding inputEncoding,
-    TextEncoding destinationEncodings[],
-    ItemCount    maxDestinationEncodings,
-    ItemCount *  actualDestinationEncodings );
+  TextEncoding   inputEncoding,
+  TextEncoding   destinationEncodings[],
+  ItemCount      maxDestinationEncodings,
+  ItemCount *    actualDestinationEncodings);
+
 
 /* get info about a text encoding */
 /*
@@ -161,8 +171,9 @@ TECGetDestinationTextEncodings(
  */
 EXTERN_API( OSStatus )
 TECGetTextEncodingInternetName(
-    TextEncoding textEncoding,
-    Str255       encodingName );
+  TextEncoding   textEncoding,
+  Str255         encodingName);
+
 
 /*
  *  TECGetTextEncodingFromInternetName()
@@ -174,8 +185,9 @@ TECGetTextEncodingInternetName(
  */
 EXTERN_API( OSStatus )
 TECGetTextEncodingFromInternetName(
-    TextEncoding *   textEncoding,
-    ConstStr255Param encodingName );
+  TextEncoding *     textEncoding,
+  ConstStr255Param   encodingName);
+
 
 /* create/dispose converters */
 /*
@@ -188,9 +200,10 @@ TECGetTextEncodingFromInternetName(
  */
 EXTERN_API( OSStatus )
 TECCreateConverter(
-    TECObjectRef *newEncodingConverter,
-    TextEncoding  inputEncoding,
-    TextEncoding  outputEncoding );
+  TECObjectRef *  newEncodingConverter,
+  TextEncoding    inputEncoding,
+  TextEncoding    outputEncoding);
+
 
 /*
  *  TECCreateConverterFromPath()
@@ -202,9 +215,10 @@ TECCreateConverter(
  */
 EXTERN_API( OSStatus )
 TECCreateConverterFromPath(
-    TECObjectRef *     newEncodingConverter,
-    const TextEncoding inPath[],
-    ItemCount          inEncodings );
+  TECObjectRef *       newEncodingConverter,
+  const TextEncoding   inPath[],
+  ItemCount            inEncodings);
+
 
 /*
  *  TECDisposeConverter()
@@ -215,7 +229,8 @@ TECCreateConverterFromPath(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-TECDisposeConverter( TECObjectRef newEncodingConverter );
+TECDisposeConverter(TECObjectRef newEncodingConverter);
+
 
 /* convert text encodings */
 /*
@@ -227,7 +242,8 @@ TECDisposeConverter( TECObjectRef newEncodingConverter );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-TECClearConverterContextInfo( TECObjectRef encodingConverter );
+TECClearConverterContextInfo(TECObjectRef encodingConverter);
+
 
 /*
  *  TECConvertText()
@@ -239,13 +255,14 @@ TECClearConverterContextInfo( TECObjectRef encodingConverter );
  */
 EXTERN_API( OSStatus )
 TECConvertText(
-    TECObjectRef encodingConverter,
-    ConstTextPtr inputBuffer,
-    ByteCount    inputBufferLength,
-    ByteCount *  actualInputLength,
-    TextPtr      outputBuffer,
-    ByteCount    outputBufferLength,
-    ByteCount *  actualOutputLength );
+  TECObjectRef   encodingConverter,
+  ConstTextPtr   inputBuffer,
+  ByteCount      inputBufferLength,
+  ByteCount *    actualInputLength,
+  TextPtr        outputBuffer,
+  ByteCount      outputBufferLength,
+  ByteCount *    actualOutputLength);
+
 
 /*
  *  TECFlushText()
@@ -257,10 +274,11 @@ TECConvertText(
  */
 EXTERN_API( OSStatus )
 TECFlushText(
-    TECObjectRef encodingConverter,
-    TextPtr      outputBuffer,
-    ByteCount    outputBufferLength,
-    ByteCount *  actualOutputLength );
+  TECObjectRef   encodingConverter,
+  TextPtr        outputBuffer,
+  ByteCount      outputBufferLength,
+  ByteCount *    actualOutputLength);
+
 
 /* one-to-many routines */
 /*
@@ -273,8 +291,9 @@ TECFlushText(
  */
 EXTERN_API( OSStatus )
 TECCountSubTextEncodings(
-    TextEncoding inputEncoding,
-    ItemCount *  numberOfEncodings );
+  TextEncoding   inputEncoding,
+  ItemCount *    numberOfEncodings);
+
 
 /*
  *  TECGetSubTextEncodings()
@@ -286,10 +305,11 @@ TECCountSubTextEncodings(
  */
 EXTERN_API( OSStatus )
 TECGetSubTextEncodings(
-    TextEncoding inputEncoding,
-    TextEncoding subEncodings[],
-    ItemCount    maxSubEncodings,
-    ItemCount *  actualSubEncodings );
+  TextEncoding   inputEncoding,
+  TextEncoding   subEncodings[],
+  ItemCount      maxSubEncodings,
+  ItemCount *    actualSubEncodings);
+
 
 /*
  *  TECGetEncodingList()
@@ -301,9 +321,10 @@ TECGetSubTextEncodings(
  */
 EXTERN_API( OSStatus )
 TECGetEncodingList(
-    TECObjectRef encodingConverter,
-    ItemCount *  numEncodings,
-    Handle *     encodingList );
+  TECObjectRef   encodingConverter,
+  ItemCount *    numEncodings,
+  Handle *       encodingList);
+
 
 /*
  *  TECCreateOneToManyConverter()
@@ -315,10 +336,11 @@ TECGetEncodingList(
  */
 EXTERN_API( OSStatus )
 TECCreateOneToManyConverter(
-    TECObjectRef *     newEncodingConverter,
-    TextEncoding       inputEncoding,
-    ItemCount          numOutputEncodings,
-    const TextEncoding outputEncodings[] );
+  TECObjectRef *       newEncodingConverter,
+  TextEncoding         inputEncoding,
+  ItemCount            numOutputEncodings,
+  const TextEncoding   outputEncodings[]);
+
 
 /*
  *  TECConvertTextToMultipleEncodings()
@@ -330,16 +352,17 @@ TECCreateOneToManyConverter(
  */
 EXTERN_API( OSStatus )
 TECConvertTextToMultipleEncodings(
-    TECObjectRef    encodingConverter,
-    ConstTextPtr    inputBuffer,
-    ByteCount       inputBufferLength,
-    ByteCount *     actualInputLength,
-    TextPtr         outputBuffer,
-    ByteCount       outputBufferLength,
-    ByteCount *     actualOutputLength,
-    TextEncodingRun outEncodingsBuffer[],
-    ItemCount       maxOutEncodingRuns,
-    ItemCount *     actualOutEncodingRuns );
+  TECObjectRef      encodingConverter,
+  ConstTextPtr      inputBuffer,
+  ByteCount         inputBufferLength,
+  ByteCount *       actualInputLength,
+  TextPtr           outputBuffer,
+  ByteCount         outputBufferLength,
+  ByteCount *       actualOutputLength,
+  TextEncodingRun   outEncodingsBuffer[],
+  ItemCount         maxOutEncodingRuns,
+  ItemCount *       actualOutEncodingRuns);
+
 
 /*
  *  TECFlushMultipleEncodings()
@@ -351,13 +374,14 @@ TECConvertTextToMultipleEncodings(
  */
 EXTERN_API( OSStatus )
 TECFlushMultipleEncodings(
-    TECObjectRef    encodingConverter,
-    TextPtr         outputBuffer,
-    ByteCount       outputBufferLength,
-    ByteCount *     actualOutputLength,
-    TextEncodingRun outEncodingsBuffer[],
-    ItemCount       maxOutEncodingRuns,
-    ItemCount *     actualOutEncodingRuns );
+  TECObjectRef      encodingConverter,
+  TextPtr           outputBuffer,
+  ByteCount         outputBufferLength,
+  ByteCount *       actualOutputLength,
+  TextEncodingRun   outEncodingsBuffer[],
+  ItemCount         maxOutEncodingRuns,
+  ItemCount *       actualOutEncodingRuns);
+
 
 /* international internet info */
 /*
@@ -370,8 +394,9 @@ TECFlushMultipleEncodings(
  */
 EXTERN_API( OSStatus )
 TECCountWebTextEncodings(
-    RegionCode locale,
-    ItemCount *numberEncodings );
+  RegionCode   locale,
+  ItemCount *  numberEncodings);
+
 
 /*
  *  TECGetWebTextEncodings()
@@ -383,10 +408,11 @@ TECCountWebTextEncodings(
  */
 EXTERN_API( OSStatus )
 TECGetWebTextEncodings(
-    RegionCode   locale,
-    TextEncoding availableEncodings[],
-    ItemCount    maxAvailableEncodings,
-    ItemCount *  actualAvailableEncodings );
+  RegionCode     locale,
+  TextEncoding   availableEncodings[],
+  ItemCount      maxAvailableEncodings,
+  ItemCount *    actualAvailableEncodings);
+
 
 /*
  *  TECCountMailTextEncodings()
@@ -398,8 +424,9 @@ TECGetWebTextEncodings(
  */
 EXTERN_API( OSStatus )
 TECCountMailTextEncodings(
-    RegionCode locale,
-    ItemCount *numberEncodings );
+  RegionCode   locale,
+  ItemCount *  numberEncodings);
+
 
 /*
  *  TECGetMailTextEncodings()
@@ -411,10 +438,11 @@ TECCountMailTextEncodings(
  */
 EXTERN_API( OSStatus )
 TECGetMailTextEncodings(
-    RegionCode   locale,
-    TextEncoding availableEncodings[],
-    ItemCount    maxAvailableEncodings,
-    ItemCount *  actualAvailableEncodings );
+  RegionCode     locale,
+  TextEncoding   availableEncodings[],
+  ItemCount      maxAvailableEncodings,
+  ItemCount *    actualAvailableEncodings);
+
 
 /* examine text encodings */
 /*
@@ -426,7 +454,8 @@ TECGetMailTextEncodings(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-TECCountAvailableSniffers( ItemCount *numberOfEncodings );
+TECCountAvailableSniffers(ItemCount * numberOfEncodings);
+
 
 /*
  *  TECGetAvailableSniffers()
@@ -438,9 +467,10 @@ TECCountAvailableSniffers( ItemCount *numberOfEncodings );
  */
 EXTERN_API( OSStatus )
 TECGetAvailableSniffers(
-    TextEncoding availableSniffers[],
-    ItemCount    maxAvailableSniffers,
-    ItemCount *  actualAvailableSniffers );
+  TextEncoding   availableSniffers[],
+  ItemCount      maxAvailableSniffers,
+  ItemCount *    actualAvailableSniffers);
+
 
 /*
  *  TECCreateSniffer()
@@ -452,9 +482,10 @@ TECGetAvailableSniffers(
  */
 EXTERN_API( OSStatus )
 TECCreateSniffer(
-    TECSnifferObjectRef *encodingSniffer,
-    TextEncoding         testEncodings[],
-    ItemCount            numTextEncodings );
+  TECSnifferObjectRef *  encodingSniffer,
+  TextEncoding           testEncodings[],
+  ItemCount              numTextEncodings);
+
 
 /*
  *  TECSniffTextEncoding()
@@ -466,15 +497,16 @@ TECCreateSniffer(
  */
 EXTERN_API( OSStatus )
 TECSniffTextEncoding(
-    TECSnifferObjectRef encodingSniffer,
-    TextPtr             inputBuffer,
-    ByteCount           inputBufferLength,
-    TextEncoding        testEncodings[],
-    ItemCount           numTextEncodings,
-    ItemCount           numErrsArray[],
-    ItemCount           maxErrs,
-    ItemCount           numFeaturesArray[],
-    ItemCount           maxFeatures );
+  TECSnifferObjectRef   encodingSniffer,
+  TextPtr               inputBuffer,
+  ByteCount             inputBufferLength,
+  TextEncoding          testEncodings[],
+  ItemCount             numTextEncodings,
+  ItemCount             numErrsArray[],
+  ItemCount             maxErrs,
+  ItemCount             numFeaturesArray[],
+  ItemCount             maxFeatures);
+
 
 /*
  *  TECDisposeSniffer()
@@ -485,7 +517,8 @@ TECSniffTextEncoding(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-TECDisposeSniffer( TECSnifferObjectRef encodingSniffer );
+TECDisposeSniffer(TECSnifferObjectRef encodingSniffer);
+
 
 /*
  *  TECClearSnifferContextInfo()
@@ -496,7 +529,8 @@ TECDisposeSniffer( TECSnifferObjectRef encodingSniffer );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-TECClearSnifferContextInfo( TECSnifferObjectRef encodingSniffer );
+TECClearSnifferContextInfo(TECSnifferObjectRef encodingSniffer);
+
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -509,17 +543,20 @@ TECClearSnifferContextInfo( TECSnifferObjectRef encodingSniffer );
  */
 EXTERN_API( OSStatus )
 TECSetBasicOptions(
-    TECObjectRef encodingConverter,
-    OptionBits   controlFlags );
+  TECObjectRef   encodingConverter,
+  OptionBits     controlFlags);
 
-#endif /* CALL_NOT_IN_CARBON */
+
+#endif  /* CALL_NOT_IN_CARBON */
+
+
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -533,3 +570,4 @@ TECSetBasicOptions(
 #endif
 
 #endif /* __TEXTENCODINGCONVERTER__ */
+

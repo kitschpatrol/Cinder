@@ -24,8 +24,12 @@
 #include <PMTicket.h>
 #endif
 
+
+
+
 /* An enum to distinguish between different kinds of template entries. Each entry in a template */
 /* has a specific type that allows us to determine what other fields and functions are available. */
+
 
 #if PRAGMA_ONCE
 #pragma once
@@ -40,48 +44,50 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = mac68k
+    #pragma options align=mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( push, 2 )
+    #pragma pack(push, 2)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack( 2 )
+    #pragma pack(2)
 #endif
 
 typedef SInt32 PMValueType;
 enum {
-	kPMValueUndefined = 0, /* Template Entry is unknown or undefined */
-	kPMValueBoolean = 1, /* A CFBoolean of value true or false. */
-	kPMValueData = 2, /* A CFData, raw data converted to CFData. Has a default value, but no other constraints */
-	kPMValueString = 3, /* A CFString. Has a default value, but no other constraints */
-	kPMValueSInt32 = 4, /* A CFNumber of long type. */
-	kPMValueSInt32Range = 5, /* A pair of CFNumbers, SInt32s, defining a range. */
-	kPMValueUInt32 = 6, /* A CFNumber of unsigned long type (which isn't actually defined) */
-	kPMValueUInt32Range = 7, /* A pair of CFNumber, UInt32s, defining a range. */
-	kPMValueDouble = 8, /* A CFNumber of double type. */
-	kPMValueDoubleRange = 9, /* A pair of CFNumbers, doubles, defining a range of values. */
-	kPMValuePMRect = 10, /* A CFArray of 4 CFNumbers, all doubles. */
-	kPMValueDate = 11, /* A CFDate, holding date and time. */
-	kPMValueArray = 12, /* A CFArray, holding an array of values. No way to constrain these. */
-	kPMValueDict = 13, /* A CFDictionary, which has a default, but no constraints. */
-	kPMValueTicket = 14 /* A PMTicket will require each key/value be identical - only works for list constraints. */
+  kPMValueUndefined             = 0,    /* Template Entry is unknown or undefined */
+  kPMValueBoolean               = 1,    /* A CFBoolean of value true or false. */
+  kPMValueData                  = 2,    /* A CFData, raw data converted to CFData. Has a default value, but no other constraints */
+  kPMValueString                = 3,    /* A CFString. Has a default value, but no other constraints */
+  kPMValueSInt32                = 4,    /* A CFNumber of long type. */
+  kPMValueSInt32Range           = 5,    /* A pair of CFNumbers, SInt32s, defining a range. */
+  kPMValueUInt32                = 6,    /* A CFNumber of unsigned long type (which isn't actually defined) */
+  kPMValueUInt32Range           = 7,    /* A pair of CFNumber, UInt32s, defining a range. */
+  kPMValueDouble                = 8,    /* A CFNumber of double type. */
+  kPMValueDoubleRange           = 9,    /* A pair of CFNumbers, doubles, defining a range of values. */
+  kPMValuePMRect                = 10,   /* A CFArray of 4 CFNumbers, all doubles. */
+  kPMValueDate                  = 11,   /* A CFDate, holding date and time. */
+  kPMValueArray                 = 12,   /* A CFArray, holding an array of values. No way to constrain these. */
+  kPMValueDict                  = 13,   /* A CFDictionary, which has a default, but no constraints. */
+  kPMValueTicket                = 14    /* A PMTicket will require each key/value be identical - only works for list constraints. */
 };
+
 
 typedef SInt32 PMConstraintType;
 enum {
-	kPMConstraintUndefined = 0, /* Undefined, no constraint checking required. */
-	kPMConstraintRange = 1, /* Range has a CFArray of two values, both CFTypeRefs */
-	kPMConstraintList = 2, /* List has an array CFTypeRefs, listing possible values. DefaultValues are CFNumberRef (zero-based index into the list) */
-	kPMConstraintPrivate = 3 /* Private constraint, not checked by the system. */
+  kPMConstraintUndefined        = 0,    /* Undefined, no constraint checking required. */
+  kPMConstraintRange            = 1,    /* Range has a CFArray of two values, both CFTypeRefs */
+  kPMConstraintList             = 2,    /* List has an array CFTypeRefs, listing possible values. DefaultValues are CFNumberRef (zero-based index into the list) */
+  kPMConstraintPrivate          = 3     /* Private constraint, not checked by the system. */
 };
+
 
 /* A couple of keys are defined as special cases for the template code, only because it's */
 /* a flat structure and the Job ticket is possibly a hierarchy of tickets. We need to be */
 /* able to fetch the PaperInfo template information, but the Job Ticket has a separate */
 /* ticket, so there is no key defined for fetching PaperInfo ticket from the Job Ticket. */
 /* Will fetch the default value and constraint list for valid papers. */
-#define kPMTemplatePrelude "com.apple.print.TemplateSpecific"
-#define kPMPaperInfoListStr "com.apple.print.TemplateSpecific.PMTemplatePaperInfoTicket"
-#define kPMPaperInfoList CFSTR( "com.apple.print.TemplateSpecific.PMTemplatePaperInfoTicket" )
+#define kPMTemplatePrelude              "com.apple.print.TemplateSpecific"
+#define kPMPaperInfoListStr             "com.apple.print.TemplateSpecific.PMTemplatePaperInfoTicket"
+#define kPMPaperInfoList                CFSTR("com.apple.print.TemplateSpecific.PMTemplatePaperInfoTicket")
 
 /* The PMTemplateRef is defined in PMTicket.h to avoid circular references */
 
@@ -95,7 +101,8 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-PMTemplateCreate( PMTemplateRef *newTemplate );
+PMTemplateCreate(PMTemplateRef * newTemplate);
+
 
 /*
  *  PMTemplateDelete()
@@ -106,7 +113,9 @@ PMTemplateCreate( PMTemplateRef *newTemplate );
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-PMTemplateDelete( PMTemplateRef *oldTemplate );
+PMTemplateDelete(PMTemplateRef * oldTemplate);
+
+
 
 /* Functions to send to and from XML. Also a function to tell us if the template is locked and */
 /* can't be modified. */
@@ -120,8 +129,9 @@ PMTemplateDelete( PMTemplateRef *oldTemplate );
  */
 EXTERN_API_C( OSStatus )
 PMTemplateCreateXML(
-    PMTemplateRef srcTemplate,
-    CFDataRef *   xmlData );
+  PMTemplateRef   srcTemplate,
+  CFDataRef *     xmlData);
+
 
 /*
  *  PMTemplateLoadFromXML()
@@ -133,8 +143,9 @@ PMTemplateCreateXML(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateLoadFromXML(
-    CFDataRef      srcData,
-    PMTemplateRef *destTemplate );
+  CFDataRef        srcData,
+  PMTemplateRef *  destTemplate);
+
 
 /*
  *  PMTemplateIsLocked()
@@ -146,8 +157,10 @@ PMTemplateLoadFromXML(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateIsLocked(
-    PMTemplateRef srcTemplate,
-    Boolean *     locked );
+  PMTemplateRef   srcTemplate,
+  Boolean *       locked);
+
+
 
 /* Functions to add entries in a template. Each entry describes a value type and constraint */
 /* type as well as default and constraint values for a specific key. This key must match the */
@@ -162,12 +175,13 @@ PMTemplateIsLocked(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateMakeFullEntry(
-    PMTemplateRef    pmTemplate,
-    CFStringRef      key,
-    PMValueType      valueType,
-    PMConstraintType constraintType,
-    CFTypeRef        defaultValue,
-    CFTypeRef        constraintValue );
+  PMTemplateRef      pmTemplate,
+  CFStringRef        key,
+  PMValueType        valueType,
+  PMConstraintType   constraintType,
+  CFTypeRef          defaultValue,
+  CFTypeRef          constraintValue);
+
 
 /* This function allows a caller to create the template entry in a series of calls, first to */
 /* establish what type of entry it is and then later to set default and constraint values. This */
@@ -183,10 +197,12 @@ PMTemplateMakeFullEntry(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateMakeEntry(
-    PMTemplateRef    pmTemplate,
-    CFStringRef      key,
-    PMValueType      valueType,
-    PMConstraintType constraintType );
+  PMTemplateRef      pmTemplate,
+  CFStringRef        key,
+  PMValueType        valueType,
+  PMConstraintType   constraintType);
+
+
 
 /* The following functions update an already created entry. */
 /*
@@ -199,9 +215,10 @@ PMTemplateMakeEntry(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetCFDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFTypeRef     defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFTypeRef       defaultValue);
+
 
 /*
  *  PMTemplateSetSInt32DefaultValue()
@@ -213,9 +230,10 @@ PMTemplateSetCFDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetSInt32DefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32        defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32          defaultValue);
+
 
 /*
  *  PMTemplateSetSInt32RangeDefaultValue()
@@ -227,10 +245,11 @@ PMTemplateSetSInt32DefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetSInt32RangeDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32        min,
-    SInt32        max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32          min,
+  SInt32          max);
+
 
 /*
  *  PMTemplateSetBooleanDefaultValue()
@@ -242,9 +261,10 @@ PMTemplateSetSInt32RangeDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetBooleanDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    Boolean       defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  Boolean         defaultValue);
+
 
 /*
  *  PMTemplateSetDoubleDefaultValue()
@@ -256,9 +276,10 @@ PMTemplateSetBooleanDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetDoubleDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double        defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double          defaultValue);
+
 
 /*
  *  PMTemplateSetDoubleRangeDefaultValue()
@@ -270,10 +291,11 @@ PMTemplateSetDoubleDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetDoubleRangeDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double        min,
-    double        max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double          min,
+  double          max);
+
 
 /*
  *  PMTemplateSetCFDataDefaultValue()
@@ -285,9 +307,10 @@ PMTemplateSetDoubleRangeDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetCFDataDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFDataRef     defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFDataRef       defaultValue);
+
 
 /*
  *  PMTemplateSetPMRectDefaultValue()
@@ -299,9 +322,10 @@ PMTemplateSetCFDataDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetPMRectDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    PMRect *      defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  PMRect *        defaultValue);
+
 
 /*
  *  PMTemplateSetPMTicketDefaultValue()
@@ -313,9 +337,10 @@ PMTemplateSetPMRectDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetPMTicketDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    PMTicketRef   defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  PMTicketRef     defaultValue);
+
 
 /* Functions to allow various constraints to be set up. */
 /*
@@ -328,9 +353,10 @@ PMTemplateSetPMTicketDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetCFArrayConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFArrayRef    constraintValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFArrayRef      constraintValue);
+
 
 /*
  *  PMTemplateSetCFRangeConstraint()
@@ -342,10 +368,11 @@ PMTemplateSetCFArrayConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetCFRangeConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFTypeRef     min,
-    CFTypeRef     max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFTypeRef       min,
+  CFTypeRef       max);
+
 
 /*
  *  PMTemplateSetSInt32RangeConstraint()
@@ -357,10 +384,11 @@ PMTemplateSetCFRangeConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetSInt32RangeConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32        min,
-    SInt32        max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32          min,
+  SInt32          max);
+
 
 /* Note - if the default value is a range, then the constraint should be a pair */
 /* of ranges. */
@@ -374,12 +402,13 @@ PMTemplateSetSInt32RangeConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetSInt32RangesConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32        minForMin,
-    SInt32        maxForMin,
-    SInt32        minForMax,
-    SInt32        maxForMax );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32          minForMin,
+  SInt32          maxForMin,
+  SInt32          minForMax,
+  SInt32          maxForMax);
+
 
 /*
  *  PMTemplateSetDoubleRangeConstraint()
@@ -391,10 +420,11 @@ PMTemplateSetSInt32RangesConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetDoubleRangeConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double        min,
-    double        max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double          min,
+  double          max);
+
 
 /*
  *  PMTemplateSetDoubleRangesConstraint()
@@ -406,12 +436,14 @@ PMTemplateSetDoubleRangeConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetDoubleRangesConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double        minForMin,
-    double        maxForMin,
-    double        minForMax,
-    double        maxForMax );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double          minForMin,
+  double          maxForMin,
+  double          minForMax,
+  double          maxForMax);
+
+
 
 /* A List constraint could be a simple list of SInt32s. */
 /*
@@ -424,10 +456,11 @@ PMTemplateSetDoubleRangesConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetSInt32ListConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    int           listSize,
-    SInt32 *      sint32List );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  int             listSize,
+  SInt32 *        sint32List);
+
 
 /* Or a list of doubles. */
 /*
@@ -440,10 +473,11 @@ PMTemplateSetSInt32ListConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetDoubleListConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    int           listSize,
-    double *      doubleList );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  int             listSize,
+  double *        doubleList);
+
 
 /* A list of rectangles. */
 /*
@@ -456,10 +490,11 @@ PMTemplateSetDoubleListConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetPMRectListConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    int           listSize,
-    PMRect *      rectList );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  int             listSize,
+  PMRect *        rectList);
+
 
 /* Or a ticket list. */
 /*
@@ -472,9 +507,11 @@ PMTemplateSetPMRectListConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateSetPMTicketListConstraint(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    PMTicketRef   listTicket );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  PMTicketRef     listTicket);
+
+
 
 /* Boolean constraints don't need to be set - the constraint type is enough. */
 /* Accessors for reaching specific template entry info based on the key passed in. */
@@ -488,9 +525,10 @@ PMTemplateSetPMTicketListConstraint(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetValueType(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    PMValueType * valueType );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  PMValueType *   valueType);
+
 
 /*
  *  PMTemplateGetConstraintType()
@@ -502,9 +540,10 @@ PMTemplateGetValueType(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetConstraintType(
-    PMTemplateRef     pmTemplate,
-    CFStringRef       key,
-    PMConstraintType *constraintType );
+  PMTemplateRef       pmTemplate,
+  CFStringRef         key,
+  PMConstraintType *  constraintType);
+
 
 /* Fetch the various types of default values. */
 /*
@@ -517,9 +556,10 @@ PMTemplateGetConstraintType(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetCFDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFTypeRef *   defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFTypeRef *     defaultValue);
+
 
 /*
  *  PMTemplateGetSInt32DefaultValue()
@@ -531,9 +571,10 @@ PMTemplateGetCFDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetSInt32DefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32 *      defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32 *        defaultValue);
+
 
 /*
  *  PMTemplateGetSInt32RangeDefaultValue()
@@ -545,10 +586,11 @@ PMTemplateGetSInt32DefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetSInt32RangeDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32 *      min,
-    SInt32 *      max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32 *        min,
+  SInt32 *        max);
+
 
 /*
  *  PMTemplateGetBooleanDefaultValue()
@@ -560,9 +602,10 @@ PMTemplateGetSInt32RangeDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetBooleanDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    Boolean *     defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  Boolean *       defaultValue);
+
 
 /*
  *  PMTemplateGetDoubleDefaultValue()
@@ -574,9 +617,10 @@ PMTemplateGetBooleanDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetDoubleDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double *      defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double *        defaultValue);
+
 
 /*
  *  PMTemplateGetDoubleRangeDefaultValue()
@@ -588,10 +632,11 @@ PMTemplateGetDoubleDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetDoubleRangeDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double *      min,
-    double *      max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double *        min,
+  double *        max);
+
 
 /*
  *  PMTemplateGetCFDataDefaultValue()
@@ -603,9 +648,10 @@ PMTemplateGetDoubleRangeDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetCFDataDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFDataRef *   defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFDataRef *     defaultValue);
+
 
 /*
  *  PMTemplateGetPMRectDefaultValue()
@@ -617,9 +663,10 @@ PMTemplateGetCFDataDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetPMRectDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    PMRect *      defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  PMRect *        defaultValue);
+
 
 /*
  *  PMTemplateGetPMTicketDefaultValue()
@@ -631,9 +678,10 @@ PMTemplateGetPMRectDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetPMTicketDefaultValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    PMTicketRef * defaultValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  PMTicketRef *   defaultValue);
+
 
 /* Fetch the various flavors of constraint values. */
 /*
@@ -646,9 +694,10 @@ PMTemplateGetPMTicketDefaultValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetCFArrayConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFArrayRef *  constraintValue );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFArrayRef *    constraintValue);
+
 
 /*
  *  PMTemplateGetCFRangeConstraintValue()
@@ -660,10 +709,11 @@ PMTemplateGetCFArrayConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetCFRangeConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFTypeRef *   min,
-    CFTypeRef *   max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFTypeRef *     min,
+  CFTypeRef *     max);
+
 
 /*
  *  PMTemplateGetSInt32RangeConstraintValue()
@@ -675,10 +725,11 @@ PMTemplateGetCFRangeConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetSInt32RangeConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32 *      min,
-    SInt32 *      max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32 *        min,
+  SInt32 *        max);
+
 
 /*
  *  PMTemplateGetSInt32RangesConstraintValue()
@@ -690,12 +741,13 @@ PMTemplateGetSInt32RangeConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetSInt32RangesConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    SInt32 *      minForMin,
-    SInt32 *      maxForMin,
-    SInt32 *      minForMax,
-    SInt32 *      maxForMax );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  SInt32 *        minForMin,
+  SInt32 *        maxForMin,
+  SInt32 *        minForMax,
+  SInt32 *        maxForMax);
+
 
 /*
  *  PMTemplateGetDoubleRangeConstraintValue()
@@ -707,10 +759,11 @@ PMTemplateGetSInt32RangesConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetDoubleRangeConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double *      min,
-    double *      max );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double *        min,
+  double *        max);
+
 
 /*
  *  PMTemplateGetDoubleRangesConstraintValue()
@@ -722,12 +775,13 @@ PMTemplateGetDoubleRangeConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetDoubleRangesConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    double *      minForMin,
-    double *      maxForMin,
-    double *      minForMax,
-    double *      maxForMax );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  double *        minForMin,
+  double *        maxForMin,
+  double *        minForMax,
+  double *        maxForMax);
+
 
 /* The following functions need to be called twice, first to determine the length of */
 /* the list and a second time, after allocating space, to actually fetch the list.*/
@@ -741,10 +795,11 @@ PMTemplateGetDoubleRangesConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetSInt32ListConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    int *         listSize,
-    SInt32 *      sint32List );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  int *           listSize,
+  SInt32 *        sint32List);
+
 
 /*
  *  PMTemplateGetDoubleListConstraintValue()
@@ -756,10 +811,11 @@ PMTemplateGetSInt32ListConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetDoubleListConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    int *         listSize,
-    double *      doubleList );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  int *           listSize,
+  double *        doubleList);
+
 
 /*
  *  PMTemplateGetPMRectListConstraintValue()
@@ -771,10 +827,11 @@ PMTemplateGetDoubleListConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetPMRectListConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    int *         listSize,
-    PMRect *      rectList );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  int *           listSize,
+  PMRect *        rectList);
+
 
 /* The Ticket APIs support a "List Ticket" that can hold numerous other tickets, so there is */
 /* no need to allocate space for an array in this case. */
@@ -789,9 +846,10 @@ PMTemplateGetPMRectListConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateGetListTicketConstraintValue(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    PMTicketRef * listTicket );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  PMTicketRef *   listTicket);
+
 
 /* Remove an entry from our template. */
 /*
@@ -804,8 +862,10 @@ PMTemplateGetListTicketConstraintValue(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateRemoveEntry(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key);
+
+
 
 /* Validate a ticket item - passing in the key and the item data. */
 /*
@@ -818,10 +878,12 @@ PMTemplateRemoveEntry(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateValidateItem(
-    PMTemplateRef pmTemplate,
-    CFStringRef   key,
-    CFTypeRef     item,
-    Boolean *     validationResults );
+  PMTemplateRef   pmTemplate,
+  CFStringRef     key,
+  CFTypeRef       item,
+  Boolean *       validationResults);
+
+
 
 /* Move a set of template entries from one template to another. Any entry in the destination */
 /* template will be overwritten by an entry with the same key in the source template */
@@ -835,8 +897,9 @@ PMTemplateValidateItem(
  */
 EXTERN_API_C( OSStatus )
 PMTemplateMergeTemplates(
-    PMTemplateRef sourceTemplate,
-    PMTemplateRef destTemplate );
+  PMTemplateRef   sourceTemplate,
+  PMTemplateRef   destTemplate);
+
 
 /* NOTES:
     
@@ -858,12 +921,13 @@ PMTemplateMergeTemplates(
         for range constraints to be built for some entries, and list constraints for other entries.
 */
 
+
 #if PRAGMA_STRUCT_ALIGN
-#pragma options align = reset
+    #pragma options align=reset
 #elif PRAGMA_STRUCT_PACKPUSH
-#pragma pack( pop )
+    #pragma pack(pop)
 #elif PRAGMA_STRUCT_PACK
-#pragma pack()
+    #pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -877,3 +941,4 @@ PMTemplateMergeTemplates(
 #endif
 
 #endif /* __PMTEMPLATE__ */
+

@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include "cinder/gl/draw.h"
 #include "cinder/gl/platform.h"
-#include "cinder/gl/scoped.h"
 #include "cinder/gl/wrapper.h"
+#include "cinder/gl/draw.h"
+#include "cinder/gl/scoped.h"
 
 #include "cinder/gl/Batch.h"
 #include "cinder/gl/BufferTexture.h"
