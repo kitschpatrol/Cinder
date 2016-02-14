@@ -6,7 +6,7 @@
 	Simple redirect header to ConditionalMacros.h for use on Windows.
 */
 
-#if !defined(__TargetConditionals_h__)
+#if !defined( __TargetConditionals_h__ )
 #define __TargetConditionals_h__
 
 #include "ConditionalMacros.h"

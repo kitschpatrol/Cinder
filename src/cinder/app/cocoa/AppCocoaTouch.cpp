@@ -21,15 +21,16 @@
 */
 
 #include "cinder/app/cocoa/AppCocoaTouch.h"
-#include "cinder/app/cocoa/AppImplCocoaTouch.h"
 #include "cinder/Log.h"
+#include "cinder/app/cocoa/AppImplCocoaTouch.h"
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
-AppCocoaTouch*	AppCocoaTouch::sInstance = nullptr;
+AppCocoaTouch *AppCocoaTouch::sInstance = nullptr;
 
 AppCocoaTouch::Settings::Settings()
-	: AppBase::Settings(), mStatusBarEnabled( false )
+    : AppBase::Settings(), mStatusBarEnabled( false )
 {
 	mPowerManagementEnabled = true;
 	mHighDensityDisplayEnabled = true;
@@ -37,7 +38,7 @@ AppCocoaTouch::Settings::Settings()
 }
 
 AppCocoaTouch::AppCocoaTouch()
-	: AppBase()
+    : AppBase()
 {
 	AppCocoaTouch::sInstance = this;
 
@@ -58,9 +59,9 @@ AppCocoaTouch::~AppCocoaTouch()
 void AppCocoaTouch::launch()
 {
 	const auto &args = getCommandLineArgs();
-	int argc = (int)args.size();
+	int         argc = (int)args.size();
 
-	char* argv[argc];
+	char *argv[argc];
 	for( int i = 0; i < argc; i++ )
 		argv[i] = const_cast<char *>( args[i].c_str() );
 
@@ -74,7 +75,7 @@ WindowRef AppCocoaTouch::createWindow( const Window::Format &format )
 
 WindowRef AppCocoaTouch::getWindow() const
 {
-	if( ! mImpl->mActiveWindow )
+	if( !mImpl->mActiveWindow )
 		throw cinder::app::ExcInvalidWindow();
 	else
 		return mImpl->mActiveWindow->mWindowRef;
@@ -92,7 +93,7 @@ WindowRef AppCocoaTouch::getWindowIndex( size_t index ) const
 
 	auto iter = mImpl->mWindows.begin();
 	std::advance( iter, index );
-	return (*iter)->mWindowRef;
+	return ( *iter )->mWindowRef;
 }
 
 InterfaceOrientation AppCocoaTouch::getOrientation() const
@@ -110,8 +111,9 @@ InterfaceOrientation AppCocoaTouch::getWindowOrientation() const
 void AppCocoaTouch::enableProximitySensor()
 {
 	[UIDevice currentDevice].proximityMonitoringEnabled = YES;
-	[[NSNotificationCenter defaultCenter] addObserver:mImpl selector:@selector(proximityStateChange:)
-		name:UIDeviceProximityStateDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:mImpl selector:@selector( proximityStateChange: )
+	                                             name:UIDeviceProximityStateDidChangeNotification
+	                                           object:nil];
 }
 
 void AppCocoaTouch::disableProximitySensor()
@@ -129,10 +131,12 @@ void AppCocoaTouch::enableBatteryMonitoring()
 	[UIDevice currentDevice].batteryMonitoringEnabled = YES;
 	mImpl->mBatteryLevel = [UIDevice currentDevice].batteryLevel;
 	mImpl->mIsUnplugged = [UIDevice currentDevice].batteryState == UIDeviceBatteryStateUnplugged;
-	[[NSNotificationCenter defaultCenter] addObserver:mImpl selector:@selector(batteryLevelChange:) 
-		name:UIDeviceBatteryLevelDidChangeNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:mImpl selector:@selector(batteryStateChange:) 
-		name:UIDeviceBatteryStateDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:mImpl selector:@selector( batteryLevelChange: )
+	                                             name:UIDeviceBatteryLevelDidChangeNotification
+	                                           object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:mImpl selector:@selector( batteryStateChange: )
+	                                             name:UIDeviceBatteryStateDidChangeNotification
+	                                           object:nil];
 }
 
 void AppCocoaTouch::disableBatteryMonitoring()
@@ -165,7 +169,7 @@ void AppCocoaTouch::hideKeyboard()
 	[mImpl hideKeyboard];
 }
 
-std::string	AppCocoaTouch::getKeyboardString() const
+std::string AppCocoaTouch::getKeyboardString() const
 {
 	return [mImpl getKeyboardString];
 }
@@ -175,7 +179,7 @@ void AppCocoaTouch::setKeyboardString( const std::string &keyboardString )
 	[mImpl setKeyboardString:keyboardString];
 }
 
-::UITextView* AppCocoaTouch::getKeyboardTextView() const
+::UITextView *AppCocoaTouch::getKeyboardTextView() const
 {
 	return [mImpl getKeyboardTextView];
 }
@@ -288,14 +292,23 @@ void AppCocoaTouch::emitSignalBatteryState( bool isUnplugged )
 	mSignalBatteryState.emit( isUnplugged );
 }
 
-std::ostream& operator<<( std::ostream &lhs, const InterfaceOrientation &rhs )
+std::ostream &operator<<( std::ostream &lhs, const InterfaceOrientation &rhs )
 {
 	switch( rhs ) {
-		case InterfaceOrientation::Portrait:			lhs << "Portrait";				break;
-		case InterfaceOrientation::PortraitUpsideDown:	lhs << "PortraitUpsideDown";	break;
-		case InterfaceOrientation::LandscapeLeft:		lhs << "LandscapeLeft";			break;
-		case InterfaceOrientation::LandscapeRight:		lhs << "LandscapeRight";		break;
-		default: lhs << "Error";
+	case InterfaceOrientation::Portrait:
+		lhs << "Portrait";
+		break;
+	case InterfaceOrientation::PortraitUpsideDown:
+		lhs << "PortraitUpsideDown";
+		break;
+	case InterfaceOrientation::LandscapeLeft:
+		lhs << "LandscapeLeft";
+		break;
+	case InterfaceOrientation::LandscapeRight:
+		lhs << "LandscapeRight";
+		break;
+	default:
+		lhs << "Error";
 	}
 	return lhs;
 }
@@ -303,12 +316,17 @@ std::ostream& operator<<( std::ostream &lhs, const InterfaceOrientation &rhs )
 float getOrientationDegrees( InterfaceOrientation orientation )
 {
 	switch( orientation ) {
-		case InterfaceOrientation::Portrait:			return 0.0f;
-		case InterfaceOrientation::PortraitUpsideDown:	return 180.0f;
-		case InterfaceOrientation::LandscapeLeft:		return 90.0f;
-		case InterfaceOrientation::LandscapeRight:		return 270.0f;
-		default: return 0.0f;
+	case InterfaceOrientation::Portrait:
+		return 0.0f;
+	case InterfaceOrientation::PortraitUpsideDown:
+		return 180.0f;
+	case InterfaceOrientation::LandscapeLeft:
+		return 90.0f;
+	case InterfaceOrientation::LandscapeRight:
+		return 270.0f;
+	default:
+		return 0.0f;
 	}
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

@@ -36,12 +36,9 @@
 #include <Multiprocessing.h>
 #endif
 
-
 #ifndef __QUICKDRAW__
 #include <Quickdraw.h>
 #endif
-
-
 
 #if PRAGMA_ONCE
 #pragma once
@@ -56,62 +53,59 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /* Values of the 'message' parameter to a Chooser device package */
 enum {
-  chooserInitMsg                = 11,   /* the user selected this device package */
-  newSelMsg                     = 12,   /* the user made new device selections */
-  fillListMsg                   = 13,   /* fill the device list with choices */
-  getSelMsg                     = 14,   /* mark one or more choices as selected */
-  selectMsg                     = 15,   /* the user made a selection */
-  deselectMsg                   = 16,   /* the user canceled a selection */
-  terminateMsg                  = 17,   /* allows device package to clean up */
-  buttonMsg                     = 19    /* the user selected a button */
+	chooserInitMsg = 11, /* the user selected this device package */
+	newSelMsg = 12, /* the user made new device selections */
+	fillListMsg = 13, /* fill the device list with choices */
+	getSelMsg = 14, /* mark one or more choices as selected */
+	selectMsg = 15, /* the user made a selection */
+	deselectMsg = 16, /* the user canceled a selection */
+	terminateMsg = 17, /* allows device package to clean up */
+	buttonMsg = 19 /* the user selected a button */
 };
-
 
 /* Values of the 'caller' parameter to a Chooser device package */
 enum {
-  chooserID                     = 1
+	chooserID = 1
 };
-
 
 /* Values of the 'message' parameter to a Monitor 'mntr' */
 enum {
-  initMsg                       = 1,    /*initialization*/
-  okMsg                         = 2,    /*user clicked OK button*/
-  cancelMsg                     = 3,    /*user clicked Cancel button*/
-  hitMsg                        = 4,    /*user clicked control in Options dialog*/
-  nulMsg                        = 5,    /*periodic event*/
-  updateMsg                     = 6,    /*update event*/
-  activateMsg                   = 7,    /*not used*/
-  deactivateMsg                 = 8,    /*not used*/
-  keyEvtMsg                     = 9,    /*keyboard event*/
-  superMsg                      = 10,   /*show superuser controls*/
-  normalMsg                     = 11,   /*show only normal controls*/
-  startupMsg                    = 12    /*code has been loaded*/
+	initMsg = 1, /*initialization*/
+	okMsg = 2, /*user clicked OK button*/
+	cancelMsg = 3, /*user clicked Cancel button*/
+	hitMsg = 4, /*user clicked control in Options dialog*/
+	nulMsg = 5, /*periodic event*/
+	updateMsg = 6, /*update event*/
+	activateMsg = 7, /*not used*/
+	deactivateMsg = 8, /*not used*/
+	keyEvtMsg = 9, /*keyboard event*/
+	superMsg = 10, /*show superuser controls*/
+	normalMsg = 11, /*show only normal controls*/
+	startupMsg = 12 /*code has been loaded*/
 };
-
 
 /* control codes for DeskAccessories */
 enum {
-  goodbye                       = -1,   /* heap being reinitialized */
-  killCode                      = 1,    /* KillIO requested */
-  accEvent                      = 64,   /* handle an event */
-  accRun                        = 65,   /* time for periodic action */
-  accCursor                     = 66,   /* change cursor shape */
-  accMenu                       = 67,   /* handle menu item */
-  accUndo                       = 68,   /* handle undo command */
-  accCut                        = 70,   /* handle cut command */
-  accCopy                       = 71,   /* handle copy command */
-  accPaste                      = 72,   /* handle paste command */
-  accClear                      = 73    /* handle clear command */
+	goodbye = -1, /* heap being reinitialized */
+	killCode = 1, /* KillIO requested */
+	accEvent = 64, /* handle an event */
+	accRun = 65, /* time for periodic action */
+	accCursor = 66, /* change cursor shape */
+	accMenu = 67, /* handle menu item */
+	accUndo = 68, /* handle undo command */
+	accCut = 70, /* handle cut command */
+	accCopy = 71, /* handle copy command */
+	accPaste = 72, /* handle paste command */
+	accClear = 73 /* handle clear command */
 };
 
 /* Control/Status Call Codes */
@@ -119,195 +113,194 @@ enum {
 
 /* miscellaneous Device Manager constants */
 enum {
-  ioInProgress                  = 1,    /* predefined value of ioResult while I/O is pending */
-  aRdCmd                        = 2,    /* low byte of ioTrap for Read calls */
-  aWrCmd                        = 3,    /* low byte of ioTrap for Write calls */
-  asyncTrpBit                   = 10,   /* trap word modifier */
-  noQueueBit                    = 9     /* trap word modifier */
+	ioInProgress = 1, /* predefined value of ioResult while I/O is pending */
+	aRdCmd = 2, /* low byte of ioTrap for Read calls */
+	aWrCmd = 3, /* low byte of ioTrap for Write calls */
+	asyncTrpBit = 10, /* trap word modifier */
+	noQueueBit = 9 /* trap word modifier */
 };
 
 /* flags used in the driver header and device control entry */
 enum {
-  dReadEnable                   = 0,    /* set if driver responds to read requests */
-  dWritEnable                   = 1,    /* set if driver responds to write requests */
-  dCtlEnable                    = 2,    /* set if driver responds to control requests */
-  dStatEnable                   = 3,    /* set if driver responds to status requests */
-  dNeedGoodBye                  = 4,    /* set if driver needs time for performing periodic tasks */
-  dNeedTime                     = 5,    /* set if driver needs time for performing periodic tasks */
-  dNeedLock                     = 6     /* set if driver must be locked in memory as soon as it is opened */
+	dReadEnable = 0, /* set if driver responds to read requests */
+	dWritEnable = 1, /* set if driver responds to write requests */
+	dCtlEnable = 2, /* set if driver responds to control requests */
+	dStatEnable = 3, /* set if driver responds to status requests */
+	dNeedGoodBye = 4, /* set if driver needs time for performing periodic tasks */
+	dNeedTime = 5, /* set if driver needs time for performing periodic tasks */
+	dNeedLock = 6 /* set if driver must be locked in memory as soon as it is opened */
 };
 
 enum {
-  dNeedLockMask                 = 0x4000, /* set if driver must be locked in memory as soon as it is opened */
-  dNeedTimeMask                 = 0x2000, /* set if driver needs time for performing periodic tasks */
-  dNeedGoodByeMask              = 0x1000, /* set if driver needs to be called before the application heap is initialized */
-  dStatEnableMask               = 0x0800, /* set if driver responds to status requests */
-  dCtlEnableMask                = 0x0400, /* set if driver responds to control requests */
-  dWritEnableMask               = 0x0200, /* set if driver responds to write requests */
-  dReadEnableMask               = 0x0100 /* set if driver responds to read requests */
+	dNeedLockMask = 0x4000, /* set if driver must be locked in memory as soon as it is opened */
+	dNeedTimeMask = 0x2000, /* set if driver needs time for performing periodic tasks */
+	dNeedGoodByeMask = 0x1000, /* set if driver needs to be called before the application heap is initialized */
+	dStatEnableMask = 0x0800, /* set if driver responds to status requests */
+	dCtlEnableMask = 0x0400, /* set if driver responds to control requests */
+	dWritEnableMask = 0x0200, /* set if driver responds to write requests */
+	dReadEnableMask = 0x0100 /* set if driver responds to read requests */
 };
-
 
 /* run-time flags used in the device control entry */
 enum {
-  dVMImmuneBit                  = 0,    /* driver does not need VM protection */
-  dOpened                       = 5,    /* driver is open */
-  dRAMBased                     = 6,    /* dCtlDriver is a handle (1) or pointer (0) */
-  drvrActive                    = 7     /* driver is currently processing a request */
+	dVMImmuneBit = 0, /* driver does not need VM protection */
+	dOpened = 5, /* driver is open */
+	dRAMBased = 6, /* dCtlDriver is a handle (1) or pointer (0) */
+	drvrActive = 7 /* driver is currently processing a request */
 };
 
 enum {
-  dVMImmuneMask                 = 0x0001, /* driver does not need VM protection */
-  dOpenedMask                   = 0x0020, /* driver is open */
-  dRAMBasedMask                 = 0x0040, /* dCtlDriver is a handle (1) or pointer (0) */
-  drvrActiveMask                = 0x0080 /* driver is currently processing a request */
+	dVMImmuneMask = 0x0001, /* driver does not need VM protection */
+	dOpenedMask = 0x0020, /* driver is open */
+	dRAMBasedMask = 0x0040, /* dCtlDriver is a handle (1) or pointer (0) */
+	drvrActiveMask = 0x0080 /* driver is currently processing a request */
 };
 
 struct DRVRHeader {
-  short               drvrFlags;
-  short               drvrDelay;
-  short               drvrEMask;
-  short               drvrMenu;
-  short               drvrOpen;
-  short               drvrPrime;
-  short               drvrCtl;
-  short               drvrStatus;
-  short               drvrClose;
-  unsigned char       drvrName[1];
+	short         drvrFlags;
+	short         drvrDelay;
+	short         drvrEMask;
+	short         drvrMenu;
+	short         drvrOpen;
+	short         drvrPrime;
+	short         drvrCtl;
+	short         drvrStatus;
+	short         drvrClose;
+	unsigned char drvrName[1];
 };
-typedef struct DRVRHeader               DRVRHeader;
-typedef DRVRHeader *                    DRVRHeaderPtr;
-typedef DRVRHeaderPtr *                 DRVRHeaderHandle;
+typedef struct DRVRHeader DRVRHeader;
+typedef DRVRHeader *      DRVRHeaderPtr;
+typedef DRVRHeaderPtr *   DRVRHeaderHandle;
 struct DCtlEntry {
-  Ptr                 dCtlDriver;
-  volatile short      dCtlFlags;
-  QHdr                dCtlQHdr;
-  volatile long       dCtlPosition;
-  Handle              dCtlStorage;
-  short               dCtlRefNum;
-  long                dCtlCurTicks;
-  GrafPtr             dCtlWindow;
-  short               dCtlDelay;
-  short               dCtlEMask;
-  short               dCtlMenu;
+	Ptr            dCtlDriver;
+	volatile short dCtlFlags;
+	QHdr           dCtlQHdr;
+	volatile long  dCtlPosition;
+	Handle         dCtlStorage;
+	short          dCtlRefNum;
+	long           dCtlCurTicks;
+	GrafPtr        dCtlWindow;
+	short          dCtlDelay;
+	short          dCtlEMask;
+	short          dCtlMenu;
 };
-typedef struct DCtlEntry                DCtlEntry;
-typedef DCtlEntry *                     DCtlPtr;
-typedef DCtlPtr *                       DCtlHandle;
+typedef struct DCtlEntry DCtlEntry;
+typedef DCtlEntry *      DCtlPtr;
+typedef DCtlPtr *        DCtlHandle;
 struct AuxDCE {
-  Ptr                 dCtlDriver;
-  volatile short      dCtlFlags;
-  QHdr                dCtlQHdr;
-  long                dCtlPosition;
-  Handle              dCtlStorage;
-  short               dCtlRefNum;
-  long                dCtlCurTicks;
-  GrafPtr             dCtlWindow;
-  short               dCtlDelay;
-  short               dCtlEMask;
-  short               dCtlMenu;
-  SInt8               dCtlSlot;
-  SInt8               dCtlSlotId;
-  long                dCtlDevBase;
-  Ptr                 dCtlOwner;
-  SInt8               dCtlExtDev;
-  SInt8               fillByte;
-  UInt32              dCtlNodeID;
+	Ptr            dCtlDriver;
+	volatile short dCtlFlags;
+	QHdr           dCtlQHdr;
+	long           dCtlPosition;
+	Handle         dCtlStorage;
+	short          dCtlRefNum;
+	long           dCtlCurTicks;
+	GrafPtr        dCtlWindow;
+	short          dCtlDelay;
+	short          dCtlEMask;
+	short          dCtlMenu;
+	SInt8          dCtlSlot;
+	SInt8          dCtlSlotId;
+	long           dCtlDevBase;
+	Ptr            dCtlOwner;
+	SInt8          dCtlExtDev;
+	SInt8          fillByte;
+	UInt32         dCtlNodeID;
 };
-typedef struct AuxDCE                   AuxDCE;
-typedef AuxDCE *                        AuxDCEPtr;
-typedef AuxDCEPtr *                     AuxDCEHandle;
+typedef struct AuxDCE AuxDCE;
+typedef AuxDCE *      AuxDCEPtr;
+typedef AuxDCEPtr *   AuxDCEHandle;
 /*  The NDRV Driver IO Entry Point and Commands */
-typedef UInt16                          UnitNumber;
-typedef UInt32                          DriverOpenCount;
-typedef SInt16                          DriverRefNum;
-typedef SInt16                          DriverFlags;
-typedef UInt32                          IOCommandCode;
+typedef UInt16 UnitNumber;
+typedef UInt32 DriverOpenCount;
+typedef SInt16 DriverRefNum;
+typedef SInt16 DriverFlags;
+typedef UInt32 IOCommandCode;
 enum {
-  kOpenCommand                  = 0,
-  kCloseCommand                 = 1,
-  kReadCommand                  = 2,
-  kWriteCommand                 = 3,
-  kControlCommand               = 4,
-  kStatusCommand                = 5,
-  kKillIOCommand                = 6,
-  kInitializeCommand            = 7,    /* init driver and device*/
-  kFinalizeCommand              = 8,    /* shutdown driver and device*/
-  kReplaceCommand               = 9,    /* replace an old driver*/
-  kSupersededCommand            = 10,   /* prepare to be replaced by a new driver*/
-  kSuspendCommand               = 11,   /* prepare driver to go to sleep*/
-  kResumeCommand                = 12    /* wake up sleeping driver*/
+	kOpenCommand = 0,
+	kCloseCommand = 1,
+	kReadCommand = 2,
+	kWriteCommand = 3,
+	kControlCommand = 4,
+	kStatusCommand = 5,
+	kKillIOCommand = 6,
+	kInitializeCommand = 7, /* init driver and device*/
+	kFinalizeCommand = 8, /* shutdown driver and device*/
+	kReplaceCommand = 9, /* replace an old driver*/
+	kSupersededCommand = 10, /* prepare to be replaced by a new driver*/
+	kSuspendCommand = 11, /* prepare driver to go to sleep*/
+	kResumeCommand = 12 /* wake up sleeping driver*/
 };
 
-typedef MPAddressSpaceID                AddressSpaceID;
-typedef struct OpaqueIOCommandID*       IOCommandID;
+typedef MPAddressSpaceID          AddressSpaceID;
+typedef struct OpaqueIOCommandID *IOCommandID;
 struct MacDriverType {
-  long                filler[9];
+	long filler[9];
 };
-typedef struct MacDriverType            MacDriverType;
-typedef MacDriverType *                 DriverTypePtr;
+typedef struct MacDriverType MacDriverType;
+typedef MacDriverType *      DriverTypePtr;
 struct DriverDescription {
-  long                filler[32];
+	long filler[32];
 };
-typedef struct DriverDescription        DriverDescription;
-typedef DriverDescription *             DriverDescriptionPtr;
-typedef UInt32                          IOCommandKind;
+typedef struct DriverDescription DriverDescription;
+typedef DriverDescription *      DriverDescriptionPtr;
+typedef UInt32                   IOCommandKind;
 enum {
-  kSynchronousIOCommandKind     = 0x00000001,
-  kAsynchronousIOCommandKind    = 0x00000002,
-  kImmediateIOCommandKind       = 0x00000004
+	kSynchronousIOCommandKind = 0x00000001,
+	kAsynchronousIOCommandKind = 0x00000002,
+	kImmediateIOCommandKind = 0x00000004
 };
 
 struct DriverInitInfo {
-  DriverRefNum        refNum;
-  RegEntryID          deviceEntry;
+	DriverRefNum refNum;
+	RegEntryID   deviceEntry;
 };
-typedef struct DriverInitInfo           DriverInitInfo;
-typedef DriverInitInfo *                DriverInitInfoPtr;
-typedef DriverInitInfo                  DriverReplaceInfo;
-typedef DriverInitInfo *                DriverReplaceInfoPtr;
+typedef struct DriverInitInfo DriverInitInfo;
+typedef DriverInitInfo *      DriverInitInfoPtr;
+typedef DriverInitInfo        DriverReplaceInfo;
+typedef DriverInitInfo *      DriverReplaceInfoPtr;
 struct DriverFinalInfo {
-  DriverRefNum        refNum;
-  RegEntryID          deviceEntry;
+	DriverRefNum refNum;
+	RegEntryID   deviceEntry;
 };
-typedef struct DriverFinalInfo          DriverFinalInfo;
-typedef DriverFinalInfo *               DriverFinalInfoPtr;
-typedef DriverFinalInfo                 DriverSupersededInfo;
-typedef DriverFinalInfo *               DriverSupersededInfoPtr;
+typedef struct DriverFinalInfo DriverFinalInfo;
+typedef DriverFinalInfo *      DriverFinalInfoPtr;
+typedef DriverFinalInfo        DriverSupersededInfo;
+typedef DriverFinalInfo *      DriverSupersededInfoPtr;
 
 /* Contents are command specific*/
 
 union IOCommandContents {
-  ParmBlkPtr          pb;
-  DriverInitInfoPtr   initialInfo;
-  DriverFinalInfoPtr  finalInfo;
-  DriverReplaceInfoPtr  replaceInfo;
-  DriverSupersededInfoPtr  supersededInfo;
+	ParmBlkPtr              pb;
+	DriverInitInfoPtr       initialInfo;
+	DriverFinalInfoPtr      finalInfo;
+	DriverReplaceInfoPtr    replaceInfo;
+	DriverSupersededInfoPtr supersededInfo;
 };
-typedef union IOCommandContents         IOCommandContents;
-typedef CALLBACK_API_C( OSErr , DriverEntryPointPtr )(AddressSpaceID SpaceID, IOCommandID CommandID, IOCommandContents Contents, IOCommandCode Code, IOCommandKind Kind);
+typedef union IOCommandContents IOCommandContents;
+typedef CALLBACK_API_C( OSErr, DriverEntryPointPtr )( AddressSpaceID SpaceID, IOCommandID CommandID, IOCommandContents Contents, IOCommandCode Code, IOCommandKind Kind );
 /* Record to describe a file-based driver candidate */
 struct FileBasedDriverRecord {
-  FSSpec              theSpec;                /* file specification*/
-  MacDriverType       theType;                /* nameInfoStr + version number*/
-  Boolean             compatibleProp;         /* true if matched using a compatible name*/
-  UInt8               pad[3];                 /* alignment*/
+	FSSpec        theSpec; /* file specification*/
+	MacDriverType theType; /* nameInfoStr + version number*/
+	Boolean       compatibleProp; /* true if matched using a compatible name*/
+	UInt8         pad[3]; /* alignment*/
 };
-typedef struct FileBasedDriverRecord    FileBasedDriverRecord;
-typedef FileBasedDriverRecord *         FileBasedDriverRecordPtr;
+typedef struct FileBasedDriverRecord FileBasedDriverRecord;
+typedef FileBasedDriverRecord *      FileBasedDriverRecordPtr;
 /* Detailed Record to describe a file-based driver candidate. Includes fragment name */
 struct FileBasedDriverDetailed {
-  FileBasedDriverRecord  fileBasedDriver;
-  Str63               fragName;
+	FileBasedDriverRecord fileBasedDriver;
+	Str63                 fragName;
 };
-typedef struct FileBasedDriverDetailed  FileBasedDriverDetailed;
-typedef FileBasedDriverDetailed *       FileBasedDriverDetailedPtr;
+typedef struct FileBasedDriverDetailed FileBasedDriverDetailed;
+typedef FileBasedDriverDetailed *      FileBasedDriverDetailedPtr;
 /* Driver Loader API */
-#define DECLARE_DRIVERDESCRIPTION(N_ADDITIONAL_SERVICES)\
-        struct {\
-            DriverDescription   fixed;\
-            DriverServiceInfo   additional_service[N_ADDITIONAL_SERVICES-1];\
-        };
+#define DECLARE_DRIVERDESCRIPTION( N_ADDITIONAL_SERVICES )               \
+	struct {                                                             \
+		DriverDescription fixed;                                         \
+		DriverServiceInfo additional_service[N_ADDITIONAL_SERVICES - 1]; \
+	};
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -320,9 +313,8 @@ typedef FileBasedDriverDetailed *       FileBasedDriverDetailedPtr;
  */
 EXTERN_API_C( SInt16 )
 HigherDriverVersion(
-  const NumVersion *  driverVersion1,
-  const NumVersion *  driverVersion2);
-
+    const NumVersion *driverVersion1,
+    const NumVersion *driverVersion2 );
 
 /*
  *  VerifyFragmentAsDriver()
@@ -334,10 +326,9 @@ HigherDriverVersion(
  */
 EXTERN_API_C( OSErr )
 VerifyFragmentAsDriver(
-  CFragConnectionID       fragmentConnID,
-  DriverEntryPointPtr *   fragmentMain,
-  DriverDescriptionPtr *  driverDesc);
-
+    CFragConnectionID     fragmentConnID,
+    DriverEntryPointPtr * fragmentMain,
+    DriverDescriptionPtr *driverDesc );
 
 /*
  *  GetDriverMemoryFragment()
@@ -349,13 +340,12 @@ VerifyFragmentAsDriver(
  */
 EXTERN_API_C( OSErr )
 GetDriverMemoryFragment(
-  Ptr                     memAddr,
-  long                    length,
-  ConstStr63Param         fragName,
-  CFragConnectionID *     fragmentConnID,
-  DriverEntryPointPtr *   fragmentMain,
-  DriverDescriptionPtr *  driverDesc);
-
+    Ptr                   memAddr,
+    long                  length,
+    ConstStr63Param       fragName,
+    CFragConnectionID *   fragmentConnID,
+    DriverEntryPointPtr * fragmentMain,
+    DriverDescriptionPtr *driverDesc );
 
 /*
  *  GetDriverDiskFragment()
@@ -367,11 +357,10 @@ GetDriverMemoryFragment(
  */
 EXTERN_API_C( OSErr )
 GetDriverDiskFragment(
-  FSSpecPtr               fragmentSpec,
-  CFragConnectionID *     fragmentConnID,
-  DriverEntryPointPtr *   fragmentMain,
-  DriverDescriptionPtr *  driverDesc);
-
+    FSSpecPtr             fragmentSpec,
+    CFragConnectionID *   fragmentConnID,
+    DriverEntryPointPtr * fragmentMain,
+    DriverDescriptionPtr *driverDesc );
 
 /*
  *  GetNamedDriverDiskFragment()
@@ -383,12 +372,11 @@ GetDriverDiskFragment(
  */
 EXTERN_API_C( OSErr )
 GetNamedDriverDiskFragment(
-  FSSpecPtr               fragmentSpec,
-  ConstStr63Param         fragName,
-  CFragConnectionID *     fragmentConnID,
-  DriverEntryPointPtr *   fragmentMain,
-  DriverDescriptionPtr *  driverDesc);
-
+    FSSpecPtr             fragmentSpec,
+    ConstStr63Param       fragName,
+    CFragConnectionID *   fragmentConnID,
+    DriverEntryPointPtr * fragmentMain,
+    DriverDescriptionPtr *driverDesc );
 
 /*
  *  InstallDriverFromFragment()
@@ -400,12 +388,11 @@ GetNamedDriverDiskFragment(
  */
 EXTERN_API_C( OSErr )
 InstallDriverFromFragment(
-  CFragConnectionID   fragmentConnID,
-  RegEntryID *        device,
-  UnitNumber          beginningUnit,
-  UnitNumber          endingUnit,
-  DriverRefNum *      refNum);
-
+    CFragConnectionID fragmentConnID,
+    RegEntryID *      device,
+    UnitNumber        beginningUnit,
+    UnitNumber        endingUnit,
+    DriverRefNum *    refNum );
 
 /*
  *  InstallDriverFromFile()
@@ -417,12 +404,11 @@ InstallDriverFromFragment(
  */
 EXTERN_API_C( OSErr )
 InstallDriverFromFile(
-  FSSpecPtr       fragmentSpec,
-  RegEntryID *    device,
-  UnitNumber      beginningUnit,
-  UnitNumber      endingUnit,
-  DriverRefNum *  refNum);
-
+    FSSpecPtr     fragmentSpec,
+    RegEntryID *  device,
+    UnitNumber    beginningUnit,
+    UnitNumber    endingUnit,
+    DriverRefNum *refNum );
 
 /*
  *  InstallDriverFromMemory()
@@ -434,14 +420,13 @@ InstallDriverFromFile(
  */
 EXTERN_API_C( OSErr )
 InstallDriverFromMemory(
-  Ptr               memory,
-  long              length,
-  ConstStr63Param   fragName,
-  RegEntryID *      device,
-  UnitNumber        beginningUnit,
-  UnitNumber        endingUnit,
-  DriverRefNum *    refNum);
-
+    Ptr             memory,
+    long            length,
+    ConstStr63Param fragName,
+    RegEntryID *    device,
+    UnitNumber      beginningUnit,
+    UnitNumber      endingUnit,
+    DriverRefNum *  refNum );
 
 /*
  *  InstallDriverFromResource()
@@ -453,13 +438,12 @@ InstallDriverFromMemory(
  */
 EXTERN_API_C( OSErr )
 InstallDriverFromResource(
-  SInt16             theRsrcID,
-  ConstStr255Param   theRsrcName,
-  RegEntryIDPtr      theDevice,
-  UnitNumber         theBeginningUnit,
-  UnitNumber         theEndingUnit,
-  DriverRefNum *     theRefNum);
-
+    SInt16           theRsrcID,
+    ConstStr255Param theRsrcName,
+    RegEntryIDPtr    theDevice,
+    UnitNumber       theBeginningUnit,
+    UnitNumber       theEndingUnit,
+    DriverRefNum *   theRefNum );
 
 /*
  *  InstallDriverFromDisk()
@@ -471,12 +455,11 @@ InstallDriverFromResource(
  */
 EXTERN_API_C( OSErr )
 InstallDriverFromDisk(
-  Ptr             theDriverName,
-  RegEntryID *    theDevice,
-  UnitNumber      theBeginningUnit,
-  UnitNumber      theEndingUnit,
-  DriverRefNum *  theRefNum);
-
+    Ptr           theDriverName,
+    RegEntryID *  theDevice,
+    UnitNumber    theBeginningUnit,
+    UnitNumber    theEndingUnit,
+    DriverRefNum *theRefNum );
 
 /*
  *  FindDriversForDevice()
@@ -488,14 +471,13 @@ InstallDriverFromDisk(
  */
 EXTERN_API_C( OSErr )
 FindDriversForDevice(
-  RegEntryID *         device,
-  FSSpec *             fragmentSpec,
-  DriverDescription *  fileDriverDesc,
-  Ptr *                memAddr,
-  long *               length,
-  StringPtr            fragName,
-  DriverDescription *  memDriverDesc);
-
+    RegEntryID *       device,
+    FSSpec *           fragmentSpec,
+    DriverDescription *fileDriverDesc,
+    Ptr *              memAddr,
+    long *             length,
+    StringPtr          fragName,
+    DriverDescription *memDriverDesc );
 
 /*
  *  FindDriverForDeviceFromFile()
@@ -507,11 +489,10 @@ FindDriversForDevice(
  */
 EXTERN_API_C( OSErr )
 FindDriverForDeviceFromFile(
-  RegEntryID *         device,
-  FSSpec *             fragmentSpec,
-  DriverDescription *  driverDesc,
-  StringPtr            fragName);
-
+    RegEntryID *       device,
+    FSSpec *           fragmentSpec,
+    DriverDescription *driverDesc,
+    StringPtr          fragName );
 
 /*
  *  FindDriverCandidates()
@@ -523,15 +504,14 @@ FindDriverForDeviceFromFile(
  */
 EXTERN_API_C( OSErr )
 FindDriverCandidates(
-  RegEntryID *               deviceID,
-  Ptr *                      propBasedDriver,
-  RegPropertyValueSize *     propBasedDriverSize,
-  StringPtr                  deviceName,
-  MacDriverType *            propBasedDriverType,
-  Boolean *                  gotPropBasedDriver,
-  FileBasedDriverRecordPtr   fileBasedDrivers,
-  ItemCount *                nFileBasedDrivers);
-
+    RegEntryID *             deviceID,
+    Ptr *                    propBasedDriver,
+    RegPropertyValueSize *   propBasedDriverSize,
+    StringPtr                deviceName,
+    MacDriverType *          propBasedDriverType,
+    Boolean *                gotPropBasedDriver,
+    FileBasedDriverRecordPtr fileBasedDrivers,
+    ItemCount *              nFileBasedDrivers );
 
 /*
  *  FindDriverCandidatesDetailed()
@@ -543,15 +523,14 @@ FindDriverCandidates(
  */
 EXTERN_API_C( OSErr )
 FindDriverCandidatesDetailed(
-  RegEntryIDPtr                deviceID,
-  Ptr *                        propBasedDriver,
-  RegPropertyValueSize *       propBasedDriverSize,
-  StringPtr                    deviceName,
-  MacDriverType *              propBasedDriverType,
-  Boolean *                    gotPropBasedDriver,
-  FileBasedDriverDetailedPtr   fileBasedDrivers,
-  ItemCount *                  nFileBasedDrivers);
-
+    RegEntryIDPtr              deviceID,
+    Ptr *                      propBasedDriver,
+    RegPropertyValueSize *     propBasedDriverSize,
+    StringPtr                  deviceName,
+    MacDriverType *            propBasedDriverType,
+    Boolean *                  gotPropBasedDriver,
+    FileBasedDriverDetailedPtr fileBasedDrivers,
+    ItemCount *                nFileBasedDrivers );
 
 /*
  *  ScanDriverCandidates()
@@ -563,12 +542,11 @@ FindDriverCandidatesDetailed(
  */
 EXTERN_API_C( OSErr )
 ScanDriverCandidates(
-  RegEntryID *               deviceID,
-  FileBasedDriverRecordPtr   fileBasedDrivers,
-  ItemCount                  nFileBasedDrivers,
-  FileBasedDriverRecordPtr   matchingDrivers,
-  ItemCount *                nMatchingDrivers);
-
+    RegEntryID *             deviceID,
+    FileBasedDriverRecordPtr fileBasedDrivers,
+    ItemCount                nFileBasedDrivers,
+    FileBasedDriverRecordPtr matchingDrivers,
+    ItemCount *              nMatchingDrivers );
 
 /*
  *  ScanDriverCandidatesDetailed()
@@ -580,12 +558,11 @@ ScanDriverCandidates(
  */
 EXTERN_API_C( OSErr )
 ScanDriverCandidatesDetailed(
-  RegEntryID *                 deviceID,
-  FileBasedDriverDetailedPtr   fileBasedDrivers,
-  ItemCount                    nFileBasedDrivers,
-  FileBasedDriverDetailedPtr   matchingDrivers,
-  ItemCount *                  nMatchingDrivers);
-
+    RegEntryID *               deviceID,
+    FileBasedDriverDetailedPtr fileBasedDrivers,
+    ItemCount                  nFileBasedDrivers,
+    FileBasedDriverDetailedPtr matchingDrivers,
+    ItemCount *                nMatchingDrivers );
 
 /*
  *  CompareFileCandToPropCand()
@@ -597,11 +574,10 @@ ScanDriverCandidatesDetailed(
  */
 EXTERN_API_C( SInt16 )
 CompareFileCandToPropCand(
-  RegEntryID *               device,
-  StringPtr                  deviceName,
-  DriverTypePtr              propBasedCandidate,
-  FileBasedDriverRecordPtr   fileBasedCandidate);
-
+    RegEntryID *             device,
+    StringPtr                deviceName,
+    DriverTypePtr            propBasedCandidate,
+    FileBasedDriverRecordPtr fileBasedCandidate );
 
 /*
  *  GetCompatibleProperty()
@@ -613,10 +589,9 @@ CompareFileCandToPropCand(
  */
 EXTERN_API_C( void )
 GetCompatibleProperty(
-  RegEntryID *  device,
-  StringPtr *   compatibleNames,
-  ItemCount *   nCompatibleNames);
-
+    RegEntryID *device,
+    StringPtr * compatibleNames,
+    ItemCount * nCompatibleNames );
 
 /*
  *  CompatibleDriverNames()
@@ -628,11 +603,10 @@ GetCompatibleProperty(
  */
 EXTERN_API_C( Boolean )
 CompatibleDriverNames(
-  StringPtr   nameInfoStr,
-  StringPtr   compatibleNames,
-  ItemCount   nCompatibleNames,
-  long *      nameCount);
-
+    StringPtr nameInfoStr,
+    StringPtr compatibleNames,
+    ItemCount nCompatibleNames,
+    long *    nameCount );
 
 /*
  *  GetDriverForDevice()
@@ -644,11 +618,10 @@ CompatibleDriverNames(
  */
 EXTERN_API_C( OSErr )
 GetDriverForDevice(
-  RegEntryID *            device,
-  CFragConnectionID *     fragmentConnID,
-  DriverEntryPointPtr *   fragmentMain,
-  DriverDescriptionPtr *  driverDesc);
-
+    RegEntryID *          device,
+    CFragConnectionID *   fragmentConnID,
+    DriverEntryPointPtr * fragmentMain,
+    DriverDescriptionPtr *driverDesc );
 
 /*
  *  InstallDriverForDevice()
@@ -660,11 +633,10 @@ GetDriverForDevice(
  */
 EXTERN_API_C( OSErr )
 InstallDriverForDevice(
-  RegEntryID *    device,
-  UnitNumber      beginningUnit,
-  UnitNumber      endingUnit,
-  DriverRefNum *  refNum);
-
+    RegEntryID *  device,
+    UnitNumber    beginningUnit,
+    UnitNumber    endingUnit,
+    DriverRefNum *refNum );
 
 /*
  *  GetDriverInformation()
@@ -676,17 +648,16 @@ InstallDriverForDevice(
  */
 EXTERN_API_C( OSErr )
 GetDriverInformation(
-  DriverRefNum           refNum,
-  UnitNumber *           unitNum,
-  DriverFlags *          flags,
-  DriverOpenCount *      count,
-  StringPtr              name,
-  RegEntryID *           device,
-  CFragSystem7Locator *  driverLoadLocation,
-  CFragConnectionID *    fragmentConnID,
-  DriverEntryPointPtr *  fragmentMain,
-  DriverDescription *    driverDesc);
-
+    DriverRefNum         refNum,
+    UnitNumber *         unitNum,
+    DriverFlags *        flags,
+    DriverOpenCount *    count,
+    StringPtr            name,
+    RegEntryID *         device,
+    CFragSystem7Locator *driverLoadLocation,
+    CFragConnectionID *  fragmentConnID,
+    DriverEntryPointPtr *fragmentMain,
+    DriverDescription *  driverDesc );
 
 /*
  *  GetDriverDescription()
@@ -698,9 +669,8 @@ GetDriverInformation(
  */
 EXTERN_API_C( OSErr )
 GetDriverDescription(
-  LogicalAddress          fragmentPtr,
-  DriverDescriptionPtr *  theDriverDesc);
-
+    LogicalAddress        fragmentPtr,
+    DriverDescriptionPtr *theDriverDesc );
 
 /*
  *  GetNamedDriverDescFromFSSpec()
@@ -712,10 +682,9 @@ GetDriverDescription(
  */
 EXTERN_API_C( OSStatus )
 GetNamedDriverDescFromFSSpec(
-  FSSpecPtr               fragmentSpec,
-  StringPtr               fragName,
-  DriverDescriptionPtr *  driverDesc);
-
+    FSSpecPtr             fragmentSpec,
+    StringPtr             fragName,
+    DriverDescriptionPtr *driverDesc );
 
 /*
  *  SetDriverClosureMemory()
@@ -727,9 +696,8 @@ GetNamedDriverDescFromFSSpec(
  */
 EXTERN_API_C( OSErr )
 SetDriverClosureMemory(
-  CFragConnectionID   fragmentConnID,
-  Boolean             holdDriverMemory);
-
+    CFragConnectionID fragmentConnID,
+    Boolean           holdDriverMemory );
 
 /*
  *  ReplaceDriverWithFragment()
@@ -741,9 +709,8 @@ SetDriverClosureMemory(
  */
 EXTERN_API_C( OSErr )
 ReplaceDriverWithFragment(
-  DriverRefNum        theRefNum,
-  CFragConnectionID   fragmentConnID);
-
+    DriverRefNum      theRefNum,
+    CFragConnectionID fragmentConnID );
 
 /*
  *  OpenInstalledDriver()
@@ -755,9 +722,8 @@ ReplaceDriverWithFragment(
  */
 EXTERN_API_C( OSErr )
 OpenInstalledDriver(
-  DriverRefNum   refNum,
-  SInt8          ioPermission);
-
+    DriverRefNum refNum,
+    SInt8        ioPermission );
 
 /*
  *  RenameDriver()
@@ -769,9 +735,8 @@ OpenInstalledDriver(
  */
 EXTERN_API_C( OSErr )
 RenameDriver(
-  DriverRefNum   refNum,
-  StringPtr      newDriverName);
-
+    DriverRefNum refNum,
+    StringPtr    newDriverName );
 
 /*
  *  RemoveDriver()
@@ -783,9 +748,8 @@ RenameDriver(
  */
 EXTERN_API_C( OSErr )
 RemoveDriver(
-  DriverRefNum   refNum,
-  Boolean        immediate);
-
+    DriverRefNum refNum,
+    Boolean      immediate );
 
 /*
  *  LookupDrivers()
@@ -797,12 +761,11 @@ RemoveDriver(
  */
 EXTERN_API_C( OSErr )
 LookupDrivers(
-  UnitNumber      beginningUnit,
-  UnitNumber      endingUnit,
-  Boolean         emptyUnits,
-  ItemCount *     returnedRefNums,
-  DriverRefNum *  refNums);
-
+    UnitNumber    beginningUnit,
+    UnitNumber    endingUnit,
+    Boolean       emptyUnits,
+    ItemCount *   returnedRefNums,
+    DriverRefNum *refNums );
 
 /*
  *  HighestUnitNumber()
@@ -813,8 +776,7 @@ LookupDrivers(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UnitNumber )
-HighestUnitNumber(void);
-
+HighestUnitNumber( void );
 
 /*
  *  DriverGestaltOn()
@@ -825,8 +787,7 @@ HighestUnitNumber(void);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSErr )
-DriverGestaltOn(DriverRefNum refNum);
-
+DriverGestaltOn( DriverRefNum refNum );
 
 /*
  *  DriverGestaltOff()
@@ -837,8 +798,7 @@ DriverGestaltOn(DriverRefNum refNum);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSErr )
-DriverGestaltOff(DriverRefNum refNum);
-
+DriverGestaltOff( DriverRefNum refNum );
 
 /*
  *  DriverGestaltIsOn()
@@ -849,8 +809,7 @@ DriverGestaltOff(DriverRefNum refNum);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( Boolean )
-DriverGestaltIsOn(DriverFlags flags);
-
+DriverGestaltIsOn( DriverFlags flags );
 
 /*
  *  PBOpenSync()
@@ -861,11 +820,10 @@ DriverGestaltIsOn(DriverFlags flags);
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBOpenSync(__A0)
+#pragma parameter __D0 PBOpenSync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBOpenSync(ParmBlkPtr paramBlock)                             ONEWORDINLINE(0xA000);
-
+PBOpenSync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA000 );
 
 /*
  *  PBOpenAsync()
@@ -876,11 +834,10 @@ PBOpenSync(ParmBlkPtr paramBlock)                             ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBOpenAsync(__A0)
+#pragma parameter __D0 PBOpenAsync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBOpenAsync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA400);
-
+PBOpenAsync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA400 );
 
 /*
  *  PBOpenImmed()
@@ -891,13 +848,12 @@ PBOpenAsync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA4
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBOpenImmed(__A0)
+#pragma parameter __D0 PBOpenImmed( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBOpenImmed(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA200);
+PBOpenImmed( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA200 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  PBCloseSync()
@@ -908,11 +864,10 @@ PBOpenImmed(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA2
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBCloseSync(__A0)
+#pragma parameter __D0 PBCloseSync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBCloseSync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA001);
-
+PBCloseSync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA001 );
 
 /*
  *  PBCloseAsync()
@@ -923,11 +878,10 @@ PBCloseSync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA0
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBCloseAsync(__A0)
+#pragma parameter __D0 PBCloseAsync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBCloseAsync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA401);
-
+PBCloseAsync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA401 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -939,13 +893,12 @@ PBCloseAsync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA4
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBCloseImmed(__A0)
+#pragma parameter __D0 PBCloseImmed( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBCloseImmed(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA201);
+PBCloseImmed( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA201 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  PBReadSync()
@@ -956,11 +909,10 @@ PBCloseImmed(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA2
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBReadSync(__A0)
+#pragma parameter __D0 PBReadSync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBReadSync(ParmBlkPtr paramBlock)                             ONEWORDINLINE(0xA002);
-
+PBReadSync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA002 );
 
 /*
  *  PBReadAsync()
@@ -971,11 +923,10 @@ PBReadSync(ParmBlkPtr paramBlock)                             ONEWORDINLINE(0xA0
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBReadAsync(__A0)
+#pragma parameter __D0 PBReadAsync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBReadAsync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA402);
-
+PBReadAsync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA402 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -987,13 +938,12 @@ PBReadAsync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA4
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBReadImmed(__A0)
+#pragma parameter __D0 PBReadImmed( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBReadImmed(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA202);
+PBReadImmed( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA202 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  PBWriteSync()
@@ -1004,11 +954,10 @@ PBReadImmed(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA2
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBWriteSync(__A0)
+#pragma parameter __D0 PBWriteSync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBWriteSync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA003);
-
+PBWriteSync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA003 );
 
 /*
  *  PBWriteAsync()
@@ -1019,11 +968,10 @@ PBWriteSync(ParmBlkPtr paramBlock)                            ONEWORDINLINE(0xA0
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBWriteAsync(__A0)
+#pragma parameter __D0 PBWriteAsync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBWriteAsync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA403);
-
+PBWriteAsync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA403 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1035,18 +983,17 @@ PBWriteAsync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA4
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBWriteImmed(__A0)
+#pragma parameter __D0 PBWriteImmed( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBWriteImmed(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA203);
-
+PBWriteImmed( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA203 );
 
 /*
     PBWaitIOComplete is a friendly way for applications to monitor
     a pending asynchronous I/O operation in power-managed and
     preemptive multitasking systems.
  */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  PBWaitIOComplete()
@@ -1058,9 +1005,8 @@ PBWriteImmed(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA2
  */
 EXTERN_API( OSErr )
 PBWaitIOComplete(
-  ParmBlkPtr   paramBlock,
-  Duration     timeout);
-
+    ParmBlkPtr paramBlock,
+    Duration   timeout );
 
 /* AddDrive and GetDrvQHdr are now defined in Disks.h/p/a */
 
@@ -1074,8 +1020,7 @@ PBWaitIOComplete(
  *    Mac OS X:         not available
  */
 EXTERN_API( DCtlHandle )
-GetDCtlEntry(short refNum);
-
+GetDCtlEntry( short refNum );
 
 /*
     SetChooserAlert used to simply set a bit in a low-mem global
@@ -1098,13 +1043,12 @@ GetDCtlEntry(short refNum);
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 DriverInstall(__A0, __D0)
+#pragma parameter __D0 DriverInstall( __A0, __D0 )
 #endif
 EXTERN_API( OSErr )
 DriverInstall(
-  DRVRHeaderPtr   drvrPtr,
-  short           refNum)                                     ONEWORDINLINE(0xA03D);
-
+    DRVRHeaderPtr drvrPtr,
+    short         refNum ) ONEWORDINLINE( 0xA03D );
 
 /*
  *  DriverInstallReserveMem()
@@ -1115,13 +1059,12 @@ DriverInstall(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 DriverInstallReserveMem(__A0, __D0)
+#pragma parameter __D0 DriverInstallReserveMem( __A0, __D0 )
 #endif
 EXTERN_API( OSErr )
 DriverInstallReserveMem(
-  DRVRHeaderPtr   drvrPtr,
-  short           refNum)                                     ONEWORDINLINE(0xA43D);
-
+    DRVRHeaderPtr drvrPtr,
+    short         refNum ) ONEWORDINLINE( 0xA43D );
 
 /*
   Note: DrvrInstall() is no longer supported, becuase it never really worked anyways.
@@ -1140,15 +1083,14 @@ DriverInstallReserveMem(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 DrvrRemove(__D0)
+#pragma parameter __D0 DrvrRemove( __D0 )
 #endif
 EXTERN_API( OSErr )
-DrvrRemove(short refNum)                                      ONEWORDINLINE(0xA03E);
+DrvrRemove( short refNum ) ONEWORDINLINE( 0xA03E );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#define DriverRemove(refNum) DrvrRemove(refNum)
+#define DriverRemove( refNum ) DrvrRemove( refNum )
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1160,13 +1102,12 @@ DrvrRemove(short refNum)                                      ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC
-    #define MacOpenDriver OpenDriver
+#define MacOpenDriver OpenDriver
 #endif
 EXTERN_API( OSErr )
 MacOpenDriver(
-  ConstStr255Param   name,
-  short *            drvrRefNum);
-
+    ConstStr255Param name,
+    short *          drvrRefNum );
 
 /*
  *  [Mac]CloseDriver()
@@ -1177,11 +1118,10 @@ MacOpenDriver(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC
-    #define MacCloseDriver CloseDriver
+#define MacCloseDriver CloseDriver
 #endif
 EXTERN_API( OSErr )
-MacCloseDriver(short refNum);
-
+MacCloseDriver( short refNum );
 
 /*
  *  Control()
@@ -1193,10 +1133,9 @@ MacCloseDriver(short refNum);
  */
 EXTERN_API( OSErr )
 Control(
-  short         refNum,
-  short         csCode,
-  const void *  csParamPtr);
-
+    short       refNum,
+    short       csCode,
+    const void *csParamPtr );
 
 /*
  *  Status()
@@ -1208,10 +1147,9 @@ Control(
  */
 EXTERN_API( OSErr )
 Status(
-  short   refNum,
-  short   csCode,
-  void *  csParamPtr);
-
+    short refNum,
+    short csCode,
+    void *csParamPtr );
 
 /*
  *  KillIO()
@@ -1222,8 +1160,7 @@ Status(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-KillIO(short refNum);
-
+KillIO( short refNum );
 
 /*
  *  Fetch()
@@ -1234,11 +1171,10 @@ KillIO(short refNum);
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 Fetch(__A1)
+#pragma parameter __D0 Fetch( __A1 )
 #endif
 EXTERN_API( long )
-Fetch(DCtlPtr dce)                                            THREEWORDINLINE(0x2078, 0x08F4, 0x4E90);
-
+Fetch( DCtlPtr dce ) THREEWORDINLINE( 0x2078, 0x08F4, 0x4E90 );
 
 /*
  *  Stash()
@@ -1249,13 +1185,12 @@ Fetch(DCtlPtr dce)                                            THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 Stash(__A1, __D0)
+#pragma parameter __D0 Stash( __A1, __D0 )
 #endif
 EXTERN_API( long )
 Stash(
-  DCtlPtr   dce,
-  char      data)                                             THREEWORDINLINE(0x2078, 0x08F8, 0x4E90);
-
+    DCtlPtr dce,
+    char    data ) THREEWORDINLINE( 0x2078, 0x08F8, 0x4E90 );
 
 /*
  *  IODone()
@@ -1266,15 +1201,14 @@ Stash(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter IODone(__A1, __D0)
+#pragma parameter IODone( __A1, __D0 )
 #endif
 EXTERN_API( void )
 IODone(
-  DCtlPtr   dce,
-  OSErr     ioResult)                                         THREEWORDINLINE(0x2078, 0x08FC, 0x4E90);
+    DCtlPtr dce,
+    OSErr   ioResult ) THREEWORDINLINE( 0x2078, 0x08FC, 0x4E90 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1286,11 +1220,10 @@ IODone(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBControlSync(__A0)
+#pragma parameter __D0 PBControlSync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBControlSync(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA004);
-
+PBControlSync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA004 );
 
 /*
  *  PBControlAsync()
@@ -1301,11 +1234,10 @@ PBControlSync(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBControlAsync(__A0)
+#pragma parameter __D0 PBControlAsync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBControlAsync(ParmBlkPtr paramBlock)                         ONEWORDINLINE(0xA404);
-
+PBControlAsync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA404 );
 
 /*
  *  PBControlImmed()
@@ -1316,11 +1248,10 @@ PBControlAsync(ParmBlkPtr paramBlock)                         ONEWORDINLINE(0xA4
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBControlImmed(__A0)
+#pragma parameter __D0 PBControlImmed( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBControlImmed(ParmBlkPtr paramBlock)                         ONEWORDINLINE(0xA204);
-
+PBControlImmed( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA204 );
 
 /*
  *  PBStatusSync()
@@ -1331,11 +1262,10 @@ PBControlImmed(ParmBlkPtr paramBlock)                         ONEWORDINLINE(0xA2
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBStatusSync(__A0)
+#pragma parameter __D0 PBStatusSync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBStatusSync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA005);
-
+PBStatusSync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA005 );
 
 /*
  *  PBStatusAsync()
@@ -1346,11 +1276,10 @@ PBStatusSync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBStatusAsync(__A0)
+#pragma parameter __D0 PBStatusAsync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBStatusAsync(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA405);
-
+PBStatusAsync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA405 );
 
 /*
  *  PBStatusImmed()
@@ -1361,11 +1290,10 @@ PBStatusAsync(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA4
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBStatusImmed(__A0)
+#pragma parameter __D0 PBStatusImmed( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBStatusImmed(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA205);
-
+PBStatusImmed( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA205 );
 
 /*
  *  PBKillIOSync()
@@ -1376,11 +1304,10 @@ PBStatusImmed(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA2
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBKillIOSync(__A0)
+#pragma parameter __D0 PBKillIOSync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBKillIOSync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA006);
-
+PBKillIOSync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA006 );
 
 /*
  *  PBKillIOAsync()
@@ -1391,11 +1318,10 @@ PBKillIOSync(ParmBlkPtr paramBlock)                           ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBKillIOAsync(__A0)
+#pragma parameter __D0 PBKillIOAsync( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBKillIOAsync(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA406);
-
+PBKillIOAsync( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA406 );
 
 /*
  *  PBKillIOImmed()
@@ -1406,11 +1332,10 @@ PBKillIOAsync(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA4
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 PBKillIOImmed(__A0)
+#pragma parameter __D0 PBKillIOImmed( __A0 )
 #endif
 EXTERN_API( OSErr )
-PBKillIOImmed(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA206);
-
+PBKillIOImmed( ParmBlkPtr paramBlock ) ONEWORDINLINE( 0xA206 );
 
 /*
  *  OpenDeskAcc()
@@ -1421,8 +1346,7 @@ PBKillIOImmed(ParmBlkPtr paramBlock)                          ONEWORDINLINE(0xA2
  *    Mac OS X:         not available
  */
 EXTERN_API( short )
-OpenDeskAcc(ConstStr255Param deskAccName)                     ONEWORDINLINE(0xA9B6);
-
+OpenDeskAcc( ConstStr255Param deskAccName ) ONEWORDINLINE( 0xA9B6 );
 
 /*
  *  CloseDeskAcc()
@@ -1433,10 +1357,9 @@ OpenDeskAcc(ConstStr255Param deskAccName)                     ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-CloseDeskAcc(short refNum)                                    ONEWORDINLINE(0xA9B7);
+CloseDeskAcc( short refNum ) ONEWORDINLINE( 0xA9B7 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1448,8 +1371,7 @@ CloseDeskAcc(short refNum)                                    ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API_C( short )
-opendeskacc(const char * deskAccName);
-
+opendeskacc( const char *deskAccName );
 
 /*
  *  opendriver()
@@ -1461,37 +1383,31 @@ opendeskacc(const char * deskAccName);
  */
 EXTERN_API_C( OSErr )
 opendriver(
-  const char *  driverName,
-  short *       refNum);
+    const char *driverName,
+    short *     refNum );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
     The PBxxx() routines are obsolete.  
     
     Use the PBxxxSync(), PBxxxAsync(), or PBxxxImmed version instead.
 */
-#define PBControl(pb, async) ((async) ? PBControlAsync(pb) : PBControlSync(pb))
-#define PBStatus(pb, async) ((async) ? PBStatusAsync(pb) : PBStatusSync(pb))
-#define PBKillIO(pb, async) ((async) ? PBKillIOAsync(pb) : PBKillIOSync(pb))
+#define PBControl( pb, async ) ( ( async ) ? PBControlAsync( pb ) : PBControlSync( pb ) )
+#define PBStatus( pb, async ) ( ( async ) ? PBStatusAsync( pb ) : PBStatusSync( pb ) )
+#define PBKillIO( pb, async ) ( ( async ) ? PBKillIOAsync( pb ) : PBKillIOSync( pb ) )
 
-#define PBOpen(pb, async) ((async) ? PBOpenAsync(pb) : PBOpenSync(pb))
-#define PBClose(pb, async) ((async) ? PBCloseAsync(pb) : PBCloseSync(pb))
-#define PBRead(pb, async) ((async) ? PBReadAsync(pb) : PBReadSync(pb))
-#define PBWrite(pb, async) ((async) ? PBWriteAsync(pb) : PBWriteSync(pb))
-
-
-
-
-
+#define PBOpen( pb, async ) ( ( async ) ? PBOpenAsync( pb ) : PBOpenSync( pb ) )
+#define PBClose( pb, async ) ( ( async ) ? PBCloseAsync( pb ) : PBCloseSync( pb ) )
+#define PBRead( pb, async ) ( ( async ) ? PBReadAsync( pb ) : PBReadSync( pb ) )
+#define PBWrite( pb, async ) ( ( async ) ? PBWriteAsync( pb ) : PBWriteSync( pb ) )
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1505,4 +1421,3 @@ opendriver(
 #endif
 
 #endif /* __DEVICES__ */
-

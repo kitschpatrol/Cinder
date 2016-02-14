@@ -1,10 +1,10 @@
 #include "cinder/app/App.h"
+#include "cinder/CameraUi.h"
+#include "cinder/ImageIo.h"
+#include "cinder/ObjLoader.h"
+#include "cinder/Sphere.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/CameraUi.h"
-#include "cinder/Sphere.h"
-#include "cinder/ObjLoader.h"
-#include "cinder/ImageIo.h"
 #include "cinder/ip/Checkerboard.h"
 
 #include "Resources.h"
@@ -15,23 +15,23 @@ using namespace ci::app;
 
 class TriMeshReadWriteTestApp : public App {
   public:
-	void	setup() override;
-	void	resize() override;
+	void setup() override;
+	void resize() override;
 
-	void	testObjFileWriteRead();
-	void	loadObjFile( const fs::path &filePath );
-	void	draw() override;
-	
-	CameraUi		mCamUi;
-	CameraPersp		mCam;
-	TriMeshRef		mMesh;
-	gl::BatchRef	mBatch;
-	gl::GlslProgRef	mGlsl;
-	gl::TextureRef	mCheckerTexture;
+	void testObjFileWriteRead();
+	void loadObjFile( const fs::path &filePath );
+	void draw() override;
+
+	CameraUi        mCamUi;
+	CameraPersp     mCam;
+	TriMeshRef      mMesh;
+	gl::BatchRef    mBatch;
+	gl::GlslProgRef mGlsl;
+	gl::TextureRef  mCheckerTexture;
 };
 
 void TriMeshReadWriteTestApp::setup()
-{	
+{
 	mGlsl = gl::GlslProg::create( loadAsset( "shader.vert" ), loadAsset( "shader.frag" ) );
 	mGlsl->uniform( "uTex0", 0 );
 
@@ -55,7 +55,7 @@ void TriMeshReadWriteTestApp::testObjFileWriteRead()
 #else
 	fs::path writePath = getAppPath().parent_path();
 #endif
-	
+
 	// write
 	t.start();
 	ObjLoader loader( loadResource( RES_8LBS_OBJ ) );
@@ -101,6 +101,5 @@ void TriMeshReadWriteTestApp::draw()
 
 	mBatch->draw();
 }
-
 
 CINDER_APP( TriMeshReadWriteTestApp, RendererGl )

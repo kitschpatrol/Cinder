@@ -24,9 +24,6 @@
 #include <MacTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,11 +37,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*
@@ -97,8 +94,7 @@ extern "C" {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt16 )
-EndianS16_BtoN(SInt16 value);
-
+EndianS16_BtoN( SInt16 value );
 
 /*
  *  EndianS16_NtoB()
@@ -109,8 +105,7 @@ EndianS16_BtoN(SInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt16 )
-EndianS16_NtoB(SInt16 value);
-
+EndianS16_NtoB( SInt16 value );
 
 /*
  *  EndianS16_LtoN()
@@ -121,8 +116,7 @@ EndianS16_NtoB(SInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt16 )
-EndianS16_LtoN(SInt16 value);
-
+EndianS16_LtoN( SInt16 value );
 
 /*
  *  EndianS16_NtoL()
@@ -133,8 +127,7 @@ EndianS16_LtoN(SInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt16 )
-EndianS16_NtoL(SInt16 value);
-
+EndianS16_NtoL( SInt16 value );
 
 /*
  *  EndianS16_LtoB()
@@ -145,8 +138,7 @@ EndianS16_NtoL(SInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt16 )
-EndianS16_LtoB(SInt16 value);
-
+EndianS16_LtoB( SInt16 value );
 
 /*
  *  EndianS16_BtoL()
@@ -157,8 +149,7 @@ EndianS16_LtoB(SInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt16 )
-EndianS16_BtoL(SInt16 value);
-
+EndianS16_BtoL( SInt16 value );
 
 /*
  *  EndianU16_BtoN()
@@ -169,8 +160,7 @@ EndianS16_BtoL(SInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt16 )
-EndianU16_BtoN(UInt16 value);
-
+EndianU16_BtoN( UInt16 value );
 
 /*
  *  EndianU16_NtoB()
@@ -181,8 +171,7 @@ EndianU16_BtoN(UInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt16 )
-EndianU16_NtoB(UInt16 value);
-
+EndianU16_NtoB( UInt16 value );
 
 /*
  *  EndianU16_LtoN()
@@ -193,8 +182,7 @@ EndianU16_NtoB(UInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt16 )
-EndianU16_LtoN(UInt16 value);
-
+EndianU16_LtoN( UInt16 value );
 
 /*
  *  EndianU16_NtoL()
@@ -205,8 +193,7 @@ EndianU16_LtoN(UInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt16 )
-EndianU16_NtoL(UInt16 value);
-
+EndianU16_NtoL( UInt16 value );
 
 /*
  *  EndianU16_LtoB()
@@ -217,8 +204,7 @@ EndianU16_NtoL(UInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt16 )
-EndianU16_LtoB(UInt16 value);
-
+EndianU16_LtoB( UInt16 value );
 
 /*
  *  EndianU16_BtoL()
@@ -229,8 +215,7 @@ EndianU16_LtoB(UInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt16 )
-EndianU16_BtoL(UInt16 value);
-
+EndianU16_BtoL( UInt16 value );
 
 /*
  *  EndianS32_BtoN()
@@ -241,8 +226,7 @@ EndianU16_BtoL(UInt16 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt32 )
-EndianS32_BtoN(SInt32 value);
-
+EndianS32_BtoN( SInt32 value );
 
 /*
  *  EndianS32_NtoB()
@@ -253,8 +237,7 @@ EndianS32_BtoN(SInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt32 )
-EndianS32_NtoB(SInt32 value);
-
+EndianS32_NtoB( SInt32 value );
 
 /*
  *  EndianS32_LtoN()
@@ -265,8 +248,7 @@ EndianS32_NtoB(SInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt32 )
-EndianS32_LtoN(SInt32 value);
-
+EndianS32_LtoN( SInt32 value );
 
 /*
  *  EndianS32_NtoL()
@@ -277,8 +259,7 @@ EndianS32_LtoN(SInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt32 )
-EndianS32_NtoL(SInt32 value);
-
+EndianS32_NtoL( SInt32 value );
 
 /*
  *  EndianS32_LtoB()
@@ -289,8 +270,7 @@ EndianS32_NtoL(SInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt32 )
-EndianS32_LtoB(SInt32 value);
-
+EndianS32_LtoB( SInt32 value );
 
 /*
  *  EndianS32_BtoL()
@@ -301,8 +281,7 @@ EndianS32_LtoB(SInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt32 )
-EndianS32_BtoL(SInt32 value);
-
+EndianS32_BtoL( SInt32 value );
 
 /*
  *  EndianU32_BtoN()
@@ -313,8 +292,7 @@ EndianS32_BtoL(SInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt32 )
-EndianU32_BtoN(UInt32 value);
-
+EndianU32_BtoN( UInt32 value );
 
 /*
  *  EndianU32_NtoB()
@@ -325,8 +303,7 @@ EndianU32_BtoN(UInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt32 )
-EndianU32_NtoB(UInt32 value);
-
+EndianU32_NtoB( UInt32 value );
 
 /*
  *  EndianU32_LtoN()
@@ -337,8 +314,7 @@ EndianU32_NtoB(UInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt32 )
-EndianU32_LtoN(UInt32 value);
-
+EndianU32_LtoN( UInt32 value );
 
 /*
  *  EndianU32_NtoL()
@@ -349,8 +325,7 @@ EndianU32_LtoN(UInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt32 )
-EndianU32_NtoL(UInt32 value);
-
+EndianU32_NtoL( UInt32 value );
 
 /*
  *  EndianU32_LtoB()
@@ -361,8 +336,7 @@ EndianU32_NtoL(UInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt32 )
-EndianU32_LtoB(UInt32 value);
-
+EndianU32_LtoB( UInt32 value );
 
 /*
  *  EndianU32_BtoL()
@@ -373,10 +347,9 @@ EndianU32_LtoB(UInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt32 )
-EndianU32_BtoL(UInt32 value);
+EndianU32_BtoL( UInt32 value );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if !TYPE_LONGLONG
 /*
@@ -394,8 +367,7 @@ EndianU32_BtoL(UInt32 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt64 )
-EndianS64_BtoN(SInt64 value);
-
+EndianS64_BtoN( SInt64 value );
 
 /*
  *  EndianS64_NtoB()
@@ -406,8 +378,7 @@ EndianS64_BtoN(SInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt64 )
-EndianS64_NtoB(SInt64 value);
-
+EndianS64_NtoB( SInt64 value );
 
 /*
  *  EndianS64_LtoN()
@@ -418,8 +389,7 @@ EndianS64_NtoB(SInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt64 )
-EndianS64_LtoN(SInt64 value);
-
+EndianS64_LtoN( SInt64 value );
 
 /*
  *  EndianS64_NtoL()
@@ -430,8 +400,7 @@ EndianS64_LtoN(SInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt64 )
-EndianS64_NtoL(SInt64 value);
-
+EndianS64_NtoL( SInt64 value );
 
 /*
  *  EndianS64_LtoB()
@@ -442,8 +411,7 @@ EndianS64_NtoL(SInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt64 )
-EndianS64_LtoB(SInt64 value);
-
+EndianS64_LtoB( SInt64 value );
 
 /*
  *  EndianS64_BtoL()
@@ -454,8 +422,7 @@ EndianS64_LtoB(SInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt64 )
-EndianS64_BtoL(SInt64 value);
-
+EndianS64_BtoL( SInt64 value );
 
 /*
  *  EndianU64_BtoN()
@@ -466,8 +433,7 @@ EndianS64_BtoL(SInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-EndianU64_BtoN(UInt64 value);
-
+EndianU64_BtoN( UInt64 value );
 
 /*
  *  EndianU64_NtoB()
@@ -478,8 +444,7 @@ EndianU64_BtoN(UInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-EndianU64_NtoB(UInt64 value);
-
+EndianU64_NtoB( UInt64 value );
 
 /*
  *  EndianU64_LtoN()
@@ -490,8 +455,7 @@ EndianU64_NtoB(UInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-EndianU64_LtoN(UInt64 value);
-
+EndianU64_LtoN( UInt64 value );
 
 /*
  *  EndianU64_NtoL()
@@ -502,8 +466,7 @@ EndianU64_LtoN(UInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-EndianU64_NtoL(UInt64 value);
-
+EndianU64_NtoL( UInt64 value );
 
 /*
  *  EndianU64_LtoB()
@@ -514,8 +477,7 @@ EndianU64_NtoL(UInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-EndianU64_LtoB(UInt64 value);
-
+EndianU64_LtoB( UInt64 value );
 
 /*
  *  EndianU64_BtoL()
@@ -526,12 +488,11 @@ EndianU64_LtoB(UInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-EndianU64_BtoL(UInt64 value);
+EndianU64_BtoL( UInt64 value );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* !TYPE_LONGLONG */
+#endif /* !TYPE_LONGLONG */
 
 /*
    These types are used for structures that contain data that is
@@ -542,128 +503,121 @@ EndianU64_BtoL(UInt64 value);
 
 #if TARGET_RT_LITTLE_ENDIAN
 struct BigEndianLong {
-  long                bigEndianValue;
+	long bigEndianValue;
 };
-typedef struct BigEndianLong            BigEndianLong;
+typedef struct BigEndianLong BigEndianLong;
 struct BigEndianUnsignedLong {
-  unsigned long       bigEndianValue;
+	unsigned long bigEndianValue;
 };
-typedef struct BigEndianUnsignedLong    BigEndianUnsignedLong;
+typedef struct BigEndianUnsignedLong BigEndianUnsignedLong;
 struct BigEndianShort {
-  short               bigEndianValue;
+	short bigEndianValue;
 };
-typedef struct BigEndianShort           BigEndianShort;
+typedef struct BigEndianShort BigEndianShort;
 struct BigEndianUnsignedShort {
-  unsigned short      bigEndianValue;
+	unsigned short bigEndianValue;
 };
-typedef struct BigEndianUnsignedShort   BigEndianUnsignedShort;
+typedef struct BigEndianUnsignedShort BigEndianUnsignedShort;
 struct BigEndianFixed {
-  Fixed               bigEndianValue;
+	Fixed bigEndianValue;
 };
-typedef struct BigEndianFixed           BigEndianFixed;
+typedef struct BigEndianFixed BigEndianFixed;
 struct BigEndianUnsignedFixed {
-  UnsignedFixed       bigEndianValue;
+	UnsignedFixed bigEndianValue;
 };
-typedef struct BigEndianUnsignedFixed   BigEndianUnsignedFixed;
+typedef struct BigEndianUnsignedFixed BigEndianUnsignedFixed;
 struct BigEndianOSType {
-  OSType              bigEndianValue;
+	OSType bigEndianValue;
 };
-typedef struct BigEndianOSType          BigEndianOSType;
+typedef struct BigEndianOSType BigEndianOSType;
 #else
 
-typedef long                            BigEndianLong;
-typedef unsigned long                   BigEndianUnsignedLong;
-typedef short                           BigEndianShort;
-typedef unsigned short                  BigEndianUnsignedShort;
-typedef Fixed                           BigEndianFixed;
-typedef UnsignedFixed                   BigEndianUnsignedFixed;
-typedef OSType                          BigEndianOSType;
-#endif  /* TARGET_RT_LITTLE_ENDIAN */
-
+typedef long           BigEndianLong;
+typedef unsigned long  BigEndianUnsignedLong;
+typedef short          BigEndianShort;
+typedef unsigned short BigEndianUnsignedShort;
+typedef Fixed          BigEndianFixed;
+typedef UnsignedFixed  BigEndianUnsignedFixed;
+typedef OSType         BigEndianOSType;
+#endif /* TARGET_RT_LITTLE_ENDIAN */
 
 /*
     Macro away no-op functions
 */
 #if TARGET_RT_BIG_ENDIAN
- #define EndianS16_BtoN(value)               (value)
-    #define EndianS16_NtoB(value)               (value)
-    #define EndianU16_BtoN(value)               (value)
-    #define EndianU16_NtoB(value)               (value)
-    #define EndianS32_BtoN(value)               (value)
-    #define EndianS32_NtoB(value)               (value)
-    #define EndianU32_BtoN(value)               (value)
-    #define EndianU32_NtoB(value)               (value)
-    #define EndianS64_BtoN(value)               (value)
-    #define EndianS64_NtoB(value)               (value)
-    #define EndianU64_BtoN(value)               (value)
-    #define EndianU64_NtoB(value)               (value)
+#define EndianS16_BtoN( value ) ( value )
+#define EndianS16_NtoB( value ) ( value )
+#define EndianU16_BtoN( value ) ( value )
+#define EndianU16_NtoB( value ) ( value )
+#define EndianS32_BtoN( value ) ( value )
+#define EndianS32_NtoB( value ) ( value )
+#define EndianU32_BtoN( value ) ( value )
+#define EndianU32_NtoB( value ) ( value )
+#define EndianS64_BtoN( value ) ( value )
+#define EndianS64_NtoB( value ) ( value )
+#define EndianU64_BtoN( value ) ( value )
+#define EndianU64_NtoB( value ) ( value )
 #else
-  #define EndianS16_LtoN(value)               (value)
-    #define EndianS16_NtoL(value)               (value)
-    #define EndianU16_LtoN(value)               (value)
-    #define EndianU16_NtoL(value)               (value)
-    #define EndianS32_LtoN(value)               (value)
-    #define EndianS32_NtoL(value)               (value)
-    #define EndianU32_LtoN(value)               (value)
-    #define EndianU32_NtoL(value)               (value)
-    #define EndianS64_LtoN(value)               (value)
-    #define EndianS64_NtoL(value)               (value)
-    #define EndianU64_LtoN(value)               (value)
-    #define EndianU64_NtoL(value)               (value)
+#define EndianS16_LtoN( value ) ( value )
+#define EndianS16_NtoL( value ) ( value )
+#define EndianU16_LtoN( value ) ( value )
+#define EndianU16_NtoL( value ) ( value )
+#define EndianS32_LtoN( value ) ( value )
+#define EndianS32_NtoL( value ) ( value )
+#define EndianU32_LtoN( value ) ( value )
+#define EndianU32_NtoL( value ) ( value )
+#define EndianS64_LtoN( value ) ( value )
+#define EndianS64_NtoL( value ) ( value )
+#define EndianU64_LtoN( value ) ( value )
+#define EndianU64_NtoL( value ) ( value )
 #endif
-
-
 
 /*
     Map native to actual
 */
 #if TARGET_RT_BIG_ENDIAN
-   #define EndianS16_LtoN(value)               EndianS16_LtoB(value)
-  #define EndianS16_NtoL(value)               EndianS16_BtoL(value)
-  #define EndianU16_LtoN(value)               EndianU16_LtoB(value)
-  #define EndianU16_NtoL(value)               EndianU16_BtoL(value)
-  #define EndianS32_LtoN(value)               EndianS32_LtoB(value)
-  #define EndianS32_NtoL(value)               EndianS32_BtoL(value)
-  #define EndianU32_LtoN(value)               EndianU32_LtoB(value)
-  #define EndianU32_NtoL(value)               EndianU32_BtoL(value)
-  #define EndianS64_LtoN(value)               EndianS64_LtoB(value)
-  #define EndianS64_NtoL(value)               EndianS64_BtoL(value)
-  #define EndianU64_LtoN(value)               EndianU64_LtoB(value)
-  #define EndianU64_NtoL(value)               EndianU64_BtoL(value)
+#define EndianS16_LtoN( value ) EndianS16_LtoB( value )
+#define EndianS16_NtoL( value ) EndianS16_BtoL( value )
+#define EndianU16_LtoN( value ) EndianU16_LtoB( value )
+#define EndianU16_NtoL( value ) EndianU16_BtoL( value )
+#define EndianS32_LtoN( value ) EndianS32_LtoB( value )
+#define EndianS32_NtoL( value ) EndianS32_BtoL( value )
+#define EndianU32_LtoN( value ) EndianU32_LtoB( value )
+#define EndianU32_NtoL( value ) EndianU32_BtoL( value )
+#define EndianS64_LtoN( value ) EndianS64_LtoB( value )
+#define EndianS64_NtoL( value ) EndianS64_BtoL( value )
+#define EndianU64_LtoN( value ) EndianU64_LtoB( value )
+#define EndianU64_NtoL( value ) EndianU64_BtoL( value )
 #else
-    #define EndianS16_BtoN(value)               EndianS16_BtoL(value)
-  #define EndianS16_NtoB(value)               EndianS16_LtoB(value)
-  #define EndianU16_BtoN(value)               EndianU16_BtoL(value)
-  #define EndianU16_NtoB(value)               EndianU16_LtoB(value)
-  #define EndianS32_BtoN(value)               EndianS32_BtoL(value)
-  #define EndianS32_NtoB(value)               EndianS32_LtoB(value)
-  #define EndianU32_BtoN(value)               EndianU32_BtoL(value)
-  #define EndianU32_NtoB(value)               EndianU32_LtoB(value)
-  #define EndianS64_BtoN(value)               EndianS64_BtoL(value)
-  #define EndianS64_NtoB(value)               EndianS64_LtoB(value)
-  #define EndianU64_BtoN(value)               EndianU64_BtoL(value)
-  #define EndianU64_NtoB(value)               EndianU64_LtoB(value)
+#define EndianS16_BtoN( value ) EndianS16_BtoL( value )
+#define EndianS16_NtoB( value ) EndianS16_LtoB( value )
+#define EndianU16_BtoN( value ) EndianU16_BtoL( value )
+#define EndianU16_NtoB( value ) EndianU16_LtoB( value )
+#define EndianS32_BtoN( value ) EndianS32_BtoL( value )
+#define EndianS32_NtoB( value ) EndianS32_LtoB( value )
+#define EndianU32_BtoN( value ) EndianU32_BtoL( value )
+#define EndianU32_NtoB( value ) EndianU32_LtoB( value )
+#define EndianS64_BtoN( value ) EndianS64_BtoL( value )
+#define EndianS64_NtoB( value ) EndianS64_LtoB( value )
+#define EndianU64_BtoN( value ) EndianU64_BtoL( value )
+#define EndianU64_NtoB( value ) EndianU64_LtoB( value )
 #endif
-
-
 
 /*
     Implement ÅLtoB and ÅBtoL
 */
-#define EndianS16_LtoB(value)              ((SInt16)Endian16_Swap(value))
-#define EndianS16_BtoL(value)                ((SInt16)Endian16_Swap(value))
-#define EndianU16_LtoB(value)                ((UInt16)Endian16_Swap(value))
-#define EndianU16_BtoL(value)                ((UInt16)Endian16_Swap(value))
-#define EndianS32_LtoB(value)                ((SInt32)Endian32_Swap(value))
-#define EndianS32_BtoL(value)                ((SInt32)Endian32_Swap(value))
-#define EndianU32_LtoB(value)                ((UInt32)Endian32_Swap(value))
-#define EndianU32_BtoL(value)                ((UInt32)Endian32_Swap(value))
-#define EndianS64_LtoB(value)                ((SInt64)Endian64_Swap((UInt64)value))
-#define EndianS64_BtoL(value)                ((SInt64)Endian64_Swap((UInt64)value))
-#define EndianU64_LtoB(value)                ((UInt64)Endian64_Swap(value))
-#define EndianU64_BtoL(value)                ((UInt64)Endian64_Swap(value))
-
-
+#define EndianS16_LtoB( value ) ( (SInt16)Endian16_Swap( value ) )
+#define EndianS16_BtoL( value ) ( (SInt16)Endian16_Swap( value ) )
+#define EndianU16_LtoB( value ) ( (UInt16)Endian16_Swap( value ) )
+#define EndianU16_BtoL( value ) ( (UInt16)Endian16_Swap( value ) )
+#define EndianS32_LtoB( value ) ( (SInt32)Endian32_Swap( value ) )
+#define EndianS32_BtoL( value ) ( (SInt32)Endian32_Swap( value ) )
+#define EndianU32_LtoB( value ) ( (UInt32)Endian32_Swap( value ) )
+#define EndianU32_BtoL( value ) ( (UInt32)Endian32_Swap( value ) )
+#define EndianS64_LtoB( value ) ( (SInt64)Endian64_Swap( (UInt64)value ) )
+#define EndianS64_BtoL( value ) ( (SInt64)Endian64_Swap( (UInt64)value ) )
+#define EndianU64_LtoB( value ) ( (UInt64)Endian64_Swap( value ) )
+#define EndianU64_BtoL( value ) ( (UInt64)Endian64_Swap( value ) )
 
 /*
     Implement low level *_Swap functions.
@@ -686,11 +640,10 @@ typedef OSType                          BigEndianOSType;
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 Endian16_Swap(__D0)
+#pragma parameter __D0 Endian16_Swap( __D0 )
 #endif
 EXTERN_API( UInt16 )
-Endian16_Swap(UInt16 value)                                   ONEWORDINLINE(0xE158);
-
+Endian16_Swap( UInt16 value ) ONEWORDINLINE( 0xE158 );
 
 /*
  *  Endian32_Swap()
@@ -701,64 +654,45 @@ Endian16_Swap(UInt16 value)                                   ONEWORDINLINE(0xE1
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 Endian32_Swap(__D0)
+#pragma parameter __D0 Endian32_Swap( __D0 )
 #endif
 EXTERN_API( UInt32 )
-Endian32_Swap(UInt32 value)                                   THREEWORDINLINE(0xE158, 0x4840, 0xE158);
+Endian32_Swap( UInt32 value ) THREEWORDINLINE( 0xE158, 0x4840, 0xE158 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /* override with macros */
-#define Endian16_Swap(value)                 \
-        (((((UInt16)value)<<8) & 0xFF00)   | \
-         ((((UInt16)value)>>8) & 0x00FF))
+#define Endian16_Swap( value ) \
+	( ( ( ( (UInt16)value ) << 8 ) & 0xFF00 ) | ( ( ( (UInt16)value ) >> 8 ) & 0x00FF ) )
 
-#define Endian32_Swap(value)                     \
-        (((((UInt32)value)<<24) & 0xFF000000)  | \
-         ((((UInt32)value)<< 8) & 0x00FF0000)  | \
-         ((((UInt32)value)>> 8) & 0x0000FF00)  | \
-         ((((UInt32)value)>>24) & 0x000000FF))
+#define Endian32_Swap( value ) \
+	( ( ( ( (UInt32)value ) << 24 ) & 0xFF000000 ) | ( ( ( (UInt32)value ) << 8 ) & 0x00FF0000 ) | ( ( ( (UInt32)value ) >> 8 ) & 0x0000FF00 ) | ( ( ( (UInt32)value ) >> 24 ) & 0x000000FF ) )
 
 #if TYPE_LONGLONG
-    #if TARGET_OS_WIN32
-        /* the inline macros crash MSDEV's optimizer on Windows. */
-        extern UInt64 Endian64_Swap(UInt64 value);
-    #elif defined(__MWERKS__) && (__MWERKS__ < 0x1800)
-        /* older Metrowerks compilers errored on LL suffix */
-        #define Endian64_Swap(value)                             \
-                (((((UInt64)value)<<56) & 0xFF00000000000000)  | \
-                 ((((UInt64)value)<<40) & 0x00FF000000000000)  | \
-                 ((((UInt64)value)<<24) & 0x0000FF0000000000)  | \
-                 ((((UInt64)value)<< 8) & 0x000000FF00000000)  | \
-                 ((((UInt64)value)>> 8) & 0x00000000FF000000)  | \
-                 ((((UInt64)value)>>24) & 0x0000000000FF0000)  | \
-                 ((((UInt64)value)>>40) & 0x000000000000FF00)  | \
-                 ((((UInt64)value)>>56) & 0x00000000000000FF))
-    #else
-        #define Endian64_Swap(value)                                \
-                (((((UInt64)value)<<56) & 0xFF00000000000000ULL)  | \
-                 ((((UInt64)value)<<40) & 0x00FF000000000000ULL)  | \
-                 ((((UInt64)value)<<24) & 0x0000FF0000000000ULL)  | \
-                 ((((UInt64)value)<< 8) & 0x000000FF00000000ULL)  | \
-                 ((((UInt64)value)>> 8) & 0x00000000FF000000ULL)  | \
-                 ((((UInt64)value)>>24) & 0x0000000000FF0000ULL)  | \
-                 ((((UInt64)value)>>40) & 0x000000000000FF00ULL)  | \
-                 ((((UInt64)value)>>56) & 0x00000000000000FFULL))
-    #endif
+#if TARGET_OS_WIN32
+/* the inline macros crash MSDEV's optimizer on Windows. */
+extern UInt64 Endian64_Swap( UInt64 value );
+#elif defined( __MWERKS__ ) && ( __MWERKS__ < 0x1800 )
+/* older Metrowerks compilers errored on LL suffix */
+#define Endian64_Swap( value ) \
+	( ( ( ( (UInt64)value ) << 56 ) & 0xFF00000000000000 ) | ( ( ( (UInt64)value ) << 40 ) & 0x00FF000000000000 ) | ( ( ( (UInt64)value ) << 24 ) & 0x0000FF0000000000 ) | ( ( ( (UInt64)value ) << 8 ) & 0x000000FF00000000 ) | ( ( ( (UInt64)value ) >> 8 ) & 0x00000000FF000000 ) | ( ( ( (UInt64)value ) >> 24 ) & 0x0000000000FF0000 ) | ( ( ( (UInt64)value ) >> 40 ) & 0x000000000000FF00 ) | ( ( ( (UInt64)value ) >> 56 ) & 0x00000000000000FF ) )
+#else
+#define Endian64_Swap( value ) \
+	( ( ( ( (UInt64)value ) << 56 ) & 0xFF00000000000000ULL ) | ( ( ( (UInt64)value ) << 40 ) & 0x00FF000000000000ULL ) | ( ( ( (UInt64)value ) << 24 ) & 0x0000FF0000000000ULL ) | ( ( ( (UInt64)value ) << 8 ) & 0x000000FF00000000ULL ) | ( ( ( (UInt64)value ) >> 8 ) & 0x00000000FF000000ULL ) | ( ( ( (UInt64)value ) >> 24 ) & 0x0000000000FF0000ULL ) | ( ( ( (UInt64)value ) >> 40 ) & 0x000000000000FF00ULL ) | ( ( ( (UInt64)value ) >> 56 ) & 0x00000000000000FFULL ) )
+#endif
 #else
 /* 
     Note: When using compilers that don't support "long long",
           Endian64_Swap must be implemented as glue. 
 */
 #ifdef __cplusplus
-    inline static UInt64 Endian64_Swap(UInt64 value)
-    {
-        UInt64 temp;
-        ((UnsignedWide*)&temp)->lo = Endian32_Swap(((UnsignedWide*)&value)->hi);
-        ((UnsignedWide*)&temp)->hi = Endian32_Swap(((UnsignedWide*)&value)->lo);
-        return temp;
-    }
+inline static UInt64 Endian64_Swap( UInt64 value )
+{
+	UInt64 temp;
+	( (UnsignedWide *)&temp )->lo = Endian32_Swap( ( (UnsignedWide *)&value )->hi );
+	( (UnsignedWide *)&temp )->hi = Endian32_Swap( ( (UnsignedWide *)&value )->lo );
+	return temp;
+}
 #else
 #if CALL_NOT_IN_CARBON
 /*
@@ -770,22 +704,19 @@ Endian32_Swap(UInt32 value)                                   THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-Endian64_Swap(UInt64 value);
+Endian64_Swap( UInt64 value );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #endif
-#endif  /* TYPE_LONGLONG */
-
-
+#endif /* TYPE_LONGLONG */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -799,4 +730,3 @@ Endian64_Swap(UInt64 value);
 #endif
 
 #endif /* __ENDIAN__ */
-

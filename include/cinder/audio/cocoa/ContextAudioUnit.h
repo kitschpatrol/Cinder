@@ -24,38 +24,45 @@
 #pragma once
 
 #include "cinder/audio/Context.h"
-#include "cinder/audio/dsp/RingBuffer.h"
-#include "cinder/audio/dsp/Converter.h"
 #include "cinder/audio/cocoa/CinderCoreAudio.h"
+#include "cinder/audio/dsp/Converter.h"
+#include "cinder/audio/dsp/RingBuffer.h"
 
 #include <AudioUnit/AudioUnit.h>
 
-namespace cinder { namespace audio { namespace cocoa {
+namespace cinder {
+namespace audio {
+namespace cocoa {
 
 class DeviceAudioUnit;
 class ContextAudioUnit;
 
 class NodeAudioUnit {
   public:
-	NodeAudioUnit() : mAudioUnit( nullptr ), mOwnsAudioUnit( true )	{}
+	NodeAudioUnit()
+	    : mAudioUnit( nullptr ), mOwnsAudioUnit( true ) {}
 	virtual ~NodeAudioUnit();
 
-	virtual ::AudioUnit getAudioUnit() const	{ return mAudioUnit; }
-
+	virtual ::AudioUnit getAudioUnit() const { return mAudioUnit; }
   protected:
 	void initAu();
 	void uninitAu();
 
-	::AudioUnit			mAudioUnit;
-	bool				mOwnsAudioUnit;
-	Buffer*				mProcessBuffer;
+	::AudioUnit mAudioUnit;
+	bool        mOwnsAudioUnit;
+	Buffer *    mProcessBuffer;
 
 	struct RenderData {
-		RenderData()	: node( nullptr ), context( nullptr )	{}
-		~RenderData()	{ node = nullptr; context = nullptr; }
+		RenderData()
+		    : node( nullptr ), context( nullptr ) {}
+		~RenderData()
+		{
+			node = nullptr;
+			context = nullptr;
+		}
 
-		Node*				node;
-		ContextAudioUnit*	context;
+		Node *            node;
+		ContextAudioUnit *context;
 	} mRenderData;
 };
 
@@ -64,18 +71,17 @@ class OutputDeviceNodeAudioUnit : public OutputDeviceNode, public NodeAudioUnit 
 	OutputDeviceNodeAudioUnit( const DeviceRef &device, const Format &format = Format() );
 	virtual ~OutputDeviceNodeAudioUnit() = default;
 
-	void enableProcessing()		override;
-	void disableProcessing()	override;
+	void enableProcessing() override;
+	void disableProcessing() override;
 
   protected:
-	void initialize()	override;
-	void uninitialize()	override;
-	bool supportsProcessInPlace() const	override	{ return false; }
-
+	void initialize() override;
+	void uninitialize() override;
+	bool supportsProcessInPlace() const override { return false; }
   private:
 	static OSStatus renderCallback( void *data, ::AudioUnitRenderActionFlags *flags, const ::AudioTimeStamp *timeStamp, UInt32 busNumber, UInt32 numFrames, ::AudioBufferList *bufferList );
 
-	bool								mSynchronousIO;
+	bool mSynchronousIO;
 
 	friend class InputDeviceNodeAudioUnit;
 };
@@ -85,23 +91,23 @@ class InputDeviceNodeAudioUnit : public InputDeviceNode, public NodeAudioUnit {
 	InputDeviceNodeAudioUnit( const DeviceRef &device, const Format &format = Format() );
 	virtual ~InputDeviceNodeAudioUnit();
 
-	void enableProcessing()		override;
-	void disableProcessing()	override;
+	void enableProcessing() override;
+	void disableProcessing() override;
 
   protected:
-	void initialize()				override;
-	void uninitialize()				override;
-	void process( Buffer *buffer )	override;
+	void initialize() override;
+	void uninitialize() override;
+	void process( Buffer *buffer ) override;
 
   private:
 	static OSStatus inputCallback( void *data, ::AudioUnitRenderActionFlags *flags, const ::AudioTimeStamp *timeStamp, UInt32 bus, UInt32 numFrames, ::AudioBufferList *bufferList );
 
-	dsp::RingBuffer						mRingBuffer;
-	size_t								mRingBufferPaddingFactor;
-	std::unique_ptr<dsp::Converter>		mConverter;
-	BufferDynamic						mReadBuffer, mConvertedReadBuffer;
-	AudioBufferListPtr					mBufferList;
-	bool								mSynchronousIO;
+	dsp::RingBuffer                 mRingBuffer;
+	size_t                          mRingBufferPaddingFactor;
+	std::unique_ptr<dsp::Converter> mConverter;
+	BufferDynamic                   mReadBuffer, mConvertedReadBuffer;
+	AudioBufferListPtr              mBufferList;
+	bool                            mSynchronousIO;
 };
 
 // TODO: when stopped / mEnabled = false; kAudioUnitProperty_BypassEffect should be used
@@ -110,17 +116,17 @@ class EffectAudioUnitNode : public Node, public NodeAudioUnit {
 	EffectAudioUnitNode( UInt32 subType, const Format &format = Format() );
 	virtual ~EffectAudioUnitNode();
 
-	void setParameter( ::AudioUnitParameterID paramId, float val );
+	void setParameter(::AudioUnitParameterID paramId, float val );
 
   protected:
-	void initialize()				override;
-	void uninitialize()				override;
-	void process( Buffer *buffer )	override;
+	void initialize() override;
+	void uninitialize() override;
+	void process( Buffer *buffer ) override;
 
   private:
 	static OSStatus renderCallback( void *data, ::AudioUnitRenderActionFlags *flags, const ::AudioTimeStamp *timeStamp, UInt32 busNumber, UInt32 numFrames, ::AudioBufferList *bufferList );
 
-	UInt32		mEffectSubType;
+	UInt32             mEffectSubType;
 	AudioBufferListPtr mBufferList;
 };
 
@@ -128,17 +134,16 @@ class ContextAudioUnit : public Context {
   public:
 	virtual ~ContextAudioUnit();
 
-	OutputDeviceNodeRef		createOutputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format() ) override;
-	InputDeviceNodeRef		createInputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format() ) override;
+	OutputDeviceNodeRef createOutputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format() ) override;
+	InputDeviceNodeRef createInputDeviceNode( const DeviceRef &device, const Node::Format &format = Node::Format() ) override;
 
 	//! set by the OutputNode
 	void setCurrentTimeStamp( const ::AudioTimeStamp *timeStamp ) { mCurrentTimeStamp = timeStamp; }
 	//! all other NodeAudioUnit's need to pass this correctly formatted timestamp to AudioUnitRender
-	const ::AudioTimeStamp* getCurrentTimeStamp() { return mCurrentTimeStamp; }
-
+	const ::AudioTimeStamp *getCurrentTimeStamp() { return mCurrentTimeStamp; }
   private:
-
 	const ::AudioTimeStamp *mCurrentTimeStamp;
 };
-
-} } } // namespace cinder::audio::cocoa
+}
+}
+} // namespace cinder::audio::cocoa

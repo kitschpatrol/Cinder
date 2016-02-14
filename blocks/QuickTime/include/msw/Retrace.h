@@ -25,9 +25,6 @@
 #include <OSUtils.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,23 +38,23 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-typedef struct VBLTask                  VBLTask;
-typedef VBLTask *                       VBLTaskPtr;
-typedef CALLBACK_API_REGISTER68K( void , VBLProcPtr, (VBLTaskPtr vblTaskPtr) );
-typedef REGISTER_UPP_TYPE(VBLProcPtr)                           VBLUPP;
+typedef struct VBLTask VBLTask;
+typedef VBLTask *      VBLTaskPtr;
+typedef CALLBACK_API_REGISTER68K( void, VBLProcPtr, ( VBLTaskPtr vblTaskPtr ) );
+typedef REGISTER_UPP_TYPE( VBLProcPtr ) VBLUPP;
 struct VBLTask {
-  QElemPtr            qLink;
-  short               qType;
-  VBLUPP              vblAddr;
-  short               vblCount;
-  short               vblPhase;
+	QElemPtr qLink;
+	short    qType;
+	VBLUPP   vblAddr;
+	short    vblCount;
+	short    vblPhase;
 };
 
 #if CALL_NOT_IN_CARBON
@@ -70,14 +67,17 @@ struct VBLTask {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( VBLUPP )
-NewVBLUPP(VBLProcPtr userRoutine);
+NewVBLUPP( VBLProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppVBLProcInfo = 0x00009802 };  /* register no_return_value Func(4_bytes:A0) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(VBLUPP) NewVBLUPP(VBLProcPtr userRoutine) { return (VBLUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppVBLProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewVBLUPP(userRoutine) (VBLUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppVBLProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppVBLProcInfo = 0x00009802 }; /* register no_return_value Func(4_bytes:A0) */
+#ifdef __cplusplus
+inline DEFINE_API_C( VBLUPP ) NewVBLUPP( VBLProcPtr userRoutine )
+{
+	return (VBLUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppVBLProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewVBLUPP( userRoutine ) ( VBLUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppVBLProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -89,13 +89,16 @@ NewVBLUPP(VBLProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeVBLUPP(VBLUPP userUPP);
+DisposeVBLUPP( VBLUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeVBLUPP(VBLUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeVBLUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeVBLUPP( VBLUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeVBLUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -107,26 +110,29 @@ DisposeVBLUPP(VBLUPP userUPP);
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter InvokeVBLUPP(__A0, __A1)
+#pragma parameter InvokeVBLUPP( __A0, __A1 )
 #endif
 EXTERN_API_C( void )
 InvokeVBLUPP(
-  VBLTaskPtr  vblTaskPtr,
-  VBLUPP      userUPP)                                        ONEWORDINLINE(0x4E91);
-#if !OPAQUE_UPP_TYPES && (!TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM)
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeVBLUPP(VBLTaskPtr vblTaskPtr, VBLUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppVBLProcInfo, vblTaskPtr); }
-  #else
-    #define InvokeVBLUPP(vblTaskPtr, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppVBLProcInfo, (vblTaskPtr))
-  #endif
+    VBLTaskPtr vblTaskPtr,
+    VBLUPP     userUPP ) ONEWORDINLINE( 0x4E91 );
+#if !OPAQUE_UPP_TYPES && ( !TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM )
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeVBLUPP( VBLTaskPtr vblTaskPtr, VBLUPP userUPP )
+{
+	CALL_ONE_PARAMETER_UPP( userUPP, uppVBLProcInfo, vblTaskPtr );
+}
+#else
+#define InvokeVBLUPP( vblTaskPtr, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppVBLProcInfo, ( vblTaskPtr ) )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewVBLProc(userRoutine)                             NewVBLUPP(userRoutine)
-    #define CallVBLProc(userRoutine, vblTaskPtr)                InvokeVBLUPP(vblTaskPtr, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewVBLProc( userRoutine ) NewVBLUPP( userRoutine )
+#define CallVBLProc( userRoutine, vblTaskPtr ) InvokeVBLUPP( vblTaskPtr, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
@@ -140,8 +146,7 @@ InvokeVBLUPP(
  *    Mac OS X:         not available
  */
 EXTERN_API( QHdrPtr )
-GetVBLQHdr(void)                                              THREEWORDINLINE(0x2EBC, 0x0000, 0x0160);
-
+GetVBLQHdr( void ) THREEWORDINLINE( 0x2EBC, 0x0000, 0x0160 );
 
 /*
  *  SlotVInstall()
@@ -152,13 +157,12 @@ GetVBLQHdr(void)                                              THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 SlotVInstall(__A0, __D0)
+#pragma parameter __D0 SlotVInstall( __A0, __D0 )
 #endif
 EXTERN_API( OSErr )
 SlotVInstall(
-  QElemPtr   vblBlockPtr,
-  short      theSlot)                                         ONEWORDINLINE(0xA06F);
-
+    QElemPtr vblBlockPtr,
+    short    theSlot ) ONEWORDINLINE( 0xA06F );
 
 /*
  *  SlotVRemove()
@@ -169,13 +173,12 @@ SlotVInstall(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 SlotVRemove(__A0, __D0)
+#pragma parameter __D0 SlotVRemove( __A0, __D0 )
 #endif
 EXTERN_API( OSErr )
 SlotVRemove(
-  QElemPtr   vblBlockPtr,
-  short      theSlot)                                         ONEWORDINLINE(0xA070);
-
+    QElemPtr vblBlockPtr,
+    short    theSlot ) ONEWORDINLINE( 0xA070 );
 
 /*
  *  AttachVBL()
@@ -186,11 +189,10 @@ SlotVRemove(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 AttachVBL(__D0)
+#pragma parameter __D0 AttachVBL( __D0 )
 #endif
 EXTERN_API( OSErr )
-AttachVBL(short theSlot)                                      ONEWORDINLINE(0xA071);
-
+AttachVBL( short theSlot ) ONEWORDINLINE( 0xA071 );
 
 /*
  *  DoVBLTask()
@@ -201,11 +203,10 @@ AttachVBL(short theSlot)                                      ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 DoVBLTask(__D0)
+#pragma parameter __D0 DoVBLTask( __D0 )
 #endif
 EXTERN_API( OSErr )
-DoVBLTask(short theSlot)                                      ONEWORDINLINE(0xA072);
-
+DoVBLTask( short theSlot ) ONEWORDINLINE( 0xA072 );
 
 /*
  *  VInstall()
@@ -216,11 +217,10 @@ DoVBLTask(short theSlot)                                      ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 VInstall(__A0)
+#pragma parameter __D0 VInstall( __A0 )
 #endif
 EXTERN_API( OSErr )
-VInstall(QElemPtr vblTaskPtr)                                 ONEWORDINLINE(0xA033);
-
+VInstall( QElemPtr vblTaskPtr ) ONEWORDINLINE( 0xA033 );
 
 /*
  *  VRemove()
@@ -231,23 +231,21 @@ VInstall(QElemPtr vblTaskPtr)                                 ONEWORDINLINE(0xA0
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __D0 VRemove(__A0)
+#pragma parameter __D0 VRemove( __A0 )
 #endif
 EXTERN_API( OSErr )
-VRemove(QElemPtr vblTaskPtr)                                  ONEWORDINLINE(0xA034);
+VRemove( QElemPtr vblTaskPtr ) ONEWORDINLINE( 0xA034 );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -261,4 +259,3 @@ VRemove(QElemPtr vblTaskPtr)                                  ONEWORDINLINE(0xA0
 #endif
 
 #endif /* __RETRACE__ */
-

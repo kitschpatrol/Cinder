@@ -28,8 +28,6 @@
 #include <CFString.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,24 +41,23 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /* AppleHelp Error Codes */
 enum {
-  kAHInternalErr                = -10790,
-  kAHInternetConfigPrefErr      = -10791
+	kAHInternalErr = -10790,
+	kAHInternetConfigPrefErr = -10791
 };
-
 
 typedef SInt16 AHTOCType;
 enum {
-  kAHTOCTypeUser                = 0,
-  kAHTOCTypeDeveloper           = 1
+	kAHTOCTypeUser = 0,
+	kAHTOCTypeDeveloper = 1
 };
 
 /*
@@ -93,9 +90,8 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 AHSearch(
-  CFStringRef   bookname,
-  CFStringRef   query);
-
+    CFStringRef bookname,
+    CFStringRef query );
 
 /*
  *  AHGotoMainTOC()
@@ -121,8 +117,7 @@ AHSearch(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-AHGotoMainTOC(AHTOCType toctype);
-
+AHGotoMainTOC( AHTOCType toctype );
 
 /*
  *  AHGotoPage()
@@ -163,10 +158,9 @@ AHGotoMainTOC(AHTOCType toctype);
  */
 EXTERN_API_C( OSStatus )
 AHGotoPage(
-  CFStringRef   bookname,
-  CFStringRef   path,
-  CFStringRef   anchor);
-
+    CFStringRef bookname,
+    CFStringRef path,
+    CFStringRef anchor );
 
 /*
  *  AHLookupAnchor()
@@ -200,10 +194,8 @@ AHGotoPage(
  */
 EXTERN_API_C( OSStatus )
 AHLookupAnchor(
-  CFStringRef   bookname,
-  CFStringRef   anchor);
-
-
+    CFStringRef bookname,
+    CFStringRef anchor );
 
 /*
  *  AHRegisterHelpBook()
@@ -233,16 +225,14 @@ AHLookupAnchor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-AHRegisterHelpBook(const FSRef * appBundleRef);
-
-
+AHRegisterHelpBook( const FSRef *appBundleRef );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -256,4 +246,3 @@ AHRegisterHelpBook(const FSRef * appBundleRef);
 #endif
 
 #endif /* __APPLEHELP__ */
-

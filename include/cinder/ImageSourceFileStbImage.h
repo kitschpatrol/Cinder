@@ -24,29 +24,28 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/ImageIo.h"
 #include "cinder/Exception.h"
+#include "cinder/ImageIo.h"
 
 namespace cinder {
 
-typedef std::shared_ptr<class ImageSourceFileStbImage>	ImageSourceFileStbImageRef;
+typedef std::shared_ptr<class ImageSourceFileStbImage> ImageSourceFileStbImageRef;
 
 class ImageSourceFileStbImage : public ImageSource {
   public:
 	~ImageSourceFileStbImage();
 
-	static ImageSourceRef	create( DataSourceRef dataSourceRef, ImageSource::Options options ) { return ImageSourceFileStbImageRef( new ImageSourceFileStbImage( dataSourceRef, options ) ); }
+	static ImageSourceRef create( DataSourceRef dataSourceRef, ImageSource::Options options ) { return ImageSourceFileStbImageRef( new ImageSourceFileStbImage( dataSourceRef, options ) ); }
+	static void registerSelf();
 
-	static void		registerSelf();
-
-	void	load( ImageTargetRef target ) override;
+	void load( ImageTargetRef target ) override;
 
   protected:
 	ImageSourceFileStbImage( DataSourceRef dataSourceRef, ImageSource::Options options );
-	
-	uint8_t		*mData8u;
-	float		*mData32f;
-	size_t		mRowBytes;
+
+	uint8_t *mData8u;
+	float *  mData32f;
+	size_t   mRowBytes;
 };
 
 } // namespace cinder

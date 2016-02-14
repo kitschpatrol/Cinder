@@ -23,52 +23,53 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
+#include "cinder/CinderMath.h"
 #include "cinder/audio/Node.h"
 #include "cinder/audio/Param.h"
-#include "cinder/CinderMath.h"
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 // Typedefs for shared_ptr's to all MathNode types
-typedef std::shared_ptr<class MathNode>			MathNodeRef;
-typedef std::shared_ptr<class AddNode>			AddNodeRef;
-typedef std::shared_ptr<class SubtractNode>		SubtractNodeRef;
-typedef std::shared_ptr<class MultiplyNode>		MultiplyNodeRef;
-typedef std::shared_ptr<class DivideNode>		DivideNodeRef;
+typedef std::shared_ptr<class MathNode>     MathNodeRef;
+typedef std::shared_ptr<class AddNode>      AddNodeRef;
+typedef std::shared_ptr<class SubtractNode> SubtractNodeRef;
+typedef std::shared_ptr<class MultiplyNode> MultiplyNodeRef;
+typedef std::shared_ptr<class DivideNode>   DivideNodeRef;
 
 //! Base class for an arithmetic based Node.
 class MathNode : public Node {
   public:
 	//! Sets the current value to a constant \a value.
-	void setValue( float value )	{ mParam.setValue( value ); }
+	void setValue( float value ) { mParam.setValue( value ); }
 	//! Returns the current value.
-	float getValue() const			{ return mParam.getValue(); }
-
+	float getValue() const { return mParam.getValue(); }
 	//! Returns a pointer to the Param that can be used to animate the value.
-	Param* getParam()				{ return &mParam; }
-
+	Param *getParam() { return &mParam; }
   protected:
 	MathNode( float initialValue, const Format &format );
 
-	Param	mParam;
+	Param mParam;
 };
 
 //! Node for performing an addition operation on its input.
 class AddNode : public MathNode {
   public:
-	AddNode( const Format &format = Format() ) : MathNode( 0, format )	{}
-	AddNode( float initialValue, const Format &format = Format() )	: MathNode( initialValue, format )	{}
-
-protected:
+	AddNode( const Format &format = Format() )
+	    : MathNode( 0, format ) {}
+	AddNode( float initialValue, const Format &format = Format() )
+	    : MathNode( initialValue, format ) {}
+  protected:
 	void process( Buffer *buffer ) override;
 };
 
 //! Node for performing a subtration operation on its input.
 class SubtractNode : public MathNode {
   public:
-	SubtractNode( const Format &format = Format() ) : MathNode( 0, format )	{}
-	SubtractNode( float initialValue, const Format &format = Format() )	: MathNode( initialValue, format )	{}
-
+	SubtractNode( const Format &format = Format() )
+	    : MathNode( 0, format ) {}
+	SubtractNode( float initialValue, const Format &format = Format() )
+	    : MathNode( initialValue, format ) {}
   protected:
 	void process( Buffer *buffer ) override;
 };
@@ -76,9 +77,10 @@ class SubtractNode : public MathNode {
 //! Node for performing a mulitplication operation on its input.
 class MultiplyNode : public MathNode {
   public:
-	MultiplyNode( const Format &format = Format() ) : MathNode( 0, format )	{}
-	MultiplyNode( float initialValue, const Format &format = Format() )	: MathNode( initialValue, format )	{}
-
+	MultiplyNode( const Format &format = Format() )
+	    : MathNode( 0, format ) {}
+	MultiplyNode( float initialValue, const Format &format = Format() )
+	    : MathNode( initialValue, format ) {}
   protected:
 	void process( Buffer *buffer ) override;
 };
@@ -86,11 +88,12 @@ class MultiplyNode : public MathNode {
 //! Node for performing a division operation on its input.
 class DivideNode : public MathNode {
   public:
-	DivideNode( const Format &format = Format() ) : MathNode( 0, format )	{}
-	DivideNode( float initialValue, const Format &format = Format() )	: MathNode( initialValue, format )	{}
-
+	DivideNode( const Format &format = Format() )
+	    : MathNode( 0, format ) {}
+	DivideNode( float initialValue, const Format &format = Format() )
+	    : MathNode( initialValue, format ) {}
   protected:
 	void process( Buffer *buffer ) override;
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

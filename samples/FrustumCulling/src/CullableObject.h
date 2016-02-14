@@ -24,8 +24,8 @@
 
 #include "cinder/Matrix.h"
 #include "cinder/Vector.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/gl/Batch.h"
+#include "cinder/gl/Texture.h"
 
 typedef std::shared_ptr<class CullableObject> CullableObjectRef;
 
@@ -33,36 +33,33 @@ class CullableObject {
   public:
 	CullableObject( const ci::gl::BatchRef &batch );
 	~CullableObject();
-	
+
 	void update( double elapsed );
 	void draw();
 
 	void setCulled( bool culled = true ) { mIsCulled = culled; }
-	bool isCulled() { return mIsCulled; }
-
-	const ci::mat4& getTransform() const { return mTransform; }
-	
+	bool                 isCulled() { return mIsCulled; }
+	const ci::mat4 &     getTransform() const { return mTransform; }
 	//! For sorting purposes
-	const ci::vec3& getPosition() const { return mPosition; }
+	const ci::vec3 &getPosition() const { return mPosition; }
 	//!
-	const ci::vec3& getRotation() const { return mRotation; }
+	const ci::vec3 &getRotation() const { return mRotation; }
 	//!
 	float getScale() const { return mScale; }
-	
 	void setTransform( const ci::vec3 &position, const ci::vec3 &rotation, float scale );
-	
+
   protected:
 	//! keep track of culling state
-	bool			mIsCulled;
+	bool mIsCulled;
 
 	//! keep track of position, rotation and scale
-	ci::vec3		mPosition;
-	ci::vec3		mRotation;
-	float			mScale;
+	ci::vec3 mPosition;
+	ci::vec3 mRotation;
+	float    mScale;
 
 	//! This is the combined transformation that is used to transform the model matrix
-	ci::mat4			mTransform;
+	ci::mat4 mTransform;
 
 	//! This is our handle the gpu-side geometry data.
-	ci::gl::BatchRef	mBatch;
+	ci::gl::BatchRef mBatch;
 };

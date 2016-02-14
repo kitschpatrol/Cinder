@@ -24,9 +24,6 @@
 #include <CFURL.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,18 +37,18 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-typedef struct CGDataProvider*          CGDataProviderRef;
-typedef CALLBACK_API_C( size_t , CGGetBytesProcPtr )(void *info, void *buffer, size_t count);
-typedef CALLBACK_API_C( void , CGSkipBytesProcPtr )(void *info, size_t count);
-typedef CALLBACK_API_C( void , CGRewindProcPtr )(void * info);
-typedef CALLBACK_API_C( void , CGReleaseProviderProcPtr )(void * info);
+typedef struct CGDataProvider *CGDataProviderRef;
+typedef CALLBACK_API_C( size_t, CGGetBytesProcPtr )( void *info, void *buffer, size_t count );
+typedef CALLBACK_API_C( void, CGSkipBytesProcPtr )( void *info, size_t count );
+typedef CALLBACK_API_C( void, CGRewindProcPtr )( void *info );
+typedef CALLBACK_API_C( void, CGReleaseProviderProcPtr )( void *info );
 /* Callbacks for sequentially accessing data.
  * `getBytes' is called to copy `count' bytes from the provider's data to
  * `buffer'.  It should return the number of bytes copied, or 0 if there's
@@ -60,15 +57,15 @@ typedef CALLBACK_API_C( void , CGReleaseProviderProcPtr )(void * info);
  * `rewind' is called to rewind the provider to the beginning of the data.
  * `releaseProvider', if non-NULL, is called when the provider is freed. */
 struct CGDataProviderCallbacks {
-  CGGetBytesProcPtr   getBytes;
-  CGSkipBytesProcPtr  skipBytes;
-  CGRewindProcPtr     rewind;
-  CGReleaseProviderProcPtr  releaseProvider;
+	CGGetBytesProcPtr        getBytes;
+	CGSkipBytesProcPtr       skipBytes;
+	CGRewindProcPtr          rewind;
+	CGReleaseProviderProcPtr releaseProvider;
 };
-typedef struct CGDataProviderCallbacks  CGDataProviderCallbacks;
-typedef CALLBACK_API_C( void *, CGGetBytePointerProcPtr )(void * info);
-typedef CALLBACK_API_C( void , CGReleaseByteProcPtr )(void *info, const void *pointer);
-typedef CALLBACK_API_C( size_t , CGGetBytesDirectProcPtr )(void *info, void *buffer, size_t offset, size_t count);
+typedef struct CGDataProviderCallbacks CGDataProviderCallbacks;
+typedef CALLBACK_API_C( void *, CGGetBytePointerProcPtr )( void *info );
+typedef CALLBACK_API_C( void, CGReleaseByteProcPtr )( void *info, const void *pointer );
+typedef CALLBACK_API_C( size_t, CGGetBytesDirectProcPtr )( void *info, void *buffer, size_t offset, size_t count );
 /* Callbacks for directly accessing data.
  * `getBytePointer', if non-NULL, is called to return a pointer to the
  * provider's entire block of data.
@@ -80,13 +77,13 @@ typedef CALLBACK_API_C( size_t , CGGetBytesDirectProcPtr )(void *info, void *buf
  * `releaseProvider', if non-NULL, is called when the provider is freed.
  * At least one of `getBytePointer' or `getBytes' must be non-NULL.  */
 struct CGDataProviderDirectAccessCallbacks {
-  CGGetBytePointerProcPtr  getBytePointer;
-  CGReleaseByteProcPtr  releaseBytePointer;
-  CGGetBytesDirectProcPtr  getBytes;
-  CGReleaseProviderProcPtr  releaseProvider;
+	CGGetBytePointerProcPtr  getBytePointer;
+	CGReleaseByteProcPtr     releaseBytePointer;
+	CGGetBytesDirectProcPtr  getBytes;
+	CGReleaseProviderProcPtr releaseProvider;
 };
 typedef struct CGDataProviderDirectAccessCallbacks CGDataProviderDirectAccessCallbacks;
-typedef CALLBACK_API_C( void , CGReleaseDataProcPtr )(void *info, const void *data, size_t size);
+typedef CALLBACK_API_C( void, CGReleaseDataProcPtr )( void *info, const void *data, size_t size );
 /* Create a sequential-access data provider using `callbacks' to provide
  * the data.  `info' is passed to each of the callback functions. */
 /*
@@ -99,9 +96,8 @@ typedef CALLBACK_API_C( void , CGReleaseDataProcPtr )(void *info, const void *da
  */
 EXTERN_API_C( CGDataProviderRef )
 CGDataProviderCreate(
-  void *                           info,
-  const CGDataProviderCallbacks *  callbacks);
-
+    void *                         info,
+    const CGDataProviderCallbacks *callbacks );
 
 /* Create a direct-access data provider using `callbacks' to supply `size'
  * bytes of data. `info' is passed to each of the callback functions. */
@@ -115,10 +111,9 @@ CGDataProviderCreate(
  */
 EXTERN_API_C( CGDataProviderRef )
 CGDataProviderCreateDirectAccess(
-  void *                                       info,
-  size_t                                       size,
-  const CGDataProviderDirectAccessCallbacks *  callbacks);
-
+    void *                                     info,
+    size_t                                     size,
+    const CGDataProviderDirectAccessCallbacks *callbacks );
 
 /* Create a direct-access data provider using `data', an array of `size'
  * bytes.  `releaseData' is called when the data provider is freed, and is
@@ -133,11 +128,10 @@ CGDataProviderCreateDirectAccess(
  */
 EXTERN_API_C( CGDataProviderRef )
 CGDataProviderCreateWithData(
-  void *                 info,
-  const void *           data,
-  size_t                 size,
-  CGReleaseDataProcPtr   releaseData);
-
+    void *               info,
+    const void *         data,
+    size_t               size,
+    CGReleaseDataProcPtr releaseData );
 
 /* Create a data provider using `url'. */
 /*
@@ -149,8 +143,7 @@ CGDataProviderCreateWithData(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDataProviderRef )
-CGDataProviderCreateWithURL(CFURLRef url);
-
+CGDataProviderCreateWithURL( CFURLRef url );
 
 /* Increment the retain count of `provider' and return it.  All data
  * providers are created with an initial retain count of 1. */
@@ -163,8 +156,7 @@ CGDataProviderCreateWithURL(CFURLRef url);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDataProviderRef )
-CGDataProviderRetain(CGDataProviderRef provider);
-
+CGDataProviderRetain( CGDataProviderRef provider );
 
 /* Decrement the retain count of `provider'.  If the retain count reaches
  * 0, then free `provider' and any associated resources. */
@@ -177,16 +169,14 @@ CGDataProviderRetain(CGDataProviderRef provider);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGDataProviderRelease(CGDataProviderRef provider);
-
-
+CGDataProviderRelease( CGDataProviderRef provider );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -200,4 +190,3 @@ CGDataProviderRelease(CGDataProviderRef provider);
 #endif
 
 #endif /* CGDATAPROVIDER_H_ */
-

@@ -33,9 +33,6 @@
 #include <SFNTTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -49,30 +46,29 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=power
+#pragma options align = power
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
-
 
 /* Matching Options */
 typedef UInt32 FNSMatchOptions;
 enum {
-  kFNSMatchNames                = 0x00000001, /* font names must match */
-  kFNSMatchTechnology           = 0x00000002, /* scaler technology must match */
-  kFNSMatchGlyphs               = 0x00000004, /* glyph data must match */
-  kFNSMatchEncodings            = 0x00000008, /* cmaps must match */
-  kFNSMatchQDMetrics            = 0x00000010, /* QuickDraw Text metrics must match */
-  kFNSMatchATSUMetrics          = 0x00000020, /* ATSUI metrics (incl. vertical) must match */
-  kFNSMatchKerning              = 0x00000040, /* kerning data must match */
-  kFNSMatchWSLayout             = 0x00000080, /* WorldScript layout tables must match */
-  kFNSMatchAATLayout            = 0x00000100, /* AAT (incl. OpenType) layout tables must match */
-  kFNSMatchPrintEncoding        = 0x00000200, /* PostScript font and glyph names and re-encoding vector must match */
-  kFNSMissingDataNoMatch        = (unsigned long)0x80000000, /* treat missing data as mismatch */
-  kFNSMatchAll                  = (unsigned long)0xFFFFFFFF, /* everything must match */
-  kFNSMatchDefaults             = 0     /* use global default match options */
+	kFNSMatchNames = 0x00000001, /* font names must match */
+	kFNSMatchTechnology = 0x00000002, /* scaler technology must match */
+	kFNSMatchGlyphs = 0x00000004, /* glyph data must match */
+	kFNSMatchEncodings = 0x00000008, /* cmaps must match */
+	kFNSMatchQDMetrics = 0x00000010, /* QuickDraw Text metrics must match */
+	kFNSMatchATSUMetrics = 0x00000020, /* ATSUI metrics (incl. vertical) must match */
+	kFNSMatchKerning = 0x00000040, /* kerning data must match */
+	kFNSMatchWSLayout = 0x00000080, /* WorldScript layout tables must match */
+	kFNSMatchAATLayout = 0x00000100, /* AAT (incl. OpenType) layout tables must match */
+	kFNSMatchPrintEncoding = 0x00000200, /* PostScript font and glyph names and re-encoding vector must match */
+	kFNSMissingDataNoMatch = (unsigned long)0x80000000, /* treat missing data as mismatch */
+	kFNSMatchAll = (unsigned long)0xFFFFFFFF, /* everything must match */
+	kFNSMatchDefaults = 0 /* use global default match options */
 };
 
 /*
@@ -84,33 +80,31 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( FNSMatchOptions )
-FNSMatchDefaultsGet(void);
-
-
+FNSMatchDefaultsGet( void );
 
 /* Version control */
 typedef UInt32 FNSObjectVersion;
 enum {
-  kFNSVersionDontCare           = 0,
-  kFNSCurSysInfoVersion         = 1
+	kFNSVersionDontCare = 0,
+	kFNSCurSysInfoVersion = 1
 };
 
 /* No features defined yet.*/
-typedef UInt32                          FNSFeatureFlags;
+typedef UInt32 FNSFeatureFlags;
 /*
    The FontSync library version number is binary-coded decimal:
    8 bits of major version, 4 minor version and 4 bits revision.
 */
 struct FNSSysInfo {
-  FNSObjectVersion    iSysInfoVersion;        /* fill this in before calling FNSSysInfoGet*/
-  FNSFeatureFlags     oFeatures;
-  FNSObjectVersion    oCurRefVersion;
-  FNSObjectVersion    oMinRefVersion;
-  FNSObjectVersion    oCurProfileVersion;
-  FNSObjectVersion    oMinProfileVersion;
-  UInt16              oFontSyncVersion;
+	FNSObjectVersion iSysInfoVersion; /* fill this in before calling FNSSysInfoGet*/
+	FNSFeatureFlags  oFeatures;
+	FNSObjectVersion oCurRefVersion;
+	FNSObjectVersion oMinRefVersion;
+	FNSObjectVersion oCurProfileVersion;
+	FNSObjectVersion oMinProfileVersion;
+	UInt16           oFontSyncVersion;
 };
-typedef struct FNSSysInfo               FNSSysInfo;
+typedef struct FNSSysInfo FNSSysInfo;
 /*
  *  FNSSysInfoGet()
  *  
@@ -120,12 +114,10 @@ typedef struct FNSSysInfo               FNSSysInfo;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-FNSSysInfoGet(FNSSysInfo * ioInfo);
-
-
+FNSSysInfoGet( FNSSysInfo *ioInfo );
 
 /* FontSync References */
-typedef struct OpaqueFNSFontReference*  FNSFontReference;
+typedef struct OpaqueFNSFontReference *FNSFontReference;
 /*
  *  FNSReferenceGetVersion()
  *  
@@ -136,9 +128,8 @@ typedef struct OpaqueFNSFontReference*  FNSFontReference;
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceGetVersion(
-  FNSFontReference    iReference,
-  FNSObjectVersion *  oVersion);
-
+    FNSFontReference  iReference,
+    FNSObjectVersion *oVersion );
 
 /*
  *  FNSReferenceDispose()
@@ -149,8 +140,7 @@ FNSReferenceGetVersion(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-FNSReferenceDispose(FNSFontReference iReference);
-
+FNSReferenceDispose( FNSFontReference iReference );
 
 /*
  *  FNSReferenceMatch()
@@ -162,11 +152,10 @@ FNSReferenceDispose(FNSFontReference iReference);
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceMatch(
-  FNSFontReference   iReference1,
-  FNSFontReference   iReference2,
-  FNSMatchOptions    iOptions,
-  FNSMatchOptions *  oFailedMatchOptions);      /* can be NULL */
-
+    FNSFontReference iReference1,
+    FNSFontReference iReference2,
+    FNSMatchOptions  iOptions,
+    FNSMatchOptions *oFailedMatchOptions ); /* can be NULL */
 
 /*
  *  FNSReferenceFlattenedSize()
@@ -178,9 +167,8 @@ FNSReferenceMatch(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceFlattenedSize(
-  FNSFontReference   iReference,
-  ByteCount *        oFlattenedSize);
-
+    FNSFontReference iReference,
+    ByteCount *      oFlattenedSize );
 
 /*
  *  FNSReferenceFlatten()
@@ -192,10 +180,9 @@ FNSReferenceFlattenedSize(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceFlatten(
-  FNSFontReference   iReference,
-  void *             oFlatReference,       /* can be NULL */
-  ByteCount *        oFlattenedSize);      /* can be NULL */
-
+    FNSFontReference iReference,
+    void *           oFlatReference, /* can be NULL */
+    ByteCount *      oFlattenedSize ); /* can be NULL */
 
 /*
  *  FNSReferenceUnflatten()
@@ -207,19 +194,17 @@ FNSReferenceFlatten(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceUnflatten(
-  const void *        iFlatReference,
-  ByteCount           iFlattenedSize,
-  FNSFontReference *  oReference);
-
-
+    const void *      iFlatReference,
+    ByteCount         iFlattenedSize,
+    FNSFontReference *oReference );
 
 /* FontSync Profiles */
 enum {
-  kFNSCreatorDefault            = 0,
-  kFNSProfileFileType           = FOUR_CHAR_CODE('fnsp')
+	kFNSCreatorDefault = 0,
+	kFNSProfileFileType = FOUR_CHAR_CODE( 'fnsp' )
 };
 
-typedef struct OpaqueFNSFontProfile*    FNSFontProfile;
+typedef struct OpaqueFNSFontProfile *FNSFontProfile;
 /*
  *  FNSProfileCreate()
  *  
@@ -230,12 +215,11 @@ typedef struct OpaqueFNSFontProfile*    FNSFontProfile;
  */
 EXTERN_API_C( OSStatus )
 FNSProfileCreate(
-  const FSSpec *     iFile,
-  FourCharCode       iCreator,
-  ItemCount          iEstNumRefs,
-  FNSObjectVersion   iDesiredVersion,
-  FNSFontProfile *   oProfile);
-
+    const FSSpec *   iFile,
+    FourCharCode     iCreator,
+    ItemCount        iEstNumRefs,
+    FNSObjectVersion iDesiredVersion,
+    FNSFontProfile * oProfile );
 
 /*
  *  FNSProfileOpen()
@@ -247,11 +231,9 @@ FNSProfileCreate(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileOpen(
-  const FSSpec *    iFile,
-  Boolean           iOpenForWrite,
-  FNSFontProfile *  oProfile);
-
-
+    const FSSpec *  iFile,
+    Boolean         iOpenForWrite,
+    FNSFontProfile *oProfile );
 
 /*
  *  FNSProfileCreateWithFSRef()
@@ -263,14 +245,13 @@ FNSProfileOpen(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileCreateWithFSRef(
-  const FSRef *      iParentDirectory,
-  UniCharCount       iNameLength,
-  const UniChar *    iName,
-  FourCharCode       iCreator,
-  ItemCount          iEstNumRefs,
-  FNSObjectVersion   iDesiredVersion,
-  FNSFontProfile *   oProfile);
-
+    const FSRef *    iParentDirectory,
+    UniCharCount     iNameLength,
+    const UniChar *  iName,
+    FourCharCode     iCreator,
+    ItemCount        iEstNumRefs,
+    FNSObjectVersion iDesiredVersion,
+    FNSFontProfile * oProfile );
 
 /*
  *  FNSProfileOpenWithFSRef()
@@ -282,10 +263,9 @@ FNSProfileCreateWithFSRef(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileOpenWithFSRef(
-  const FSRef *     iFile,
-  Boolean           iOpenForWrite,
-  FNSFontProfile *  oProfile);
-
+    const FSRef *   iFile,
+    Boolean         iOpenForWrite,
+    FNSFontProfile *oProfile );
 
 /*
  *  FNSProfileGetVersion()
@@ -297,9 +277,8 @@ FNSProfileOpenWithFSRef(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileGetVersion(
-  FNSFontProfile      iProfile,
-  FNSObjectVersion *  oVersion);
-
+    FNSFontProfile    iProfile,
+    FNSObjectVersion *oVersion );
 
 /*
  *  FNSProfileCompact()
@@ -310,8 +289,7 @@ FNSProfileGetVersion(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-FNSProfileCompact(FNSFontProfile iProfile);
-
+FNSProfileCompact( FNSFontProfile iProfile );
 
 /*
  *  FNSProfileClose()
@@ -322,8 +300,7 @@ FNSProfileCompact(FNSFontProfile iProfile);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-FNSProfileClose(FNSFontProfile iProfile);
-
+FNSProfileClose( FNSFontProfile iProfile );
 
 /*
  *  FNSProfileAddReference()
@@ -335,9 +312,8 @@ FNSProfileClose(FNSFontProfile iProfile);
  */
 EXTERN_API_C( OSStatus )
 FNSProfileAddReference(
-  FNSFontProfile     iProfile,
-  FNSFontReference   iReference);
-
+    FNSFontProfile   iProfile,
+    FNSFontReference iReference );
 
 /*
  *  FNSProfileRemoveReference()
@@ -349,9 +325,8 @@ FNSProfileAddReference(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileRemoveReference(
-  FNSFontProfile     iProfile,
-  FNSFontReference   iReference);
-
+    FNSFontProfile   iProfile,
+    FNSFontReference iReference );
 
 /*
  *  FNSProfileRemoveIndReference()
@@ -363,9 +338,8 @@ FNSProfileRemoveReference(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileRemoveIndReference(
-  FNSFontProfile   iProfile,
-  UInt32           iIndex);
-
+    FNSFontProfile iProfile,
+    UInt32         iIndex );
 
 /*
  *  FNSProfileClear()
@@ -376,8 +350,7 @@ FNSProfileRemoveIndReference(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-FNSProfileClear(FNSFontProfile iProfile);
-
+FNSProfileClear( FNSFontProfile iProfile );
 
 /*
  *  FNSProfileCountReferences()
@@ -389,9 +362,8 @@ FNSProfileClear(FNSFontProfile iProfile);
  */
 EXTERN_API_C( OSStatus )
 FNSProfileCountReferences(
-  FNSFontProfile   iProfile,
-  ItemCount *      oCount);
-
+    FNSFontProfile iProfile,
+    ItemCount *    oCount );
 
 /*
  *  FNSProfileGetIndReference()
@@ -403,10 +375,9 @@ FNSProfileCountReferences(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileGetIndReference(
-  FNSFontProfile      iProfile,
-  UInt32              iWhichReference,
-  FNSFontReference *  oReference);
-
+    FNSFontProfile    iProfile,
+    UInt32            iWhichReference,
+    FNSFontReference *oReference );
 
 /*
  *  FNSProfileMatchReference()
@@ -418,14 +389,12 @@ FNSProfileGetIndReference(
  */
 EXTERN_API_C( OSStatus )
 FNSProfileMatchReference(
-  FNSFontProfile     iProfile,
-  FNSFontReference   iReference,
-  FNSMatchOptions    iMatchOptions,
-  ItemCount          iOutputSize,
-  UInt32             oIndices[],          /* can be NULL */
-  ItemCount *        oNumMatches);        /* can be NULL */
-
-
+    FNSFontProfile   iProfile,
+    FNSFontReference iReference,
+    FNSMatchOptions  iMatchOptions,
+    ItemCount        iOutputSize,
+    UInt32           oIndices[], /* can be NULL */
+    ItemCount *      oNumMatches ); /* can be NULL */
 
 /* Mapping to and from Font Objects */
 /*
@@ -438,10 +407,9 @@ FNSProfileMatchReference(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceCreate(
-  FMFont              iFont,
-  FNSObjectVersion    iDesiredVersion,
-  FNSFontReference *  oReference);
-
+    FMFont            iFont,
+    FNSObjectVersion  iDesiredVersion,
+    FNSFontReference *oReference );
 
 /*
  *  FNSReferenceMatchFonts()
@@ -453,13 +421,11 @@ FNSReferenceCreate(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceMatchFonts(
-  FNSFontReference   iReference,
-  FNSMatchOptions    iMatchOptions,
-  ItemCount          iOutputSize,
-  FMFont             oFonts[],            /* can be NULL */
-  ItemCount *        oNumMatches);        /* can be NULL */
-
-
+    FNSFontReference iReference,
+    FNSMatchOptions  iMatchOptions,
+    ItemCount        iOutputSize,
+    FMFont           oFonts[], /* can be NULL */
+    ItemCount *      oNumMatches ); /* can be NULL */
 
 /* Mapping to and from Font Families */
 /*
@@ -472,12 +438,11 @@ FNSReferenceMatchFonts(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceCreateFromFamily(
-  FMFontFamily        iFamily,
-  FMFontStyle         iStyle,
-  FNSObjectVersion    iDesiredVersion,
-  FNSFontReference *  oReference,            /* can be NULL */
-  FMFontStyle *       oActualStyle);         /* can be NULL */
-
+    FMFontFamily      iFamily,
+    FMFontStyle       iStyle,
+    FNSObjectVersion  iDesiredVersion,
+    FNSFontReference *oReference, /* can be NULL */
+    FMFontStyle *     oActualStyle ); /* can be NULL */
 
 /*
  *  FNSReferenceMatchFamilies()
@@ -489,13 +454,11 @@ FNSReferenceCreateFromFamily(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceMatchFamilies(
-  FNSFontReference       iReference,
-  FNSMatchOptions        iMatchOptions,
-  ItemCount              iOutputSize,
-  FMFontFamilyInstance   oFonts[],            /* can be NULL */
-  ItemCount *            oNumMatches);        /* can be NULL */
-
-
+    FNSFontReference     iReference,
+    FNSMatchOptions      iMatchOptions,
+    ItemCount            iOutputSize,
+    FMFontFamilyInstance oFonts[], /* can be NULL */
+    ItemCount *          oNumMatches ); /* can be NULL */
 
 /* UI Support */
 /*
@@ -508,11 +471,10 @@ FNSReferenceMatchFamilies(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceGetFamilyInfo(
-  FNSFontReference   iReference,
-  Str255             oFamilyName,             /* can be NULL */
-  ScriptCode *       oFamilyNameScript,       /* can be NULL */
-  FMFontStyle *      oActualStyle);           /* can be NULL */
-
+    FNSFontReference iReference,
+    Str255           oFamilyName, /* can be NULL */
+    ScriptCode *     oFamilyNameScript, /* can be NULL */
+    FMFontStyle *    oActualStyle ); /* can be NULL */
 
 /*
  *  FNSReferenceCountNames()
@@ -524,9 +486,8 @@ FNSReferenceGetFamilyInfo(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceCountNames(
-  FNSFontReference   iReference,
-  ItemCount *        oNameCount);
-
+    FNSFontReference iReference,
+    ItemCount *      oNameCount );
 
 /*
  *  FNSReferenceGetIndName()
@@ -538,16 +499,15 @@ FNSReferenceCountNames(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceGetIndName(
-  FNSFontReference    iReference,
-  ItemCount           iFontNameIndex,
-  ByteCount           iMaximumNameLength,
-  Ptr                 oName,                    /* can be NULL */
-  ByteCount *         oActualNameLength,        /* can be NULL */
-  FontNameCode *      oFontNameCode,            /* can be NULL */
-  FontPlatformCode *  oFontNamePlatform,        /* can be NULL */
-  FontScriptCode *    oFontNameScript,          /* can be NULL */
-  FontLanguageCode *  oFontNameLanguage);       /* can be NULL */
-
+    FNSFontReference  iReference,
+    ItemCount         iFontNameIndex,
+    ByteCount         iMaximumNameLength,
+    Ptr               oName, /* can be NULL */
+    ByteCount *       oActualNameLength, /* can be NULL */
+    FontNameCode *    oFontNameCode, /* can be NULL */
+    FontPlatformCode *oFontNamePlatform, /* can be NULL */
+    FontScriptCode *  oFontNameScript, /* can be NULL */
+    FontLanguageCode *oFontNameLanguage ); /* can be NULL */
 
 /*
  *  FNSReferenceFindName()
@@ -559,16 +519,15 @@ FNSReferenceGetIndName(
  */
 EXTERN_API_C( OSStatus )
 FNSReferenceFindName(
-  FNSFontReference   iReference,
-  FontNameCode       iFontNameCode,
-  FontPlatformCode   iFontNamePlatform,
-  FontScriptCode     iFontNameScript,
-  FontLanguageCode   iFontNameLanguage,
-  ByteCount          iMaximumNameLength,
-  Ptr                oName,                    /* can be NULL */
-  ByteCount *        oActualNameLength,        /* can be NULL */
-  ItemCount *        oFontNameIndex);          /* can be NULL */
-
+    FNSFontReference iReference,
+    FontNameCode     iFontNameCode,
+    FontPlatformCode iFontNamePlatform,
+    FontScriptCode   iFontNameScript,
+    FontLanguageCode iFontNameLanguage,
+    ByteCount        iMaximumNameLength,
+    Ptr              oName, /* can be NULL */
+    ByteCount *      oActualNameLength, /* can be NULL */
+    ItemCount *      oFontNameIndex ); /* can be NULL */
 
 /* Miscellany */
 /*
@@ -580,16 +539,14 @@ FNSReferenceFindName(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-FNSEnabled(void);
-
-
+FNSEnabled( void );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF

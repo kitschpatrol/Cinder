@@ -34,76 +34,76 @@ namespace app {
 #if defined( CINDER_COCOA )
 
 static bool sTableInited = false;
-map<int,int> sKeyTable;
+map<int, int> sKeyTable;
 
-// Much of this keyTable is courtesy of SDL's keyboard handling code	
+// Much of this keyTable is courtesy of SDL's keyboard handling code
 static void initKeyTable()
 {
 	// keys in 0x00 format are from the book
 	// keys in the range 0xF700-0xF8FF are from NSEvent.h in Application Kit
 	// commented out keys have not been found for Mac OS X
-		
-	sKeyTable[0x33]			= KeyEvent::KEY_BACKSPACE;
-	sKeyTable[0x30]			= KeyEvent::KEY_TAB;
-	sKeyTable[0xF739]		= KeyEvent::KEY_CLEAR;
-	sKeyTable[0x24]			= KeyEvent::KEY_RETURN;
-	sKeyTable[0x71]			= KeyEvent::KEY_PAUSE;
-	sKeyTable[0x35]			= KeyEvent::KEY_ESCAPE;
-	sKeyTable[0x31]			= KeyEvent::KEY_SPACE;
-	sKeyTable[0x27]			= KeyEvent::KEY_QUOTE;
-	sKeyTable[0x2B]			= KeyEvent::KEY_COMMA;
-	sKeyTable[0x1B]			= KeyEvent::KEY_MINUS;
-	sKeyTable[0x2F]			= KeyEvent::KEY_PERIOD;
-	sKeyTable[0x2C]			= KeyEvent::KEY_SLASH;
-	
-	sKeyTable[0x1D]			= KeyEvent::KEY_0;
-	sKeyTable[0x12]			= KeyEvent::KEY_1;
-	sKeyTable[0x13]			= KeyEvent::KEY_2;
-	sKeyTable[0x14]			= KeyEvent::KEY_3;
-	sKeyTable[0x15]			= KeyEvent::KEY_4;
-	sKeyTable[0x17]			= KeyEvent::KEY_5;
-	sKeyTable[0x16]			= KeyEvent::KEY_6;
-	sKeyTable[0x1A]			= KeyEvent::KEY_7;
-	sKeyTable[0x1C]			= KeyEvent::KEY_8;
-	sKeyTable[0x19]			= KeyEvent::KEY_9;
-	
-	sKeyTable[0x29]			= KeyEvent::KEY_SEMICOLON;
-	sKeyTable[0x18]			= KeyEvent::KEY_EQUALS;
-	sKeyTable[0x21]			= KeyEvent::KEY_LEFTBRACKET;
-	sKeyTable[0x2A]			= KeyEvent::KEY_BACKSLASH;
+
+	sKeyTable[0x33] = KeyEvent::KEY_BACKSPACE;
+	sKeyTable[0x30] = KeyEvent::KEY_TAB;
+	sKeyTable[0xF739] = KeyEvent::KEY_CLEAR;
+	sKeyTable[0x24] = KeyEvent::KEY_RETURN;
+	sKeyTable[0x71] = KeyEvent::KEY_PAUSE;
+	sKeyTable[0x35] = KeyEvent::KEY_ESCAPE;
+	sKeyTable[0x31] = KeyEvent::KEY_SPACE;
+	sKeyTable[0x27] = KeyEvent::KEY_QUOTE;
+	sKeyTable[0x2B] = KeyEvent::KEY_COMMA;
+	sKeyTable[0x1B] = KeyEvent::KEY_MINUS;
+	sKeyTable[0x2F] = KeyEvent::KEY_PERIOD;
+	sKeyTable[0x2C] = KeyEvent::KEY_SLASH;
+
+	sKeyTable[0x1D] = KeyEvent::KEY_0;
+	sKeyTable[0x12] = KeyEvent::KEY_1;
+	sKeyTable[0x13] = KeyEvent::KEY_2;
+	sKeyTable[0x14] = KeyEvent::KEY_3;
+	sKeyTable[0x15] = KeyEvent::KEY_4;
+	sKeyTable[0x17] = KeyEvent::KEY_5;
+	sKeyTable[0x16] = KeyEvent::KEY_6;
+	sKeyTable[0x1A] = KeyEvent::KEY_7;
+	sKeyTable[0x1C] = KeyEvent::KEY_8;
+	sKeyTable[0x19] = KeyEvent::KEY_9;
+
+	sKeyTable[0x29] = KeyEvent::KEY_SEMICOLON;
+	sKeyTable[0x18] = KeyEvent::KEY_EQUALS;
+	sKeyTable[0x21] = KeyEvent::KEY_LEFTBRACKET;
+	sKeyTable[0x2A] = KeyEvent::KEY_BACKSLASH;
 	//sKeyTable[VK_OEM_102]	= KeyEvent::KEY_LESS;
-	sKeyTable[0x1E]			= KeyEvent::KEY_RIGHTBRACKET;
-	sKeyTable[0x32]			= KeyEvent::KEY_BACKQUOTE;
+	sKeyTable[0x1E] = KeyEvent::KEY_RIGHTBRACKET;
+	sKeyTable[0x32] = KeyEvent::KEY_BACKQUOTE;
 	//sKeyTable[0xDF]		= KeyEvent::KEY_BACKQUOTE;
-	
-	sKeyTable[0x00]			= KeyEvent::KEY_a;
-	sKeyTable[0x0B]			= KeyEvent::KEY_b;
-	sKeyTable[0x08]			= KeyEvent::KEY_c;
-	sKeyTable[0x02]			= KeyEvent::KEY_d;
-	sKeyTable[0x0E]			= KeyEvent::KEY_e;
-	sKeyTable[0x03]			= KeyEvent::KEY_f;
-	sKeyTable[0x05]			= KeyEvent::KEY_g;
-	sKeyTable[0x04]			= KeyEvent::KEY_h;
-	sKeyTable[0x22]			= KeyEvent::KEY_i;
-	sKeyTable[0x26]			= KeyEvent::KEY_j;
-	sKeyTable[0x28]			= KeyEvent::KEY_k;
-	sKeyTable[0x25]			= KeyEvent::KEY_l;
-	sKeyTable[0x2E]			= KeyEvent::KEY_m;
-	sKeyTable[0x2D]			= KeyEvent::KEY_n;
-	sKeyTable[0x1F]			= KeyEvent::KEY_o;
-	sKeyTable[0x23]			= KeyEvent::KEY_p;
-	sKeyTable[0x0C]			= KeyEvent::KEY_q;
-	sKeyTable[0x0F]			= KeyEvent::KEY_r;
-	sKeyTable[0x01]			= KeyEvent::KEY_s;
-	sKeyTable[0x11]			= KeyEvent::KEY_t;
-	sKeyTable[0x20]			= KeyEvent::KEY_u;
-	sKeyTable[0x09]			= KeyEvent::KEY_v;
-	sKeyTable[0x0D]			= KeyEvent::KEY_w;
-	sKeyTable[0x07]			= KeyEvent::KEY_x;
-	sKeyTable[0x10]			= KeyEvent::KEY_y;
-	sKeyTable[0x06]			= KeyEvent::KEY_z;
-	sKeyTable[0x75]			= KeyEvent::KEY_DELETE;
-	
+
+	sKeyTable[0x00] = KeyEvent::KEY_a;
+	sKeyTable[0x0B] = KeyEvent::KEY_b;
+	sKeyTable[0x08] = KeyEvent::KEY_c;
+	sKeyTable[0x02] = KeyEvent::KEY_d;
+	sKeyTable[0x0E] = KeyEvent::KEY_e;
+	sKeyTable[0x03] = KeyEvent::KEY_f;
+	sKeyTable[0x05] = KeyEvent::KEY_g;
+	sKeyTable[0x04] = KeyEvent::KEY_h;
+	sKeyTable[0x22] = KeyEvent::KEY_i;
+	sKeyTable[0x26] = KeyEvent::KEY_j;
+	sKeyTable[0x28] = KeyEvent::KEY_k;
+	sKeyTable[0x25] = KeyEvent::KEY_l;
+	sKeyTable[0x2E] = KeyEvent::KEY_m;
+	sKeyTable[0x2D] = KeyEvent::KEY_n;
+	sKeyTable[0x1F] = KeyEvent::KEY_o;
+	sKeyTable[0x23] = KeyEvent::KEY_p;
+	sKeyTable[0x0C] = KeyEvent::KEY_q;
+	sKeyTable[0x0F] = KeyEvent::KEY_r;
+	sKeyTable[0x01] = KeyEvent::KEY_s;
+	sKeyTable[0x11] = KeyEvent::KEY_t;
+	sKeyTable[0x20] = KeyEvent::KEY_u;
+	sKeyTable[0x09] = KeyEvent::KEY_v;
+	sKeyTable[0x0D] = KeyEvent::KEY_w;
+	sKeyTable[0x07] = KeyEvent::KEY_x;
+	sKeyTable[0x10] = KeyEvent::KEY_y;
+	sKeyTable[0x06] = KeyEvent::KEY_z;
+	sKeyTable[0x75] = KeyEvent::KEY_DELETE;
+
 	sKeyTable[0x52] = KeyEvent::KEY_KP0;
 	sKeyTable[0x53] = KeyEvent::KEY_KP1;
 	sKeyTable[0x54] = KeyEvent::KEY_KP2;
@@ -117,20 +117,20 @@ static void initKeyTable()
 	sKeyTable[0x41] = KeyEvent::KEY_KP_PERIOD;
 	sKeyTable[0x4B] = KeyEvent::KEY_KP_DIVIDE;
 	sKeyTable[0x43] = KeyEvent::KEY_KP_MULTIPLY;
-	
+
 	sKeyTable[0x1B] = KeyEvent::KEY_KP_MINUS;
 	sKeyTable[0x45] = KeyEvent::KEY_KP_PLUS;
-	
-	sKeyTable[0x7E]	= KeyEvent::KEY_UP;
-	sKeyTable[0x7D]	= KeyEvent::KEY_DOWN;
-	sKeyTable[0x7C]	= KeyEvent::KEY_RIGHT;
-	sKeyTable[0x7B]	= KeyEvent::KEY_LEFT;
+
+	sKeyTable[0x7E] = KeyEvent::KEY_UP;
+	sKeyTable[0x7D] = KeyEvent::KEY_DOWN;
+	sKeyTable[0x7C] = KeyEvent::KEY_RIGHT;
+	sKeyTable[0x7B] = KeyEvent::KEY_LEFT;
 	sKeyTable[0xF727] = KeyEvent::KEY_INSERT;
-	sKeyTable[0x73]	= KeyEvent::KEY_HOME;
-	sKeyTable[0x77]	= KeyEvent::KEY_END;
-	sKeyTable[0x74]	= KeyEvent::KEY_PAGEUP;
-	sKeyTable[0x79]	= KeyEvent::KEY_PAGEDOWN;
-	
+	sKeyTable[0x73] = KeyEvent::KEY_HOME;
+	sKeyTable[0x77] = KeyEvent::KEY_END;
+	sKeyTable[0x74] = KeyEvent::KEY_PAGEUP;
+	sKeyTable[0x79] = KeyEvent::KEY_PAGEDOWN;
+
 	sKeyTable[0x7A] = KeyEvent::KEY_F1;
 	sKeyTable[0x78] = KeyEvent::KEY_F2;
 	sKeyTable[0x63] = KeyEvent::KEY_F3;
@@ -146,7 +146,7 @@ static void initKeyTable()
 	sKeyTable[0x69] = KeyEvent::KEY_F13;
 	sKeyTable[0x6B] = KeyEvent::KEY_F14;
 	sKeyTable[0x71] = KeyEvent::KEY_F15;
-	
+
 	// sKeyTable[NSFNumLock] = KeyEvent::KEY_NUMLOCK;
 	sKeyTable[0x39] = KeyEvent::KEY_CAPSLOCK;
 	sKeyTable[0x6B] = KeyEvent::KEY_SCROLLOCK;
@@ -160,27 +160,27 @@ static void initKeyTable()
 	sKeyTable[0x36] = KeyEvent::KEY_RMETA;
 	// sKeyTable[VK_RWIN] = KeyEvent::KEY_RSUPER;
 	// sKeyTable[VK_LWIN] = KeyEvent::KEY_LSUPER;
-	
-	sKeyTable[0x72]		= KeyEvent::KEY_HELP;
-	sKeyTable[0xF738]	= KeyEvent::KEY_PRINT;
+
+	sKeyTable[0x72] = KeyEvent::KEY_HELP;
+	sKeyTable[0xF738] = KeyEvent::KEY_PRINT;
 	//sKeyTable[VK_SNAPSHOT]		= KeyEvent::KEY_PRINT;
-	sKeyTable[0xF732]	= KeyEvent::KEY_BREAK;
-	sKeyTable[0xF735]	= KeyEvent::KEY_MENU;
-	
+	sKeyTable[0xF732] = KeyEvent::KEY_BREAK;
+	sKeyTable[0xF735] = KeyEvent::KEY_MENU;
+
 	// additions not in WIN version
-	sKeyTable[0xF730]	= KeyEvent::KEY_PAUSE;
-	sKeyTable[0x7F]		= KeyEvent::KEY_POWER;
-	
+	sKeyTable[0xF730] = KeyEvent::KEY_PAUSE;
+	sKeyTable[0x7F] = KeyEvent::KEY_POWER;
+
 	sTableInited = true;
 }
 
-#if ! defined( CINDER_COCOA_TOUCH )
-int	KeyEvent::translateNativeKeyCode( int nativeKeyCode )
+#if !defined( CINDER_COCOA_TOUCH )
+int KeyEvent::translateNativeKeyCode( int nativeKeyCode )
 {
-	if( ! sTableInited )
+	if( !sTableInited )
 		initKeyTable();
-	
-	map<int,int>::iterator iter = sKeyTable.find( nativeKeyCode );
+
+	map<int, int>::iterator iter = sKeyTable.find( nativeKeyCode );
 	if( iter != sKeyTable.end() )
 		return iter->second;
 	else
@@ -191,10 +191,10 @@ int	KeyEvent::translateNativeKeyCode( int nativeKeyCode )
 #elif defined( CINDER_MSW )
 
 #include <windows.h>
-	
-static bool sTableInited = false;
+
+static bool      sTableInited = false;
 static const int MAX_KEYCODE = 256;
-int sKeyTable[MAX_KEYCODE];
+int              sKeyTable[MAX_KEYCODE];
 
 // Much of this keyTable is courtesy of SDL's keyboard handling code
 static void initKeyTable()
@@ -319,15 +319,15 @@ static void initKeyTable()
 	sKeyTable[VK_SNAPSHOT] = KeyEvent::KEY_PRINT;
 	sKeyTable[VK_CANCEL] = KeyEvent::KEY_BREAK;
 	sKeyTable[VK_APPS] = KeyEvent::KEY_MENU;
-	
+
 	sTableInited = true;
 }
 
-int	KeyEvent::translateNativeKeyCode( int nativeKeyCode )
+int KeyEvent::translateNativeKeyCode( int nativeKeyCode )
 {
-	if( ! sTableInited )
+	if( !sTableInited )
 		initKeyTable();
-	
+
 	if( nativeKeyCode >= MAX_KEYCODE )
 		return KeyEvent::KEY_UNKNOWN;
 	else
@@ -337,9 +337,9 @@ int	KeyEvent::translateNativeKeyCode( int nativeKeyCode )
 
 using namespace Windows::System;
 
-static bool sTableInited = false;
+static bool      sTableInited = false;
 static const int MAX_KEYCODE = 256;
-int sKeyTable[MAX_KEYCODE];
+int              sKeyTable[MAX_KEYCODE];
 
 // Much of this keyTable is courtesy of SDL's keyboard handling code
 // http://msdn.microsoft.com/en-US/library/windows/apps/xaml/windows.system.virtualkey
@@ -465,22 +465,21 @@ static void initKeyTable()
 	sKeyTable[(int)VirtualKey::Snapshot] = KeyEvent::KEY_PRINT;
 	sKeyTable[(int)VirtualKey::Cancel] = KeyEvent::KEY_BREAK;
 	sKeyTable[(int)VirtualKey::Application] = KeyEvent::KEY_MENU;
-	
+
 	sTableInited = true;
 }
 
-int	KeyEvent::translateNativeKeyCode( int nativeKeyCode )
+int KeyEvent::translateNativeKeyCode( int nativeKeyCode )
 {
-	if( ! sTableInited )
+	if( !sTableInited )
 		initKeyTable();
-	
+
 	if( nativeKeyCode >= MAX_KEYCODE )
 		return KeyEvent::KEY_UNKNOWN;
 	else
 		return sKeyTable[nativeKeyCode];
 }
 
-
 #endif // defined( CINDER_WINRT )
-	
-} } // namespace cinder::app
+}
+} // namespace cinder::app

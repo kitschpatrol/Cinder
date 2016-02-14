@@ -23,11 +23,12 @@
 
 #pragma once
 
+#include "cinder/Filesystem.h"
 #include "cinder/audio/Node.h"
 #include "cinder/audio/SampleType.h"
-#include "cinder/Filesystem.h"
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 typedef std::shared_ptr<class SampleRecorderNode> SampleRecorderNodeRef;
 typedef std::shared_ptr<class BufferRecorderNode> BufferRecorderNodeRef;
@@ -36,11 +37,11 @@ typedef std::shared_ptr<class BufferRecorderNode> BufferRecorderNodeRef;
 class SampleRecorderNode : public NodeAutoPullable {
   public:
 	//! Returns the current write position, which represents how many samples are currently recorded.
-	size_t getWritePosition() const		{ return mWritePos; }
+	size_t getWritePosition() const { return mWritePos; }
   protected:
 	SampleRecorderNode( const Format &format = Format() );
 
-	std::atomic<size_t>		mWritePos;
+	std::atomic<size_t> mWritePos;
 };
 
 //! Records its inputs to a Buffer.  The Buffer record size should be specified by the user (the default size is 44100 frames). Also supports writing the recorded samples to file.
@@ -64,14 +65,14 @@ class BufferRecorderNode : public SampleRecorderNode {
 	void setNumSeconds( double numSeconds, bool shrinkToFit = false );
 
 	//! Returns the length of the recording buffer in frames.
-	size_t		getNumFrames() const	{ return mRecorderBuffer.getNumFrames(); }
+	size_t getNumFrames() const { return mRecorderBuffer.getNumFrames(); }
 	//! Returns the length of the recording buffer in seconds.
-	double		getNumSeconds() const;
+	double getNumSeconds() const;
 
 	//! \brief Returns a copy of the recored samples, up to the current write position.
 	//!
 	//! This method is non locking, and as such any resizing calls must be performed on the same thread or be otherwise synchronized.
-	BufferRef	getRecordedCopy() const;
+	BufferRef getRecordedCopy() const;
 
 	//! \brief Writes the currently recorded samples to a file at \a filePath
 	//!
@@ -83,14 +84,14 @@ class BufferRecorderNode : public SampleRecorderNode {
 	uint64_t getLastOverrun();
 
   protected:
-	void initialize()				override;
-	void process( Buffer *buffer )	override;
+	void initialize() override;
+	void process( Buffer *buffer ) override;
 
 	void initBuffers( size_t numFrames );
 
-	BufferDynamic			mRecorderBuffer;
-	BufferDynamicRef		mCopiedBuffer;
-	std::atomic<uint64_t>	mLastOverrun;
+	BufferDynamic         mRecorderBuffer;
+	BufferDynamicRef      mCopiedBuffer;
+	std::atomic<uint64_t> mLastOverrun;
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

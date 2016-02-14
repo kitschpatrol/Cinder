@@ -27,12 +27,13 @@
 #undef min
 #undef max
 
+#include "cinder/Display.h"
+#include "cinder/app/Window.h"
 #include "cinder/app/msw/AppImplMsw.h"
 #include "cinder/app/msw/AppMsw.h"
-#include "cinder/app/Window.h"
-#include "cinder/Display.h"
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class WindowImplMswBasic;
 
@@ -40,41 +41,40 @@ class AppImplMswBasic : public AppImplMsw {
   public:
 	AppImplMswBasic( AppMsw *app, const AppMsw::Settings &settings );
 
-	void	run();
+	void run();
 
-	AppMsw*	getApp() { return mApp; }
-	
-	void	quit() override;
+	AppMsw *getApp() { return mApp; }
+	void    quit() override;
 
-	void	setFrameRate( float frameRate ) override;
-	void	disableFrameRate();
-	bool	isFrameRateEnabled() const;
+	void setFrameRate( float frameRate ) override;
+	void disableFrameRate();
+	bool isFrameRateEnabled() const;
 
-	size_t		getNumWindows() const;
-	WindowRef	getWindowIndex( size_t index );
-	WindowRef	getForegroundWindow() const;
-	
-	void		setupBlankingWindows( DisplayRef fullScreenDisplay );
-	void		destroyBlankingWindows();
+	size_t    getNumWindows() const;
+	WindowRef getWindowIndex( size_t index );
+	WindowRef getForegroundWindow() const;
+
+	void setupBlankingWindows( DisplayRef fullScreenDisplay );
+	void destroyBlankingWindows();
 
   private:
-	void		sleep( double seconds );
+	void sleep( double seconds );
 
-	WindowRef		createWindow( Window::Format format );
-	RendererRef		findSharedRenderer( const RendererRef &searchRenderer );
-	void			closeWindow( class WindowImplMsw *windowImpl ) override;
-	void			setForegroundWindow( WindowRef window ) override;
-	
-	AppMsw*	mApp;
-	HINSTANCE		mInstance;
-	double			mNextFrameTime;
-	bool			mFrameRateEnabled;
-	bool			mShouldQuit;
-	bool			mQuitOnLastWindowClosed;
+	WindowRef createWindow( Window::Format format );
+	RendererRef findSharedRenderer( const RendererRef &searchRenderer );
+	void closeWindow( class WindowImplMsw *windowImpl ) override;
+	void setForegroundWindow( WindowRef window ) override;
 
-	std::list<class WindowImplMswBasic*>	mWindows;
-	std::list<BlankingWindowRef>			mBlankingWindows;
-	WindowRef								mForegroundWindow;
+	AppMsw *  mApp;
+	HINSTANCE mInstance;
+	double    mNextFrameTime;
+	bool      mFrameRateEnabled;
+	bool      mShouldQuit;
+	bool      mQuitOnLastWindowClosed;
+
+	std::list<class WindowImplMswBasic *> mWindows;
+	std::list<BlankingWindowRef>          mBlankingWindows;
+	WindowRef                             mForegroundWindow;
 
 	friend LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	friend class AppMsw;
@@ -83,13 +83,12 @@ class AppImplMswBasic : public AppImplMsw {
 class WindowImplMswBasic : public WindowImplMsw {
   public:
 	WindowImplMswBasic( const Window::Format &format, RendererRef sharedRenderer, AppImplMswBasic *appImpl )
-		: WindowImplMsw( format, sharedRenderer, appImpl ), mAppImplBasic( appImpl ) {}
-
+	    : WindowImplMsw( format, sharedRenderer, appImpl ), mAppImplBasic( appImpl ) {}
 	virtual void WindowImplMswBasic::toggleFullScreen( const app::FullScreenOptions &options );
 
   protected:
-	AppImplMswBasic		*mAppImplBasic;
+	AppImplMswBasic *mAppImplBasic;
 	friend AppImplMswBasic;
 };
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

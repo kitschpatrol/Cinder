@@ -20,9 +20,6 @@
 #include <ATSUnicode.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -36,11 +33,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /* ---------------------------------------------------------------------------- */
@@ -53,9 +50,8 @@ extern "C" {
 */
 typedef UInt32 ATSUFlattenedDataStreamFormat;
 enum {
-  kATSUDataStreamUnicodeStyledText = FOUR_CHAR_CODE('ustl')
+	kATSUDataStreamUnicodeStyledText = FOUR_CHAR_CODE( 'ustl' )
 };
-
 
 /*
    ATSUFlattenStyleRunOptions is a bitfield list of options that can be passed
@@ -64,7 +60,7 @@ enum {
 */
 typedef UInt32 ATSUFlattenStyleRunOptions;
 enum {
-  kATSUFlattenOptionNoOptionsMask = 0x00000000
+	kATSUFlattenOptionNoOptionsMask = 0x00000000
 };
 
 /*
@@ -74,9 +70,8 @@ enum {
 */
 typedef UInt32 ATSUUnFlattenStyleRunOptions;
 enum {
-  kATSUUnFlattenOptionNoOptionsMask = 0x00000000
+	kATSUUnFlattenOptionNoOptionsMask = 0x00000000
 };
-
 
 /* ---------------------------------------------------------------------------- */
 /* Data Types                                                                   */
@@ -89,10 +84,10 @@ enum {
    to return the style run info to the caller. 
 */
 struct ATSUStyleRunInfo {
-  UniCharCount        runLength;
-  ItemCount           styleObjectIndex;
+	UniCharCount runLength;
+	ItemCount    styleObjectIndex;
 };
-typedef struct ATSUStyleRunInfo         ATSUStyleRunInfo;
+typedef struct ATSUStyleRunInfo ATSUStyleRunInfo;
 /* ---------------------------------------------------------------------------- */
 /* 'ustl' structure data structures and definitions                             */
 /* ---------------------------------------------------------------------------- */
@@ -113,10 +108,10 @@ typedef struct ATSUStyleRunInfo         ATSUStyleRunInfo;
    versions were not completly specified and have been obsoleted.
 */
 enum {
-  kATSFlatDataUstlVersion0      = 0,
-  kATSFlatDataUstlVersion1      = 1,
-  kATSFlatDataUstlVersion2      = 2,
-  kATSFlatDataUstlCurrentVersion = kATSFlatDataUstlVersion2
+	kATSFlatDataUstlVersion0 = 0,
+	kATSFlatDataUstlVersion1 = 1,
+	kATSFlatDataUstlVersion2 = 2,
+	kATSFlatDataUstlCurrentVersion = kATSFlatDataUstlVersion2
 };
 
 /* ------------------ */
@@ -128,27 +123,26 @@ enum {
    of the data and how it is structured.
 */
 struct ATSFlatDataMainHeaderBlock {
+	/* the 'ustl' version number. This needs to be the first item in the*/
+	/* data block do as not to confuse parsers of earlier (and possibly*/
+	/* later) versions of the spec *|*/
+	UInt32 version;
 
-                                              /* the 'ustl' version number. This needs to be the first item in the*/
-                                              /* data block do as not to confuse parsers of earlier (and possibly*/
-                                              /* later) versions of the spec *|*/
-  UInt32              version;
+	/* the total size of the stream in bytes, including the four bytes in*/
+	/* the version above*/
+	ByteCount sizeOfDataBlock;
 
-                                              /* the total size of the stream in bytes, including the four bytes in*/
-                                              /* the version above*/
-  ByteCount           sizeOfDataBlock;
+	/* offset from the beginning of the stream to the flattened text layout data.*/
+	/* This can be set to 0 if there are no text layouts stored in the stream.*/
+	ByteCount offsetToTextLayouts;
 
-                                              /* offset from the beginning of the stream to the flattened text layout data.*/
-                                              /* This can be set to 0 if there are no text layouts stored in the stream.*/
-  ByteCount           offsetToTextLayouts;
+	/* offset from the beginning of the stream to the flattened style run data. */
+	/* This can be set to 0 if there is no flattened style run data in the stream*/
+	ByteCount offsetToStyleRuns;
 
-                                              /* offset from the beginning of the stream to the flattened style run data. */
-                                              /* This can be set to 0 if there is no flattened style run data in the stream*/
-  ByteCount           offsetToStyleRuns;
-
-                                              /* offset to the flattened style list data. This can be set to 0 if there*/
-                                              /* is no flattened style list data*/
-  ByteCount           offsetToStyleList;
+	/* offset to the flattened style list data. This can be set to 0 if there*/
+	/* is no flattened style list data*/
+	ByteCount offsetToStyleList;
 };
 typedef struct ATSFlatDataMainHeaderBlock ATSFlatDataMainHeaderBlock;
 /* ------------------ */
@@ -166,30 +160,29 @@ typedef struct ATSFlatDataMainHeaderBlock ATSFlatDataMainHeaderBlock;
    points to in block 1.
 */
 struct ATSFlatDataTextLayoutDataHeader {
+	/* the total size of this particular flattened text layout, including any*/
+	/* padding bytes and such. */
+	ByteCount sizeOfLayoutData;
 
-                                              /* the total size of this particular flattened text layout, including any*/
-                                              /* padding bytes and such. */
-  ByteCount           sizeOfLayoutData;
+	/* the number of characters covered by this flattened text layout*/
+	ByteCount textLayoutLength;
 
-                                              /* the number of characters covered by this flattened text layout*/
-  ByteCount           textLayoutLength;
+	/* the byte offset relative to the start of this structure to the flattened*/
+	/* layout control data. This can be set to zero if there are no layout*/
+	/* controls.*/
+	ByteCount offsetToLayoutControls;
 
-                                              /* the byte offset relative to the start of this structure to the flattened*/
-                                              /* layout control data. This can be set to zero if there are no layout*/
-                                              /* controls.*/
-  ByteCount           offsetToLayoutControls;
+	/* the byte offset, relative to the start of this structure to the*/
+	/* flattened line info. This can be set to zero if there is no line info */
+	/* in this layout.*/
+	ByteCount offsetToLineInfo;
 
-                                              /* the byte offset, relative to the start of this structure to the*/
-                                              /* flattened line info. This can be set to zero if there is no line info */
-                                              /* in this layout.*/
-  ByteCount           offsetToLineInfo;
-
-                                              /* if the offsetToLayoutControls is non-zero, then following this block*/
-                                              /* there will be a ATSFlattenedLayoutDataFlattenedLayoutControlsHeader*/
-                                              /* followed by an array of ATSFlattenedLayoutDataFlattenedLayoutControls*/
-                                              /* structures. If the offsetToLineInfo is non-zero, then following the*/
-                                              /* flattened layout controls will be a ATSFlatDataLineInfoHeader*/
-                                              /* structure.*/
+	/* if the offsetToLayoutControls is non-zero, then following this block*/
+	/* there will be a ATSFlattenedLayoutDataFlattenedLayoutControlsHeader*/
+	/* followed by an array of ATSFlattenedLayoutDataFlattenedLayoutControls*/
+	/* structures. If the offsetToLineInfo is non-zero, then following the*/
+	/* flattened layout controls will be a ATSFlatDataLineInfoHeader*/
+	/* structure.*/
 };
 typedef struct ATSFlatDataTextLayoutDataHeader ATSFlatDataTextLayoutDataHeader;
 /*
@@ -198,52 +191,49 @@ typedef struct ATSFlatDataTextLayoutDataHeader ATSFlatDataTextLayoutDataHeader;
    ATSFlatDataTextLayoutDataHeader
 */
 struct ATSFlatDataLayoutControlsDataHeader {
+	/* the number of flattened layout controls. It is suggested that there be*/
+	/* at least one layout control to output the line direction for the layout*/
+	ItemCount numberOfLayoutControls;
 
-                                              /* the number of flattened layout controls. It is suggested that there be*/
-                                              /* at least one layout control to output the line direction for the layout*/
-  ItemCount           numberOfLayoutControls;
-
-                                              /* first of possibly many flattened layout controls. There should be one */
-                                              /* of these for each layout control as determined by the*/
-                                              /* numberOfLayoutControls above. Of course, if there are no layout controls,*/
-                                              /* then this structure shouldn't even exist. Each attribute info structure*/
-                                              /* in the array could be followed by additional padding bytes in order*/
-                                              /* to maintain four-byte alignment. These padding bytes are not to be*/
-                                              /* included in the fValueSize member of each structure. */
-  ATSUAttributeInfo   controlArray[1];
+	/* first of possibly many flattened layout controls. There should be one */
+	/* of these for each layout control as determined by the*/
+	/* numberOfLayoutControls above. Of course, if there are no layout controls,*/
+	/* then this structure shouldn't even exist. Each attribute info structure*/
+	/* in the array could be followed by additional padding bytes in order*/
+	/* to maintain four-byte alignment. These padding bytes are not to be*/
+	/* included in the fValueSize member of each structure. */
+	ATSUAttributeInfo controlArray[1];
 };
 typedef struct ATSFlatDataLayoutControlsDataHeader ATSFlatDataLayoutControlsDataHeader;
 struct ATSFlatDataLineInfoData {
+	/* the length of this particular line in UniChars*/
+	UniCharCount lineLength;
 
-                                              /* the length of this particular line in UniChars*/
-  UniCharCount        lineLength;
+	/* the number of line controls applied to this line. This can be set*/
+	/* to zero if there are no special line controls applied to this line.*/
+	ItemCount numberOfLineControls;
 
-                                              /* the number of line controls applied to this line. This can be set*/
-                                              /* to zero if there are no special line controls applied to this line.*/
-  ItemCount           numberOfLineControls;
-
-                                              /* the numberOfLineControls is non-zero, then following this structure*/
-                                              /* must be an array of ATSUAttributeInfo structures. There must be one*/
-                                              /* ATSUAttributeInfo structure for each numberOfLineControls above.*/
+	/* the numberOfLineControls is non-zero, then following this structure*/
+	/* must be an array of ATSUAttributeInfo structures. There must be one*/
+	/* ATSUAttributeInfo structure for each numberOfLineControls above.*/
 };
-typedef struct ATSFlatDataLineInfoData  ATSFlatDataLineInfoData;
+typedef struct ATSFlatDataLineInfoData ATSFlatDataLineInfoData;
 /*
    This structure is the main data header for the flattened line info data. This
    is what a non-zero offsetToLineInfo points to in the 
    ATSFlatDataTextLayoutDataHeader structure above.
 */
 struct ATSFlatDataLineInfoHeader {
+	/* the number of flattened line info structures that are stored in this*/
+	/* block. This value should really be equal to the number of soft line*/
+	/* breaks in the layout + 1. Of course if numberOfLines is zero, then*/
+	/* this structure shouldn't even be used.*/
+	ItemCount numberOfLines;
 
-                                              /* the number of flattened line info structures that are stored in this*/
-                                              /* block. This value should really be equal to the number of soft line*/
-                                              /* breaks in the layout + 1. Of course if numberOfLines is zero, then*/
-                                              /* this structure shouldn't even be used.*/
-  ItemCount           numberOfLines;
-
-                                              /* the first in a array of ATSFlatDataLineInfoData structures. There*/
-                                              /* needs to be a ATSFlatDataLineInfoData for each numberOfLines*/
-                                              /* specified above.*/
-  ATSFlatDataLineInfoData  lineInfoArray[1];
+	/* the first in a array of ATSFlatDataLineInfoData structures. There*/
+	/* needs to be a ATSFlatDataLineInfoData for each numberOfLines*/
+	/* specified above.*/
+	ATSFlatDataLineInfoData lineInfoArray[1];
 };
 typedef struct ATSFlatDataLineInfoHeader ATSFlatDataLineInfoHeader;
 /* ------------------ */
@@ -262,14 +252,13 @@ typedef struct ATSFlatDataLineInfoHeader ATSFlatDataLineInfoHeader;
    ATSFlatDataMainHeaderBlock points to in block 1.
 */
 struct ATSFlatDataStyleRunDataHeader {
+	/* the number of style run data structures stored in this block*/
+	ItemCount numberOfStyleRuns;
 
-                                              /* the number of style run data structures stored in this block*/
-  ItemCount           numberOfStyleRuns;
-
-                                              /* the first in an array of ATSUStyleRunInfo structures. There needs to*/
-                                              /* be a ATSUStyleRunInfo structure for each numberOfStyleRuns specified*/
-                                              /* above. This structure is defined in ATSUnicode.h*/
-  ATSUStyleRunInfo    styleRunArray[1];
+	/* the first in an array of ATSUStyleRunInfo structures. There needs to*/
+	/* be a ATSUStyleRunInfo structure for each numberOfStyleRuns specified*/
+	/* above. This structure is defined in ATSUnicode.h*/
+	ATSUStyleRunInfo styleRunArray[1];
 };
 typedef struct ATSFlatDataStyleRunDataHeader ATSFlatDataStyleRunDataHeader;
 /* ------------------ */
@@ -286,46 +275,45 @@ typedef struct ATSFlatDataStyleRunDataHeader ATSFlatDataStyleRunDataHeader;
    object. 
 */
 struct ATSFlatDataStyleListStyleDataHeader {
+	/* the size of this flattened style object, including these four bytes and*/
+	/* any padding bytes at the end of the structure. Basically, this can be*/
+	/* used to determine where the next structure in the array begins.*/
+	ByteCount sizeOfStyleInfo;
 
-                                              /* the size of this flattened style object, including these four bytes and*/
-                                              /* any padding bytes at the end of the structure. Basically, this can be*/
-                                              /* used to determine where the next structure in the array begins.*/
-  ByteCount           sizeOfStyleInfo;
+	/* the number of attributes set in this flattened style object. This should */
+	/* be at least one for the font data, although it can be 0 if this is to be*/
+	/* unspecfied.*/
+	ItemCount numberOfSetAttributes;
 
-                                              /* the number of attributes set in this flattened style object. This should */
-                                              /* be at least one for the font data, although it can be 0 if this is to be*/
-                                              /* unspecfied.*/
-  ItemCount           numberOfSetAttributes;
+	/* the number of font features set in the flattened style object. This can*/
+	/* be set to 0 if there are no font features set in the style object. */
+	ItemCount numberOfSetFeatures;
 
-                                              /* the number of font features set in the flattened style object. This can*/
-                                              /* be set to 0 if there are no font features set in the style object. */
-  ItemCount           numberOfSetFeatures;
+	/* the number of font variations set in the flattened style object. This*/
+	/* can be set to 0 if there are no font variations set in the style object.*/
+	ItemCount numberOfSetVariations;
 
-                                              /* the number of font variations set in the flattened style object. This*/
-                                              /* can be set to 0 if there are no font variations set in the style object.*/
-  ItemCount           numberOfSetVariations;
+	/* after this structure header, there is the following data in this block:*/
 
-                                              /* after this structure header, there is the following data in this block:*/
+	/* 1. if the numberOfSetAttributes is non-zero, then there will be an*/
+	/*       array of ATSUAttributeInfo structures immediately following the*/
+	/*       above header data to store the style attributes. This is a variable*/
+	/*       structure array. There must be one ATSUAttributeInfo for*/
+	/*       for each numberOfSetAttributes. If numberOfSetAttributes is zero,*/
+	/*       then skip to the next data section 2.*/
 
-                                              /* 1. if the numberOfSetAttributes is non-zero, then there will be an*/
-                                              /*       array of ATSUAttributeInfo structures immediately following the*/
-                                              /*       above header data to store the style attributes. This is a variable*/
-                                              /*       structure array. There must be one ATSUAttributeInfo for*/
-                                              /*       for each numberOfSetAttributes. If numberOfSetAttributes is zero,*/
-                                              /*       then skip to the next data section 2.*/
+	/* 2. if the numberOfSetFeatures is non-zero, then there will be an array*/
+	/*       of ATSFlatDataStyleListFeatureData structures immediately after*/
+	/*       the ATSUAttributeInfo array above (if any). There must be one*/
+	/*       ATSFlatDataStyleListFeatureData structure for each */
+	/*       numberOfSetFeatures set in the header above. If numberOfSetFeatures*/
+	/*       is zero, then skip to the next data section 3.*/
 
-                                              /* 2. if the numberOfSetFeatures is non-zero, then there will be an array*/
-                                              /*       of ATSFlatDataStyleListFeatureData structures immediately after*/
-                                              /*       the ATSUAttributeInfo array above (if any). There must be one*/
-                                              /*       ATSFlatDataStyleListFeatureData structure for each */
-                                              /*       numberOfSetFeatures set in the header above. If numberOfSetFeatures*/
-                                              /*       is zero, then skip to the next data section 3.*/
-
-                                              /* 3. if the numberOfSetVariations is non-zero, then there will be an*/
-                                              /*       array of ATSFlatDataStyleListVariationData immediately after the*/
-                                              /*       ATSFlatDataStyleListFeatureData array above (if any). There must be*/
-                                              /*       one ATSFlatDataStyleListVariationData structure for each */
-                                              /*       numberOfSetVariations set in the header above.*/
+	/* 3. if the numberOfSetVariations is non-zero, then there will be an*/
+	/*       array of ATSFlatDataStyleListVariationData immediately after the*/
+	/*       ATSFlatDataStyleListFeatureData array above (if any). There must be*/
+	/*       one ATSFlatDataStyleListVariationData structure for each */
+	/*       numberOfSetVariations set in the header above.*/
 };
 typedef struct ATSFlatDataStyleListStyleDataHeader ATSFlatDataStyleListStyleDataHeader;
 /*
@@ -334,17 +322,15 @@ typedef struct ATSFlatDataStyleListStyleDataHeader ATSFlatDataStyleListStyleData
    block 1.
 */
 struct ATSFlatDataStyleListHeader {
+	/* the total number of flattened style objects stored in this block*/
+	ItemCount numberOfStyles;
 
-                                              /* the total number of flattened style objects stored in this block*/
-  ItemCount           numberOfStyles;
-
-                                              /* the first in an array of flattned style entries. The data stored*/
-                                              /* in them is variably sized, so a simply array access won't do for*/
-                                              /* iterating through these. However, there must be one of these*/
-                                              /* ATSFlatDataStyleListStyleDataHeader structures for each */
-                                              /* numberOfStyles above.*/
-  ATSFlatDataStyleListStyleDataHeader  styleDataArray[1];
-
+	/* the first in an array of flattned style entries. The data stored*/
+	/* in them is variably sized, so a simply array access won't do for*/
+	/* iterating through these. However, there must be one of these*/
+	/* ATSFlatDataStyleListStyleDataHeader structures for each */
+	/* numberOfStyles above.*/
+	ATSFlatDataStyleListStyleDataHeader styleDataArray[1];
 };
 typedef struct ATSFlatDataStyleListHeader ATSFlatDataStyleListHeader;
 /*
@@ -353,12 +339,11 @@ typedef struct ATSFlatDataStyleListHeader ATSFlatDataStyleListHeader;
    non-zero. There must be one of these structures for each numberOfSetFeatures.
 */
 struct ATSFlatDataStyleListFeatureData {
+	/* the font feature type*/
+	ATSUFontFeatureType theFeatureType;
 
-                                              /* the font feature type*/
-  ATSUFontFeatureType  theFeatureType;
-
-                                              /* the font feature selector*/
-  ATSUFontFeatureSelector  theFeatureSelector;
+	/* the font feature selector*/
+	ATSUFontFeatureSelector theFeatureSelector;
 };
 typedef struct ATSFlatDataStyleListFeatureData ATSFlatDataStyleListFeatureData;
 /*
@@ -368,12 +353,11 @@ typedef struct ATSFlatDataStyleListFeatureData ATSFlatDataStyleListFeatureData;
    structures for each numberOfSetFeatures.
 */
 struct ATSFlatDataStyleListVariationData {
+	/* the variation axis*/
+	ATSUFontVariationAxis theVariationAxis;
 
-                                              /* the variation axis*/
-  ATSUFontVariationAxis  theVariationAxis;
-
-                                              /* the variation value*/
-  ATSUFontVariationValue  theVariationValue;
+	/* the variation value*/
+	ATSUFontVariationValue theVariationValue;
 };
 typedef struct ATSFlatDataStyleListVariationData ATSFlatDataStyleListVariationData;
 /* ------------------------ */
@@ -387,13 +371,12 @@ typedef struct ATSFlatDataStyleListVariationData ATSFlatDataStyleListVariationDa
    'ustl' above, this structure must maintain four byte alignment.
 */
 
-
 /* these are the currenly supported font specifiers. */
 typedef UInt32 ATSFlatDataFontSpeciferType;
 enum {
-                                        /* this specifier allows the storage of font data based on name data. This*/
-                                        /* uses the stuctures below to store the actual data itself.*/
-  kATSFlattenedFontSpecifierRawNameData = FOUR_CHAR_CODE('namd')
+	/* this specifier allows the storage of font data based on name data. This*/
+	/* uses the stuctures below to store the actual data itself.*/
+	kATSFlattenedFontSpecifierRawNameData = FOUR_CHAR_CODE( 'namd' )
 };
 
 /*
@@ -402,22 +385,20 @@ enum {
    nameSpecType. 
 */
 struct ATSFlatDataFontNameDataHeader {
+	/* the type of data that is flattened in this structure*/
+	ATSFlatDataFontSpeciferType nameSpecifierType;
 
-                                              /* the type of data that is flattened in this structure*/
-  ATSFlatDataFontSpeciferType  nameSpecifierType;
+	/* the size of the data that is flattened in this structre, not including */
+	/* any padding bytes that may be necessary to achive the four byte */
+	/* alignment of the data, unless they are specified as part of structure, */
+	/* such as with the ATSFlatDataFontSpecRawNameData structure.*/
+	ByteCount nameSpecifierSize;
 
-                                              /* the size of the data that is flattened in this structre, not including */
-                                              /* any padding bytes that may be necessary to achive the four byte */
-                                              /* alignment of the data, unless they are specified as part of structure, */
-                                              /* such as with the ATSFlatDataFontSpecRawNameData structure.*/
-  ByteCount           nameSpecifierSize;
-
-                                              /* after this header comes the flattened font name data which matches*/
-                                              /* the type specified by the nameSpecifierType above. For instance, if */
-                                              /* the nameSpecType is kATSFlattenedFontNameSpecifierRawNameData, the*/
-                                              /* structure that immediately follows this would be a*/
-                                              /* ATSFlatDataFontNameRawNameDataHeader structure. */
-
+	/* after this header comes the flattened font name data which matches*/
+	/* the type specified by the nameSpecifierType above. For instance, if */
+	/* the nameSpecType is kATSFlattenedFontNameSpecifierRawNameData, the*/
+	/* structure that immediately follows this would be a*/
+	/* ATSFlatDataFontNameRawNameDataHeader structure. */
 };
 typedef struct ATSFlatDataFontNameDataHeader ATSFlatDataFontNameDataHeader;
 /*
@@ -428,34 +409,32 @@ typedef struct ATSFlatDataFontNameDataHeader ATSFlatDataFontNameDataHeader;
 */
 /* this is the structure in which raw font name data is actually stored. */
 struct ATSFlatDataFontSpecRawNameData {
+	/* the type of name being specified*/
+	FontNameCode fontNameType;
 
-                                              /* the type of name being specified*/
-  FontNameCode        fontNameType;
+	/* the platform type of the font name, whether it be Unicode, Mac, etc.  */
+	/* This should be specified if known. If not known, then specify*/
+	/* kFontNoPlatform, but then all matching will be done based on the first*/
+	/* font in the name table matching the other parameters.*/
+	FontPlatformCode fontNamePlatform;
 
-                                              /* the platform type of the font name, whether it be Unicode, Mac, etc.  */
-                                              /* This should be specified if known. If not known, then specify*/
-                                              /* kFontNoPlatform, but then all matching will be done based on the first*/
-                                              /* font in the name table matching the other parameters.*/
-  FontPlatformCode    fontNamePlatform;
+	/* the script code of the font's name based on the platform that was passed*/
+	/* in above. If set to kFontNoScript, then the name will be matched based*/
+	/* on the first font in the name table matching the other font name*/
+	/* parameters.*/
+	FontScriptCode fontNameScript;
 
-                                              /* the script code of the font's name based on the platform that was passed*/
-                                              /* in above. If set to kFontNoScript, then the name will be matched based*/
-                                              /* on the first font in the name table matching the other font name*/
-                                              /* parameters.*/
-  FontScriptCode      fontNameScript;
+	/* the language of the font name. If set to kFontNoLanguage, then the name */
+	/* will be matched based on the first font in the name table matching the*/
+	/* other font name parameters.*/
+	FontLanguageCode fontNameLanguage;
 
-                                              /* the language of the font name. If set to kFontNoLanguage, then the name */
-                                              /* will be matched based on the first font in the name table matching the*/
-                                              /* other font name parameters.*/
-  FontLanguageCode    fontNameLanguage;
+	/* the length of the font name in bytes, not including any padding bytes*/
+	/* added to maintain the four byte alignment*/
+	ByteCount fontNameLength;
 
-                                              /* the length of the font name in bytes, not including any padding bytes*/
-                                              /* added to maintain the four byte alignment*/
-  ByteCount           fontNameLength;
-
-                                              /* after the name length comes the actual font name data itself, plus any*/
-                                              /* padding bytes needed to maintain the four byte alignment.*/
-
+	/* after the name length comes the actual font name data itself, plus any*/
+	/* padding bytes needed to maintain the four byte alignment.*/
 };
 typedef struct ATSFlatDataFontSpecRawNameData ATSFlatDataFontSpecRawNameData;
 /*
@@ -470,17 +449,15 @@ typedef struct ATSFlatDataFontSpecRawNameData ATSFlatDataFontSpecRawNameData;
    these. 
 */
 struct ATSFlatDataFontSpecRawNameDataHeader {
+	/* the number of flattened font names. There must be at least one flattened */
+	/* font name, otherwise the structure is malformed.*/
+	ItemCount numberOfFlattenedNames;
 
-                                              /* the number of flattened font names. There must be at least one flattened */
-                                              /* font name, otherwise the structure is malformed.*/
-  ItemCount           numberOfFlattenedNames;
-
-                                              /* the first in an array of possibly many font name specifiers - depending*/
-                                              /* on how specific the caller wants this. There must be one */
-                                              /* ATSFlatDataFontNameData structure for each numberOfFlattenedNames*/
-                                              /* above.*/
-  ATSFlatDataFontSpecRawNameData  nameDataArray[1];
-
+	/* the first in an array of possibly many font name specifiers - depending*/
+	/* on how specific the caller wants this. There must be one */
+	/* ATSFlatDataFontNameData structure for each numberOfFlattenedNames*/
+	/* above.*/
+	ATSFlatDataFontSpecRawNameData nameDataArray[1];
 };
 typedef struct ATSFlatDataFontSpecRawNameDataHeader ATSFlatDataFontSpecRawNameDataHeader;
 /* ---------------------------------------------------------------------------- */
@@ -496,16 +473,15 @@ typedef struct ATSFlatDataFontSpecRawNameDataHeader ATSFlatDataFontSpecRawNameDa
  */
 EXTERN_API_C( OSStatus )
 ATSUFlattenStyleRunsToStream(
-  ATSUFlattenedDataStreamFormat   iStreamFormat,
-  ATSUFlattenStyleRunOptions      iFlattenOptions,
-  ItemCount                       iNumberOfRunInfo,
-  const ATSUStyleRunInfo          iRunInfoArray[],
-  ItemCount                       iNumberOfStyleObjects,
-  const ATSUStyle                 iStyleArray[],
-  ByteCount                       iStreamBufferSize,
-  void *                          oStreamBuffer,
-  ByteCount *                     oActualStreamBufferSize);
-
+    ATSUFlattenedDataStreamFormat iStreamFormat,
+    ATSUFlattenStyleRunOptions    iFlattenOptions,
+    ItemCount                     iNumberOfRunInfo,
+    const ATSUStyleRunInfo        iRunInfoArray[],
+    ItemCount                     iNumberOfStyleObjects,
+    const ATSUStyle               iStyleArray[],
+    ByteCount                     iStreamBufferSize,
+    void *                        oStreamBuffer,
+    ByteCount *                   oActualStreamBufferSize );
 
 /*
  *  ATSUUnflattenStyleRunsFromStream()
@@ -517,25 +493,23 @@ ATSUFlattenStyleRunsToStream(
  */
 EXTERN_API_C( OSStatus )
 ATSUUnflattenStyleRunsFromStream(
-  ATSUFlattenedDataStreamFormat   iStreamFormat,
-  ATSUUnFlattenStyleRunOptions    iUnflattenOptions,
-  ByteCount                       iStreamBufferSize,
-  const void *                    iStreamBuffer,
-  ItemCount                       iNumberOfRunInfo,
-  ItemCount                       iNumberOfStyleObjects,
-  ATSUStyleRunInfo                oRunInfoArray[],
-  ATSUStyle                       oStyleArray[],
-  ItemCount *                     oActualNumberOfRunInfo,
-  ItemCount *                     oActualNumberOfStyleObjects);
-
-
+    ATSUFlattenedDataStreamFormat iStreamFormat,
+    ATSUUnFlattenStyleRunOptions  iUnflattenOptions,
+    ByteCount                     iStreamBufferSize,
+    const void *                  iStreamBuffer,
+    ItemCount                     iNumberOfRunInfo,
+    ItemCount                     iNumberOfStyleObjects,
+    ATSUStyleRunInfo              oRunInfoArray[],
+    ATSUStyle                     oStyleArray[],
+    ItemCount *                   oActualNumberOfRunInfo,
+    ItemCount *                   oActualNumberOfStyleObjects );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -549,4 +523,3 @@ ATSUUnflattenStyleRunsFromStream(
 #endif
 
 #endif /* __ATSUNICODEFLATTENING__ */
-

@@ -23,10 +23,9 @@
 
 #import "cinder/app/cocoa/RendererImpl2dMacQuartz.h"
 
-
 // This is only here so that we can override rightMouseDown
-@interface CocoaRendererQuartzView : NSView
-{}
+@interface CocoaRendererQuartzView : NSView {
+}
 @end
 
 @implementation CocoaRendererQuartzView
@@ -50,11 +49,11 @@
 - (id)initWithFrame:(NSRect)frame cinderView:(NSView *)cinderView
 {
 	self = [super init];
-	
+
 	view = [[CocoaRendererQuartzView alloc] initWithFrame:frame];
 	currentRef = nil;
 	[cinderView addSubview:view];
-	
+
 	return self;
 }
 
@@ -63,16 +62,16 @@
 	[super dealloc];
 }
 
-- (NSView*)view
+- (NSView *)view
 {
 	return view;
 }
 
-- (NSBitmapImageRep*)getContents:(cinder::Area)area
+- (NSBitmapImageRep *)getContents:(cinder::Area)area
 {
 	[view lockFocus];
 	CGContextFlush( currentRef );
-	NSRect rect = NSMakeRect( area.x1, area.y1, area.getWidth(), area.getHeight() );
+	NSRect            rect = NSMakeRect( area.x1, area.y1, area.getWidth(), area.getHeight() );
 	NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:rect];
 	[view unlockFocus];
 	return [rep autorelease];
@@ -85,17 +84,17 @@
 
 	currentGraphicsContext = [[view window] graphicsContext];
 	[currentGraphicsContext saveGraphicsState];
-	currentRef = (CGContextRef)[currentGraphicsContext graphicsPort];
+	currentRef = ( CGContextRef )[currentGraphicsContext graphicsPort];
 	CGContextRetain( currentRef );
 
 	// set the clipping rectangle to be the parent (CinderView)'s bounds
-	CGRect boundsRect = NSRectToCGRect([[view superview] bounds]);
+	CGRect boundsRect = NSRectToCGRect( [[view superview] bounds] );
 	CGContextClipToRect( currentRef, boundsRect );
-	
+
 	// undo any previously transformations, so that we start with identity CTM
 	CGAffineTransform originalCtm = ::CGContextGetCTM( currentRef );
 	CGAffineTransform originalCtmInv = ::CGAffineTransformInvert( originalCtm );
-	::CGContextConcatCTM( currentRef, originalCtmInv );	
+	::CGContextConcatCTM( currentRef, originalCtmInv );
 }
 
 - (void)finishDraw

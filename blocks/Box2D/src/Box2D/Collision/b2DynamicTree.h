@@ -22,11 +22,10 @@
 #include <Box2D/Collision/b2Collision.h>
 #include <Box2D/Common/b2GrowableStack.h>
 
-#define b2_nullNode (-1)
+#define b2_nullNode ( -1 )
 
 /// A node in the dynamic tree. The client does not interact with this directly.
-struct b2TreeNode
-{
+struct b2TreeNode {
 	bool IsLeaf() const
 	{
 		return child1 == b2_nullNode;
@@ -35,10 +34,9 @@ struct b2TreeNode
 	/// Enlarged AABB
 	b2AABB aabb;
 
-	void* userData;
+	void *userData;
 
-	union
-	{
+	union {
 		int32 parent;
 		int32 next;
 	};
@@ -58,9 +56,8 @@ struct b2TreeNode
 /// object to move by small amounts without triggering a tree update.
 ///
 /// Nodes are pooled and relocatable, so we use node indices rather than pointers.
-class b2DynamicTree
-{
-public:
+class b2DynamicTree {
+  public:
 	/// Constructing the tree initializes the node pool.
 	b2DynamicTree();
 
@@ -68,28 +65,28 @@ public:
 	~b2DynamicTree();
 
 	/// Create a proxy. Provide a tight fitting AABB and a userData pointer.
-	int32 CreateProxy(const b2AABB& aabb, void* userData);
+	int32 CreateProxy( const b2AABB &aabb, void *userData );
 
 	/// Destroy a proxy. This asserts if the id is invalid.
-	void DestroyProxy(int32 proxyId);
+	void DestroyProxy( int32 proxyId );
 
 	/// Move a proxy with a swepted AABB. If the proxy has moved outside of its fattened AABB,
 	/// then the proxy is removed from the tree and re-inserted. Otherwise
 	/// the function returns immediately.
 	/// @return true if the proxy was re-inserted.
-	bool MoveProxy(int32 proxyId, const b2AABB& aabb1, const b2Vec2& displacement);
+	bool MoveProxy( int32 proxyId, const b2AABB &aabb1, const b2Vec2 &displacement );
 
 	/// Get proxy user data.
 	/// @return the proxy user data or 0 if the id is invalid.
-	void* GetUserData(int32 proxyId) const;
+	void *GetUserData( int32 proxyId ) const;
 
 	/// Get the fat AABB for a proxy.
-	const b2AABB& GetFatAABB(int32 proxyId) const;
+	const b2AABB &GetFatAABB( int32 proxyId ) const;
 
 	/// Query an AABB for overlapping proxies. The callback class
 	/// is called for each proxy that overlaps the supplied AABB.
 	template <typename T>
-	void Query(T* callback, const b2AABB& aabb) const;
+	void Query( T *callback, const b2AABB &aabb ) const;
 
 	/// Ray-cast against the proxies in the tree. This relies on the callback
 	/// to perform a exact ray-cast in the case were the proxy contains a shape.
@@ -99,7 +96,7 @@ public:
 	/// @param input the ray-cast input data. The ray extends from p1 to p1 + maxFraction * (p2 - p1).
 	/// @param callback a callback class that is called for each proxy that is hit by the ray.
 	template <typename T>
-	void RayCast(T* callback, const b2RayCastInput& input) const;
+	void RayCast( T *callback, const b2RayCastInput &input ) const;
 
 	/// Validate this tree. For testing.
 	void Validate() const;
@@ -118,27 +115,26 @@ public:
 	/// Build an optimal tree. Very expensive. For testing.
 	void RebuildBottomUp();
 
-private:
-
+  private:
 	int32 AllocateNode();
-	void FreeNode(int32 node);
+	void FreeNode( int32 node );
 
-	void InsertLeaf(int32 node);
-	void RemoveLeaf(int32 node);
+	void InsertLeaf( int32 node );
+	void RemoveLeaf( int32 node );
 
-	int32 Balance(int32 index);
+	int32 Balance( int32 index );
 
 	int32 ComputeHeight() const;
-	int32 ComputeHeight(int32 nodeId) const;
+	int32 ComputeHeight( int32 nodeId ) const;
 
-	void ValidateStructure(int32 index) const;
-	void ValidateMetrics(int32 index) const;
+	void ValidateStructure( int32 index ) const;
+	void ValidateMetrics( int32 index ) const;
 
 	int32 m_root;
 
-	b2TreeNode* m_nodes;
-	int32 m_nodeCount;
-	int32 m_nodeCapacity;
+	b2TreeNode *m_nodes;
+	int32       m_nodeCount;
+	int32       m_nodeCapacity;
 
 	int32 m_freeList;
 
@@ -148,65 +144,59 @@ private:
 	int32 m_insertionCount;
 };
 
-inline void* b2DynamicTree::GetUserData(int32 proxyId) const
+inline void *b2DynamicTree::GetUserData( int32 proxyId ) const
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2Assert( 0 <= proxyId && proxyId < m_nodeCapacity );
 	return m_nodes[proxyId].userData;
 }
 
-inline const b2AABB& b2DynamicTree::GetFatAABB(int32 proxyId) const
+inline const b2AABB &b2DynamicTree::GetFatAABB( int32 proxyId ) const
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2Assert( 0 <= proxyId && proxyId < m_nodeCapacity );
 	return m_nodes[proxyId].aabb;
 }
 
 template <typename T>
-inline void b2DynamicTree::Query(T* callback, const b2AABB& aabb) const
+inline void b2DynamicTree::Query( T *callback, const b2AABB &aabb ) const
 {
 	b2GrowableStack<int32, 256> stack;
-	stack.Push(m_root);
+	stack.Push( m_root );
 
-	while (stack.GetCount() > 0)
-	{
+	while( stack.GetCount() > 0 ) {
 		int32 nodeId = stack.Pop();
-		if (nodeId == b2_nullNode)
-		{
+		if( nodeId == b2_nullNode ) {
 			continue;
 		}
 
-		const b2TreeNode* node = m_nodes + nodeId;
+		const b2TreeNode *node = m_nodes + nodeId;
 
-		if (b2TestOverlap(node->aabb, aabb))
-		{
-			if (node->IsLeaf())
-			{
-				bool proceed = callback->QueryCallback(nodeId);
-				if (proceed == false)
-				{
+		if( b2TestOverlap( node->aabb, aabb ) ) {
+			if( node->IsLeaf() ) {
+				bool proceed = callback->QueryCallback( nodeId );
+				if( proceed == false ) {
 					return;
 				}
 			}
-			else
-			{
-				stack.Push(node->child1);
-				stack.Push(node->child2);
+			else {
+				stack.Push( node->child1 );
+				stack.Push( node->child2 );
 			}
 		}
 	}
 }
 
 template <typename T>
-inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) const
+inline void b2DynamicTree::RayCast( T *callback, const b2RayCastInput &input ) const
 {
 	b2Vec2 p1 = input.p1;
 	b2Vec2 p2 = input.p2;
 	b2Vec2 r = p2 - p1;
-	b2Assert(r.LengthSquared() > 0.0f);
+	b2Assert( r.LengthSquared() > 0.0f );
 	r.Normalize();
 
 	// v is perpendicular to the segment.
-	b2Vec2 v = b2Cross(1.0f, r);
-	b2Vec2 abs_v = b2Abs(v);
+	b2Vec2 v = b2Cross( 1.0f, r );
+	b2Vec2 abs_v = b2Abs( v );
 
 	// Separating axis for segment (Gino, p80).
 	// |dot(v, p1 - c)| > dot(|v|, h)
@@ -216,67 +206,59 @@ inline void b2DynamicTree::RayCast(T* callback, const b2RayCastInput& input) con
 	// Build a bounding box for the segment.
 	b2AABB segmentAABB;
 	{
-		b2Vec2 t = p1 + maxFraction * (p2 - p1);
-		segmentAABB.lowerBound = b2Min(p1, t);
-		segmentAABB.upperBound = b2Max(p1, t);
+		b2Vec2 t = p1 + maxFraction * ( p2 - p1 );
+		segmentAABB.lowerBound = b2Min( p1, t );
+		segmentAABB.upperBound = b2Max( p1, t );
 	}
 
 	b2GrowableStack<int32, 256> stack;
-	stack.Push(m_root);
+	stack.Push( m_root );
 
-	while (stack.GetCount() > 0)
-	{
+	while( stack.GetCount() > 0 ) {
 		int32 nodeId = stack.Pop();
-		if (nodeId == b2_nullNode)
-		{
+		if( nodeId == b2_nullNode ) {
 			continue;
 		}
 
-		const b2TreeNode* node = m_nodes + nodeId;
+		const b2TreeNode *node = m_nodes + nodeId;
 
-		if (b2TestOverlap(node->aabb, segmentAABB) == false)
-		{
+		if( b2TestOverlap( node->aabb, segmentAABB ) == false ) {
 			continue;
 		}
 
 		// Separating axis for segment (Gino, p80).
 		// |dot(v, p1 - c)| > dot(|v|, h)
-		b2Vec2 c = node->aabb.GetCenter();
-		b2Vec2 h = node->aabb.GetExtents();
-		float32 separation = b2Abs(b2Dot(v, p1 - c)) - b2Dot(abs_v, h);
-		if (separation > 0.0f)
-		{
+		b2Vec2  c = node->aabb.GetCenter();
+		b2Vec2  h = node->aabb.GetExtents();
+		float32 separation = b2Abs( b2Dot( v, p1 - c ) ) - b2Dot( abs_v, h );
+		if( separation > 0.0f ) {
 			continue;
 		}
 
-		if (node->IsLeaf())
-		{
+		if( node->IsLeaf() ) {
 			b2RayCastInput subInput;
 			subInput.p1 = input.p1;
 			subInput.p2 = input.p2;
 			subInput.maxFraction = maxFraction;
 
-			float32 value = callback->RayCastCallback(subInput, nodeId);
+			float32 value = callback->RayCastCallback( subInput, nodeId );
 
-			if (value == 0.0f)
-			{
+			if( value == 0.0f ) {
 				// The client has terminated the ray cast.
 				return;
 			}
 
-			if (value > 0.0f)
-			{
+			if( value > 0.0f ) {
 				// Update segment bounding box.
 				maxFraction = value;
-				b2Vec2 t = p1 + maxFraction * (p2 - p1);
-				segmentAABB.lowerBound = b2Min(p1, t);
-				segmentAABB.upperBound = b2Max(p1, t);
+				b2Vec2 t = p1 + maxFraction * ( p2 - p1 );
+				segmentAABB.lowerBound = b2Min( p1, t );
+				segmentAABB.upperBound = b2Max( p1, t );
 			}
 		}
-		else
-		{
-			stack.Push(node->child1);
-			stack.Push(node->child2);
+		else {
+			stack.Push( node->child1 );
+			stack.Push( node->child2 );
 		}
 	}
 }

@@ -1,22 +1,22 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
-#include "cinder/gl/Texture.h"
 #include "cinder/Text.h"
 #include "cinder/Timeline.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 struct TextView {
-	TextView() : mIsSelected( false ), mPadding( 4.0f ) {}
-
-	Rectf mBounds;
+	TextView()
+	    : mIsSelected( false ), mPadding( 4.0f ) {}
+	Rectf  mBounds;
 	string mText;
 	string mPlacerholderText;
-	bool mIsSelected;
-	float mPadding;
+	bool   mIsSelected;
+	float  mPadding;
 
 	Rectf getTextBounds() const { return Rectf( mBounds.x1 + mPadding, mBounds.y1 + mPadding, mBounds.x2 - mPadding, mBounds.y2 - mPadding ); }
 };
@@ -38,7 +38,7 @@ class iosKeyboardApp : public AppCocoaTouch {
 	TextView mMultiLineTextView;
 
 	Anim<float> mViewYOffset;
-	Font mFont;
+	Font        mFont;
 };
 
 void iosKeyboardApp::setup()
@@ -65,7 +65,6 @@ void iosKeyboardApp::setup()
 
 void iosKeyboardApp::touchesBegan( TouchEvent event )
 {
-
 	mNumericalTextView.mIsSelected = false;
 	mMultiLineTextView.mIsSelected = false;
 
@@ -102,13 +101,13 @@ void iosKeyboardApp::keyDown( KeyEvent event )
 // manually build a string of numerical digits, filtering out everything else
 void iosKeyboardApp::processNumerical( const KeyEvent &event )
 {
-	if( event.getCode() == KeyEvent::KEY_BACKSPACE && ! mNumericalTextView.mText.empty() )
+	if( event.getCode() == KeyEvent::KEY_BACKSPACE && !mNumericalTextView.mText.empty() )
 		mNumericalTextView.mText.pop_back();
 	else if( isdigit( event.getChar() ) ) {
 		mNumericalTextView.mText.push_back( event.getChar() );
-		Rectf fitRect = mNumericalTextView.getTextBounds();
+		Rectf   fitRect = mNumericalTextView.getTextBounds();
 		TextBox tbox = TextBox().font( mFont ).text( mNumericalTextView.mText ).size( TextBox::GROW, TextBox::GROW );
-		vec2 size = tbox.measure();
+		vec2    size = tbox.measure();
 
 		if( size.x > fitRect.getWidth() ) {
 			console() << "OVERFLOW" << endl;
@@ -152,11 +151,11 @@ void iosKeyboardApp::drawTextView( const TextView &textView )
 	gl::drawStrokedRect( textView.mBounds );
 
 	Rectf fitRect = textView.getTextBounds();
-	vec2 offset( 0.0f, mFont.getAscent() );
+	vec2  offset( 0.0f, mFont.getAscent() );
 
 	TextBox tbox = TextBox().font( mFont ).size( fitRect.getWidth(), fitRect.getHeight() ).premultiplied();
 
-	if( textView.mText.empty() && ! textView.mIsSelected ) {
+	if( textView.mText.empty() && !textView.mIsSelected ) {
 		tbox.color( Color::gray( 0.6f ) ).text( textView.mPlacerholderText );
 	}
 	else {
@@ -174,7 +173,7 @@ void iosKeyboardApp::layoutTextViews()
 	gl::enableAlphaBlending( true );
 
 	const float kLineHeight = 26.0f;
-	Rectf rect( getWindowWidth() * 0.2f, getWindowCenter().y - kLineHeight * 2.0f, getWindowWidth() * 0.8f, getWindowCenter().y - kLineHeight );
+	Rectf       rect( getWindowWidth() * 0.2f, getWindowCenter().y - kLineHeight * 2.0f, getWindowWidth() * 0.8f, getWindowCenter().y - kLineHeight );
 	mNumericalTextView.mBounds = rect;
 	mNumericalTextView.mPlacerholderText = "enter digits";
 

@@ -42,7 +42,6 @@
 
 #include <stdint.h>
 
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -55,23 +54,23 @@ extern "C" {
 #pragma import on
 #endif
 
-typedef struct _CGDirectDisplayID*      CGDirectDisplayID;
-typedef struct _CGDirectPaletteRef*     CGDirectPaletteRef;
-typedef uint32_t                        CGDisplayCount;
-typedef uint32_t                        CGTableCount;
-typedef int32_t                         CGDisplayCoord;
-typedef uint8_t                         CGByteValue;
-typedef uint32_t                        CGOpenGLDisplayMask;
-typedef uint32_t                        CGBeamPosition;
-typedef int32_t                         CGMouseDelta;
-typedef double                          CGRefreshRate;
-typedef CGError                         CGDisplayErr;
+typedef struct _CGDirectDisplayID * CGDirectDisplayID;
+typedef struct _CGDirectPaletteRef *CGDirectPaletteRef;
+typedef uint32_t                    CGDisplayCount;
+typedef uint32_t                    CGTableCount;
+typedef int32_t                     CGDisplayCoord;
+typedef uint8_t                     CGByteValue;
+typedef uint32_t                    CGOpenGLDisplayMask;
+typedef uint32_t                    CGBeamPosition;
+typedef int32_t                     CGMouseDelta;
+typedef double                      CGRefreshRate;
+typedef CGError                     CGDisplayErr;
 enum {
-  CGDisplayNoErr                = kCGErrorSuccess
+	CGDisplayNoErr = kCGErrorSuccess
 };
 
 /* A NULL value points to the main display device as a programming convention */
-#define kCGDirectMainDisplay            ((CGDirectDisplayID)NULL)
+#define kCGDirectMainDisplay ( (CGDirectDisplayID)NULL )
 
 /*
  * Mechanisms used to find screen IDs
@@ -93,11 +92,10 @@ enum {
  */
 EXTERN_API_C( CGDisplayErr )
 CGGetDisplaysWithPoint(
-  CGPoint              point,
-  CGDisplayCount       maxDisplays,
-  CGDirectDisplayID *  dspys,
-  CGDisplayCount *     dspyCnt);
-
+    CGPoint            point,
+    CGDisplayCount     maxDisplays,
+    CGDirectDisplayID *dspys,
+    CGDisplayCount *   dspyCnt );
 
 /*
  *  CGGetDisplaysWithRect()
@@ -109,11 +107,10 @@ CGGetDisplaysWithPoint(
  */
 EXTERN_API_C( CGDisplayErr )
 CGGetDisplaysWithRect(
-  CGRect               rect,
-  CGDisplayCount       maxDisplays,
-  CGDirectDisplayID *  dspys,
-  CGDisplayCount *     dspyCnt);
-
+    CGRect             rect,
+    CGDisplayCount     maxDisplays,
+    CGDirectDisplayID *dspys,
+    CGDisplayCount *   dspyCnt );
 
 /*
  *  CGGetDisplaysWithOpenGLDisplayMask()
@@ -125,11 +122,10 @@ CGGetDisplaysWithRect(
  */
 EXTERN_API_C( CGDisplayErr )
 CGGetDisplaysWithOpenGLDisplayMask(
-  CGOpenGLDisplayMask   mask,
-  CGDisplayCount        maxDisplays,
-  CGDirectDisplayID *   dspys,
-  CGDisplayCount *      dspyCnt);
-
+    CGOpenGLDisplayMask mask,
+    CGDisplayCount      maxDisplays,
+    CGDirectDisplayID * dspys,
+    CGDisplayCount *    dspyCnt );
 
 /*
  * Get lists of displays.  Use this to determine display IDs
@@ -152,10 +148,9 @@ CGGetDisplaysWithOpenGLDisplayMask(
  */
 EXTERN_API_C( CGDisplayErr )
 CGGetActiveDisplayList(
-  CGDisplayCount       maxDisplays,
-  CGDirectDisplayID *  activeDspys,
-  CGDisplayCount *     dspyCnt);
-
+    CGDisplayCount     maxDisplays,
+    CGDirectDisplayID *activeDspys,
+    CGDisplayCount *   dspyCnt );
 
 /* Map a display to an OpenGL display mask; returns 0 on invalid display */
 /*
@@ -167,8 +162,7 @@ CGGetActiveDisplayList(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGOpenGLDisplayMask )
-CGDisplayIDToOpenGLDisplayMask(CGDirectDisplayID display);
-
+CGDisplayIDToOpenGLDisplayMask( CGDirectDisplayID display );
 
 /* Return screen size and origin in global coords; Empty rect if display is invalid */
 /*
@@ -180,8 +174,7 @@ CGDisplayIDToOpenGLDisplayMask(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGRect )
-CGDisplayBounds(CGDirectDisplayID display);
-
+CGDisplayBounds( CGDirectDisplayID display );
 
 /*
  *  CGDisplayPixelsWide()
@@ -192,8 +185,7 @@ CGDisplayBounds(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGDisplayPixelsWide(CGDirectDisplayID display);
-
+CGDisplayPixelsWide( CGDirectDisplayID display );
 
 /*
  *  CGDisplayPixelsHigh()
@@ -204,8 +196,7 @@ CGDisplayPixelsWide(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGDisplayPixelsHigh(CGDirectDisplayID display);
-
+CGDisplayPixelsHigh( CGDirectDisplayID display );
 
 /*
  * Display mode selection
@@ -316,8 +307,7 @@ extern CFStringRef kCGDisplayIOFlags;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CFArrayRef )
-CGDisplayAvailableModes(CGDirectDisplayID display);
-
+CGDisplayAvailableModes( CGDirectDisplayID display );
 
 /*
  * Try to find a display mode of specified depth with dimensions equal or greater than
@@ -339,12 +329,11 @@ CGDisplayAvailableModes(CGDirectDisplayID display);
  */
 EXTERN_API_C( CFDictionaryRef )
 CGDisplayBestModeForParameters(
-  CGDirectDisplayID   display,
-  size_t              bitsPerPixel,
-  size_t              width,
-  size_t              height,
-  boolean_t *         exactMatch);
-
+    CGDirectDisplayID display,
+    size_t            bitsPerPixel,
+    size_t            width,
+    size_t            height,
+    boolean_t *       exactMatch );
 
 /*
  *  CGDisplayBestModeForParametersAndRefreshRate()
@@ -356,13 +345,12 @@ CGDisplayBestModeForParameters(
  */
 EXTERN_API_C( CFDictionaryRef )
 CGDisplayBestModeForParametersAndRefreshRate(
-  CGDirectDisplayID   display,
-  size_t              bitsPerPixel,
-  size_t              width,
-  size_t              height,
-  CGRefreshRate       refresh,
-  boolean_t *         exactMatch);
-
+    CGDirectDisplayID display,
+    size_t            bitsPerPixel,
+    size_t            width,
+    size_t            height,
+    CGRefreshRate     refresh,
+    boolean_t *       exactMatch );
 
 /*
  * Return a CFDictionary describing the current display mode.
@@ -377,8 +365,7 @@ CGDisplayBestModeForParametersAndRefreshRate(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CFDictionaryRef )
-CGDisplayCurrentMode(CGDirectDisplayID display);
-
+CGDisplayCurrentMode( CGDirectDisplayID display );
 
 /*
  * Switch display mode.  Note that after switching, 
@@ -398,9 +385,8 @@ CGDisplayCurrentMode(CGDirectDisplayID display);
  */
 EXTERN_API_C( CGDisplayErr )
 CGDisplaySwitchToMode(
-  CGDirectDisplayID   display,
-  CFDictionaryRef     mode);
-
+    CGDirectDisplayID display,
+    CFDictionaryRef   mode );
 
 /* Query parameters for current mode */
 /*
@@ -412,8 +398,7 @@ CGDisplaySwitchToMode(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGDisplayBitsPerPixel(CGDirectDisplayID display);
-
+CGDisplayBitsPerPixel( CGDirectDisplayID display );
 
 /*
  *  CGDisplayBitsPerSample()
@@ -424,8 +409,7 @@ CGDisplayBitsPerPixel(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGDisplayBitsPerSample(CGDirectDisplayID display);
-
+CGDisplayBitsPerSample( CGDirectDisplayID display );
 
 /*
  *  CGDisplaySamplesPerPixel()
@@ -436,8 +420,7 @@ CGDisplayBitsPerSample(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGDisplaySamplesPerPixel(CGDirectDisplayID display);
-
+CGDisplaySamplesPerPixel( CGDirectDisplayID display );
 
 /*
  *  CGDisplayBytesPerRow()
@@ -448,8 +431,7 @@ CGDisplaySamplesPerPixel(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGDisplayBytesPerRow(CGDirectDisplayID display);
-
+CGDisplayBytesPerRow( CGDirectDisplayID display );
 
 /*
  * Set a display gamma/transfer function from a formula specifying
@@ -466,7 +448,7 @@ CGDisplayBytesPerRow(CGDirectDisplayID display);
  * The resulting values are converted to a machine specific format
  * and loaded into hardware.
  */
-typedef float                           CGGammaValue;
+typedef float CGGammaValue;
 /*
  *  CGSetDisplayTransferByFormula()
  *  
@@ -477,17 +459,16 @@ typedef float                           CGGammaValue;
  */
 EXTERN_API_C( CGDisplayErr )
 CGSetDisplayTransferByFormula(
-  CGDirectDisplayID   display,
-  CGGammaValue        redMin,
-  CGGammaValue        redMax,
-  CGGammaValue        redGamma,
-  CGGammaValue        greenMin,
-  CGGammaValue        greenMax,
-  CGGammaValue        greenGamma,
-  CGGammaValue        blueMin,
-  CGGammaValue        blueMax,
-  CGGammaValue        blueGamma);
-
+    CGDirectDisplayID display,
+    CGGammaValue      redMin,
+    CGGammaValue      redMax,
+    CGGammaValue      redGamma,
+    CGGammaValue      greenMin,
+    CGGammaValue      greenMax,
+    CGGammaValue      greenGamma,
+    CGGammaValue      blueMin,
+    CGGammaValue      blueMax,
+    CGGammaValue      blueGamma );
 
 /*
  *  CGGetDisplayTransferByFormula()
@@ -499,17 +480,16 @@ CGSetDisplayTransferByFormula(
  */
 EXTERN_API_C( CGDisplayErr )
 CGGetDisplayTransferByFormula(
-  CGDirectDisplayID   display,
-  CGGammaValue *      redMin,
-  CGGammaValue *      redMax,
-  CGGammaValue *      redGamma,
-  CGGammaValue *      greenMin,
-  CGGammaValue *      greenMax,
-  CGGammaValue *      greenGamma,
-  CGGammaValue *      blueMin,
-  CGGammaValue *      blueMax,
-  CGGammaValue *      blueGamma);
-
+    CGDirectDisplayID display,
+    CGGammaValue *    redMin,
+    CGGammaValue *    redMax,
+    CGGammaValue *    redGamma,
+    CGGammaValue *    greenMin,
+    CGGammaValue *    greenMax,
+    CGGammaValue *    greenGamma,
+    CGGammaValue *    blueMin,
+    CGGammaValue *    blueMax,
+    CGGammaValue *    blueGamma );
 
 /*
  * Set a display gamma/transfer function using tables of data for each channel.
@@ -529,12 +509,11 @@ CGGetDisplayTransferByFormula(
  */
 EXTERN_API_C( CGDisplayErr )
 CGSetDisplayTransferByTable(
-  CGDirectDisplayID     display,
-  CGTableCount          tableSize,
-  const CGGammaValue *  redTable,
-  const CGGammaValue *  greenTable,
-  const CGGammaValue *  blueTable);
-
+    CGDirectDisplayID   display,
+    CGTableCount        tableSize,
+    const CGGammaValue *redTable,
+    const CGGammaValue *greenTable,
+    const CGGammaValue *blueTable );
 
 /*
  * Get transfer tables.  Capacity should contain the number of samples each
@@ -551,13 +530,12 @@ CGSetDisplayTransferByTable(
  */
 EXTERN_API_C( CGDisplayErr )
 CGGetDisplayTransferByTable(
-  CGDirectDisplayID   display,
-  CGTableCount        capacity,
-  CGGammaValue *      redTable,
-  CGGammaValue *      greenTable,
-  CGGammaValue *      blueTable,
-  CGTableCount *      sampleCount);
-
+    CGDirectDisplayID display,
+    CGTableCount      capacity,
+    CGGammaValue *    redTable,
+    CGGammaValue *    greenTable,
+    CGGammaValue *    blueTable,
+    CGTableCount *    sampleCount );
 
 /* As a convenience, allow setting of the gamma table by byte values */
 /*
@@ -570,12 +548,11 @@ CGGetDisplayTransferByTable(
  */
 EXTERN_API_C( CGDisplayErr )
 CGSetDisplayTransferByByteTable(
-  CGDirectDisplayID    display,
-  CGTableCount         tableSize,
-  const CGByteValue *  redTable,
-  const CGByteValue *  greenTable,
-  const CGByteValue *  blueTable);
-
+    CGDirectDisplayID  display,
+    CGTableCount       tableSize,
+    const CGByteValue *redTable,
+    const CGByteValue *greenTable,
+    const CGByteValue *blueTable );
 
 /* Restore gamma tables of system displays to the user's ColorSync specified values */
 /*
@@ -587,8 +564,7 @@ CGSetDisplayTransferByByteTable(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGDisplayRestoreColorSyncSettings(void);
-
+CGDisplayRestoreColorSyncSettings( void );
 
 /* Display capture and release */
 /*
@@ -600,8 +576,7 @@ CGDisplayRestoreColorSyncSettings(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( boolean_t )
-CGDisplayIsCaptured(CGDirectDisplayID display);
-
+CGDisplayIsCaptured( CGDirectDisplayID display );
 
 /*
  *  CGDisplayCapture()
@@ -612,8 +587,7 @@ CGDisplayIsCaptured(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDisplayErr )
-CGDisplayCapture(CGDirectDisplayID display);
-
+CGDisplayCapture( CGDirectDisplayID display );
 
 /*
  *  CGDisplayRelease()
@@ -624,9 +598,7 @@ CGDisplayCapture(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDisplayErr )
-CGDisplayRelease(CGDirectDisplayID display);
-
-
+CGDisplayRelease( CGDirectDisplayID display );
 
 /*
  * Capture all displays; this has the nice effect of providing an immersive
@@ -642,8 +614,7 @@ CGDisplayRelease(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDisplayErr )
-CGCaptureAllDisplays(void);
-
+CGCaptureAllDisplays( void );
 
 /*
  * Release all captured displays, and restore the display modes to the
@@ -659,9 +630,7 @@ CGCaptureAllDisplays(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDisplayErr )
-CGReleaseAllDisplays(void);
-
-
+CGReleaseAllDisplays( void );
 
 /*
  * Returns CoreGraphics raw shield window ID or NULL if not shielded
@@ -676,8 +645,7 @@ CGReleaseAllDisplays(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void * )
-CGShieldingWindowID(CGDirectDisplayID display);
-
+CGShieldingWindowID( CGDirectDisplayID display );
 
 /*
  * Returns the window level used for the shield window.
@@ -693,8 +661,7 @@ CGShieldingWindowID(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( int32_t )
-CGShieldingWindowLevel(void);
-
+CGShieldingWindowLevel( void );
 
 /*
  * Returns base address of display or NULL for an invalid display.
@@ -710,8 +677,7 @@ CGShieldingWindowLevel(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void * )
-CGDisplayBaseAddress(CGDirectDisplayID display);
-
+CGDisplayBaseAddress( CGDirectDisplayID display );
 
 /*
  * return address for X,Y in screen coordinates;
@@ -730,11 +696,9 @@ CGDisplayBaseAddress(CGDirectDisplayID display);
  */
 EXTERN_API_C( void * )
 CGDisplayAddressForPosition(
-  CGDirectDisplayID   display,
-  CGDisplayCoord      x,
-  CGDisplayCoord      y);
-
-
+    CGDirectDisplayID display,
+    CGDisplayCoord    x,
+    CGDisplayCoord    y );
 
 /* Mouse Cursor controls */
 /*
@@ -746,8 +710,7 @@ CGDisplayAddressForPosition(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDisplayErr )
-CGDisplayHideCursor(CGDirectDisplayID display);
-
+CGDisplayHideCursor( CGDirectDisplayID display );
 
 /* increments hide cursor count */
 /*
@@ -759,8 +722,7 @@ CGDisplayHideCursor(CGDirectDisplayID display);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGDisplayErr )
-CGDisplayShowCursor(CGDirectDisplayID display);
-
+CGDisplayShowCursor( CGDirectDisplayID display );
 
 /* decrements hide cursor count  */
 /*
@@ -779,9 +741,8 @@ CGDisplayShowCursor(CGDirectDisplayID display);
  */
 EXTERN_API_C( CGDisplayErr )
 CGDisplayMoveCursorToPoint(
-  CGDirectDisplayID   display,
-  CGPoint             point);
-
+    CGDirectDisplayID display,
+    CGPoint           point );
 
 /*
  * Report the mouse position change associated with the last mouse move event
@@ -797,10 +758,8 @@ CGDisplayMoveCursorToPoint(
  */
 EXTERN_API_C( void )
 CGGetLastMouseDelta(
-  CGMouseDelta *  deltaX,
-  CGMouseDelta *  deltaY);
-
-
+    CGMouseDelta *deltaX,
+    CGMouseDelta *deltaY );
 
 /* Palette controls (8 bit pseudocolor only) */
 /*
@@ -815,8 +774,7 @@ CGGetLastMouseDelta(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( boolean_t )
-CGDisplayCanSetPalette(CGDirectDisplayID display);
-
+CGDisplayCanSetPalette( CGDirectDisplayID display );
 
 /*
  * Set a palette.  The current gamma function is applied to the palette
@@ -832,9 +790,8 @@ CGDisplayCanSetPalette(CGDirectDisplayID display);
  */
 EXTERN_API_C( CGDisplayErr )
 CGDisplaySetPalette(
-  CGDirectDisplayID    display,
-  CGDirectPaletteRef   palette);
-
+    CGDirectDisplayID  display,
+    CGDirectPaletteRef palette );
 
 /*
  * Wait until the beam position is outside the range specified by upperScanLine and lowerScanLine.
@@ -876,10 +833,9 @@ CGDisplaySetPalette(
  */
 EXTERN_API_C( CGDisplayErr )
 CGDisplayWaitForBeamPositionOutsideLines(
-  CGDirectDisplayID   display,
-  CGBeamPosition      upperScanLine,
-  CGBeamPosition      lowerScanLine);
-
+    CGDirectDisplayID display,
+    CGBeamPosition    upperScanLine,
+    CGBeamPosition    lowerScanLine );
 
 /*
  * Returns the current beam position on the display.  If display is invalid,
@@ -895,9 +851,7 @@ CGDisplayWaitForBeamPositionOutsideLines(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGBeamPosition )
-CGDisplayBeamPosition(CGDirectDisplayID display);
-
-
+CGDisplayBeamPosition( CGDirectDisplayID display );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -910,4 +864,3 @@ CGDisplayBeamPosition(CGDirectDisplayID display);
 #endif
 
 #endif /* CGDIRECTDISPLAY_H_ */
-

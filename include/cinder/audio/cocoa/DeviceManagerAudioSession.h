@@ -23,16 +23,17 @@
 
 #pragma once
 
-
 #include "cinder/audio/Device.h"
 
 #if defined( __OBJC__ )
-	@class AudioSessionInterruptionHandlerImpl;
+@class AudioSessionInterruptionHandlerImpl;
 #else
-	class AudioSessionInterruptionHandlerImpl;
+class AudioSessionInterruptionHandlerImpl;
 #endif
 
-namespace cinder { namespace audio { namespace cocoa {
+namespace cinder {
+namespace audio {
+namespace cocoa {
 
 class DeviceAudioUnit;
 
@@ -41,38 +42,36 @@ class DeviceManagerAudioSession : public DeviceManager {
 	DeviceManagerAudioSession();
 	virtual ~DeviceManagerAudioSession();
 
-	DeviceRef	getDefaultOutput()								override;
-	DeviceRef	getDefaultInput()								override;
-	DeviceRef	findDeviceByName( const std::string &name )		override;
-	DeviceRef	findDeviceByKey( const std::string &key )		override;
+	DeviceRef getDefaultOutput() override;
+	DeviceRef getDefaultInput() override;
+	DeviceRef findDeviceByName( const std::string &name ) override;
+	DeviceRef findDeviceByKey( const std::string &key ) override;
 
-	const std::vector<DeviceRef>&	getDevices()				override;
+	const std::vector<DeviceRef> &getDevices() override;
 
-	std::string		getName( const DeviceRef &device )										override;
-	size_t			getNumInputChannels( const DeviceRef &device )							override;
-	size_t			getNumOutputChannels( const DeviceRef &device )							override;
-	size_t			getSampleRate( const DeviceRef &device )								override;
-	size_t			getFramesPerBlock( const DeviceRef &device )							override;
+	std::string getName( const DeviceRef &device ) override;
+	size_t getNumInputChannels( const DeviceRef &device ) override;
+	size_t getNumOutputChannels( const DeviceRef &device ) override;
+	size_t getSampleRate( const DeviceRef &device ) override;
+	size_t getFramesPerBlock( const DeviceRef &device ) override;
 
-	void			setSampleRate( const DeviceRef &device, size_t sampleRate )				override;
-	void			setFramesPerBlock( const DeviceRef &device, size_t framesPerBlock )		override;
+	void setSampleRate( const DeviceRef &device, size_t sampleRate ) override;
+	void setFramesPerBlock( const DeviceRef &device, size_t framesPerBlock ) override;
 
 	void setInputEnabled( bool enable = true );
-	bool isInputEnabled() const		{ return mInputEnabled; }
-
+	bool isInputEnabled() const { return mInputEnabled; }
   private:
-
-	const DeviceRef&				getRemoteIODevice();
-	void							activateSession();
-	std::string						getSessionCategory();
+	const DeviceRef &getRemoteIODevice();
+	void             activateSession();
+	std::string      getSessionCategory();
 
 	AudioSessionInterruptionHandlerImpl *getSessionInterruptionHandler();
 
-
 	DeviceRef mRemoteIODevice;
-	bool mSessionIsActive, mInputEnabled;
+	bool      mSessionIsActive, mInputEnabled;
 
 	AudioSessionInterruptionHandlerImpl *mSessionInterruptionHandler;
 };
-
-} } } // namespace cinder::audio::cocoa
+}
+}
+} // namespace cinder::audio::cocoa

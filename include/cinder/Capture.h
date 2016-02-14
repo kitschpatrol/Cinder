@@ -23,32 +23,32 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/Surface.h"
 #include "cinder/Exception.h"
+#include "cinder/Surface.h"
 
 #if defined( CINDER_MAC ) || defined( CINDER_COCOA_TOUCH_DEVICE )
-	#if defined( __OBJC__ )
-		@class CaptureImplAvFoundation;
-	#else
-		class CaptureImplAvFoundation;
-	#endif
+#if defined( __OBJC__ )
+@class CaptureImplAvFoundation;
+#else
+class CaptureImplAvFoundation;
+#endif
 #elif defined( CINDER_COCOA_TOUCH_SIMULATOR )
-	#if defined( __OBJC__ )
-		@class CaptureImplCocoaDummy;
-	#else
-		class CaptureImplCocoaDummy;
-	#endif
+#if defined( __OBJC__ )
+@class CaptureImplCocoaDummy;
+#else
+class CaptureImplCocoaDummy;
+#endif
 #elif defined( CINDER_MSW )
-	namespace cinder {
-		class CaptureImplDirectShow;
-	}
+namespace cinder {
+class CaptureImplDirectShow;
+}
 #endif
 
 #include <map>
 
 namespace cinder {
 
-typedef std::shared_ptr<class Capture>	CaptureRef;
+typedef std::shared_ptr<class Capture> CaptureRef;
 
 class Capture {
   public:
@@ -56,38 +56,36 @@ class Capture {
 	typedef std::shared_ptr<Device> DeviceRef;
 
 	//! Creates a new Capture requesting (but not promising) a resolution of \a width x \a height pixels.
-	static CaptureRef	create( int32_t width, int32_t height, const DeviceRef device = DeviceRef() ) { return CaptureRef( new Capture( width, height, device ) ); }
-
+	static CaptureRef create( int32_t width, int32_t height, const DeviceRef device = DeviceRef() ) { return CaptureRef( new Capture( width, height, device ) ); }
 	~Capture();
 
 	//! Begin capturing video
-	void		start();
+	void start();
 	//! Stop capturing video
-	void		stop();
+	void stop();
 	//! Is the device capturing video
-	bool		isCapturing();
+	bool isCapturing();
 
 	//! Returns whether there is a new video frame available since the last call to checkNewFrame()
-	bool		checkNewFrame() const;
+	bool checkNewFrame() const;
 
 	//! Returns the width of the captured image in pixels.
-	int32_t		getWidth() const;
+	int32_t getWidth() const;
 	//! Returns the height of the captured image in pixels.
-	int32_t		getHeight() const;
+	int32_t getHeight() const;
 	//! Returns the size of the captured image in pixels.
-	ivec2		getSize() const { return ivec2( getWidth(), getHeight() ); }
+	ivec2 getSize() const { return ivec2( getWidth(), getHeight() ); }
 	//! Returns the aspect ratio of the capture imagee, which is its width / height
-	float		getAspectRatio() const { return getWidth() / (float)getHeight(); }
+	float getAspectRatio() const { return getWidth() / (float)getHeight(); }
 	//! Returns the bounding rectangle of the capture imagee, which is Area( 0, 0, width, height )
-	Area		getBounds() const { return Area( 0, 0, getWidth(), getHeight() ); }
-	
+	Area getBounds() const { return Area( 0, 0, getWidth(), getHeight() ); }
 	//! Returns a SurfaceRef representing the current captured frame.
-	Surface8uRef	getSurface() const;
+	Surface8uRef getSurface() const;
 	//! Returns the associated Device for this instace of Capture
 	const Capture::DeviceRef getDevice() const;
 
 	//! Returns a vector of all Devices connected to the system. If \a forceRefresh then the system will be polled for connected devices.
-	static const std::vector<DeviceRef>&	getDevices( bool forceRefresh = false );
+	static const std::vector<DeviceRef> &getDevices( bool forceRefresh = false );
 	//! Finds a particular device based on its name
 	static DeviceRef findDeviceByName( const std::string &name );
 	//! Finds the first device whose name contains the string \a nameFragment
@@ -96,43 +94,43 @@ class Capture {
 #if defined( CINDER_COCOA )
 	typedef std::string DeviceIdentifier;
 #else
-	typedef int DeviceIdentifier;
+	typedef int            DeviceIdentifier;
 #endif
 
 	// This is an abstract base class for implementing platform specific devices
 	class Device {
-	 public:
+	  public:
 		virtual ~Device() {}
 		//! Returns the human-readable name of the device.
-		const std::string&					getName() const { return mName; }
+		const std::string &getName() const { return mName; }
 		//! Returns whether the device is available for use.
-		virtual bool						checkAvailable() const = 0;
+		virtual bool checkAvailable() const = 0;
 		//! Returns whether the device is currently connected.
-		virtual bool						isConnected() const = 0;
+		virtual bool isConnected() const = 0;
 		//! Returns the OS-specific unique identifier
-		virtual Capture::DeviceIdentifier	getUniqueId() const = 0;
-		//! Returns an OS-specific pointer. AVCaptureDevice* on OS X and iOS. Not implemented on MSW.
+		virtual Capture::DeviceIdentifier getUniqueId() const = 0;
+//! Returns an OS-specific pointer. AVCaptureDevice* on OS X and iOS. Not implemented on MSW.
 #if defined( CINDER_COCOA )
-		virtual void*		getNative() const = 0;
+		virtual void *getNative() const = 0;
 #endif
 #if defined( CINDER_COCOA_TOUCH )
 		//! Returns whether device is front-facing. False implies rear-facing.
-		virtual bool		isFrontFacing() const = 0;
+		virtual bool isFrontFacing() const = 0;
 #endif
-	 protected:
+	  protected:
 		Device() {}
-		std::string		mName;
+		std::string mName;
 	};
-		
- protected:
- 	Capture( int32_t width, int32_t height, const DeviceRef device );
+
+  protected:
+	Capture( int32_t width, int32_t height, const DeviceRef device );
 
 #if defined( CINDER_MAC ) || defined( CINDER_COCOA_TOUCH_DEVICE )
-	CaptureImplAvFoundation			*mImpl;
+	CaptureImplAvFoundation *mImpl;
 #elif defined( CINDER_COCOA_TOUCH_SIMULATOR )
-	CaptureImplCocoaDummy			*mImpl;
+	CaptureImplCocoaDummy *mImpl;
 #elif defined( CINDER_MSW )
-	CaptureImplDirectShow			*mImpl;
+	CaptureImplDirectShow *mImpl;
 #endif
 };
 

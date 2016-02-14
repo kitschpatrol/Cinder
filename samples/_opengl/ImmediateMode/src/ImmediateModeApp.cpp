@@ -11,7 +11,7 @@ class ImmediateModeApp : public App {
 	void setup();
 	void draw();
 
-	gl::GlslProgRef		mGlsl;
+	gl::GlslProgRef mGlsl;
 };
 
 void ImmediateModeApp::setup()
@@ -22,15 +22,15 @@ void ImmediateModeApp::setup()
 
 void ImmediateModeApp::draw()
 {
-	gl::clear();	
+	gl::clear();
 
 	gl::VertBatch vb( GL_TRIANGLES );
-		vb.color( 1, 0, 0 );
-		vb.vertex( getWindowWidth() / 2, 50 );
-		vb.color( 0, 1, 0 );
-		vb.vertex( getWindowWidth() - 50, getWindowHeight() - 50 );
-		vb.color( 0, 0, 1 );
-		vb.vertex( 50, getWindowHeight() - 50 );
+	vb.color( 1, 0, 0 );
+	vb.vertex( getWindowWidth() / 2, 50 );
+	vb.color( 0, 1, 0 );
+	vb.vertex( getWindowWidth() - 50, getWindowHeight() - 50 );
+	vb.color( 0, 0, 1 );
+	vb.vertex( 50, getWindowHeight() - 50 );
 	vb.draw();
 }
 

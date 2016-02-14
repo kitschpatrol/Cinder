@@ -27,54 +27,58 @@
 #include "cinder/app/Renderer.h"
 
 #if defined( CINDER_WINRT )
-	#include <agile.h>
+#include <agile.h>
 #endif
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
-typedef std::shared_ptr<class RendererDx>	RendererDxRef;
+typedef std::shared_ptr<class RendererDx> RendererDxRef;
 class RendererDx : public Renderer {
   public:
 	RendererDx( int aAntiAliasing = AA_MSAA_16 );
 	~RendererDx();
-	
-	static RendererDxRef	create( int antiAliasing = AA_MSAA_16  ) { return RendererDxRef( new RendererDx( antiAliasing ) ); }
-	virtual RendererRef		clone() const { return RendererDxRef( new RendererDx( *this ) ); }
 
-#if defined ( CINDER_MSW )
+	static RendererDxRef create( int antiAliasing = AA_MSAA_16 ) { return RendererDxRef( new RendererDx( antiAliasing ) ); }
+	virtual RendererRef              clone() const { return RendererDxRef( new RendererDx( *this ) ); }
+#if defined( CINDER_MSW )
 	virtual void setup( AppBase *aApp, HWND wnd, HDC dc, RendererRef sharedRenderer );
-	virtual HWND	getHwnd() { return mWnd; }
+	virtual HWND getHwnd() { return mWnd; }
 #elif defined( CINDER_WINRT )
-	virtual void	setup( AppBase *aApp, Platform::Agile<Windows::UI::Core::CoreWindow> wnd);
+	virtual void setup( AppBase *aApp, Platform::Agile<Windows::UI::Core::CoreWindow> wnd );
 #endif
 
-	virtual void	kill();
-	virtual void	prepareToggleFullScreen();
-	virtual void	finishToggleFullScreen();
+	virtual void kill();
+	virtual void prepareToggleFullScreen();
+	virtual void finishToggleFullScreen();
 
-	enum	{ AA_NONE = 0, AA_MSAA_2, AA_MSAA_4, AA_MSAA_6, AA_MSAA_8, AA_MSAA_16, AA_MSAA_32 };
-	static const int	sAntiAliasingSamples[];
-	void				setAntiAliasing( int aAntiAliasing );
-	int					getAntiAliasing() const { return mAntiAliasing; }
+	enum { AA_NONE = 0,
+		AA_MSAA_2,
+		AA_MSAA_4,
+		AA_MSAA_6,
+		AA_MSAA_8,
+		AA_MSAA_16,
+		AA_MSAA_32 };
+	static const int sAntiAliasingSamples[];
+	void setAntiAliasing( int aAntiAliasing );
+	int             getAntiAliasing() const { return mAntiAliasing; }
+	virtual void    startDraw();
+	virtual void    finishDraw();
+	virtual void    defaultResize();
+	virtual Surface copyWindowSurface( const Area &area );
+	virtual void makeCurrentContext();
 
-	virtual void	startDraw();
-	virtual void	finishDraw();
-	virtual void	defaultResize();
-	virtual Surface	copyWindowSurface( const Area &area );
-	virtual void	makeCurrentContext();
+	MatrixStack &         getModelView() { return mModelView; }
+	MatrixStack &         getProjection() { return mProjection; }
+	class RendererImplDx *mImpl;
 
-	MatrixStack &getModelView() { return mModelView; }
-	MatrixStack &getProjection() { return mProjection; }
-
-	class RendererImplDx	*mImpl;
-	
- protected:
+  protected:
 	RendererDx( const RendererDx &renderer );
 
-	int				mAntiAliasing;
-	DX_WINDOW_TYPE	mWnd;
-	MatrixStack		mModelView;
-	MatrixStack		mProjection;
+	int            mAntiAliasing;
+	DX_WINDOW_TYPE mWnd;
+	MatrixStack    mModelView;
+	MatrixStack    mProjection;
 };
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

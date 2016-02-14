@@ -25,8 +25,8 @@
 
 #pragma once
 
+#include "cinder/audio/DelayNode.h"
+#include "cinder/audio/FilterNode.h"
 #include "cinder/audio/GainNode.h"
 #include "cinder/audio/NodeMath.h"
-#include "cinder/audio/DelayNode.h"
 #include "cinder/audio/PanNode.h"
-#include "cinder/audio/FilterNode.h"

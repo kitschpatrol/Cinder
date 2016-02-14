@@ -21,7 +21,6 @@
 #include <QD3D.h>
 #endif
 
-
 #if TARGET_OS_MAC
 #ifndef __MACTYPES__
 #include <MacTypes.h>
@@ -31,15 +30,13 @@
 #include <Files.h>
 #endif
 
-#endif  /* TARGET_OS_MAC */
-
+#endif /* TARGET_OS_MAC */
 
 #if TARGET_OS_WIN32
-   #include <windows.h>
+#include <windows.h>
 #endif /* TARGET_OS_WIN32 */
 
 #include <stdio.h>
-
 
 #if PRAGMA_ONCE
 #pragma once
@@ -54,26 +51,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=power
+#pragma options align = power
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __QD3DSTORAGE__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __QD3DSTORAGE__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __QD3DSTORAGE__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __QD3DSTORAGE__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
 /******************************************************************************
@@ -91,8 +88,7 @@ extern "C" {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3Storage_GetType(TQ3StorageObject storage);
-
+Q3Storage_GetType( TQ3StorageObject storage );
 
 /*
  *  Q3Storage_GetSize()
@@ -104,9 +100,8 @@ Q3Storage_GetType(TQ3StorageObject storage);
  */
 EXTERN_API_C( TQ3Status )
 Q3Storage_GetSize(
-  TQ3StorageObject   storage,
-  unsigned long *    size);
-
+    TQ3StorageObject storage,
+    unsigned long *  size );
 
 /* 
  *  Reads "dataSize" bytes starting at offset in storage, copying into data. 
@@ -124,12 +119,11 @@ Q3Storage_GetSize(
  */
 EXTERN_API_C( TQ3Status )
 Q3Storage_GetData(
-  TQ3StorageObject   storage,
-  unsigned long      offset,
-  unsigned long      dataSize,
-  unsigned char *    data,
-  unsigned long *    sizeRead);
-
+    TQ3StorageObject storage,
+    unsigned long    offset,
+    unsigned long    dataSize,
+    unsigned char *  data,
+    unsigned long *  sizeRead );
 
 /* 
  *  Write "dataSize" bytes starting at offset in storage, copying from data. 
@@ -147,12 +141,11 @@ Q3Storage_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3Storage_SetData(
-  TQ3StorageObject       storage,
-  unsigned long          offset,
-  unsigned long          dataSize,
-  const unsigned char *  data,
-  unsigned long *        sizeWritten);
-
+    TQ3StorageObject     storage,
+    unsigned long        offset,
+    unsigned long        dataSize,
+    const unsigned char *data,
+    unsigned long *      sizeWritten );
 
 /******************************************************************************
  **                                                                          **
@@ -168,8 +161,7 @@ Q3Storage_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3MemoryStorage_GetType(TQ3StorageObject storage);
-
+Q3MemoryStorage_GetType( TQ3StorageObject storage );
 
 /*
  * These calls COPY the buffer into QD3D space
@@ -184,9 +176,8 @@ Q3MemoryStorage_GetType(TQ3StorageObject storage);
  */
 EXTERN_API_C( TQ3StorageObject )
 Q3MemoryStorage_New(
-  const unsigned char *  buffer,
-  unsigned long          validSize);
-
+    const unsigned char *buffer,
+    unsigned long        validSize );
 
 /*
  *  Q3MemoryStorage_Set()
@@ -198,15 +189,14 @@ Q3MemoryStorage_New(
  */
 EXTERN_API_C( TQ3Status )
 Q3MemoryStorage_Set(
-  TQ3StorageObject       storage,
-  const unsigned char *  buffer,
-  unsigned long          validSize);
-
+    TQ3StorageObject     storage,
+    const unsigned char *buffer,
+    unsigned long        validSize );
 
 /*
  * These calls use the pointer given - you must dispose it when you're through
  */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -219,10 +209,9 @@ Q3MemoryStorage_Set(
  */
 EXTERN_API_C( TQ3StorageObject )
 Q3MemoryStorage_NewBuffer(
-  unsigned char *  buffer,
-  unsigned long    validSize,
-  unsigned long    bufferSize);
-
+    unsigned char *buffer,
+    unsigned long  validSize,
+    unsigned long  bufferSize );
 
 /*
  *  Q3MemoryStorage_SetBuffer()
@@ -234,11 +223,10 @@ Q3MemoryStorage_NewBuffer(
  */
 EXTERN_API_C( TQ3Status )
 Q3MemoryStorage_SetBuffer(
-  TQ3StorageObject   storage,
-  unsigned char *    buffer,
-  unsigned long      validSize,
-  unsigned long      bufferSize);
-
+    TQ3StorageObject storage,
+    unsigned char *  buffer,
+    unsigned long    validSize,
+    unsigned long    bufferSize );
 
 /*
  *  Q3MemoryStorage_GetBuffer()
@@ -250,13 +238,12 @@ Q3MemoryStorage_SetBuffer(
  */
 EXTERN_API_C( TQ3Status )
 Q3MemoryStorage_GetBuffer(
-  TQ3StorageObject   storage,
-  unsigned char **   buffer,
-  unsigned long *    validSize,
-  unsigned long *    bufferSize);
+    TQ3StorageObject storage,
+    unsigned char ** buffer,
+    unsigned long *  validSize,
+    unsigned long *  bufferSize );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if TARGET_OS_MAC
 /******************************************************************************
@@ -276,9 +263,8 @@ Q3MemoryStorage_GetBuffer(
  */
 EXTERN_API_C( TQ3StorageObject )
 Q3HandleStorage_New(
-  Handle          handle,
-  unsigned long   validSize);
-
+    Handle        handle,
+    unsigned long validSize );
 
 /*
  *  Q3HandleStorage_Set()
@@ -290,10 +276,9 @@ Q3HandleStorage_New(
  */
 EXTERN_API_C( TQ3Status )
 Q3HandleStorage_Set(
-  TQ3StorageObject   storage,
-  Handle             handle,
-  unsigned long      validSize);
-
+    TQ3StorageObject storage,
+    Handle           handle,
+    unsigned long    validSize );
 
 /*
  *  Q3HandleStorage_Get()
@@ -305,10 +290,9 @@ Q3HandleStorage_Set(
  */
 EXTERN_API_C( TQ3Status )
 Q3HandleStorage_Get(
-  TQ3StorageObject   storage,
-  Handle *           handle,
-  unsigned long *    validSize);
-
+    TQ3StorageObject storage,
+    Handle *         handle,
+    unsigned long *  validSize );
 
 /******************************************************************************
  **                                                                          **
@@ -324,8 +308,7 @@ Q3HandleStorage_Get(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3StorageObject )
-Q3MacintoshStorage_New(short fsRefNum);
-
+Q3MacintoshStorage_New( short fsRefNum );
 
 /* Note: This storage is assumed open */
 /*
@@ -338,9 +321,8 @@ Q3MacintoshStorage_New(short fsRefNum);
  */
 EXTERN_API_C( TQ3Status )
 Q3MacintoshStorage_Set(
-  TQ3StorageObject   storage,
-  short              fsRefNum);
-
+    TQ3StorageObject storage,
+    short            fsRefNum );
 
 /*
  *  Q3MacintoshStorage_Get()
@@ -352,9 +334,8 @@ Q3MacintoshStorage_Set(
  */
 EXTERN_API_C( TQ3Status )
 Q3MacintoshStorage_Get(
-  TQ3StorageObject   storage,
-  short *            fsRefNum);
-
+    TQ3StorageObject storage,
+    short *          fsRefNum );
 
 /*
  *  Q3MacintoshStorage_GetType()
@@ -365,9 +346,7 @@ Q3MacintoshStorage_Get(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3MacintoshStorage_GetType(TQ3StorageObject storage);
-
-
+Q3MacintoshStorage_GetType( TQ3StorageObject storage );
 
 /******************************************************************************
  **                                                                          **
@@ -383,8 +362,7 @@ Q3MacintoshStorage_GetType(TQ3StorageObject storage);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3StorageObject )
-Q3FSSpecStorage_New(const FSSpec * fs);
-
+Q3FSSpecStorage_New( const FSSpec *fs );
 
 /*
  *  Q3FSSpecStorage_Set()
@@ -396,9 +374,8 @@ Q3FSSpecStorage_New(const FSSpec * fs);
  */
 EXTERN_API_C( TQ3Status )
 Q3FSSpecStorage_Set(
-  TQ3StorageObject   storage,
-  const FSSpec *     fs);
-
+    TQ3StorageObject storage,
+    const FSSpec *   fs );
 
 /*
  *  Q3FSSpecStorage_Get()
@@ -410,13 +387,12 @@ Q3FSSpecStorage_Set(
  */
 EXTERN_API_C( TQ3Status )
 Q3FSSpecStorage_Get(
-  TQ3StorageObject   storage,
-  FSSpec *           fs);
+    TQ3StorageObject storage,
+    FSSpec *         fs );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_OS_MAC */
+#endif /* TARGET_OS_MAC */
 
 #if TARGET_OS_WIN32
 /******************************************************************************
@@ -434,8 +410,7 @@ Q3FSSpecStorage_Get(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3StorageObject )
-Q3Win32Storage_New(HANDLE hFile);
-
+Q3Win32Storage_New( HANDLE hFile );
 
 /*
  *  Q3Win32Storage_Set()
@@ -447,9 +422,8 @@ Q3Win32Storage_New(HANDLE hFile);
  */
 EXTERN_API_C( TQ3Status )
 Q3Win32Storage_Set(
-  TQ3StorageObject   storage,
-  HANDLE             hFile);
-
+    TQ3StorageObject storage,
+    HANDLE           hFile );
 
 /*
  *  Q3Win32Storage_Get()
@@ -461,14 +435,12 @@ Q3Win32Storage_Set(
  */
 EXTERN_API_C( TQ3Status )
 Q3Win32Storage_Get(
-  TQ3StorageObject   storage,
-  HANDLE *           hFile);
+    TQ3StorageObject storage,
+    HANDLE *         hFile );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_OS_WIN32 */
-
+#endif /* TARGET_OS_WIN32 */
 
 /******************************************************************************
  **                                                                          **
@@ -476,7 +448,6 @@ Q3Win32Storage_Get(
  **             The Unix Storage prototypes have been obsoleted.             **
  **                                                                          **
  *****************************************************************************/
-
 
 /******************************************************************************
  **                                                                          **
@@ -493,8 +464,7 @@ Q3Win32Storage_Get(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3StorageObject )
-Q3UnixPathStorage_New(const char * pathName);
-
+Q3UnixPathStorage_New( const char *pathName );
 
 /* C string */
 /*
@@ -507,9 +477,8 @@ Q3UnixPathStorage_New(const char * pathName);
  */
 EXTERN_API_C( TQ3Status )
 Q3UnixPathStorage_Set(
-  TQ3StorageObject   storage,
-  const char *       pathName);
-
+    TQ3StorageObject storage,
+    const char *     pathName );
 
 /* C string */
 /*
@@ -522,34 +491,30 @@ Q3UnixPathStorage_Set(
  */
 EXTERN_API_C( TQ3Status )
 Q3UnixPathStorage_Get(
-  TQ3StorageObject   storage,
-  char *             pathName);
-
+    TQ3StorageObject storage,
+    char *           pathName );
 
 /* pathName is a buffer */
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __QD3DSTORAGE__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __QD3DSTORAGE__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__QD3DSTORAGE__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __QD3DSTORAGE__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -563,4 +528,3 @@ Q3UnixPathStorage_Get(
 #endif
 
 #endif /* __QD3DSTORAGE__ */
-

@@ -33,13 +33,13 @@ namespace cinder {
 // Registrar
 void ImageSourceFileStbImage::registerSelf()
 {
-	static bool alreadyRegistered = false;
+	static bool          alreadyRegistered = false;
 	static const int32_t SOURCE_PRIORITY = 3; // OS-default are 2; this is lower priority
-	
+
 	if( alreadyRegistered )
 		return;
 	alreadyRegistered = true;
-	
+
 	ImageIoRegistrar::SourceCreationFunc sourceFunc = ImageSourceFileStbImage::create;
 	ImageIoRegistrar::registerSourceType( "jpg", sourceFunc, SOURCE_PRIORITY );
 	ImageIoRegistrar::registerSourceType( "jpeg", sourceFunc, SOURCE_PRIORITY );
@@ -53,44 +53,43 @@ void ImageSourceFileStbImage::registerSelf()
 	ImageIoRegistrar::registerSourceGeneric( ImageSourceFileStbImage::create, SOURCE_PRIORITY );
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // ImageSourceFileStbImage
 ImageSourceFileStbImage::ImageSourceFileStbImage( DataSourceRef dataSourceRef, ImageSource::Options options )
-	: mData8u( nullptr ), mData32f( nullptr ), mRowBytes( 0 )
+    : mData8u( nullptr ), mData32f( nullptr ), mRowBytes( 0 )
 {
 	int width = 0, height = 0, components = 0;
-	
+
 	if( dataSourceRef->isFilePath() ) {
-		if( stbi_is_hdr( dataSourceRef->getFilePath().string().c_str() ) ) {		
+		if( stbi_is_hdr( dataSourceRef->getFilePath().string().c_str() ) ) {
 			mData32f = stbi_loadf( dataSourceRef->getFilePath().string().c_str(), &width, &height, &components, 0 /*any # of components*/ );
-			if( ! mData32f )
+			if( !mData32f )
 				throw ImageIoException();
 
 			mRowBytes = width * components * sizeof( float );
 		}
 		else {
 			mData8u = stbi_load( dataSourceRef->getFilePath().string().c_str(), &width, &height, &components, 0 /*any # of components*/ );
-			if( ! mData8u )
+			if( !mData8u )
 				throw ImageIoException();
 
-			mRowBytes = width * components;		
+			mRowBytes = width * components;
 		}
 	}
 	else { // we'll use a dataref from the buffer
 		Buffer buffer = dataSourceRef->getBuffer();
-		if( stbi_is_hdr_from_memory( (unsigned char*)buffer.getData(), (int)buffer.getDataSize() ) ) {
-			mData32f = stbi_loadf_from_memory( (unsigned char*)buffer.getData(), (int)buffer.getDataSize(), &width, &height, &components, 0 /*any # of components*/ );
-			if( ! mData32f )
+		if( stbi_is_hdr_from_memory( (unsigned char *)buffer.getData(), (int)buffer.getDataSize() ) ) {
+			mData32f = stbi_loadf_from_memory( (unsigned char *)buffer.getData(), (int)buffer.getDataSize(), &width, &height, &components, 0 /*any # of components*/ );
+			if( !mData32f )
 				throw ImageIoException();
-			
-			mRowBytes = width * components * sizeof(float);
+
+			mRowBytes = width * components * sizeof( float );
 		}
 		else {
-			mData8u = stbi_load_from_memory( (unsigned char*)buffer.getData(), (int)buffer.getDataSize(), &width, &height, &components, 0 /*any # of components*/ );
-			if( ! mData8u )
+			mData8u = stbi_load_from_memory( (unsigned char *)buffer.getData(), (int)buffer.getDataSize(), &width, &height, &components, 0 /*any # of components*/ );
+			if( !mData8u )
 				throw ImageIoException();
-				
+
 			mRowBytes = width * components;
 		}
 	}
@@ -102,42 +101,41 @@ ImageSourceFileStbImage::ImageSourceFileStbImage( DataSourceRef dataSourceRef, I
 	setSize( width, height );
 
 	switch( components ) {
-		case 1:
-			setColorModel( ImageIo::CM_GRAY );
-			setChannelOrder( ImageIo::ChannelOrder::Y );
+	case 1:
+		setColorModel( ImageIo::CM_GRAY );
+		setChannelOrder( ImageIo::ChannelOrder::Y );
 		break;
-		case 2:
-			setColorModel( ImageIo::CM_GRAY );
-			setChannelOrder( ImageIo::ChannelOrder::YA );
+	case 2:
+		setColorModel( ImageIo::CM_GRAY );
+		setChannelOrder( ImageIo::ChannelOrder::YA );
 		break;
-		case 3:
-			setColorModel( ImageIo::CM_RGB );
-			setChannelOrder( ImageIo::ChannelOrder::RGB );			
+	case 3:
+		setColorModel( ImageIo::CM_RGB );
+		setChannelOrder( ImageIo::ChannelOrder::RGB );
 		break;
-		case 4:
-			setColorModel( ImageIo::CM_RGB );
-			setChannelOrder( ImageIo::ChannelOrder::RGBA );
+	case 4:
+		setColorModel( ImageIo::CM_RGB );
+		setChannelOrder( ImageIo::ChannelOrder::RGBA );
 		break;
-		default:
-			throw ImageIoException();
+	default:
+		throw ImageIoException();
 	}
 }
-
 
 ImageSourceFileStbImage::~ImageSourceFileStbImage()
 {
 	if( mData8u )
-		stbi_image_free( (void*)mData8u );
+		stbi_image_free( (void *)mData8u );
 	if( mData32f )
-		stbi_image_free( (void*)mData32f );
+		stbi_image_free( (void *)mData32f );
 }
 
 void ImageSourceFileStbImage::load( ImageTargetRef target )
 {
 	ImageSource::RowFunc func = setupRowFunc( target );
-	const uint8_t *data = ( mData8u ) ? mData8u : reinterpret_cast<uint8_t*>( mData32f );
+	const uint8_t *      data = ( mData8u ) ? mData8u : reinterpret_cast<uint8_t *>( mData32f );
 	for( int32_t row = 0; row < mHeight; ++row ) {
-		((*this).*func)( target, row, data + row * mRowBytes );
+		( ( *this ).*func )( target, row, data + row * mRowBytes );
 	}
 }
 

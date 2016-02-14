@@ -27,14 +27,13 @@
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct b2PrismaticJointDef : public b2JointDef
-{
+struct b2PrismaticJointDef : public b2JointDef {
 	b2PrismaticJointDef()
 	{
 		type = e_prismaticJoint;
 		localAnchorA.SetZero();
 		localAnchorB.SetZero();
-		localAxisA.Set(1.0f, 0.0f);
+		localAxisA.Set( 1.0f, 0.0f );
 		referenceAngle = 0.0f;
 		enableLimit = false;
 		lowerTranslation = 0.0f;
@@ -46,7 +45,7 @@ struct b2PrismaticJointDef : public b2JointDef
 
 	/// Initialize the bodies, anchors, axis, and reference angle using the world
 	/// anchor and unit world axis.
-	void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor, const b2Vec2& axis);
+	void Initialize( b2Body *bodyA, b2Body *bodyB, const b2Vec2 &anchor, const b2Vec2 &axis );
 
 	/// The local anchor point relative to bodyA's origin.
 	b2Vec2 localAnchorA;
@@ -83,27 +82,22 @@ struct b2PrismaticJointDef : public b2JointDef
 /// along an axis fixed in bodyA. Relative rotation is prevented. You can
 /// use a joint limit to restrict the range of motion and a joint motor to
 /// drive the motion or to model joint friction.
-class b2PrismaticJoint : public b2Joint
-{
-public:
+class b2PrismaticJoint : public b2Joint {
+  public:
 	b2Vec2 GetAnchorA() const;
 	b2Vec2 GetAnchorB() const;
 
-	b2Vec2 GetReactionForce(float32 inv_dt) const;
-	float32 GetReactionTorque(float32 inv_dt) const;
+	b2Vec2 GetReactionForce( float32 inv_dt ) const;
+	float32 GetReactionTorque( float32 inv_dt ) const;
 
 	/// The local anchor point relative to bodyA's origin.
-	const b2Vec2& GetLocalAnchorA() const { return m_localAnchorA; }
-
+	const b2Vec2 &GetLocalAnchorA() const { return m_localAnchorA; }
 	/// The local anchor point relative to bodyB's origin.
-	const b2Vec2& GetLocalAnchorB() const  { return m_localAnchorB; }
-
+	const b2Vec2 &GetLocalAnchorB() const { return m_localAnchorB; }
 	/// The local joint axis relative to bodyA.
-	const b2Vec2& GetLocalAxisA() const { return m_localXAxisA; }
-
+	const b2Vec2 &GetLocalAxisA() const { return m_localXAxisA; }
 	/// Get the reference angle.
 	float32 GetReferenceAngle() const { return m_referenceAngle; }
-
 	/// Get the current joint translation, usually in meters.
 	float32 GetJointTranslation() const;
 
@@ -114,7 +108,7 @@ public:
 	bool IsLimitEnabled() const;
 
 	/// Enable/disable the joint limit.
-	void EnableLimit(bool flag);
+	void EnableLimit( bool flag );
 
 	/// Get the lower joint limit, usually in meters.
 	float32 GetLowerLimit() const;
@@ -123,65 +117,64 @@ public:
 	float32 GetUpperLimit() const;
 
 	/// Set the joint limits, usually in meters.
-	void SetLimits(float32 lower, float32 upper);
+	void SetLimits( float32 lower, float32 upper );
 
 	/// Is the joint motor enabled?
 	bool IsMotorEnabled() const;
 
 	/// Enable/disable the joint motor.
-	void EnableMotor(bool flag);
+	void EnableMotor( bool flag );
 
 	/// Set the motor speed, usually in meters per second.
-	void SetMotorSpeed(float32 speed);
+	void SetMotorSpeed( float32 speed );
 
 	/// Get the motor speed, usually in meters per second.
 	float32 GetMotorSpeed() const;
 
 	/// Set the maximum motor force, usually in N.
-	void SetMaxMotorForce(float32 force);
+	void SetMaxMotorForce( float32 force );
 	float32 GetMaxMotorForce() const { return m_maxMotorForce; }
-
 	/// Get the current motor force given the inverse time step, usually in N.
-	float32 GetMotorForce(float32 inv_dt) const;
+	float32 GetMotorForce( float32 inv_dt ) const;
 
 	/// Dump to b2Log
 	void Dump();
 
-protected:
+  protected:
 	friend class b2Joint;
 	friend class b2GearJoint;
-	b2PrismaticJoint(const b2PrismaticJointDef* def);
+	b2PrismaticJoint( const b2PrismaticJointDef *def );
 
-	void InitVelocityConstraints(const b2SolverData& data);
-	void SolveVelocityConstraints(const b2SolverData& data);
-	bool SolvePositionConstraints(const b2SolverData& data);
+	void InitVelocityConstraints( const b2SolverData &data );
+	void SolveVelocityConstraints( const b2SolverData &data );
+	bool SolvePositionConstraints( const b2SolverData &data );
 
 	// Solver shared
-	b2Vec2 m_localAnchorA;
-	b2Vec2 m_localAnchorB;
-	b2Vec2 m_localXAxisA;
-	b2Vec2 m_localYAxisA;
-	float32 m_referenceAngle;
-	b2Vec3 m_impulse;
-	float32 m_motorImpulse;
-	float32 m_lowerTranslation;
-	float32 m_upperTranslation;
-	float32 m_maxMotorForce;
-	float32 m_motorSpeed;
-	bool m_enableLimit;
-	bool m_enableMotor;
+	b2Vec2       m_localAnchorA;
+	b2Vec2       m_localAnchorB;
+	b2Vec2       m_localXAxisA;
+	b2Vec2       m_localYAxisA;
+	float32      m_referenceAngle;
+	b2Vec3       m_impulse;
+	float32      m_motorImpulse;
+	float32      m_lowerTranslation;
+	float32      m_upperTranslation;
+	float32      m_maxMotorForce;
+	float32      m_motorSpeed;
+	bool         m_enableLimit;
+	bool         m_enableMotor;
 	b2LimitState m_limitState;
 
 	// Solver temp
-	int32 m_indexA;
-	int32 m_indexB;
-	b2Vec2 m_localCenterA;
-	b2Vec2 m_localCenterB;
+	int32   m_indexA;
+	int32   m_indexB;
+	b2Vec2  m_localCenterA;
+	b2Vec2  m_localCenterB;
 	float32 m_invMassA;
 	float32 m_invMassB;
 	float32 m_invIA;
 	float32 m_invIB;
-	b2Vec2 m_axis, m_perp;
+	b2Vec2  m_axis, m_perp;
 	float32 m_s1, m_s2;
 	float32 m_a1, m_a2;
 	b2Mat33 m_K;

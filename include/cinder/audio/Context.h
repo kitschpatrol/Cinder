@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "cinder/audio/Node.h"
 #include "cinder/audio/InputNode.h"
+#include "cinder/audio/Node.h"
 #include "cinder/audio/OutputNode.h"
 
 #include <list>
@@ -32,7 +32,8 @@
 #include <set>
 #include <thread>
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 class DeviceManager;
 
@@ -48,28 +49,28 @@ class Context : public std::enable_shared_from_this<Context> {
 	virtual ~Context();
 
 	//! Returns the master \a Context that manages hardware I/O and real-time processing, which is platform specific. If none is available, returns \a null.
-	static Context*				master();
+	static Context *master();
 	//! Returns the platform-specific \a DeviceManager singleton instance, which is platform specific. If none is available, returns \a null.
-	static DeviceManager*		deviceManager();
+	static DeviceManager *deviceManager();
 	//! Allows the user to set the master Context and DeviceManager, overriding the defaults.
-	static void					setMaster( Context *masterContext, DeviceManager *deviceManager );
+	static void setMaster( Context *masterContext, DeviceManager *deviceManager );
 
-	//! Creates and returns a platform-specific OutputDeviceNode, which delivers audio to the hardware output device specified by \a device. 
-	virtual OutputDeviceNodeRef		createOutputDeviceNode( const DeviceRef &device = Device::getDefaultOutput(), const Node::Format &format = Node::Format() ) = 0;
-	//! Creates and returns a platform-specific InputDeviceNode, which captures audio from the hardware input device specified by \a device. 
-	virtual InputDeviceNodeRef		createInputDeviceNode( const DeviceRef &device = Device::getDefaultInput(), const Node::Format &format = Node::Format() ) = 0;
+	//! Creates and returns a platform-specific OutputDeviceNode, which delivers audio to the hardware output device specified by \a device.
+	virtual OutputDeviceNodeRef createOutputDeviceNode( const DeviceRef &device = Device::getDefaultOutput(), const Node::Format &format = Node::Format() ) = 0;
+	//! Creates and returns a platform-specific InputDeviceNode, which captures audio from the hardware input device specified by \a device.
+	virtual InputDeviceNodeRef createInputDeviceNode( const DeviceRef &device = Device::getDefaultInput(), const Node::Format &format = Node::Format() ) = 0;
 
 	//! Interface for creating new Node's of type \a NodeT, which is owned by this Context. All Node's must be created using the Context.
-	template<typename NodeT>
-	std::shared_ptr<NodeT>		makeNode( NodeT *node );
+	template <typename NodeT>
+	std::shared_ptr<NodeT> makeNode( NodeT *node );
 	//! Interface for creating a new Node of type \a NodeT, which is owned by this Context. All Node's must be created using the Context.
-	template<typename NodeT, typename... Args>
-	std::shared_ptr<NodeT>		makeNode( Args&&... args );
+	template <typename NodeT, typename... Args>
+	std::shared_ptr<NodeT> makeNode( Args &&... args );
 
 	//! Sets the new output of this Context to \a output. You should do this before making any connections because when Node's are initialized they use the format of the OutputNode to configure their buffers.
 	virtual void setOutput( const OutputNodeRef &output );
 	//! Returns the OutputNode for the Context (currently always an OutputDeviceNode that sends audio to your speakers). This can be thought of as the 'heartbeat', it is the one who initiates the pulling and processing of all other Node's in the audio graph. \a note If the output has not already been set, it is the default OutputDeviceNode
-	virtual const OutputNodeRef& getOutput();
+	virtual const OutputNodeRef &getOutput();
 
 	//! Enables audio processing. Effectively the same as calling getOutput()->enable()
 	virtual void enable();
@@ -78,21 +79,17 @@ class Context : public std::enable_shared_from_this<Context> {
 	//! start / stop audio processing via boolean
 	void setEnabled( bool enable );
 	//! Returns whether or not this \a Context is current enabled and processing audio.
-	bool isEnabled() const		{ return mEnabled; }
-
+	bool isEnabled() const { return mEnabled; }
 	//! Called by \a node when it's connections have changed, default implementation is empty.
-	virtual void connectionsDidChange( const NodeRef &node ) {} 
-
+	virtual void connectionsDidChange( const NodeRef &node ) {}
 	//! Returns the samplerate of this Context, which is governed by the current OutputNode.
-	size_t		getSampleRate()				{ return getOutput()->getOutputSampleRate(); }
+	size_t getSampleRate() { return getOutput()->getOutputSampleRate(); }
 	//! Returns the number of frames processed in one block by this Node, which is governed by the current OutputNode.
-	size_t		getFramesPerBlock()			{ return getOutput()->getOutputFramesPerBlock(); }
-
+	size_t getFramesPerBlock() { return getOutput()->getOutputFramesPerBlock(); }
 	//! Returns the total number of frames that have been processed in the dsp loop.
-	uint64_t	getNumProcessedFrames() const		{ return mNumProcessedFrames; }
+	uint64_t getNumProcessedFrames() const { return mNumProcessedFrames; }
 	//! Returns the total number of seconds that have been processed in the dsp loop.
-	double		getNumProcessedSeconds()			{ return (double)getNumProcessedFrames() / (double)getSampleRate(); }
-
+	double getNumProcessedSeconds() { return (double)getNumProcessedFrames() / (double)getSampleRate(); }
 	//! Initializes \a node, ensuring that Node::initialze() gets called and that its internal buffers are ready for processing. Useful for initializing a heavy Node at an opportune time so as to not cause audio drop-outs or UI snags.
 	void initializeNode( const NodeRef &node );
 	//! Un-initializes \a node, ensuring that Node::uninitialze() gets called.
@@ -112,10 +109,10 @@ class Context : public std::enable_shared_from_this<Context> {
 	void removeAutoPulledNode( const NodeRef &node );
 
 	//! Schedule \a node to be enabled or disabled with with \a func on the audio thread, to be called at \a when seconds measured against getNumProcessedSeconds(). \a node is owned until the scheduled event completes.
-	void schedule( double when, const NodeRef &node, bool enable, const std::function<void ()> &func );
+	void schedule( double when, const NodeRef &node, bool enable, const std::function<void()> &func );
 
 	//! Returns the mutex used to synchronize the audio thread. This is also used internally by the Node class when making connections.
-	std::mutex& getMutex() const			{ return mMutex; }
+	std::mutex &getMutex() const { return mMutex; }
 	//! Returns true if the current thread is the thread used for audio processing, false otherwise.
 	bool isAudioThread() const;
 
@@ -132,48 +129,49 @@ class Context : public std::enable_shared_from_this<Context> {
 
   private:
 	struct ScheduledEvent {
-		ScheduledEvent( uint64_t eventFrameThreshold, const NodeRef &node, bool enable, const std::function<void ()> &fn )
-			: mEventFrameThreshold( eventFrameThreshold ), mNode( node ), mEnable( enable ), mFunc( fn ), mFinished( false )
-		{}
+		ScheduledEvent( uint64_t eventFrameThreshold, const NodeRef &node, bool enable, const std::function<void()> &fn )
+		    : mEventFrameThreshold( eventFrameThreshold ), mNode( node ), mEnable( enable ), mFunc( fn ), mFinished( false )
+		{
+		}
 
-		uint64_t				mEventFrameThreshold;
-		NodeRef					mNode;
-		bool					mEnable;
-		bool					mFinished;
-		std::function<void ()>	mFunc;
+		uint64_t              mEventFrameThreshold;
+		NodeRef               mNode;
+		bool                  mEnable;
+		bool                  mFinished;
+		std::function<void()> mFunc;
 	};
 
-	void	disconnectRecursive( const NodeRef &node, std::set<NodeRef> &traversedNodes );
-	void	initRecursisve( const NodeRef &node, std::set<NodeRef> &traversedNodes  );
-	void	uninitRecursive( const NodeRef &node, std::set<NodeRef> &traversedNodes  );
-	const	std::vector<Node *>& getAutoPulledNodes(); // called if there are any nodes besides output that need to be pulled
-	void	processAutoPulledNodes();
-	void	preProcessScheduledEvents();
-	void	postProcessScheduledEvents();
-	void	incrementFrameCount();
+	void disconnectRecursive( const NodeRef &node, std::set<NodeRef> &traversedNodes );
+	void initRecursisve( const NodeRef &node, std::set<NodeRef> &traversedNodes );
+	void uninitRecursive( const NodeRef &node, std::set<NodeRef> &traversedNodes );
+	const std::vector<Node *> &getAutoPulledNodes(); // called if there are any nodes besides output that need to be pulled
+	void                       processAutoPulledNodes();
+	void                       preProcessScheduledEvents();
+	void                       postProcessScheduledEvents();
+	void                       incrementFrameCount();
 
 	static void registerClearStatics();
 
-	bool						mEnabled;
-	std::atomic<uint64_t>		mNumProcessedFrames;
-	OutputNodeRef				mOutput;
-	std::list<ScheduledEvent>	mScheduledEvents;
+	bool                      mEnabled;
+	std::atomic<uint64_t>     mNumProcessedFrames;
+	OutputNodeRef             mOutput;
+	std::list<ScheduledEvent> mScheduledEvents;
 
 	// other nodes that don't have any outputs and need to be explictly pulled
-	std::set<NodeRef>		mAutoPulledNodes;
-	std::vector<Node *>		mAutoPullCache;
-	bool					mAutoPullRequired, mAutoPullCacheDirty;
-	BufferDynamic			mAutoPullBuffer;
+	std::set<NodeRef>   mAutoPulledNodes;
+	std::vector<Node *> mAutoPullCache;
+	bool                mAutoPullRequired, mAutoPullCacheDirty;
+	BufferDynamic       mAutoPullBuffer;
 
-	mutable std::mutex		mMutex;
-	std::thread::id			mAudioThreadId;
+	mutable std::mutex mMutex;
+	std::thread::id    mAudioThreadId;
 
 	// - Context is stored in Node classes as a weak_ptr, so it needs to (for now) be created as a shared_ptr
-	static std::shared_ptr<Context>			sMasterContext;
-	static std::unique_ptr<DeviceManager>	sDeviceManager; // TODO: consider turning DeviceManager into a HardwareContext class
+	static std::shared_ptr<Context>       sMasterContext;
+	static std::unique_ptr<DeviceManager> sDeviceManager; // TODO: consider turning DeviceManager into a HardwareContext class
 };
 
-template<typename NodeT>
+template <typename NodeT>
 std::shared_ptr<NodeT> Context::makeNode( NodeT *node )
 {
 	static_assert( std::is_base_of<Node, NodeT>::value, "NodeT must inherit from audio::Node" );
@@ -183,8 +181,8 @@ std::shared_ptr<NodeT> Context::makeNode( NodeT *node )
 	return result;
 }
 
-template<typename NodeT, typename... Args>
-std::shared_ptr<NodeT> Context::makeNode( Args&&... args )
+template <typename NodeT, typename... Args>
+std::shared_ptr<NodeT> Context::makeNode( Args &&... args )
 {
 	static_assert( std::is_base_of<Node, NodeT>::value, "NodeT must inherit from audio::Node" );
 
@@ -194,8 +192,10 @@ std::shared_ptr<NodeT> Context::makeNode( Args&&... args )
 }
 
 //! Returns the master \a Context that manages hardware I/O and real-time processing, which is platform specific. If none is available, returns \a null.
-inline Context* master()	{ return Context::master(); }
-
+inline Context *master()
+{
+	return Context::master();
+}
 
 //! RAII-style utility class to set a \a Context's enabled state and have it restored at the end of the current scope block.
 struct ScopedEnableContext {
@@ -204,9 +204,10 @@ struct ScopedEnableContext {
 	//! Constructs an object that will set \a context's enabled state to \a enable and restore it to the original state at the end of the current scope.
 	ScopedEnableContext( Context *context, bool enable );
 	~ScopedEnableContext();
-private:
-	Context*	mContext;
-	bool		mWasEnabled;
-};
 
-} } // namespace cinder::audio
+  private:
+	Context *mContext;
+	bool     mWasEnabled;
+};
+}
+} // namespace cinder::audio

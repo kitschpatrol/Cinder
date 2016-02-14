@@ -4,9 +4,9 @@
  */
 
 #include "cinder/app/App.h"
-#include "cinder/gl/gl.h"
-#include "cinder/Rand.h"
 #include "Item.h"
+#include "cinder/Rand.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace std;
@@ -15,7 +15,7 @@ Font Item::sSmallFont;
 Font Item::sBigFont;
 
 Item::Item( int index, vec2 pos, const string &title, const string &desc, Surface palette )
-	: mIndex(index), mTitle( title ), mDesc( desc ), mPalette(palette)
+    : mIndex( index ), mTitle( title ), mDesc( desc ), mPalette( palette )
 {
 	// TODO: can you reuse layouts? If so, how do you clear the text?
 	// textures
@@ -25,44 +25,44 @@ Item::Item( int index, vec2 pos, const string &title, const string &desc, Surfac
 	layout.setColor( Color::white() );
 	layout.addLine( mTitle );
 	mTitleTex = gl::Texture::create( layout.render( true ) );
-	
+
 	TextLayout bigLayout;
 	bigLayout.clear( ColorA( 1, 1, 1, 0 ) );
 	bigLayout.setFont( sBigFont );
 	bigLayout.setColor( Color::white() );
 	bigLayout.addLine( mTitle );
 	mTitleBigTex = gl::Texture::create( bigLayout.render( true ) );
-	
+
 	// title
-	mTitleStart		= pos;
-	mTitleDest1		= vec2( pos.x - 25.0f, pos.y );
-	mTitleFinish	= vec2( pos.x - 4.0f, 120.0f );
-	mTitleDest2		= vec2( mTitleFinish.x - 25.0f, mTitleFinish.y );
-	mMouseOverDest	= mTitleStart + vec2( 7.0f, 0.0f );
-	mTitlePos		= mTitleStart;
-	mTitleColor		= Color( 0.7f, 0.7f, 0.7f );
-	mTitleAlpha		= 1.0f;
-	mTitleWidth		= mTitleTex->getWidth();
-	mTitleHeight	= mTitleTex->getHeight();
-	
+	mTitleStart = pos;
+	mTitleDest1 = vec2( pos.x - 25.0f, pos.y );
+	mTitleFinish = vec2( pos.x - 4.0f, 120.0f );
+	mTitleDest2 = vec2( mTitleFinish.x - 25.0f, mTitleFinish.y );
+	mMouseOverDest = mTitleStart + vec2( 7.0f, 0.0f );
+	mTitlePos = mTitleStart;
+	mTitleColor = Color( 0.7f, 0.7f, 0.7f );
+	mTitleAlpha = 1.0f;
+	mTitleWidth = mTitleTex->getWidth();
+	mTitleHeight = mTitleTex->getHeight();
+
 	// desc
-	mDescStart		= vec2( mTitleStart.x + 25.0f, mTitleFinish.y + mTitleBigTex->getHeight() + 5.0f );
-	mDescDest		= vec2( mTitleStart.x + 35.0f, mDescStart.y );
-	mDescPos		= mDescStart;
-	mDescAlpha		= 0.0f;
-	TextBox tbox	= TextBox().alignment( TextBox::LEFT ).font( sSmallFont ).size( ivec2( 650.0f, TextBox::GROW ) ).text( mDesc );
-	mDescTex		= gl::Texture::create( tbox.render() );
-	
+	mDescStart = vec2( mTitleStart.x + 25.0f, mTitleFinish.y + mTitleBigTex->getHeight() + 5.0f );
+	mDescDest = vec2( mTitleStart.x + 35.0f, mDescStart.y );
+	mDescPos = mDescStart;
+	mDescAlpha = 0.0f;
+	TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( sSmallFont ).size( ivec2( 650.0f, TextBox::GROW ) ).text( mDesc );
+	mDescTex = gl::Texture::create( tbox.render() );
+
 	// bar
-	mBarPos			= pos - vec2( 4.0f, 1.0f );
-	mBarWidth		= 0.0f;
-	mBarHeight		= mTitleHeight + 2.0f;
-	mMaxBarWidth	= mTitleWidth + 22.0f;
-	mBarColor		= Color::white();
-	mBarAlpha		= 0.3f;
-	
-	mFadeFloat		= 1.0f;
-	mIsSelected		= false;
+	mBarPos = pos - vec2( 4.0f, 1.0f );
+	mBarWidth = 0.0f;
+	mBarHeight = mTitleHeight + 2.0f;
+	mMaxBarWidth = mTitleWidth + 22.0f;
+	mBarColor = Color::white();
+	mBarAlpha = 0.3f;
+
+	mFadeFloat = 1.0f;
+	mIsSelected = false;
 	mIsBeingSelected = false;
 
 	setColors();
@@ -73,10 +73,10 @@ void Item::setColors()
 	Surface::Iter iter = mPalette.getIter();
 	while( iter.line() ) {
 		while( iter.pixel() ) {
-			int index = iter.x();
-			Color col( iter.r()/255.0f, iter.g()/255.0f, iter.b()/255.0f );
-			vec2 pos = vec2( index%4, floor(index/4.0f) ) * 5.0f - vec2( 12.0f, 8.0f );
-			Rectf rect( -2.0f, -2.0f, 2.0f, 2.0f );
+			int    index = iter.x();
+			Color  col( iter.r() / 255.0f, iter.g() / 255.0f, iter.b() / 255.0f );
+			vec2   pos = vec2( index % 4, floor( index / 4.0f ) ) * 5.0f - vec2( 12.0f, 8.0f );
+			Rectf  rect( -2.0f, -2.0f, 2.0f, 2.0f );
 			Swatch swatch( col, mTitleStart + pos + vec2( -10.0f, 10.0f ), rect );
 			mSwatches.push_back( swatch );
 		}
@@ -90,13 +90,13 @@ bool Item::isPointIn( const vec2 &pt ) const
 
 void Item::mouseOver( Timeline &timeline )
 {
-	if( !mIsBeingSelected ){
+	if( !mIsBeingSelected ) {
 		float dur = 0.2f;
-		
+
 		// title
 		timeline.apply( &mTitlePos, mMouseOverDest, dur, EaseOutAtan( 10 ) );
 		timeline.apply( &mTitleColor, Color( 1, 1, 1 ), 0.05f, EaseOutAtan( 10 ) );
-		
+
 		// bar
 		timeline.apply( &mBarColor, Color( 0, 0, 0 ), dur, EaseOutAtan( 10 ) );
 		timeline.apply( &mBarAlpha, 0.4f, dur, EaseOutAtan( 10 ) );
@@ -110,13 +110,13 @@ void Item::mouseOver( Timeline &timeline )
 
 void Item::mouseOff( Timeline &timeline )
 {
-	if( !mIsBeingSelected ){
+	if( !mIsBeingSelected ) {
 		float dur = 0.4f;
-		
+
 		// title
 		timeline.apply( &mTitlePos, mTitleStart, dur, EaseOutBounce( 1.0f ) );
 		timeline.apply( &mTitleColor, Color( 0.7f, 0.7f, 0.7f ), 0.05f, EaseOutAtan( 10 ) );
-		
+
 		// bar
 		timeline.apply( &mBarColor, Color( 0, 0, 0 ), 0.2f, EaseOutAtan( 10 ) );
 		timeline.apply( &mBarAlpha, 0.0f, 0.2f, EaseOutAtan( 10 ) );
@@ -130,14 +130,14 @@ void Item::mouseOff( Timeline &timeline )
 
 void Item::select( Timeline &timeline, float leftBorder )
 {
-	if( !mIsSelected ){
+	if( !mIsSelected ) {
 		mIsBeingSelected = true;
-		
+
 		mFadeFloat = 0.0f;
-		
+
 		float dur1 = 0.2f;
 		float dur2 = 0.2f;
-		
+
 		// title position
 		// set selected after initial animation
 		timeline.apply( &mTitlePos, mTitleDest1, dur1, EaseInAtan( 10 ) ).finishFn( bind( &Item::setSelected, this ) );
@@ -148,17 +148,17 @@ void Item::select( Timeline &timeline, float leftBorder )
 		// title alpha
 		timeline.apply( &mTitleAlpha, 0.0f, dur1, EaseInAtan( 10 ) );
 		timeline.appendTo( &mTitleAlpha, 1.0f, dur2, EaseOutAtan( 10 ) );
-		
+
 		// desc position
 		timeline.apply( &mDescPos, mDescDest, dur2, EaseOutAtan( 10 ) ).timelineEnd( -dur1 );
 		// desc alpha
-		timeline.apply( &mDescAlpha, 1.0f, dur2, EaseOutQuad() ).timelineEnd( -dur1*0.5f );
-		
+		timeline.apply( &mDescAlpha, 1.0f, dur2, EaseOutQuad() ).timelineEnd( -dur1 * 0.5f );
+
 		// fadeFloat (used to adjust dropshadow offset)
 		timeline.apply( &mFadeFloat, 0.0f, dur1, EaseInAtan( 10 ) );
 		timeline.appendTo( &mFadeFloat, 0.0f, 0.25f, EaseNone() );
 		timeline.appendTo( &mFadeFloat, 1.0f, dur2, EaseOutQuad() );
-		
+
 		// bar width
 		timeline.apply( &mBarWidth, 0.0f, dur1, EaseInOutAtan( 10 ) );
 
@@ -171,50 +171,50 @@ void Item::select( Timeline &timeline, float leftBorder )
 void Item::deselect( Timeline &timeline )
 {
 	mIsBeingSelected = false;
-	
+
 	float dur1 = 0.2f;
 	float dur2 = 0.2f;
-	
+
 	// set title position
 	// set deselected after initial animation
 	timeline.apply( &mTitlePos, mTitleDest2, dur1, EaseInAtan( 10 ) ).finishFn( bind( &Item::setDeselected, this ) );
 	timeline.appendTo( &mTitlePos, mTitleDest1, 0.0001f, EaseNone() );
 	timeline.appendTo( &mTitlePos, mTitleStart, dur2, EaseOutElastic( 2.0f, 0.5f ) );
-	
+
 	// set title color
 	timeline.apply( &mTitleColor, Color( 1, 1, 1 ), dur1, EaseInAtan( 10 ) );
 	timeline.appendTo( &mTitleColor, Color( 0.7f, 0.7f, 0.7f ), 0.05f, EaseOutAtan( 10 ) );
-	
+
 	// set title alpha
 	timeline.apply( &mTitleAlpha, 0.0f, dur1, EaseInAtan( 10 ) );
 	timeline.appendTo( &mTitleAlpha, 1.0f, dur2, EaseOutAtan( 10 ) );
-	
+
 	// set desc position
 	timeline.apply( &mDescPos, mDescStart, dur1, EaseInAtan( 10 ) ).timelineEnd();
-	
+
 	// set desc alpha
 	timeline.apply( &mDescAlpha, 0.0f, dur1, EaseInQuad() ).timelineEnd( -dur1 );
-	
+
 	// set bar
 	timeline.apply( &mBarWidth, 0.0f, dur1, EaseInAtan( 10 ) );
 	mBarAlpha = 0.3f;
-	
+
 	mIsSelected = false;
-	
-	for( std::vector<Swatch>::iterator swatchIt = mSwatches.begin(); swatchIt != mSwatches.end(); ++swatchIt ){
+
+	for( std::vector<Swatch>::iterator swatchIt = mSwatches.begin(); swatchIt != mSwatches.end(); ++swatchIt ) {
 		swatchIt->assemble( timeline );
 	}
 }
 
 void Item::update()
 {
-	mTitleArea	= Area( mTitlePos().x - 50.0f, mTitlePos().y - 2.0f, mTitlePos().x + mTitleWidth + 50.0f, mTitlePos().y + mTitleHeight + 2.0f );
-	mBarRect	= Rectf( mBarPos.x, mBarPos.y, mBarPos.x + mBarWidth, mBarPos.y + mBarHeight );
+	mTitleArea = Area( mTitlePos().x - 50.0f, mTitlePos().y - 2.0f, mTitlePos().x + mTitleWidth + 50.0f, mTitlePos().y + mTitleHeight + 2.0f );
+	mBarRect = Rectf( mBarPos.x, mBarPos.y, mBarPos.x + mBarWidth, mBarPos.y + mBarHeight );
 }
 
 void Item::drawSwatches() const
-{	
-	for( std::vector<Swatch>::const_iterator swatchIt = mSwatches.begin(); swatchIt != mSwatches.end(); ++swatchIt ){
+{
+	for( std::vector<Swatch>::const_iterator swatchIt = mSwatches.begin(); swatchIt != mSwatches.end(); ++swatchIt ) {
 		swatchIt->draw();
 	}
 }
@@ -227,7 +227,7 @@ void Item::drawBgBar() const
 
 void Item::drawText() const
 {
-	if( isBelowTextThreshold() ){
+	if( isBelowTextThreshold() ) {
 		// title shadow
 		gl::color( ColorA( 0, 0, 0, mTitleAlpha() * 0.1f ) );
 		gl::draw( mTitleBigTex, mTitlePos() + mFadeFloat() * vec2( -3.5f, 3.5f ) );
@@ -235,11 +235,11 @@ void Item::drawText() const
 		gl::draw( mTitleBigTex, mTitlePos() + mFadeFloat() * vec2( -2.5f, 2.5f ) );
 		gl::color( ColorA( 0, 0, 0, mTitleAlpha() * 0.6f ) );
 		gl::draw( mTitleBigTex, mTitlePos() + mFadeFloat() * vec2( -1.0f, 1.0f ) );
-		
+
 		// title text
 		gl::color( ColorA( mTitleColor(), mTitleAlpha() ) );
 		gl::draw( mTitleBigTex, mTitlePos() );
-		
+
 		// desc shadow
 		gl::color( ColorA( 0, 0, 0, mDescAlpha() ) );
 		gl::draw( mDescTex, mDescPos() + vec2( -1.0f, 1.0f ) );
@@ -247,11 +247,12 @@ void Item::drawText() const
 		// desc text
 		gl::color( ColorA( 1, 1, 1, mDescAlpha() ) );
 		gl::draw( mDescTex, mDescPos() );
-	} else {
+	}
+	else {
 		// drop shadow
 		gl::color( ColorA( 0, 0, 0, mTitleAlpha() ) );
 		gl::draw( mTitleTex, mTitlePos() + vec2( -1.0f, 1.0f ) );
-		
+
 		// white text
 		gl::color( ColorA( mTitleColor(), mTitleAlpha() ) );
 		gl::draw( mTitleTex, mTitlePos() );
@@ -260,7 +261,7 @@ void Item::drawText() const
 
 bool Item::isBelowTextThreshold() const
 {
-	if( mTitlePos().y <= mTitleFinish.y + 1.0f ){
+	if( mTitlePos().y <= mTitleFinish.y + 1.0f ) {
 		return true;
 	}
 	return false;
@@ -268,6 +269,6 @@ bool Item::isBelowTextThreshold() const
 
 void Item::setFonts( const Font &smallFont, const Font &bigFont )
 {
-	sSmallFont	= smallFont;
-	sBigFont	= bigFont;
+	sSmallFont = smallFont;
+	sBigFont = bigFont;
 }

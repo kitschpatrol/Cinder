@@ -28,9 +28,6 @@
 #include <Menus.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,20 +40,18 @@ extern "C" {
 #pragma import on
 #endif
 
-typedef HIObjectRef                     HIToolbarRef;
-typedef HIObjectRef                     HIToolbarItemRef;
+typedef HIObjectRef HIToolbarRef;
+typedef HIObjectRef HIToolbarItemRef;
 /*----------------------------------------------------------------------------------*/
 /* Standard Toolbox-provided item identifiers                                       */
 /*----------------------------------------------------------------------------------*/
 
-#define kHIToolbarSeparatorIdentifier   CFSTR("com.apple.hitoolbox.toolbar.separator")
-#define kHIToolbarSpaceIdentifier       CFSTR("com.apple.hitoolbox.toolbar.space")
-#define kHIToolbarFlexibleSpaceIdentifier  CFSTR("com.apple.hitoolbox.toolbar.flexiblespace")
-#define kHIToolbarCustomizeIdentifier   CFSTR("com.apple.hitoolbox.toolbar.customize")
-#define kHIToolbarPrintItemIdentifier   CFSTR("com.apple.hitoolbox.toolbar.print")
-#define kHIToolbarFontsItemIdentifier   CFSTR("com.apple.hitoolbox.toolbar.fonts")
-
-
+#define kHIToolbarSeparatorIdentifier CFSTR( "com.apple.hitoolbox.toolbar.separator" )
+#define kHIToolbarSpaceIdentifier CFSTR( "com.apple.hitoolbox.toolbar.space" )
+#define kHIToolbarFlexibleSpaceIdentifier CFSTR( "com.apple.hitoolbox.toolbar.flexiblespace" )
+#define kHIToolbarCustomizeIdentifier CFSTR( "com.apple.hitoolbox.toolbar.customize" )
+#define kHIToolbarPrintItemIdentifier CFSTR( "com.apple.hitoolbox.toolbar.print" )
+#define kHIToolbarFontsItemIdentifier CFSTR( "com.apple.hitoolbox.toolbar.fonts" )
 
 /*
  *  Summary:
@@ -64,31 +59,31 @@ typedef HIObjectRef                     HIToolbarItemRef;
  */
 enum {
 
-  /*
+	/*
    * This indicates to use the default display mode. Currently, this is
    * defined as being both icon and label, but could change in the
    * future.
    */
-  kHIToolbarDisplayModeDefault  = 0,
+	kHIToolbarDisplayModeDefault = 0,
 
-  /*
+	/*
    * This indicates to display the image as well as the label of the
    * toolbar items.
    */
-  kHIToolbarDisplayModeIconAndLabel = 1,
+	kHIToolbarDisplayModeIconAndLabel = 1,
 
-  /*
+	/*
    * This indicates that only the image should be shown.
    */
-  kHIToolbarDisplayModeIconOnly = 2,
+	kHIToolbarDisplayModeIconOnly = 2,
 
-  /*
+	/*
    * This indicates that only the label should be shown.
    */
-  kHIToolbarDisplayModeLabelOnly = 3
+	kHIToolbarDisplayModeLabelOnly = 3
 };
 
-typedef UInt32                          HIToolbarDisplayMode;
+typedef UInt32 HIToolbarDisplayMode;
 
 /*
  *  Summary:
@@ -96,24 +91,24 @@ typedef UInt32                          HIToolbarDisplayMode;
  */
 enum {
 
-  /*
+	/*
    * This indicates to use the default display size. Currently, this is
    * defined as using 32 x 32 icons ("normal" size).
    */
-  kHIToolbarDisplaySizeDefault  = 0,
+	kHIToolbarDisplaySizeDefault = 0,
 
-  /*
+	/*
    * This size uses a larger text and icon size.
    */
-  kHIToolbarDisplaySizeNormal   = 1,
+	kHIToolbarDisplaySizeNormal = 1,
 
-  /*
+	/*
    * This size uses a smaller text and icon size.
    */
-  kHIToolbarDisplaySizeSmall    = 2
+	kHIToolbarDisplaySizeSmall = 2
 };
 
-typedef UInt32                          HIToolbarDisplaySize;
+typedef UInt32 HIToolbarDisplaySize;
 
 /*
  *  Summary:
@@ -121,30 +116,28 @@ typedef UInt32                          HIToolbarDisplaySize;
  */
 enum {
 
-  /*
+	/*
    * Pass this to indicate no attributes at all.
    */
-  kHIToolbarNoAttributes        = 0,
+	kHIToolbarNoAttributes = 0,
 
-  /*
+	/*
    * Pass this attribute to allow the toolbar to save its configuration
    * automatically to your application's preferences. You must make
    * sure to synchronize the prefs at some point to ensure it gets
    * written to disk. The toolbar will also read its config from the
    * prefs if this attribute is set.
    */
-  kHIToolbarAutoSavesConfig     = (1 << 0),
+	kHIToolbarAutoSavesConfig = ( 1 << 0 ),
 
-  /*
+	/*
    * This attribute indicates that the toolbar is configurable, i.e.
    * the user can drag items around and bring up the configuration
    * palette, etc.
    */
-  kHIToolbarIsConfigurable      = (1 << 1),
-  kHIToolbarValidAttrs          = kHIToolbarAutoSavesConfig | kHIToolbarIsConfigurable
+	kHIToolbarIsConfigurable = ( 1 << 1 ),
+	kHIToolbarValidAttrs = kHIToolbarAutoSavesConfig | kHIToolbarIsConfigurable
 };
-
-
 
 /*
  *  Summary:
@@ -152,29 +145,28 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * Sending this to a window with a toolbar will cause the
    * configuration sheet to appear. You can set a menu item's command
    * to this command ID and it will be handled and updated
    * automatically for you.
    */
-  kHICommandCustomizeToolbar    = FOUR_CHAR_CODE('tcfg'),
+	kHICommandCustomizeToolbar = FOUR_CHAR_CODE( 'tcfg' ),
 
-  /*
+	/*
    * This command causes a window's toolbar to be shown. You can set a
    * menu item's command to this ID and it will be handled and updated
    * automatically for you.
    */
-  kHICommandShowToolbar         = FOUR_CHAR_CODE('tbsh'),
+	kHICommandShowToolbar = FOUR_CHAR_CODE( 'tbsh' ),
 
-  /*
+	/*
    * This command causes a window's toolbar to be hidden. You can set a
    * menu item's command to this ID and it will be handled and updated
    * automatically for you.
    */
-  kHICommandHideToolbar         = FOUR_CHAR_CODE('tbhd')
+	kHICommandHideToolbar = FOUR_CHAR_CODE( 'tbhd' )
 };
-
 
 /*
     Parameter Information:
@@ -204,36 +196,35 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * This event is sent to the delegate to get a list of all of the
    * default item identifiers that should be created for a toolbar. You
    * are passed a mutable array to fill in with the identifiers.
    */
-  kEventToolbarGetDefaultIdentifiers = 1,
+	kEventToolbarGetDefaultIdentifiers = 1,
 
-  /*
+	/*
    * This event is sent to the delegate to get a list of all the items
    * which could possibly be added to the toolbar. This is sent out
    * when the configuration sheet is about to be displayed.You are
    * passed a mutable array to fill in with the identifiers.
    */
-  kEventToolbarGetAllowedIdentifiers = 2,
+	kEventToolbarGetAllowedIdentifiers = 2,
 
-  /*
+	/*
    * This event is sent to the delegate to when we need to create an
    * item from an identifier.
    */
-  kEventToolbarCreateItemWithIdentifier = 3,
+	kEventToolbarCreateItemWithIdentifier = 3,
 
-  /*
+	/*
    * This event is sent to the delegate to when we need to create an
    * item from a drag. This allows you to be able to drag items into a
    * toolbar that aren't normal toolbar items. You might use this to
    * allow your toolbar to accept file system items, for example.
    */
-  kEventToolbarCreateItemFromDrag = 4
+	kEventToolbarCreateItemFromDrag = 4
 };
-
 
 /*
  *  Summary:
@@ -241,35 +232,35 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * This event is sent to the item (itself) when the image changes.
    * Any interested parties can install handlers on the toolbar item to
    * receive notifications.
    */
-  kEventToolbarItemImageChanged = 1,
+	kEventToolbarItemImageChanged = 1,
 
-  /*
+	/*
    * This event is sent to the item (itself) when the label changes.
    * Any interested parties can install handlers on the toolbar item to
    * receive notifications.
    */
-  kEventToolbarItemLabelChanged = 2,
+	kEventToolbarItemLabelChanged = 2,
 
-  /*
+	/*
    * This event is sent to the item (itself) when the help text
    * changes. Any interested parties can install handlers on the
    * toolbar item to receive notifications.
    */
-  kEventToolbarItemHelpTextChanged = 3,
+	kEventToolbarItemHelpTextChanged = 3,
 
-  /*
+	/*
    * This event is sent to the item (itself) when the command ID
    * changes. Any interested parties can install handlers on the
    * toolbar item to receive notifications.
    */
-  kEventToolbarItemCommandIDChanged = 4,
+	kEventToolbarItemCommandIDChanged = 4,
 
-  /*
+	/*
    * This event is sent to the item (itself) when the toolbar is going
    * to write out the configuration information for the item. Any
    * custom items can listen for this event and add any extra
@@ -277,43 +268,42 @@ enum {
    * be reanimated later on from the same config data. Typically, you'd
    * not need to handle this event.
    */
-  kEventToolbarItemGetPersistentData = 5,
+	kEventToolbarItemGetPersistentData = 5,
 
-  /*
+	/*
    * This event is sent to the toolbar item when it is time to create a
    * view for it to display its contents. Implementors of custom
    * toolbar items can install a handler for this event to create their
    * own custom views for their items.
    */
-  kEventToolbarItemCreateCustomView = 6,
+	kEventToolbarItemCreateCustomView = 6,
 
-  /*
+	/*
    * This event is sent to the item (itself) when the enabled state
    * changes. Any interested parties can install handlers on the
    * toolbar item to receive notifications.
    */
-  kEventToolbarItemEnabledStateChanged = 7,
+	kEventToolbarItemEnabledStateChanged = 7,
 
-  /*
+	/*
    * This event is sent when a toolbar item is clicked. Subclasses of
    * toolbar items can choose to do special actions by overriding this
    * event. If this event is unhandled, the default action of sending a
    * command event will occur.
    */
-  kEventToolbarItemPerformAction = 8
+	kEventToolbarItemPerformAction = 8
 };
-
 
 /*
  *  Summary:
  *    Toolbar Item Attributes
  */
 enum {
-  kHIToolbarItemNoAttributes    = 0,
-  kHIToolbarItemAllowDuplicates = (1 << 0),
-  kHIToolbarItemCantBeRemoved   = (1 << 1),
+	kHIToolbarItemNoAttributes = 0,
+	kHIToolbarItemAllowDuplicates = ( 1 << 0 ),
+	kHIToolbarItemCantBeRemoved = ( 1 << 1 ),
 
-  /*
+	/*
    * This item cannot be moved at all by the user. It is anchored to
    * the left of the toolbar. It is important that there not be any
    * unanchored items to the left of this item, else dragging items
@@ -322,17 +312,17 @@ enum {
    * to do toolbars like the the one in the System Preferences app,
    * where the first couple of items are stuck in place.
    */
-  kHIToolbarItemAnchoredLeft    = (1 << 2),
-  kHIToolbarItemIsSeparator     = (1 << 3),
+	kHIToolbarItemAnchoredLeft = ( 1 << 2 ),
+	kHIToolbarItemIsSeparator = ( 1 << 3 ),
 
-  /*
+	/*
    * If this attribute bit is set, the command that gets sent out will
    * be directed at the user focus instead of at the window the toolbar
    * is attached to.
    */
-  kHIToolbarItemSendCmdToUserFocus = (1 << 4),
-  kHIToolbarItemValidAttrs      = kHIToolbarItemAllowDuplicates | kHIToolbarItemIsSeparator | kHIToolbarItemCantBeRemoved | kHIToolbarItemAnchoredLeft | kHIToolbarItemSendCmdToUserFocus,
-  kHIToolbarItemMutableAttrs    = kHIToolbarItemCantBeRemoved | kHIToolbarItemAnchoredLeft
+	kHIToolbarItemSendCmdToUserFocus = ( 1 << 4 ),
+	kHIToolbarItemValidAttrs = kHIToolbarItemAllowDuplicates | kHIToolbarItemIsSeparator | kHIToolbarItemCantBeRemoved | kHIToolbarItemAnchoredLeft | kHIToolbarItemSendCmdToUserFocus,
+	kHIToolbarItemMutableAttrs = kHIToolbarItemCantBeRemoved | kHIToolbarItemAnchoredLeft
 };
 
 /*======================================================================================*/
@@ -369,10 +359,9 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 HIToolbarCreate(
-  CFStringRef     inIdentifier,
-  OptionBits      inAttributes,
-  HIToolbarRef *  outToolbar);
-
+    CFStringRef   inIdentifier,
+    OptionBits    inAttributes,
+    HIToolbarRef *outToolbar );
 
 #define _HIToolbarGetAttributes HIToolbarGetAttributes
 /*
@@ -399,9 +388,8 @@ HIToolbarCreate(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarGetAttributes(
-  HIToolbarRef   inToolbar,
-  OptionBits *   outAttributes);
-
+    HIToolbarRef inToolbar,
+    OptionBits * outAttributes );
 
 #define _HIToolbarChangeAttributes HIToolbarChangeAttributes
 /*
@@ -431,10 +419,9 @@ HIToolbarGetAttributes(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarChangeAttributes(
-  HIToolbarRef   inToolbar,
-  OptionBits     inAttrsToSet,
-  OptionBits     inAttrsToClear);
-
+    HIToolbarRef inToolbar,
+    OptionBits   inAttrsToSet,
+    OptionBits   inAttrsToClear );
 
 #define _HIToolbarGetDisplayMode HIToolbarGetDisplayMode
 /*
@@ -461,9 +448,8 @@ HIToolbarChangeAttributes(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarGetDisplayMode(
-  HIToolbarRef            inToolbar,
-  HIToolbarDisplayMode *  outDisplayMode);
-
+    HIToolbarRef          inToolbar,
+    HIToolbarDisplayMode *outDisplayMode );
 
 #define _HIToolbarSetDisplayMode HIToolbarSetDisplayMode
 /*
@@ -490,9 +476,8 @@ HIToolbarGetDisplayMode(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarSetDisplayMode(
-  HIToolbarRef           inToolbar,
-  HIToolbarDisplayMode   inDisplayMode);
-
+    HIToolbarRef         inToolbar,
+    HIToolbarDisplayMode inDisplayMode );
 
 #define _HIToolbarGetDisplaySize HIToolbarGetDisplaySize
 /*
@@ -519,9 +504,8 @@ HIToolbarSetDisplayMode(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarGetDisplaySize(
-  HIToolbarRef            inToolbar,
-  HIToolbarDisplaySize *  outSize);
-
+    HIToolbarRef          inToolbar,
+    HIToolbarDisplaySize *outSize );
 
 #define _HIToolbarSetDisplaySize HIToolbarSetDisplaySize
 /*
@@ -548,9 +532,8 @@ HIToolbarGetDisplaySize(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarSetDisplaySize(
-  HIToolbarRef           inToolbar,
-  HIToolbarDisplaySize   inSize);
-
+    HIToolbarRef         inToolbar,
+    HIToolbarDisplaySize inSize );
 
 #define _HIToolbarCopyIdentifier HIToolbarCopyIdentifier
 /*
@@ -578,9 +561,8 @@ HIToolbarSetDisplaySize(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarCopyIdentifier(
-  HIToolbarRef   inToolbar,
-  CFStringRef *  outIdentifier);
-
+    HIToolbarRef inToolbar,
+    CFStringRef *outIdentifier );
 
 #define _HIToolbarCopyItems HIToolbarCopyItems
 /*
@@ -608,9 +590,8 @@ HIToolbarCopyIdentifier(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarCopyItems(
-  HIToolbarRef   inToolbar,
-  CFArrayRef *   outItems);
-
+    HIToolbarRef inToolbar,
+    CFArrayRef * outItems );
 
 /*
  *  HIToolbarCreateItemWithIdentifier()
@@ -647,12 +628,10 @@ HIToolbarCopyItems(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarCreateItemWithIdentifier(
-  HIToolbarRef        inToolbar,
-  CFStringRef         inIdentifier,
-  CFTypeRef           inConfigData,       /* can be NULL */
-  HIToolbarItemRef *  outItem);
-
-
+    HIToolbarRef      inToolbar,
+    CFStringRef       inIdentifier,
+    CFTypeRef         inConfigData, /* can be NULL */
+    HIToolbarItemRef *outItem );
 
 #define _HIToolbarInsertItemAtIndex HIToolbarInsertItemAtIndex
 /*
@@ -684,11 +663,9 @@ HIToolbarCreateItemWithIdentifier(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarInsertItemAtIndex(
-  HIToolbarRef       inToolbar,
-  HIToolbarItemRef   inItem,
-  CFIndex            inIndex);
-
-
+    HIToolbarRef     inToolbar,
+    HIToolbarItemRef inItem,
+    CFIndex          inIndex );
 
 #define _HIToolbarAppendItem HIToolbarAppendItem
 /*
@@ -716,9 +693,8 @@ HIToolbarInsertItemAtIndex(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarAppendItem(
-  HIToolbarRef       inToolbar,
-  HIToolbarItemRef   inItem);
-
+    HIToolbarRef     inToolbar,
+    HIToolbarItemRef inItem );
 
 #define _HIToolbarRemoveItemAtIndex HIToolbarRemoveItemAtIndex
 /*
@@ -745,9 +721,8 @@ HIToolbarAppendItem(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarRemoveItemAtIndex(
-  HIToolbarRef   inToolbar,
-  CFIndex        inIndex);
-
+    HIToolbarRef inToolbar,
+    CFIndex      inIndex );
 
 #define _HIToolbarSetDelegate HIToolbarSetDelegate
 /*
@@ -779,9 +754,8 @@ HIToolbarRemoveItemAtIndex(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarSetDelegate(
-  HIToolbarRef   inToolbar,
-  HIObjectRef    inDelegate);
-
+    HIToolbarRef inToolbar,
+    HIObjectRef  inDelegate );
 
 #define _HIToolbarGetDelegate HIToolbarGetDelegate
 /*
@@ -804,16 +778,14 @@ HIToolbarSetDelegate(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIObjectRef )
-HIToolbarGetDelegate(HIToolbarRef inToolbar);
-
+HIToolbarGetDelegate( HIToolbarRef inToolbar );
 
 /*==========================================================================*/
 /* HITOOLBARITEM                                                            */
 /*==========================================================================*/
 /* The HIObject class ID for the ToolbarItem class. */
 
-#define kHIToolbarItemClassID           CFSTR("com.apple.hitoolbaritem")
-
+#define kHIToolbarItemClassID CFSTR( "com.apple.hitoolbaritem" )
 
 /* Required construction parameters                                         */
 /*                                                                          */
@@ -822,7 +794,6 @@ HIToolbarGetDelegate(HIToolbarRef inToolbar);
 /*                                                                          */
 /*      kEventParamToolbarItemIdentifier            typeCFStringRef         */
 /*      kEventParamAttibutes                        typeUInt32              */
-
 
 #define _HIToolbarItemCreate HIToolbarItemCreate
 /*
@@ -855,10 +826,9 @@ HIToolbarGetDelegate(HIToolbarRef inToolbar);
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemCreate(
-  CFStringRef         inIdentifier,
-  OptionBits          inOptions,
-  HIToolbarItemRef *  outItem);
-
+    CFStringRef       inIdentifier,
+    OptionBits        inOptions,
+    HIToolbarItemRef *outItem );
 
 #define _HIToolbarItemCopyIdentifier HIToolbarItemCopyIdentifier
 /*
@@ -888,9 +858,8 @@ HIToolbarItemCreate(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemCopyIdentifier(
-  HIToolbarItemRef   inItem,
-  CFStringRef *      outIdentifier);
-
+    HIToolbarItemRef inItem,
+    CFStringRef *    outIdentifier );
 
 #define _HIToolbarItemGetAttributes HIToolbarItemGetAttributes
 /*
@@ -917,9 +886,8 @@ HIToolbarItemCopyIdentifier(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemGetAttributes(
-  HIToolbarItemRef   inItem,
-  OptionBits *       outAttributes);
-
+    HIToolbarItemRef inItem,
+    OptionBits *     outAttributes );
 
 #define _HIToolbarItemChangeAttributes HIToolbarItemChangeAttributes
 /*
@@ -953,10 +921,9 @@ HIToolbarItemGetAttributes(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemChangeAttributes(
-  HIToolbarItemRef   inItem,
-  OptionBits         inAttrsToSet,
-  OptionBits         inAttrsToClear);
-
+    HIToolbarItemRef inItem,
+    OptionBits       inAttrsToSet,
+    OptionBits       inAttrsToClear );
 
 #define _HIToolbarItemSetLabel HIToolbarItemSetLabel
 /*
@@ -985,9 +952,8 @@ HIToolbarItemChangeAttributes(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemSetLabel(
-  HIToolbarItemRef   inItem,
-  CFStringRef        inLabel);
-
+    HIToolbarItemRef inItem,
+    CFStringRef      inLabel );
 
 #define _HIToolbarItemCopyLabel HIToolbarItemCopyLabel
 /*
@@ -1015,9 +981,8 @@ HIToolbarItemSetLabel(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemCopyLabel(
-  HIToolbarItemRef   inItem,
-  CFStringRef *      outLabel);
-
+    HIToolbarItemRef inItem,
+    CFStringRef *    outLabel );
 
 #define _HIToolbarItemSetHelpText HIToolbarItemSetHelpText
 /*
@@ -1052,10 +1017,9 @@ HIToolbarItemCopyLabel(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemSetHelpText(
-  HIToolbarItemRef   inItem,
-  CFStringRef        inShortText,
-  CFStringRef        inLongText);       /* can be NULL */
-
+    HIToolbarItemRef inItem,
+    CFStringRef      inShortText,
+    CFStringRef      inLongText ); /* can be NULL */
 
 #define _HIToolbarItemCopyHelpText HIToolbarItemCopyHelpText
 /*
@@ -1093,10 +1057,9 @@ HIToolbarItemSetHelpText(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemCopyHelpText(
-  HIToolbarItemRef   inItem,
-  CFStringRef *      outShortText,       /* can be NULL */
-  CFStringRef *      outLongText);       /* can be NULL */
-
+    HIToolbarItemRef inItem,
+    CFStringRef *    outShortText, /* can be NULL */
+    CFStringRef *    outLongText ); /* can be NULL */
 
 #define _HIToolbarItemSetCommandID HIToolbarItemSetCommandID
 /*
@@ -1127,9 +1090,8 @@ HIToolbarItemCopyHelpText(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemSetCommandID(
-  HIToolbarItemRef   inItem,
-  MenuCommand        inCommandID);
-
+    HIToolbarItemRef inItem,
+    MenuCommand      inCommandID );
 
 #define _HIToolbarItemGetCommandID HIToolbarItemGetCommandID
 /*
@@ -1156,9 +1118,8 @@ HIToolbarItemSetCommandID(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemGetCommandID(
-  HIToolbarItemRef   inItem,
-  MenuCommand *      outCommandID);
-
+    HIToolbarItemRef inItem,
+    MenuCommand *    outCommandID );
 
 #define _HIToolbarItemSetIconRef HIToolbarItemSetIconRef
 /*
@@ -1187,9 +1148,8 @@ HIToolbarItemGetCommandID(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemSetIconRef(
-  HIToolbarItemRef   inItem,
-  IconRef            inIcon);
-
+    HIToolbarItemRef inItem,
+    IconRef          inIcon );
 
 #define _HIToolbarItemSetImage HIToolbarItemSetImage
 /*
@@ -1220,9 +1180,8 @@ HIToolbarItemSetIconRef(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemSetImage(
-  HIToolbarItemRef   inItem,
-  CGImageRef         inImage);
-
+    HIToolbarItemRef inItem,
+    CGImageRef       inImage );
 
 #define _HIToolbarItemCopyImage HIToolbarItemCopyImage
 /*
@@ -1251,9 +1210,8 @@ HIToolbarItemSetImage(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemCopyImage(
-  HIToolbarItemRef   inItem,
-  CGImageRef *       outImage);
-
+    HIToolbarItemRef inItem,
+    CGImageRef *     outImage );
 
 #define _HIToolbarItemSetMenu HIToolbarItemSetMenu
 /*
@@ -1287,9 +1245,8 @@ HIToolbarItemCopyImage(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemSetMenu(
-  HIToolbarItemRef   inItem,
-  MenuRef            inMenu);
-
+    HIToolbarItemRef inItem,
+    MenuRef          inMenu );
 
 #define _HIToolbarItemCopyMenu HIToolbarItemCopyMenu
 /*
@@ -1317,9 +1274,8 @@ HIToolbarItemSetMenu(
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemCopyMenu(
-  HIToolbarItemRef   inItem,
-  MenuRef *          outMenu);
-
+    HIToolbarItemRef inItem,
+    MenuRef *        outMenu );
 
 #define _HIToolbarItemGetToolbar HIToolbarItemGetToolbar
 /*
@@ -1343,8 +1299,7 @@ HIToolbarItemCopyMenu(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIToolbarRef )
-HIToolbarItemGetToolbar(HIToolbarItemRef inItem);
-
+HIToolbarItemGetToolbar( HIToolbarItemRef inItem );
 
 /*
  *  HIToolbarItemIsEnabled()
@@ -1366,8 +1321,7 @@ HIToolbarItemGetToolbar(HIToolbarItemRef inItem);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIToolbarItemIsEnabled(HIToolbarItemRef inItem);
-
+HIToolbarItemIsEnabled( HIToolbarItemRef inItem );
 
 /*
  *  HIToolbarItemSetEnabled()
@@ -1393,10 +1347,8 @@ HIToolbarItemIsEnabled(HIToolbarItemRef inItem);
  */
 EXTERN_API_C( OSStatus )
 HIToolbarItemSetEnabled(
-  HIToolbarItemRef   inItem,
-  Boolean            inEnabled);
-
-
+    HIToolbarItemRef inItem,
+    Boolean          inEnabled );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -1409,4 +1361,3 @@ HIToolbarItemSetEnabled(
 #endif
 
 #endif /* __HITOOLBAR__ */
-

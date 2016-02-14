@@ -6,22 +6,22 @@
  *
  */
 
-#if !defined(__COREVIDEO_CVPIXELFORMATDESCRIPTION_H__)
+#if !defined( __COREVIDEO_CVPIXELFORMATDESCRIPTION_H__ )
 #define __COREVIDEO_CVPIXELFORMATDESCRIPTION_H__
 
 #include <TargetConditionals.h>
 
 #if TARGET_OS_MAC
-#include <QuartzCore/CoreVideo.h>
-#include <CoreFoundation/CFDictionary.h>
 #include <CoreFoundation/CFArray.h>
+#include <CoreFoundation/CFDictionary.h>
+#include <QuartzCore/CoreVideo.h>
 #else
-#include <CoreVideo.h>
-#include <CFDictionary.h>
 #include <CFArray.h>
+#include <CFDictionary.h>
+#include <CoreVideo.h>
 #endif
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 extern "C" {
 #endif
 
@@ -40,7 +40,7 @@ CV_EXPORT const CFStringRef kCVPixelFormatCodecType AVAILABLE_MAC_OS_X_VERSION_1
 /* This is the equivalent Microsoft FourCC code for this pixel format */
 CV_EXPORT const CFStringRef kCVPixelFormatFourCC AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
-/* All buffers have one or more image planes.  Each plane may contain a single or an interleaved set of components */   
+/* All buffers have one or more image planes.  Each plane may contain a single or an interleaved set of components */
 /* For simplicity sake, pixel formats that are not planar may place the required format keys at the top
    level dictionary. */
 CV_EXPORT const CFStringRef kCVPixelFormatPlanes AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
@@ -94,11 +94,11 @@ CV_EXPORT const CFStringRef kCVPixelFormatOpenGLCompatibility AVAILABLE_MAC_OS_X
 
 /* This callback routine implements code to handle the functionality of CVPixelBufferFillExtendedPixels.  
    For custom pixel formats where you will never need to use that call, this is not required. */
-typedef Boolean (*CVFillExtendedPixelsCallBack)( CVPixelBufferRef pixelBuffer, void *refCon);
+typedef Boolean ( *CVFillExtendedPixelsCallBack )( CVPixelBufferRef pixelBuffer, void *refCon );
 typedef struct {
-    CFIndex version;
-    CVFillExtendedPixelsCallBack    fillCallBack;
-    void *refCon;
+	CFIndex                      version;
+	CVFillExtendedPixelsCallBack fillCallBack;
+	void *                       refCon;
 } CVFillExtendedPixelsCallBackData;
 
 #if TARGET_OS_MAC
@@ -107,48 +107,47 @@ CV_EXPORT const CFStringRef kCVPixelFormatFillExtendedPixelsCallback AVAILABLE_M
 #endif
 
 /* Create a description of a pixel format from a provided OSType */
-CV_EXPORT CFDictionaryRef CVPixelFormatDescriptionCreateWithPixelFormatType(CFAllocatorRef allocator, OSType pixelFormat) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+CV_EXPORT CFDictionaryRef CVPixelFormatDescriptionCreateWithPixelFormatType( CFAllocatorRef allocator, OSType pixelFormat ) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
 /* Get an array containing all known pixel format description dictionaries */
-CV_EXPORT CFArrayRef CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes(CFAllocatorRef allocator) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+CV_EXPORT CFArrayRef CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes( CFAllocatorRef allocator ) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
 /* Register a new pixel format with CoreVideo */
-CV_EXPORT void CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType(CFDictionaryRef description, OSType pixelFormat) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+CV_EXPORT void CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType( CFDictionaryRef description, OSType pixelFormat ) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
 #if TARGET_OS_WIN32
-#define kCVPixelFormatName				CFSTR("Name")
-#define kCVPixelFormatName422YpCbCr8			CFSTR("Component Y'CbCr 8-bit 4:2:2")
-#define kCVPixelFormatName422YpCbCr10			CFSTR("Component Y'CbCr 10-bit 4:2:2")
-#define kCVPixelFormatConstant				CFSTR("PixelFormat")
-#define kCVPixelFormatCodecType			CFSTR("CodecType")
-#define kCVPixelFormatFourCC				CFSTR("FourCC")
-#define kCVPixelFormatPlanes				CFSTR("Planes")        
-#define kCVPixelFormatComponents			CFSTR("ComponentLayout")
-#define kCVPixelFormatBlockWidth			CFSTR("BlockWidth")
-#define kCVPixelFormatBlockHeight			CFSTR("BlockHeight")
-#define kCVPixelFormatBlockHorizontalAlignment		CFSTR("BlockHorizontalAlignment")
-#define kCVPixelFormatBlockVerticalAlignment		CFSTR("BlockVerticalAlignment")
-#define kCVPixelFormatBitsPerBlock			CFSTR("BitsPerBlock")
-#define kCVPixelFormatHorizontalSubsampling		CFSTR("HorizontalSubsampling")
-#define kCVPixelFormatVerticalSubsampling		CFSTR("VerticalSubsampling")
-#define kCVPixelFormatOpenGLFormat			CFSTR("OpenGLFormat")
-#define kCVPixelFormatOpenGLType			CFSTR("OpenGLType")
-#define kCVPixelFormatOpenGLInternalFormat		CFSTR("OpenGLInternalFormat")
-#define kCVPixelFormatDirect3DFormat				CFSTR("D3DFormat")
-#define kCVPixelFormatDirect3DType				CFSTR("D3DType")
-#define kCVPixelFormatDirect3DInternalFormat			CFSTR("D3DInternalFormat")
-#define kCVPixelFormatQDCompatibility			CFSTR("QDCompatibility")
-#define kCVPixelFormatCGBitmapContextCompatibility	CFSTR("CGBitmapContextCompatibility")
-#define kCVPixelFormatCGImageCompatibility		CFSTR("CGImageCompatibility")
-#define kCVPixelFormatOpenGLCompatibility		CFSTR("OpenGLCompatibility")
-#define kCVPixelFormatDirect3DCompatibility			CFSTR("Direct3DCompatibility")
-#define kCVPixelFormatCGBitmapInfo			CFSTR("CGBitmapInfo")
-#define kCVPixelFormatFillExtendedPixelsCallback	CFSTR("FillExtendedPixelsCallback")
+#define kCVPixelFormatName CFSTR( "Name" )
+#define kCVPixelFormatName422YpCbCr8 CFSTR( "Component Y'CbCr 8-bit 4:2:2" )
+#define kCVPixelFormatName422YpCbCr10 CFSTR( "Component Y'CbCr 10-bit 4:2:2" )
+#define kCVPixelFormatConstant CFSTR( "PixelFormat" )
+#define kCVPixelFormatCodecType CFSTR( "CodecType" )
+#define kCVPixelFormatFourCC CFSTR( "FourCC" )
+#define kCVPixelFormatPlanes CFSTR( "Planes" )
+#define kCVPixelFormatComponents CFSTR( "ComponentLayout" )
+#define kCVPixelFormatBlockWidth CFSTR( "BlockWidth" )
+#define kCVPixelFormatBlockHeight CFSTR( "BlockHeight" )
+#define kCVPixelFormatBlockHorizontalAlignment CFSTR( "BlockHorizontalAlignment" )
+#define kCVPixelFormatBlockVerticalAlignment CFSTR( "BlockVerticalAlignment" )
+#define kCVPixelFormatBitsPerBlock CFSTR( "BitsPerBlock" )
+#define kCVPixelFormatHorizontalSubsampling CFSTR( "HorizontalSubsampling" )
+#define kCVPixelFormatVerticalSubsampling CFSTR( "VerticalSubsampling" )
+#define kCVPixelFormatOpenGLFormat CFSTR( "OpenGLFormat" )
+#define kCVPixelFormatOpenGLType CFSTR( "OpenGLType" )
+#define kCVPixelFormatOpenGLInternalFormat CFSTR( "OpenGLInternalFormat" )
+#define kCVPixelFormatDirect3DFormat CFSTR( "D3DFormat" )
+#define kCVPixelFormatDirect3DType CFSTR( "D3DType" )
+#define kCVPixelFormatDirect3DInternalFormat CFSTR( "D3DInternalFormat" )
+#define kCVPixelFormatQDCompatibility CFSTR( "QDCompatibility" )
+#define kCVPixelFormatCGBitmapContextCompatibility CFSTR( "CGBitmapContextCompatibility" )
+#define kCVPixelFormatCGImageCompatibility CFSTR( "CGImageCompatibility" )
+#define kCVPixelFormatOpenGLCompatibility CFSTR( "OpenGLCompatibility" )
+#define kCVPixelFormatDirect3DCompatibility CFSTR( "Direct3DCompatibility" )
+#define kCVPixelFormatCGBitmapInfo CFSTR( "CGBitmapInfo" )
+#define kCVPixelFormatFillExtendedPixelsCallback CFSTR( "FillExtendedPixelsCallback" )
 #endif
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 }
 #endif
 
 #endif
-

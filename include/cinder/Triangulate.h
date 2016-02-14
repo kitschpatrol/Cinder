@@ -23,10 +23,10 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/TriMesh.h"
+#include "cinder/Path2d.h"
 #include "cinder/PolyLine.h"
 #include "cinder/Shape2d.h"
-#include "cinder/Path2d.h"
+#include "cinder/TriMesh.h"
 
 struct TESStesselator;
 
@@ -35,7 +35,11 @@ namespace cinder {
 //! Converts an arbitrary Shape2d into a TriMesh2d
 class Triangulator {
   public:
-	typedef enum Winding { WINDING_ODD, WINDING_NONZERO, WINDING_POSITIVE, WINDING_NEGATIVE, WINDING_ABS_GEQ_TWO } Winding;
+	typedef enum Winding { WINDING_ODD,
+		WINDING_NONZERO,
+		WINDING_POSITIVE,
+		WINDING_NEGATIVE,
+		WINDING_ABS_GEQ_TWO } Winding;
 
 	//! Default constructor
 	Triangulator();
@@ -46,28 +50,28 @@ class Triangulator {
 	//! Constructs using a PolyLine2f.
 	Triangulator( const PolyLine2f &polyLine );
 
-	//! Adds a Shape2d to the tesselation. \a approximationScale represents how smooth the tesselation is, with 1.0 corresponding to 1:1 with screen space	
-	void		addShape( const Shape2d &path, float approximationScale = 1.0f );
-	//! Adds a Path2d to the tesselation. \a approximationScale represents how smooth the tesselation is, with 1.0 corresponding to 1:1 with screen space	
-	void		addPath( const Path2d &path, float approximationScale = 1.0f );
+	//! Adds a Shape2d to the tesselation. \a approximationScale represents how smooth the tesselation is, with 1.0 corresponding to 1:1 with screen space
+	void addShape( const Shape2d &path, float approximationScale = 1.0f );
+	//! Adds a Path2d to the tesselation. \a approximationScale represents how smooth the tesselation is, with 1.0 corresponding to 1:1 with screen space
+	void addPath( const Path2d &path, float approximationScale = 1.0f );
 	//! Adds a PolyLine2f to the tesselation.
-	void		addPolyLine( const PolyLine2f &polyLine );
+	void addPolyLine( const PolyLine2f &polyLine );
 	//! Adds a PolyLine defined as a series of vec2's
-	void		addPolyLine( const vec2 *points, size_t numPoints );
+	void addPolyLine( const vec2 *points, size_t numPoints );
 
 	//! Performs the tesselation, returning a TriMesh2d
-	TriMesh		calcMesh( Winding winding = WINDING_ODD );
+	TriMesh calcMesh( Winding winding = WINDING_ODD );
 	//! Performs the tesselation, returning a TriMesh2d
-	TriMeshRef	createMesh( Winding winding = WINDING_ODD );
-	
+	TriMeshRef createMesh( Winding winding = WINDING_ODD );
+
 	class Exception : public cinder::Exception {
 	};
-	
-  protected:	
-	void			allocate();
-	
-	int									mAllocated;
-	std::shared_ptr<TESStesselator>		mTess;
+
+  protected:
+	void allocate();
+
+	int                             mAllocated;
+	std::shared_ptr<TESStesselator> mTess;
 };
 
 } // namespace cinder

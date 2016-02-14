@@ -20,8 +20,6 @@
 #include <ConditionalMacros.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -35,14 +33,14 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-#if TARGET_RT_MAC_MACHO && defined(__MATH__)
+#if TARGET_RT_MAC_MACHO && defined( __MATH__ )
 /* these types were already defined in math.h */
 #else
 #if TARGET_OS_MAC
@@ -68,76 +66,75 @@ extern "C" {
 *                                                                               *
 ********************************************************************************/
 #if TARGET_CPU_PPC
-typedef long                            fenv_t;
-typedef long                            fexcept_t;
+typedef long fenv_t;
+typedef long fexcept_t;
 /*    Definitions of floating-point exception macros                          */
 enum {
-  FE_INEXACT                    = 0x02000000,
-  FE_DIVBYZERO                  = 0x04000000,
-  FE_UNDERFLOW                  = 0x08000000,
-  FE_OVERFLOW                   = 0x10000000,
-  FE_INVALID                    = 0x20000000,
-  FE_ALL_EXCEPT                 = 0x3E000000 /* FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID*/
+	FE_INEXACT = 0x02000000,
+	FE_DIVBYZERO = 0x04000000,
+	FE_UNDERFLOW = 0x08000000,
+	FE_OVERFLOW = 0x10000000,
+	FE_INVALID = 0x20000000,
+	FE_ALL_EXCEPT = 0x3E000000 /* FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID*/
 };
-
 
 /*    Definitions of rounding direction macros                                */
 enum {
-  FE_TONEAREST                  = 0x00000000,
-  FE_TOWARDZERO                 = 0x00000001,
-  FE_UPWARD                     = 0x00000002,
-  FE_DOWNWARD                   = 0x00000003
+	FE_TONEAREST = 0x00000000,
+	FE_TOWARDZERO = 0x00000001,
+	FE_UPWARD = 0x00000002,
+	FE_DOWNWARD = 0x00000003
 };
 
-#endif  /* TARGET_CPU_PPC */
+#endif /* TARGET_CPU_PPC */
 
 #if TARGET_CPU_68K
 #if TARGET_RT_MAC_68881
-typedef long                            fexcept_t;
+typedef long fexcept_t;
 struct fenv_t {
-  long                FPCR;
-  long                FPSR;
+	long FPCR;
+	long FPSR;
 };
-typedef struct fenv_t                   fenv_t;
+typedef struct fenv_t fenv_t;
 enum {
-  FE_INEXACT                    = 0x00000008, /* ((long)(8))   */
-  FE_DIVBYZERO                  = 0x00000010, /* ((long)(16))  */
-  FE_UNDERFLOW                  = 0x00000020, /* ((long)(32))  */
-  FE_OVERFLOW                   = 0x00000040, /* ((long)(64))  */
-  FE_INVALID                    = 0x00000080, /* ((long)(128)) */
-  FE_ALL_EXCEPT                 = 0x000000F8 /* FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID*/
+	FE_INEXACT = 0x00000008, /* ((long)(8))   */
+	FE_DIVBYZERO = 0x00000010, /* ((long)(16))  */
+	FE_UNDERFLOW = 0x00000020, /* ((long)(32))  */
+	FE_OVERFLOW = 0x00000040, /* ((long)(64))  */
+	FE_INVALID = 0x00000080, /* ((long)(128)) */
+	FE_ALL_EXCEPT = 0x000000F8 /* FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID*/
 };
 
 #else
 
-typedef short                           fexcept_t;
-typedef short                           fenv_t;
+typedef short fexcept_t;
+typedef short fenv_t;
 enum {
-  FE_INVALID                    = 0x0001, /* ((short)(1))  */
-  FE_UNDERFLOW                  = 0x0002, /* ((short)(2))  */
-  FE_OVERFLOW                   = 0x0004, /* ((short)(4))  */
-  FE_DIVBYZERO                  = 0x0008, /* ((short)(8))  */
-  FE_INEXACT                    = 0x0010, /* ((short)(16)) */
-  FE_ALL_EXCEPT                 = 0x001F /* FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID*/
+	FE_INVALID = 0x0001, /* ((short)(1))  */
+	FE_UNDERFLOW = 0x0002, /* ((short)(2))  */
+	FE_OVERFLOW = 0x0004, /* ((short)(4))  */
+	FE_DIVBYZERO = 0x0008, /* ((short)(8))  */
+	FE_INEXACT = 0x0010, /* ((short)(16)) */
+	FE_ALL_EXCEPT = 0x001F /* FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID*/
 };
 
-#endif  /* TARGET_RT_MAC_68881 */
+#endif /* TARGET_RT_MAC_68881 */
 
 enum {
-  FE_TONEAREST                  = 0x0000, /* ((short)(0))  */
-  FE_UPWARD                     = 0x0001, /* ((short)(1))  */
-  FE_DOWNWARD                   = 0x0002, /* ((short)(2))  */
-  FE_TOWARDZERO                 = 0x0003 /* ((short)(3))  */
+	FE_TONEAREST = 0x0000, /* ((short)(0))  */
+	FE_UPWARD = 0x0001, /* ((short)(1))  */
+	FE_DOWNWARD = 0x0002, /* ((short)(2))  */
+	FE_TOWARDZERO = 0x0003 /* ((short)(3))  */
 };
 
 /*    Definitions of rounding precision macros  (68K only)                    */
 enum {
-  FE_LDBLPREC                   = 0x0000, /* ((short)(0))  */
-  FE_DBLPREC                    = 0x0001, /* ((short)(1))  */
-  FE_FLTPREC                    = 0x0002 /* ((short)(2))  */
+	FE_LDBLPREC = 0x0000, /* ((short)(0))  */
+	FE_DBLPREC = 0x0001, /* ((short)(1))  */
+	FE_FLTPREC = 0x0002 /* ((short)(2))  */
 };
 
-#endif  /* TARGET_CPU_68K */
+#endif /* TARGET_CPU_68K */
 
 /* default environment object        */
 /*
@@ -149,7 +146,7 @@ enum {
  *    Mac OS X:         in version 10.1 and later
  */
 extern fenv_t _FE_DFL_ENV;
-#define FE_DFL_ENV &_FE_DFL_ENV          /* pointer to default environment    */
+#define FE_DFL_ENV &_FE_DFL_ENV /* pointer to default environment    */
 /*******************************************************************************
 *     The following functions provide access to the exception flags.  The      *
 *     "int" input argument can be constructed by bitwise ORs of the exception  *
@@ -167,10 +164,8 @@ extern fenv_t _FE_DFL_ENV;
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) feclearexcept(int excepts);
-
-
-
+EXTERN_API_C( void )
+feclearexcept( int excepts );
 
 /*******************************************************************************
 *    The function "fegetexcept" stores a representation of the exception       *
@@ -185,10 +180,8 @@ EXTERN_API_C( void ) feclearexcept(int excepts);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) fegetexcept(fexcept_t *flagp, int excepts);
-
-
-
+EXTERN_API_C( void )
+fegetexcept( fexcept_t *flagp, int excepts );
 
 /*******************************************************************************
 *     The function "feraiseexcept" raises the supported exceptions             *
@@ -202,10 +195,8 @@ EXTERN_API_C( void ) fegetexcept(fexcept_t *flagp, int excepts);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) feraiseexcept(int excepts);
-
-
-
+EXTERN_API_C( void )
+feraiseexcept( int excepts );
 
 /*******************************************************************************
 *     The function "fesetexcept" sets or clears the exception flags indicated  *
@@ -223,10 +214,8 @@ EXTERN_API_C( void ) feraiseexcept(int excepts);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) fesetexcept(const fexcept_t *flagp, int excepts);
-
-
-
+EXTERN_API_C( void )
+fesetexcept( const fexcept_t *flagp, int excepts );
 
 /*******************************************************************************
 *     The function "fetestexcept" determines which of the specified subset of  *
@@ -243,10 +232,8 @@ EXTERN_API_C( void ) fesetexcept(const fexcept_t *flagp, int excepts);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( int ) fetestexcept(int excepts);
-
-
-
+EXTERN_API_C( int )
+fetestexcept( int excepts );
 
 /*******************************************************************************
 *     The following functions provide control of rounding direction modes.     *
@@ -263,10 +250,8 @@ EXTERN_API_C( int ) fetestexcept(int excepts);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( int ) fegetround(void);
-
-
-
+EXTERN_API_C( int )
+fegetround( void );
 
 /*******************************************************************************
 *     The function "fesetround" establishes the rounding direction represented *
@@ -282,10 +267,8 @@ EXTERN_API_C( int ) fegetround(void);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( int ) fesetround(int round);
-
-
-
+EXTERN_API_C( int )
+fesetround( int round );
 
 /*******************************************************************************
 *    The following functions manage the floating-point environment, exception  *
@@ -303,10 +286,8 @@ EXTERN_API_C( int ) fesetround(int round);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) fegetenv(fenv_t * envp);
-
-
-
+EXTERN_API_C( void )
+fegetenv( fenv_t *envp );
 
 /*******************************************************************************
 *     The function "feholdexcept" saves the current environment in the object  *
@@ -323,10 +304,8 @@ EXTERN_API_C( void ) fegetenv(fenv_t * envp);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( int ) feholdexcept(fenv_t * envp);
-
-
-
+EXTERN_API_C( int )
+feholdexcept( fenv_t *envp );
 
 /*******************************************************************************
 *     The function "fesetenv" installs the floating-point environment          *
@@ -343,10 +322,8 @@ EXTERN_API_C( int ) feholdexcept(fenv_t * envp);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) fesetenv(const fenv_t * envp);
-
-
-
+EXTERN_API_C( void )
+fesetenv( const fenv_t *envp );
 
 /*******************************************************************************
 *     The function "feupdateenv" saves the current exceptions into its         *
@@ -364,10 +341,8 @@ EXTERN_API_C( void ) fesetenv(const fenv_t * envp);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) feupdateenv(const fenv_t * envp);
-
-
-
+EXTERN_API_C( void )
+feupdateenv( const fenv_t *envp );
 
 #if TARGET_CPU_68K
 /*******************************************************************************
@@ -386,8 +361,8 @@ EXTERN_API_C( void ) feupdateenv(const fenv_t * envp);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API_C( int ) fegetprec(void);
-
+EXTERN_API_C( int )
+fegetprec( void );
 
 /*
  *  fesetprec()
@@ -397,24 +372,23 @@ EXTERN_API_C( int ) fegetprec(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API_C( int ) fesetprec(int precision);
+EXTERN_API_C( int )
+fesetprec( int precision );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* TARGET_CPU_68K */
 
-#endif  /* TARGET_CPU_68K */
+#endif /* TARGET_OS_MAC */
 
-#endif  /* TARGET_OS_MAC */
-
-#endif  /* TARGET_RT_MAC_MACHO && defined(__MATH__) */
-
+#endif /* TARGET_RT_MAC_MACHO && defined(__MATH__) */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -428,4 +402,3 @@ EXTERN_API_C( int ) fesetprec(int precision);
 #endif
 
 #endif /* __FENV__ */
-

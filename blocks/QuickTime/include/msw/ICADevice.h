@@ -20,9 +20,6 @@
 #include <ICAApplication.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -36,11 +33,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /* 
@@ -52,52 +49,52 @@ extern "C" {
    e.g. (ICD_BuildObjectChildrenPB*), ...
    
 */
-typedef struct ICDHeader                ICDHeader;
-typedef CALLBACK_API_C( void , ICDCompletion )(ICDHeader * pb);
+typedef struct ICDHeader ICDHeader;
+typedef CALLBACK_API_C( void, ICDCompletion )( ICDHeader *pb );
 /* 
 --------------- ICDHeader --------------- 
 */
 struct ICDHeader {
-  OSErr               err;                    /* --> */
-  UInt32              refcon;                 /* <-- */
+	OSErr  err; /* --> */
+	UInt32 refcon; /* <-- */
 };
 
 /*
 --------------- Object parameter blocks ---------------
 */
 struct ICD_NewObjectPB {
-  ICDHeader           header;
+	ICDHeader header;
 
-  ICAObject           parentObject;           /* <-- */
-  ICAObjectInfo       objectInfo;             /* <-- */
+	ICAObject     parentObject; /* <-- */
+	ICAObjectInfo objectInfo; /* <-- */
 
-  ICAObject           object;                 /* --> */
+	ICAObject object; /* --> */
 };
-typedef struct ICD_NewObjectPB          ICD_NewObjectPB;
+typedef struct ICD_NewObjectPB ICD_NewObjectPB;
 struct ICD_DisposeObjectPB {
-  ICDHeader           header;
+	ICDHeader header;
 
-  ICAObject           object;                 /* <-- */
+	ICAObject object; /* <-- */
 };
-typedef struct ICD_DisposeObjectPB      ICD_DisposeObjectPB;
+typedef struct ICD_DisposeObjectPB ICD_DisposeObjectPB;
 /*
 --------------- Property parameter blocks ---------------
 */
 struct ICD_NewPropertyPB {
-  ICDHeader           header;
+	ICDHeader header;
 
-  ICAObject           object;                 /* <-- */
-  ICAPropertyInfo     propertyInfo;           /* <-- */
+	ICAObject       object; /* <-- */
+	ICAPropertyInfo propertyInfo; /* <-- */
 
-  ICAProperty         property;               /* --> */
+	ICAProperty property; /* --> */
 };
-typedef struct ICD_NewPropertyPB        ICD_NewPropertyPB;
+typedef struct ICD_NewPropertyPB ICD_NewPropertyPB;
 struct ICD_DisposePropertyPB {
-  ICDHeader           header;
+	ICDHeader header;
 
-  ICAProperty         property;               /* <-- */
+	ICAProperty property; /* <-- */
 };
-typedef struct ICD_DisposePropertyPB    ICD_DisposePropertyPB;
+typedef struct ICD_DisposePropertyPB ICD_DisposePropertyPB;
 /*
    
    NOTE: for all APIs - pass NULL as completion parameter to make a synchronous call 
@@ -117,9 +114,8 @@ typedef struct ICD_DisposePropertyPB    ICD_DisposePropertyPB;
  */
 EXTERN_API( OSErr )
 ICDNewObject(
-  ICD_NewObjectPB *  pb,
-  ICDCompletion      completion);      /* can be NULL */
-
+    ICD_NewObjectPB *pb,
+    ICDCompletion    completion ); /* can be NULL */
 
 /*
  *  ICDDisposeObject()
@@ -131,9 +127,8 @@ ICDNewObject(
  */
 EXTERN_API( OSErr )
 ICDDisposeObject(
-  ICD_DisposeObjectPB *  pb,
-  ICDCompletion          completion);      /* can be NULL */
-
+    ICD_DisposeObjectPB *pb,
+    ICDCompletion        completion ); /* can be NULL */
 
 /*
  *  ICDNewProperty()
@@ -145,9 +140,8 @@ ICDDisposeObject(
  */
 EXTERN_API( OSErr )
 ICDNewProperty(
-  ICD_NewPropertyPB *  pb,
-  ICDCompletion        completion);      /* can be NULL */
-
+    ICD_NewPropertyPB *pb,
+    ICDCompletion      completion ); /* can be NULL */
 
 /*
  *  ICDDisposeProperty()
@@ -159,21 +153,15 @@ ICDNewProperty(
  */
 EXTERN_API( OSErr )
 ICDDisposeProperty(
-  ICD_DisposePropertyPB *  pb,
-  ICDCompletion            completion);      /* can be NULL */
-
-
-
-
-
-
+    ICD_DisposePropertyPB *pb,
+    ICDCompletion          completion ); /* can be NULL */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -187,4 +175,3 @@ ICDDisposeProperty(
 #endif
 
 #endif /* __ICADEVICE__ */
-

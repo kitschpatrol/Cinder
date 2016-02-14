@@ -30,25 +30,20 @@
 namespace cinder {
 
 class AxisAlignedBox {
-public:
-	AxisAlignedBox() : mCenter( 0 ), mExtents( 0 ) {}
+  public:
+	AxisAlignedBox()
+	    : mCenter( 0 ), mExtents( 0 ) {}
 	AxisAlignedBox( const vec3 &min, const vec3 &max ) { set( min, max ); }
-
 	//! Returns the center of the axis-aligned box.
-	const vec3& getCenter() const { return mCenter; }
-
+	const vec3 &getCenter() const { return mCenter; }
 	//! Returns the extents of the axis-aligned box.
-	const vec3& getExtents() const { return mExtents; }
-
-	//! Returns the size of the axis-aligned box. 
+	const vec3 &getExtents() const { return mExtents; }
+	//! Returns the size of the axis-aligned box.
 	vec3 getSize() const { return 2.0f * mExtents; }
-
 	//! Returns the corner of the axis-aligned box with the smallest x, y and z coordinates.
 	vec3 getMin() const { return mCenter - mExtents; }
-
 	//! Returns the corner of the axis-aligned box with the largest x, y and z coordinates.
 	vec3 getMax() const { return mCenter + mExtents; }
-
 	//! Construct an axis-aligned box by specifying two opposite corners.
 	void set( const vec3 &min, const vec3 &max )
 	{
@@ -235,9 +230,9 @@ public:
 		return result;
 	}
 
-protected:
-	vec3  mCenter;
-	vec3  mExtents;
+  protected:
+	vec3 mCenter;
+	vec3 mExtents;
 };
 
 } // namespace cinder

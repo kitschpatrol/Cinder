@@ -20,9 +20,6 @@
 #include <MacTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -45,9 +42,8 @@ extern "C" {
  */
 EXTERN_API( short )
 PLstrcmp(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2);
-
+    ConstStr255Param str1,
+    ConstStr255Param str2 );
 
 /*
  *  PLstrncmp()
@@ -59,10 +55,9 @@ PLstrcmp(
  */
 EXTERN_API( short )
 PLstrncmp(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2,
-  short              num);
-
+    ConstStr255Param str1,
+    ConstStr255Param str2,
+    short            num );
 
 /*
  *  PLstrcpy()
@@ -74,9 +69,8 @@ PLstrncmp(
  */
 EXTERN_API( StringPtr )
 PLstrcpy(
-  StringPtr          str1,
-  ConstStr255Param   str2);
-
+    StringPtr        str1,
+    ConstStr255Param str2 );
 
 /*
  *  PLstrncpy()
@@ -88,10 +82,9 @@ PLstrcpy(
  */
 EXTERN_API( StringPtr )
 PLstrncpy(
-  StringPtr          str1,
-  ConstStr255Param   str2,
-  short              num);
-
+    StringPtr        str1,
+    ConstStr255Param str2,
+    short            num );
 
 /*
  *  PLstrcat()
@@ -103,9 +96,8 @@ PLstrncpy(
  */
 EXTERN_API( StringPtr )
 PLstrcat(
-  StringPtr          str1,
-  ConstStr255Param   str2);
-
+    StringPtr        str1,
+    ConstStr255Param str2 );
 
 /*
  *  PLstrncat()
@@ -117,10 +109,9 @@ PLstrcat(
  */
 EXTERN_API( StringPtr )
 PLstrncat(
-  StringPtr          str1,
-  ConstStr255Param   str2,
-  short              num);
-
+    StringPtr        str1,
+    ConstStr255Param str2,
+    short            num );
 
 /*
  *  PLstrchr()
@@ -132,9 +123,8 @@ PLstrncat(
  */
 EXTERN_API( Ptr )
 PLstrchr(
-  ConstStr255Param   str1,
-  short              ch1);
-
+    ConstStr255Param str1,
+    short            ch1 );
 
 /*
  *  PLstrrchr()
@@ -146,9 +136,8 @@ PLstrchr(
  */
 EXTERN_API( Ptr )
 PLstrrchr(
-  ConstStr255Param   str1,
-  short              ch1);
-
+    ConstStr255Param str1,
+    short            ch1 );
 
 /*
  *  PLstrpbrk()
@@ -160,9 +149,8 @@ PLstrrchr(
  */
 EXTERN_API( Ptr )
 PLstrpbrk(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2);
-
+    ConstStr255Param str1,
+    ConstStr255Param str2 );
 
 /*
  *  PLstrspn()
@@ -174,9 +162,8 @@ PLstrpbrk(
  */
 EXTERN_API( short )
 PLstrspn(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2);
-
+    ConstStr255Param str1,
+    ConstStr255Param str2 );
 
 /*
  *  PLstrstr()
@@ -188,9 +175,8 @@ PLstrspn(
  */
 EXTERN_API( Ptr )
 PLstrstr(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2);
-
+    ConstStr255Param str1,
+    ConstStr255Param str2 );
 
 /*
  *  PLstrlen()
@@ -201,8 +187,7 @@ PLstrstr(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-PLstrlen(ConstStr255Param str);
-
+PLstrlen( ConstStr255Param str );
 
 /*
  *  PLpos()
@@ -214,11 +199,8 @@ PLstrlen(ConstStr255Param str);
  */
 EXTERN_API( short )
 PLpos(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2);
-
-
-
+    ConstStr255Param str1,
+    ConstStr255Param str2 );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -231,4 +213,3 @@ PLpos(
 #endif
 
 #endif /* __PLSTRINGFUNCS__ */
-

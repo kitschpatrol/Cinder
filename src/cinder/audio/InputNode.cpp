@@ -26,14 +26,15 @@
 
 using namespace std;
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - InputNode
 // ----------------------------------------------------------------------------------------------------
 
 InputNode::InputNode( const Format &format )
-	: Node( format )
+    : Node( format )
 {
 	if( getChannelMode() != ChannelMode::SPECIFIED )
 		setChannelMode( ChannelMode::MATCHES_OUTPUT );
@@ -56,7 +57,7 @@ void InputNode::connectInput( const NodeRef &input )
 // ----------------------------------------------------------------------------------------------------
 
 InputDeviceNode::InputDeviceNode( const DeviceRef &device, const Format &format )
-	: InputNode( format ), mDevice( device ), mLastOverrun( 0 ), mLastUnderrun( 0 )
+    : InputNode( format ), mDevice( device ), mLastOverrun( 0 ), mLastUnderrun( 0 )
 {
 	size_t deviceNumChannels = mDevice->getNumInputChannels();
 
@@ -68,8 +69,8 @@ InputDeviceNode::InputDeviceNode( const DeviceRef &device, const Format &format 
 
 	// TODO: this doesn't always mean a failing cause, need Device::supportsNumInputChannels( mNumChannels ) to be sure
 	//	- on iOS, the RemoteIO audio unit can have 2 input channels, while the AVAudioSession reports only 1 input channel.
-//	if( deviceNumChannels < mNumChannels )
-//		throw AudioFormatExc( string( "Device can not accommodate " ) + to_string( deviceNumChannels ) + " output channels." );
+	//	if( deviceNumChannels < mNumChannels )
+	//		throw AudioFormatExc( string( "Device can not accommodate " ) + to_string( deviceNumChannels ) + " output channels." );
 }
 
 InputDeviceNode::~InputDeviceNode()
@@ -100,7 +101,6 @@ void InputDeviceNode::markUnderrun()
 
 void InputDeviceNode::markOverrun()
 {
-
 	auto ctx = getContext();
 	CI_ASSERT( ctx );
 
@@ -112,7 +112,7 @@ void InputDeviceNode::markOverrun()
 // ----------------------------------------------------------------------------------------------------
 
 CallbackProcessorNode::CallbackProcessorNode( const CallbackProcessorFn &callbackFn, const Format &format )
-	: InputNode( format ), mCallbackFn( callbackFn )
+    : InputNode( format ), mCallbackFn( callbackFn )
 {
 }
 
@@ -121,5 +121,5 @@ void CallbackProcessorNode::process( Buffer *buffer )
 	if( mCallbackFn )
 		mCallbackFn( buffer, getSampleRate() );
 }
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

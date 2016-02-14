@@ -1,11 +1,11 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
+#include "Resources.h"
+#include "cinder/Font.h"
+#include "cinder/ImageIo.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
-#include "cinder/ImageIo.h"
-#include "cinder/Font.h"
-#include "Resources.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -17,11 +17,11 @@ using std::list;
 static const bool PREMULT = false;
 
 class TextTestApp : public App {
- public:
+  public:
 	void setup();
 	void draw();
 
-	gl::Texture2dRef	mTexture, mSimpleTexture;
+	gl::Texture2dRef mTexture, mSimpleTexture;
 };
 
 void printFontNames()
@@ -51,7 +51,7 @@ void TextTestApp::setup()
 	layout.clear( ColorA( 0.2f, 0.2f, 0.2f, 0.2f ) );
 	layout.setFont( Font( normalFont, 24 ) );
 	layout.setColor( Color( 1, 1, 1 ) );
-	layout.addLine( std::string( "Unicode: " ) + (const char*)japanese );
+	layout.addLine( std::string( "Unicode: " ) + (const char *)japanese );
 	layout.setColor( Color( 0.5f, 0.25f, 0.8f ) );
 	layout.setFont( Font( boldFont, 12 ) );
 	layout.addRightLine( "Now is the time" );
@@ -72,11 +72,11 @@ void TextTestApp::setup()
 	layout.addLine( " • Back to regular leading but translucent" );
 	Surface8u rendered = layout.render( true, PREMULT );
 	mTexture = gl::Texture2d::create( rendered );
-	
+
 	// Create a custom font by loading it from a resource
 	Font customFont( Font( loadResource( RES_CUSTOM_FONT ), 72 ) );
 	console() << "This font is called " << customFont.getFullName() << std::endl;
-	
+
 	TextLayout simple;
 	simple.setFont( customFont );
 	simple.setColor( Color( 1, 0, 0.1f ) );

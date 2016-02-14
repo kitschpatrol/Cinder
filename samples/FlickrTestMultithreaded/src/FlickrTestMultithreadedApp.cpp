@@ -1,14 +1,14 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/Context.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/gl/Sync.h"
-#include "cinder/gl/gl.h"
-#include "cinder/Xml.h"
-#include "cinder/Timeline.h"
+#include "cinder/ConcurrentCircularBuffer.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Thread.h"
-#include "cinder/ConcurrentCircularBuffer.h"
+#include "cinder/Timeline.h"
+#include "cinder/Xml.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/Context.h"
+#include "cinder/gl/Sync.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 
 /*	The heart of this sample is to show how to create a background thread that interacts with OpenGL.
 	It launches a secondary thread which pulls down images from a Flickr group and puts them in a thread-safe buffer.
@@ -21,7 +21,7 @@ using namespace ci::app;
 using namespace std;
 
 class FlickrTestMTApp : public App {
-  public:		
+  public:
 	~FlickrTestMTApp();
 
 	void setup() override;
@@ -29,13 +29,13 @@ class FlickrTestMTApp : public App {
 	void draw() override;
 	void loadImagesThreadFn( gl::ContextRef sharedGlContext );
 
-	ConcurrentCircularBuffer<gl::TextureRef>	*mImages;
+	ConcurrentCircularBuffer<gl::TextureRef> *mImages;
 
-	bool					mShouldQuit;
-	shared_ptr<thread>		mThread;
-	gl::TextureRef			mTexture, mLastTexture;
-	Anim<float>				mFade;
-	double					mLastTime;
+	bool               mShouldQuit;
+	shared_ptr<thread> mThread;
+	gl::TextureRef     mTexture, mLastTexture;
+	Anim<float>        mFade;
+	double             mLastTime;
 };
 
 void FlickrTestMTApp::setup()
@@ -55,10 +55,10 @@ void FlickrTestMTApp::loadImagesThreadFn( gl::ContextRef context )
 	ci::ThreadSetup threadSetup; // instantiate this if you're talking to Cinder from a secondary thread
 	// we received as a parameter a gl::Context we can use safely that shares resources with the primary Context
 	context->makeCurrent();
-	vector<Url>	urls;
+	vector<Url> urls;
 
 	// parse the image URLS from the XML feed and push them into 'urls'
-	const Url sunFlickrGroup = Url( "https://api.flickr.com/services/feeds/groups_pool.gne?id=52242317293@N01&format=rss_200" );
+	const Url     sunFlickrGroup = Url( "https://api.flickr.com/services/feeds/groups_pool.gne?id=52242317293@N01&format=rss_200" );
 	const XmlTree xml( loadUrl( sunFlickrGroup ) );
 	for( auto item = xml.begin( "rss/channel/item" ); item != xml.end(); ++item ) {
 		const XmlTree &urlXml = ( ( *item / "media:content" ) );
@@ -66,7 +66,7 @@ void FlickrTestMTApp::loadImagesThreadFn( gl::ContextRef context )
 	}
 
 	// load images as Textures into our ConcurrentCircularBuffer
-	while( ( ! mShouldQuit ) && ( ! urls.empty() ) ) {
+	while( ( !mShouldQuit ) && ( !urls.empty() ) ) {
 		try {
 			// we need to wait on a fence before alerting the primary thread that the Texture is ready
 			auto fence = gl::Sync::create();
@@ -87,13 +87,13 @@ void FlickrTestMTApp::update()
 	double timeSinceLastImage = getElapsedSeconds() - mLastTime;
 	if( ( timeSinceLastImage > 2.5 ) && mImages->isNotEmpty() ) {
 		mLastTexture = mTexture; // the "last" texture is now the current text
-		
+
 		mImages->popBack( &mTexture );
-		
+
 		mLastTime = getElapsedSeconds();
 		// blend from 0 to 1 over 1.5sec
 		timeline().apply( &mFade, 0.0f, 1.0f, 1.5f );
-	}	
+	}
 }
 
 void FlickrTestMTApp::draw()

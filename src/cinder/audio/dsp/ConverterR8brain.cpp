@@ -28,7 +28,9 @@
 
 using namespace std;
 
-namespace cinder { namespace audio { namespace dsp {
+namespace cinder {
+namespace audio {
+namespace dsp {
 
 // Notes on how to make r8brain run a little faster, if needed:
 // For a fair comparison you may also decrease ReqTransBand and increase ReqAtten if necessary - this won't make r8brain-free-src much slower.
@@ -37,7 +39,7 @@ namespace cinder { namespace audio { namespace dsp {
 //	The basic formula for ReqAtten is something close to 6.02*BitDepth+40. The ReqTransBand selection depends on how "greedy" you are for the highest frequencies. It's set to 2% by default, but in practice you can use 4 or 5, that still leaves a lot of frequency content (flat up to 21kHz for 44.1k audio).
 
 ConverterImplR8brain::ConverterImplR8brain( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock )
-	: Converter( sourceSampleRate, destSampleRate, sourceNumChannels, destNumChannels, sourceMaxFramesPerBlock )
+    : Converter( sourceSampleRate, destSampleRate, sourceNumChannels, destNumChannels, sourceMaxFramesPerBlock )
 {
 	size_t numResamplers;
 	if( mSourceNumChannels > mDestNumChannels ) {
@@ -135,5 +137,6 @@ pair<size_t, size_t> ConverterImplR8brain::convertImplUpMixing( const Buffer *so
 
 	return make_pair( readCount, (size_t)outCount );
 }
-
-} } } // namespace cinder::audio::dsp
+}
+}
+} // namespace cinder::audio::dsp

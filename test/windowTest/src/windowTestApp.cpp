@@ -1,9 +1,9 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
+#include "cinder/Log.h"
 #include "cinder/Rand.h"
 #include "cinder/Utilities.h"
-#include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 #include <list>
 
@@ -14,11 +14,11 @@ using namespace std;
 class WindowData {
   public:
 	~WindowData() { CI_LOG_V( "Destroying Window Data" ); };
-	vector<vec2> 	mPoints;
+	vector<vec2> mPoints;
 };
 
 class WindowTestApp : public App {
- public:
+  public:
 	// this is passed into the app intantiation macro at the bottom of the file
 	static void prepareSettings( Settings *settings );
 
@@ -44,13 +44,13 @@ class WindowTestApp : public App {
 	bool shouldQuit();
 
 	// This will maintain a list of points which we will draw line segments between
-	WindowRef		mSecondWindow;
+	WindowRef mSecondWindow;
 };
 
 void WindowTestApp::mouseDrag( MouseEvent event )
 {
-	vec2 v = event.getPos();
-	WindowRef w = event.getWindow();
+	vec2          v = event.getPos();
+	WindowRef     w = event.getWindow();
 	vector<vec2> &points = w->getUserData<WindowData>()->mPoints;
 	points.push_back( v );
 }
@@ -59,11 +59,11 @@ void WindowTestApp::prepareSettings( Settings *settings )
 {
 	settings->setPowerManagementEnabled( false );
 	settings->setQuitOnLastWindowCloseEnabled( false );
-//	settings->setFullScreen( true );
+	//	settings->setFullScreen( true );
 	settings->setWindowSize( 800, 500 );
 	settings->setTitle( "title set from App::Settings" );
-//	settings->prepareWindow( Window::Format().resizable( false ).renderer( RendererGl::create() ).fullScreen( true ) );
-//	settings->prepareWindow( Window::Format().fullScreen().fullScreenButton() );
+	//	settings->prepareWindow( Window::Format().resizable( false ).renderer( RendererGl::create() ).fullScreen( true ) );
+	//	settings->prepareWindow( Window::Format().fullScreen().fullScreenButton() );
 }
 
 void WindowTestApp::setup()
@@ -75,15 +75,15 @@ void WindowTestApp::setup()
 
 	getWindow()->getSignalMouseDown().connect( signals::slot( this, &WindowTestApp::anotherTest ) );
 	getWindow()->getSignalMouseDown().connect( std::bind( &WindowTestApp::mouseDown1, this, std::placeholders::_1 ) );
-//	getWindow()->getSignalMouseDown().connect( std::bind( &WindowTestApp::mouseDown2, this, std::placeholders::_1 ) ); // This shouldn't build because it has the wrong signature (<bool( MouseEvent )>) - to note, the reference is not the problem, just the return value is different.
+	//	getWindow()->getSignalMouseDown().connect( std::bind( &WindowTestApp::mouseDown2, this, std::placeholders::_1 ) ); // This shouldn't build because it has the wrong signature (<bool( MouseEvent )>) - to note, the reference is not the problem, just the return value is different.
 	getWindow()->getSignalMouseDown().connect( std::bind( &WindowTestApp::mouseDown3, this, std::placeholders::_1 ) );
 	getSignalShouldQuit().connect( std::bind( &WindowTestApp::shouldQuit, this ) );
-	
+
 	getWindow()->getSignalMove().connect( std::bind( &WindowTestApp::windowMove, this ) );
 	getWindow()->getSignalDraw().connect( std::bind( &WindowTestApp::windowDraw, this ) );
 	getWindow()->getSignalDisplayChange().connect( std::bind( &WindowTestApp::displayChange, this ) );
 	getWindow()->getSignalClose().connect( std::bind( &WindowTestApp::windowClose, this ) );
-	
+
 	getSignalDidBecomeActive().connect( [] { CI_LOG_V( "App became active." ); } );
 	getSignalWillResignActive().connect( [] { CI_LOG_V( "App will resign active." ); } );
 }
@@ -109,14 +109,14 @@ void WindowTestApp::mouseDown( MouseEvent event )
 
 void WindowTestApp::mouseDown1( MouseEvent &event )
 {
-	enablePowerManagement( ! isPowerManagementEnabled() );
+	enablePowerManagement( !isPowerManagementEnabled() );
 	CI_LOG_V( "Power mgmt: " << isPowerManagementEnabled() );
 	CI_LOG_V( "window pos: " << getWindow()->getPos() );
 	CI_LOG_V( "Title was: " << getWindow()->getTitle() << "." );
 	getWindow()->setTitle( "Crunk " + toString( getWindow()->getPos().x ) );
 	CI_LOG_V( "Window size from app: " << getWindowWidth() << " x " << getWindowHeight() << " from window: " << event.getWindow()->getSize() );
 	CI_LOG_V( "Window pos from app: " << getWindowPos() << " from window: " << getWindow()->getPos() );
-//	event.setHandled();
+	//	event.setHandled();
 }
 
 void WindowTestApp::windowMove()
@@ -164,7 +164,7 @@ void WindowTestApp::keyDown( KeyEvent event )
 		CI_LOG_V( "Toggling from fullscreen: " << getWindow()->isFullScreen() );
 		// This line forces fullscreen on the secondary display
 		//getWindow()->setFullScreen( ! getWindow()->isFullScreen(), FullScreenOptions().display( Display::getDisplays()[1] ) );
-		getWindow()->setFullScreen( ! getWindow()->isFullScreen() );
+		getWindow()->setFullScreen( !getWindow()->isFullScreen() );
 	}
 	else if( event.getChar() == 'o' ) {
 		CI_LOG_V( "(kiosk) Toggling from fullscreen: " << getWindow()->isFullScreen() );
@@ -175,7 +175,7 @@ void WindowTestApp::keyDown( KeyEvent event )
 			fullScreenOptions.secondaryDisplayBlanking( true );
 		//if( event.isControlDown() )
 		//	fullScreenOptions.exclusive();
-		getWindow()->setFullScreen( ! getWindow()->isFullScreen(), fullScreenOptions );
+		getWindow()->setFullScreen( !getWindow()->isFullScreen(), fullScreenOptions );
 	}
 	else if( event.getCode() == KeyEvent::KEY_LEFT )
 		getWindow()->setPos( getWindow()->getPos().x - 1, getWindow()->getPos().y );
@@ -196,19 +196,19 @@ void WindowTestApp::keyDown( KeyEvent event )
 	}
 	else if( event.getChar() == 'c' ) {
 		getWindow()->close();
-//		getWindow( getNumWindows() - 1 )->close();
+		//		getWindow( getNumWindows() - 1 )->close();
 	}
 	else if( event.getChar() == 'h' ) {
-		if( getWindowIndex(0)->isHidden() )
-			getWindowIndex(0)->show();
+		if( getWindowIndex( 0 )->isHidden() )
+			getWindowIndex( 0 )->show();
 		else
-			getWindowIndex(0)->hide();
+			getWindowIndex( 0 )->hide();
 	}
 	else if( event.getChar() == 'b' ) {
-		getWindow()->setBorderless( ! getWindow()->isBorderless() );
+		getWindow()->setBorderless( !getWindow()->isBorderless() );
 	}
 	else if( event.getChar() == 't' ) {
-		getWindow()->setAlwaysOnTop( ! getWindow()->isAlwaysOnTop() );
+		getWindow()->setAlwaysOnTop( !getWindow()->isAlwaysOnTop() );
 	}
 	else if( event.getChar() == 's' ) {
 		getWindow()->setBorderless();
@@ -216,8 +216,8 @@ void WindowTestApp::keyDown( KeyEvent event )
 		CI_LOG_V( "Spanning Area: " << Display::getSpanningArea() );
 		CI_LOG_V( "Bounds: " << getWindow()->getBounds() );
 		//getWindow()->setPos( ivec2( -1680 + 1, 0 + 1 ) );
-//		getWindow()->setSize( 1440, 900 );
-//		getWindow()->setPos( 0, 0 );
+		//		getWindow()->setSize( 1440, 900 );
+		//		getWindow()->setPos( 0, 0 );
 	}
 }
 
@@ -234,7 +234,7 @@ void WindowTestApp::resize()
 void WindowTestApp::windowDraw()
 {
 	gl::enableAlphaBlending();
-//	glEnable(GL_MULTISAMPLE_ARB);
+	//	glEnable(GL_MULTISAMPLE_ARB);
 	if( getWindow() == getForegroundWindow() )
 		gl::clear( Color( 0.1f, 0.1f, 0.5f ) );
 	else
@@ -245,21 +245,21 @@ void WindowTestApp::windowDraw()
 
 	glEnable( GL_LINE_SMOOTH );
 	glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
-	
+
 	gl::begin( GL_LINE_STRIP );
 	const vector<vec2> &points = getWindow()->getUserData<WindowData>()->mPoints;
 	for( auto pointIter = points.begin(); pointIter != points.end(); ++pointIter ) {
 		gl::vertex( *pointIter /*+ vec2( 0, getElapsedSeconds() )*/ );
 	}
 	gl::end();
-	
+
 	//if( window == mSecondWindow )
-		gl::drawLine( vec2( 50, 50 ), vec2( 250, 250 ) );
+	gl::drawLine( vec2( 50, 50 ), vec2( 250, 250 ) );
 	gl::pushMatrices();
-		gl::color( 1.0f, 0.2f, 0.15f );
-		gl::translate( getWindowCenter() );
-		gl::rotate( getElapsedSeconds() );
-		gl::drawSolidRect( Rectf( -100, -100, 100, 100 ) );
+	gl::color( 1.0f, 0.2f, 0.15f );
+	gl::translate( getWindowCenter() );
+	gl::rotate( getElapsedSeconds() );
+	gl::drawSolidRect( Rectf( -100, -100, 100, 100 ) );
 	gl::popMatrices();
 }
 

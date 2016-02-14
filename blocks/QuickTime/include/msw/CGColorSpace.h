@@ -25,9 +25,6 @@
 #include <CGDataProvider.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,30 +38,29 @@ extern "C" {
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __CGCOLORSPACE__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __CGCOLORSPACE__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __CGCOLORSPACE__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __CGCOLORSPACE__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
-typedef struct CGColorSpace*            CGColorSpaceRef;
+typedef struct CGColorSpace *CGColorSpaceRef;
 enum CGColorRenderingIntent {
-  kCGRenderingIntentDefault     = 0,
-  kCGRenderingIntentAbsoluteColorimetric = 1,
-  kCGRenderingIntentRelativeColorimetric = 2,
-  kCGRenderingIntentPerceptual  = 3,
-  kCGRenderingIntentSaturation  = 4
+	kCGRenderingIntentDefault = 0,
+	kCGRenderingIntentAbsoluteColorimetric = 1,
+	kCGRenderingIntentRelativeColorimetric = 2,
+	kCGRenderingIntentPerceptual = 3,
+	kCGRenderingIntentSaturation = 4
 };
 typedef enum CGColorRenderingIntent CGColorRenderingIntent;
-
 
 /** Device-dependent color spaces.  **/
 /* Create a DeviceGray colorspace. */
@@ -77,8 +73,7 @@ typedef enum CGColorRenderingIntent CGColorRenderingIntent;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGColorSpaceRef )
-CGColorSpaceCreateDeviceGray(void);
-
+CGColorSpaceCreateDeviceGray( void );
 
 /* Create a DeviceRGB colorspace. */
 /*
@@ -90,8 +85,7 @@ CGColorSpaceCreateDeviceGray(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGColorSpaceRef )
-CGColorSpaceCreateDeviceRGB(void);
-
+CGColorSpaceCreateDeviceRGB( void );
 
 /* Create a DeviceCMYK colorspace. */
 /*
@@ -103,8 +97,7 @@ CGColorSpaceCreateDeviceRGB(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGColorSpaceRef )
-CGColorSpaceCreateDeviceCMYK(void);
-
+CGColorSpaceCreateDeviceCMYK( void );
 
 /** Device-independent color spaces. **/
 /* Create a calibrated gray colorspace.  `whitePoint' is an array of 3
@@ -122,10 +115,9 @@ CGColorSpaceCreateDeviceCMYK(void);
  */
 EXTERN_API_C( CGColorSpaceRef )
 CGColorSpaceCreateCalibratedGray(
-  const float   whitePoint[3],
-  const float   blackPoint[3],
-  float         gamma);
-
+    const float whitePoint[3],
+    const float blackPoint[3],
+    float       gamma );
 
 /* Create a calibrated RGB colorspace.  `whitePoint' is an array of 3
  * numbers specifying the tristimulus value, in the CIE 1931 XYZ-space, of
@@ -146,11 +138,10 @@ CGColorSpaceCreateCalibratedGray(
  */
 EXTERN_API_C( CGColorSpaceRef )
 CGColorSpaceCreateCalibratedRGB(
-  const float   whitePoint[3],
-  const float   blackPoint[3],
-  const float   gamma[3],
-  const float   matrix[9]);
-
+    const float whitePoint[3],
+    const float blackPoint[3],
+    const float gamma[3],
+    const float matrix[9] );
 
 /* Create an L*a*b* colorspace.  `whitePoint' is an array of 3 numbers
  * specifying the tristimulus value, in the CIE 1931 XYZ-space, of the
@@ -168,10 +159,9 @@ CGColorSpaceCreateCalibratedRGB(
  */
 EXTERN_API_C( CGColorSpaceRef )
 CGColorSpaceCreateLab(
-  const float   whitePoint[3],
-  const float   blackPoint[3],
-  const float   range[4]);
-
+    const float whitePoint[3],
+    const float blackPoint[3],
+    const float range[4] );
 
 /* Create an ICC-based colorspace.  `nComponents' specifies the number of
  * color components in the color space defined by the ICC profile data.
@@ -196,11 +186,10 @@ CGColorSpaceCreateLab(
  */
 EXTERN_API_C( CGColorSpaceRef )
 CGColorSpaceCreateICCBased(
-  size_t              nComponents,
-  const float *       range,
-  CGDataProviderRef   profile,
-  CGColorSpaceRef     alternateSpace);
-
+    size_t            nComponents,
+    const float *     range,
+    CGDataProviderRef profile,
+    CGColorSpaceRef   alternateSpace );
 
 /** Special colorspaces. **/
 /* Create an indexed colorspace.  A sample value in an indexed color space
@@ -222,10 +211,9 @@ CGColorSpaceCreateICCBased(
  */
 EXTERN_API_C( CGColorSpaceRef )
 CGColorSpaceCreateIndexed(
-  CGColorSpaceRef        baseSpace,
-  size_t                 lastIndex,
-  const unsigned char *  colorTable);
-
+    CGColorSpaceRef      baseSpace,
+    size_t               lastIndex,
+    const unsigned char *colorTable );
 
 /* Create a pattern colorspace. `baseSpace' is the underlying colorspace of
  * the pattern colorspace.  For colored patterns, `baseSpace' should be
@@ -240,8 +228,7 @@ CGColorSpaceCreateIndexed(
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( CGColorSpaceRef )
-CGColorSpaceCreatePattern(CGColorSpaceRef baseSpace);
-
+CGColorSpaceCreatePattern( CGColorSpaceRef baseSpace );
 
 /* Create a CGColorSpace using `platformColorSpaceReference', a pointer to
  * a platform-specific color space reference. For MacOS X,
@@ -255,9 +242,7 @@ CGColorSpaceCreatePattern(CGColorSpaceRef baseSpace);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( CGColorSpaceRef )
-CGColorSpaceCreateWithPlatformColorSpace(void * platformColorSpaceReference);
-
-
+CGColorSpaceCreateWithPlatformColorSpace( void *platformColorSpaceReference );
 
 /** Colorspace information. **/
 /* Return the number of color components supported by the colorspace `cs'. */
@@ -270,8 +255,7 @@ CGColorSpaceCreateWithPlatformColorSpace(void * platformColorSpaceReference);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( size_t )
-CGColorSpaceGetNumberOfComponents(CGColorSpaceRef cs);
-
+CGColorSpaceGetNumberOfComponents( CGColorSpaceRef cs );
 
 /** Retaining & releasing colorspaces. **/
 /* Increment the retain count of `cs' and return it.  All colorspaces are
@@ -285,8 +269,7 @@ CGColorSpaceGetNumberOfComponents(CGColorSpaceRef cs);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGColorSpaceRef )
-CGColorSpaceRetain(CGColorSpaceRef cs);
-
+CGColorSpaceRetain( CGColorSpaceRef cs );
 
 /* Decrement the retain count of `cs'.  If the retain count reaches 0, then
  * release it and any associated resources. */
@@ -299,19 +282,17 @@ CGColorSpaceRetain(CGColorSpaceRef cs);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGColorSpaceRelease(CGColorSpaceRef cs);
-
-
+CGColorSpaceRelease( CGColorSpaceRef cs );
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __CGCOLORSPACE__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __CGCOLORSPACE__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__CGCOLORSPACE__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __CGCOLORSPACE__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -325,4 +306,3 @@ CGColorSpaceRelease(CGColorSpaceRef cs);
 #endif
 
 #endif /* CGCOLORSPACE_H_ */
-

@@ -28,8 +28,6 @@
 #include <AEDataModel.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,21 +41,20 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*======================================================================================*/
 /*  The core data structure of the Carbon Event system                                  */
 /*======================================================================================*/
-typedef struct OpaqueEventRef*          EventRef;
+typedef struct OpaqueEventRef *EventRef;
 /*======================================================================================*/
 /*  EVENT COMMON                                                                        */
 /*======================================================================================*/
-
 
 /*
  *  Discussion:
@@ -66,51 +63,51 @@ typedef struct OpaqueEventRef*          EventRef;
  */
 enum {
 
-  /*
+	/*
    * This is returned from PostEventToQueue if the event in question is
    * already in the queue you are posting it to (or any other queue).
    */
-  eventAlreadyPostedErr         = -9860,
+	eventAlreadyPostedErr = -9860,
 
-  /*
+	/*
    * You are attemtping to modify a target that is currently in use,
    * such as when dispatching.
    */
-  eventTargetBusyErr            = -9861,
+	eventTargetBusyErr = -9861,
 
-  /*
+	/*
    * This is obsolete and will be removed.
    */
-  eventClassInvalidErr          = -9862,
+	eventClassInvalidErr = -9862,
 
-  /*
+	/*
    * This is obsolete and will be removed.
    */
-  eventClassIncorrectErr        = -9864,
+	eventClassIncorrectErr = -9864,
 
-  /*
+	/*
    * Returned from InstallEventHandler if the handler proc you pass is
    * already installed for a given event type you are trying to
    * register.
    */
-  eventHandlerAlreadyInstalledErr = -9866,
+	eventHandlerAlreadyInstalledErr = -9866,
 
-  /*
+	/*
    * A generic error.
    */
-  eventInternalErr              = -9868,
+	eventInternalErr = -9868,
 
-  /*
+	/*
    * This is obsolete and will be removed.
    */
-  eventKindIncorrectErr         = -9869,
+	eventKindIncorrectErr = -9869,
 
-  /*
+	/*
    * The piece of data you are requesting from an event is not present.
    */
-  eventParameterNotFoundErr     = -9870,
+	eventParameterNotFoundErr = -9870,
 
-  /*
+	/*
    * This is what you should return from an event handler when your
    * handler has received an event it doesn't currently want to (or
    * isn't able to) handle. If you handle an event, you should return
@@ -119,27 +116,27 @@ enum {
    * will not be sent to any other event handler, and the return value
    * will be provided to the original caller of SendEventToTarget.
    */
-  eventNotHandledErr            = -9874,
+	eventNotHandledErr = -9874,
 
-  /*
+	/*
    * The event loop has timed out. This can be returned from calls to
    * ReceiveNextEvent or RunCurrentEventLoop.
    */
-  eventLoopTimedOutErr          = -9875,
+	eventLoopTimedOutErr = -9875,
 
-  /*
+	/*
    * The event loop was quit, probably by a call to QuitEventLoop. This
    * can be returned from ReceiveNextEvent or RunCurrentEventLoop.
    */
-  eventLoopQuitErr              = -9876,
+	eventLoopQuitErr = -9876,
 
-  /*
+	/*
    * Returned from RemoveEventFromQueue when trying to remove an event
    * that's not in any queue.
    */
-  eventNotInQueueErr            = -9877,
-  eventHotKeyExistsErr          = -9878,
-  eventHotKeyInvalidErr         = -9879
+	eventNotInQueueErr = -9877,
+	eventHotKeyExistsErr = -9878,
+	eventHotKeyInvalidErr = -9879
 };
 
 /*======================================================================================*/
@@ -164,26 +161,26 @@ enum {
 typedef SInt16 EventPriority;
 enum {
 
-  /*
+	/*
    * Lowest priority. Currently only window update events are posted at
    * this priority.
    */
-  kEventPriorityLow             = 0,
+	kEventPriorityLow = 0,
 
-  /*
+	/*
    * Normal priority of events. Most events are standard priority.
    */
-  kEventPriorityStandard        = 1,
+	kEventPriorityStandard = 1,
 
-  /*
+	/*
    * Highest priority.
    */
-  kEventPriorityHigh            = 2
+	kEventPriorityHigh = 2
 };
 
 enum {
-  kEventLeaveInQueue            = false,
-  kEventRemoveFromQueue         = true
+	kEventLeaveInQueue = false,
+	kEventRemoveFromQueue = true
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -191,28 +188,33 @@ enum {
 /*                                                                                      */
 /* EventTime is in seconds since boot. Use the constants to make life easy.             */
 /*--------------------------------------------------------------------------------------*/
-typedef double                          EventTime;
-typedef EventTime                       EventTimeout;
-typedef EventTime                       EventTimerInterval;
-#define kEventDurationSecond            ((EventTime)1.0)
-#define kEventDurationMillisecond       ((EventTime)(kEventDurationSecond/1000))
-#define kEventDurationMicrosecond       ((EventTime)(kEventDurationSecond/1000000))
-#define kEventDurationNanosecond        ((EventTime)(kEventDurationSecond/1000000000))
-#define kEventDurationMinute            ((EventTime)(kEventDurationSecond*60))
-#define kEventDurationHour              ((EventTime)(kEventDurationMinute*60))
-#define kEventDurationDay               ((EventTime)(kEventDurationHour*24))
-#define kEventDurationNoWait            ((EventTime)0.0)
-#define kEventDurationForever           ((EventTime)(-1.0))
+typedef double    EventTime;
+typedef EventTime EventTimeout;
+typedef EventTime EventTimerInterval;
+#define kEventDurationSecond ( (EventTime)1.0 )
+#define kEventDurationMillisecond ( ( EventTime )( kEventDurationSecond / 1000 ) )
+#define kEventDurationMicrosecond ( ( EventTime )( kEventDurationSecond / 1000000 ) )
+#define kEventDurationNanosecond ( ( EventTime )( kEventDurationSecond / 1000000000 ) )
+#define kEventDurationMinute ( ( EventTime )( kEventDurationSecond * 60 ) )
+#define kEventDurationHour ( ( EventTime )( kEventDurationMinute * 60 ) )
+#define kEventDurationDay ( ( EventTime )( kEventDurationHour * 24 ) )
+#define kEventDurationNoWait ( (EventTime)0.0 )
+#define kEventDurationForever ( ( EventTime )( -1.0 ) )
 
 /* Helpful doodads to convert to and from ticks and event times*/
 #ifdef __cplusplus
-    inline EventTime TicksToEventTime( UInt32 t ) { return ( (t) / 60.0 ); }
-    inline UInt32 EventTimeToTicks( EventTime t ) { return (UInt32)( ((t) * 60) + 0.5 ); }
+inline EventTime TicksToEventTime( UInt32 t )
+{
+	return ( ( t ) / 60.0 );
+}
+inline UInt32 EventTimeToTicks( EventTime t )
+{
+	return ( UInt32 )( ( (t)*60 ) + 0.5 );
+}
 #else
-    #define TicksToEventTime( t )   ((EventTime)( (t) / 60.0 ))
-    #define EventTimeToTicks( t )   ((UInt32)( ((t) * 60) + 0.5 ))
-#endif  /* defined(__cplusplus) */
-
+#define TicksToEventTime( t ) ( ( EventTime )( ( t ) / 60.0 ) )
+#define EventTimeToTicks( t ) ( ( UInt32 )( ( (t)*60 ) + 0.5 ) )
+#endif /* defined(__cplusplus) */
 
 /*--------------------------------------------------------------------------------------*/
 /* EventTypeSpec structure                                                              */
@@ -231,15 +233,15 @@ typedef EventTime                       EventTimerInterval;
  *    FlushEventsMatchingListFromQueue.
  */
 struct EventTypeSpec {
-  UInt32              eventClass;
-  UInt32              eventKind;
+	UInt32 eventClass;
+	UInt32 eventKind;
 };
-typedef struct EventTypeSpec            EventTypeSpec;
+typedef struct EventTypeSpec EventTypeSpec;
 /*A helpful macro for dealing with EventTypeSpecs */
-#define GetEventTypeCount( t )  (sizeof( (t) ) / sizeof( EventTypeSpec ))
+#define GetEventTypeCount( t ) ( sizeof( ( t ) ) / sizeof( EventTypeSpec ) )
 
-typedef OSType                          EventParamName;
-typedef OSType                          EventParamType;
+typedef OSType EventParamName;
+typedef OSType EventParamType;
 /*--------------------------------------------------------------------------------------*/
 /*  o EventLoop                                                                         */
 /*--------------------------------------------------------------------------------------*/
@@ -260,7 +262,7 @@ typedef OSType                          EventParamType;
  *    preemptive thread can have an event loop. Cooperative threads
  *    share the main thread's event loop.
  */
-typedef struct OpaqueEventLoopRef*      EventLoopRef;
+typedef struct OpaqueEventLoopRef *EventLoopRef;
 /*
  *  GetCurrentEventLoop()
  *  
@@ -278,8 +280,7 @@ typedef struct OpaqueEventLoopRef*      EventLoopRef;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventLoopRef )
-GetCurrentEventLoop(void);
-
+GetCurrentEventLoop( void );
 
 /*
  *  GetMainEventLoop()
@@ -296,9 +297,7 @@ GetCurrentEventLoop(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventLoopRef )
-GetMainEventLoop(void);
-
-
+GetMainEventLoop( void );
 
 /*
  *  RunCurrentEventLoop()
@@ -322,8 +321,7 @@ GetMainEventLoop(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-RunCurrentEventLoop(EventTimeout inTimeout);
-
+RunCurrentEventLoop( EventTimeout inTimeout );
 
 /*
  *  QuitEventLoop()
@@ -349,8 +347,7 @@ RunCurrentEventLoop(EventTimeout inTimeout);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-QuitEventLoop(EventLoopRef inEventLoop);
-
+QuitEventLoop( EventLoopRef inEventLoop );
 
 /*
  *  GetCFRunLoopFromEventLoop()
@@ -379,8 +376,7 @@ QuitEventLoop(EventLoopRef inEventLoop);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( CFTypeRef )
-GetCFRunLoopFromEventLoop(EventLoopRef inEventLoop);
-
+GetCFRunLoopFromEventLoop( EventLoopRef inEventLoop );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Low-level event fetching                                                          */
@@ -428,20 +424,19 @@ GetCFRunLoopFromEventLoop(EventLoopRef inEventLoop);
  */
 EXTERN_API( OSStatus )
 ReceiveNextEvent(
-  UInt32                 inNumTypes,
-  const EventTypeSpec *  inList,
-  EventTimeout           inTimeout,
-  Boolean                inPullEvent,
-  EventRef *             outEvent);
-
+    UInt32               inNumTypes,
+    const EventTypeSpec *inList,
+    EventTimeout         inTimeout,
+    Boolean              inPullEvent,
+    EventRef *           outEvent );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Core event lifetime APIs                                                          */
 /*--------------------------------------------------------------------------------------*/
 typedef UInt32 EventAttributes;
 enum {
-  kEventAttributeNone           = 0,
-  kEventAttributeUserEvent      = (1 << 0)
+	kEventAttributeNone = 0,
+	kEventAttributeUserEvent = ( 1 << 0 )
 };
 
 /*
@@ -453,17 +448,16 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacCreateEvent CreateEvent
+#define MacCreateEvent CreateEvent
 #endif
 EXTERN_API( OSStatus )
 MacCreateEvent(
-  CFAllocatorRef    inAllocator,       /* can be NULL */
-  UInt32            inClassID,
-  UInt32            kind,
-  EventTime         when,
-  EventAttributes   flags,
-  EventRef *        outEvent);
-
+    CFAllocatorRef  inAllocator, /* can be NULL */
+    UInt32          inClassID,
+    UInt32          kind,
+    EventTime       when,
+    EventAttributes flags,
+    EventRef *      outEvent );
 
 /*
  *  CopyEvent()
@@ -474,8 +468,7 @@ MacCreateEvent(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventRef )
-CopyEvent(EventRef inOther);
-
+CopyEvent( EventRef inOther );
 
 /*
  *  RetainEvent()
@@ -486,8 +479,7 @@ CopyEvent(EventRef inOther);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventRef )
-RetainEvent(EventRef inEvent);
-
+RetainEvent( EventRef inEvent );
 
 /*
  *  GetEventRetainCount()
@@ -498,8 +490,7 @@ RetainEvent(EventRef inEvent);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt32 )
-GetEventRetainCount(EventRef inEvent);
-
+GetEventRetainCount( EventRef inEvent );
 
 /*
  *  ReleaseEvent()
@@ -510,8 +501,7 @@ GetEventRetainCount(EventRef inEvent);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-ReleaseEvent(EventRef inEvent);
-
+ReleaseEvent( EventRef inEvent );
 
 /*
  *  SetEventParameter()
@@ -546,13 +536,11 @@ ReleaseEvent(EventRef inEvent);
  */
 EXTERN_API( OSStatus )
 SetEventParameter(
-  EventRef         inEvent,
-  EventParamName   inName,
-  EventParamType   inType,
-  UInt32           inSize,
-  const void *     inDataPtr);
-
-
+    EventRef       inEvent,
+    EventParamName inName,
+    EventParamType inType,
+    UInt32         inSize,
+    const void *   inDataPtr );
 
 /*
  *  GetEventParameter()
@@ -597,15 +585,13 @@ SetEventParameter(
  */
 EXTERN_API( OSStatus )
 GetEventParameter(
-  EventRef          inEvent,
-  EventParamName    inName,
-  EventParamType    inDesiredType,
-  EventParamType *  outActualType,       /* can be NULL */
-  UInt32            inBufferSize,
-  UInt32 *          outActualSize,       /* can be NULL */
-  void *            outData);
-
-
+    EventRef        inEvent,
+    EventParamName  inName,
+    EventParamType  inDesiredType,
+    EventParamType *outActualType, /* can be NULL */
+    UInt32          inBufferSize,
+    UInt32 *        outActualSize, /* can be NULL */
+    void *          outData );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Getters for 'base-class' event info                                               */
@@ -631,8 +617,7 @@ GetEventParameter(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt32 )
-GetEventClass(EventRef inEvent);
-
+GetEventClass( EventRef inEvent );
 
 /*
  *  GetEventKind()
@@ -657,8 +642,7 @@ GetEventClass(EventRef inEvent);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt32 )
-GetEventKind(EventRef inEvent);
-
+GetEventKind( EventRef inEvent );
 
 /*
  *  GetEventTime()
@@ -682,8 +666,7 @@ GetEventKind(EventRef inEvent);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventTime )
-GetEventTime(EventRef inEvent);
-
+GetEventTime( EventRef inEvent );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Setters for 'base-class' event info                                               */
@@ -716,15 +699,14 @@ GetEventTime(EventRef inEvent);
  */
 EXTERN_API( OSStatus )
 SetEventTime(
-  EventRef    inEvent,
-  EventTime   inTime);
-
+    EventRef  inEvent,
+    EventTime inTime );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Event Queue routines (posting, finding, flushing)                                 */
 /*--------------------------------------------------------------------------------------*/
 
-typedef struct OpaqueEventQueueRef*     EventQueueRef;
+typedef struct OpaqueEventQueueRef *EventQueueRef;
 /*
  *  GetCurrentEventQueue()
  *  
@@ -742,8 +724,7 @@ typedef struct OpaqueEventQueueRef*     EventQueueRef;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventQueueRef )
-GetCurrentEventQueue(void);
-
+GetCurrentEventQueue( void );
 
 /*
  *  GetMainEventQueue()
@@ -760,9 +741,7 @@ GetCurrentEventQueue(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventQueueRef )
-GetMainEventQueue(void);
-
-
+GetMainEventQueue( void );
 
 /*
  *  EventComparatorProcPtr
@@ -782,8 +761,8 @@ GetMainEventQueue(void);
  *    A boolean value indicating whether the event matches (true) or
  *    not (false).
  */
-typedef CALLBACK_API( Boolean , EventComparatorProcPtr )(EventRef inEvent, void *inCompareData);
-typedef STACK_UPP_TYPE(EventComparatorProcPtr)                  EventComparatorUPP;
+typedef CALLBACK_API( Boolean, EventComparatorProcPtr )( EventRef inEvent, void *inCompareData );
+typedef STACK_UPP_TYPE( EventComparatorProcPtr ) EventComparatorUPP;
 /*
  *  NewEventComparatorUPP()
  *  
@@ -793,14 +772,17 @@ typedef STACK_UPP_TYPE(EventComparatorProcPtr)                  EventComparatorU
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( EventComparatorUPP )
-NewEventComparatorUPP(EventComparatorProcPtr userRoutine);
+NewEventComparatorUPP( EventComparatorProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppEventComparatorProcInfo = 0x000003D0 };  /* pascal 1_byte Func(4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(EventComparatorUPP) NewEventComparatorUPP(EventComparatorProcPtr userRoutine) { return (EventComparatorUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventComparatorProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewEventComparatorUPP(userRoutine) (EventComparatorUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventComparatorProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppEventComparatorProcInfo = 0x000003D0 }; /* pascal 1_byte Func(4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( EventComparatorUPP ) NewEventComparatorUPP( EventComparatorProcPtr userRoutine )
+{
+	return (EventComparatorUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventComparatorProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewEventComparatorUPP( userRoutine ) ( EventComparatorUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventComparatorProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -812,13 +794,16 @@ NewEventComparatorUPP(EventComparatorProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeEventComparatorUPP(EventComparatorUPP userUPP);
+DisposeEventComparatorUPP( EventComparatorUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeEventComparatorUPP(EventComparatorUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeEventComparatorUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeEventComparatorUPP( EventComparatorUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeEventComparatorUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -831,21 +816,24 @@ DisposeEventComparatorUPP(EventComparatorUPP userUPP);
  */
 EXTERN_API_C( Boolean )
 InvokeEventComparatorUPP(
-  EventRef            inEvent,
-  void *              inCompareData,
-  EventComparatorUPP  userUPP);
+    EventRef           inEvent,
+    void *             inCompareData,
+    EventComparatorUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(Boolean) InvokeEventComparatorUPP(EventRef inEvent, void * inCompareData, EventComparatorUPP userUPP) { return (Boolean)CALL_TWO_PARAMETER_UPP(userUPP, uppEventComparatorProcInfo, inEvent, inCompareData); }
-  #else
-    #define InvokeEventComparatorUPP(inEvent, inCompareData, userUPP) (Boolean)CALL_TWO_PARAMETER_UPP((userUPP), uppEventComparatorProcInfo, (inEvent), (inCompareData))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) InvokeEventComparatorUPP( EventRef inEvent, void *inCompareData, EventComparatorUPP userUPP )
+{
+	return (Boolean)CALL_TWO_PARAMETER_UPP( userUPP, uppEventComparatorProcInfo, inEvent, inCompareData );
+}
+#else
+#define InvokeEventComparatorUPP( inEvent, inCompareData, userUPP ) ( Boolean ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppEventComparatorProcInfo, ( inEvent ), ( inCompareData ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewEventComparatorProc(userRoutine)                 NewEventComparatorUPP(userRoutine)
-    #define CallEventComparatorProc(userRoutine, inEvent, inCompareData) InvokeEventComparatorUPP(inEvent, inCompareData, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewEventComparatorProc( userRoutine ) NewEventComparatorUPP( userRoutine )
+#define CallEventComparatorProc( userRoutine, inEvent, inCompareData ) InvokeEventComparatorUPP( inEvent, inCompareData, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -878,10 +866,9 @@ InvokeEventComparatorUPP(
  */
 EXTERN_API( OSStatus )
 PostEventToQueue(
-  EventQueueRef   inQueue,
-  EventRef        inEvent,
-  EventPriority   inPriority);
-
+    EventQueueRef inQueue,
+    EventRef      inEvent,
+    EventPriority inPriority );
 
 /*
  *  FlushEventsMatchingListFromQueue()
@@ -911,10 +898,9 @@ PostEventToQueue(
  */
 EXTERN_API( OSStatus )
 FlushEventsMatchingListFromQueue(
-  EventQueueRef          inQueue,
-  UInt32                 inNumTypes,
-  const EventTypeSpec *  inList);
-
+    EventQueueRef        inQueue,
+    UInt32               inNumTypes,
+    const EventTypeSpec *inList );
 
 /*
  *  FlushSpecificEventsFromQueue()
@@ -943,10 +929,9 @@ FlushEventsMatchingListFromQueue(
  */
 EXTERN_API( OSStatus )
 FlushSpecificEventsFromQueue(
-  EventQueueRef        inQueue,
-  EventComparatorUPP   inComparator,
-  void *               inCompareData);
-
+    EventQueueRef      inQueue,
+    EventComparatorUPP inComparator,
+    void *             inCompareData );
 
 /*
  *  FlushEventQueue()
@@ -968,8 +953,7 @@ FlushSpecificEventsFromQueue(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-FlushEventQueue(EventQueueRef inQueue);
-
+FlushEventQueue( EventQueueRef inQueue );
 
 /*
  *  FindSpecificEventInQueue()
@@ -1002,10 +986,9 @@ FlushEventQueue(EventQueueRef inQueue);
  */
 EXTERN_API( EventRef )
 FindSpecificEventInQueue(
-  EventQueueRef        inQueue,
-  EventComparatorUPP   inComparator,
-  void *               inCompareData);
-
+    EventQueueRef      inQueue,
+    EventComparatorUPP inComparator,
+    void *             inCompareData );
 
 /*
  *  GetNumEventsInQueue()
@@ -1027,8 +1010,7 @@ FindSpecificEventInQueue(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt32 )
-GetNumEventsInQueue(EventQueueRef inQueue);
-
+GetNumEventsInQueue( EventQueueRef inQueue );
 
 /*
  *  RemoveEventFromQueue()
@@ -1057,9 +1039,8 @@ GetNumEventsInQueue(EventQueueRef inQueue);
  */
 EXTERN_API( OSStatus )
 RemoveEventFromQueue(
-  EventQueueRef   inQueue,
-  EventRef        inEvent);
-
+    EventQueueRef inQueue,
+    EventRef      inEvent );
 
 /*
  *  IsEventInQueue()
@@ -1085,9 +1066,8 @@ RemoveEventFromQueue(
  */
 EXTERN_API( Boolean )
 IsEventInQueue(
-  EventQueueRef   inQueue,
-  EventRef        inEvent);
-
+    EventQueueRef inQueue,
+    EventRef      inEvent );
 
 /*--------------------------------------------------------------------------------------*/
 /*  Queue-synchronized event state                                                      */
@@ -1118,8 +1098,7 @@ IsEventInQueue(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( EventRef )
-GetCurrentEvent(void);
-
+GetCurrentEvent( void );
 
 /*
  *  GetCurrentEventButtonState()
@@ -1164,8 +1143,7 @@ GetCurrentEvent(void);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( UInt32 )
-GetCurrentEventButtonState(void);
-
+GetCurrentEventButtonState( void );
 
 /*
  *  GetCurrentEventKeyModifiers()
@@ -1210,8 +1188,7 @@ GetCurrentEventButtonState(void);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( UInt32 )
-GetCurrentEventKeyModifiers(void);
-
+GetCurrentEventKeyModifiers( void );
 
 /*--------------------------------------------------------------------------------------*/
 /*  Multiple-button support                                                             */
@@ -1252,8 +1229,7 @@ GetCurrentEventKeyModifiers(void);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( UInt32 )
-GetCurrentButtonState(void);
-
+GetCurrentButtonState( void );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Helpful utilities                                                                 */
@@ -1274,8 +1250,7 @@ GetCurrentButtonState(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( EventTime )
-GetCurrentEventTime(void);
-
+GetCurrentEventTime( void );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Timers                                                                            */
@@ -1312,7 +1287,7 @@ GetCurrentEventTime(void);
  *    current port so that calling your timer doesn't inadvertently
  *    change the port out from under someone.
  */
-typedef struct __EventLoopTimer*        EventLoopTimerRef;
+typedef struct __EventLoopTimer *EventLoopTimerRef;
 
 /*
  *  EventLoopTimerProcPtr
@@ -1328,7 +1303,7 @@ typedef struct __EventLoopTimer*        EventLoopTimerRef;
  *    inUserData:
  *      The data passed into InstallEventLoopTimer.
  */
-typedef CALLBACK_API( void , EventLoopTimerProcPtr )(EventLoopTimerRef inTimer, void *inUserData);
+typedef CALLBACK_API( void, EventLoopTimerProcPtr )( EventLoopTimerRef inTimer, void *inUserData );
 
 /*
  *  Discussion:
@@ -1336,29 +1311,29 @@ typedef CALLBACK_API( void , EventLoopTimerProcPtr )(EventLoopTimerRef inTimer, 
  */
 enum {
 
-  /*
+	/*
    * The user has gone idle (not touched an input device) for the
    * duration specified in your idle timer. This is the first message
    * you will receive. Start your engines!
    */
-  kEventLoopIdleTimerStarted    = 1,
+	kEventLoopIdleTimerStarted = 1,
 
-  /*
+	/*
    * If you specified an interval on your idle timer, your idle timer
    * proc will be called with this message, letting you know it is
    * merely firing at the interval specified. If you did not specify an
    * interval, this message is not sent.
    */
-  kEventLoopIdleTimerIdling     = 2,
+	kEventLoopIdleTimerIdling = 2,
 
-  /*
+	/*
    * The user is back! Stop everything! This is your cue to stop any
    * processing if you need to.
    */
-  kEventLoopIdleTimerStopped    = 3
+	kEventLoopIdleTimerStopped = 3
 };
 
-typedef UInt16                          EventLoopIdleTimerMessage;
+typedef UInt16 EventLoopIdleTimerMessage;
 
 /*
  *  EventLoopIdleTimerProcPtr
@@ -1377,9 +1352,9 @@ typedef UInt16                          EventLoopIdleTimerMessage;
  *    inUserData:
  *      The data passed into InstallEventLoopTimer.
  */
-typedef CALLBACK_API( void , EventLoopIdleTimerProcPtr )(EventLoopTimerRef inTimer, EventLoopIdleTimerMessage inState, void *inUserData);
-typedef STACK_UPP_TYPE(EventLoopTimerProcPtr)                   EventLoopTimerUPP;
-typedef STACK_UPP_TYPE(EventLoopIdleTimerProcPtr)               EventLoopIdleTimerUPP;
+typedef CALLBACK_API( void, EventLoopIdleTimerProcPtr )( EventLoopTimerRef inTimer, EventLoopIdleTimerMessage inState, void *inUserData );
+typedef STACK_UPP_TYPE( EventLoopTimerProcPtr ) EventLoopTimerUPP;
+typedef STACK_UPP_TYPE( EventLoopIdleTimerProcPtr ) EventLoopIdleTimerUPP;
 /*
  *  NewEventLoopTimerUPP()
  *  
@@ -1389,14 +1364,17 @@ typedef STACK_UPP_TYPE(EventLoopIdleTimerProcPtr)               EventLoopIdleTim
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( EventLoopTimerUPP )
-NewEventLoopTimerUPP(EventLoopTimerProcPtr userRoutine);
+NewEventLoopTimerUPP( EventLoopTimerProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppEventLoopTimerProcInfo = 0x000003C0 };  /* pascal no_return_value Func(4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(EventLoopTimerUPP) NewEventLoopTimerUPP(EventLoopTimerProcPtr userRoutine) { return (EventLoopTimerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventLoopTimerProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewEventLoopTimerUPP(userRoutine) (EventLoopTimerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventLoopTimerProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppEventLoopTimerProcInfo = 0x000003C0 }; /* pascal no_return_value Func(4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( EventLoopTimerUPP ) NewEventLoopTimerUPP( EventLoopTimerProcPtr userRoutine )
+{
+	return (EventLoopTimerUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventLoopTimerProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewEventLoopTimerUPP( userRoutine ) ( EventLoopTimerUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventLoopTimerProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -1409,17 +1387,20 @@ NewEventLoopTimerUPP(EventLoopTimerProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( EventLoopIdleTimerUPP )
-NewEventLoopIdleTimerUPP(EventLoopIdleTimerProcPtr userRoutine);
+NewEventLoopIdleTimerUPP( EventLoopIdleTimerProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppEventLoopIdleTimerProcInfo = 0x00000EC0 };  /* pascal no_return_value Func(4_bytes, 2_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(EventLoopIdleTimerUPP) NewEventLoopIdleTimerUPP(EventLoopIdleTimerProcPtr userRoutine) { return (EventLoopIdleTimerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventLoopIdleTimerProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewEventLoopIdleTimerUPP(userRoutine) (EventLoopIdleTimerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventLoopIdleTimerProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppEventLoopIdleTimerProcInfo = 0x00000EC0 }; /* pascal no_return_value Func(4_bytes, 2_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( EventLoopIdleTimerUPP ) NewEventLoopIdleTimerUPP( EventLoopIdleTimerProcPtr userRoutine )
+{
+	return (EventLoopIdleTimerUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventLoopIdleTimerProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewEventLoopIdleTimerUPP( userRoutine ) ( EventLoopIdleTimerUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventLoopIdleTimerProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  DisposeEventLoopTimerUPP()
@@ -1430,13 +1411,16 @@ NewEventLoopIdleTimerUPP(EventLoopIdleTimerProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeEventLoopTimerUPP(EventLoopTimerUPP userUPP);
+DisposeEventLoopTimerUPP( EventLoopTimerUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeEventLoopTimerUPP(EventLoopTimerUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeEventLoopTimerUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeEventLoopTimerUPP( EventLoopTimerUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeEventLoopTimerUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -1449,16 +1433,19 @@ DisposeEventLoopTimerUPP(EventLoopTimerUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeEventLoopIdleTimerUPP(EventLoopIdleTimerUPP userUPP);
+DisposeEventLoopIdleTimerUPP( EventLoopIdleTimerUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeEventLoopIdleTimerUPP(EventLoopIdleTimerUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeEventLoopIdleTimerUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeEventLoopIdleTimerUPP( EventLoopIdleTimerUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeEventLoopIdleTimerUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  InvokeEventLoopTimerUPP()
@@ -1470,15 +1457,18 @@ DisposeEventLoopIdleTimerUPP(EventLoopIdleTimerUPP userUPP);
  */
 EXTERN_API_C( void )
 InvokeEventLoopTimerUPP(
-  EventLoopTimerRef  inTimer,
-  void *             inUserData,
-  EventLoopTimerUPP  userUPP);
+    EventLoopTimerRef inTimer,
+    void *            inUserData,
+    EventLoopTimerUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeEventLoopTimerUPP(EventLoopTimerRef inTimer, void * inUserData, EventLoopTimerUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppEventLoopTimerProcInfo, inTimer, inUserData); }
-  #else
-    #define InvokeEventLoopTimerUPP(inTimer, inUserData, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppEventLoopTimerProcInfo, (inTimer), (inUserData))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeEventLoopTimerUPP( EventLoopTimerRef inTimer, void *inUserData, EventLoopTimerUPP userUPP )
+{
+	CALL_TWO_PARAMETER_UPP( userUPP, uppEventLoopTimerProcInfo, inTimer, inUserData );
+}
+#else
+#define InvokeEventLoopTimerUPP( inTimer, inUserData, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppEventLoopTimerProcInfo, ( inTimer ), ( inUserData ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -1492,26 +1482,29 @@ InvokeEventLoopTimerUPP(
  */
 EXTERN_API_C( void )
 InvokeEventLoopIdleTimerUPP(
-  EventLoopTimerRef          inTimer,
-  EventLoopIdleTimerMessage  inState,
-  void *                     inUserData,
-  EventLoopIdleTimerUPP      userUPP);
+    EventLoopTimerRef         inTimer,
+    EventLoopIdleTimerMessage inState,
+    void *                    inUserData,
+    EventLoopIdleTimerUPP     userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeEventLoopIdleTimerUPP(EventLoopTimerRef inTimer, EventLoopIdleTimerMessage inState, void * inUserData, EventLoopIdleTimerUPP userUPP) { CALL_THREE_PARAMETER_UPP(userUPP, uppEventLoopIdleTimerProcInfo, inTimer, inState, inUserData); }
-  #else
-    #define InvokeEventLoopIdleTimerUPP(inTimer, inState, inUserData, userUPP) CALL_THREE_PARAMETER_UPP((userUPP), uppEventLoopIdleTimerProcInfo, (inTimer), (inState), (inUserData))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeEventLoopIdleTimerUPP( EventLoopTimerRef inTimer, EventLoopIdleTimerMessage inState, void *inUserData, EventLoopIdleTimerUPP userUPP )
+{
+	CALL_THREE_PARAMETER_UPP( userUPP, uppEventLoopIdleTimerProcInfo, inTimer, inState, inUserData );
+}
+#else
+#define InvokeEventLoopIdleTimerUPP( inTimer, inState, inUserData, userUPP ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppEventLoopIdleTimerProcInfo, ( inTimer ), ( inState ), ( inUserData ) )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewEventLoopTimerProc(userRoutine)                  NewEventLoopTimerUPP(userRoutine)
-    #define NewEventLoopIdleTimerProc(userRoutine)              NewEventLoopIdleTimerUPP(userRoutine)
-    #define CallEventLoopTimerProc(userRoutine, inTimer, inUserData) InvokeEventLoopTimerUPP(inTimer, inUserData, userRoutine)
-    #define CallEventLoopIdleTimerProc(userRoutine, inTimer, inState, inUserData) InvokeEventLoopIdleTimerUPP(inTimer, inState, inUserData, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewEventLoopTimerProc( userRoutine ) NewEventLoopTimerUPP( userRoutine )
+#define NewEventLoopIdleTimerProc( userRoutine ) NewEventLoopIdleTimerUPP( userRoutine )
+#define CallEventLoopTimerProc( userRoutine, inTimer, inUserData ) InvokeEventLoopTimerUPP( inTimer, inUserData, userRoutine )
+#define CallEventLoopIdleTimerProc( userRoutine, inTimer, inState, inUserData ) InvokeEventLoopIdleTimerUPP( inTimer, inState, inUserData, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -1563,13 +1556,12 @@ InvokeEventLoopIdleTimerUPP(
  */
 EXTERN_API( OSStatus )
 InstallEventLoopTimer(
-  EventLoopRef         inEventLoop,
-  EventTimerInterval   inFireDelay,
-  EventTimerInterval   inInterval,
-  EventLoopTimerUPP    inTimerProc,
-  void *               inTimerData,
-  EventLoopTimerRef *  outTimer);
-
+    EventLoopRef       inEventLoop,
+    EventTimerInterval inFireDelay,
+    EventTimerInterval inInterval,
+    EventLoopTimerUPP  inTimerProc,
+    void *             inTimerData,
+    EventLoopTimerRef *outTimer );
 
 /*
  *  InstallEventLoopIdleTimer()
@@ -1624,13 +1616,12 @@ InstallEventLoopTimer(
  */
 EXTERN_API( OSStatus )
 InstallEventLoopIdleTimer(
-  EventLoopRef            inEventLoop,
-  EventTimerInterval      inDelay,
-  EventTimerInterval      inInterval,
-  EventLoopIdleTimerUPP   inTimerProc,
-  void *                  inTimerData,
-  EventLoopTimerRef *     outTimer);
-
+    EventLoopRef          inEventLoop,
+    EventTimerInterval    inDelay,
+    EventTimerInterval    inInterval,
+    EventLoopIdleTimerUPP inTimerProc,
+    void *                inTimerData,
+    EventLoopTimerRef *   outTimer );
 
 /* GOING AWAY!!!! DO NOT CALL THIS API!!!!! USE INSTALLEVENTLOOPIDLETIMER ABOVE!!!! */
 /*
@@ -1643,13 +1634,12 @@ InstallEventLoopIdleTimer(
  */
 EXTERN_API( OSStatus )
 InstallIdleTimer(
-  EventLoopRef         inEventLoop,
-  EventTimerInterval   inDelay,
-  EventTimerInterval   inInterval,
-  EventLoopTimerUPP    inTimerProc,
-  void *               inTimerData,
-  EventLoopTimerRef *  outTimer);
-
+    EventLoopRef       inEventLoop,
+    EventTimerInterval inDelay,
+    EventTimerInterval inInterval,
+    EventLoopTimerUPP  inTimerProc,
+    void *             inTimerData,
+    EventLoopTimerRef *outTimer );
 
 /*
  *  RemoveEventLoopTimer()
@@ -1673,8 +1663,7 @@ InstallIdleTimer(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-RemoveEventLoopTimer(EventLoopTimerRef inTimer);
-
+RemoveEventLoopTimer( EventLoopTimerRef inTimer );
 
 /*
  *  SetEventLoopTimerNextFireTime()
@@ -1709,18 +1698,15 @@ RemoveEventLoopTimer(EventLoopTimerRef inTimer);
  */
 EXTERN_API( OSStatus )
 SetEventLoopTimerNextFireTime(
-  EventLoopTimerRef    inTimer,
-  EventTimerInterval   inNextFire);
-
-
-
+    EventLoopTimerRef  inTimer,
+    EventTimerInterval inNextFire );
 
 /*======================================================================================*/
 /*  EVENT HANDLERS                                                                      */
 /*======================================================================================*/
 
-typedef struct OpaqueEventHandlerRef*   EventHandlerRef;
-typedef struct OpaqueEventHandlerCallRef*  EventHandlerCallRef;
+typedef struct OpaqueEventHandlerRef *    EventHandlerRef;
+typedef struct OpaqueEventHandlerCallRef *EventHandlerCallRef;
 
 /*--------------------------------------------------------------------------------------*/
 /*  o EventHandler specification                                                        */
@@ -1753,8 +1739,8 @@ typedef struct OpaqueEventHandlerCallRef*  EventHandlerCallRef;
  *    not handle the event and perhaps the toolbox should take other
  *    action.
  */
-typedef CALLBACK_API( OSStatus , EventHandlerProcPtr )(EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData);
-typedef STACK_UPP_TYPE(EventHandlerProcPtr)                     EventHandlerUPP;
+typedef CALLBACK_API( OSStatus, EventHandlerProcPtr )( EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData );
+typedef STACK_UPP_TYPE( EventHandlerProcPtr ) EventHandlerUPP;
 /*
  *  NewEventHandlerUPP()
  *  
@@ -1764,14 +1750,17 @@ typedef STACK_UPP_TYPE(EventHandlerProcPtr)                     EventHandlerUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( EventHandlerUPP )
-NewEventHandlerUPP(EventHandlerProcPtr userRoutine);
+NewEventHandlerUPP( EventHandlerProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppEventHandlerProcInfo = 0x00000FF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(EventHandlerUPP) NewEventHandlerUPP(EventHandlerProcPtr userRoutine) { return (EventHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventHandlerProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewEventHandlerUPP(userRoutine) (EventHandlerUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppEventHandlerProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppEventHandlerProcInfo = 0x00000FF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( EventHandlerUPP ) NewEventHandlerUPP( EventHandlerProcPtr userRoutine )
+{
+	return (EventHandlerUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventHandlerProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewEventHandlerUPP( userRoutine ) ( EventHandlerUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppEventHandlerProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -1783,13 +1772,16 @@ NewEventHandlerUPP(EventHandlerProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeEventHandlerUPP(EventHandlerUPP userUPP);
+DisposeEventHandlerUPP( EventHandlerUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeEventHandlerUPP(EventHandlerUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeEventHandlerUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeEventHandlerUPP( EventHandlerUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeEventHandlerUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -1802,25 +1794,28 @@ DisposeEventHandlerUPP(EventHandlerUPP userUPP);
  */
 EXTERN_API_C( OSStatus )
 InvokeEventHandlerUPP(
-  EventHandlerCallRef  inHandlerCallRef,
-  EventRef             inEvent,
-  void *               inUserData,
-  EventHandlerUPP      userUPP);
+    EventHandlerCallRef inHandlerCallRef,
+    EventRef            inEvent,
+    void *              inUserData,
+    EventHandlerUPP     userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSStatus) InvokeEventHandlerUPP(EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void * inUserData, EventHandlerUPP userUPP) { return (OSStatus)CALL_THREE_PARAMETER_UPP(userUPP, uppEventHandlerProcInfo, inHandlerCallRef, inEvent, inUserData); }
-  #else
-    #define InvokeEventHandlerUPP(inHandlerCallRef, inEvent, inUserData, userUPP) (OSStatus)CALL_THREE_PARAMETER_UPP((userUPP), uppEventHandlerProcInfo, (inHandlerCallRef), (inEvent), (inUserData))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSStatus ) InvokeEventHandlerUPP( EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData, EventHandlerUPP userUPP )
+{
+	return (OSStatus)CALL_THREE_PARAMETER_UPP( userUPP, uppEventHandlerProcInfo, inHandlerCallRef, inEvent, inUserData );
+}
+#else
+#define InvokeEventHandlerUPP( inHandlerCallRef, inEvent, inUserData, userUPP ) ( OSStatus ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppEventHandlerProcInfo, ( inHandlerCallRef ), ( inEvent ), ( inUserData ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewEventHandlerProc(userRoutine)                    NewEventHandlerUPP(userRoutine)
-    #define CallEventHandlerProc(userRoutine, inHandlerCallRef, inEvent, inUserData) InvokeEventHandlerUPP(inHandlerCallRef, inEvent, inUserData, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewEventHandlerProc( userRoutine ) NewEventHandlerUPP( userRoutine )
+#define CallEventHandlerProc( userRoutine, inHandlerCallRef, inEvent, inUserData ) InvokeEventHandlerUPP( inHandlerCallRef, inEvent, inUserData, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
-typedef struct OpaqueEventTargetRef*    EventTargetRef;
+typedef struct OpaqueEventTargetRef *EventTargetRef;
 /*--------------------------------------------------------------------------------------*/
 /*  o Installing Event Handlers                                                         */
 /*                                                                                      */
@@ -1886,13 +1881,12 @@ typedef struct OpaqueEventTargetRef*    EventTargetRef;
  */
 EXTERN_API( OSStatus )
 InstallEventHandler(
-  EventTargetRef         inTarget,
-  EventHandlerUPP        inHandler,
-  UInt32                 inNumTypes,
-  const EventTypeSpec *  inList,
-  void *                 inUserData,
-  EventHandlerRef *      outRef);          /* can be NULL */
-
+    EventTargetRef       inTarget,
+    EventHandlerUPP      inHandler,
+    UInt32               inNumTypes,
+    const EventTypeSpec *inList,
+    void *               inUserData,
+    EventHandlerRef *    outRef ); /* can be NULL */
 
 /*
  *  InstallStandardEventHandler()
@@ -1903,8 +1897,7 @@ InstallEventHandler(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-InstallStandardEventHandler(EventTargetRef inTarget);
-
+InstallStandardEventHandler( EventTargetRef inTarget );
 
 /*
  *  RemoveEventHandler()
@@ -1928,8 +1921,7 @@ InstallStandardEventHandler(EventTargetRef inTarget);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-RemoveEventHandler(EventHandlerRef inHandlerRef);
-
+RemoveEventHandler( EventHandlerRef inHandlerRef );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Adjusting set of event types after a handler is created                           */
@@ -1974,10 +1966,9 @@ RemoveEventHandler(EventHandlerRef inHandlerRef);
  */
 EXTERN_API( OSStatus )
 AddEventTypesToHandler(
-  EventHandlerRef        inHandlerRef,
-  UInt32                 inNumTypes,
-  const EventTypeSpec *  inList);
-
+    EventHandlerRef      inHandlerRef,
+    UInt32               inNumTypes,
+    const EventTypeSpec *inList );
 
 /*
  *  RemoveEventTypesFromHandler()
@@ -2007,10 +1998,9 @@ AddEventTypesToHandler(
  */
 EXTERN_API( OSStatus )
 RemoveEventTypesFromHandler(
-  EventHandlerRef        inHandlerRef,
-  UInt32                 inNumTypes,
-  const EventTypeSpec *  inList);
-
+    EventHandlerRef      inHandlerRef,
+    UInt32               inNumTypes,
+    const EventTypeSpec *inList );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Explicit Propogation                                                              */
@@ -2051,10 +2041,8 @@ RemoveEventTypesFromHandler(
  */
 EXTERN_API( OSStatus )
 CallNextEventHandler(
-  EventHandlerCallRef   inCallRef,
-  EventRef              inEvent);
-
-
+    EventHandlerCallRef inCallRef,
+    EventRef            inEvent );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Sending Events                                                                    */
@@ -2066,15 +2054,15 @@ CallNextEventHandler(
  */
 enum {
 
-  /*
+	/*
    * The event should be sent to the target given only, and should not
    * propagate to any other target. CallNextEventHandler will do
    * nothing in a handler which has received an event sent in this
    * manner.
    */
-  kEventTargetDontPropagate     = (1 << 0),
+	kEventTargetDontPropagate = ( 1 << 0 ),
 
-  /*
+	/*
    * The event is a notification-style event, and should be received by
    * all handlers. The result is usually meaningless when sent in this
    * manner, though we do maintain the strongest result code while the
@@ -2084,7 +2072,7 @@ enum {
    * No handler can stop this event from propagating, i.e. the result
    * code does not alter event flow.
    */
-  kEventTargetSendToAllHandlers = (1 << 1)
+	kEventTargetSendToAllHandlers = ( 1 << 1 )
 };
 
 /*
@@ -2111,9 +2099,8 @@ enum {
  */
 EXTERN_API( OSStatus )
 SendEventToEventTarget(
-  EventRef         inEvent,
-  EventTargetRef   inTarget);
-
+    EventRef       inEvent,
+    EventTargetRef inTarget );
 
 /*
  *  SendEventToEventTargetWithOptions()
@@ -2145,19 +2132,16 @@ SendEventToEventTarget(
  */
 EXTERN_API_C( OSStatus )
 SendEventToEventTargetWithOptions(
-  EventRef         inEvent,
-  EventTargetRef   inTarget,
-  OptionBits       inOptions);
-
-
-
+    EventRef       inEvent,
+    EventTargetRef inTarget,
+    OptionBits     inOptions );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2171,4 +2155,3 @@ SendEventToEventTargetWithOptions(
 #endif
 
 #endif /* __CARBONEVENTSCORE__ */
-

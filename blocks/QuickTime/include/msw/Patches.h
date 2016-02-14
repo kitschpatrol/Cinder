@@ -21,9 +21,6 @@
 #include <MacTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -38,17 +35,17 @@ extern "C" {
 
 #if CALL_NOT_IN_CARBON
 enum {
-  kOSTrapType                   = 0,
-  kToolboxTrapType              = 1
+	kOSTrapType = 0,
+	kToolboxTrapType = 1
 };
 
-typedef SignedByte                      TrapType;
+typedef SignedByte TrapType;
 enum {
-  OSTrap                        = kOSTrapType, /* old name */
-  ToolTrap                      = kToolboxTrapType /* old name */
+	OSTrap = kOSTrapType, /* old name */
+	ToolTrap = kToolboxTrapType /* old name */
 };
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
     GetTrapAddress and SetTrapAddress are obsolete and should not
@@ -66,11 +63,10 @@ enum {
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __A0 GetTrapAddress(__D0)
+#pragma parameter __A0 GetTrapAddress( __D0 )
 #endif
 EXTERN_API( UniversalProcPtr )
-GetTrapAddress(UInt16 trapNum)                                ONEWORDINLINE(0xA146);
-
+GetTrapAddress( UInt16 trapNum ) ONEWORDINLINE( 0xA146 );
 
 /*
  *  SetTrapAddress()
@@ -81,17 +77,16 @@ GetTrapAddress(UInt16 trapNum)                                ONEWORDINLINE(0xA1
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter SetTrapAddress(__A0, __D0)
+#pragma parameter SetTrapAddress( __A0, __D0 )
 #endif
 EXTERN_API( void )
 SetTrapAddress(
-  UniversalProcPtr   trapAddr,
-  UInt16             trapNum)                                 ONEWORDINLINE(0xA047);
+    UniversalProcPtr trapAddr,
+    UInt16           trapNum ) ONEWORDINLINE( 0xA047 );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_CPU_68K && !TARGET_RT_MAC_CFM */
+#endif /* TARGET_CPU_68K && !TARGET_RT_MAC_CFM */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -104,9 +99,8 @@ SetTrapAddress(
  */
 EXTERN_API( UniversalProcPtr )
 NGetTrapAddress(
-  UInt16     trapNum,
-  TrapType   tTyp);
-
+    UInt16   trapNum,
+    TrapType tTyp );
 
 /*
  *  NSetTrapAddress()
@@ -118,12 +112,11 @@ NGetTrapAddress(
  */
 EXTERN_API( void )
 NSetTrapAddress(
-  UniversalProcPtr   trapAddr,
-  UInt16             trapNum,
-  TrapType           tTyp);
+    UniversalProcPtr trapAddr,
+    UInt16           trapNum,
+    TrapType         tTyp );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -135,11 +128,10 @@ NSetTrapAddress(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __A0 GetOSTrapAddress(__D0)
+#pragma parameter __A0 GetOSTrapAddress( __D0 )
 #endif
 EXTERN_API( UniversalProcPtr )
-GetOSTrapAddress(UInt16 trapNum)                              ONEWORDINLINE(0xA346);
-
+GetOSTrapAddress( UInt16 trapNum ) ONEWORDINLINE( 0xA346 );
 
 /*
  *  SetOSTrapAddress()
@@ -150,13 +142,12 @@ GetOSTrapAddress(UInt16 trapNum)                              ONEWORDINLINE(0xA3
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter SetOSTrapAddress(__A0, __D0)
+#pragma parameter SetOSTrapAddress( __A0, __D0 )
 #endif
 EXTERN_API( void )
 SetOSTrapAddress(
-  UniversalProcPtr   trapAddr,
-  UInt16             trapNum)                                 ONEWORDINLINE(0xA247);
-
+    UniversalProcPtr trapAddr,
+    UInt16           trapNum ) ONEWORDINLINE( 0xA247 );
 
 /*
  *  GetToolTrapAddress()
@@ -167,11 +158,10 @@ SetOSTrapAddress(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __A0 GetToolTrapAddress(__D0)
+#pragma parameter __A0 GetToolTrapAddress( __D0 )
 #endif
 EXTERN_API( UniversalProcPtr )
-GetToolTrapAddress(UInt16 trapNum)                            ONEWORDINLINE(0xA746);
-
+GetToolTrapAddress( UInt16 trapNum ) ONEWORDINLINE( 0xA746 );
 
 /*
  *  SetToolTrapAddress()
@@ -182,13 +172,12 @@ GetToolTrapAddress(UInt16 trapNum)                            ONEWORDINLINE(0xA7
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter SetToolTrapAddress(__A0, __D0)
+#pragma parameter SetToolTrapAddress( __A0, __D0 )
 #endif
 EXTERN_API( void )
 SetToolTrapAddress(
-  UniversalProcPtr   trapAddr,
-  UInt16             trapNum)                                 ONEWORDINLINE(0xA647);
-
+    UniversalProcPtr trapAddr,
+    UInt16           trapNum ) ONEWORDINLINE( 0xA647 );
 
 /*
  *  GetToolboxTrapAddress()
@@ -199,11 +188,10 @@ SetToolTrapAddress(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter __A0 GetToolboxTrapAddress(__D0)
+#pragma parameter __A0 GetToolboxTrapAddress( __D0 )
 #endif
 EXTERN_API( UniversalProcPtr )
-GetToolboxTrapAddress(UInt16 trapNum)                         ONEWORDINLINE(0xA746);
-
+GetToolboxTrapAddress( UInt16 trapNum ) ONEWORDINLINE( 0xA746 );
 
 /*
  *  SetToolboxTrapAddress()
@@ -214,15 +202,14 @@ GetToolboxTrapAddress(UInt16 trapNum)                         ONEWORDINLINE(0xA7
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter SetToolboxTrapAddress(__A0, __D0)
+#pragma parameter SetToolboxTrapAddress( __A0, __D0 )
 #endif
 EXTERN_API( void )
 SetToolboxTrapAddress(
-  UniversalProcPtr   trapAddr,
-  UInt16             trapNum)                                 ONEWORDINLINE(0xA647);
+    UniversalProcPtr trapAddr,
+    UInt16           trapNum ) ONEWORDINLINE( 0xA647 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if TARGET_CPU_PPC
 #if CALL_NOT_IN_CARBON
@@ -235,15 +222,11 @@ SetToolboxTrapAddress(
  *    Mac OS X:         not available
  */
 EXTERN_API( UniversalProcHandle )
-GetTrapVector(UInt16 trapNumber);
+GetTrapVector( UInt16 trapNumber );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_CPU_PPC */
-
-
-
+#endif /* TARGET_CPU_PPC */
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -256,4 +239,3 @@ GetTrapVector(UInt16 trapNumber);
 #endif
 
 #endif /* __PATCHES__ */
-

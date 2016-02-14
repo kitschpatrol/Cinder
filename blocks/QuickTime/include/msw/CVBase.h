@@ -5,32 +5,31 @@
  *  Copyright (c) 2004 Apple Computer, Inc. All rights reserved.
  *
  */
- 
- /*! @header CVBase.h
+
+/*! @header CVBase.h
 	@copyright 2004 Apple Computer, Inc. All rights reserved.
 	@availability Mac OS X 10.4 or later
     @discussion Here you can find the type declarations for CoreVideo. CoreVideo uses a CVTimeStamp structure to store video display time stamps.
 */
 
- 
-#if !defined(__COREVIDEO_CVBASE_H__)
+#if !defined( __COREVIDEO_CVBASE_H__ )
 #define __COREVIDEO_CVBASE_H__ 1
 
-#include <TargetConditionals.h>
 #include <AvailabilityMacros.h>
+#include <TargetConditionals.h>
 
 #if TARGET_OS_MAC
 #include <CoreFoundation/CFBase.h>
 #else
-#include <MacTypes.h>
 #include <CFBase.h>
+#include <MacTypes.h>
 #endif
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 extern "C" {
 #endif
 
-#define CV_EXPORT CF_EXPORT 
+#define CV_EXPORT CF_EXPORT
 #define CV_INLINE CF_INLINE
 
 #if TARGET_OS_WIN32
@@ -69,19 +68,18 @@ typedef uint64_t CVOptionFlags;
     @field          frames
                         The number of frames in the full message.
 */
-struct CVSMPTETime
-{
-    SInt16  subframes;
-    SInt16  subframeDivisor;
-    UInt32  counter;
-    UInt32  type;
-    UInt32  flags;
-    SInt16  hours;
-    SInt16  minutes;
-    SInt16  seconds;
-    SInt16  frames;
+struct CVSMPTETime {
+	SInt16 subframes;
+	SInt16 subframeDivisor;
+	UInt32 counter;
+	UInt32 type;
+	UInt32 flags;
+	SInt16 hours;
+	SInt16 minutes;
+	SInt16 seconds;
+	SInt16 frames;
 };
-typedef struct CVSMPTETime    CVSMPTETime;
+typedef struct CVSMPTETime CVSMPTETime;
 
 /*!
     @enum           SMPTE Time Types
@@ -103,16 +101,15 @@ typedef struct CVSMPTETime    CVSMPTETime;
     @constant       kCVSMPTETimeType5994
                         59.94 Frame
 */
-enum
-{
-    kCVSMPTETimeType24        = 0,
-    kCVSMPTETimeType25        = 1,
-    kCVSMPTETimeType30Drop    = 2,
-    kCVSMPTETimeType30        = 3,
-    kCVSMPTETimeType2997      = 4,
-    kCVSMPTETimeType2997Drop  = 5,
-    kCVSMPTETimeType60        = 6,
-    kCVSMPTETimeType5994      = 7
+enum {
+	kCVSMPTETimeType24 = 0,
+	kCVSMPTETimeType25 = 1,
+	kCVSMPTETimeType30Drop = 2,
+	kCVSMPTETimeType30 = 3,
+	kCVSMPTETimeType2997 = 4,
+	kCVSMPTETimeType2997Drop = 5,
+	kCVSMPTETimeType60 = 6,
+	kCVSMPTETimeType5994 = 7
 };
 
 /*!
@@ -123,22 +120,20 @@ enum
     @constant       kCVSMPTETimeRunning
                         Time is running.
 */
-enum
-{
-    kCVSMPTETimeValid     = (1L << 0),
-    kCVSMPTETimeRunning   = (1L << 1)
+enum {
+	kCVSMPTETimeValid = ( 1L << 0 ),
+	kCVSMPTETimeRunning = ( 1L << 1 )
 };
 
-
 enum {
-    kCVTimeIsIndefinite = 1 << 0
+	kCVTimeIsIndefinite = 1 << 0
 };
 
 typedef struct
-{
-    int64_t	    timeValue;
-    int32_t	    timeScale;
-    int32_t	    flags;
+    {
+	int64_t timeValue;
+	int32_t timeScale;
+	int32_t flags;
 } CVTime;
 
 /*!
@@ -169,43 +164,41 @@ typedef struct
 
 */
 typedef struct
-{
-    uint32_t			version;		// Currently will be 0.
-    int32_t			videoTimeScale;     	// Video timescale (units per second)
-    int64_t			videoTime;		// This represents the start of a frame (or field for interlaced) .. think vsync  - still not 100% sure on the name
-    uint64_t			hostTime;		// Host root timebase time
-    double			rateScalar;		// Current rate as measured by the timestamps divided by the nominal rate
-    int64_t			videoRefreshPeriod;    	// Hint for nominal output rate
-    CVSMPTETime			smpteTime;
-    uint64_t			flags;
-    uint64_t			reserved;
-} CVTimeStamp; 
+    {
+	uint32_t    version; // Currently will be 0.
+	int32_t     videoTimeScale; // Video timescale (units per second)
+	int64_t     videoTime; // This represents the start of a frame (or field for interlaced) .. think vsync  - still not 100% sure on the name
+	uint64_t    hostTime; // Host root timebase time
+	double      rateScalar; // Current rate as measured by the timestamps divided by the nominal rate
+	int64_t     videoRefreshPeriod; // Hint for nominal output rate
+	CVSMPTETime smpteTime;
+	uint64_t    flags;
+	uint64_t    reserved;
+} CVTimeStamp;
 
 // Flags for the CVTimeStamp structure
-enum
-{
-    kCVTimeStampVideoTimeValid              = (1L << 0),
-    kCVTimeStampHostTimeValid               = (1L << 1),
-    kCVTimeStampSMPTETimeValid              = (1L << 2),
-    kCVTimeStampVideoRefreshPeriodValid     = (1L << 3),
-    kCVTimeStampRateScalarValid             = (1L << 4),
-    
-    // There are flags for each field to make it easier to detect interlaced vs progressive output
-    kCVTimeStampTopField                    = (1L << 16),
-    kCVTimeStampBottomField                 = (1L << 17)
+enum {
+	kCVTimeStampVideoTimeValid = ( 1L << 0 ),
+	kCVTimeStampHostTimeValid = ( 1L << 1 ),
+	kCVTimeStampSMPTETimeValid = ( 1L << 2 ),
+	kCVTimeStampVideoRefreshPeriodValid = ( 1L << 3 ),
+	kCVTimeStampRateScalarValid = ( 1L << 4 ),
+
+	// There are flags for each field to make it easier to detect interlaced vs progressive output
+	kCVTimeStampTopField = ( 1L << 16 ),
+	kCVTimeStampBottomField = ( 1L << 17 )
 };
 
 //	Some commonly used combinations of timestamp flags
-enum
-{
-    kCVTimeStampVideoHostTimeValid   = (kCVTimeStampVideoTimeValid | kCVTimeStampHostTimeValid),
-    kCVTimeStampIsInterlaced	     = (kCVTimeStampTopField | kCVTimeStampBottomField)
+enum {
+	kCVTimeStampVideoHostTimeValid = ( kCVTimeStampVideoTimeValid | kCVTimeStampHostTimeValid ),
+	kCVTimeStampIsInterlaced = ( kCVTimeStampTopField | kCVTimeStampBottomField )
 };
 
 CV_EXPORT const CVTime kCVZeroTime;
 CV_EXPORT const CVTime kCVIndefiniteTime;
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 }
 #endif
 

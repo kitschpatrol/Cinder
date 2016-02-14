@@ -1,24 +1,23 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/CinderAssert.h"
 #include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
 
-#include "cinder/audio/GenNode.h"
 #include "cinder/audio/GainNode.h"
+#include "cinder/audio/GenNode.h"
 #include "cinder/audio/MonitorNode.h"
 
 #include "cinder/audio/Utilities.h"
 
-#include "../../common/AudioTestGui.h"
 #include "../../../../samples/_audio/common/AudioDrawUtils.h"
+#include "../../common/AudioTestGui.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-
 class WaveTableTestApp : public App {
-public:
+  public:
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -33,21 +32,20 @@ public:
 	void setupPulse();
 	void setupTriangleCalc();
 
-	audio::GainNodeRef				mGain;
-	audio::MonitorSpectralNodeRef	mMonitor;
-	audio::GenOscNodeRef			mGenOsc;
-	audio::GenPulseNodeRef			mGenPulse;
-	audio::GenNodeRef				mGen;
+	audio::GainNodeRef            mGain;
+	audio::MonitorSpectralNodeRef mMonitor;
+	audio::GenOscNodeRef          mGenOsc;
+	audio::GenPulseNodeRef        mGenPulse;
+	audio::GenNodeRef             mGen;
 
-	audio::BufferDynamic		mTableCopy;
+	audio::BufferDynamic mTableCopy;
 
-	vector<TestWidget *>	mWidgets;
-	Button					mPlayButton;
-	VSelector				mTestSelector;
-	HSlider					mGainSlider, mFreqSlider, mFreqRampSlider, mPulseWidthSlider;
-	TextInput				mNumPartialsInput, mTableSizeInput;
-	SpectrumPlot			mSpectrumPlot;
-
+	vector<TestWidget *> mWidgets;
+	Button               mPlayButton;
+	VSelector            mTestSelector;
+	HSlider              mGainSlider, mFreqSlider, mFreqRampSlider, mPulseWidthSlider;
+	TextInput            mNumPartialsInput, mTableSizeInput;
+	SpectrumPlot         mSpectrumPlot;
 };
 
 void WaveTableTestApp::setup()
@@ -62,8 +60,8 @@ void WaveTableTestApp::setup()
 	mFreqSlider.set( 100 );
 
 	setupOsc( audio::WaveformType::SINE );
-//	setupTable();
-//	setupPulse();
+	//	setupTable();
+	//	setupPulse();
 
 	mGen >> mMonitor >> mGain >> ctx->getOutput();
 
@@ -96,7 +94,7 @@ void WaveTableTestApp::setupOsc( audio::WaveformType type )
 
 void WaveTableTestApp::setupPulse()
 {
-	if( ! mGenPulse ) {
+	if( !mGenPulse ) {
 		mGenPulse = audio::master()->makeNode( new audio::GenPulseNode );
 		mGenPulse->setFreq( mFreqSlider.mValueScaled );
 		mGenPulse->enable();
@@ -122,8 +120,8 @@ void WaveTableTestApp::setupPulse()
 	audio::dsp::mul( table.data(), 0.45f, table.data(), table.size() );
 	audio::dsp::add( table.data(), 0.5f, table.data(), table.size() );
 
-//	mTableCopy.setNumFrames( table.size() );
-//	memmove( mTableCopy.getData(), table.data(), table.size() * sizeof( float ) );
+	//	mTableCopy.setNumFrames( table.size() );
+	//	memmove( mTableCopy.getData(), table.data(), table.size() * sizeof( float ) );
 
 	mod->getWaveTable()->copyFrom( table.data() );
 	mod->setFreq( 0.6f );
@@ -196,7 +194,6 @@ void WaveTableTestApp::setupUI()
 	mPulseWidthSlider.set( 0.05f );
 	mWidgets.push_back( &mPulseWidthSlider );
 
-
 	sliderRect += vec2( 0, sliderRect.getHeight() + 30 );
 	mNumPartialsInput.mBounds = sliderRect;
 	mNumPartialsInput.mTitle = "num partials";
@@ -208,10 +205,10 @@ void WaveTableTestApp::setupUI()
 	mTableSizeInput.setValue( mGenOsc ? mGenOsc->getTableSize() : 0 );
 	mWidgets.push_back( &mTableSizeInput );
 
-	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -230,19 +227,18 @@ void WaveTableTestApp::processDrag( ivec2 pos )
 	else if( mFreqRampSlider.hitTest( pos ) ) {
 	}
 	else if( mGenPulse && mPulseWidthSlider.hitTest( pos ) ) {
-//		mGenPulse->setWidth( mPulseWidthSlider.mValueScaled );
+		//		mGenPulse->setWidth( mPulseWidthSlider.mValueScaled );
 		mGenPulse->getParamWidth()->applyRamp( mPulseWidthSlider.mValueScaled, 0.5f );
 	}
-
 }
 
 void WaveTableTestApp::processTap( ivec2 pos )
 {
-	auto ctx = audio::master();
+	auto   ctx = audio::master();
 	size_t currentIndex = mTestSelector.mCurrentSectionIndex;
 
 	if( mPlayButton.hitTest( pos ) )
-		ctx->setEnabled( ! ctx->isEnabled() );
+		ctx->setEnabled( !ctx->isEnabled() );
 	else if( mNumPartialsInput.hitTest( pos ) ) {
 	}
 	else if( mTableSizeInput.hitTest( pos ) ) {
@@ -277,18 +273,17 @@ void WaveTableTestApp::processTap( ivec2 pos )
 void WaveTableTestApp::keyDown( KeyEvent event )
 {
 	TextInput *currentSelected = TextInput::getCurrentSelected();
-	if( ! currentSelected )
+	if( !currentSelected )
 		return;
 
 	if( event.getCode() == KeyEvent::KEY_RETURN ) {
-//		if( currentSelected == &mTableSizeInput ) {
-//			int tableSize = currentSelected->getValue();
-//			CI_LOG_V( "updating table size from: " << mGen->getTableSize() << " to: " << tableSize );
-//			mGen->setWaveform( mGen->getWaveForm(), tableSize );
-//			mTableCopy.setNumFrames( tableSize );
-//			mGen->copyFromTable( mTableCopy.getData() );
-//		}
-
+		//		if( currentSelected == &mTableSizeInput ) {
+		//			int tableSize = currentSelected->getValue();
+		//			CI_LOG_V( "updating table size from: " << mGen->getTableSize() << " to: " << tableSize );
+		//			mGen->setWaveform( mGen->getWaveForm(), tableSize );
+		//			mTableCopy.setNumFrames( tableSize );
+		//			mGen->copyFromTable( mTableCopy.getData() );
+		//		}
 	}
 	else {
 		if( event.getCode() == KeyEvent::KEY_BACKSPACE )

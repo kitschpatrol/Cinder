@@ -24,9 +24,6 @@
 #include <MacTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -39,11 +36,10 @@ extern "C" {
 #pragma import on
 #endif
 
-
 #if TYPE_LONGLONG && TARGET_OS_WIN32
-    #define S64Max() 9223372036854775807i64
-#elif TYPE_LONGLONG && defined(__MWERKS__) && (__MWERKS__ < 0x1800)
-    #define S64Max() 9223372036854775807
+#define S64Max() 9223372036854775807i64
+#elif TYPE_LONGLONG && defined( __MWERKS__ ) && ( __MWERKS__ < 0x1800 )
+#define S64Max() 9223372036854775807
 #else
 /*
  *  S64Max()
@@ -57,15 +53,17 @@ extern "C" {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-S64Max(void);
+S64Max( void );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Max(void) { return 9223372036854775807LL; }
-  #else
-    #define S64Max() (9223372036854775807LL)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Max( void )
+{
+	return 9223372036854775807LL;
+}
+#else
+#define S64Max() ( 9223372036854775807LL )
 #endif
-
+#endif
 
 #endif
 /*
@@ -80,16 +78,17 @@ S64Max(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-S64Min(void);
+S64Min( void );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Min(void) { return -S64Max() - 1; }
-  #else
-    #define S64Min() (-S64Max() - 1)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Min( void )
+{
+	return -S64Max() - 1;
+}
+#else
+#define S64Min() ( -S64Max() - 1 )
 #endif
-
-
+#endif
 
 /*
  *  S64Add()
@@ -106,17 +105,18 @@ S64Min(void);
  */
 EXTERN_API_C( SInt64 )
 S64Add(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Add(SInt64 left, SInt64 right) { return (SInt64)(left) + (SInt64)(right); }
-  #else
-    #define S64Add(left, right) ((SInt64)(left) + (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Add( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) + ( SInt64 )( right );
+}
+#else
+#define S64Add( left, right ) ( ( SInt64 )( left ) + ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Subtract()
@@ -133,17 +133,18 @@ S64Add(
  */
 EXTERN_API_C( SInt64 )
 S64Subtract(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Subtract(SInt64 left, SInt64 right) { return (SInt64)(left) - (SInt64)(right); }
-  #else
-    #define S64Subtract(left, right) ((SInt64)(left) - (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Subtract( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) - ( SInt64 )( right );
+}
+#else
+#define S64Subtract( left, right ) ( ( SInt64 )( left ) - ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Negate()
@@ -159,16 +160,17 @@ S64Subtract(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-S64Negate(SInt64 value);
+S64Negate( SInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Negate(SInt64 value) { return -(SInt64)(value); }
-  #else
-    #define S64Negate(value) (-(SInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Negate( SInt64 value )
+{
+	return -( SInt64 )( value );
+}
+#else
+#define S64Negate( value ) ( -( SInt64 )( value ) )
 #endif
-
-
+#endif
 
 #if !TYPE_LONGLONG
 /*
@@ -186,17 +188,19 @@ S64Negate(SInt64 value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-S64Absolute(SInt64 value);
+S64Absolute( SInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Absolute(SInt64 value) { return llabs((SInt64)value); }
-  #else
-    #define S64Absolute(value) (llabs((SInt64)value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Absolute( SInt64 value )
+{
+	return llabs( (SInt64)value );
+}
+#else
+#define S64Absolute( value ) ( llabs( (SInt64)value ) )
+#endif
 #endif
 
-
-#endif  /* !TYPE_LONGLONG */
+#endif /* !TYPE_LONGLONG */
 
 /*
  *  S64Multiply()
@@ -214,17 +218,18 @@ S64Absolute(SInt64 value);
  */
 EXTERN_API_C( SInt64 )
 S64Multiply(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Multiply(SInt64 left, SInt64 right) { return (SInt64)(left) * (SInt64)(right); }
-  #else
-    #define S64Multiply(left, right) ((SInt64)(left) * (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Multiply( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) * ( SInt64 )( right );
+}
+#else
+#define S64Multiply( left, right ) ( ( SInt64 )( left ) * ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Mod()
@@ -240,18 +245,18 @@ S64Multiply(
  */
 EXTERN_API_C( SInt64 )
 S64Mod(
-  SInt64   dividend,
-  SInt64   divisor);
+    SInt64 dividend,
+    SInt64 divisor );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Mod(SInt64 dividend, SInt64 divisor) { return (SInt64)(dividend) % (SInt64)(divisor); }
-  #else
-    #define S64Mod(dividend, divisor) ((SInt64)(dividend) % (SInt64)(divisor))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Mod( SInt64 dividend, SInt64 divisor )
+{
+	return ( SInt64 )( dividend ) % ( SInt64 )( divisor );
+}
+#else
+#define S64Mod( dividend, divisor ) ( ( SInt64 )( dividend ) % ( SInt64 )( divisor ) )
 #endif
-
-
-
+#endif
 
 /*
  *  S64Divide()
@@ -273,18 +278,19 @@ S64Mod(
  */
 EXTERN_API_C( SInt64 )
 S64Divide(
-  SInt64    dividend,
-  SInt64    divisor,
-  SInt64 *  remainder);      /* can be NULL */
+    SInt64  dividend,
+    SInt64  divisor,
+    SInt64 *remainder ); /* can be NULL */
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Divide(SInt64 dividend, SInt64 divisor, SInt64 *remainder) { return ( (void)((remainder) && (*((SInt64*)(remainder)) = ((SInt64)(dividend) % (SInt64)(divisor)))), ((SInt64)(dividend) / (SInt64)(divisor)) ); }
-  #else
-    #define S64Divide(dividend, divisor, remainder) (( (void)((remainder) && (*((SInt64*)(remainder)) = ((SInt64)(dividend) % (SInt64)(divisor)))), ((SInt64)(dividend) / (SInt64)(divisor)) ))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Divide( SInt64 dividend, SInt64 divisor, SInt64 *remainder )
+{
+	return ( (void)( ( remainder ) && ( *( (SInt64 *)( remainder ) ) = ( ( SInt64 )( dividend ) % ( SInt64 )( divisor ) ) ) ), ( ( SInt64 )( dividend ) / ( SInt64 )( divisor ) ) );
+}
+#else
+#define S64Divide( dividend, divisor, remainder ) ( ( (void)( ( remainder ) && ( *( (SInt64 *)( remainder ) ) = ( ( SInt64 )( dividend ) % ( SInt64 )( divisor ) ) ) ), ( ( SInt64 )( dividend ) / ( SInt64 )( divisor ) ) ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Div()
@@ -297,17 +303,18 @@ S64Divide(
  */
 EXTERN_API_C( SInt64 )
 S64Div(
-  SInt64   dividend,
-  SInt64   divisor);
+    SInt64 dividend,
+    SInt64 divisor );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Div(SInt64 dividend, SInt64 divisor) { return S64Divide((dividend), (divisor), NULL); }
-  #else
-    #define S64Div(dividend, divisor) (S64Divide((dividend), (divisor), NULL))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Div( SInt64 dividend, SInt64 divisor )
+{
+	return S64Divide( ( dividend ), ( divisor ), NULL );
+}
+#else
+#define S64Div( dividend, divisor ) ( S64Divide( ( dividend ), ( divisor ), NULL ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Set()
@@ -323,16 +330,17 @@ S64Div(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-S64Set(SInt32 value);
+S64Set( SInt32 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64Set(SInt32 value) { return (SInt64)(value); }
-  #else
-    #define S64Set(value) ((SInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64Set( SInt32 value )
+{
+	return ( SInt64 )( value );
+}
+#else
+#define S64Set( value ) ( ( SInt64 )( value ) )
 #endif
-
-
+#endif
 
 /*
  *  S64SetU()
@@ -346,15 +354,17 @@ S64Set(SInt32 value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-S64SetU(UInt32 value);
+S64SetU( UInt32 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64SetU(UInt32 value) { return (SInt64)(value); }
-  #else
-    #define S64SetU(value) ((SInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64SetU( UInt32 value )
+{
+	return ( SInt64 )( value );
+}
+#else
+#define S64SetU( value ) ( ( SInt64 )( value ) )
 #endif
-
+#endif
 
 /*
  *  S32Set()
@@ -369,16 +379,17 @@ S64SetU(UInt32 value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt32 )
-S32Set(SInt64 value);
+S32Set( SInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt32 ) S32Set(SInt64 value) { return (SInt32)(value); }
-  #else
-    #define S32Set(value) ((SInt32)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt32 ) S32Set( SInt64 value )
+{
+	return ( SInt32 )( value );
+}
+#else
+#define S32Set( value ) ( ( SInt32 )( value ) )
 #endif
-
-
+#endif
 
 /*
  *  S64And()
@@ -393,17 +404,18 @@ S32Set(SInt64 value);
  */
 EXTERN_API_C( Boolean )
 S64And(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) S64And(SInt64 left, SInt64 right) { return (SInt64)(left) && (SInt64)(right); }
-  #else
-    #define S64And(left, right) ((SInt64)(left) && (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) S64And( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) && ( SInt64 )( right );
+}
+#else
+#define S64And( left, right ) ( ( SInt64 )( left ) && ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Or()
@@ -418,17 +430,18 @@ S64And(
  */
 EXTERN_API_C( Boolean )
 S64Or(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) S64Or(SInt64 left, SInt64 right) { return (SInt64)(left) || (SInt64)(right); }
-  #else
-    #define S64Or(left, right) ((SInt64)(left) || (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) S64Or( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) || ( SInt64 )( right );
+}
+#else
+#define S64Or( left, right ) ( ( SInt64 )( left ) || ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Eor()
@@ -443,17 +456,18 @@ S64Or(
  */
 EXTERN_API_C( Boolean )
 S64Eor(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) S64Eor(SInt64 left, SInt64 right) { return (Boolean)(((SInt64)(left) ? 1 : 0) ^ ((SInt64)(right) ? 1 : 0)); }
-  #else
-    #define S64Eor(left, right) ((Boolean)(((SInt64)(left) ? 1 : 0) ^ ((SInt64)(right) ? 1 : 0)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) S64Eor( SInt64 left, SInt64 right )
+{
+	return ( Boolean )( ( ( SInt64 )( left ) ? 1 : 0 ) ^ ( ( SInt64 )( right ) ? 1 : 0 ) );
+}
+#else
+#define S64Eor( left, right ) ( ( Boolean )( ( ( SInt64 )( left ) ? 1 : 0 ) ^ ( ( SInt64 )( right ) ? 1 : 0 ) ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Not()
@@ -467,16 +481,17 @@ S64Eor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-S64Not(SInt64 value);
+S64Not( SInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) S64Not(SInt64 value) { return !((SInt64)(value)); }
-  #else
-    #define S64Not(value) (!((SInt64)(value)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) S64Not( SInt64 value )
+{
+	return !( ( SInt64 )( value ) );
+}
+#else
+#define S64Not( value ) ( !( ( SInt64 )( value ) ) )
 #endif
-
-
+#endif
 
 /*
  *  S64Compare()
@@ -500,10 +515,8 @@ S64Not(SInt64 value);
  */
 EXTERN_API_C( SInt32 )
 S64Compare(
-  SInt64   left,
-  SInt64   right);
-
-
+    SInt64 left,
+    SInt64 right );
 
 /*
  *  S64BitwiseAnd()
@@ -518,17 +531,18 @@ S64Compare(
  */
 EXTERN_API_C( SInt64 )
 S64BitwiseAnd(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64BitwiseAnd(SInt64 left, SInt64 right) { return (SInt64)(left) & (SInt64)(right); }
-  #else
-    #define S64BitwiseAnd(left, right) ((SInt64)(left) & (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64BitwiseAnd( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) & ( SInt64 )( right );
+}
+#else
+#define S64BitwiseAnd( left, right ) ( ( SInt64 )( left ) & ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64BitwiseOr()
@@ -543,17 +557,18 @@ S64BitwiseAnd(
  */
 EXTERN_API_C( SInt64 )
 S64BitwiseOr(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64BitwiseOr(SInt64 left, SInt64 right) { return (SInt64)(left) | (SInt64)(right); }
-  #else
-    #define S64BitwiseOr(left, right) ((SInt64)(left) | (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64BitwiseOr( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) | ( SInt64 )( right );
+}
+#else
+#define S64BitwiseOr( left, right ) ( ( SInt64 )( left ) | ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64BitwiseEor()
@@ -568,17 +583,18 @@ S64BitwiseOr(
  */
 EXTERN_API_C( SInt64 )
 S64BitwiseEor(
-  SInt64   left,
-  SInt64   right);
+    SInt64 left,
+    SInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64BitwiseEor(SInt64 left, SInt64 right) { return (SInt64)(left) ^ (SInt64)(right); }
-  #else
-    #define S64BitwiseEor(left, right) ((SInt64)(left) ^ (SInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64BitwiseEor( SInt64 left, SInt64 right )
+{
+	return ( SInt64 )( left ) ^ ( SInt64 )( right );
+}
+#else
+#define S64BitwiseEor( left, right ) ( ( SInt64 )( left ) ^ ( SInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  S64BitwiseNot()
@@ -592,16 +608,17 @@ S64BitwiseEor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-S64BitwiseNot(SInt64 value);
+S64BitwiseNot( SInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64BitwiseNot(SInt64 value) { return ~((SInt64)(value)); }
-  #else
-    #define S64BitwiseNot(value) (~((SInt64)(value)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64BitwiseNot( SInt64 value )
+{
+	return ~( ( SInt64 )( value ) );
+}
+#else
+#define S64BitwiseNot( value ) ( ~( ( SInt64 )( value ) ) )
 #endif
-
-
+#endif
 
 /*
  *  S64ShiftRight()
@@ -616,17 +633,18 @@ S64BitwiseNot(SInt64 value);
  */
 EXTERN_API_C( SInt64 )
 S64ShiftRight(
-  SInt64   value,
-  UInt32   shift);
+    SInt64 value,
+    UInt32 shift );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64ShiftRight(SInt64 value, UInt32 shift) { return (SInt64)(value) >> ((shift) & 0x7F); }
-  #else
-    #define S64ShiftRight(value, shift) ((SInt64)(value) >> ((shift) & 0x7F))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64ShiftRight( SInt64 value, UInt32 shift )
+{
+	return ( SInt64 )( value ) >> ( (shift)&0x7F );
+}
+#else
+#define S64ShiftRight( value, shift ) ( ( SInt64 )( value ) >> ( (shift)&0x7F ) )
 #endif
-
-
+#endif
 
 /*
  *  S64ShiftLeft()
@@ -641,17 +659,18 @@ S64ShiftRight(
  */
 EXTERN_API_C( SInt64 )
 S64ShiftLeft(
-  SInt64   value,
-  UInt32   shift);
+    SInt64 value,
+    UInt32 shift );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) S64ShiftLeft(SInt64 value, UInt32 shift) { return (SInt64)(value) << ((shift) & 0x7F); }
-  #else
-    #define S64ShiftLeft(value, shift) ((SInt64)(value) << ((shift) & 0x7F))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) S64ShiftLeft( SInt64 value, UInt32 shift )
+{
+	return ( SInt64 )( value ) << ( (shift)&0x7F );
+}
+#else
+#define S64ShiftLeft( value, shift ) ( ( SInt64 )( value ) << ( (shift)&0x7F ) )
 #endif
-
-
+#endif
 
 #if !TYPE_LONGDOUBLE_IS_DOUBLE
 /*
@@ -671,15 +690,17 @@ S64ShiftLeft(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long double )
-SInt64ToLongDouble(SInt64 value);
+SInt64ToLongDouble( SInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) SInt64ToLongDouble(SInt64 value) { return (long double)(value); }
-  #else
-    #define SInt64ToLongDouble(value) ((long double)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) SInt64ToLongDouble( SInt64 value )
+{
+	return (long double)( value );
+}
+#else
+#define SInt64ToLongDouble( value ) ( (long double)( value ) )
 #endif
-
+#endif
 
 /*
  *  LongDoubleToSInt64()
@@ -698,23 +719,24 @@ SInt64ToLongDouble(SInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt64 )
-LongDoubleToSInt64(long double value);
+LongDoubleToSInt64( long double value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) LongDoubleToSInt64(long double value) { return (SInt64)(value); }
-  #else
-    #define LongDoubleToSInt64(value) ((SInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) LongDoubleToSInt64( long double value )
+{
+	return ( SInt64 )( value );
+}
+#else
+#define LongDoubleToSInt64( value ) ( ( SInt64 )( value ) )
+#endif
 #endif
 
-
-#endif  /* !TYPE_LONGDOUBLE_IS_DOUBLE */
-
+#endif /* !TYPE_LONGDOUBLE_IS_DOUBLE */
 
 #if TYPE_LONGLONG && TARGET_OS_WIN32
-    #define U64Max() 0xffffffffffffffffui64
-#elif TYPE_LONGLONG && defined(__MWERKS__) && (__MWERKS__ < 0x1800)
-    #define U64Max() 0xffffffffffffffff
+#define U64Max() 0xffffffffffffffffui64
+#elif TYPE_LONGLONG && defined( __MWERKS__ ) && ( __MWERKS__ < 0x1800 )
+#define U64Max() 0xffffffffffffffff
 #else
 /*
  *  U64Max()
@@ -728,15 +750,17 @@ LongDoubleToSInt64(long double value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UInt64 )
-U64Max(void);
+U64Max( void );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Max(void) { return 0xffffffffffffffffULL; }
-  #else
-    #define U64Max() (0xffffffffffffffffULL)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Max( void )
+{
+	return 0xffffffffffffffffULL;
+}
+#else
+#define U64Max() ( 0xffffffffffffffffULL )
 #endif
-
+#endif
 
 #endif
 /*
@@ -754,16 +778,18 @@ U64Max(void);
  */
 EXTERN_API_C( UInt64 )
 U64Add(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Add(UInt64 left, UInt64 right) { return (UInt64)(left) + (UInt64)(right); }
-  #else
-    #define U64Add(left, right) ((UInt64)(left) + (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Add( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) + ( UInt64 )( right );
+}
+#else
+#define U64Add( left, right ) ( ( UInt64 )( left ) + ( UInt64 )( right ) )
 #endif
-
+#endif
 
 /*
  *  U64Subtract()
@@ -780,17 +806,18 @@ U64Add(
  */
 EXTERN_API_C( UInt64 )
 U64Subtract(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Subtract(UInt64 left, UInt64 right) { return (UInt64)(left) - (UInt64)(right); }
-  #else
-    #define U64Subtract(left, right) ((UInt64)(left) - (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Subtract( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) - ( UInt64 )( right );
+}
+#else
+#define U64Subtract( left, right ) ( ( UInt64 )( left ) - ( UInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Multiply()
@@ -808,17 +835,18 @@ U64Subtract(
  */
 EXTERN_API_C( UInt64 )
 U64Multiply(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Multiply(UInt64 left, UInt64 right) { return (UInt64)(left) * (UInt64)(right); }
-  #else
-    #define U64Multiply(left, right) ((UInt64)(left) * (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Multiply( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) * ( UInt64 )( right );
+}
+#else
+#define U64Multiply( left, right ) ( ( UInt64 )( left ) * ( UInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Mod()
@@ -834,17 +862,18 @@ U64Multiply(
  */
 EXTERN_API_C( UInt64 )
 U64Mod(
-  UInt64   dividend,
-  UInt64   divisor);
+    UInt64 dividend,
+    UInt64 divisor );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Mod(UInt64 dividend, UInt64 divisor) { return (UInt64)(dividend) % (UInt64)(divisor); }
-  #else
-    #define U64Mod(dividend, divisor) ((UInt64)(dividend) % (UInt64)(divisor))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Mod( UInt64 dividend, UInt64 divisor )
+{
+	return ( UInt64 )( dividend ) % ( UInt64 )( divisor );
+}
+#else
+#define U64Mod( dividend, divisor ) ( ( UInt64 )( dividend ) % ( UInt64 )( divisor ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Divide()
@@ -866,20 +895,19 @@ U64Mod(
  */
 EXTERN_API_C( UInt64 )
 U64Divide(
-  UInt64    dividend,
-  UInt64    divisor,
-  UInt64 *  remainder);      /* can be NULL */
+    UInt64  dividend,
+    UInt64  divisor,
+    UInt64 *remainder ); /* can be NULL */
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Divide(UInt64 dividend, UInt64 divisor, UInt64 *remainder) { return ( (void)((remainder) && (*((UInt64*)(remainder)) = ((UInt64)(dividend) % (UInt64)(divisor)))), ((UInt64)(dividend) / (UInt64)(divisor)) ); }
-  #else
-    #define U64Divide(dividend, divisor, remainder) (( (void)((remainder) && (*((UInt64*)(remainder)) = ((UInt64)(dividend) % (UInt64)(divisor)))), ((UInt64)(dividend) / (UInt64)(divisor)) ))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Divide( UInt64 dividend, UInt64 divisor, UInt64 *remainder )
+{
+	return ( (void)( ( remainder ) && ( *( (UInt64 *)( remainder ) ) = ( ( UInt64 )( dividend ) % ( UInt64 )( divisor ) ) ) ), ( ( UInt64 )( dividend ) / ( UInt64 )( divisor ) ) );
+}
+#else
+#define U64Divide( dividend, divisor, remainder ) ( ( (void)( ( remainder ) && ( *( (UInt64 *)( remainder ) ) = ( ( UInt64 )( dividend ) % ( UInt64 )( divisor ) ) ) ), ( ( UInt64 )( dividend ) / ( UInt64 )( divisor ) ) ) )
 #endif
-
-
-
-
+#endif
 
 /*
  *  U64Div()
@@ -892,17 +920,18 @@ U64Divide(
  */
 EXTERN_API_C( UInt64 )
 U64Div(
-  UInt64   dividend,
-  UInt64   divisor);
+    UInt64 dividend,
+    UInt64 divisor );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Div(UInt64 dividend, UInt64 divisor) { return U64Divide((dividend), (divisor), NULL); }
-  #else
-    #define U64Div(dividend, divisor) (U64Divide((dividend), (divisor), NULL))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Div( UInt64 dividend, UInt64 divisor )
+{
+	return U64Divide( ( dividend ), ( divisor ), NULL );
+}
+#else
+#define U64Div( dividend, divisor ) ( U64Divide( ( dividend ), ( divisor ), NULL ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Set()
@@ -918,16 +947,17 @@ U64Div(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UInt64 )
-U64Set(SInt32 value);
+U64Set( SInt32 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64Set(SInt32 value) { return (UInt64)(value); }
-  #else
-    #define U64Set(value) ((UInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64Set( SInt32 value )
+{
+	return ( UInt64 )( value );
+}
+#else
+#define U64Set( value ) ( ( UInt64 )( value ) )
 #endif
-
-
+#endif
 
 /*
  *  U64SetU()
@@ -941,15 +971,17 @@ U64Set(SInt32 value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UInt64 )
-U64SetU(UInt32 value);
+U64SetU( UInt32 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64SetU(UInt32 value) { return (UInt64)(value); }
-  #else
-    #define U64SetU(value) ((UInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64SetU( UInt32 value )
+{
+	return ( UInt64 )( value );
+}
+#else
+#define U64SetU( value ) ( ( UInt64 )( value ) )
 #endif
-
+#endif
 
 /*
  *  U32SetU()
@@ -964,16 +996,17 @@ U64SetU(UInt32 value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UInt32 )
-U32SetU(UInt64 value);
+U32SetU( UInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt32 ) U32SetU(UInt64 value) { return (UInt32)(value); }
-  #else
-    #define U32SetU(value) ((UInt32)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt32 ) U32SetU( UInt64 value )
+{
+	return ( UInt32 )( value );
+}
+#else
+#define U32SetU( value ) ( ( UInt32 )( value ) )
 #endif
-
-
+#endif
 
 /*
  *  U64And()
@@ -988,17 +1021,18 @@ U32SetU(UInt64 value);
  */
 EXTERN_API_C( Boolean )
 U64And(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) U64And(UInt64 left, UInt64 right) { return (UInt64)(left) && (UInt64)(right); }
-  #else
-    #define U64And(left, right) ((UInt64)(left) && (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) U64And( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) && ( UInt64 )( right );
+}
+#else
+#define U64And( left, right ) ( ( UInt64 )( left ) && ( UInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Or()
@@ -1013,17 +1047,18 @@ U64And(
  */
 EXTERN_API_C( Boolean )
 U64Or(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) U64Or(UInt64 left, UInt64 right) { return (UInt64)(left) || (UInt64)(right); }
-  #else
-    #define U64Or(left, right) ((UInt64)(left) || (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) U64Or( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) || ( UInt64 )( right );
+}
+#else
+#define U64Or( left, right ) ( ( UInt64 )( left ) || ( UInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Eor()
@@ -1038,17 +1073,18 @@ U64Or(
  */
 EXTERN_API_C( Boolean )
 U64Eor(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) U64Eor(UInt64 left, UInt64 right) { return (Boolean)(((UInt64)(left) ? 1 : 0) ^ ((UInt64)(right) ? 1 : 0)); }
-  #else
-    #define U64Eor(left, right) ((Boolean)(((UInt64)(left) ? 1 : 0) ^ ((UInt64)(right) ? 1 : 0)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) U64Eor( UInt64 left, UInt64 right )
+{
+	return ( Boolean )( ( ( UInt64 )( left ) ? 1 : 0 ) ^ ( ( UInt64 )( right ) ? 1 : 0 ) );
+}
+#else
+#define U64Eor( left, right ) ( ( Boolean )( ( ( UInt64 )( left ) ? 1 : 0 ) ^ ( ( UInt64 )( right ) ? 1 : 0 ) ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Not()
@@ -1062,16 +1098,17 @@ U64Eor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-U64Not(UInt64 value);
+U64Not( UInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) U64Not(UInt64 value) { return !((UInt64)(value)); }
-  #else
-    #define U64Not(value) (!((UInt64)(value)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) U64Not( UInt64 value )
+{
+	return !( ( UInt64 )( value ) );
+}
+#else
+#define U64Not( value ) ( !( ( UInt64 )( value ) ) )
 #endif
-
-
+#endif
 
 /*
  *  U64Compare()
@@ -1095,9 +1132,8 @@ U64Not(UInt64 value);
  */
 EXTERN_API_C( SInt32 )
 U64Compare(
-  UInt64   left,
-  UInt64   right);
-
+    UInt64 left,
+    UInt64 right );
 
 /*
  *  U64BitwiseAnd()
@@ -1112,17 +1148,18 @@ U64Compare(
  */
 EXTERN_API_C( UInt64 )
 U64BitwiseAnd(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64BitwiseAnd(UInt64 left, UInt64 right) { return (UInt64)(left) & (UInt64)(right); }
-  #else
-    #define U64BitwiseAnd(left, right) ((UInt64)(left) & (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64BitwiseAnd( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) & ( UInt64 )( right );
+}
+#else
+#define U64BitwiseAnd( left, right ) ( ( UInt64 )( left ) & ( UInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  U64BitwiseOr()
@@ -1137,17 +1174,18 @@ U64BitwiseAnd(
  */
 EXTERN_API_C( UInt64 )
 U64BitwiseOr(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64BitwiseOr(UInt64 left, UInt64 right) { return (UInt64)(left) | (UInt64)(right); }
-  #else
-    #define U64BitwiseOr(left, right) ((UInt64)(left) | (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64BitwiseOr( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) | ( UInt64 )( right );
+}
+#else
+#define U64BitwiseOr( left, right ) ( ( UInt64 )( left ) | ( UInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  U64BitwiseEor()
@@ -1162,17 +1200,18 @@ U64BitwiseOr(
  */
 EXTERN_API_C( UInt64 )
 U64BitwiseEor(
-  UInt64   left,
-  UInt64   right);
+    UInt64 left,
+    UInt64 right );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64BitwiseEor(UInt64 left, UInt64 right) { return (UInt64)(left) ^ (UInt64)(right); }
-  #else
-    #define U64BitwiseEor(left, right) ((UInt64)(left) ^ (UInt64)(right))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64BitwiseEor( UInt64 left, UInt64 right )
+{
+	return ( UInt64 )( left ) ^ ( UInt64 )( right );
+}
+#else
+#define U64BitwiseEor( left, right ) ( ( UInt64 )( left ) ^ ( UInt64 )( right ) )
 #endif
-
-
+#endif
 
 /*
  *  U64BitwiseNot()
@@ -1186,16 +1225,17 @@ U64BitwiseEor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UInt64 )
-U64BitwiseNot(UInt64 value);
+U64BitwiseNot( UInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64BitwiseNot(UInt64 value) { return ~((UInt64)(value)); }
-  #else
-    #define U64BitwiseNot(value) (~((UInt64)(value)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64BitwiseNot( UInt64 value )
+{
+	return ~( ( UInt64 )( value ) );
+}
+#else
+#define U64BitwiseNot( value ) ( ~( ( UInt64 )( value ) ) )
 #endif
-
-
+#endif
 
 /*
  *  U64ShiftRight()
@@ -1210,17 +1250,18 @@ U64BitwiseNot(UInt64 value);
  */
 EXTERN_API_C( UInt64 )
 U64ShiftRight(
-  UInt64   value,
-  UInt32   shift);
+    UInt64 value,
+    UInt32 shift );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64ShiftRight(UInt64 value, UInt32 shift) { return (UInt64)(value) >> ((shift) & 0x7F); }
-  #else
-    #define U64ShiftRight(value, shift) ((UInt64)(value) >> ((shift) & 0x7F))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64ShiftRight( UInt64 value, UInt32 shift )
+{
+	return ( UInt64 )( value ) >> ( (shift)&0x7F );
+}
+#else
+#define U64ShiftRight( value, shift ) ( ( UInt64 )( value ) >> ( (shift)&0x7F ) )
 #endif
-
-
+#endif
 
 /*
  *  U64ShiftLeft()
@@ -1235,17 +1276,18 @@ U64ShiftRight(
  */
 EXTERN_API_C( UInt64 )
 U64ShiftLeft(
-  UInt64   value,
-  UInt32   shift);
+    UInt64 value,
+    UInt32 shift );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) U64ShiftLeft(UInt64 value, UInt32 shift) { return (UInt64)(value) << ((shift) & 0x7F); }
-  #else
-    #define U64ShiftLeft(value, shift) ((UInt64)(value) << ((shift) & 0x7F))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) U64ShiftLeft( UInt64 value, UInt32 shift )
+{
+	return ( UInt64 )( value ) << ( (shift)&0x7F );
+}
+#else
+#define U64ShiftLeft( value, shift ) ( ( UInt64 )( value ) << ( (shift)&0x7F ) )
 #endif
-
-
+#endif
 
 #if !TYPE_LONGDOUBLE_IS_DOUBLE
 /*
@@ -1261,15 +1303,17 @@ U64ShiftLeft(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long double )
-UInt64ToLongDouble(UInt64 value);
+UInt64ToLongDouble( UInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) UInt64ToLongDouble(UInt64 value) { return (long double)(value); }
-  #else
-    #define UInt64ToLongDouble(value) ((long double)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) UInt64ToLongDouble( UInt64 value )
+{
+	return (long double)( value );
+}
+#else
+#define UInt64ToLongDouble( value ) ( (long double)( value ) )
 #endif
-
+#endif
 
 /*
  *  LongDoubleToUInt64()
@@ -1284,18 +1328,19 @@ UInt64ToLongDouble(UInt64 value);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( UInt64 )
-LongDoubleToUInt64(long double value);
+LongDoubleToUInt64( long double value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) LongDoubleToUInt64(long double value) { return (UInt64)(value); }
-  #else
-    #define LongDoubleToUInt64(value) ((UInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) LongDoubleToUInt64( long double value )
+{
+	return ( UInt64 )( value );
+}
+#else
+#define LongDoubleToUInt64( value ) ( ( UInt64 )( value ) )
+#endif
 #endif
 
-
-#endif  /* !TYPE_LONGDOUBLE_IS_DOUBLE */
-
+#endif /* !TYPE_LONGDOUBLE_IS_DOUBLE */
 
 /*
  *  UInt64ToSInt64()
@@ -1309,16 +1354,17 @@ LongDoubleToUInt64(long double value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( SInt64 )
-UInt64ToSInt64(UInt64 value);
+UInt64ToSInt64( UInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt64 ) UInt64ToSInt64(UInt64 value) { return (SInt64)(value); }
-  #else
-    #define UInt64ToSInt64(value) ((SInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt64 ) UInt64ToSInt64( UInt64 value )
+{
+	return ( SInt64 )( value );
+}
+#else
+#define UInt64ToSInt64( value ) ( ( SInt64 )( value ) )
 #endif
-
-
+#endif
 
 /*
  *  SInt64ToUInt64()
@@ -1332,19 +1378,17 @@ UInt64ToSInt64(UInt64 value);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( UInt64 )
-SInt64ToUInt64(SInt64 value);
+SInt64ToUInt64( SInt64 value );
 #if TYPE_LONGLONG
-  #ifdef __cplusplus
-    inline DEFINE_API_C(UInt64 ) SInt64ToUInt64(SInt64 value) { return (UInt64)(value); }
-  #else
-    #define SInt64ToUInt64(value) ((UInt64)(value))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( UInt64 ) SInt64ToUInt64( SInt64 value )
+{
+	return ( UInt64 )( value );
+}
+#else
+#define SInt64ToUInt64( value ) ( ( UInt64 )( value ) )
 #endif
-
-
-
-
-
+#endif
 
 /* 
    Functions to convert between [Unsigned]Wide and [S|U]Int64 types.
@@ -1366,20 +1410,17 @@ SInt64ToUInt64(SInt64 value);
                 as a typedef of wide, the macro does nothing. If SInt64 is 
                 implemented as a long long, it reads the struct into a long long.
 */
-#if TYPE_LONGLONG 
-    #define SInt64ToWide(x)         (*((wide*)(&(x))))
- #define WideToSInt64(x)         (*((SInt64*)(&(x))))
-   #define UInt64ToUnsignedWide(x) (*((UnsignedWide*)(&(x))))
- #define UnsignedWideToUInt64(x) (*((UInt64*)(&(x))))
+#if TYPE_LONGLONG
+#define SInt64ToWide( x ) ( *( (wide *)( &( x ) ) ) )
+#define WideToSInt64( x ) ( *( (SInt64 *)( &( x ) ) ) )
+#define UInt64ToUnsignedWide( x ) ( *( (UnsignedWide *)( &( x ) ) ) )
+#define UnsignedWideToUInt64( x ) ( *( (UInt64 *)( &( x ) ) ) )
 #else
- #define SInt64ToWide(x)         (x)
-    #define WideToSInt64(x)         (x)
-    #define UInt64ToUnsignedWide(x) (x)
-    #define UnsignedWideToUInt64(x) (x)
+#define SInt64ToWide( x ) ( x )
+#define WideToSInt64( x ) ( x )
+#define UInt64ToUnsignedWide( x ) ( x )
+#define UnsignedWideToUInt64( x ) ( x )
 #endif
-
-
-
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -1392,4 +1433,3 @@ SInt64ToUInt64(SInt64 value);
 #endif
 
 #endif /* __MATH64__ */
-

@@ -20,7 +20,6 @@
 #include <CarbonCore.h>
 #endif
 
-
 #ifndef __OPENTRANSPORT__
 #include <OpenTransport.h>
 #endif
@@ -33,6 +32,4 @@
 #include <OpenTransportProtocol.h>
 #endif
 
-
 #endif /* __OT__ */
-

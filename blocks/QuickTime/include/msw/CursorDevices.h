@@ -25,9 +25,6 @@
 #include <MixedMode.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,11 +38,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*
@@ -64,68 +61,68 @@ extern "C" {
     
 */
 
-typedef short                           ButtonOpcode;
+typedef short ButtonOpcode;
 /* ButtonOpcodes */
 enum {
-  kButtonNoOp                   = 0,    /* No action for this button */
-  kButtonSingleClick            = 1,    /* Normal mouse button */
-  kButtonDoubleClick            = 2,    /* Click-release-click when pressed */
-  kButtonClickLock              = 3     /* Click on press, release on next press */
+	kButtonNoOp = 0, /* No action for this button */
+	kButtonSingleClick = 1, /* Normal mouse button */
+	kButtonDoubleClick = 2, /* Click-release-click when pressed */
+	kButtonClickLock = 3 /* Click on press, release on next press */
 };
 
 enum {
-  kButtonCustom                 = 6     /* Custom behavior, data = CursorDeviceCustomButtonUPP */
+	kButtonCustom = 6 /* Custom behavior, data = CursorDeviceCustomButtonUPP */
 };
 
 /* Device Classes */
 enum {
-  kDeviceClassAbsolute          = 0,    /* a flat-response device */
-  kDeviceClassMouse             = 1,    /* mechanical or optical mouse */
-  kDeviceClassTrackball         = 2,    /* trackball */
-  kDeviceClassTrackPad          = 3
+	kDeviceClassAbsolute = 0, /* a flat-response device */
+	kDeviceClassMouse = 1, /* mechanical or optical mouse */
+	kDeviceClassTrackball = 2, /* trackball */
+	kDeviceClassTrackPad = 3
 };
 
 enum {
-  kDeviceClass3D                = 6     /* a 3D pointing device */
+	kDeviceClass3D = 6 /* a 3D pointing device */
 };
 
 /* Structures used in Cursor Device Manager calls */
 struct CursorData {
-  struct CursorData * nextCursorData;         /* next in global list */
-  Ptr                 displayInfo;            /* unused (reserved for future) */
-  Fixed               whereX;                 /* horizontal position */
-  Fixed               whereY;                 /* vertical position */
-  Point               where;                  /* the pixel position */
-  Boolean             isAbs;                  /* has been stuffed with absolute coords */
-  UInt8               buttonCount;            /* number of buttons currently pressed */
-  long                screenRes;              /* pixels per inch on the current display */
-  short               privateFields[22];      /* fields use internally by CDM */
+	struct CursorData *nextCursorData; /* next in global list */
+	Ptr                displayInfo; /* unused (reserved for future) */
+	Fixed              whereX; /* horizontal position */
+	Fixed              whereY; /* vertical position */
+	Point              where; /* the pixel position */
+	Boolean            isAbs; /* has been stuffed with absolute coords */
+	UInt8              buttonCount; /* number of buttons currently pressed */
+	long               screenRes; /* pixels per inch on the current display */
+	short              privateFields[22]; /* fields use internally by CDM */
 };
-typedef struct CursorData               CursorData;
-typedef CursorData *                    CursorDataPtr;
+typedef struct CursorData CursorData;
+typedef CursorData *      CursorDataPtr;
 struct CursorDevice {
-  struct CursorDevice * nextCursorDevice;     /* pointer to next record in linked list */
-  CursorData *        whichCursor;            /* pointer to data for target cursor */
-  long                refCon;                 /* application-defined */
-  long                unused;                 /* reserved for future */
-  OSType              devID;                  /* device identifier (from ADB reg 1) */
-  Fixed               resolution;             /* units/inch (orig. from ADB reg 1) */
-  UInt8               devClass;               /* device class (from ADB reg 1) */
-  UInt8               cntButtons;             /* number of buttons (from ADB reg 1) */
-  UInt8               filler1;                /* reserved for future */
-  UInt8               buttons;                /* state of all buttons */
-  UInt8               buttonOp[8];            /* action performed per button */
-  unsigned long       buttonTicks[8];         /* ticks when button last went up (for debounce) */
-  long                buttonData[8];          /* data for the button operation */
-  unsigned long       doubleClickTime;        /* device-specific double click speed */
-  Fixed               acceleration;           /* current acceleration */
-  short               privateFields[15];      /* fields used internally to CDM */
+	struct CursorDevice *nextCursorDevice; /* pointer to next record in linked list */
+	CursorData *         whichCursor; /* pointer to data for target cursor */
+	long                 refCon; /* application-defined */
+	long                 unused; /* reserved for future */
+	OSType               devID; /* device identifier (from ADB reg 1) */
+	Fixed                resolution; /* units/inch (orig. from ADB reg 1) */
+	UInt8                devClass; /* device class (from ADB reg 1) */
+	UInt8                cntButtons; /* number of buttons (from ADB reg 1) */
+	UInt8                filler1; /* reserved for future */
+	UInt8                buttons; /* state of all buttons */
+	UInt8                buttonOp[8]; /* action performed per button */
+	unsigned long        buttonTicks[8]; /* ticks when button last went up (for debounce) */
+	long                 buttonData[8]; /* data for the button operation */
+	unsigned long        doubleClickTime; /* device-specific double click speed */
+	Fixed                acceleration; /* current acceleration */
+	short                privateFields[15]; /* fields used internally to CDM */
 };
-typedef struct CursorDevice             CursorDevice;
-typedef CursorDevice *                  CursorDevicePtr;
+typedef struct CursorDevice CursorDevice;
+typedef CursorDevice *      CursorDevicePtr;
 /* for use with CursorDeviceButtonOp when opcode = kButtonCustom */
-typedef CALLBACK_API_REGISTER68K( void , CursorDeviceCustomButtonProcPtr, (CursorDevicePtr ourDevice, short button) );
-typedef REGISTER_UPP_TYPE(CursorDeviceCustomButtonProcPtr)      CursorDeviceCustomButtonUPP;
+typedef CALLBACK_API_REGISTER68K( void, CursorDeviceCustomButtonProcPtr, ( CursorDevicePtr ourDevice, short button ) );
+typedef REGISTER_UPP_TYPE( CursorDeviceCustomButtonProcPtr ) CursorDeviceCustomButtonUPP;
 #if CALL_NOT_IN_CARBON
 /*
  *  NewCursorDeviceCustomButtonUPP()
@@ -136,14 +133,17 @@ typedef REGISTER_UPP_TYPE(CursorDeviceCustomButtonProcPtr)      CursorDeviceCust
  *    Mac OS X:         not available
  */
 EXTERN_API_C( CursorDeviceCustomButtonUPP )
-NewCursorDeviceCustomButtonUPP(CursorDeviceCustomButtonProcPtr userRoutine);
+NewCursorDeviceCustomButtonUPP( CursorDeviceCustomButtonProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppCursorDeviceCustomButtonProcInfo = 0x000ED802 };  /* register no_return_value Func(4_bytes:A2, 2_bytes:D3) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(CursorDeviceCustomButtonUPP) NewCursorDeviceCustomButtonUPP(CursorDeviceCustomButtonProcPtr userRoutine) { return (CursorDeviceCustomButtonUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCursorDeviceCustomButtonProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewCursorDeviceCustomButtonUPP(userRoutine) (CursorDeviceCustomButtonUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCursorDeviceCustomButtonProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppCursorDeviceCustomButtonProcInfo = 0x000ED802 }; /* register no_return_value Func(4_bytes:A2, 2_bytes:D3) */
+#ifdef __cplusplus
+inline DEFINE_API_C( CursorDeviceCustomButtonUPP ) NewCursorDeviceCustomButtonUPP( CursorDeviceCustomButtonProcPtr userRoutine )
+{
+	return (CursorDeviceCustomButtonUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCursorDeviceCustomButtonProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewCursorDeviceCustomButtonUPP( userRoutine ) ( CursorDeviceCustomButtonUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCursorDeviceCustomButtonProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -155,13 +155,16 @@ NewCursorDeviceCustomButtonUPP(CursorDeviceCustomButtonProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeCursorDeviceCustomButtonUPP(CursorDeviceCustomButtonUPP userUPP);
+DisposeCursorDeviceCustomButtonUPP( CursorDeviceCustomButtonUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeCursorDeviceCustomButtonUPP(CursorDeviceCustomButtonUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeCursorDeviceCustomButtonUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeCursorDeviceCustomButtonUPP( CursorDeviceCustomButtonUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeCursorDeviceCustomButtonUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -174,23 +177,26 @@ DisposeCursorDeviceCustomButtonUPP(CursorDeviceCustomButtonUPP userUPP);
  */
 EXTERN_API_C( void )
 InvokeCursorDeviceCustomButtonUPP(
-  CursorDevicePtr              ourDevice,
-  short                        button,
-  CursorDeviceCustomButtonUPP  userUPP);
-#if !OPAQUE_UPP_TYPES && (!TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM)
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeCursorDeviceCustomButtonUPP(CursorDevicePtr ourDevice, short button, CursorDeviceCustomButtonUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppCursorDeviceCustomButtonProcInfo, ourDevice, button); }
-  #else
-    #define InvokeCursorDeviceCustomButtonUPP(ourDevice, button, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppCursorDeviceCustomButtonProcInfo, (ourDevice), (button))
-  #endif
+    CursorDevicePtr             ourDevice,
+    short                       button,
+    CursorDeviceCustomButtonUPP userUPP );
+#if !OPAQUE_UPP_TYPES && ( !TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM )
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeCursorDeviceCustomButtonUPP( CursorDevicePtr ourDevice, short button, CursorDeviceCustomButtonUPP userUPP )
+{
+	CALL_TWO_PARAMETER_UPP( userUPP, uppCursorDeviceCustomButtonProcInfo, ourDevice, button );
+}
+#else
+#define InvokeCursorDeviceCustomButtonUPP( ourDevice, button, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppCursorDeviceCustomButtonProcInfo, ( ourDevice ), ( button ) )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewCursorDeviceCustomButtonProc(userRoutine)        NewCursorDeviceCustomButtonUPP(userRoutine)
-    #define CallCursorDeviceCustomButtonProc(userRoutine, ourDevice, button) InvokeCursorDeviceCustomButtonUPP(ourDevice, button, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewCursorDeviceCustomButtonProc( userRoutine ) NewCursorDeviceCustomButtonUPP( userRoutine )
+#define CallCursorDeviceCustomButtonProc( userRoutine, ourDevice, button ) InvokeCursorDeviceCustomButtonUPP( ourDevice, button, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
@@ -204,10 +210,9 @@ InvokeCursorDeviceCustomButtonUPP(
  */
 EXTERN_API( OSErr )
 CursorDeviceMove(
-  CursorDevicePtr   ourDevice,
-  long              deltaX,
-  long              deltaY)                                   TWOWORDINLINE(0x7000, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    long            deltaX,
+    long            deltaY ) TWOWORDINLINE( 0x7000, 0xAADB );
 
 /*
  *  CursorDeviceMoveTo()
@@ -219,10 +224,9 @@ CursorDeviceMove(
  */
 EXTERN_API( OSErr )
 CursorDeviceMoveTo(
-  CursorDevicePtr   ourDevice,
-  long              absX,
-  long              absY)                                     TWOWORDINLINE(0x7001, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    long            absX,
+    long            absY ) TWOWORDINLINE( 0x7001, 0xAADB );
 
 /*
  *  CursorDeviceFlush()
@@ -233,8 +237,7 @@ CursorDeviceMoveTo(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CursorDeviceFlush(CursorDevicePtr ourDevice)                  TWOWORDINLINE(0x7002, 0xAADB);
-
+CursorDeviceFlush( CursorDevicePtr ourDevice ) TWOWORDINLINE( 0x7002, 0xAADB );
 
 /*
  *  CursorDeviceButtons()
@@ -246,9 +249,8 @@ CursorDeviceFlush(CursorDevicePtr ourDevice)                  TWOWORDINLINE(0x70
  */
 EXTERN_API( OSErr )
 CursorDeviceButtons(
-  CursorDevicePtr   ourDevice,
-  short             buttons)                                  TWOWORDINLINE(0x7003, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    short           buttons ) TWOWORDINLINE( 0x7003, 0xAADB );
 
 /*
  *  CursorDeviceButtonDown()
@@ -259,8 +261,7 @@ CursorDeviceButtons(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CursorDeviceButtonDown(CursorDevicePtr ourDevice)             TWOWORDINLINE(0x7004, 0xAADB);
-
+CursorDeviceButtonDown( CursorDevicePtr ourDevice ) TWOWORDINLINE( 0x7004, 0xAADB );
 
 /*
  *  CursorDeviceButtonUp()
@@ -271,8 +272,7 @@ CursorDeviceButtonDown(CursorDevicePtr ourDevice)             TWOWORDINLINE(0x70
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CursorDeviceButtonUp(CursorDevicePtr ourDevice)               TWOWORDINLINE(0x7005, 0xAADB);
-
+CursorDeviceButtonUp( CursorDevicePtr ourDevice ) TWOWORDINLINE( 0x7005, 0xAADB );
 
 /*
  *  CursorDeviceButtonOp()
@@ -284,11 +284,10 @@ CursorDeviceButtonUp(CursorDevicePtr ourDevice)               TWOWORDINLINE(0x70
  */
 EXTERN_API( OSErr )
 CursorDeviceButtonOp(
-  CursorDevicePtr   ourDevice,
-  short             buttonNumber,
-  ButtonOpcode      opcode,
-  long              data)                                     TWOWORDINLINE(0x7006, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    short           buttonNumber,
+    ButtonOpcode    opcode,
+    long            data ) TWOWORDINLINE( 0x7006, 0xAADB );
 
 /*
  *  CursorDeviceSetButtons()
@@ -300,9 +299,8 @@ CursorDeviceButtonOp(
  */
 EXTERN_API( OSErr )
 CursorDeviceSetButtons(
-  CursorDevicePtr   ourDevice,
-  short             numberOfButtons)                          TWOWORDINLINE(0x7007, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    short           numberOfButtons ) TWOWORDINLINE( 0x7007, 0xAADB );
 
 /*
  *  CursorDeviceSetAcceleration()
@@ -314,9 +312,8 @@ CursorDeviceSetButtons(
  */
 EXTERN_API( OSErr )
 CursorDeviceSetAcceleration(
-  CursorDevicePtr   ourDevice,
-  Fixed             acceleration)                             TWOWORDINLINE(0x7008, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    Fixed           acceleration ) TWOWORDINLINE( 0x7008, 0xAADB );
 
 /*
  *  CursorDeviceDoubleTime()
@@ -328,9 +325,8 @@ CursorDeviceSetAcceleration(
  */
 EXTERN_API( OSErr )
 CursorDeviceDoubleTime(
-  CursorDevicePtr   ourDevice,
-  long              durationTicks)                            TWOWORDINLINE(0x7009, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    long            durationTicks ) TWOWORDINLINE( 0x7009, 0xAADB );
 
 /*
  *  CursorDeviceUnitsPerInch()
@@ -342,9 +338,8 @@ CursorDeviceDoubleTime(
  */
 EXTERN_API( OSErr )
 CursorDeviceUnitsPerInch(
-  CursorDevicePtr   ourDevice,
-  Fixed             resolution)                               TWOWORDINLINE(0x700A, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    Fixed           resolution ) TWOWORDINLINE( 0x700A, 0xAADB );
 
 /*
  *  CursorDeviceNextDevice()
@@ -355,8 +350,7 @@ CursorDeviceUnitsPerInch(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CursorDeviceNextDevice(CursorDevicePtr * ourDevice)           TWOWORDINLINE(0x700B, 0xAADB);
-
+CursorDeviceNextDevice( CursorDevicePtr *ourDevice ) TWOWORDINLINE( 0x700B, 0xAADB );
 
 /*
  *  CursorDeviceNewDevice()
@@ -367,8 +361,7 @@ CursorDeviceNextDevice(CursorDevicePtr * ourDevice)           TWOWORDINLINE(0x70
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CursorDeviceNewDevice(CursorDevicePtr * ourDevice)            TWOWORDINLINE(0x700C, 0xAADB);
-
+CursorDeviceNewDevice( CursorDevicePtr *ourDevice ) TWOWORDINLINE( 0x700C, 0xAADB );
 
 /*
  *  CursorDeviceDisposeDevice()
@@ -379,9 +372,7 @@ CursorDeviceNewDevice(CursorDevicePtr * ourDevice)            TWOWORDINLINE(0x70
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CursorDeviceDisposeDevice(CursorDevicePtr ourDevice)          TWOWORDINLINE(0x700D, 0xAADB);
-
-
+CursorDeviceDisposeDevice( CursorDevicePtr ourDevice ) TWOWORDINLINE( 0x700D, 0xAADB );
 
 /*
                        * * *  W A R N I N G  * * * 
@@ -392,7 +383,7 @@ CursorDeviceDisposeDevice(CursorDevicePtr ourDevice)          TWOWORDINLINE(0x70
     CursorDeviceNextDevice instead.
 
 */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if OLDROUTINENAMES
 #if CALL_NOT_IN_CARBON
@@ -406,10 +397,9 @@ CursorDeviceDisposeDevice(CursorDevicePtr ourDevice)          TWOWORDINLINE(0x70
  */
 EXTERN_API( OSErr )
 CrsrDevMoveTo(
-  CursorDevicePtr   ourDevice,
-  long              absX,
-  long              absY)                                     TWOWORDINLINE(0x7001, 0xAADB);
-
+    CursorDevicePtr ourDevice,
+    long            absX,
+    long            absY ) TWOWORDINLINE( 0x7001, 0xAADB );
 
 /*
  *  CrsrDevNextDevice()
@@ -420,21 +410,18 @@ CrsrDevMoveTo(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CrsrDevNextDevice(CursorDevicePtr * ourDevice)                TWOWORDINLINE(0x700B, 0xAADB);
+CrsrDevNextDevice( CursorDevicePtr *ourDevice ) TWOWORDINLINE( 0x700B, 0xAADB );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* OLDROUTINENAMES */
-
-
+#endif /* OLDROUTINENAMES */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -448,4 +435,3 @@ CrsrDevNextDevice(CursorDevicePtr * ourDevice)                TWOWORDINLINE(0x70
 #endif
 
 #endif /* __CURSORDEVICES__ */
-

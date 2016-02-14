@@ -32,9 +32,6 @@
 #include <CMICCProfile.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -48,11 +45,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*
@@ -60,14 +57,14 @@ extern "C" {
     containing information on registered devices.
 */
 enum {
-  cmDeviceInfoVersion1          = 0x00010000,
-  cmDeviceProfileInfoVersion1   = 0x00010000,
-  cmDeviceProfileInfoVersion2   = 0x00020000
+	cmDeviceInfoVersion1 = 0x00010000,
+	cmDeviceProfileInfoVersion1 = 0x00010000,
+	cmDeviceProfileInfoVersion2 = 0x00020000
 };
 
 enum {
-  cmCurrentDeviceInfoVersion    = cmDeviceInfoVersion1,
-  cmCurrentProfileInfoVersion   = cmDeviceProfileInfoVersion1
+	cmCurrentDeviceInfoVersion = cmDeviceInfoVersion1,
+	cmCurrentProfileInfoVersion = cmDeviceProfileInfoVersion1
 };
 
 /*
@@ -75,8 +72,8 @@ enum {
     In some cases, a "default ID" can be used.
 */
 enum {
-  cmDefaultDeviceID             = 0,
-  cmDefaultProfileID            = 0
+	cmDefaultDeviceID = 0,
+	cmDefaultProfileID = 0
 };
 
 /*
@@ -84,12 +81,12 @@ enum {
     CMGetDeviceState() and CMSetDeviceState() APIs.
 */
 enum {
-  cmDeviceStateDefault          = 0x00000000,
-  cmDeviceStateOffline          = 0x00000001,
-  cmDeviceStateBusy             = 0x00000002,
-  cmDeviceStateForceNotify      = (long)0x80000000,
-  cmDeviceStateDeviceRsvdBits   = 0x00FF0000,
-  cmDeviceStateAppleRsvdBits    = (long)0xFF00FFFF
+	cmDeviceStateDefault = 0x00000000,
+	cmDeviceStateOffline = 0x00000001,
+	cmDeviceStateBusy = 0x00000002,
+	cmDeviceStateForceNotify = (long)0x80000000,
+	cmDeviceStateDeviceRsvdBits = 0x00FF0000,
+	cmDeviceStateAppleRsvdBits = (long)0xFF00FFFF
 };
 
 /*
@@ -121,24 +118,23 @@ enum {
     cmIterateAllDeviceProfiles. 
 */
 enum {
-  cmIterateFactoryDeviceProfiles = 0x00000001,
-  cmIterateCustomDeviceProfiles = 0x00000002,
-  cmIterateCurrentDeviceProfiles = 0x00000003,
-  cmIterateAllDeviceProfiles    = 0x00000004,
-  cmIterateDeviceProfilesMask   = 0x0000000F
+	cmIterateFactoryDeviceProfiles = 0x00000001,
+	cmIterateCustomDeviceProfiles = 0x00000002,
+	cmIterateCurrentDeviceProfiles = 0x00000003,
+	cmIterateAllDeviceProfiles = 0x00000004,
+	cmIterateDeviceProfilesMask = 0x0000000F
 };
 
 /*
     Errors returned by CMDeviceIntegration APIs
 */
 enum {
-  cmDeviceDBNotFoundErr         = -4227, /* Prefs not found/loaded */
-  cmDeviceAlreadyRegistered     = -4228, /* Re-registration of device */
-  cmDeviceNotRegistered         = -4229, /* Device not found */
-  cmDeviceProfilesNotFound      = -4230, /* Profiles not found */
-  cmInternalCFErr               = -4231 /* CoreFoundation failure */
+	cmDeviceDBNotFoundErr = -4227, /* Prefs not found/loaded */
+	cmDeviceAlreadyRegistered = -4228, /* Re-registration of device */
+	cmDeviceNotRegistered = -4229, /* Device not found */
+	cmDeviceProfilesNotFound = -4230, /* Profiles not found */
+	cmInternalCFErr = -4231 /* CoreFoundation failure */
 };
-
 
 /*
     Clients can register for notifications of device evolutions:
@@ -152,103 +148,103 @@ enum {
   DeviceProfiles                  Any change to any device's profiles
     DefaultDeviceProfile            The default profile for any device changed
 */
-#define   kCMDeviceRegisteredNotification     CFSTR("CMDeviceRegisteredNotification")
-#define kCMDeviceUnregisteredNotification   CFSTR("CMDeviceUnregisteredNotification")
-#define   kCMDeviceOnlineNotification         CFSTR("CMDeviceOnlineNotification")
-#define kCMDeviceOfflineNotification        CFSTR("CMDeviceOfflineNotification")
-#define    kCMDeviceStateNotification          CFSTR("CMDeviceStateNotification")
-#define  kCMDefaultDeviceNotification        CFSTR("CMDefaultDeviceNotification")
-#define    kCMDeviceProfilesNotification       CFSTR("CMDeviceProfilesNotification")
-#define   kCMDefaultDeviceProfileNotification CFSTR("CMDefaultDeviceProfileNotification")
+#define kCMDeviceRegisteredNotification CFSTR( "CMDeviceRegisteredNotification" )
+#define kCMDeviceUnregisteredNotification CFSTR( "CMDeviceUnregisteredNotification" )
+#define kCMDeviceOnlineNotification CFSTR( "CMDeviceOnlineNotification" )
+#define kCMDeviceOfflineNotification CFSTR( "CMDeviceOfflineNotification" )
+#define kCMDeviceStateNotification CFSTR( "CMDeviceStateNotification" )
+#define kCMDefaultDeviceNotification CFSTR( "CMDefaultDeviceNotification" )
+#define kCMDeviceProfilesNotification CFSTR( "CMDeviceProfilesNotification" )
+#define kCMDefaultDeviceProfileNotification CFSTR( "CMDefaultDeviceProfileNotification" )
 
 /*
     Device state data.
 */
-typedef UInt32                          CMDeviceState;
+typedef UInt32 CMDeviceState;
 /*
     A CMDeviceID must be unique within a device's class.
 */
-typedef UInt32                          CMDeviceID;
+typedef UInt32 CMDeviceID;
 /*
     A CMDeviceProfileID must only be unique per device.
 */
-typedef UInt32                          CMDeviceProfileID;
+typedef UInt32 CMDeviceProfileID;
 /*
     DeviceClass type.
 */
 enum {
-  cmScannerDeviceClass          = FOUR_CHAR_CODE('scnr'),
-  cmCameraDeviceClass           = FOUR_CHAR_CODE('cmra'),
-  cmDisplayDeviceClass          = FOUR_CHAR_CODE('mntr'),
-  cmPrinterDeviceClass          = FOUR_CHAR_CODE('prtr'),
-  cmProofDeviceClass            = FOUR_CHAR_CODE('pruf')
+	cmScannerDeviceClass = FOUR_CHAR_CODE( 'scnr' ),
+	cmCameraDeviceClass = FOUR_CHAR_CODE( 'cmra' ),
+	cmDisplayDeviceClass = FOUR_CHAR_CODE( 'mntr' ),
+	cmPrinterDeviceClass = FOUR_CHAR_CODE( 'prtr' ),
+	cmProofDeviceClass = FOUR_CHAR_CODE( 'pruf' )
 };
 
-typedef OSType                          CMDeviceClass;
+typedef OSType CMDeviceClass;
 /*
     CMDeviceScope
     Structure specifying a device's or a device setting's scope.
 */
 struct CMDeviceScope {
-  CFStringRef         deviceUser;             /* kCFPreferencesCurrentUser | _AnyUser */
-  CFStringRef         deviceHost;             /* kCFPreferencesCurrentHost | _AnyHost */
+	CFStringRef deviceUser; /* kCFPreferencesCurrentUser | _AnyUser */
+	CFStringRef deviceHost; /* kCFPreferencesCurrentHost | _AnyHost */
 };
-typedef struct CMDeviceScope            CMDeviceScope;
-typedef CMDeviceScope                   CMDeviceProfileScope;
+typedef struct CMDeviceScope CMDeviceScope;
+typedef CMDeviceScope        CMDeviceProfileScope;
 /*
     CMDeviceInfo
     Structure containing information on a given device.
 */
 struct CMDeviceInfo {
-  UInt32              dataVersion;            /* cmDeviceInfoVersion1 */
-  CMDeviceClass       deviceClass;            /* device class */
-  CMDeviceID          deviceID;               /* device ID */
-  CMDeviceScope       deviceScope;            /* device's scope */
-  CMDeviceState       deviceState;            /* Device State flags */
-  CMDeviceProfileID   defaultProfileID;       /* Can change */
-  CFDictionaryRef *   deviceName;             /* Ptr to storage for CFDictionary of */
-                                              /* localized device names (could be nil) */
-  UInt32              profileCount;           /* Count of registered profiles */
-  UInt32              reserved;               /* Reserved for use by ColorSync */
+	UInt32            dataVersion; /* cmDeviceInfoVersion1 */
+	CMDeviceClass     deviceClass; /* device class */
+	CMDeviceID        deviceID; /* device ID */
+	CMDeviceScope     deviceScope; /* device's scope */
+	CMDeviceState     deviceState; /* Device State flags */
+	CMDeviceProfileID defaultProfileID; /* Can change */
+	CFDictionaryRef * deviceName; /* Ptr to storage for CFDictionary of */
+	/* localized device names (could be nil) */
+	UInt32 profileCount; /* Count of registered profiles */
+	UInt32 reserved; /* Reserved for use by ColorSync */
 };
-typedef struct CMDeviceInfo             CMDeviceInfo;
-typedef CMDeviceInfo *                  CMDeviceInfoPtr;
+typedef struct CMDeviceInfo CMDeviceInfo;
+typedef CMDeviceInfo *      CMDeviceInfoPtr;
 /*
     CMDeviceProfileInfo
     Structure containing information on a device profile.
 */
 struct CMDeviceProfileInfo {
-  UInt32              dataVersion;            /* cmDeviceProfileInfoVersion1 */
-  CMDeviceProfileID   profileID;              /* The identifier for this profile */
-  CMProfileLocation   profileLoc;             /* The profile's location */
-  CFDictionaryRef     profileName;            /* CFDictionary of localized profile names */
-  UInt32              reserved;               /* Reserved for use by ColorSync */
+	UInt32            dataVersion; /* cmDeviceProfileInfoVersion1 */
+	CMDeviceProfileID profileID; /* The identifier for this profile */
+	CMProfileLocation profileLoc; /* The profile's location */
+	CFDictionaryRef   profileName; /* CFDictionary of localized profile names */
+	UInt32            reserved; /* Reserved for use by ColorSync */
 };
-typedef struct CMDeviceProfileInfo      CMDeviceProfileInfo;
+typedef struct CMDeviceProfileInfo CMDeviceProfileInfo;
 struct NCMDeviceProfileInfo {
-  UInt32              dataVersion;            /* cmDeviceProfileInfoVersion2 */
-  CMDeviceProfileID   profileID;              /* The identifier for this profile */
-  CMProfileLocation   profileLoc;             /* The profile's location */
-  CFDictionaryRef     profileName;            /* CFDictionary of localized profile names */
-  CMDeviceProfileScope  profileScope;         /* The scope this profile applies to */
-  UInt32              reserved;               /* Reserved for use by ColorSync */
+	UInt32               dataVersion; /* cmDeviceProfileInfoVersion2 */
+	CMDeviceProfileID    profileID; /* The identifier for this profile */
+	CMProfileLocation    profileLoc; /* The profile's location */
+	CFDictionaryRef      profileName; /* CFDictionary of localized profile names */
+	CMDeviceProfileScope profileScope; /* The scope this profile applies to */
+	UInt32               reserved; /* Reserved for use by ColorSync */
 };
-typedef struct NCMDeviceProfileInfo     NCMDeviceProfileInfo;
+typedef struct NCMDeviceProfileInfo NCMDeviceProfileInfo;
 /*
     CMDeviceProfileArray
     Structure containing the profiles for a device.
 */
 struct CMDeviceProfileArray {
-  UInt32              profileCount;           /* Count of profiles in array */
-  CMDeviceProfileInfo  profiles[1];           /* The profile info records */
+	UInt32              profileCount; /* Count of profiles in array */
+	CMDeviceProfileInfo profiles[1]; /* The profile info records */
 };
-typedef struct CMDeviceProfileArray     CMDeviceProfileArray;
-typedef CMDeviceProfileArray *          CMDeviceProfileArrayPtr;
+typedef struct CMDeviceProfileArray CMDeviceProfileArray;
+typedef CMDeviceProfileArray *      CMDeviceProfileArrayPtr;
 /*
     Caller-supplied iterator functions
 */
-typedef CALLBACK_API_C( OSErr , CMIterateDeviceInfoProcPtr )(const CMDeviceInfo *deviceInfo, void *refCon);
-typedef CALLBACK_API_C( OSErr , CMIterateDeviceProfileProcPtr )(const CMDeviceInfo *deviceInfo, const NCMDeviceProfileInfo *profileInfo, void *refCon);
+typedef CALLBACK_API_C( OSErr, CMIterateDeviceInfoProcPtr )( const CMDeviceInfo *deviceInfo, void *refCon );
+typedef CALLBACK_API_C( OSErr, CMIterateDeviceProfileProcPtr )( const CMDeviceInfo *deviceInfo, const NCMDeviceProfileInfo *profileInfo, void *refCon );
 /*
     Device Registration
 */
@@ -262,11 +258,10 @@ typedef CALLBACK_API_C( OSErr , CMIterateDeviceProfileProcPtr )(const CMDeviceIn
  */
 EXTERN_API( CMError )
 CMRegisterColorDevice(
-  CMDeviceClass          deviceClass,
-  CMDeviceID             deviceID,
-  CFDictionaryRef        deviceName,
-  const CMDeviceScope *  deviceScope);
-
+    CMDeviceClass        deviceClass,
+    CMDeviceID           deviceID,
+    CFDictionaryRef      deviceName,
+    const CMDeviceScope *deviceScope );
 
 /*
  *  CMUnregisterColorDevice()
@@ -278,9 +273,8 @@ CMRegisterColorDevice(
  */
 EXTERN_API( CMError )
 CMUnregisterColorDevice(
-  CMDeviceClass   deviceClass,
-  CMDeviceID      deviceID);
-
+    CMDeviceClass deviceClass,
+    CMDeviceID    deviceID );
 
 /*
     Default Device accessors
@@ -295,9 +289,8 @@ CMUnregisterColorDevice(
  */
 EXTERN_API( CMError )
 CMSetDefaultDevice(
-  CMDeviceClass   deviceClass,
-  CMDeviceID      deviceID);
-
+    CMDeviceClass deviceClass,
+    CMDeviceID    deviceID );
 
 /*
  *  CMGetDefaultDevice()
@@ -309,9 +302,8 @@ CMSetDefaultDevice(
  */
 EXTERN_API( CMError )
 CMGetDefaultDevice(
-  CMDeviceClass   deviceClass,
-  CMDeviceID *    deviceID);
-
+    CMDeviceClass deviceClass,
+    CMDeviceID *  deviceID );
 
 /*
     Device Profile Registration & Access
@@ -326,11 +318,10 @@ CMGetDefaultDevice(
  */
 EXTERN_API( CMError )
 CMSetDeviceFactoryProfiles(
-  CMDeviceClass                 deviceClass,
-  CMDeviceID                    deviceID,
-  CMDeviceProfileID             defaultProfID,
-  const CMDeviceProfileArray *  deviceProfiles);
-
+    CMDeviceClass               deviceClass,
+    CMDeviceID                  deviceID,
+    CMDeviceProfileID           defaultProfID,
+    const CMDeviceProfileArray *deviceProfiles );
 
 /*
  *  CMGetDeviceFactoryProfiles()
@@ -342,12 +333,11 @@ CMSetDeviceFactoryProfiles(
  */
 EXTERN_API( CMError )
 CMGetDeviceFactoryProfiles(
-  CMDeviceClass           deviceClass,
-  CMDeviceID              deviceID,
-  CMDeviceProfileID *     defaultProfID,
-  UInt32 *                arraySize,
-  CMDeviceProfileArray *  deviceProfiles);
-
+    CMDeviceClass         deviceClass,
+    CMDeviceID            deviceID,
+    CMDeviceProfileID *   defaultProfID,
+    UInt32 *              arraySize,
+    CMDeviceProfileArray *deviceProfiles );
 
 /*
  *  CMSetDeviceProfiles()
@@ -359,11 +349,10 @@ CMGetDeviceFactoryProfiles(
  */
 EXTERN_API( CMError )
 CMSetDeviceProfiles(
-  CMDeviceClass                 deviceClass,
-  CMDeviceID                    deviceID,
-  const CMDeviceProfileScope *  profileScope,
-  const CMDeviceProfileArray *  deviceProfiles);
-
+    CMDeviceClass               deviceClass,
+    CMDeviceID                  deviceID,
+    const CMDeviceProfileScope *profileScope,
+    const CMDeviceProfileArray *deviceProfiles );
 
 /*
  *  CMGetDeviceProfiles()
@@ -375,11 +364,10 @@ CMSetDeviceProfiles(
  */
 EXTERN_API( CMError )
 CMGetDeviceProfiles(
-  CMDeviceClass           deviceClass,
-  CMDeviceID              deviceID,
-  UInt32 *                arraySize,
-  CMDeviceProfileArray *  deviceProfiles);
-
+    CMDeviceClass         deviceClass,
+    CMDeviceID            deviceID,
+    UInt32 *              arraySize,
+    CMDeviceProfileArray *deviceProfiles );
 
 /*
  *  CMSetDeviceDefaultProfileID()
@@ -391,10 +379,9 @@ CMGetDeviceProfiles(
  */
 EXTERN_API( CMError )
 CMSetDeviceDefaultProfileID(
-  CMDeviceClass       deviceClass,
-  CMDeviceID          deviceID,
-  CMDeviceProfileID   defaultProfID);
-
+    CMDeviceClass     deviceClass,
+    CMDeviceID        deviceID,
+    CMDeviceProfileID defaultProfID );
 
 /*
  *  CMGetDeviceDefaultProfileID()
@@ -406,10 +393,9 @@ CMSetDeviceDefaultProfileID(
  */
 EXTERN_API( CMError )
 CMGetDeviceDefaultProfileID(
-  CMDeviceClass        deviceClass,
-  CMDeviceID           deviceID,
-  CMDeviceProfileID *  defaultProfID);
-
+    CMDeviceClass      deviceClass,
+    CMDeviceID         deviceID,
+    CMDeviceProfileID *defaultProfID );
 
 /*
  *  CMGetDeviceProfile()
@@ -421,11 +407,10 @@ CMGetDeviceDefaultProfileID(
  */
 EXTERN_API( CMError )
 CMGetDeviceProfile(
-  CMDeviceClass        deviceClass,
-  CMDeviceID           deviceID,
-  CMDeviceProfileID    profileID,
-  CMProfileLocation *  deviceProfLoc);
-
+    CMDeviceClass      deviceClass,
+    CMDeviceID         deviceID,
+    CMDeviceProfileID  profileID,
+    CMProfileLocation *deviceProfLoc );
 
 /*
  *  CMSetDeviceProfile()
@@ -437,12 +422,11 @@ CMGetDeviceProfile(
  */
 EXTERN_API( CMError )
 CMSetDeviceProfile(
-  CMDeviceClass                 deviceClass,
-  CMDeviceID                    deviceID,
-  const CMDeviceProfileScope *  profileScope,
-  CMDeviceProfileID             profileID,
-  const CMProfileLocation *     deviceProfLoc);
-
+    CMDeviceClass               deviceClass,
+    CMDeviceID                  deviceID,
+    const CMDeviceProfileScope *profileScope,
+    CMDeviceProfileID           profileID,
+    const CMProfileLocation *   deviceProfLoc );
 
 /*
     Other Device State/Info accessors
@@ -457,10 +441,9 @@ CMSetDeviceProfile(
  */
 EXTERN_API( CMError )
 CMSetDeviceState(
-  CMDeviceClass   deviceClass,
-  CMDeviceID      deviceID,
-  CMDeviceState   deviceState);
-
+    CMDeviceClass deviceClass,
+    CMDeviceID    deviceID,
+    CMDeviceState deviceState );
 
 /*
  *  CMGetDeviceState()
@@ -472,10 +455,9 @@ CMSetDeviceState(
  */
 EXTERN_API( CMError )
 CMGetDeviceState(
-  CMDeviceClass    deviceClass,
-  CMDeviceID       deviceID,
-  CMDeviceState *  deviceState);
-
+    CMDeviceClass  deviceClass,
+    CMDeviceID     deviceID,
+    CMDeviceState *deviceState );
 
 /*
  *  CMGetDeviceInfo()
@@ -487,10 +469,9 @@ CMGetDeviceState(
  */
 EXTERN_API( CMError )
 CMGetDeviceInfo(
-  CMDeviceClass   deviceClass,
-  CMDeviceID      deviceID,
-  CMDeviceInfo *  deviceInfo);
-
+    CMDeviceClass deviceClass,
+    CMDeviceID    deviceID,
+    CMDeviceInfo *deviceInfo );
 
 /*
     Device Info & Profile Iterators
@@ -505,11 +486,10 @@ CMGetDeviceInfo(
  */
 EXTERN_API( CMError )
 CMIterateColorDevices(
-  CMIterateDeviceInfoProcPtr   proc,
-  UInt32 *                     seed,
-  UInt32 *                     count,
-  void *                       refCon);
-
+    CMIterateDeviceInfoProcPtr proc,
+    UInt32 *                   seed,
+    UInt32 *                   count,
+    void *                     refCon );
 
 /*
  *  CMIterateDeviceProfiles()
@@ -521,20 +501,18 @@ CMIterateColorDevices(
  */
 EXTERN_API( CMError )
 CMIterateDeviceProfiles(
-  CMIterateDeviceProfileProcPtr   proc,
-  UInt32 *                        seed,
-  UInt32 *                        count,
-  UInt32                          flags,
-  void *                          refCon);
-
-
+    CMIterateDeviceProfileProcPtr proc,
+    UInt32 *                      seed,
+    UInt32 *                      count,
+    UInt32                        flags,
+    void *                        refCon );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -548,4 +526,3 @@ CMIterateDeviceProfiles(
 #endif
 
 #endif /* __CMDEVICEINTEGRATION__ */
-

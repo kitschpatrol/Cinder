@@ -21,13 +21,12 @@
 #include <ConditionalMacros.h>
 #endif
 
-
 #if TARGET_OS_MAC
 #ifndef __MACTYPES__
 #include <MacTypes.h>
 #endif
 
-#endif  /* TARGET_OS_MAC */
+#endif /* TARGET_OS_MAC */
 
 #ifndef __QD3D__
 #include <QD3D.h>
@@ -45,9 +44,6 @@
 #include <QD3DIO.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -61,26 +57,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=power
+#pragma options align = power
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __QD3DOLD__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __QD3DOLD__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __QD3DOLD__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __QD3DOLD__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
 /******************************************************************************
@@ -89,22 +85,22 @@ extern "C" {
  **                         from QD3D.i                                      **
  **                                                                          **
  *****************************************************************************/
-typedef struct OpaqueTQ3ObjectClass*    TQ3ObjectClass;
-typedef unsigned long                   TQ3MethodType;
+typedef struct OpaqueTQ3ObjectClass *TQ3ObjectClass;
+typedef unsigned long                TQ3MethodType;
 /*
  * Object methods
  */
-#define kQ3MethodTypeObjectUnregister       Q3_METHOD_TYPE('u','n','r','g')
+#define kQ3MethodTypeObjectUnregister Q3_METHOD_TYPE( 'u', 'n', 'r', 'g' )
 /*
  * IO Methods
  */
-#define kQ3MethodTypeObjectFileVersion      Q3_METHOD_TYPE('v','e','r','s') /* version */
-#define kQ3MethodTypeObjectTraverse         Q3_METHOD_TYPE('t','r','v','s') /* byte count */
-#define kQ3MethodTypeObjectTraverseData     Q3_METHOD_TYPE('t','r','v','d') /* byte count */
-#define kQ3MethodTypeObjectWrite            Q3_METHOD_TYPE('w','r','i','t') /* Dump info to file */
-#define kQ3MethodTypeObjectReadData         Q3_METHOD_TYPE('r','d','d','t') /* Read info from file into buffer or, attach read data to parent */ 
-typedef CALLBACK_API_C( void , TQ3FunctionPointer )(void);
-typedef CALLBACK_API_C( TQ3FunctionPointer , TQ3MetaHandler )(TQ3MethodType methodType);
+#define kQ3MethodTypeObjectFileVersion Q3_METHOD_TYPE( 'v', 'e', 'r', 's' ) /* version */
+#define kQ3MethodTypeObjectTraverse Q3_METHOD_TYPE( 't', 'r', 'v', 's' ) /* byte count */
+#define kQ3MethodTypeObjectTraverseData Q3_METHOD_TYPE( 't', 'r', 'v', 'd' ) /* byte count */
+#define kQ3MethodTypeObjectWrite Q3_METHOD_TYPE( 'w', 'r', 'i', 't' ) /* Dump info to file */
+#define kQ3MethodTypeObjectReadData Q3_METHOD_TYPE( 'r', 'd', 'd', 't' ) /* Read info from file into buffer or, attach read data to parent */
+typedef CALLBACK_API_C( void, TQ3FunctionPointer )( void );
+typedef CALLBACK_API_C( TQ3FunctionPointer, TQ3MetaHandler )( TQ3MethodType methodType );
 /*
  * MetaHandler:
  *      When you give a metahandler to QuickDraw 3D, it is called multiple times to
@@ -120,7 +116,7 @@ typedef CALLBACK_API_C( TQ3FunctionPointer , TQ3MetaHandler )(TQ3MethodType meth
  *
  *      These types here are prototypes of how your functions should look.
  */
-typedef CALLBACK_API_C( TQ3Status , TQ3ObjectUnregisterMethod )(TQ3ObjectClass objectClass);
+typedef CALLBACK_API_C( TQ3Status, TQ3ObjectUnregisterMethod )( TQ3ObjectClass objectClass );
 /******************************************************************************
  **                                                                          **
  **                     Obsolete ObjectClass Routines                        **
@@ -142,10 +138,7 @@ typedef CALLBACK_API_C( TQ3Status , TQ3ObjectUnregisterMethod )(TQ3ObjectClass o
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3ObjectClass_Unregister(TQ3ObjectClass objectClass);
-
-
-
+Q3ObjectClass_Unregister( TQ3ObjectClass objectClass );
 
 /******************************************************************************
  **                                                                          **
@@ -153,18 +146,18 @@ Q3ObjectClass_Unregister(TQ3ObjectClass objectClass);
  **                         from QD3DSet.i                                   **
  **                                                                          **
  *****************************************************************************/
-#define kQ3MethodTypeElementCopyAdd         Q3_METHOD_TYPE('e','c','p','a')
-#define kQ3MethodTypeElementCopyReplace     Q3_METHOD_TYPE('e','c','p','r')
-#define kQ3MethodTypeElementCopyGet         Q3_METHOD_TYPE('e','c','p','g')
-#define kQ3MethodTypeElementCopyDuplicate   Q3_METHOD_TYPE('e','c','p','d')
-#define kQ3MethodTypeElementDelete          Q3_METHOD_TYPE('e','d','e','l')
-#endif  /* CALL_NOT_IN_CARBON */
+#define kQ3MethodTypeElementCopyAdd Q3_METHOD_TYPE( 'e', 'c', 'p', 'a' )
+#define kQ3MethodTypeElementCopyReplace Q3_METHOD_TYPE( 'e', 'c', 'p', 'r' )
+#define kQ3MethodTypeElementCopyGet Q3_METHOD_TYPE( 'e', 'c', 'p', 'g' )
+#define kQ3MethodTypeElementCopyDuplicate Q3_METHOD_TYPE( 'e', 'c', 'p', 'd' )
+#define kQ3MethodTypeElementDelete Q3_METHOD_TYPE( 'e', 'd', 'e', 'l' )
+#endif /* CALL_NOT_IN_CARBON */
 
-typedef CALLBACK_API_C( TQ3Status , TQ3ElementCopyAddMethod )(const void *fromAPIElement, void *toInternalElement);
-typedef CALLBACK_API_C( TQ3Status , TQ3ElementCopyReplaceMethod )(const void *fromAPIElement, void *ontoInternalElement);
-typedef CALLBACK_API_C( TQ3Status , TQ3ElementCopyGetMethod )(const void *fromInternalElement, void *toAPIElement);
-typedef CALLBACK_API_C( TQ3Status , TQ3ElementCopyDuplicateMethod )(const void *fromInternalElement, void *toInternalElement);
-typedef CALLBACK_API_C( TQ3Status , TQ3ElementDeleteMethod )(void * internalElement);
+typedef CALLBACK_API_C( TQ3Status, TQ3ElementCopyAddMethod )( const void *fromAPIElement, void *toInternalElement );
+typedef CALLBACK_API_C( TQ3Status, TQ3ElementCopyReplaceMethod )( const void *fromAPIElement, void *ontoInternalElement );
+typedef CALLBACK_API_C( TQ3Status, TQ3ElementCopyGetMethod )( const void *fromInternalElement, void *toAPIElement );
+typedef CALLBACK_API_C( TQ3Status, TQ3ElementCopyDuplicateMethod )( const void *fromInternalElement, void *toInternalElement );
+typedef CALLBACK_API_C( TQ3Status, TQ3ElementDeleteMethod )( void *internalElement );
 #if CALL_NOT_IN_CARBON
 /*
  *  Q3ElementClass_Register()
@@ -176,11 +169,10 @@ typedef CALLBACK_API_C( TQ3Status , TQ3ElementDeleteMethod )(void * internalElem
  */
 EXTERN_API_C( TQ3ObjectClass )
 Q3ElementClass_Register(
-  TQ3ElementType   elementType,
-  const char *     name,
-  unsigned long    sizeOfElement,
-  TQ3MetaHandler   metaHandler);
-
+    TQ3ElementType elementType,
+    const char *   name,
+    unsigned long  sizeOfElement,
+    TQ3MetaHandler metaHandler );
 
 /*
  *  Q3ElementType_GetElementSize()
@@ -192,10 +184,8 @@ Q3ElementClass_Register(
  */
 EXTERN_API_C( TQ3Status )
 Q3ElementType_GetElementSize(
-  TQ3ElementType   elementType,
-  unsigned long *  sizeOfElement);
-
-
+    TQ3ElementType elementType,
+    unsigned long *sizeOfElement );
 
 /******************************************************************************
  **                                                                          **
@@ -207,21 +197,21 @@ Q3ElementType_GetElementSize(
  *  the Q3Pick_GetPickDetailData function in conjunction
  *  with the pickDetailValue enum
  */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 struct TQ3HitData {
-  TQ3PickParts        part;
-  TQ3PickDetail       validMask;
-  unsigned long       pickID;
-  TQ3HitPath          path;
-  TQ3Object           object;
-  TQ3Matrix4x4        localToWorldMatrix;
-  TQ3Point3D          xyzPoint;
-  float               distance;
-  TQ3Vector3D         normal;
-  TQ3ShapePartObject  shapePart;
+	TQ3PickParts       part;
+	TQ3PickDetail      validMask;
+	unsigned long      pickID;
+	TQ3HitPath         path;
+	TQ3Object          object;
+	TQ3Matrix4x4       localToWorldMatrix;
+	TQ3Point3D         xyzPoint;
+	float              distance;
+	TQ3Vector3D        normal;
+	TQ3ShapePartObject shapePart;
 };
-typedef struct TQ3HitData               TQ3HitData;
+typedef struct TQ3HitData TQ3HitData;
 /*
  *  The following functions have been superseeded
  *  by the Q3Pick_GetPickDetailData function
@@ -237,10 +227,9 @@ typedef struct TQ3HitData               TQ3HitData;
  */
 EXTERN_API_C( TQ3Status )
 Q3Pick_GetHitData(
-  TQ3PickObject   pick,
-  unsigned long   index,
-  TQ3HitData *    hitData);
-
+    TQ3PickObject pick,
+    unsigned long index,
+    TQ3HitData *  hitData );
 
 /*
  *  Q3Hit_EmptyData()
@@ -251,8 +240,7 @@ Q3Pick_GetHitData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3Status )
-Q3Hit_EmptyData(TQ3HitData * hitData);
-
+Q3Hit_EmptyData( TQ3HitData *hitData );
 
 /******************************************************************************
  **                                                                          **
@@ -275,10 +263,8 @@ Q3Hit_EmptyData(TQ3HitData * hitData);
  */
 EXTERN_API_C( TQ3Status )
 Q3Renderer_Sync(
-  TQ3RendererObject   renderer,
-  TQ3ViewObject       view);
-
-
+    TQ3RendererObject renderer,
+    TQ3ViewObject     view );
 
 /******************************************************************************
  **                                                                          **
@@ -295,14 +281,14 @@ Q3Renderer_Sync(
  *
  *  The view is the current traversal view.
  */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
-typedef CALLBACK_API_C( TQ3Status , TQ3ObjectTraverseMethod )(TQ3Object object, void *data, TQ3ViewObject view);
-typedef CALLBACK_API_C( TQ3Status , TQ3ObjectWriteMethod )(const void *object, TQ3FileObject theFile);
+typedef CALLBACK_API_C( TQ3Status, TQ3ObjectTraverseMethod )( TQ3Object object, void *data, TQ3ViewObject view );
+typedef CALLBACK_API_C( TQ3Status, TQ3ObjectWriteMethod )( const void *object, TQ3FileObject theFile );
 /*
  *  Use Q3XView_SubmitWriteData instead...
  */
-typedef CALLBACK_API_C( void , TQ3DataDeleteMethod )(void * data);
+typedef CALLBACK_API_C( void, TQ3DataDeleteMethod )( void *data );
 #if CALL_NOT_IN_CARBON
 /*
  *  Q3View_SubmitWriteData()
@@ -314,11 +300,10 @@ typedef CALLBACK_API_C( void , TQ3DataDeleteMethod )(void * data);
  */
 EXTERN_API_C( TQ3Status )
 Q3View_SubmitWriteData(
-  TQ3ViewObject         view,
-  TQ3Size               size,
-  void *                data,
-  TQ3DataDeleteMethod   deleteData);
-
+    TQ3ViewObject       view,
+    TQ3Size             size,
+    void *              data,
+    TQ3DataDeleteMethod deleteData );
 
 /*
  *  TQ3ObjectReadDataMethod
@@ -328,28 +313,27 @@ Q3View_SubmitWriteData(
  *
  *  Otherwise, parentObject is whatever object your element is a subobject of...
  */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
-typedef CALLBACK_API_C( TQ3Status , TQ3ObjectReadDataMethod )(TQ3Object parentObject, TQ3FileObject theFile);
-
+typedef CALLBACK_API_C( TQ3Status, TQ3ObjectReadDataMethod )( TQ3Object parentObject, TQ3FileObject theFile );
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __QD3DOLD__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __QD3DOLD__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__QD3DOLD__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __QD3DOLD__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -363,4 +347,3 @@ typedef CALLBACK_API_C( TQ3Status , TQ3ObjectReadDataMethod )(TQ3Object parentOb
 #endif
 
 #endif /* __QD3DOLD__ */
-

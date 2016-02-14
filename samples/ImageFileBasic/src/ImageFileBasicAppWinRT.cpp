@@ -1,10 +1,9 @@
 #include "cinder/app/App.h"
-#include "cinder/Utilities.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Surface.h"
+#include "cinder/Utilities.h"
 #include "cinder/dx/DxTexture.h"
 #include "cinder/dx/dx.h"
-
 
 // Uncomment this line to enable specialized PNG handling
 //#include "cinder/ImageSourcePng.h"
@@ -13,20 +12,13 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-
-
-
-
 class ImageFileBasicApp : public App {
   public:
 	void setup();
 	void keyDown( KeyEvent event );
-	void draw();
-	dx::Texture		mTexture;	
-
-
+	void        draw();
+	dx::Texture mTexture;
 };
-
 
 void ImageFileBasicApp::setup()
 {
@@ -37,12 +29,11 @@ void ImageFileBasicApp::setup()
 		   the selected file.
 		*/
 		std::vector<std::string> extensions;
-		extensions.push_back(".png");
-		extensions.push_back(".jpg");
+		extensions.push_back( ".png" );
+		extensions.push_back( ".jpg" );
 
-
-		getOpenFilePath( "", extensions, [this](fs::path path){
-			if( ! path.empty() ) {
+		getOpenFilePath( "", extensions, [this]( fs::path path ) {
+			if( !path.empty() ) {
 				/*	Windows 8 Store Apps file access is highly sandboxed. In order to open 
 					a file outside of your Application's directory (such as the Pictures Directory), 
 					you will need to use the loadImageAsync()  method. If necessary, it will copy
@@ -50,10 +41,9 @@ void ImageFileBasicApp::setup()
 					and then delete the temporary copy of the image.
 				*/
 
-				loadImageAsync(path, [this](ImageSourceRef imageRef){
+				loadImageAsync( path, [this]( ImageSourceRef imageRef ) {
 					this->mTexture = dx::Texture( imageRef );
-				});
-
+				} );
 
 				/* You can also load a texture asychronously like this
 				//dx::Texture::loadImageAsync(path, this->mTexture);
@@ -67,7 +57,7 @@ void ImageFileBasicApp::setup()
 					Surface::loadImageAsync(path, this->mSurface);
 				*/
 			}
-		});
+		} );
 	}
 	catch( ci::Exception &exc ) {
 		console() << "unable to load the texture file, what: " << exc.what() << endl;
@@ -79,7 +69,7 @@ void ImageFileBasicApp::keyDown( KeyEvent event )
 	int c = event.getChar();
 
 	if( event.getChar() == 'f' ) {
-		setFullScreen( ! isFullScreen() );
+		setFullScreen( !isFullScreen() );
 	}
 	else if( event.getCode() == app::KeyEvent::KEY_ESCAPE ) {
 		setFullScreen( false );
@@ -93,14 +83,12 @@ void ImageFileBasicApp::draw()
 {
 	dx::clear( Color( 0.5f, 0.5f, 0.5f ) );
 	dx::enableAlphaBlending();
-	
+
 	/*	Note: Since textures may be loaded asynchronously in WinRT, it is very important to test if 
 		your texture is not empty before trying to use it!
 	*/
 	if( mTexture )
 		dx::draw( mTexture, vec2( 0, 0 ) );
 }
-
-
 
 CINDER_APP( ImageFileBasicApp, RendererDx )

@@ -1,17 +1,17 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/Rand.h"
 #include "cinder/CinderAssert.h"
 #include "cinder/Log.h"
+#include "cinder/Rand.h"
+#include "cinder/app/RendererGl.h"
 
-#include "cinder/audio/GenNode.h"
 #include "cinder/audio/GainNode.h"
+#include "cinder/audio/GenNode.h"
 #include "cinder/audio/MonitorNode.h"
 
 #include "cinder/audio/Utilities.h"
 
-#include "../../common/AudioTestGui.h"
 #include "../../../../samples/_audio/common/AudioDrawUtils.h"
+#include "../../common/AudioTestGui.h"
 
 // FIXME: type switching should clear the cached wavetable
 
@@ -19,10 +19,15 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-enum GenType { SINE, TRIANGLE, OSC_SINE, OSC_SAW, OSC_SQUARE, OSC_TRIANGLE };
+enum GenType { SINE,
+	TRIANGLE,
+	OSC_SINE,
+	OSC_SAW,
+	OSC_SQUARE,
+	OSC_TRIANGLE };
 
 class StressTestApp : public App {
-public:
+  public:
 	void setup() override;
 	void draw() override;
 	void keyDown( KeyEvent event ) override;
@@ -35,24 +40,24 @@ public:
 	void removeGens();
 	void clearGens();
 
-	audio::GenNodeRef	makeSelectedGenType();
-	audio::GenNodeRef	makeOsc( audio::WaveformType type );
+	audio::GenNodeRef makeSelectedGenType();
+	audio::GenNodeRef makeOsc( audio::WaveformType type );
 
-	audio::GainNodeRef				mGain;
-	audio::MonitorSpectralNodeRef	mMonitor;
-	audio::WaveTable2dRef	mWaveTable;
-	vector<audio::GenNodeRef>		mGenBank;
+	audio::GainNodeRef            mGain;
+	audio::MonitorSpectralNodeRef mMonitor;
+	audio::WaveTable2dRef         mWaveTable;
+	vector<audio::GenNodeRef>     mGenBank;
 
-	vector<TestWidget *>	mWidgets;
-	Button					mPlayButton, mAddGens, mRemoveGens, mClearGens;
-	VSelector				mTestSelector;
-	HSlider					mGainSlider;
-	TextInput				mAddIncrInput;
-	SpectrumPlot			mSpectrumPlot;
+	vector<TestWidget *> mWidgets;
+	Button               mPlayButton, mAddGens, mRemoveGens, mClearGens;
+	VSelector            mTestSelector;
+	HSlider              mGainSlider;
+	TextInput            mAddIncrInput;
+	SpectrumPlot         mSpectrumPlot;
 
-	bool					mEnableDrawing;
-	size_t					mAddIncr;
-	GenType					mSelectedGenType;
+	bool    mEnableDrawing;
+	size_t  mAddIncr;
+	GenType mSelectedGenType;
 };
 
 void StressTestApp::setup()
@@ -73,7 +78,6 @@ void StressTestApp::setup()
 	addGens();
 
 	setupUI();
-
 }
 
 void StressTestApp::addGens()
@@ -107,7 +111,7 @@ void StressTestApp::removeGens()
 
 void StressTestApp::clearGens()
 {
-	while( ! mGenBank.empty() ) {
+	while( !mGenBank.empty() ) {
 		mGenBank.back()->disconnectAll();
 		mGenBank.pop_back();
 	}
@@ -119,14 +123,21 @@ void StressTestApp::clearGens()
 audio::GenNodeRef StressTestApp::makeSelectedGenType()
 {
 	switch( mSelectedGenType ) {
-		case SINE: return audio::master()->makeNode( new audio::GenSineNode );
-		case TRIANGLE: return audio::master()->makeNode( new audio::GenTriangleNode );
-		case OSC_SINE: return makeOsc( audio::WaveformType::SINE );
-		case OSC_SAW: return makeOsc( audio::WaveformType::SAWTOOTH );
-		case OSC_SQUARE: return makeOsc( audio::WaveformType::SQUARE );
-		case OSC_TRIANGLE: return makeOsc( audio::WaveformType::TRIANGLE );
+	case SINE:
+		return audio::master()->makeNode( new audio::GenSineNode );
+	case TRIANGLE:
+		return audio::master()->makeNode( new audio::GenTriangleNode );
+	case OSC_SINE:
+		return makeOsc( audio::WaveformType::SINE );
+	case OSC_SAW:
+		return makeOsc( audio::WaveformType::SAWTOOTH );
+	case OSC_SQUARE:
+		return makeOsc( audio::WaveformType::SQUARE );
+	case OSC_TRIANGLE:
+		return makeOsc( audio::WaveformType::TRIANGLE );
 
-		default: CI_ASSERT_NOT_REACHABLE();
+	default:
+		CI_ASSERT_NOT_REACHABLE();
 	}
 
 	return audio::GenNodeRef();
@@ -150,7 +161,6 @@ audio::GenNodeRef StressTestApp::makeOsc( audio::WaveformType type )
 
 void StressTestApp::setupUI()
 {
-
 	Rectf buttonRect( (float)getWindowWidth() - 200, 10, (float)getWindowWidth(), 60 );
 	mPlayButton = Button( true, "stopped", "playing" );
 	mPlayButton.mBounds = buttonRect;
@@ -196,10 +206,10 @@ void StressTestApp::setupUI()
 	mAddIncrInput.setValue( mAddIncr );
 	mWidgets.push_back( &mAddIncrInput );
 
-	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -213,16 +223,15 @@ void StressTestApp::processDrag( ivec2 pos )
 {
 	if( mGainSlider.hitTest( pos ) )
 		mGain->getParam()->applyRamp( mGainSlider.mValueScaled, 0.03f );
-
 }
 
 void StressTestApp::processTap( ivec2 pos )
 {
-	auto ctx = audio::master();
+	auto   ctx = audio::master();
 	size_t currentIndex = mTestSelector.mCurrentSectionIndex;
 
 	if( mPlayButton.hitTest( pos ) )
-		ctx->setEnabled( ! ctx->isEnabled() );
+		ctx->setEnabled( !ctx->isEnabled() );
 	else if( mAddGens.hitTest( pos ) )
 		addGens();
 	else if( mRemoveGens.hitTest( pos ) )
@@ -277,11 +286,10 @@ void StressTestApp::keyDown( KeyEvent event )
 			else
 				currentSelected->processChar( event.getChar() );
 		}
-
 	}
 	else {
 		if( event.getChar() == 'g' )
-			mEnableDrawing = ! mEnableDrawing;
+			mEnableDrawing = !mEnableDrawing;
 		else if( event.getChar() == 'a' )
 			addGens();
 	}
@@ -291,7 +299,7 @@ void StressTestApp::draw()
 {
 	gl::clear();
 
-	if( ! mEnableDrawing )
+	if( !mEnableDrawing )
 		return;
 
 	const float padding = 10;

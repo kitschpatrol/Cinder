@@ -32,9 +32,6 @@
 #include <TranslationExtensions.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -48,40 +45,40 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /* enumerated types on how a document can be opened*/
-typedef short                           DocOpenMethod;
+typedef short DocOpenMethod;
 enum {
-  domCannot                     = 0,
-  domNative                     = 1,
-  domTranslateFirst             = 2,
-  domWildcard                   = 3
+	domCannot = 0,
+	domNative = 1,
+	domTranslateFirst = 2,
+	domWildcard = 3
 };
 
 /* 0L terminated array of OSTypes, or FileTypes*/
-typedef OSType                          TypesBlock[64];
-typedef OSType *                        TypesBlockPtr;
+typedef OSType  TypesBlock[64];
+typedef OSType *TypesBlockPtr;
 /* Progress dialog resource ID*/
 enum {
-  kTranslationScrapProgressDialogID = -16555
+	kTranslationScrapProgressDialogID = -16555
 };
 
 /* block of data that describes how to translate*/
 struct FileTranslationSpec {
-  OSType              componentSignature;
-  const void *        translationSystemInfo;
-  FileTypeSpec        src;
-  FileTypeSpec        dst;
+	OSType       componentSignature;
+	const void * translationSystemInfo;
+	FileTypeSpec src;
+	FileTypeSpec dst;
 };
-typedef struct FileTranslationSpec      FileTranslationSpec;
-typedef FileTranslationSpec *           FileTranslationSpecArrayPtr;
-typedef FileTranslationSpecArrayPtr *   FileTranslationSpecArrayHandle;
+typedef struct FileTranslationSpec   FileTranslationSpec;
+typedef FileTranslationSpec *        FileTranslationSpecArrayPtr;
+typedef FileTranslationSpecArrayPtr *FileTranslationSpecArrayHandle;
 
 /*****************************************************************************************
 * 
@@ -105,10 +102,9 @@ typedef FileTranslationSpecArrayPtr *   FileTranslationSpecArrayHandle;
  */
 EXTERN_API( OSErr )
 GetFileTypesThatAppCanNativelyOpen(
-  short       appVRefNumHint,
-  OSType      appSignature,
-  FileType *  nativeTypes)                                    TWOWORDINLINE(0x701C, 0xABFC);
-
+    short     appVRefNumHint,
+    OSType    appSignature,
+    FileType *nativeTypes ) TWOWORDINLINE( 0x701C, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -135,12 +131,10 @@ GetFileTypesThatAppCanNativelyOpen(
  */
 EXTERN_API( OSErr )
 ExtendFileTypeList(
-  const FileType *  originalTypeList,
-  short             numberOriginalTypes,
-  FileType *        extendedTypeList,
-  short *           numberExtendedTypes)                      TWOWORDINLINE(0x7009, 0xABFC);
-
-
+    const FileType *originalTypeList,
+    short           numberOriginalTypes,
+    FileType *      extendedTypeList,
+    short *         numberExtendedTypes ) TWOWORDINLINE( 0x7009, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -172,15 +166,13 @@ ExtendFileTypeList(
  */
 EXTERN_API( OSErr )
 CanDocBeOpened(
-  const FSSpec *         targetDocument,
-  short                  appVRefNumHint,
-  OSType                 appSignature,
-  const FileType *       nativeTypes,
-  Boolean                onlyNative,
-  DocOpenMethod *        howToOpen,
-  FileTranslationSpec *  howToTranslate)                      TWOWORDINLINE(0x701E, 0xABFC);
-
-
+    const FSSpec *       targetDocument,
+    short                appVRefNumHint,
+    OSType               appSignature,
+    const FileType *     nativeTypes,
+    Boolean              onlyNative,
+    DocOpenMethod *      howToOpen,
+    FileTranslationSpec *howToTranslate ) TWOWORDINLINE( 0x701E, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -205,11 +197,10 @@ CanDocBeOpened(
  */
 EXTERN_API( short )
 GetFileTranslationPaths(
-  const FSSpec *                srcDocument,
-  FileType                      dstDocType,
-  unsigned short                maxResultCount,
-  FileTranslationSpecArrayPtr   resultBuffer)                 TWOWORDINLINE(0x7038, 0xABFC);
-
+    const FSSpec *              srcDocument,
+    FileType                    dstDocType,
+    unsigned short              maxResultCount,
+    FileTranslationSpecArrayPtr resultBuffer ) TWOWORDINLINE( 0x7038, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -240,13 +231,11 @@ GetFileTranslationPaths(
  */
 EXTERN_API( OSErr )
 GetPathFromTranslationDialog(
-  const FSSpec *         theDocument,
-  const FSSpec *         theApplication,
-  TypesBlockPtr          typeList,
-  DocOpenMethod *        howToOpen,
-  FileTranslationSpec *  howToTranslate)                      TWOWORDINLINE(0x7037, 0xABFC);
-
-
+    const FSSpec *       theDocument,
+    const FSSpec *       theApplication,
+    TypesBlockPtr        typeList,
+    DocOpenMethod *      howToOpen,
+    FileTranslationSpec *howToTranslate ) TWOWORDINLINE( 0x7037, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -272,10 +261,9 @@ GetPathFromTranslationDialog(
  */
 EXTERN_API( OSErr )
 TranslateFile(
-  const FSSpec *               sourceDocument,
-  const FSSpec *               destinationDocument,
-  const FileTranslationSpec *  howToTranslate)                TWOWORDINLINE(0x700C, 0xABFC);
-
+    const FSSpec *             sourceDocument,
+    const FSSpec *             destinationDocument,
+    const FileTranslationSpec *howToTranslate ) TWOWORDINLINE( 0x700C, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -302,11 +290,10 @@ TranslateFile(
  */
 EXTERN_API( OSErr )
 GetDocumentKindString(
-  short    docVRefNum,
-  OSType   docType,
-  OSType   docCreator,
-  Str63    kindString)                                        TWOWORDINLINE(0x7016, 0xABFC);
-
+    short  docVRefNum,
+    OSType docType,
+    OSType docCreator,
+    Str63  kindString ) TWOWORDINLINE( 0x7016, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -329,10 +316,8 @@ GetDocumentKindString(
  */
 EXTERN_API( OSErr )
 GetTranslationExtensionName(
-  const FileTranslationSpec *  translationMethod,
-  Str31                        extensionName)                 TWOWORDINLINE(0x7036, 0xABFC);
-
-
+    const FileTranslationSpec *translationMethod,
+    Str31                      extensionName ) TWOWORDINLINE( 0x7036, 0xABFC );
 
 /*****************************************************************************************
 * 
@@ -351,8 +336,8 @@ GetTranslationExtensionName(
 *           
 *  Exit:    dataH                   Handle is resized and filled with data in requested format
 */
-typedef CALLBACK_API( OSErr , GetScrapDataProcPtr )(ScrapType requestedFormat, Handle dataH, void *srcDataGetterRefCon);
-typedef STACK_UPP_TYPE(GetScrapDataProcPtr)                     GetScrapDataUPP;
+typedef CALLBACK_API( OSErr, GetScrapDataProcPtr )( ScrapType requestedFormat, Handle dataH, void *srcDataGetterRefCon );
+typedef STACK_UPP_TYPE( GetScrapDataProcPtr ) GetScrapDataUPP;
 /*
  *  NewGetScrapDataUPP()
  *  
@@ -362,14 +347,17 @@ typedef STACK_UPP_TYPE(GetScrapDataProcPtr)                     GetScrapDataUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( GetScrapDataUPP )
-NewGetScrapDataUPP(GetScrapDataProcPtr userRoutine);
+NewGetScrapDataUPP( GetScrapDataProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppGetScrapDataProcInfo = 0x00000FE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(GetScrapDataUPP) NewGetScrapDataUPP(GetScrapDataProcPtr userRoutine) { return (GetScrapDataUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppGetScrapDataProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewGetScrapDataUPP(userRoutine) (GetScrapDataUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppGetScrapDataProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppGetScrapDataProcInfo = 0x00000FE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( GetScrapDataUPP ) NewGetScrapDataUPP( GetScrapDataProcPtr userRoutine )
+{
+	return (GetScrapDataUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppGetScrapDataProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewGetScrapDataUPP( userRoutine ) ( GetScrapDataUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppGetScrapDataProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -381,13 +369,16 @@ NewGetScrapDataUPP(GetScrapDataProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeGetScrapDataUPP(GetScrapDataUPP userUPP);
+DisposeGetScrapDataUPP( GetScrapDataUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeGetScrapDataUPP(GetScrapDataUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeGetScrapDataUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeGetScrapDataUPP( GetScrapDataUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeGetScrapDataUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -400,25 +391,28 @@ DisposeGetScrapDataUPP(GetScrapDataUPP userUPP);
  */
 EXTERN_API_C( OSErr )
 InvokeGetScrapDataUPP(
-  ScrapType        requestedFormat,
-  Handle           dataH,
-  void *           srcDataGetterRefCon,
-  GetScrapDataUPP  userUPP);
+    ScrapType       requestedFormat,
+    Handle          dataH,
+    void *          srcDataGetterRefCon,
+    GetScrapDataUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSErr) InvokeGetScrapDataUPP(ScrapType requestedFormat, Handle dataH, void * srcDataGetterRefCon, GetScrapDataUPP userUPP) { return (OSErr)CALL_THREE_PARAMETER_UPP(userUPP, uppGetScrapDataProcInfo, requestedFormat, dataH, srcDataGetterRefCon); }
-  #else
-    #define InvokeGetScrapDataUPP(requestedFormat, dataH, srcDataGetterRefCon, userUPP) (OSErr)CALL_THREE_PARAMETER_UPP((userUPP), uppGetScrapDataProcInfo, (requestedFormat), (dataH), (srcDataGetterRefCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSErr ) InvokeGetScrapDataUPP( ScrapType requestedFormat, Handle dataH, void *srcDataGetterRefCon, GetScrapDataUPP userUPP )
+{
+	return (OSErr)CALL_THREE_PARAMETER_UPP( userUPP, uppGetScrapDataProcInfo, requestedFormat, dataH, srcDataGetterRefCon );
+}
+#else
+#define InvokeGetScrapDataUPP( requestedFormat, dataH, srcDataGetterRefCon, userUPP ) ( OSErr ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppGetScrapDataProcInfo, ( requestedFormat ), ( dataH ), ( srcDataGetterRefCon ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewGetScrapDataProc(userRoutine)                    NewGetScrapDataUPP(userRoutine)
-    #define CallGetScrapDataProc(userRoutine, requestedFormat, dataH, srcDataGetterRefCon) InvokeGetScrapDataUPP(requestedFormat, dataH, srcDataGetterRefCon, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewGetScrapDataProc( userRoutine ) NewGetScrapDataUPP( userRoutine )
+#define CallGetScrapDataProc( userRoutine, requestedFormat, dataH, srcDataGetterRefCon ) InvokeGetScrapDataUPP( requestedFormat, dataH, srcDataGetterRefCon, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
-typedef GetScrapDataUPP                 GetScrapData;
+typedef GetScrapDataUPP GetScrapData;
 /*****************************************************************************************
 * 
 *  TranslateScrap
@@ -446,22 +440,18 @@ typedef GetScrapDataUPP                 GetScrapData;
  */
 EXTERN_API( OSErr )
 TranslateScrap(
-  GetScrapDataUPP   sourceDataGetter,
-  void *            sourceDataGetterRefCon,
-  ScrapType         destinationFormat,
-  Handle            destinationData,
-  short             progressDialogID)                         TWOWORDINLINE(0x700E, 0xABFC);
-
-
-
-
+    GetScrapDataUPP sourceDataGetter,
+    void *          sourceDataGetterRefCon,
+    ScrapType       destinationFormat,
+    Handle          destinationData,
+    short           progressDialogID ) TWOWORDINLINE( 0x700E, 0xABFC );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -475,4 +465,3 @@ TranslateScrap(
 #endif
 
 #endif /* __TRANSLATION__ */
-

@@ -1,14 +1,14 @@
 #include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
 
+#include "cinder/Log.h"
 #include "cinder/audio/GenNode.h"
 #include "cinder/audio/NodeEffects.h"
-#include "cinder/Log.h"
 
+#include "cinder/CinderAssert.h"
 #include "cinder/audio/msw/ContextXAudio.h"
 #include "cinder/audio/msw/MswUtil.h"
 #include "cinder/msw/CinderMsw.h"
-#include "cinder/CinderAssert.h"
 
 #include "../../common/AudioTestGui.h"
 
@@ -18,27 +18,26 @@
 #include "XAPOFX.h"
 
 #if( _WIN32_WINNT >= 0x0602 )
-	#pragma comment(lib, "xaudio2.lib")
-	#pragma comment(lib, "xapobase.lib")
+#pragma comment( lib, "xaudio2.lib" )
+#pragma comment( lib, "xapobase.lib" )
 #else
-	#pragma comment(lib, "XAPOFX.lib")
+#pragma comment( lib, "XAPOFX.lib" )
 #endif
 
 // copied from xaudio2.h to I don't have to define XAUDIO2_HELPER_FUNCTIONS
-__inline float XAudio2FrequencyRatioToSemitones(float FrequencyRatio)
+__inline float XAudio2FrequencyRatioToSemitones( float FrequencyRatio )
 {
 	// Semitones = 12 * log2(FrequencyRatio)
 	//           = 12 * log2(10) * log10(FrequencyRatio)
-	return 39.86313713864835f * log10f(FrequencyRatio);
+	return 39.86313713864835f * log10f( FrequencyRatio );
 }
 
-__inline float XAudio2CutoffFrequencyToRadians(float CutoffFrequency, UINT32 SampleRate)
+__inline float XAudio2CutoffFrequencyToRadians( float CutoffFrequency, UINT32 SampleRate )
 {
-	if ((UINT32)(CutoffFrequency * 6.0f) >= SampleRate)
-	{
+	if( ( UINT32 )( CutoffFrequency * 6.0f ) >= SampleRate ) {
 		return XAUDIO2_MAX_FILTER_FREQUENCY;
 	}
-	return 2.0f * sinf((float)M_PI * CutoffFrequency / SampleRate);
+	return 2.0f * sinf( (float)M_PI * CutoffFrequency / SampleRate );
 }
 
 using namespace ci;
@@ -46,7 +45,7 @@ using namespace ci::app;
 using namespace std;
 
 class EffectXAudioTestApp : public App {
-public:
+  public:
 	void setup();
 	void draw();
 
@@ -61,20 +60,19 @@ public:
 	void processDrag( ivec2 pos );
 	void processTap( ivec2 pos );
 
+	audio::GenNodeRef  mGen;
+	audio::GainNodeRef mGain;
 
-	audio::GenNodeRef mGen;
-	audio::GainNodeRef	mGain;
+	audio::msw::ContextXAudio *mContextXAudio;
 
-	audio::msw::ContextXAudio*	mContextXAudio;
-
-	std::unique_ptr<::IUnknown, audio::msw::ComReleaser>	mXapo;
-	XAUDIO2_EFFECT_DESCRIPTOR								mEffectDesc;
-	XAUDIO2FX_REVERB_PARAMETERS								mReverbParams;
-	XAUDIO2_FILTER_PARAMETERS								mFilterParams;
+	std::unique_ptr<::IUnknown, audio::msw::ComReleaser> mXapo;
+	XAUDIO2_EFFECT_DESCRIPTOR   mEffectDesc;
+	XAUDIO2FX_REVERB_PARAMETERS mReverbParams;
+	XAUDIO2_FILTER_PARAMETERS   mFilterParams;
 
 	vector<TestWidget *> mWidgets;
-	Button mPlayButton;
-	HSlider mFreqSlider, mLowpassCutoffSlider, mReverbDecaySlider;
+	Button               mPlayButton;
+	HSlider              mFreqSlider, mLowpassCutoffSlider, mReverbDecaySlider;
 };
 
 void EffectXAudioTestApp::setup()
@@ -91,7 +89,7 @@ void EffectXAudioTestApp::setup()
 	mGen->setAutoEnabled();
 
 	mGain = ctx->makeNode( new audio::GainNode( 0.6f ) );
-	
+
 	mGen >> mGain >> ctx->getOutput();
 
 	audio::master()->printGraph();
@@ -105,7 +103,7 @@ void EffectXAudioTestApp::setup()
 void EffectXAudioTestApp::setupReverb()
 {
 	::IUnknown *reverb;
-	HRESULT hr = XAudio2CreateReverb( &reverb );
+	HRESULT     hr = XAudio2CreateReverb( &reverb );
 	CI_ASSERT( hr == S_OK );
 
 	mXapo = audio::msw::makeComUnique( reverb );
@@ -123,7 +121,7 @@ void EffectXAudioTestApp::setupReverb()
 	mContextXAudio->uninitializeNode( lineOut );
 	mContextXAudio->initializeNode( lineOut );
 
-	IXAudio2SourceVoice *sourceVoice = lineOut->getSourceVoice(); 
+	IXAudio2SourceVoice *sourceVoice = lineOut->getSourceVoice();
 	CI_ASSERT( sourceVoice );
 
 	hr = sourceVoice->SetEffectChain( &effectsChain );
@@ -135,7 +133,7 @@ void EffectXAudioTestApp::setupReverb()
 
 void EffectXAudioTestApp::setupFilter()
 {
-	IXAudio2SourceVoice *sourceVoice = mContextXAudio->getLineOutXAudio()->getSourceVoice(); 
+	IXAudio2SourceVoice *sourceVoice = mContextXAudio->getLineOutXAudio()->getSourceVoice();
 
 	sourceVoice->GetFilterParameters( &mFilterParams );
 
@@ -178,7 +176,7 @@ void EffectXAudioTestApp::initReverbParams()
 #endif
 
 	IXAudio2SourceVoice *sourceVoice = mContextXAudio->getLineOutXAudio()->getSourceVoice();
-	HRESULT hr = sourceVoice->SetEffectParameters( 0, &mReverbParams, sizeof( mReverbParams ) );
+	HRESULT              hr = sourceVoice->SetEffectParameters( 0, &mReverbParams, sizeof( mReverbParams ) );
 	CI_ASSERT( hr == S_OK );
 }
 
@@ -188,14 +186,14 @@ void EffectXAudioTestApp::setupUI()
 	mPlayButton.mBounds = Rectf( 0, 0, 200, 60 );
 	mWidgets.push_back( &mPlayButton );
 
-	float width = std::min( (float)getWindowWidth() - 20.0f,  440.0f );
+	float width = std::min( (float)getWindowWidth() - 20.0f, 440.0f );
 	Rectf sliderRect( getWindowCenter().x - width / 2.0f, 200, getWindowCenter().x + width / 2.0f, 250 );
 
 	mFreqSlider.mBounds = sliderRect;
 	mFreqSlider.mTitle = "Gen Freq";
 	mFreqSlider.mMax = 800.0f;
 	mFreqSlider.set( mGen->getFreq() );
-	mWidgets.push_back( &mFreqSlider);
+	mWidgets.push_back( &mFreqSlider );
 
 	sliderRect += vec2( 0, sliderRect.getHeight() + 10 );
 	mLowpassCutoffSlider.mBounds = sliderRect;
@@ -212,10 +210,10 @@ void EffectXAudioTestApp::setupUI()
 	mReverbDecaySlider.set( XAUDIO2FX_REVERB_DEFAULT_DECAY_TIME );
 	mWidgets.push_back( &mReverbDecaySlider );
 
-	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -228,7 +226,7 @@ void EffectXAudioTestApp::updateLowpass()
 	mFilterParams.Frequency = XAudio2CutoffFrequencyToRadians( mLowpassCutoffSlider.mValueScaled, audio::master()->getSampleRate() );
 
 	IXAudio2SourceVoice *sourceVoice = mContextXAudio->getLineOutXAudio()->getSourceVoice();
-	HRESULT hr = sourceVoice->SetFilterParameters( &mFilterParams );
+	HRESULT              hr = sourceVoice->SetFilterParameters( &mFilterParams );
 	CI_ASSERT( hr == S_OK );
 }
 
@@ -238,7 +236,7 @@ void EffectXAudioTestApp::updateReverb()
 		mReverbParams.DecayTime = mReverbDecaySlider.mValueScaled;
 
 		IXAudio2SourceVoice *sourceVoice = mContextXAudio->getLineOutXAudio()->getSourceVoice();
-		HRESULT hr = sourceVoice->SetEffectParameters( 0, &mReverbParams, sizeof( mReverbParams ) );
+		HRESULT              hr = sourceVoice->SetEffectParameters( 0, &mReverbParams, sizeof( mReverbParams ) );
 		CI_ASSERT( hr == S_OK );
 	}
 }
@@ -248,7 +246,7 @@ void EffectXAudioTestApp::processDrag( ivec2 pos )
 	if( mFreqSlider.hitTest( pos ) )
 		mGen->setFreq( mFreqSlider.mValueScaled );
 	if( mLowpassCutoffSlider.hitTest( pos ) )
-		updateLowpass();	
+		updateLowpass();
 	if( mReverbDecaySlider.hitTest( pos ) )
 		updateReverb();
 }
@@ -256,7 +254,7 @@ void EffectXAudioTestApp::processDrag( ivec2 pos )
 void EffectXAudioTestApp::processTap( ivec2 pos )
 {
 	if( mPlayButton.hitTest( pos ) )
-		audio::master()->setEnabled( ! audio::master()->isEnabled() );
+		audio::master()->setEnabled( !audio::master()->isEnabled() );
 	else
 		processDrag( pos );
 }

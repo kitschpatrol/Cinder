@@ -22,13 +22,13 @@
 */
 
 #include "cinder/gl/platform.h"
-#import "cinder/app/cocoa/RendererImplGlMac.h"
 #import "cinder/app/cocoa/CinderViewMac.h"
+#import "cinder/app/cocoa/RendererImplGlMac.h"
 
-#include "cinder/gl/Context.h"
-#include "cinder/gl/Environment.h"
 #include "cinder/Camera.h"
 #include "cinder/Log.h"
+#include "cinder/gl/Context.h"
+#include "cinder/gl/Environment.h"
 
 #include <iostream>
 
@@ -36,7 +36,7 @@
 
 // This is only here so that we can override isOpaque, which is necessary
 // for the ScreenSaverView to show it
-@interface RendererImplGlMacTransparentView : NSOpenGLView 
+@interface RendererImplGlMacTransparentView : NSOpenGLView
 @end
 
 @implementation RendererImplGlMacTransparentView
@@ -56,7 +56,7 @@
 
 @implementation RendererImplGlMac
 
-- (id)initWithFrame:(NSRect)frame cinderView:(NSView*)cinderView renderer:(cinder::app::RendererGl *)renderer sharedRenderer:(cinder::app::RendererGlRef)sharedRenderer withRetina:(BOOL)retinaEnabled
+- (id)initWithFrame:(NSRect)frame cinderView:(NSView *)cinderView renderer:(cinder::app::RendererGl *)renderer sharedRenderer:(cinder::app::RendererGlRef)sharedRenderer withRetina:(BOOL)retinaEnabled
 {
 	self = [super init];
 
@@ -64,13 +64,13 @@
 	mRenderer = renderer;
 
 	cinder::app::RendererGl::Options options = mRenderer->getOptions();
-	NSOpenGLPixelFormat* fmt = [RendererImplGlMac defaultPixelFormat:options];
-	GLint aaSamples;
+	NSOpenGLPixelFormat *            fmt = [RendererImplGlMac defaultPixelFormat:options];
+	GLint                            aaSamples;
 	[fmt getValues:&aaSamples forAttribute:NSOpenGLPFASamples forVirtualScreen:0];
 
 	NSRect bounds = NSMakeRect( 0, 0, frame.size.width, frame.size.height );
 	mView = [[RendererImplGlMacTransparentView alloc] initWithFrame:bounds pixelFormat:fmt];
-	if( ! mView )
+	if( !mView )
 		CI_LOG_E( "Unable to allocate GL view" );
 
 	// if we've been passed a context to share with, replace our NSOpenGLContext with a new one that shares
@@ -82,13 +82,13 @@
 	}
 
 	[mCinderView addSubview:mView];
-	
+
 	if( retinaEnabled )
 		[mView setWantsBestResolutionOpenGLSurface:YES];
-	
+
 	cinder::gl::Environment::setCore();
-	
-	CGLContextObj cglContext = (CGLContextObj)[[mView openGLContext] CGLContextObj];
+
+	CGLContextObj cglContext = ( CGLContextObj )[[mView openGLContext] CGLContextObj];
 	::CGLSetCurrentContext( cglContext );
 	auto platformData = std::shared_ptr<cinder::gl::Context::PlatformData>( new cinder::gl::PlatformDataMac( cglContext ) );
 	platformData->mObjectTracking = options.getObjectTracking();
@@ -101,19 +101,19 @@
 	return self;
 }
 
-- (NSOpenGLView*)view
+- (NSOpenGLView *)view
 {
 	return mView;
 }
 
 - (CGLContextObj)getCglContext
 {
-	return (CGLContextObj)[[mView openGLContext] CGLContextObj];
+	return ( CGLContextObj )[[mView openGLContext] CGLContextObj];
 }
 
 - (CGLPixelFormatObj)getCglPixelFormat
 {
-	return (CGLPixelFormatObj)[[mView pixelFormat] CGLPixelFormatObj];
+	return ( CGLPixelFormatObj )[[mView pixelFormat] CGLPixelFormatObj];
 }
 
 - (NSOpenGLContext *)getNsOpenGlContext
@@ -132,7 +132,7 @@
 }
 
 - (void)flushBuffer
-{	
+{
 	[[NSOpenGLContext currentContext] flushBuffer];
 }
 
@@ -143,7 +143,7 @@
 
 - (void)setFrameSize:(CGSize)newSize
 {
-//	[super setFrameSize:newSize];
+	//	[super setFrameSize:newSize];
 	[mView setFrameSize:NSSizeFromCGSize( newSize )];
 }
 
@@ -160,7 +160,7 @@
 	return NO;
 }
 
-- (void)dealloc 
+- (void)dealloc
 {
 	[super dealloc];
 }
@@ -171,34 +171,34 @@
 	return YES;
 }
 
-+ (NSOpenGLPixelFormat*)defaultPixelFormat:(cinder::app::RendererGl::Options)rendererOptions
++ (NSOpenGLPixelFormat *)defaultPixelFormat:(cinder::app::RendererGl::Options)rendererOptions
 {
-	NSOpenGLPixelFormat *result = nil;
-    std::vector<NSOpenGLPixelFormatAttribute> attributes;
-    
-    attributes.push_back( NSOpenGLPFADoubleBuffer );
-	
+	NSOpenGLPixelFormat *                     result = nil;
+	std::vector<NSOpenGLPixelFormatAttribute> attributes;
+
+	attributes.push_back( NSOpenGLPFADoubleBuffer );
+
 	attributes.push_back( NSOpenGLPFAOpenGLProfile );
 	attributes.push_back( NSOpenGLProfileVersion3_2Core );
-	
-    attributes.push_back( NSOpenGLPFADepthSize );
-	attributes.push_back( (NSOpenGLPixelFormatAttribute) rendererOptions.getDepthBufferDepth() );
-	
-    if( rendererOptions.getStencil() ) {
+
+	attributes.push_back( NSOpenGLPFADepthSize );
+	attributes.push_back( (NSOpenGLPixelFormatAttribute)rendererOptions.getDepthBufferDepth() );
+
+	if( rendererOptions.getStencil() ) {
 		attributes.push_back( kCGLPFAStencilSize );
-		attributes.push_back( (CGLPixelFormatAttribute) 8 );
+		attributes.push_back( (CGLPixelFormatAttribute)8 );
 	}
-	
+
 	if( rendererOptions.getMsaa() > 0 ) {
 		attributes.push_back( NSOpenGLPFASampleBuffers );
-		attributes.push_back( (NSOpenGLPixelFormatAttribute) 1 );
+		attributes.push_back( (NSOpenGLPixelFormatAttribute)1 );
 		attributes.push_back( NSOpenGLPFASamples );
-		attributes.push_back( (NSOpenGLPixelFormatAttribute) rendererOptions.getMsaa() );
+		attributes.push_back( (NSOpenGLPixelFormatAttribute)rendererOptions.getMsaa() );
 		attributes.push_back( NSOpenGLPFAMultisample );
 	}
-	
-	attributes.push_back( (NSOpenGLPixelFormatAttribute) 0 );
-		
+
+	attributes.push_back( (NSOpenGLPixelFormatAttribute)0 );
+
 	result = [[NSOpenGLPixelFormat alloc] initWithAttributes:attributes.data()];
 
 	assert( result );

@@ -15,15 +15,15 @@ class ImageFileBasicApp : public App {
 	void setup();
 	void keyDown( KeyEvent event );
 	void draw();
-	
-	dx::Texture		mTexture;	
+
+	dx::Texture mTexture;
 };
 
 void ImageFileBasicApp::setup()
 {
 	try {
 		fs::path path = getOpenFilePath( "", ImageIo::getLoadExtensions() );
-		if( ! path.empty() ) {
+		if( !path.empty() ) {
 			mTexture = dx::Texture( loadImage( path ) );
 		}
 	}
@@ -35,25 +35,23 @@ void ImageFileBasicApp::setup()
 void ImageFileBasicApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'f' ) {
-		setFullScreen( ! isFullScreen() );
+		setFullScreen( !isFullScreen() );
 	}
 	else if( event.getCode() == app::KeyEvent::KEY_ESCAPE ) {
 		setFullScreen( false );
 	}
 	else if( event.getChar() == 'o' ) {
 		fs::path path = getOpenFilePath( "", ImageIo::getLoadExtensions() );
-		if( ! path.empty() )
+		if( !path.empty() )
 			mTexture = dx::Texture( loadImage( path.string() ) );
 	}
 }
-
-
 
 void ImageFileBasicApp::draw()
 {
 	dx::clear();
 	dx::enableAlphaBlending();
-	
+
 	if( mTexture )
 		dx::draw( mTexture, vec2( 0, 0 ) );
 }

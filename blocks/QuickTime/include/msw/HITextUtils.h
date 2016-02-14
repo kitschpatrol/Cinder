@@ -28,8 +28,6 @@
 #include <TextCommon.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -106,13 +104,11 @@ extern "C" {
  */
 EXTERN_API( OSStatus )
 GetTextAndEncodingFromCFString(
-  CFStringRef     inString,
-  BytePtr         outText,
-  ByteCount       inTextMaxLength,
-  ByteCount *     outTextLength,
-  TextEncoding *  outEncoding);          /* can be NULL */
-
-
+    CFStringRef   inString,
+    BytePtr       outText,
+    ByteCount     inTextMaxLength,
+    ByteCount *   outTextLength,
+    TextEncoding *outEncoding ); /* can be NULL */
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -125,4 +121,3 @@ GetTextAndEncodingFromCFString(
 #endif
 
 #endif /* __HITEXTUTILS__ */
-

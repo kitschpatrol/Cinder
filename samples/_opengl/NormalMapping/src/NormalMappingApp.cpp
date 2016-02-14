@@ -25,17 +25,17 @@ http://www.cgtrader.com/3d-models/character-people/fantasy/the-leprechaun-the-go
 */
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
-#include "cinder/params/Params.h"
 #include "cinder/Camera.h"
-#include "cinder/ImageIo.h"
 #include "cinder/CameraUi.h"
+#include "cinder/ImageIo.h"
+#include "cinder/Log.h"
 #include "cinder/Perlin.h"
 #include "cinder/Timeline.h"
 #include "cinder/Timer.h"
 #include "cinder/TriMesh.h"
-#include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+#include "cinder/params/Params.h"
 
 #include "DebugMesh.h"
 
@@ -43,9 +43,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-struct LightSource
-{
-	vec4 position;
+struct LightSource {
+	vec4   position;
 	ColorA diffuse;
 	ColorA specular;
 };
@@ -59,86 +58,93 @@ static void prepareSettings( App::Settings *settings )
 }
 
 class NormalMappingApp : public App {
-
-#if ! defined( CINDER_GL_ES )
-	typedef enum { Default, Glossy, Normals, Lighting, Mesh } ViewMode;
+#if !defined( CINDER_GL_ES )
+	typedef enum { Default,
+		Glossy,
+		Normals,
+		Lighting,
+		Mesh } ViewMode;
 #else
-	typedef enum { Default, Glossy, Normals, Lighting } ViewMode;
+	typedef enum { Default,
+		Glossy,
+		Normals,
+		Lighting } ViewMode;
 #endif
 
-public:
-	void	setup();
+  public:
+	void setup();
 
-	void	update();
-	void	draw();
+	void update();
+	void draw();
 
-	void	keyDown( KeyEvent event );
+	void keyDown( KeyEvent event );
 
-	bool	isInitialized() const {
+	bool isInitialized() const
+	{
 		return ( mDiffuseMap && mSpecularMap && mNormalMap && mCopyrightMap && mShaderNormalMapping && mMesh );
 	}
 
-private:
+  private:
 	/* Load the mesh and calculate normals and tangents if necessary. */
-	TriMesh			createMesh( const fs::path& mshFile );
+	TriMesh createMesh( const fs::path &mshFile );
 	/* Construct a mesh to visualize normals (blue), tangents (red) and bitangents (green). */
-	gl::VboMeshRef	createDebugMesh( const TriMesh& mesh );
+	gl::VboMeshRef createDebugMesh( const TriMesh &mesh );
 
-private:
-	ViewMode			mViewMode;
+  private:
+	ViewMode mViewMode;
 
-	mat4				mMeshTransform;
-	AxisAlignedBox	mMeshBounds;
+	mat4           mMeshTransform;
+	AxisAlignedBox mMeshBounds;
 
-	CameraPersp			mCamera;
-	CameraUi			mCamUi;
+	CameraPersp mCamera;
+	CameraUi    mCamUi;
 
-	LightSource			mLightLantern;
-	LightSource			mLightAmbient;
+	LightSource mLightLantern;
+	LightSource mLightAmbient;
 
-	gl::TextureRef		mCopyrightMap;
-	gl::TextureRef		mDiffuseMap;
-	gl::TextureRef		mSpecularMap;
-	gl::TextureRef		mNormalMap;
-	gl::TextureRef		mEmissiveMap;
+	gl::TextureRef mCopyrightMap;
+	gl::TextureRef mDiffuseMap;
+	gl::TextureRef mSpecularMap;
+	gl::TextureRef mNormalMap;
+	gl::TextureRef mEmissiveMap;
 
-	gl::GlslProgRef		mShaderNormalMapping;
-	gl::GlslProgRef		mShaderWireframe;
+	gl::GlslProgRef mShaderNormalMapping;
+	gl::GlslProgRef mShaderWireframe;
 
-	gl::VboMeshRef		mMesh;
-	gl::VboMeshRef		mMeshDebug;
+	gl::VboMeshRef mMesh;
+	gl::VboMeshRef mMeshDebug;
 
-	bool				mAutoRotate;
-	float				mAutoRotateAngle;
+	bool  mAutoRotate;
+	float mAutoRotateAngle;
 
-	bool				mAnimateLantern;
-	Perlin				mPerlin;
+	bool   mAnimateLantern;
+	Perlin mPerlin;
 
-	bool				mEnableNormalMap;
-	bool				mShowNormalsAndTangents;
+	bool mEnableNormalMap;
+	bool mShowNormalsAndTangents;
 
-	float				mTime;
+	float mTime;
 
-#if ! defined( CINDER_GL_ES )
-	params::InterfaceGlRef	mParams;
+#if !defined( CINDER_GL_ES )
+	params::InterfaceGlRef mParams;
 #endif
 };
 
 void NormalMappingApp::setup()
 {
 	// setup camera and lights
-	mCamera.lookAt( vec3( 0.2f, 0.4f, 1.0f ), vec3(0.0f, 0.425f, 0.0f) );
+	mCamera.lookAt( vec3( 0.2f, 0.4f, 1.0f ), vec3( 0.0f, 0.425f, 0.0f ) );
 	mCamera.setNearClip( 0.01f );
 	mCamera.setFarClip( 100.0f );
 
-	mLightLantern.diffuse = Color(0.9f, 0.6f, 0.3f);
-	mLightLantern.specular = Color(0.9f, 0.6f, 0.3f);
+	mLightLantern.diffuse = Color( 0.9f, 0.6f, 0.3f );
+	mLightLantern.specular = Color( 0.9f, 0.6f, 0.3f );
 
-	mLightAmbient.diffuse = Color(0.2f, 0.6f, 1.0f);
-	mLightAmbient.specular = Color(0.05f, 0.15f, 0.25f);
+	mLightAmbient.diffuse = Color( 0.2f, 0.6f, 1.0f );
+	mLightAmbient.specular = Color( 0.05f, 0.15f, 0.25f );
 
 	// setup perlin noise to easily animate our lantern light source
-	mPerlin = Perlin(4, 65535);
+	mPerlin = Perlin( 4, 65535 );
 
 	// default settings
 	mMeshBounds = AxisAlignedBox( vec3( 0 ), vec3( 1 ) );
@@ -156,26 +162,26 @@ void NormalMappingApp::setup()
 	// load assets
 	try {
 		// load our copyright message
-		mCopyrightMap  = gl::Texture::create( loadImage( loadAsset("copyright.png") ) );
+		mCopyrightMap = gl::Texture::create( loadImage( loadAsset( "copyright.png" ) ) );
 
 		// load textures
 		auto texFormat = gl::Texture2d::Format().loadTopDown();
-		mDiffuseMap = gl::Texture::create( loadImage( loadAsset("leprechaun_diffuse.jpg") ), texFormat );
-		mSpecularMap = gl::Texture::create( loadImage( loadAsset("leprechaun_specular.jpg") ), texFormat );
-		mNormalMap = gl::Texture::create( loadImage( loadAsset("leprechaun_normal.jpg") ), texFormat );
-		mEmissiveMap = gl::Texture::create( loadImage( loadAsset("leprechaun_emmisive.png") ), texFormat );
+		mDiffuseMap = gl::Texture::create( loadImage( loadAsset( "leprechaun_diffuse.jpg" ) ), texFormat );
+		mSpecularMap = gl::Texture::create( loadImage( loadAsset( "leprechaun_specular.jpg" ) ), texFormat );
+		mNormalMap = gl::Texture::create( loadImage( loadAsset( "leprechaun_normal.jpg" ) ), texFormat );
+		mEmissiveMap = gl::Texture::create( loadImage( loadAsset( "leprechaun_emmisive.png" ) ), texFormat );
 
-		// load our shaders and set the non-varying uniforms
-#if ! defined( CINDER_GL_ES )
-		mShaderNormalMapping = gl::GlslProg::create( loadAsset("normal_mapping_vert.glsl"), loadAsset("normal_mapping_frag.glsl") );
+// load our shaders and set the non-varying uniforms
+#if !defined( CINDER_GL_ES )
+		mShaderNormalMapping = gl::GlslProg::create( loadAsset( "normal_mapping_vert.glsl" ), loadAsset( "normal_mapping_frag.glsl" ) );
 
 		gl::GlslProg::Format fmt;
-		fmt.vertex( loadAsset("wireframe_vert.glsl") );
-		fmt.geometry( loadAsset("wireframe_geom.glsl") );
-		fmt.fragment( loadAsset("wireframe_frag.glsl") );
+		fmt.vertex( loadAsset( "wireframe_vert.glsl" ) );
+		fmt.geometry( loadAsset( "wireframe_geom.glsl" ) );
+		fmt.fragment( loadAsset( "wireframe_frag.glsl" ) );
 		mShaderWireframe = gl::GlslProg::create( fmt );
 #else
-		mShaderNormalMapping = gl::GlslProg::create( loadAsset("normal_mapping_vert_es2.glsl"), loadAsset("normal_mapping_frag_es2.glsl") );
+		mShaderNormalMapping = gl::GlslProg::create( loadAsset( "normal_mapping_vert_es2.glsl" ), loadAsset( "normal_mapping_frag_es2.glsl" ) );
 #endif
 
 		mShaderNormalMapping->uniform( "uDiffuseMap", 0 );
@@ -196,14 +202,14 @@ void NormalMappingApp::setup()
 	// load mesh file and create missing data (normals, tangents) if necessary
 	try {
 		fs::path mshFile = getAssetPath( "leprechaun.msh" );
-		TriMesh mesh = createMesh( mshFile );
+		TriMesh  mesh = createMesh( mshFile );
 
 		mMesh = gl::VboMesh::create( mesh );
 		mMeshBounds = mesh.calcBoundingBox();
 
-		mMeshDebug = createDebugMesh(mesh);
+		mMeshDebug = createDebugMesh( mesh );
 	}
-	catch( const std::exception& e ) {
+	catch( const std::exception &e ) {
 		CI_LOG_EXCEPTION( "Error loading asset", e );
 		quit();
 	}
@@ -212,16 +218,16 @@ void NormalMappingApp::setup()
 	std::vector<std::string> viewmodes;
 	viewmodes.push_back( "Final" );
 	viewmodes.push_back( "Glossy" );
-	viewmodes.push_back( "Normals");
+	viewmodes.push_back( "Normals" );
 	viewmodes.push_back( "Lighting" );
 	viewmodes.push_back( "Mesh" );
 
-#if ! defined( CINDER_GL_ES )
-	mParams = params::InterfaceGl::create( getWindow(), "Normal Mapping Demo", ivec2(340, 150) );
+#if !defined( CINDER_GL_ES )
+	mParams = params::InterfaceGl::create( getWindow(), "Normal Mapping Demo", ivec2( 340, 150 ) );
 	mParams->setOptions( "", "valueswidth=100" );
 
 	mParams->addParam( "Enable Normal Mapping", &mEnableNormalMap );
-	mParams->addParam( "Viewing Mode", viewmodes, (int*) &mViewMode );
+	mParams->addParam( "Viewing Mode", viewmodes, (int *)&mViewMode );
 
 	mParams->addSeparator();
 
@@ -233,7 +239,7 @@ void NormalMappingApp::setup()
 	mCamUi = CameraUi( &mCamera, getWindow(), -1 );
 
 	// keep track of time
-	mTime = (float) getElapsedSeconds();
+	mTime = (float)getElapsedSeconds();
 }
 
 void NormalMappingApp::update()
@@ -241,17 +247,17 @@ void NormalMappingApp::update()
 	// keep track of time
 	float fElapsed = (float)getElapsedSeconds() - mTime;
 	mTime += fElapsed;
-	
+
 	// rotate the mesh
 	if( mAutoRotate )
-		mAutoRotateAngle += (fElapsed * 0.2f);
+		mAutoRotateAngle += ( fElapsed * 0.2f );
 
 	mMeshTransform = mat4();
 	mMeshTransform *= rotate( mAutoRotateAngle, vec3( 0, 1, 0 ) );
 	mMeshTransform *= scale( vec3( 1 ) / mMeshBounds.getSize().y );
 
 	// position our lights (in eye space)
-	vec3 lanternPositionOS = vec3(12.5f, 30.0f, 12.5f);
+	vec3 lanternPositionOS = vec3( 12.5f, 30.0f, 12.5f );
 	if( mAnimateLantern )
 		lanternPositionOS += mPerlin.dfBm( vec3( 0.0f, 0.0f, mTime ) ) * 5.0f;
 
@@ -270,7 +276,7 @@ void NormalMappingApp::update()
 	mShaderNormalMapping->uniform( "uLights[0].position", mLightLantern.position );
 	mShaderNormalMapping->uniform( "uLights[1].position", mLightAmbient.position );
 
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 	if( mShaderWireframe )
 		mShaderWireframe->uniform( "uViewportSize", vec2( getWindowSize() ) );
 #endif
@@ -279,7 +285,7 @@ void NormalMappingApp::update()
 void NormalMappingApp::draw()
 {
 	// clear the window
-	gl::clear(); 
+	gl::clear();
 	gl::color( Color::white() );
 
 	if( isInitialized() ) {
@@ -291,17 +297,17 @@ void NormalMappingApp::draw()
 		gl::enableDepthWrite();
 
 		// bind textures
-		mDiffuseMap->bind(0);
-		mSpecularMap->bind(1);
-		mNormalMap->bind(2);
-		mEmissiveMap->bind(3);
+		mDiffuseMap->bind( 0 );
+		mSpecularMap->bind( 1 );
+		mNormalMap->bind( 2 );
+		mEmissiveMap->bind( 3 );
 
-		// render our model
-#if ! defined( CINDER_GL_ES )
+// render our model
+#if !defined( CINDER_GL_ES )
 		if( mViewMode == ViewMode::Mesh && mShaderWireframe ) {
 			// use our wireframe shader for this scope
 			gl::ScopedGlslProg glslProgScope( mShaderWireframe );
-	
+
 			gl::pushModelMatrix();
 			gl::multModelMatrix( mMeshTransform );
 			gl::draw( mMesh );
@@ -312,13 +318,13 @@ void NormalMappingApp::draw()
 		{
 			// use our own normal mapping shader for this scope
 			gl::ScopedGlslProg GlslProgScope( mShaderNormalMapping );
-	
+
 			gl::pushModelMatrix();
 			gl::multModelMatrix( mMeshTransform );
 			gl::draw( mMesh );
 			gl::popModelMatrix();
 		}
-	
+
 		// render normals, tangents and bitangents if necessary
 		if( mShowNormalsAndTangents ) {
 			// use a default shader for this scope
@@ -336,8 +342,8 @@ void NormalMappingApp::draw()
 
 		gl::popMatrices();
 
-		// render our parameter window
-#if ! defined( CINDER_GL_ES )
+// render our parameter window
+#if !defined( CINDER_GL_ES )
 		if( mParams )
 			mParams->draw();
 #endif
@@ -355,19 +361,19 @@ void NormalMappingApp::draw()
 void NormalMappingApp::keyDown( KeyEvent event )
 {
 	switch( event.getCode() ) {
-		case KeyEvent::KEY_ESCAPE:
-			quit();
+	case KeyEvent::KEY_ESCAPE:
+		quit();
 		break;
-		case KeyEvent::KEY_v:
-			gl::enableVerticalSync( ! gl::isVerticalSyncEnabled() );
+	case KeyEvent::KEY_v:
+		gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
 		break;
 	}
 }
 
-TriMesh NormalMappingApp::createMesh( const fs::path& mshFile )
-{	
-	TriMesh mesh( TriMesh::Format().positions(3).texCoords(2).normals() );
-	Timer	timer;
+TriMesh NormalMappingApp::createMesh( const fs::path &mshFile )
+{
+	TriMesh mesh( TriMesh::Format().positions( 3 ).texCoords( 2 ).normals() );
+	Timer   timer;
 
 	// try to load the msh file
 	if( fs::exists( mshFile ) ) {
@@ -381,7 +387,7 @@ TriMesh NormalMappingApp::createMesh( const fs::path& mshFile )
 	}
 
 	// if the mesh does not have normals, calculate them on-the-fly
-	if( ! mesh.hasNormals() ) {
+	if( !mesh.hasNormals() ) {
 		timer.start();
 		mesh.recalculateNormals();
 		CI_LOG_I( "Calculating " << mesh.getNumVertices() << " normals took " << timer.getSeconds() << " seconds." );
@@ -389,7 +395,7 @@ TriMesh NormalMappingApp::createMesh( const fs::path& mshFile )
 
 	// if the mesh does not have tangents, calculate them on-the-fly
 	//  (note: your model needs to have normals and texture coordinates for this to work)
-	if( ! mesh.hasTangents() ) {
+	if( !mesh.hasTangents() ) {
 		timer.start();
 		mesh.recalculateTangents();
 		CI_LOG_I( "Calculating " << mesh.getNumVertices() << " tangents took " << timer.getSeconds() << " seconds." );
@@ -398,10 +404,10 @@ TriMesh NormalMappingApp::createMesh( const fs::path& mshFile )
 	return mesh;
 }
 
-gl::VboMeshRef NormalMappingApp::createDebugMesh( const TriMesh& mesh )
+gl::VboMeshRef NormalMappingApp::createDebugMesh( const TriMesh &mesh )
 {
 	// create a debug mesh, showing normals, tangents and bitangents
-	DebugMesh source(mesh);
+	DebugMesh source( mesh );
 
 	// create a VBO from the mesh
 	gl::VboMeshRef result = gl::VboMesh::create( source );

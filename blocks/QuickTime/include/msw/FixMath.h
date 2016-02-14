@@ -20,9 +20,6 @@
 #include <MacTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -35,11 +32,10 @@ extern "C" {
 #pragma import on
 #endif
 
-
-#define fixed1              ((Fixed) 0x00010000L)
-#define fract1              ((Fract) 0x40000000L)
-#define positiveInfinity    ((long)  0x7FFFFFFFL)
-#define negativeInfinity    ((long)  0x80000000L)
+#define fixed1 ( (Fixed)0x00010000L )
+#define fract1 ( (Fract)0x40000000L )
+#define positiveInfinity ( (long)0x7FFFFFFFL )
+#define negativeInfinity ( (long)0x80000000L )
 /*
     FixRatio, FixMul, and FixRound were previously in ToolUtils.h
 */
@@ -53,9 +49,8 @@ extern "C" {
  */
 EXTERN_API( Fixed )
 FixRatio(
-  short   numer,
-  short   denom)                                              ONEWORDINLINE(0xA869);
-
+    short numer,
+    short denom ) ONEWORDINLINE( 0xA869 );
 
 /*
  *  FixMul()
@@ -67,9 +62,8 @@ FixRatio(
  */
 EXTERN_API( Fixed )
 FixMul(
-  Fixed   a,
-  Fixed   b)                                                  ONEWORDINLINE(0xA868);
-
+    Fixed a,
+    Fixed b ) ONEWORDINLINE( 0xA868 );
 
 /*
  *  FixRound()
@@ -80,8 +74,7 @@ FixMul(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-FixRound(Fixed x)                                             ONEWORDINLINE(0xA86C);
-
+FixRound( Fixed x ) ONEWORDINLINE( 0xA86C );
 
 /*
  *  Fix2Frac()
@@ -92,8 +85,7 @@ FixRound(Fixed x)                                             ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fract )
-Fix2Frac(Fixed x)                                             ONEWORDINLINE(0xA841);
-
+Fix2Frac( Fixed x ) ONEWORDINLINE( 0xA841 );
 
 /*
  *  Fix2Long()
@@ -104,8 +96,7 @@ Fix2Frac(Fixed x)                                             ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-Fix2Long(Fixed x)                                             ONEWORDINLINE(0xA840);
-
+Fix2Long( Fixed x ) ONEWORDINLINE( 0xA840 );
 
 /*
  *  Long2Fix()
@@ -116,8 +107,7 @@ Fix2Long(Fixed x)                                             ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fixed )
-Long2Fix(long x)                                              ONEWORDINLINE(0xA83F);
-
+Long2Fix( long x ) ONEWORDINLINE( 0xA83F );
 
 /*
  *  Frac2Fix()
@@ -128,8 +118,7 @@ Long2Fix(long x)                                              ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fixed )
-Frac2Fix(Fract x)                                             ONEWORDINLINE(0xA842);
-
+Frac2Fix( Fract x ) ONEWORDINLINE( 0xA842 );
 
 /*
  *  FracMul()
@@ -141,9 +130,8 @@ Frac2Fix(Fract x)                                             ONEWORDINLINE(0xA8
  */
 EXTERN_API( Fract )
 FracMul(
-  Fract   x,
-  Fract   y)                                                  ONEWORDINLINE(0xA84A);
-
+    Fract x,
+    Fract y ) ONEWORDINLINE( 0xA84A );
 
 /*
  *  FixDiv()
@@ -155,9 +143,8 @@ FracMul(
  */
 EXTERN_API( Fixed )
 FixDiv(
-  Fixed   x,
-  Fixed   y)                                                  ONEWORDINLINE(0xA84D);
-
+    Fixed x,
+    Fixed y ) ONEWORDINLINE( 0xA84D );
 
 /*
  *  FracDiv()
@@ -169,9 +156,8 @@ FixDiv(
  */
 EXTERN_API( Fract )
 FracDiv(
-  Fract   x,
-  Fract   y)                                                  ONEWORDINLINE(0xA84B);
-
+    Fract x,
+    Fract y ) ONEWORDINLINE( 0xA84B );
 
 /*
  *  FracSqrt()
@@ -182,8 +168,7 @@ FracDiv(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fract )
-FracSqrt(Fract x)                                             ONEWORDINLINE(0xA849);
-
+FracSqrt( Fract x ) ONEWORDINLINE( 0xA849 );
 
 /*
  *  FracSin()
@@ -194,8 +179,7 @@ FracSqrt(Fract x)                                             ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fract )
-FracSin(Fixed x)                                              ONEWORDINLINE(0xA848);
-
+FracSin( Fixed x ) ONEWORDINLINE( 0xA848 );
 
 /*
  *  FracCos()
@@ -206,8 +190,7 @@ FracSin(Fixed x)                                              ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fract )
-FracCos(Fixed x)                                              ONEWORDINLINE(0xA847);
-
+FracCos( Fixed x ) ONEWORDINLINE( 0xA847 );
 
 /*
  *  FixATan2()
@@ -219,9 +202,8 @@ FracCos(Fixed x)                                              ONEWORDINLINE(0xA8
  */
 EXTERN_API( Fixed )
 FixATan2(
-  long   x,
-  long   y)                                                   ONEWORDINLINE(0xA818);
-
+    long x,
+    long y ) ONEWORDINLINE( 0xA818 );
 
 /*
     Frac2X, Fix2X, X2Fix, and X2Frac translate to and from
@@ -244,8 +226,7 @@ FixATan2(
  *    Mac OS X:         not available
  */
 EXTERN_API( long double )
-Frac2X(Fract x);
-
+Frac2X( Fract x );
 
 /*
  *  Fix2X()
@@ -256,8 +237,7 @@ Frac2X(Fract x);
  *    Mac OS X:         not available
  */
 EXTERN_API( long double )
-Fix2X(Fixed x);
-
+Fix2X( Fixed x );
 
 /*
  *  X2Fix()
@@ -268,8 +248,7 @@ Fix2X(Fixed x);
  *    Mac OS X:         not available
  */
 EXTERN_API( Fixed )
-X2Fix(long double x);
-
+X2Fix( long double x );
 
 /*
  *  X2Frac()
@@ -280,10 +259,9 @@ X2Fix(long double x);
  *    Mac OS X:         not available
  */
 EXTERN_API( Fract )
-X2Frac(long double x);
+X2Frac( long double x );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #else
 #if CALL_NOT_IN_CARBON
@@ -296,8 +274,7 @@ X2Frac(long double x);
  *    Mac OS X:         not available
  */
 EXTERN_API( long double )
-Frac2X(Fract x)                                               ONEWORDINLINE(0xA845);
-
+Frac2X( Fract x ) ONEWORDINLINE( 0xA845 );
 
 /*
  *  Fix2X()
@@ -308,8 +285,7 @@ Frac2X(Fract x)                                               ONEWORDINLINE(0xA8
  *    Mac OS X:         not available
  */
 EXTERN_API( long double )
-Fix2X(Fixed x)                                                ONEWORDINLINE(0xA843);
-
+Fix2X( Fixed x ) ONEWORDINLINE( 0xA843 );
 
 /*
  *  X2Fix()
@@ -320,8 +296,7 @@ Fix2X(Fixed x)                                                ONEWORDINLINE(0xA8
  *    Mac OS X:         not available
  */
 EXTERN_API( Fixed )
-X2Fix(long double x)                                          ONEWORDINLINE(0xA844);
-
+X2Fix( long double x ) ONEWORDINLINE( 0xA844 );
 
 /*
  *  X2Frac()
@@ -332,12 +307,11 @@ X2Fix(long double x)                                          ONEWORDINLINE(0xA8
  *    Mac OS X:         not available
  */
 EXTERN_API( Fract )
-X2Frac(long double x)                                         ONEWORDINLINE(0xA846);
+X2Frac( long double x ) ONEWORDINLINE( 0xA846 );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_RT_MAC_68881 */
+#endif /* TARGET_RT_MAC_68881 */
 
 #else
 /*
@@ -349,8 +323,7 @@ X2Frac(long double x)                                         ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( double )
-Frac2X(Fract x);
-
+Frac2X( Fract x );
 
 /*
  *  Fix2X()
@@ -361,8 +334,7 @@ Frac2X(Fract x);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( double )
-Fix2X(Fixed x);
-
+Fix2X( Fixed x );
 
 /*
  *  X2Fix()
@@ -373,8 +345,7 @@ Fix2X(Fixed x);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fixed )
-X2Fix(double x);
-
+X2Fix( double x );
 
 /*
  *  X2Frac()
@@ -385,10 +356,9 @@ X2Fix(double x);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Fract )
-X2Frac(double x);
+X2Frac( double x );
 
-
-#endif  /* TARGET_CPU_68K */
+#endif /* TARGET_CPU_68K */
 
 /* QuickTime 3.0 makes these Wide routines available on other platforms*/
 #if TARGET_CPU_PPC || !TARGET_OS_MAC || TARGET_CPU_X86
@@ -402,9 +372,8 @@ X2Frac(double x);
  */
 EXTERN_API_C( short )
 WideCompare(
-  const wide *  target,
-  const wide *  source);
-
+    const wide *target,
+    const wide *source );
 
 /*
  *  WideAdd()
@@ -416,9 +385,8 @@ WideCompare(
  */
 EXTERN_API_C( wide * )
 WideAdd(
-  wide *        target,
-  const wide *  source);
-
+    wide *      target,
+    const wide *source );
 
 /*
  *  WideSubtract()
@@ -430,9 +398,8 @@ WideAdd(
  */
 EXTERN_API_C( wide * )
 WideSubtract(
-  wide *        target,
-  const wide *  source);
-
+    wide *      target,
+    const wide *source );
 
 /*
  *  WideNegate()
@@ -443,8 +410,7 @@ WideSubtract(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( wide * )
-WideNegate(wide * target);
-
+WideNegate( wide *target );
 
 /*
  *  WideShift()
@@ -456,9 +422,8 @@ WideNegate(wide * target);
  */
 EXTERN_API_C( wide * )
 WideShift(
-  wide *  target,
-  long    shift);
-
+    wide *target,
+    long  shift );
 
 /*
  *  WideSquareRoot()
@@ -469,8 +434,7 @@ WideShift(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( unsigned long )
-WideSquareRoot(const wide * source);
-
+WideSquareRoot( const wide *source );
 
 /*
  *  WideMultiply()
@@ -482,10 +446,9 @@ WideSquareRoot(const wide * source);
  */
 EXTERN_API_C( wide * )
 WideMultiply(
-  long    multiplicand,
-  long    multiplier,
-  wide *  target);
-
+    long  multiplicand,
+    long  multiplier,
+    wide *target );
 
 /* returns the quotient */
 /*
@@ -498,10 +461,9 @@ WideMultiply(
  */
 EXTERN_API_C( long )
 WideDivide(
-  const wide *  dividend,
-  long          divisor,
-  long *        remainder);
-
+    const wide *dividend,
+    long        divisor,
+    long *      remainder );
 
 /* quotient replaces dividend */
 /*
@@ -514,10 +476,9 @@ WideDivide(
  */
 EXTERN_API_C( wide * )
 WideWideDivide(
-  wide *  dividend,
-  long    divisor,
-  long *  remainder);
-
+    wide *dividend,
+    long  divisor,
+    long *remainder );
 
 /*
  *  WideBitShift()
@@ -529,13 +490,10 @@ WideWideDivide(
  */
 EXTERN_API_C( wide * )
 WideBitShift(
-  wide *  src,
-  long    shift);
+    wide *src,
+    long  shift );
 
-
-#endif  /* TARGET_CPU_PPC || !TARGET_OS_MAC || TARGET_CPU_X86 */
-
-
+#endif /* TARGET_CPU_PPC || !TARGET_OS_MAC || TARGET_CPU_X86 */
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -548,4 +506,3 @@ WideBitShift(
 #endif
 
 #endif /* __FIXMATH__ */
-

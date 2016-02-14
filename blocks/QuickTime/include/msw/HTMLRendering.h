@@ -56,9 +56,6 @@
 #include <HIToolbox.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -71,7 +68,7 @@ extern "C" {
 #pragma import on
 #endif
 
-typedef struct OpaqueHRReference*       HRReference;
+typedef struct OpaqueHRReference *HRReference;
 /*
  *  HRGetHTMLRenderingLibVersion()
  *  
@@ -81,27 +78,31 @@ typedef struct OpaqueHRReference*       HRReference;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-HRGetHTMLRenderingLibVersion(NumVersion * returnVers);
-
+HRGetHTMLRenderingLibVersion( NumVersion *returnVers );
 
 #if TARGET_RT_MAC_CFM
 #ifdef __cplusplus
-    inline pascal Boolean HRHTMLRenderingLibAvailable() { return ((HRGetHTMLRenderingLibVersion != (void*)kUnresolvedCFragSymbolAddress) ); }
+inline pascal Boolean HRHTMLRenderingLibAvailable()
+{
+	return ( ( HRGetHTMLRenderingLibVersion != (void *)kUnresolvedCFragSymbolAddress ) );
+}
 #else
-    #define HRHTMLRenderingLibAvailable()   ((HRGetHTMLRenderingLibVersion != (void*)kUnresolvedCFragSymbolAddress) )
+#define HRHTMLRenderingLibAvailable() ( ( HRGetHTMLRenderingLibVersion != (void *)kUnresolvedCFragSymbolAddress ) )
 #endif
 #elif TARGET_RT_MAC_MACHO
 #ifdef __cplusplus
-    inline pascal Boolean HRHTMLRenderingLibAvailable() { return true; }
+inline pascal Boolean HRHTMLRenderingLibAvailable()
+{
+	return true;
+}
 #else
-    #define HRHTMLRenderingLibAvailable()   (true)
+#define HRHTMLRenderingLibAvailable() ( true )
 #endif
-#endif  /*  */
+#endif /*  */
 
 enum {
-  kHRRendererHTML32Type         = FOUR_CHAR_CODE('ht32') /* HTML 3.2 */
+	kHRRendererHTML32Type = FOUR_CHAR_CODE( 'ht32' ) /* HTML 3.2 */
 };
-
 
 /*
  *  HRNewReference()
@@ -113,10 +114,9 @@ enum {
  */
 EXTERN_API( OSStatus )
 HRNewReference(
-  HRReference *  hrRef,
-  OSType         rendererType,
-  GrafPtr        grafPtr);
-
+    HRReference *hrRef,
+    OSType       rendererType,
+    GrafPtr      grafPtr );
 
 /*
  *  HRDisposeReference()
@@ -127,9 +127,7 @@ HRNewReference(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-HRDisposeReference(HRReference hrRef);
-
-
+HRDisposeReference( HRReference hrRef );
 
 /*
  *  HRFreeMemory()
@@ -140,9 +138,7 @@ HRDisposeReference(HRReference hrRef);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt32 )
-HRFreeMemory(Size inBytesNeeded);
-
-
+HRFreeMemory( Size inBytesNeeded );
 
 /* System level notifications */
 /*
@@ -154,8 +150,7 @@ HRFreeMemory(Size inBytesNeeded);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-HRScreenConfigurationChanged(void);
-
+HRScreenConfigurationChanged( void );
 
 /*
  *  HRIsHREvent()
@@ -166,9 +161,7 @@ HRScreenConfigurationChanged(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-HRIsHREvent(const EventRecord * eventRecord);
-
-
+HRIsHREvent( const EventRecord *eventRecord );
 
 /* Drawing */
 /*
@@ -181,9 +174,8 @@ HRIsHREvent(const EventRecord * eventRecord);
  */
 EXTERN_API( OSStatus )
 HRSetGrafPtr(
-  HRReference   hrRef,
-  GrafPtr       grafPtr);
-
+    HRReference hrRef,
+    GrafPtr     grafPtr );
 
 /*
  *  HRActivate()
@@ -194,8 +186,7 @@ HRSetGrafPtr(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-HRActivate(HRReference hrRef);
-
+HRActivate( HRReference hrRef );
 
 /*
  *  HRDeactivate()
@@ -206,8 +197,7 @@ HRActivate(HRReference hrRef);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-HRDeactivate(HRReference hrRef);
-
+HRDeactivate( HRReference hrRef );
 
 /*
  *  HRDraw()
@@ -219,9 +209,8 @@ HRDeactivate(HRReference hrRef);
  */
 EXTERN_API( OSStatus )
 HRDraw(
-  HRReference   hrRef,
-  RgnHandle     updateRgnH);
-
+    HRReference hrRef,
+    RgnHandle   updateRgnH );
 
 /*
  *  HRSetRenderingRect()
@@ -233,9 +222,8 @@ HRDraw(
  */
 EXTERN_API( OSStatus )
 HRSetRenderingRect(
-  HRReference   hrRef,
-  const Rect *  renderingRect);
-
+    HRReference hrRef,
+    const Rect *renderingRect );
 
 /*
  *  HRGetRenderedImageSize()
@@ -247,9 +235,8 @@ HRSetRenderingRect(
  */
 EXTERN_API( OSStatus )
 HRGetRenderedImageSize(
-  HRReference   hrRef,
-  Point *       renderingSize);
-
+    HRReference hrRef,
+    Point *     renderingSize );
 
 /*
  *  HRScrollToLocation()
@@ -261,9 +248,8 @@ HRGetRenderedImageSize(
  */
 EXTERN_API( OSStatus )
 HRScrollToLocation(
-  HRReference   hrRef,
-  Point *       location);
-
+    HRReference hrRef,
+    Point *     location );
 
 /*
  *  HRForceQuickdraw()
@@ -275,15 +261,14 @@ HRScrollToLocation(
  */
 EXTERN_API( OSStatus )
 HRForceQuickdraw(
-  HRReference   hrRef,
-  Boolean       forceQuickdraw);
-
+    HRReference hrRef,
+    Boolean     forceQuickdraw );
 
 typedef SInt16 HRScrollbarState;
 enum {
-  eHRScrollbarOn                = 0,
-  eHRScrollbarOff               = 1,
-  eHRScrollbarAuto              = 2
+	eHRScrollbarOn = 0,
+	eHRScrollbarOff = 1,
+	eHRScrollbarAuto = 2
 };
 
 /*
@@ -296,10 +281,9 @@ enum {
  */
 EXTERN_API( OSStatus )
 HRSetScrollbarState(
-  HRReference        hrRef,
-  HRScrollbarState   hScrollbarState,
-  HRScrollbarState   vScrollbarState);
-
+    HRReference      hrRef,
+    HRScrollbarState hScrollbarState,
+    HRScrollbarState vScrollbarState );
 
 /*
  *  HRSetDrawBorder()
@@ -311,9 +295,8 @@ HRSetScrollbarState(
  */
 EXTERN_API( OSStatus )
 HRSetDrawBorder(
-  HRReference   hrRef,
-  Boolean       drawBorder);
-
+    HRReference hrRef,
+    Boolean     drawBorder );
 
 /*
  *  HRSetGrowboxCutout()
@@ -325,9 +308,8 @@ HRSetDrawBorder(
  */
 EXTERN_API( OSStatus )
 HRSetGrowboxCutout(
-  HRReference   hrRef,
-  Boolean       allowCutout);
-
+    HRReference hrRef,
+    Boolean     allowCutout );
 
 /* Navigation */
 /*
@@ -340,11 +322,10 @@ HRSetGrowboxCutout(
  */
 EXTERN_API( OSStatus )
 HRGoToFile(
-  HRReference     hrRef,
-  const FSSpec *  fsspec,
-  Boolean         addToHistory,
-  Boolean         forceRefresh);
-
+    HRReference   hrRef,
+    const FSSpec *fsspec,
+    Boolean       addToHistory,
+    Boolean       forceRefresh );
 
 /*
  *  HRGoToURL()
@@ -356,11 +337,10 @@ HRGoToFile(
  */
 EXTERN_API( OSStatus )
 HRGoToURL(
-  HRReference   hrRef,
-  const char *  url,
-  Boolean       addToHistory,
-  Boolean       forceRefresh);
-
+    HRReference hrRef,
+    const char *url,
+    Boolean     addToHistory,
+    Boolean     forceRefresh );
 
 /*
  *  HRGoToAnchor()
@@ -372,9 +352,8 @@ HRGoToURL(
  */
 EXTERN_API( OSStatus )
 HRGoToAnchor(
-  HRReference   hrRef,
-  const char *  anchorName);
-
+    HRReference hrRef,
+    const char *anchorName );
 
 /*
  *  HRGoToPtr()
@@ -386,12 +365,11 @@ HRGoToAnchor(
  */
 EXTERN_API( OSStatus )
 HRGoToPtr(
-  HRReference   hrRef,
-  char *        buffer,
-  UInt32        bufferSize,
-  Boolean       addToHistory,
-  Boolean       forceRefresh);
-
+    HRReference hrRef,
+    char *      buffer,
+    UInt32      bufferSize,
+    Boolean     addToHistory,
+    Boolean     forceRefresh );
 
 /* Accessors */
 /* either file url or url of <base> tag */
@@ -405,9 +383,8 @@ HRGoToPtr(
  */
 EXTERN_API( OSStatus )
 HRGetRootURL(
-  HRReference   hrRef,
-  Handle        rootURLH);
-
+    HRReference hrRef,
+    Handle      rootURLH );
 
 /* url of <base> tag */
 /*
@@ -420,9 +397,8 @@ HRGetRootURL(
  */
 EXTERN_API( OSStatus )
 HRGetBaseURL(
-  HRReference   hrRef,
-  Handle        baseURLH);
-
+    HRReference hrRef,
+    Handle      baseURLH );
 
 /* file url */
 /*
@@ -435,9 +411,8 @@ HRGetBaseURL(
  */
 EXTERN_API( OSStatus )
 HRGetHTMLURL(
-  HRReference   hrRef,
-  Handle        HTMLURLH);
-
+    HRReference hrRef,
+    Handle      HTMLURLH );
 
 /*
  *  HRGetTitle()
@@ -449,9 +424,8 @@ HRGetHTMLURL(
  */
 EXTERN_API( OSStatus )
 HRGetTitle(
-  HRReference   hrRef,
-  StringPtr     title);
-
+    HRReference hrRef,
+    StringPtr   title );
 
 /*
  *  HRGetHTMLFile()
@@ -463,10 +437,8 @@ HRGetTitle(
  */
 EXTERN_API( OSStatus )
 HRGetHTMLFile(
-  HRReference   hrRef,
-  FSSpec *      fsspec);
-
-
+    HRReference hrRef,
+    FSSpec *    fsspec );
 
 /* Utilities */
 /*
@@ -479,10 +451,9 @@ HRGetHTMLFile(
  */
 EXTERN_API( OSStatus )
 HRUtilCreateFullURL(
-  const char *  rootURL,
-  const char *  linkURL,
-  Handle        fullURLH);
-
+    const char *rootURL,
+    const char *linkURL,
+    Handle      fullURLH );
 
 /*
  *  HRUtilGetFSSpecFromURL()
@@ -494,10 +465,9 @@ HRUtilCreateFullURL(
  */
 EXTERN_API( OSStatus )
 HRUtilGetFSSpecFromURL(
-  const char *  rootURL,
-  const char *  linkURL,
-  FSSpec *      destSpec);
-
+    const char *rootURL,
+    const char *linkURL,
+    FSSpec *    destSpec );
 
 /* urlHandle should be valid on input */
 /*
@@ -510,10 +480,8 @@ HRUtilGetFSSpecFromURL(
  */
 EXTERN_API( OSStatus )
 HRUtilGetURLFromFSSpec(
-  const FSSpec *  fsspec,
-  Handle          urlHandle);
-
-
+    const FSSpec *fsspec,
+    Handle        urlHandle );
 
 /*
     Visited links
@@ -527,8 +495,8 @@ HRUtilGetURLFromFSSpec(
     on. These URLs can be caught by the "add URL to history" callback
     below.
  */
-typedef CALLBACK_API( Boolean , HRWasURLVisitedProcPtr )(const char *url, void *refCon);
-typedef STACK_UPP_TYPE(HRWasURLVisitedProcPtr)                  HRWasURLVisitedUPP;
+typedef CALLBACK_API( Boolean, HRWasURLVisitedProcPtr )( const char *url, void *refCon );
+typedef STACK_UPP_TYPE( HRWasURLVisitedProcPtr ) HRWasURLVisitedUPP;
 /*
  *  HRRegisterWasURLVisitedUPP()
  *  
@@ -539,10 +507,9 @@ typedef STACK_UPP_TYPE(HRWasURLVisitedProcPtr)                  HRWasURLVisitedU
  */
 EXTERN_API( void )
 HRRegisterWasURLVisitedUPP(
-  HRWasURLVisitedUPP   inWasURLVisitedUPP,
-  HRReference          hrRef,
-  void *               inRefCon);
-
+    HRWasURLVisitedUPP inWasURLVisitedUPP,
+    HRReference        hrRef,
+    void *             inRefCon );
 
 /*
  *  HRUnregisterWasURLVisitedUPP()
@@ -553,9 +520,7 @@ HRRegisterWasURLVisitedUPP(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-HRUnregisterWasURLVisitedUPP(HRReference hrRef);
-
-
+HRUnregisterWasURLVisitedUPP( HRReference hrRef );
 
 /*
     New URL
@@ -568,8 +533,8 @@ HRUnregisterWasURLVisitedUPP(HRReference hrRef);
         (b) maintainging a list of visited links
         (c) setting a window title based on the new URL
 */
-typedef CALLBACK_API( OSStatus , HRNewURLProcPtr )(const char *url, const char *targetFrame, Boolean addToHistory, void *refCon);
-typedef STACK_UPP_TYPE(HRNewURLProcPtr)                         HRNewURLUPP;
+typedef CALLBACK_API( OSStatus, HRNewURLProcPtr )( const char *url, const char *targetFrame, Boolean addToHistory, void *refCon );
+typedef STACK_UPP_TYPE( HRNewURLProcPtr ) HRNewURLUPP;
 /*
  *  HRRegisterNewURLUPP()
  *  
@@ -580,10 +545,9 @@ typedef STACK_UPP_TYPE(HRNewURLProcPtr)                         HRNewURLUPP;
  */
 EXTERN_API( void )
 HRRegisterNewURLUPP(
-  HRNewURLUPP   inNewURLUPP,
-  HRReference   hrRef,
-  void *        inRefCon);
-
+    HRNewURLUPP inNewURLUPP,
+    HRReference hrRef,
+    void *      inRefCon );
 
 /*
  *  HRUnregisterNewURLUPP()
@@ -594,12 +558,7 @@ HRRegisterNewURLUPP(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-HRUnregisterNewURLUPP(HRReference hrRef);
-
-
-
-
-
+HRUnregisterNewURLUPP( HRReference hrRef );
 
 /*
     URL to FSSpec function
@@ -610,15 +569,15 @@ HRUnregisterNewURLUPP(HRReference hrRef);
  */
 typedef UInt16 URLSourceType;
 enum {
-  kHRLookingForHTMLSource       = 1,
-  kHRLookingForImage            = 2,
-  kHRLookingForEmbedded         = 3,
-  kHRLookingForImageMap         = 4,
-  kHRLookingForFrame            = 5
+	kHRLookingForHTMLSource = 1,
+	kHRLookingForImage = 2,
+	kHRLookingForEmbedded = 3,
+	kHRLookingForImageMap = 4,
+	kHRLookingForFrame = 5
 };
 
-typedef CALLBACK_API( OSStatus , HRURLToFSSpecProcPtr )(const char *rootURL, const char *linkURL, FSSpec *fsspec, URLSourceType urlSourceType, void *refCon);
-typedef STACK_UPP_TYPE(HRURLToFSSpecProcPtr)                    HRURLToFSSpecUPP;
+typedef CALLBACK_API( OSStatus, HRURLToFSSpecProcPtr )( const char *rootURL, const char *linkURL, FSSpec *fsspec, URLSourceType urlSourceType, void *refCon );
+typedef STACK_UPP_TYPE( HRURLToFSSpecProcPtr ) HRURLToFSSpecUPP;
 /*
  *  HRRegisterURLToFSSpecUPP()
  *  
@@ -629,10 +588,9 @@ typedef STACK_UPP_TYPE(HRURLToFSSpecProcPtr)                    HRURLToFSSpecUPP
  */
 EXTERN_API( void )
 HRRegisterURLToFSSpecUPP(
-  HRURLToFSSpecUPP   inURLToFSSpecUPP,
-  HRReference        hrRef,
-  void *             inRefCon);
-
+    HRURLToFSSpecUPP inURLToFSSpecUPP,
+    HRReference      hrRef,
+    void *           inRefCon );
 
 /*
  *  HRUnregisterURLToFSSpecUPP()
@@ -643,9 +601,7 @@ HRRegisterURLToFSSpecUPP(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-HRUnregisterURLToFSSpecUPP(HRReference hrRef);
-
-
+HRUnregisterURLToFSSpecUPP( HRReference hrRef );
 
 /*
  *  NewHRWasURLVisitedUPP()
@@ -656,14 +612,17 @@ HRUnregisterURLToFSSpecUPP(HRReference hrRef);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( HRWasURLVisitedUPP )
-NewHRWasURLVisitedUPP(HRWasURLVisitedProcPtr userRoutine);
+NewHRWasURLVisitedUPP( HRWasURLVisitedProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppHRWasURLVisitedProcInfo = 0x000003D0 };  /* pascal 1_byte Func(4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(HRWasURLVisitedUPP) NewHRWasURLVisitedUPP(HRWasURLVisitedProcPtr userRoutine) { return (HRWasURLVisitedUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppHRWasURLVisitedProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewHRWasURLVisitedUPP(userRoutine) (HRWasURLVisitedUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppHRWasURLVisitedProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppHRWasURLVisitedProcInfo = 0x000003D0 }; /* pascal 1_byte Func(4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( HRWasURLVisitedUPP ) NewHRWasURLVisitedUPP( HRWasURLVisitedProcPtr userRoutine )
+{
+	return (HRWasURLVisitedUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppHRWasURLVisitedProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewHRWasURLVisitedUPP( userRoutine ) ( HRWasURLVisitedUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppHRWasURLVisitedProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -683,14 +642,17 @@ NewHRWasURLVisitedUPP(HRWasURLVisitedProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( HRNewURLUPP )
-NewHRNewURLUPP(HRNewURLProcPtr userRoutine);
+NewHRNewURLUPP( HRNewURLProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppHRNewURLProcInfo = 0x000037F0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 1_byte, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(HRNewURLUPP) NewHRNewURLUPP(HRNewURLProcPtr userRoutine) { return (HRNewURLUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppHRNewURLProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewHRNewURLUPP(userRoutine) (HRNewURLUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppHRNewURLProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppHRNewURLProcInfo = 0x000037F0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 1_byte, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( HRNewURLUPP ) NewHRNewURLUPP( HRNewURLProcPtr userRoutine )
+{
+	return (HRNewURLUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppHRNewURLProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewHRNewURLUPP( userRoutine ) ( HRNewURLUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppHRNewURLProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -710,14 +672,17 @@ NewHRNewURLUPP(HRNewURLProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( HRURLToFSSpecUPP )
-NewHRURLToFSSpecUPP(HRURLToFSSpecProcPtr userRoutine);
+NewHRURLToFSSpecUPP( HRURLToFSSpecProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppHRURLToFSSpecProcInfo = 0x0000EFF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 2_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(HRURLToFSSpecUPP) NewHRURLToFSSpecUPP(HRURLToFSSpecProcPtr userRoutine) { return (HRURLToFSSpecUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppHRURLToFSSpecProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewHRURLToFSSpecUPP(userRoutine) (HRURLToFSSpecUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppHRURLToFSSpecProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppHRURLToFSSpecProcInfo = 0x0000EFF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 2_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( HRURLToFSSpecUPP ) NewHRURLToFSSpecUPP( HRURLToFSSpecProcPtr userRoutine )
+{
+	return (HRURLToFSSpecUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppHRURLToFSSpecProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewHRURLToFSSpecUPP( userRoutine ) ( HRURLToFSSpecUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppHRURLToFSSpecProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -737,13 +702,16 @@ NewHRURLToFSSpecUPP(HRURLToFSSpecProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeHRWasURLVisitedUPP(HRWasURLVisitedUPP userUPP);
+DisposeHRWasURLVisitedUPP( HRWasURLVisitedUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeHRWasURLVisitedUPP(HRWasURLVisitedUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeHRWasURLVisitedUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeHRWasURLVisitedUPP( HRWasURLVisitedUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeHRWasURLVisitedUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -763,13 +731,16 @@ DisposeHRWasURLVisitedUPP(HRWasURLVisitedUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeHRNewURLUPP(HRNewURLUPP userUPP);
+DisposeHRNewURLUPP( HRNewURLUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeHRNewURLUPP(HRNewURLUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeHRNewURLUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeHRNewURLUPP( HRNewURLUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeHRNewURLUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -789,13 +760,16 @@ DisposeHRNewURLUPP(HRNewURLUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeHRURLToFSSpecUPP(HRURLToFSSpecUPP userUPP);
+DisposeHRURLToFSSpecUPP( HRURLToFSSpecUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeHRURLToFSSpecUPP(HRURLToFSSpecUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeHRURLToFSSpecUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeHRURLToFSSpecUPP( HRURLToFSSpecUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeHRURLToFSSpecUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -816,15 +790,18 @@ DisposeHRURLToFSSpecUPP(HRURLToFSSpecUPP userUPP);
  */
 EXTERN_API_C( Boolean )
 InvokeHRWasURLVisitedUPP(
-  const char *        url,
-  void *              refCon,
-  HRWasURLVisitedUPP  userUPP);
+    const char *       url,
+    void *             refCon,
+    HRWasURLVisitedUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(Boolean) InvokeHRWasURLVisitedUPP(const char * url, void * refCon, HRWasURLVisitedUPP userUPP) { return (Boolean)CALL_TWO_PARAMETER_UPP(userUPP, uppHRWasURLVisitedProcInfo, url, refCon); }
-  #else
-    #define InvokeHRWasURLVisitedUPP(url, refCon, userUPP) (Boolean)CALL_TWO_PARAMETER_UPP((userUPP), uppHRWasURLVisitedProcInfo, (url), (refCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) InvokeHRWasURLVisitedUPP( const char *url, void *refCon, HRWasURLVisitedUPP userUPP )
+{
+	return (Boolean)CALL_TWO_PARAMETER_UPP( userUPP, uppHRWasURLVisitedProcInfo, url, refCon );
+}
+#else
+#define InvokeHRWasURLVisitedUPP( url, refCon, userUPP ) ( Boolean ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppHRWasURLVisitedProcInfo, ( url ), ( refCon ) )
+#endif
 #endif
 
 /*
@@ -845,17 +822,20 @@ InvokeHRWasURLVisitedUPP(
  */
 EXTERN_API_C( OSStatus )
 InvokeHRNewURLUPP(
-  const char *  url,
-  const char *  targetFrame,
-  Boolean       addToHistory,
-  void *        refCon,
-  HRNewURLUPP   userUPP);
+    const char *url,
+    const char *targetFrame,
+    Boolean     addToHistory,
+    void *      refCon,
+    HRNewURLUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSStatus) InvokeHRNewURLUPP(const char * url, const char * targetFrame, Boolean addToHistory, void * refCon, HRNewURLUPP userUPP) { return (OSStatus)CALL_FOUR_PARAMETER_UPP(userUPP, uppHRNewURLProcInfo, url, targetFrame, addToHistory, refCon); }
-  #else
-    #define InvokeHRNewURLUPP(url, targetFrame, addToHistory, refCon, userUPP) (OSStatus)CALL_FOUR_PARAMETER_UPP((userUPP), uppHRNewURLProcInfo, (url), (targetFrame), (addToHistory), (refCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSStatus ) InvokeHRNewURLUPP( const char *url, const char *targetFrame, Boolean addToHistory, void *refCon, HRNewURLUPP userUPP )
+{
+	return (OSStatus)CALL_FOUR_PARAMETER_UPP( userUPP, uppHRNewURLProcInfo, url, targetFrame, addToHistory, refCon );
+}
+#else
+#define InvokeHRNewURLUPP( url, targetFrame, addToHistory, refCon, userUPP ) ( OSStatus ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppHRNewURLProcInfo, ( url ), ( targetFrame ), ( addToHistory ), ( refCon ) )
+#endif
 #endif
 
 /*
@@ -876,18 +856,21 @@ InvokeHRNewURLUPP(
  */
 EXTERN_API_C( OSStatus )
 InvokeHRURLToFSSpecUPP(
-  const char *      rootURL,
-  const char *      linkURL,
-  FSSpec *          fsspec,
-  URLSourceType     urlSourceType,
-  void *            refCon,
-  HRURLToFSSpecUPP  userUPP);
+    const char *     rootURL,
+    const char *     linkURL,
+    FSSpec *         fsspec,
+    URLSourceType    urlSourceType,
+    void *           refCon,
+    HRURLToFSSpecUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSStatus) InvokeHRURLToFSSpecUPP(const char * rootURL, const char * linkURL, FSSpec * fsspec, URLSourceType urlSourceType, void * refCon, HRURLToFSSpecUPP userUPP) { return (OSStatus)CALL_FIVE_PARAMETER_UPP(userUPP, uppHRURLToFSSpecProcInfo, rootURL, linkURL, fsspec, urlSourceType, refCon); }
-  #else
-    #define InvokeHRURLToFSSpecUPP(rootURL, linkURL, fsspec, urlSourceType, refCon, userUPP) (OSStatus)CALL_FIVE_PARAMETER_UPP((userUPP), uppHRURLToFSSpecProcInfo, (rootURL), (linkURL), (fsspec), (urlSourceType), (refCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSStatus ) InvokeHRURLToFSSpecUPP( const char *rootURL, const char *linkURL, FSSpec *fsspec, URLSourceType urlSourceType, void *refCon, HRURLToFSSpecUPP userUPP )
+{
+	return (OSStatus)CALL_FIVE_PARAMETER_UPP( userUPP, uppHRURLToFSSpecProcInfo, rootURL, linkURL, fsspec, urlSourceType, refCon );
+}
+#else
+#define InvokeHRURLToFSSpecUPP( rootURL, linkURL, fsspec, urlSourceType, refCon, userUPP ) ( OSStatus ) CALL_FIVE_PARAMETER_UPP( ( userUPP ), uppHRURLToFSSpecProcInfo, ( rootURL ), ( linkURL ), ( fsspec ), ( urlSourceType ), ( refCon ) )
+#endif
 #endif
 
 /*
@@ -899,15 +882,14 @@ InvokeHRURLToFSSpecUPP(
  *    Mac OS X:         in version 10.0 and later
  */
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewHRWasURLVisitedProc(userRoutine)                 NewHRWasURLVisitedUPP(userRoutine)
-    #define NewHRNewURLProc(userRoutine)                        NewHRNewURLUPP(userRoutine)
-    #define NewHRURLToFSSpecProc(userRoutine)                   NewHRURLToFSSpecUPP(userRoutine)
-    #define CallHRWasURLVisitedProc(userRoutine, url, refCon)   InvokeHRWasURLVisitedUPP(url, refCon, userRoutine)
-    #define CallHRNewURLProc(userRoutine, url, targetFrame, addToHistory, refCon) InvokeHRNewURLUPP(url, targetFrame, addToHistory, refCon, userRoutine)
-    #define CallHRURLToFSSpecProc(userRoutine, rootURL, linkURL, fsspec, urlSourceType, refCon) InvokeHRURLToFSSpecUPP(rootURL, linkURL, fsspec, urlSourceType, refCon, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewHRWasURLVisitedProc( userRoutine ) NewHRWasURLVisitedUPP( userRoutine )
+#define NewHRNewURLProc( userRoutine ) NewHRNewURLUPP( userRoutine )
+#define NewHRURLToFSSpecProc( userRoutine ) NewHRURLToFSSpecUPP( userRoutine )
+#define CallHRWasURLVisitedProc( userRoutine, url, refCon ) InvokeHRWasURLVisitedUPP( url, refCon, userRoutine )
+#define CallHRNewURLProc( userRoutine, url, targetFrame, addToHistory, refCon ) InvokeHRNewURLUPP( url, targetFrame, addToHistory, refCon, userRoutine )
+#define CallHRURLToFSSpecProc( userRoutine, rootURL, linkURL, fsspec, urlSourceType, refCon ) InvokeHRURLToFSSpecUPP( rootURL, linkURL, fsspec, urlSourceType, refCon, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
-
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -920,4 +902,3 @@ InvokeHRURLToFSSpecUPP(
 #endif
 
 #endif /* __HTMLRENDERING__ */
-

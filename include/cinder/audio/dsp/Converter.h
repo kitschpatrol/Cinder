@@ -25,10 +25,12 @@
 
 #include "cinder/audio/Buffer.h"
 
-#include <memory>
 #include <algorithm>
+#include <memory>
 
-namespace cinder { namespace audio { namespace dsp {
+namespace cinder {
+namespace audio {
+namespace dsp {
 
 //! A platform-specific converter that supports samplerate and channel conversion.
 class Converter {
@@ -37,21 +39,18 @@ class Converter {
 	static std::unique_ptr<Converter> create( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock );
 
 	virtual ~Converter() {}
-
 	//! Converts up to getSourceMaxFramesPerBlock() frames of audio data from \a sourceBuffer into \a destBuffer. Returns a \a std::pair<num source frames used, num dest frames written>
 	//! \note destBuffer must be large enough to complete the conversion, which is calculated as: \code minNumDestFrames = min( sourceBuffer->getNumFrames, getSourceMaxFramesPerBlock() ) * getDestSampleRate() * getSourceSampleRate() \endcode
 	virtual std::pair<size_t, size_t> convert( const Buffer *sourceBuffer, Buffer *destBuffer ) = 0;
 
 	//! Clears the state of the converter, discarding / flushing accumulated samples. Optional for implementations.
-	virtual void clear()	{}
-
-	size_t getSourceSampleRate()		const		{ return mSourceSampleRate; }
-	size_t getDestSampleRate()			const		{ return mDestSampleRate; }
-	size_t getSourceNumChannels()		const		{ return mSourceNumChannels; }
-	size_t getDestNumChannels()			const		{ return mDestNumChannels; }
-	size_t getSourceMaxFramesPerBlock()	const		{ return mSourceMaxFramesPerBlock; }
-	size_t getDestMaxFramesPerBlock()	const		{ return mDestMaxFramesPerBlock; }
-
+	virtual void clear() {}
+	size_t       getSourceSampleRate() const { return mSourceSampleRate; }
+	size_t       getDestSampleRate() const { return mDestSampleRate; }
+	size_t       getSourceNumChannels() const { return mSourceNumChannels; }
+	size_t       getDestNumChannels() const { return mDestNumChannels; }
+	size_t       getSourceMaxFramesPerBlock() const { return mSourceMaxFramesPerBlock; }
+	size_t       getDestMaxFramesPerBlock() const { return mDestMaxFramesPerBlock; }
   protected:
 	Converter( size_t sourceSampleRate, size_t destSampleRate, size_t sourceNumChannels, size_t destNumChannels, size_t sourceMaxFramesPerBlock );
 
@@ -61,12 +60,18 @@ class Converter {
 //! Mixes \a numFrames frames of \a sourceBuffer to \a destBuffer's layout, replacing its content. Channel up or down mixing is applied if necessary.
 void mixBuffers( const Buffer *sourceBuffer, Buffer *destBuffer, size_t numFrames );
 //! Mixes \a sourceBuffer to \a destBuffer's layout, replacing its content. Channel up or down mixing is applied if necessary. Unequal frame counts are permitted (the minimum size will be used).
-inline void mixBuffers( const Buffer *sourceBuffer, Buffer *destBuffer )	{ mixBuffers( sourceBuffer, destBuffer, std::min( sourceBuffer->getNumFrames(), destBuffer->getNumFrames() ) ); }
+inline void mixBuffers( const Buffer *sourceBuffer, Buffer *destBuffer )
+{
+	mixBuffers( sourceBuffer, destBuffer, std::min( sourceBuffer->getNumFrames(), destBuffer->getNumFrames() ) );
+}
 
 //! Sums \a numFrames frames of \a sourceBuffer into \a destBuffer. Channel up or down mixing is applied if necessary.
 void sumBuffers( const Buffer *sourceBuffer, Buffer *destBuffer, size_t numFrames );
 //! Sums \a sourceBuffer into \a destBuffer. Channel up or down mixing is applied if necessary. Unequal frame counts are permitted (the minimum size will be used).
-inline void sumBuffers( const Buffer *sourceBuffer, Buffer *destBuffer )	{ sumBuffers( sourceBuffer, destBuffer, std::min( sourceBuffer->getNumFrames(), destBuffer->getNumFrames() ) ); }
+inline void sumBuffers( const Buffer *sourceBuffer, Buffer *destBuffer )
+{
+	sumBuffers( sourceBuffer, destBuffer, std::min( sourceBuffer->getNumFrames(), destBuffer->getNumFrames() ) );
+}
 
 //! Converts between two arrays of different precision (ex. float to double). \a length samples are converted.
 template <typename SourceT, typename DestT>
@@ -88,38 +93,38 @@ void convertBuffer( const BufferT<SourceT> *sourceBuffer, BufferT<DestT> *destBu
 }
 
 //! Converts the 24-bit int \a sourceArray to floating point precision, placing the result in \a destArray. \a length samples are converted.
-template<typename FloatT>
+template <typename FloatT>
 void convertInt24ToFloat( const char *sourceArray, FloatT *destArray, size_t length )
 {
 	const FloatT floatNormalizer = (FloatT)1 / (FloatT)8388607;
 
 	for( size_t i = 0; i < length; i++ ) {
-		int32_t sample = (int32_t)( ( (int32_t)sourceArray[2] ) << 16 ) | ( ( (int32_t)(uint8_t)sourceArray[1] ) << 8 ) | ( (int32_t)(uint8_t)sourceArray[0] );
+		int32_t sample = ( int32_t )( ( (int32_t)sourceArray[2] ) << 16 ) | ( ( ( int32_t )(uint8_t)sourceArray[1] ) << 8 ) | ( ( int32_t )(uint8_t)sourceArray[0] );
 		destArray[i] = sample * floatNormalizer;
 		sourceArray += 3;
 	}
 }
 
 //! Converts the floating point \a sourceArray to 24-bit int precision, placing the result in \a destArray. \a length samples are converted.
-template<typename FloatT>
+template <typename FloatT>
 void convertFloatToInt24( const FloatT *sourceArray, char *destArray, size_t length )
 {
 	const FloatT intNormalizer = 8388607;
 
 	for( size_t i = 0; i < length; i++ ) {
 		int32_t sample = int32_t( sourceArray[i] * intNormalizer );
-		*(destArray++) = (char)( sample & 255 );
-		*(destArray++) = (char)( ( sample >> 8 ) & 255 );
-		*(destArray++) = (char)( ( sample >> 16 ) & 255 );
+		*( destArray++ ) = (char)( sample & 255 );
+		*( destArray++ ) = (char)( ( sample >> 8 ) & 255 );
+		*( destArray++ ) = (char)( ( sample >> 16 ) & 255 );
 	}
 }
 
 //! Interleaves \a numCopyFrames of \a nonInterleavedSourceArray, placing the result in \a interleavedDestArray. \a numFramesPerChannel and \a numChannels describe the layout of the non-interleaved array.
-template<typename T>
+template <typename T>
 void interleave( const T *nonInterleavedSourceArray, T *interleavedDestArray, size_t numFramesPerChannel, size_t numChannels, size_t numCopyFrames )
 {
 	for( size_t ch = 0; ch < numChannels; ch++ ) {
-		size_t x = ch;
+		size_t   x = ch;
 		const T *sourceChannel = &nonInterleavedSourceArray[ch * numFramesPerChannel];
 		for( size_t i = 0; i < numCopyFrames; i++ ) {
 			interleavedDestArray[x] = sourceChannel[i];
@@ -129,13 +134,13 @@ void interleave( const T *nonInterleavedSourceArray, T *interleavedDestArray, si
 }
 
 //! Interleaves \a numCopyFrames of \a nonInterleavedFloatSourceArray and converts from floating point to 16-bit int precision at the same time, placing the result in \a interleavedInt16DestArray. \a numFramesPerChannel and \a numChannels describe the layout of the non-interleaved array.
-template<typename FloatT>
+template <typename FloatT>
 void interleave( const FloatT *nonInterleavedFloatSourceArray, int16_t *interleavedInt16DestArray, size_t numFramesPerChannel, size_t numChannels, size_t numCopyFrames )
 {
 	const FloatT intNormalizer = 32768;
 
 	for( size_t ch = 0; ch < numChannels; ch++ ) {
-		size_t x = ch;
+		size_t        x = ch;
 		const FloatT *sourceChannel = &nonInterleavedFloatSourceArray[ch * numFramesPerChannel];
 		for( size_t i = 0; i < numCopyFrames; i++ ) {
 			interleavedInt16DestArray[x] = int16_t( sourceChannel[i] * intNormalizer );
@@ -145,12 +150,12 @@ void interleave( const FloatT *nonInterleavedFloatSourceArray, int16_t *interlea
 }
 
 //! De-interleaves \a numCopyFrames of \a interleavedSourceArray, placing the result in \a nonInterleavedDestArray. \a numFramesPerChannel and \a numChannels describe the layout of the non-interleaved array.
-template<typename T>
+template <typename T>
 void deinterleave( const T *interleavedSourceArray, T *nonInterleavedDestArray, size_t numFramesPerChannel, size_t numChannels, size_t numCopyFrames )
 {
 	for( size_t ch = 0; ch < numChannels; ch++ ) {
 		size_t x = ch;
-		T *destChannel = &nonInterleavedDestArray[ch * numFramesPerChannel];
+		T *    destChannel = &nonInterleavedDestArray[ch * numFramesPerChannel];
 		for( size_t i = 0; i < numCopyFrames; i++ ) {
 			destChannel[i] = interleavedSourceArray[x];
 			x += numChannels;
@@ -159,13 +164,13 @@ void deinterleave( const T *interleavedSourceArray, T *nonInterleavedDestArray, 
 }
 
 //! De-interleaves \a numCopyFrames of \a interleavedInt16SourceArray and converts from 16-bit int to floating point precision at the same time, placing the result in \a nonInterleavedFloatDestArray. \a numFramesPerChannel and \a numChannels describe the layout of the non-interleaved array.
-template<typename FloatT>
+template <typename FloatT>
 void deinterleave( const int16_t *interleavedInt16SourceArray, FloatT *nonInterleavedFloatDestArray, size_t numFramesPerChannel, size_t numChannels, size_t numCopyFrames )
 {
-	const FloatT floatNormalizer = (FloatT)3.0517578125e-05;	// 1.0 / 32768.0
+	const FloatT floatNormalizer = (FloatT)3.0517578125e-05; // 1.0 / 32768.0
 
 	for( size_t ch = 0; ch < numChannels; ch++ ) {
-		size_t x = ch;
+		size_t  x = ch;
 		FloatT *destChannel = &nonInterleavedFloatDestArray[ch * numFramesPerChannel];
 		for( size_t i = 0; i < numCopyFrames; i++ ) {
 			destChannel[i] = (FloatT)interleavedInt16SourceArray[x] * floatNormalizer;
@@ -175,7 +180,7 @@ void deinterleave( const int16_t *interleavedInt16SourceArray, FloatT *nonInterl
 }
 
 //! Interleaves \a nonInterleavedSource, placing the result in \a interleavedDest.
-template<typename T>
+template <typename T>
 void interleaveBuffer( const BufferT<T> *nonInterleavedSource, BufferInterleavedT<T> *interleavedDest )
 {
 	CI_ASSERT( interleavedDest->getNumChannels() == nonInterleavedSource->getNumChannels() );
@@ -185,7 +190,7 @@ void interleaveBuffer( const BufferT<T> *nonInterleavedSource, BufferInterleaved
 }
 
 //! De-interleaves \a interleavedSource, placing the result in \a nonInterleavedDest.
-template<typename T>
+template <typename T>
 void deinterleaveBuffer( const BufferInterleavedT<T> *interleavedSource, BufferT<T> *nonInterleavedDest )
 {
 	CI_ASSERT( interleavedSource->getNumChannels() == nonInterleavedDest->getNumChannels() );
@@ -195,13 +200,13 @@ void deinterleaveBuffer( const BufferInterleavedT<T> *interleavedSource, BufferT
 }
 
 //! Interleaves \a nonInterleavedSource, placing the result in \a interleavedDest. This method is only slightly faster than interleaveBuffer(), which can handle an arbitrary number of channels.
-template<typename T>
+template <typename T>
 void interleaveStereoBuffer( const BufferT<T> *nonInterleavedSource, BufferInterleavedT<T> *interleavedDest )
 {
 	CI_ASSERT( interleavedDest->getNumChannels() == 2 && nonInterleavedSource->getNumChannels() == 2 );
 	CI_ASSERT( interleavedDest->getSize() <= nonInterleavedSource->getSize() );
 
-	size_t numFrames = interleavedDest->getNumFrames();
+	size_t   numFrames = interleavedDest->getNumFrames();
 	const T *left = nonInterleavedSource->getChannel( 0 );
 	const T *right = nonInterleavedSource->getChannel( 1 );
 
@@ -215,15 +220,15 @@ void interleaveStereoBuffer( const BufferT<T> *nonInterleavedSource, BufferInter
 }
 
 //! De-interleaves \a interleavedSource, placing the result in \a nonInterleavedDest. This method is only slightly faster than deinterleaveStereoBuffer(), which can handle an arbitrary number of channels.
-template<typename T>
+template <typename T>
 void deinterleaveStereoBuffer( const BufferInterleavedT<T> *interleavedSource, BufferT<T> *nonInterleavedDest )
 {
 	CI_ASSERT( interleavedSource->getNumChannels() == 2 && nonInterleavedDest->getNumChannels() == 2 );
 	CI_ASSERT( nonInterleavedDest->getSize() <= interleavedSource->getSize() );
 
-	size_t numFrames = nonInterleavedDest->getNumFrames();
-	T *left = nonInterleavedDest->getChannel( 0 );
-	T *right = nonInterleavedDest->getChannel( 1 );
+	size_t   numFrames = nonInterleavedDest->getNumFrames();
+	T *      left = nonInterleavedDest->getChannel( 0 );
+	T *      right = nonInterleavedDest->getChannel( 1 );
 	const T *mixed = interleavedSource->getData();
 
 	size_t i, j;
@@ -232,5 +237,6 @@ void deinterleaveStereoBuffer( const BufferInterleavedT<T> *interleavedSource, B
 		right[i] = mixed[j + 1];
 	}
 }
-
-} } } // namespace cinder::audio::dsp
+}
+}
+} // namespace cinder::audio::dsp

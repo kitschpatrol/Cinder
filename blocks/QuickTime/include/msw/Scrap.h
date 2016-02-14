@@ -28,8 +28,6 @@
 #include <CFString.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,11 +41,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*
@@ -65,7 +63,7 @@ extern "C" {
     blissfully ignorant.
 */
 
-typedef FourCharCode                    ScrapFlavorType;
+typedef FourCharCode ScrapFlavorType;
 /*
     Newsflash! After 15 years of arduous toil, it's finally possible
     for specially trained typists wielding advanced text editing
@@ -73,13 +71,13 @@ typedef FourCharCode                    ScrapFlavorType;
     flavor type constants! Apple triumphs again!
 */
 enum {
-  kScrapFlavorTypePicture       = FOUR_CHAR_CODE('PICT'), /* contents of a PicHandle*/
-  kScrapFlavorTypeText          = FOUR_CHAR_CODE('TEXT'), /* stream of characters*/
-  kScrapFlavorTypeTextStyle     = FOUR_CHAR_CODE('styl'), /* see TEGetStyleScrapHandle*/
-  kScrapFlavorTypeMovie         = FOUR_CHAR_CODE('moov'), /* reference to a movie*/
-  kScrapFlavorTypeSound         = FOUR_CHAR_CODE('snd '), /* see SndRecord and SndPlay*/
-  kScrapFlavorTypeUnicode       = FOUR_CHAR_CODE('utxt'), /* stream of UTF16 characters*/
-  kScrapFlavorTypeUnicodeStyle  = FOUR_CHAR_CODE('ustl') /* ATSUI defines; Textension uses*/
+	kScrapFlavorTypePicture = FOUR_CHAR_CODE( 'PICT' ), /* contents of a PicHandle*/
+	kScrapFlavorTypeText = FOUR_CHAR_CODE( 'TEXT' ), /* stream of characters*/
+	kScrapFlavorTypeTextStyle = FOUR_CHAR_CODE( 'styl' ), /* see TEGetStyleScrapHandle*/
+	kScrapFlavorTypeMovie = FOUR_CHAR_CODE( 'moov' ), /* reference to a movie*/
+	kScrapFlavorTypeSound = FOUR_CHAR_CODE( 'snd ' ), /* see SndRecord and SndPlay*/
+	kScrapFlavorTypeUnicode = FOUR_CHAR_CODE( 'utxt' ), /* stream of UTF16 characters*/
+	kScrapFlavorTypeUnicodeStyle = FOUR_CHAR_CODE( 'ustl' ) /* ATSUI defines; Textension uses*/
 };
 
 /*
@@ -99,8 +97,7 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-LoadScrap(void)                                               ONEWORDINLINE(0xA9FB);
-
+LoadScrap( void ) ONEWORDINLINE( 0xA9FB );
 
 /*
  *  UnloadScrap()
@@ -111,8 +108,7 @@ LoadScrap(void)                                               ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-UnloadScrap(void)                                             ONEWORDINLINE(0xA9FA);
-
+UnloadScrap( void ) ONEWORDINLINE( 0xA9FA );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -125,16 +121,16 @@ UnloadScrap(void)                                             ONEWORDINLINE(0xA9
     ________________________________________________________________
 */
 struct ScrapStuff {
-  SInt32              scrapSize;
-  Handle              scrapHandle;
-  SInt16              scrapCount;
-  SInt16              scrapState;
-  StringPtr           scrapName;
+	SInt32    scrapSize;
+	Handle    scrapHandle;
+	SInt16    scrapCount;
+	SInt16    scrapState;
+	StringPtr scrapName;
 };
-typedef struct ScrapStuff               ScrapStuff;
-typedef ScrapStuff *                    PScrapStuff;
-typedef ScrapStuff *                    ScrapStuffPtr;
-#endif  /* CALL_NOT_IN_CARBON */
+typedef struct ScrapStuff ScrapStuff;
+typedef ScrapStuff *      PScrapStuff;
+typedef ScrapStuff *      ScrapStuffPtr;
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -146,8 +142,7 @@ typedef ScrapStuff *                    ScrapStuffPtr;
  *    Mac OS X:         not available
  */
 EXTERN_API( ScrapStuffPtr )
-InfoScrap(void)                                               ONEWORDINLINE(0xA9F9);
-
+InfoScrap( void ) ONEWORDINLINE( 0xA9F9 );
 
 /*
  *  GetScrap()
@@ -159,10 +154,9 @@ InfoScrap(void)                                               ONEWORDINLINE(0xA9
  */
 EXTERN_API( long )
 GetScrap(
-  Handle            destination,
-  ScrapFlavorType   flavorType,
-  SInt32 *          offset)                                   ONEWORDINLINE(0xA9FD);
-
+    Handle          destination,
+    ScrapFlavorType flavorType,
+    SInt32 *        offset ) ONEWORDINLINE( 0xA9FD );
 
 /*
  *  ZeroScrap()
@@ -173,8 +167,7 @@ GetScrap(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-ZeroScrap(void)                                               ONEWORDINLINE(0xA9FC);
-
+ZeroScrap( void ) ONEWORDINLINE( 0xA9FC );
 
 /*
  *  PutScrap()
@@ -186,11 +179,9 @@ ZeroScrap(void)                                               ONEWORDINLINE(0xA9
  */
 EXTERN_API( OSStatus )
 PutScrap(
-  SInt32            sourceBufferByteCount,
-  ScrapFlavorType   flavorType,
-  const void *      sourceBuffer)                             ONEWORDINLINE(0xA9FE);
-
-
+    SInt32          sourceBufferByteCount,
+    ScrapFlavorType flavorType,
+    const void *    sourceBuffer ) ONEWORDINLINE( 0xA9FE );
 
 /*
     ________________________________________________________________
@@ -208,10 +199,10 @@ PutScrap(
     for the flavor data size.
 */
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kScrapFlavorSizeUnknown       = -1
+	kScrapFlavorSizeUnknown = -1
 };
 
 /*
@@ -221,7 +212,7 @@ enum {
 */
 
 enum {
-  kScrapReservedFlavorType      = FOUR_CHAR_CODE('srft')
+	kScrapReservedFlavorType = FOUR_CHAR_CODE( 'srft' )
 };
 
 /*
@@ -240,40 +231,40 @@ enum {
     Most callers should not care about this bit.
 */
 enum {
-  kScrapFlavorMaskNone          = 0x00000000,
-  kScrapFlavorMaskSenderOnly    = 0x00000001,
-  kScrapFlavorMaskTranslated    = 0x00000002
+	kScrapFlavorMaskNone = 0x00000000,
+	kScrapFlavorMaskSenderOnly = 0x00000001,
+	kScrapFlavorMaskTranslated = 0x00000002
 };
 
-typedef UInt32                          ScrapFlavorFlags;
+typedef UInt32 ScrapFlavorFlags;
 /*
     ScrapFlavorInfo describes a single flavor within
     a scrap.
 */
 struct ScrapFlavorInfo {
-  ScrapFlavorType     flavorType;
-  ScrapFlavorFlags    flavorFlags;
+	ScrapFlavorType  flavorType;
+	ScrapFlavorFlags flavorFlags;
 };
-typedef struct ScrapFlavorInfo          ScrapFlavorInfo;
-typedef struct OpaqueScrapRef*          ScrapRef;
+typedef struct ScrapFlavorInfo ScrapFlavorInfo;
+typedef struct OpaqueScrapRef *ScrapRef;
 /*
     kScrapRefNone is guaranteed to be an invalid ScrapRef.  This 
     is convenient when initializing application variables.
 */
-#define kScrapRefNone                   ((ScrapRef)NULL)
+#define kScrapRefNone ( (ScrapRef)NULL )
 /*
     Defined Apple scrap names for GetScrapByName
     kScrapClipboardScrap    traditional clipboard scrap
     kScrapFindScrap         compatible with Cocoa's global find scrap
 */
-#define kScrapClipboardScrap            CFSTR("com.apple.scrap.clipboard")
-#define kScrapFindScrap                 CFSTR("com.apple.scrap.find")
+#define kScrapClipboardScrap CFSTR( "com.apple.scrap.clipboard" )
+#define kScrapFindScrap CFSTR( "com.apple.scrap.find" )
 
 /*  Enumerated options to be passed to GetScrapByName*/
 
 enum {
-  kScrapGetNamedScrap           = 0,    /* get current named scrap without bumping*/
-  kScrapClearNamedScrap         = (1L << 0) /* acquire the named scrap, bumping and clearing*/
+	kScrapGetNamedScrap = 0, /* get current named scrap without bumping*/
+	kScrapClearNamedScrap = ( 1L << 0 ) /* acquire the named scrap, bumping and clearing*/
 };
 
 /*
@@ -314,10 +305,9 @@ enum {
  */
 EXTERN_API( OSStatus )
 GetScrapByName(
-  CFStringRef   name,
-  OptionBits    options,
-  ScrapRef *    scrap);
-
+    CFStringRef name,
+    OptionBits  options,
+    ScrapRef *  scrap );
 
 /*
     GetCurrentScrap obtains a reference to the current scrap.
@@ -334,8 +324,7 @@ GetScrapByName(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-GetCurrentScrap(ScrapRef * scrap);
-
+GetCurrentScrap( ScrapRef *scrap );
 
 /*
     GetScrapFlavorFlags tells you [a] whether the scrap contains
@@ -355,10 +344,9 @@ GetCurrentScrap(ScrapRef * scrap);
  */
 EXTERN_API( OSStatus )
 GetScrapFlavorFlags(
-  ScrapRef            scrap,
-  ScrapFlavorType     flavorType,
-  ScrapFlavorFlags *  flavorFlags);
-
+    ScrapRef          scrap,
+    ScrapFlavorType   flavorType,
+    ScrapFlavorFlags *flavorFlags );
 
 /*
     GetScrapFlavorSize gets the size of the data of the specified
@@ -377,10 +365,9 @@ GetScrapFlavorFlags(
  */
 EXTERN_API( OSStatus )
 GetScrapFlavorSize(
-  ScrapRef          scrap,
-  ScrapFlavorType   flavorType,
-  Size *            byteCount);
-
+    ScrapRef        scrap,
+    ScrapFlavorType flavorType,
+    Size *          byteCount );
 
 /*
     GetScrapFlavorData gets the data from the specified flavor in the
@@ -400,11 +387,10 @@ GetScrapFlavorSize(
  */
 EXTERN_API( OSStatus )
 GetScrapFlavorData(
-  ScrapRef          scrap,
-  ScrapFlavorType   flavorType,
-  Size *            byteCount,
-  void *            destination);
-
+    ScrapRef        scrap,
+    ScrapFlavorType flavorType,
+    Size *          byteCount,
+    void *          destination );
 
 /*
     ClearCurrentScrap clears the current scrap. Call this
@@ -427,8 +413,7 @@ GetScrapFlavorData(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ClearCurrentScrap(void);
-
+ClearCurrentScrap( void );
 
 /*
         ClearScrap will clear the scrap passed in and return the bumped
@@ -448,9 +433,7 @@ ClearCurrentScrap(void);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API( OSStatus )
-ClearScrap(ScrapRef * inOutScrap);
-
-
+ClearScrap( ScrapRef *inOutScrap );
 
 /*
         PutScrapFlavor is a lot like PutScrap, with two differences:
@@ -490,12 +473,11 @@ ClearScrap(ScrapRef * inOutScrap);
  */
 EXTERN_API( OSStatus )
 PutScrapFlavor(
-  ScrapRef           scrap,
-  ScrapFlavorType    flavorType,
-  ScrapFlavorFlags   flavorFlags,
-  Size               flavorSize,
-  const void *       flavorData);       /* can be NULL */
-
+    ScrapRef         scrap,
+    ScrapFlavorType  flavorType,
+    ScrapFlavorFlags flavorFlags,
+    Size             flavorSize,
+    const void *     flavorData ); /* can be NULL */
 
 /*
     ScrapPromiseKeeper is a function you write which is called by
@@ -504,8 +486,8 @@ PutScrapFlavor(
     the requested data by calling PutScrapFlavor.
 */
 
-typedef CALLBACK_API( OSStatus , ScrapPromiseKeeperProcPtr )(ScrapRef scrap, ScrapFlavorType flavorType, void *userData);
-typedef STACK_UPP_TYPE(ScrapPromiseKeeperProcPtr)               ScrapPromiseKeeperUPP;
+typedef CALLBACK_API( OSStatus, ScrapPromiseKeeperProcPtr )( ScrapRef scrap, ScrapFlavorType flavorType, void *userData );
+typedef STACK_UPP_TYPE( ScrapPromiseKeeperProcPtr ) ScrapPromiseKeeperUPP;
 /*
  *  NewScrapPromiseKeeperUPP()
  *  
@@ -515,14 +497,17 @@ typedef STACK_UPP_TYPE(ScrapPromiseKeeperProcPtr)               ScrapPromiseKeep
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ScrapPromiseKeeperUPP )
-NewScrapPromiseKeeperUPP(ScrapPromiseKeeperProcPtr userRoutine);
+NewScrapPromiseKeeperUPP( ScrapPromiseKeeperProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppScrapPromiseKeeperProcInfo = 0x00000FF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(ScrapPromiseKeeperUPP) NewScrapPromiseKeeperUPP(ScrapPromiseKeeperProcPtr userRoutine) { return (ScrapPromiseKeeperUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppScrapPromiseKeeperProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewScrapPromiseKeeperUPP(userRoutine) (ScrapPromiseKeeperUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppScrapPromiseKeeperProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppScrapPromiseKeeperProcInfo = 0x00000FF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( ScrapPromiseKeeperUPP ) NewScrapPromiseKeeperUPP( ScrapPromiseKeeperProcPtr userRoutine )
+{
+	return (ScrapPromiseKeeperUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppScrapPromiseKeeperProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewScrapPromiseKeeperUPP( userRoutine ) ( ScrapPromiseKeeperUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppScrapPromiseKeeperProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -534,13 +519,16 @@ NewScrapPromiseKeeperUPP(ScrapPromiseKeeperProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeScrapPromiseKeeperUPP(ScrapPromiseKeeperUPP userUPP);
+DisposeScrapPromiseKeeperUPP( ScrapPromiseKeeperUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeScrapPromiseKeeperUPP(ScrapPromiseKeeperUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeScrapPromiseKeeperUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeScrapPromiseKeeperUPP( ScrapPromiseKeeperUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeScrapPromiseKeeperUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -553,22 +541,25 @@ DisposeScrapPromiseKeeperUPP(ScrapPromiseKeeperUPP userUPP);
  */
 EXTERN_API_C( OSStatus )
 InvokeScrapPromiseKeeperUPP(
-  ScrapRef               scrap,
-  ScrapFlavorType        flavorType,
-  void *                 userData,
-  ScrapPromiseKeeperUPP  userUPP);
+    ScrapRef              scrap,
+    ScrapFlavorType       flavorType,
+    void *                userData,
+    ScrapPromiseKeeperUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSStatus) InvokeScrapPromiseKeeperUPP(ScrapRef scrap, ScrapFlavorType flavorType, void * userData, ScrapPromiseKeeperUPP userUPP) { return (OSStatus)CALL_THREE_PARAMETER_UPP(userUPP, uppScrapPromiseKeeperProcInfo, scrap, flavorType, userData); }
-  #else
-    #define InvokeScrapPromiseKeeperUPP(scrap, flavorType, userData, userUPP) (OSStatus)CALL_THREE_PARAMETER_UPP((userUPP), uppScrapPromiseKeeperProcInfo, (scrap), (flavorType), (userData))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSStatus ) InvokeScrapPromiseKeeperUPP( ScrapRef scrap, ScrapFlavorType flavorType, void *userData, ScrapPromiseKeeperUPP userUPP )
+{
+	return (OSStatus)CALL_THREE_PARAMETER_UPP( userUPP, uppScrapPromiseKeeperProcInfo, scrap, flavorType, userData );
+}
+#else
+#define InvokeScrapPromiseKeeperUPP( scrap, flavorType, userData, userUPP ) ( OSStatus ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppScrapPromiseKeeperProcInfo, ( scrap ), ( flavorType ), ( userData ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewScrapPromiseKeeperProc(userRoutine)              NewScrapPromiseKeeperUPP(userRoutine)
-    #define CallScrapPromiseKeeperProc(userRoutine, scrap, flavorType, userData) InvokeScrapPromiseKeeperUPP(scrap, flavorType, userData, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewScrapPromiseKeeperProc( userRoutine ) NewScrapPromiseKeeperUPP( userRoutine )
+#define CallScrapPromiseKeeperProc( userRoutine, scrap, flavorType, userData ) InvokeScrapPromiseKeeperUPP( scrap, flavorType, userData, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -592,10 +583,9 @@ InvokeScrapPromiseKeeperUPP(
  */
 EXTERN_API( OSStatus )
 SetScrapPromiseKeeper(
-  ScrapRef                scrap,
-  ScrapPromiseKeeperUPP   upp,
-  const void *            userData);
-
+    ScrapRef              scrap,
+    ScrapPromiseKeeperUPP upp,
+    const void *          userData );
 
 /*
     GetScrapFlavorCount produces the number of
@@ -612,9 +602,8 @@ SetScrapPromiseKeeper(
  */
 EXTERN_API( OSStatus )
 GetScrapFlavorCount(
-  ScrapRef   scrap,
-  UInt32 *   infoCount);
-
+    ScrapRef scrap,
+    UInt32 * infoCount );
 
 /*
     GetScrapFlavorInfoList fills a list (array)
@@ -636,11 +625,9 @@ GetScrapFlavorCount(
  */
 EXTERN_API( OSStatus )
 GetScrapFlavorInfoList(
-  ScrapRef          scrap,
-  UInt32 *          infoCount,
-  ScrapFlavorInfo   info[]);
-
-
+    ScrapRef        scrap,
+    UInt32 *        infoCount,
+    ScrapFlavorInfo info[] );
 
 /*
     CallInScrapPromises forces all promises to be kept.
@@ -665,16 +652,14 @@ GetScrapFlavorInfoList(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-CallInScrapPromises(void);
-
-
+CallInScrapPromises( void );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -688,4 +673,3 @@ CallInScrapPromises(void);
 #endif
 
 #endif /* __SCRAP__ */
-

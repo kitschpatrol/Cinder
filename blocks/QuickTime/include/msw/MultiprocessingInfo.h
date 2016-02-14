@@ -21,7 +21,6 @@
    ==========================================================================================================================
 */
 
-
 #ifndef __MULTIPROCESSINGINFO__
 #define __MULTIPROCESSINGINFO__
 
@@ -32,9 +31,6 @@
 #ifndef __MULTIPROCESSING__
 #include <Multiprocessing.h>
 #endif
-
-
-
 
 #if PRAGMA_ONCE
 #pragma once
@@ -49,11 +45,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=power
+#pragma options align = power
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*
@@ -61,7 +57,6 @@ extern "C" {
    This is the header file for version 2.3 of the Mac OS multiprocessing information support. 
    ==========================================================================================================================
 */
-
 
 /*
    ==========================================================================================================================
@@ -96,8 +91,6 @@ extern "C" {
    ==========================================================================================================================
 */
 
-
-
 /*
    .
    ==========================================================================================================================
@@ -115,11 +108,10 @@ extern "C" {
  *    Mac OS X:         not available
  */
 EXTERN_API_C( MPPageSizeClass )
-MPGetPageSizeClasses(void);
-
+MPGetPageSizeClasses( void );
 
 /* The number of page size classes, 1 to n.*/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /* -------------------------------------------------------------------------------------------*/
 #if CALL_NOT_IN_CARBON
@@ -132,12 +124,10 @@ MPGetPageSizeClasses(void);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( ByteCount )
-MPGetPageSize(MPPageSizeClass pageClass);
-
+MPGetPageSize( MPPageSizeClass pageClass );
 
 /* The page size in bytes.*/
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
    .
@@ -156,8 +146,7 @@ MPGetPageSize(MPPageSizeClass pageClass);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-MPGetNextCoherenceID(MPCoherenceID * coherenceID);
-
+MPGetNextCoherenceID( MPCoherenceID *coherenceID );
 
 /*
  *  MPGetNextCpuID()
@@ -169,9 +158,8 @@ MPGetNextCoherenceID(MPCoherenceID * coherenceID);
  */
 EXTERN_API_C( OSStatus )
 MPGetNextCpuID(
-  MPCoherenceID   owningCoherenceID,
-  MPCpuID *       cpuID);
-
+    MPCoherenceID owningCoherenceID,
+    MPCpuID *     cpuID );
 
 /*
  *  MPGetNextProcessID()
@@ -182,8 +170,7 @@ MPGetNextCpuID(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-MPGetNextProcessID(MPProcessID * processID);
-
+MPGetNextProcessID( MPProcessID *processID );
 
 /*
  *  MPGetNextAddressSpaceID()
@@ -195,9 +182,8 @@ MPGetNextProcessID(MPProcessID * processID);
  */
 EXTERN_API_C( OSStatus )
 MPGetNextAddressSpaceID(
-  MPProcessID         owningProcessID,
-  MPAddressSpaceID *  addressSpaceID);
-
+    MPProcessID       owningProcessID,
+    MPAddressSpaceID *addressSpaceID );
 
 /*
  *  MPGetNextTaskID()
@@ -209,9 +195,8 @@ MPGetNextAddressSpaceID(
  */
 EXTERN_API_C( OSStatus )
 MPGetNextTaskID(
-  MPProcessID   owningProcessID,
-  MPTaskID *    taskID);
-
+    MPProcessID owningProcessID,
+    MPTaskID *  taskID );
 
 /*
  *  MPGetNextQueueID()
@@ -223,9 +208,8 @@ MPGetNextTaskID(
  */
 EXTERN_API_C( OSStatus )
 MPGetNextQueueID(
-  MPProcessID   owningProcessID,
-  MPQueueID *   queueID);
-
+    MPProcessID owningProcessID,
+    MPQueueID * queueID );
 
 /*
  *  MPGetNextSemaphoreID()
@@ -237,9 +221,8 @@ MPGetNextQueueID(
  */
 EXTERN_API_C( OSStatus )
 MPGetNextSemaphoreID(
-  MPProcessID      owningProcessID,
-  MPSemaphoreID *  semaphoreID);
-
+    MPProcessID    owningProcessID,
+    MPSemaphoreID *semaphoreID );
 
 /*
  *  MPGetNextCriticalRegionID()
@@ -251,9 +234,8 @@ MPGetNextSemaphoreID(
  */
 EXTERN_API_C( OSStatus )
 MPGetNextCriticalRegionID(
-  MPProcessID           owningProcessID,
-  MPCriticalRegionID *  criticalRegionID);
-
+    MPProcessID         owningProcessID,
+    MPCriticalRegionID *criticalRegionID );
 
 /*
  *  MPGetNextTimerID()
@@ -265,9 +247,8 @@ MPGetNextCriticalRegionID(
  */
 EXTERN_API_C( OSStatus )
 MPGetNextTimerID(
-  MPProcessID   owningProcessID,
-  MPTimerID *   timerID);
-
+    MPProcessID owningProcessID,
+    MPTimerID * timerID );
 
 /*
  *  MPGetNextEventID()
@@ -279,9 +260,8 @@ MPGetNextTimerID(
  */
 EXTERN_API_C( OSStatus )
 MPGetNextEventID(
-  MPProcessID   owningProcessID,
-  MPEventID *   eventID);
-
+    MPProcessID owningProcessID,
+    MPEventID * eventID );
 
 /*
  *  MPGetNextNotificationID()
@@ -293,11 +273,10 @@ MPGetNextEventID(
  */
 EXTERN_API_C( OSStatus )
 MPGetNextNotificationID(
-  MPProcessID         owningProcessID,
-  MPNotificationID *  notificationID);
+    MPProcessID       owningProcessID,
+    MPNotificationID *notificationID );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -310,11 +289,10 @@ MPGetNextNotificationID(
  */
 EXTERN_API( OSStatus )
 MPGetNextAreaID(
-  MPAddressSpaceID   owningSpaceID,
-  MPAreaID *         areaID);
+    MPAddressSpaceID owningSpaceID,
+    MPAreaID *       areaID );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -326,13 +304,9 @@ MPGetNextAreaID(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OSStatus )
-MPGetNextConsoleID(MPConsoleID * consoleID);
-
-
-
+MPGetNextConsoleID( MPConsoleID *consoleID );
 
 /* -------------------------------------------------------------------------------------------*/
-
 
 /*
  *  MPGetNextID()
@@ -344,11 +318,8 @@ MPGetNextConsoleID(MPConsoleID * consoleID);
  */
 EXTERN_API_C( OSStatus )
 MPGetNextID(
-  MPOpaqueIDClass   kind,
-  MPOpaqueID *      id);
-
-
-
+    MPOpaqueIDClass kind,
+    MPOpaqueID *    id );
 
 /*
    .
@@ -357,109 +328,105 @@ MPGetNextID(
    ===========================
 */
 
-
 /*
    ----------------------------------------------------------------------------------------------
    ! The implementation of MPGetObjectInfo assumes that all info records are in 4 byte multiples.
 */
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-                                        /* The version of the MPAreaInfo structure requested.*/
-  kMPQueueInfoVersion           = 1L | (kOpaqueQueueID << 16),
-  kMPSemaphoreInfoVersion       = 1L | (kOpaqueSemaphoreID << 16),
-  kMPEventInfoVersion           = 1L | (kOpaqueEventID << 16),
-  kMPCriticalRegionInfoVersion  = 1L | (kOpaqueCriticalRegionID << 16),
-  kMPNotificationInfoVersion    = 1L | (kOpaqueNotificationID << 16),
-  kMPAddressSpaceInfoVersion    = 1L | (kOpaqueAddressSpaceID << 16)
+	/* The version of the MPAreaInfo structure requested.*/
+	kMPQueueInfoVersion = 1L | ( kOpaqueQueueID << 16 ),
+	kMPSemaphoreInfoVersion = 1L | ( kOpaqueSemaphoreID << 16 ),
+	kMPEventInfoVersion = 1L | ( kOpaqueEventID << 16 ),
+	kMPCriticalRegionInfoVersion = 1L | ( kOpaqueCriticalRegionID << 16 ),
+	kMPNotificationInfoVersion = 1L | ( kOpaqueNotificationID << 16 ),
+	kMPAddressSpaceInfoVersion = 1L | ( kOpaqueAddressSpaceID << 16 )
 };
-
 
 struct MPQueueInfo {
-  PBVersion           version;                /* Version of the data structure requested*/
+	PBVersion version; /* Version of the data structure requested*/
 
-  MPProcessID         processID;              /* Owning process ID*/
-  OSType              queueName;              /* Queue name*/
+	MPProcessID processID; /* Owning process ID*/
+	OSType      queueName; /* Queue name*/
 
-  ItemCount           nWaiting;
-  MPTaskID            waitingTaskID;          /* First waiting task.*/
+	ItemCount nWaiting;
+	MPTaskID  waitingTaskID; /* First waiting task.*/
 
-  ItemCount           nMessages;
-  ItemCount           nReserved;
+	ItemCount nMessages;
+	ItemCount nReserved;
 
-  void *              p1;                     /* First message parameters...*/
-  void *              p2;
-  void *              p3;
+	void *p1; /* First message parameters...*/
+	void *p2;
+	void *p3;
 };
-typedef struct MPQueueInfo              MPQueueInfo;
+typedef struct MPQueueInfo MPQueueInfo;
 struct MPSemaphoreInfo {
-  PBVersion           version;                /* Version of the data structure requested*/
+	PBVersion version; /* Version of the data structure requested*/
 
-  MPProcessID         processID;              /* Owning process ID*/
-  OSType              semaphoreName;          /* Semaphore name*/
+	MPProcessID processID; /* Owning process ID*/
+	OSType      semaphoreName; /* Semaphore name*/
 
-  ItemCount           nWaiting;
-  MPTaskID            waitingTaskID;          /* First waiting task.*/
+	ItemCount nWaiting;
+	MPTaskID  waitingTaskID; /* First waiting task.*/
 
-  ItemCount           maximum;
-  ItemCount           count;
+	ItemCount maximum;
+	ItemCount count;
 };
-typedef struct MPSemaphoreInfo          MPSemaphoreInfo;
+typedef struct MPSemaphoreInfo MPSemaphoreInfo;
 struct MPEventInfo {
-  PBVersion           version;                /* Version of the data structure requested*/
+	PBVersion version; /* Version of the data structure requested*/
 
-  MPProcessID         processID;              /* Owning process ID*/
-  OSType              eventName;              /* Event name*/
+	MPProcessID processID; /* Owning process ID*/
+	OSType      eventName; /* Event name*/
 
-  ItemCount           nWaiting;
-  MPTaskID            waitingTaskID;          /* First waiting task.*/
+	ItemCount nWaiting;
+	MPTaskID  waitingTaskID; /* First waiting task.*/
 
-  MPEventFlags        events;
+	MPEventFlags events;
 };
-typedef struct MPEventInfo              MPEventInfo;
+typedef struct MPEventInfo MPEventInfo;
 struct MPCriticalRegionInfo {
-  PBVersion           version;                /* Version of the data structure requested*/
+	PBVersion version; /* Version of the data structure requested*/
 
-  MPProcessID         processID;              /* Owning process ID*/
-  OSType              regionName;             /* Critical region name*/
+	MPProcessID processID; /* Owning process ID*/
+	OSType      regionName; /* Critical region name*/
 
-  ItemCount           nWaiting;
-  MPTaskID            waitingTaskID;          /* First waiting task.*/
+	ItemCount nWaiting;
+	MPTaskID  waitingTaskID; /* First waiting task.*/
 
-  MPTaskID            owningTask;
-  ItemCount           count;
+	MPTaskID  owningTask;
+	ItemCount count;
 };
-typedef struct MPCriticalRegionInfo     MPCriticalRegionInfo;
+typedef struct MPCriticalRegionInfo MPCriticalRegionInfo;
 struct MPNotificationInfo {
-  PBVersion           version;                /* Version of the data structure requested*/
+	PBVersion version; /* Version of the data structure requested*/
 
-  MPProcessID         processID;              /* Owning process ID*/
-  OSType              notificationName;       /* Notification name*/
+	MPProcessID processID; /* Owning process ID*/
+	OSType      notificationName; /* Notification name*/
 
-  MPQueueID           queueID;                /* Queue to notify.*/
-  void *              p1;
-  void *              p2;
-  void *              p3;
+	MPQueueID queueID; /* Queue to notify.*/
+	void *    p1;
+	void *    p2;
+	void *    p3;
 
-  MPEventID           eventID;                /* Event to set.*/
-  MPEventFlags        events;
+	MPEventID    eventID; /* Event to set.*/
+	MPEventFlags events;
 
-  MPSemaphoreID       semaphoreID;            /* Sempahore to signal.   */
+	MPSemaphoreID semaphoreID; /* Sempahore to signal.   */
 };
-typedef struct MPNotificationInfo       MPNotificationInfo;
+typedef struct MPNotificationInfo MPNotificationInfo;
 struct MPAddressSpaceInfo {
-  PBVersion           version;                /* Version of the data structure requested*/
+	PBVersion version; /* Version of the data structure requested*/
 
-  MPProcessID         processID;              /* Owning process ID*/
-  MPCoherenceID       groupID;                /* Related coherence group.*/
-  ItemCount           nTasks;                 /* Number of tasks in this space.*/
-  UInt32              vsid[16];               /* Segment register VSIDs.*/
+	MPProcessID   processID; /* Owning process ID*/
+	MPCoherenceID groupID; /* Related coherence group.*/
+	ItemCount     nTasks; /* Number of tasks in this space.*/
+	UInt32        vsid[16]; /* Segment register VSIDs.*/
 };
-typedef struct MPAddressSpaceInfo       MPAddressSpaceInfo;
+typedef struct MPAddressSpaceInfo MPAddressSpaceInfo;
 /* *** We should put the task info call here instead of in MPExtractTaskState.*/
-
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -472,10 +439,9 @@ typedef struct MPAddressSpaceInfo       MPAddressSpaceInfo;
  */
 EXTERN_API_C( OSStatus )
 MPGetQueueInfo(
-  MPQueueID      id,
-  PBVersion      version,
-  MPQueueInfo *  info_o);
-
+    MPQueueID    id,
+    PBVersion    version,
+    MPQueueInfo *info_o );
 
 /*
  *  MPGetSemaphoreInfo()
@@ -487,10 +453,9 @@ MPGetQueueInfo(
  */
 EXTERN_API_C( OSStatus )
 MPGetSemaphoreInfo(
-  MPSemaphoreID      id,
-  PBVersion          version,
-  MPSemaphoreInfo *  info_o);
-
+    MPSemaphoreID    id,
+    PBVersion        version,
+    MPSemaphoreInfo *info_o );
 
 /*
  *  MPGetEventInfo()
@@ -502,10 +467,9 @@ MPGetSemaphoreInfo(
  */
 EXTERN_API_C( OSStatus )
 MPGetEventInfo(
-  MPEventID      id,
-  PBVersion      version,
-  MPEventInfo *  info_o);
-
+    MPEventID    id,
+    PBVersion    version,
+    MPEventInfo *info_o );
 
 /*
  *  MPGetCriticalRegionInfo()
@@ -517,10 +481,9 @@ MPGetEventInfo(
  */
 EXTERN_API_C( OSStatus )
 MPGetCriticalRegionInfo(
-  MPCriticalRegionID      id,
-  PBVersion               version,
-  MPCriticalRegionInfo *  info_o);
-
+    MPCriticalRegionID    id,
+    PBVersion             version,
+    MPCriticalRegionInfo *info_o );
 
 /*
  *  MPGetNotificationInfo()
@@ -532,10 +495,9 @@ MPGetCriticalRegionInfo(
  */
 EXTERN_API_C( OSStatus )
 MPGetNotificationInfo(
-  MPNotificationID      id,
-  PBVersion             version,
-  MPNotificationInfo *  info_o);
-
+    MPNotificationID    id,
+    PBVersion           version,
+    MPNotificationInfo *info_o );
 
 /*
  *  MPGetAddressSpaceInfo()
@@ -547,25 +509,20 @@ MPGetNotificationInfo(
  */
 EXTERN_API_C( OSStatus )
 MPGetAddressSpaceInfo(
-  MPAddressSpaceID      id,
-  PBVersion             version,
-  MPAddressSpaceInfo *  info_o);
-
-
+    MPAddressSpaceID    id,
+    PBVersion           version,
+    MPAddressSpaceInfo *info_o );
 
 /* ==========================================================================================================================*/
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -579,4 +536,3 @@ MPGetAddressSpaceInfo(
 #endif
 
 #endif /* __MULTIPROCESSINGINFO__ */
-

@@ -1,9 +1,9 @@
 ﻿#include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/Clipboard.h"
 #include "cinder/Utilities.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 
 #include "Resources.h"
 
@@ -19,7 +19,7 @@ class ClipboardBasicApp : public App {
 
 void ClipboardBasicApp::keyDown( KeyEvent event )
 {
-#if ! defined( CINDER_COCOA_TOUCH )
+#if !defined( CINDER_COCOA_TOUCH )
 	if( event.getChar() == 'c' && event.isAccelDown() ) {
 		Clipboard::setImage( loadImage( loadResource( RES_CINDER_LOGO ) ) );
 		// to copy the contents of the window, you might do something like
@@ -30,10 +30,10 @@ void ClipboardBasicApp::keyDown( KeyEvent event )
 
 void ClipboardBasicApp::draw()
 {
-	gl::clear( Color( 0.5f, 0.5f, 0.5f ) ); 
+	gl::clear( Color( 0.5f, 0.5f, 0.5f ) );
 	gl::setMatricesWindow( getWindowSize() );
 	gl::enableAlphaBlending();
-	
+
 	if( Clipboard::hasImage() ) {
 		auto img = Clipboard::getImage();
 		// be aware of a race condition here; the clipboard might have changed between hasImage() and getImage()

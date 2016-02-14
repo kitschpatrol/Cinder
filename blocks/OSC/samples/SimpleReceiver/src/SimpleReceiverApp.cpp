@@ -2,9 +2,9 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
+#include "Osc.h"
 #include "cinder/Log.h"
 #include "cinder/Timeline.h"
-#include "Osc.h"
 
 #define USE_UDP 1
 
@@ -17,11 +17,11 @@ class SimpleReceiverApp : public App {
 	SimpleReceiverApp();
 	void setup() override;
 	void draw() override;
-	
-	ivec2	mCurrentCirclePos;
-	vec2	mCurrentSquarePos;
-	bool	mMouseDown = false;
-	
+
+	ivec2 mCurrentCirclePos;
+	vec2  mCurrentSquarePos;
+	bool  mMouseDown = false;
+
 #if USE_UDP
 	osc::ReceiverUdp mReceiver;
 #else
@@ -30,31 +30,30 @@ class SimpleReceiverApp : public App {
 };
 
 SimpleReceiverApp::SimpleReceiverApp()
-: mReceiver( 10001 )
+    : mReceiver( 10001 )
 {
 }
 
 void SimpleReceiverApp::setup()
 {
 	mReceiver.setListener( "/mousemove/1",
-	[&]( const osc::Message &msg ){
-		mCurrentCirclePos.x = msg[0].int32();
-		mCurrentCirclePos.y = msg[1].int32();
-	});
+	    [&]( const osc::Message &msg ) {
+		    mCurrentCirclePos.x = msg[0].int32();
+		    mCurrentCirclePos.y = msg[1].int32();
+		} );
 	mReceiver.setListener( "/mouseclick/1",
-	[&]( const osc::Message &msg ){
-		mCurrentSquarePos = vec2( msg[0].flt(), msg[1].flt() ) * vec2( getWindowSize() );
-	});
+	    [&]( const osc::Message &msg ) {
+		    mCurrentSquarePos = vec2( msg[0].flt(), msg[1].flt() ) * vec2( getWindowSize() );
+		} );
 	mReceiver.bind();
 	mReceiver.listen();
 }
-
 
 void SimpleReceiverApp::draw()
 {
 	gl::clear( GL_COLOR_BUFFER_BIT );
 	gl::setMatricesWindow( getWindowSize() );
-	
+
 	gl::drawStrokedCircle( mCurrentCirclePos, 100 );
 	gl::drawSolidRect( Rectf( mCurrentSquarePos - vec2( 50 ), mCurrentSquarePos + vec2( 50 ) ) );
 }

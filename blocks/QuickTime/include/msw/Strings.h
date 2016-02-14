@@ -25,7 +25,4 @@
 #include <TextUtils.h>
 #endif
 
-
-
 #endif /* __STRINGS__ */
-

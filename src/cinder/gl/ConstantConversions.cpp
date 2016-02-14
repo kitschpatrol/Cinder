@@ -20,7 +20,6 @@
  POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 #include "cinder/gl/ConstantConversions.h"
 #include "cinder/gl/gl.h"
 
@@ -29,14 +28,15 @@
 #include <sstream>
 #include <unordered_map>
 
-namespace cinder { namespace gl {
+namespace cinder {
+namespace gl {
 
 //! Returns a string representation for a subset of the GL constants. Returns empty string if unknown.
-std::string	constantToString( GLenum constant )
+std::string constantToString( GLenum constant )
 {
 	static bool initialized = false;
-	static std::unordered_map<GLenum,std::string> sSymbols;
-	if( ! initialized ) {
+	static std::unordered_map<GLenum, std::string> sSymbols;
+	if( !initialized ) {
 		// Types
 		sSymbols[GL_BYTE] = "BYTE";
 		sSymbols[GL_UNSIGNED_BYTE] = "UNSIGNED_BYTE";
@@ -49,7 +49,7 @@ std::string	constantToString( GLenum constant )
 		sSymbols[GL_FLOAT_VEC2] = "FLOAT_VEC2";
 		sSymbols[GL_FLOAT_VEC3] = "FLOAT_VEC3";
 		sSymbols[GL_FLOAT_VEC4] = "FLOAT_VEC4";
-#if ! defined( CINDER_GL_ES_2 )
+#if !defined( CINDER_GL_ES_2 )
 		sSymbols[GL_UNSIGNED_INT_VEC2] = "UNSIGNED_INT_VEC2";
 		sSymbols[GL_UNSIGNED_INT_VEC3] = "UNSIGNED_INT_VEC3";
 		sSymbols[GL_UNSIGNED_INT_VEC4] = "UNSIGNED_INT_VEC4";
@@ -61,7 +61,7 @@ std::string	constantToString( GLenum constant )
 		sSymbols[GL_UNSIGNED_INT_SAMPLER_2D] = "UNSIGNED_INT_SAMPLER_2D";
 		sSymbols[GL_UNSIGNED_INT_SAMPLER_3D] = "UNSIGNED_INT_SAMPLER_3D";
 		sSymbols[GL_UNSIGNED_INT_SAMPLER_2D_ARRAY] = "UNSIGNED_INT_SAMPLER_2D_ARRAY";
-		sSymbols[GL_UNSIGNED_INT_SAMPLER_CUBE] = "UNSIGNED_INT_SAMPLER_CUBE";		
+		sSymbols[GL_UNSIGNED_INT_SAMPLER_CUBE] = "UNSIGNED_INT_SAMPLER_CUBE";
 		sSymbols[GL_SAMPLER_2D_SHADOW] = "SAMPLER_2D_SHADOW";
 		sSymbols[GL_SAMPLER_2D_ARRAY_SHADOW] = "SAMPLER_2D_ARRAY_SHADOW";
 		sSymbols[GL_SAMPLER_CUBE_SHADOW] = "GL_SAMPLER_CUBE_SHADOW";
@@ -78,7 +78,7 @@ std::string	constantToString( GLenum constant )
 		sSymbols[GL_FLOAT_MAT4] = "FLOAT_MAT4";
 		sSymbols[GL_SAMPLER_2D] = "SAMPLER_2D";
 		sSymbols[GL_SAMPLER_CUBE] = "SAMPLER_CUBE";
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 		sSymbols[GL_SAMPLER_BUFFER] = "SAMPLER_BUFFER";
 		sSymbols[GL_UNSIGNED_INT_SAMPLER_BUFFER] = "UNSIGNED_INT_SAMPLER_BUFFER";
 		sSymbols[GL_SAMPLER_1D] = "SAMPLER_1D";
@@ -94,7 +94,7 @@ std::string	constantToString( GLenum constant )
 		// Buffer bindings
 		sSymbols[GL_ARRAY_BUFFER] = "GL_ARRAY_BUFFER";
 		sSymbols[GL_ELEMENT_ARRAY_BUFFER] = "GL_ELEMENT_ARRAY_BUFFER";
-#if ! defined( CINDER_GL_ES_2 )
+#if !defined( CINDER_GL_ES_2 )
 		sSymbols[GL_PIXEL_PACK_BUFFER] = "GL_PIXEL_PACK_BUFFER";
 		sSymbols[GL_PIXEL_UNPACK_BUFFER] = "GL_PIXEL_UNPACK_BUFFER";
 		sSymbols[GL_COPY_READ_BUFFER] = "GL_COPY_READ_BUFFER";
@@ -102,7 +102,7 @@ std::string	constantToString( GLenum constant )
 		sSymbols[GL_TRANSFORM_FEEDBACK_BUFFER] = "GL_TRANSFORM_FEEDBACK_BUFFER";
 		sSymbols[GL_UNIFORM_BUFFER] = "GL_UNIFORM_BUFFER";
 #endif
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 		sSymbols[GL_ATOMIC_COUNTER_BUFFER] = "GL_ATOMIC_COUNTER_BUFFER";
 		sSymbols[GL_DRAW_INDIRECT_BUFFER] = "GL_DRAW_INDIRECT_BUFFER";
 		sSymbols[GL_DISPATCH_INDIRECT_BUFFER] = "GL_DISPATCH_INDIRECT_BUFFER";
@@ -114,7 +114,7 @@ std::string	constantToString( GLenum constant )
 		sSymbols[GL_STREAM_DRAW] = "GL_STREAM_DRAW";
 		sSymbols[GL_STATIC_DRAW] = "GL_STATIC_DRAW";
 		sSymbols[GL_DYNAMIC_DRAW] = "GL_DYNAMIC_DRAW";
-#if ! defined( CINDER_GL_ES_2 )
+#if !defined( CINDER_GL_ES_2 )
 		sSymbols[GL_STREAM_READ] = "GL_STREAM_READ";
 		sSymbols[GL_STREAM_COPY] = "GL_STREAM_COPY";
 		sSymbols[GL_STATIC_READ] = "GL_STATIC_READ";
@@ -125,7 +125,7 @@ std::string	constantToString( GLenum constant )
 		// Texture targets
 		sSymbols[GL_TEXTURE_2D] = "GL_TEXTURE_2D";
 		sSymbols[GL_TEXTURE_CUBE_MAP] = "GL_TEXTURE_CUBE_MAP";
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 		sSymbols[GL_TEXTURE_1D] = "GL_TEXTURE_1D";
 		sSymbols[GL_TEXTURE_3D] = "GL_TEXTURE_3D";
 #endif
@@ -205,7 +205,7 @@ std::string	constantToString( GLenum constant )
 		sSymbols[GL_STENCIL_ATTACHMENT] = "GL_STENCIL_ATTACHMENT";
 		sSymbols[GL_DEPTH_ATTACHMENT] = "GL_DEPTH_ATTACHMENT";
 		sSymbols[GL_COLOR_ATTACHMENT0] = "GL_COLOR_ATTACHMENT0";
-#if ! defined( CINDER_GL_ES_2 )
+#if !defined( CINDER_GL_ES_2 )
 		sSymbols[GL_DEPTH_STENCIL_ATTACHMENT] = "GL_DEPTH_STENCIL_ATTACHMENT";
 		sSymbols[GL_COLOR_ATTACHMENT1] = "GL_COLOR_ATTACHMENT1";
 		sSymbols[GL_COLOR_ATTACHMENT2] = "GL_COLOR_ATTACHMENT2";
@@ -217,10 +217,10 @@ std::string	constantToString( GLenum constant )
 		sSymbols[GL_COLOR_ATTACHMENT8] = "GL_COLOR_ATTACHMENT8";
 		sSymbols[GL_COLOR_ATTACHMENT9] = "GL_COLOR_ATTACHMENT9";
 #endif // ! defined( CINDER_GL_ES_2 )
-		
+
 		initialized = true;
 	}
-	
+
 	auto it = sSymbols.find( constant );
 	if( it != sSymbols.end() )
 		return it->second;
@@ -231,119 +231,201 @@ std::string	constantToString( GLenum constant )
 		return ss.str();
 	}
 }
-	
+
 uint8_t typeToDimension( GLenum type )
 {
-	switch (type) {
-		case GL_UNSIGNED_INT:
-		case GL_INT:
-		case GL_FLOAT:
-		case GL_BOOL:
-			return 1;
-		break;
-#if ! defined( CINDER_GL_ES_2 )
-		case GL_UNSIGNED_INT_VEC2:
-#endif
-		case GL_INT_VEC2:
-		case GL_FLOAT_VEC2:
-		case GL_BOOL_VEC2:
-			return 2;
-		break;
-#if ! defined( CINDER_GL_ES_2 )
-		case GL_UNSIGNED_INT_VEC3:
-#endif
-		case GL_INT_VEC3:
-		case GL_FLOAT_VEC3:
-		case GL_BOOL_VEC3:
-			return 3;
-		break;
-#if ! defined( CINDER_GL_ES_2 )
-		case GL_UNSIGNED_INT_VEC4:
-#endif
-		case GL_INT_VEC4:
-		case GL_FLOAT_VEC4:
-		case GL_BOOL_VEC4:
-		case GL_FLOAT_MAT2:
-			return 4;
-#if ! defined( CINDER_GL_ES_2 )
-		case GL_FLOAT_MAT2x3:
-		case GL_FLOAT_MAT3x2:
-			return 6;
-		case GL_FLOAT_MAT4x2:
-		case GL_FLOAT_MAT2x4:
-			return 8;
-#endif
-		case GL_FLOAT_MAT3:
-			return 9;
-#if ! defined( CINDER_GL_ES_2 )
-		case GL_FLOAT_MAT3x4:
-		case GL_FLOAT_MAT4x3:
-			return 12;
-#endif
-		case GL_FLOAT_MAT4:
-			return 16;
-		default:
-			return 0;
-		break;
-	}
-}
-	
-uint8_t typeToBytes( GLenum type )
-{
 	switch( type ) {
-		case GL_UNSIGNED_INT:		return sizeof(uint32_t); break;
-		case GL_INT:				return sizeof(int); break;
-		case GL_SAMPLER_2D:			return sizeof(int); break;
-#if ! defined( CINDER_GL_ES )
-		case GL_SAMPLER_1D:						return sizeof(int); break;
-		case GL_SAMPLER_BUFFER_EXT:				return sizeof(int); break;
-		case GL_UNSIGNED_INT_SAMPLER_BUFFER:	return sizeof(int); break;
-		case GL_SAMPLER_2D_RECT:				return sizeof(int); break;
-		case GL_INT_SAMPLER_2D_RECT:			return sizeof(int); break;
-		case GL_UNSIGNED_INT_SAMPLER_2D_RECT:	return sizeof(int); break;
+	case GL_UNSIGNED_INT:
+	case GL_INT:
+	case GL_FLOAT:
+	case GL_BOOL:
+		return 1;
+		break;
+#if !defined( CINDER_GL_ES_2 )
+	case GL_UNSIGNED_INT_VEC2:
 #endif
-#if ! defined( CINDER_GL_ES_2 )
-		case GL_SAMPLER_2D_ARRAY:				return sizeof(int); break;
-		case GL_SAMPLER_2D_SHADOW:				return sizeof(int); break;
-		case GL_SAMPLER_2D_ARRAY_SHADOW:		return sizeof(int); break;
-		case GL_SAMPLER_CUBE_SHADOW:			return sizeof(int); break;						
-		case GL_INT_SAMPLER_2D:					return sizeof(int); break;
-		case GL_INT_SAMPLER_3D:					return sizeof(int); break;
-		case GL_INT_SAMPLER_CUBE:				return sizeof(int); break;
-		case GL_INT_SAMPLER_2D_ARRAY:			return sizeof(int); break;		
-		case GL_SAMPLER_3D:						return sizeof(int); break;
-		case GL_UNSIGNED_INT_SAMPLER_2D:		return sizeof(int); break;
-		case GL_UNSIGNED_INT_SAMPLER_3D:		return sizeof(int); break;
-		case GL_UNSIGNED_INT_SAMPLER_CUBE:		return sizeof(int); break;		
-		case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:	return sizeof(int); break;
-#else
-		case GL_SAMPLER_2D_SHADOW_EXT: return sizeof(int); break;
+	case GL_INT_VEC2:
+	case GL_FLOAT_VEC2:
+	case GL_BOOL_VEC2:
+		return 2;
+		break;
+#if !defined( CINDER_GL_ES_2 )
+	case GL_UNSIGNED_INT_VEC3:
 #endif
-		case GL_SAMPLER_CUBE:		return sizeof(int); break;
-		case GL_FLOAT:				return sizeof(float); break;
-		case GL_BOOL:				return sizeof(bool); break;
-#if ! defined( CINDER_GL_ES_2 )
-		case GL_UNSIGNED_INT_VEC2:	return sizeof(glm::uvec2); break;
-		case GL_UNSIGNED_INT_VEC3:	return sizeof(glm::uvec3); break;
-		case GL_UNSIGNED_INT_VEC4:	return sizeof(glm::uvec4); break;
+	case GL_INT_VEC3:
+	case GL_FLOAT_VEC3:
+	case GL_BOOL_VEC3:
+		return 3;
+		break;
+#if !defined( CINDER_GL_ES_2 )
+	case GL_UNSIGNED_INT_VEC4:
 #endif
-		case GL_INT_VEC2:			return sizeof(ivec2); break;
-		case GL_FLOAT_VEC2:			return sizeof(vec2); break;
-		case GL_BOOL_VEC2:			return sizeof(glm::bvec2); break;
-		case GL_INT_VEC3:			return sizeof(ivec3); break;
-		case GL_FLOAT_VEC3:			return sizeof(vec3); break;
-		case GL_BOOL_VEC3:			return sizeof(glm::bvec3); break;
-		case GL_INT_VEC4:			return sizeof(ivec4); break;
-		case GL_FLOAT_VEC4:			return sizeof(vec4); break;
-		case GL_BOOL_VEC4:			return sizeof(glm::bvec4); break;
-		case GL_FLOAT_MAT2:			return sizeof(mat2); break;
-		case GL_FLOAT_MAT3:			return sizeof(mat3); break;
-		case GL_FLOAT_MAT4:			return sizeof(mat4); break;
-		default:
-			CI_LOG_E("Unknown gl type constant " << constantToString( type ));
-			return 0;
+	case GL_INT_VEC4:
+	case GL_FLOAT_VEC4:
+	case GL_BOOL_VEC4:
+	case GL_FLOAT_MAT2:
+		return 4;
+#if !defined( CINDER_GL_ES_2 )
+	case GL_FLOAT_MAT2x3:
+	case GL_FLOAT_MAT3x2:
+		return 6;
+	case GL_FLOAT_MAT4x2:
+	case GL_FLOAT_MAT2x4:
+		return 8;
+#endif
+	case GL_FLOAT_MAT3:
+		return 9;
+#if !defined( CINDER_GL_ES_2 )
+	case GL_FLOAT_MAT3x4:
+	case GL_FLOAT_MAT4x3:
+		return 12;
+#endif
+	case GL_FLOAT_MAT4:
+		return 16;
+	default:
+		return 0;
 		break;
 	}
 }
 
-} } // namespace cinder::gl
+uint8_t typeToBytes( GLenum type )
+{
+	switch( type ) {
+	case GL_UNSIGNED_INT:
+		return sizeof( uint32_t );
+		break;
+	case GL_INT:
+		return sizeof( int );
+		break;
+	case GL_SAMPLER_2D:
+		return sizeof( int );
+		break;
+#if !defined( CINDER_GL_ES )
+	case GL_SAMPLER_1D:
+		return sizeof( int );
+		break;
+	case GL_SAMPLER_BUFFER_EXT:
+		return sizeof( int );
+		break;
+	case GL_UNSIGNED_INT_SAMPLER_BUFFER:
+		return sizeof( int );
+		break;
+	case GL_SAMPLER_2D_RECT:
+		return sizeof( int );
+		break;
+	case GL_INT_SAMPLER_2D_RECT:
+		return sizeof( int );
+		break;
+	case GL_UNSIGNED_INT_SAMPLER_2D_RECT:
+		return sizeof( int );
+		break;
+#endif
+#if !defined( CINDER_GL_ES_2 )
+	case GL_SAMPLER_2D_ARRAY:
+		return sizeof( int );
+		break;
+	case GL_SAMPLER_2D_SHADOW:
+		return sizeof( int );
+		break;
+	case GL_SAMPLER_2D_ARRAY_SHADOW:
+		return sizeof( int );
+		break;
+	case GL_SAMPLER_CUBE_SHADOW:
+		return sizeof( int );
+		break;
+	case GL_INT_SAMPLER_2D:
+		return sizeof( int );
+		break;
+	case GL_INT_SAMPLER_3D:
+		return sizeof( int );
+		break;
+	case GL_INT_SAMPLER_CUBE:
+		return sizeof( int );
+		break;
+	case GL_INT_SAMPLER_2D_ARRAY:
+		return sizeof( int );
+		break;
+	case GL_SAMPLER_3D:
+		return sizeof( int );
+		break;
+	case GL_UNSIGNED_INT_SAMPLER_2D:
+		return sizeof( int );
+		break;
+	case GL_UNSIGNED_INT_SAMPLER_3D:
+		return sizeof( int );
+		break;
+	case GL_UNSIGNED_INT_SAMPLER_CUBE:
+		return sizeof( int );
+		break;
+	case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:
+		return sizeof( int );
+		break;
+#else
+	case GL_SAMPLER_2D_SHADOW_EXT:
+		return sizeof( int );
+		break;
+#endif
+	case GL_SAMPLER_CUBE:
+		return sizeof( int );
+		break;
+	case GL_FLOAT:
+		return sizeof( float );
+		break;
+	case GL_BOOL:
+		return sizeof( bool );
+		break;
+#if !defined( CINDER_GL_ES_2 )
+	case GL_UNSIGNED_INT_VEC2:
+		return sizeof( glm::uvec2 );
+		break;
+	case GL_UNSIGNED_INT_VEC3:
+		return sizeof( glm::uvec3 );
+		break;
+	case GL_UNSIGNED_INT_VEC4:
+		return sizeof( glm::uvec4 );
+		break;
+#endif
+	case GL_INT_VEC2:
+		return sizeof( ivec2 );
+		break;
+	case GL_FLOAT_VEC2:
+		return sizeof( vec2 );
+		break;
+	case GL_BOOL_VEC2:
+		return sizeof( glm::bvec2 );
+		break;
+	case GL_INT_VEC3:
+		return sizeof( ivec3 );
+		break;
+	case GL_FLOAT_VEC3:
+		return sizeof( vec3 );
+		break;
+	case GL_BOOL_VEC3:
+		return sizeof( glm::bvec3 );
+		break;
+	case GL_INT_VEC4:
+		return sizeof( ivec4 );
+		break;
+	case GL_FLOAT_VEC4:
+		return sizeof( vec4 );
+		break;
+	case GL_BOOL_VEC4:
+		return sizeof( glm::bvec4 );
+		break;
+	case GL_FLOAT_MAT2:
+		return sizeof( mat2 );
+		break;
+	case GL_FLOAT_MAT3:
+		return sizeof( mat3 );
+		break;
+	case GL_FLOAT_MAT4:
+		return sizeof( mat4 );
+		break;
+	default:
+		CI_LOG_E( "Unknown gl type constant " << constantToString( type ) );
+		return 0;
+		break;
+	}
+}
+}
+} // namespace cinder::gl

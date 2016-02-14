@@ -11,17 +11,17 @@
  */
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/ImageIO.h"
 #include "cinder/Rand.h"
 #include "cinder/Timeline.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 #include "AccordionItem.h"
 #include "Resources.h"
 
-#include <string>
 #include <list>
+#include <string>
 
 using namespace ci;
 using namespace ci::app;
@@ -34,15 +34,15 @@ class ImageAccordionApp : public App {
 	void mouseMove( MouseEvent event );
 	void update();
 	void draw();
-	
-	int				mTotalItems;
-	
-	float			mItemExpandedWidth;
-	float			mItemRelaxedWidth;
-	float			mItemHeight;
-	
-	list<AccordionItem>				mItems;
-	list<AccordionItem>::iterator	mCurrentSelection;
+
+	int mTotalItems;
+
+	float mItemExpandedWidth;
+	float mItemRelaxedWidth;
+	float mItemHeight;
+
+	list<AccordionItem>           mItems;
+	list<AccordionItem>::iterator mCurrentSelection;
 };
 
 void ImageAccordionApp::prepareSettings( Settings *settings )
@@ -59,121 +59,122 @@ void ImageAccordionApp::setup()
 	mItemExpandedWidth = 500;
 	mItemRelaxedWidth = 848 / mTotalItems;
 	mItemHeight = 564;
-	
-	float xPos = 0;	
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_1 ) ) ),
-									string("Disney World at Sunset"),
-									string("© Trey Ratcliff") ) );
+
+	float xPos = 0;
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_1 ) ) ),
+	    string( "Disney World at Sunset" ),
+	    string( "© Trey Ratcliff" ) ) );
 	xPos += mItemRelaxedWidth;
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_2 ) ) ),
-									string("Lost Hindu Temple in the Jungle Mist"),
-									string("© Trey Ratcliff") ) );
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_2 ) ) ),
+	    string( "Lost Hindu Temple in the Jungle Mist" ),
+	    string( "© Trey Ratcliff" ) ) );
 	xPos += mItemRelaxedWidth;
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_3 ) ) ),
-									string("Icelandic Horse in the Wild"),
-									string("© Trey Ratcliff") ) );
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_3 ) ) ),
+	    string( "Icelandic Horse in the Wild" ),
+	    string( "© Trey Ratcliff" ) ) );
 	xPos += mItemRelaxedWidth;
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_4 ) ) ),
-									string("Taj Mahal"),
-									string("© Trey Ratcliff") ) );
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_4 ) ) ),
+	    string( "Taj Mahal" ),
+	    string( "© Trey Ratcliff" ) ) );
 	xPos += mItemRelaxedWidth;
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_5 ) ) ),
-									string("The Li River"),
-									string("© Trey Ratcliff") ) );
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_5 ) ) ),
+	    string( "The Li River" ),
+	    string( "© Trey Ratcliff" ) ) );
 	xPos += mItemRelaxedWidth;
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_6 ) ) ),
-									string("The End of the World"),
-									string("© Trey Ratcliff") ) );
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_6 ) ) ),
+	    string( "The End of the World" ),
+	    string( "© Trey Ratcliff" ) ) );
 	xPos += mItemRelaxedWidth;
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_7 ) ) ),
-									string("Fourth on Lake Austin"),
-									string("© Trey Ratcliff") ) );
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_7 ) ) ),
+	    string( "Fourth on Lake Austin" ),
+	    string( "© Trey Ratcliff" ) ) );
 	xPos += mItemRelaxedWidth;
-	mItems.push_back( AccordionItem( timeline(), 
-									xPos, 
-									0, 
-									mItemHeight, 
-									mItemRelaxedWidth,
-									mItemExpandedWidth, 
-									gl::Texture::create( loadImage( loadResource( IMAGE_8 ) ) ),
-									string("The Open Road"),
-									string("© Trey Ratcliff") ) );
-	
+	mItems.push_back( AccordionItem( timeline(),
+	    xPos,
+	    0,
+	    mItemHeight,
+	    mItemRelaxedWidth,
+	    mItemExpandedWidth,
+	    gl::Texture::create( loadImage( loadResource( IMAGE_8 ) ) ),
+	    string( "The Open Road" ),
+	    string( "© Trey Ratcliff" ) ) );
+
 	// similar to mCurrentSelection = null;
 	mCurrentSelection = mItems.end();
 }
 
-
 void ImageAccordionApp::mouseMove( MouseEvent event )
 {
 	list<AccordionItem>::iterator mNewSelection = mItems.end();
-	
+
 	for( list<AccordionItem>::iterator itemIt = mItems.begin(); itemIt != mItems.end(); ++itemIt ) {
 		if( itemIt->isPointIn( event.getPos() ) ) {
 			mNewSelection = itemIt;
 			break;
 		}
 	}
-	
-	if( mNewSelection != mCurrentSelection) {
+
+	if( mNewSelection != mCurrentSelection ) {
 		float xPos = 0;
-		float contractedWidth = (mTotalItems*mItemRelaxedWidth - mItemExpandedWidth)/float(mTotalItems - 1);
+		float contractedWidth = ( mTotalItems * mItemRelaxedWidth - mItemExpandedWidth ) / float( mTotalItems - 1 );
 		mCurrentSelection = mNewSelection;
-		
-		if (mCurrentSelection == mItems.end()) {
+
+		if( mCurrentSelection == mItems.end() ) {
 			for( list<AccordionItem>::iterator itemIt = mItems.begin(); itemIt != mItems.end(); ++itemIt ) {
-				itemIt->animTo(xPos, mItemRelaxedWidth);
+				itemIt->animTo( xPos, mItemRelaxedWidth );
 				xPos += mItemRelaxedWidth;
 			}
-		} else {
+		}
+		else {
 			for( list<AccordionItem>::iterator itemIt = mItems.begin(); itemIt != mItems.end(); ++itemIt ) {
 				if( itemIt == mCurrentSelection ) {
-					itemIt->animTo(xPos, mItemExpandedWidth, true);
+					itemIt->animTo( xPos, mItemExpandedWidth, true );
 					xPos += mItemExpandedWidth;
-				} else {
-					itemIt->animTo(xPos, contractedWidth);
+				}
+				else {
+					itemIt->animTo( xPos, contractedWidth );
 					xPos += contractedWidth;
 				}
 			}
@@ -189,10 +190,10 @@ void ImageAccordionApp::update()
 }
 
 void ImageAccordionApp::draw()
-{	
+{
 	gl::clear( Color( 1, 1, 1 ) );
 	gl::enableAlphaBlending();
-	
+
 	for( list<AccordionItem>::iterator itemIt = mItems.begin(); itemIt != mItems.end(); ++itemIt ) {
 		itemIt->draw();
 	}

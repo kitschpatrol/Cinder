@@ -33,52 +33,54 @@ namespace cinder {
 
 typedef std::shared_ptr<class ImageTargetFileTinyExr> ImageTargetFileTinyExrRef;
 
-typedef std::shared_ptr<class ImageSourceFileTinyExr>	ImageSourceFileTinyExrRef;
+typedef std::shared_ptr<class ImageSourceFileTinyExr> ImageSourceFileTinyExrRef;
 
 class ImageSourceFileTinyExr : public ImageSource {
-public:
-	static ImageSourceRef	create( DataSourceRef dataSource, ImageSource::Options options = ImageSource::Options() );
+  public:
+	static ImageSourceRef create( DataSourceRef dataSource, ImageSource::Options options = ImageSource::Options() );
 
 	void load( ImageTargetRef target ) override;
 
-	static void		registerSelf();
+	static void registerSelf();
 
-protected:
+  protected:
 	ImageSourceFileTinyExr( DataSourceRef dataSourceRef, ImageSource::Options options );
 
-	std::unique_ptr<EXRImage>	mExrImage;
+	std::unique_ptr<EXRImage> mExrImage;
 };
 
 class ImageTargetFileTinyExr : public ImageTarget {
   public:
-	static ImageTargetRef		create( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
+	static ImageTargetRef create( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
 
-	void*	getRowPointer( int32_t row ) override;
-	void	finalize() override;
-	
-	static void		registerSelf();
-	
+	void *getRowPointer( int32_t row ) override;
+	void finalize() override;
+
+	static void registerSelf();
+
   protected:
 	ImageTargetFileTinyExr( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
-	
-	uint8_t						mNumComponents;
-	fs::path					mFilePath;
-	std::vector<float>			mData;
-	std::vector<std::string>	mChannelNames;
+
+	uint8_t                  mNumComponents;
+	fs::path                 mFilePath;
+	std::vector<float>       mData;
+	std::vector<std::string> mChannelNames;
 };
 
 class ImageIoExceptionFailedLoadTinyExr : public ImageIoExceptionFailedLoad {
   public:
 	ImageIoExceptionFailedLoadTinyExr( const std::string &description )
-		: ImageIoExceptionFailedLoad( description )
-	{}
+	    : ImageIoExceptionFailedLoad( description )
+	{
+	}
 };
 
 class ImageIoExceptionFailedWriteTinyExr : public ImageIoExceptionFailedWrite {
   public:
 	ImageIoExceptionFailedWriteTinyExr( const std::string &description )
-		: ImageIoExceptionFailedWrite( description )
-	{}
+	    : ImageIoExceptionFailedWrite( description )
+	{
+	}
 };
 
 } // namespace cinder

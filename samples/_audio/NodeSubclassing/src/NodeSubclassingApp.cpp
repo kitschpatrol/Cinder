@@ -5,9 +5,9 @@
 #include "cinder/app/RendererGl.h"
 
 #include "cinder/audio/Context.h"
+#include "cinder/audio/GainNode.h"
 #include "cinder/audio/GenNode.h"
 #include "cinder/audio/MonitorNode.h"
-#include "cinder/audio/GainNode.h"
 
 #include "../../common/AudioDrawUtils.h"
 
@@ -24,9 +24,9 @@ class NodeSubclassingApp : public App {
 	void draw() override;
 
   private:
-	audio::GenNodeRef		mGenNode;
-	audio::MonitorNodeRef	mMonitorNode;
-	CustomTremoloNodeRef	mCustomTremeloNode;
+	audio::GenNodeRef     mGenNode;
+	audio::MonitorNodeRef mMonitorNode;
+	CustomTremoloNodeRef  mCustomTremeloNode;
 };
 
 void NodeSubclassingApp::setup()

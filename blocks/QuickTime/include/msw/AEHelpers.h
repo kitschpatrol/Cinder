@@ -29,7 +29,6 @@
 
 #include <stdarg.h>
 
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,11 +42,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*
@@ -67,35 +66,35 @@ extern "C" {
 /* Syntax Error Codes: */
 typedef UInt32 AEBuildErrorCode;
 enum {
-  aeBuildSyntaxNoErr            = 0,    /* (No error) */
-  aeBuildSyntaxBadToken         = 1,    /* Illegal character */
-  aeBuildSyntaxBadEOF           = 2,    /* Unexpected end of format string */
-  aeBuildSyntaxNoEOF            = 3,    /* Unexpected extra stuff past end */
-  aeBuildSyntaxBadNegative      = 4,    /* "-" not followed by digits */
-  aeBuildSyntaxMissingQuote     = 5,    /* Missing close "'" */
-  aeBuildSyntaxBadHex           = 6,    /* Non-digit in hex string */
-  aeBuildSyntaxOddHex           = 7,    /* Odd # of hex digits */
-  aeBuildSyntaxNoCloseHex       = 8,    /* Missing "." */
-  aeBuildSyntaxUncoercedHex     = 9,    /* Hex string must be coerced to a type */
-  aeBuildSyntaxNoCloseString    = 10,   /* Missing """ */
-  aeBuildSyntaxBadDesc          = 11,   /* Illegal descriptor */
-  aeBuildSyntaxBadData          = 12,   /* Bad data value inside (...) */
-  aeBuildSyntaxNoCloseParen     = 13,   /* Missing ")" after data value */
-  aeBuildSyntaxNoCloseBracket   = 14,   /* Expected "," or "]" */
-  aeBuildSyntaxNoCloseBrace     = 15,   /* Expected "," or "}" */
-  aeBuildSyntaxNoKey            = 16,   /* Missing keyword in record */
-  aeBuildSyntaxNoColon          = 17,   /* Missing ":" after keyword in record */
-  aeBuildSyntaxCoercedList      = 18,   /* Cannot coerce a list */
-  aeBuildSyntaxUncoercedDoubleAt = 19   /* "@@" substitution must be coerced */
+	aeBuildSyntaxNoErr = 0, /* (No error) */
+	aeBuildSyntaxBadToken = 1, /* Illegal character */
+	aeBuildSyntaxBadEOF = 2, /* Unexpected end of format string */
+	aeBuildSyntaxNoEOF = 3, /* Unexpected extra stuff past end */
+	aeBuildSyntaxBadNegative = 4, /* "-" not followed by digits */
+	aeBuildSyntaxMissingQuote = 5, /* Missing close "'" */
+	aeBuildSyntaxBadHex = 6, /* Non-digit in hex string */
+	aeBuildSyntaxOddHex = 7, /* Odd # of hex digits */
+	aeBuildSyntaxNoCloseHex = 8, /* Missing "." */
+	aeBuildSyntaxUncoercedHex = 9, /* Hex string must be coerced to a type */
+	aeBuildSyntaxNoCloseString = 10, /* Missing """ */
+	aeBuildSyntaxBadDesc = 11, /* Illegal descriptor */
+	aeBuildSyntaxBadData = 12, /* Bad data value inside (...) */
+	aeBuildSyntaxNoCloseParen = 13, /* Missing ")" after data value */
+	aeBuildSyntaxNoCloseBracket = 14, /* Expected "," or "]" */
+	aeBuildSyntaxNoCloseBrace = 15, /* Expected "," or "}" */
+	aeBuildSyntaxNoKey = 16, /* Missing keyword in record */
+	aeBuildSyntaxNoColon = 17, /* Missing ":" after keyword in record */
+	aeBuildSyntaxCoercedList = 18, /* Cannot coerce a list */
+	aeBuildSyntaxUncoercedDoubleAt = 19 /* "@@" substitution must be coerced */
 };
 
 /* A structure containing error state.*/
 
 struct AEBuildError {
-  AEBuildErrorCode    fError;
-  UInt32              fErrorPos;
+	AEBuildErrorCode fError;
+	UInt32           fErrorPos;
 };
-typedef struct AEBuildError             AEBuildError;
+typedef struct AEBuildError AEBuildError;
 /*
    Create an AEDesc from the format string.  AEBuildError can be NULL, in which case
    no explicit error information will be returned.
@@ -110,11 +109,10 @@ typedef struct AEBuildError             AEBuildError;
  */
 EXTERN_API_C( OSStatus )
 AEBuildDesc(
-  AEDesc *        dst,
-  AEBuildError *  error,       /* can be NULL */
-  const char *    src,
-  ...);
-
+    AEDesc *      dst,
+    AEBuildError *error, /* can be NULL */
+    const char *  src,
+    ... );
 
 /* varargs version of AEBuildDesc*/
 /*
@@ -127,12 +125,10 @@ AEBuildDesc(
  */
 EXTERN_API_C( OSStatus )
 vAEBuildDesc(
-  AEDesc *        dst,
-  AEBuildError *  error,       /* can be NULL */
-  const char *    src,
-  va_list         args);
-
-
+    AEDesc *      dst,
+    AEBuildError *error, /* can be NULL */
+    const char *  src,
+    va_list       args );
 
 /* Append parameters to an existing AppleEvent*/
 /*
@@ -145,11 +141,10 @@ vAEBuildDesc(
  */
 EXTERN_API_C( OSStatus )
 AEBuildParameters(
-  AppleEvent *    event,
-  AEBuildError *  error,        /* can be NULL */
-  const char *    format,
-  ...);
-
+    AppleEvent *  event,
+    AEBuildError *error, /* can be NULL */
+    const char *  format,
+    ... );
 
 /* varargs version of AEBuildParameters*/
 /*
@@ -162,11 +157,10 @@ AEBuildParameters(
  */
 EXTERN_API_C( OSStatus )
 vAEBuildParameters(
-  AppleEvent *    event,
-  AEBuildError *  error,        /* can be NULL */
-  const char *    format,
-  va_list         args);
-
+    AppleEvent *  event,
+    AEBuildError *error, /* can be NULL */
+    const char *  format,
+    va_list       args );
 
 /* Building an entire Apple event:*/
 /*
@@ -179,18 +173,17 @@ vAEBuildParameters(
  */
 EXTERN_API_C( OSStatus )
 AEBuildAppleEvent(
-  AEEventClass    theClass,
-  AEEventID       theID,
-  DescType        addressType,
-  const void *    addressData,
-  long            addressLength,
-  short           returnID,
-  long            transactionID,
-  AppleEvent *    result,
-  AEBuildError *  error,               /* can be NULL */
-  const char *    paramsFmt,
-  ...);
-
+    AEEventClass  theClass,
+    AEEventID     theID,
+    DescType      addressType,
+    const void *  addressData,
+    long          addressLength,
+    short         returnID,
+    long          transactionID,
+    AppleEvent *  result,
+    AEBuildError *error, /* can be NULL */
+    const char *  paramsFmt,
+    ... );
 
 /* varargs version of AEBuildAppleEvent*/
 /*
@@ -203,18 +196,17 @@ AEBuildAppleEvent(
  */
 EXTERN_API_C( OSStatus )
 vAEBuildAppleEvent(
-  AEEventClass    theClass,
-  AEEventID       theID,
-  DescType        addressType,
-  const void *    addressData,
-  long            addressLength,
-  short           returnID,
-  long            transactionID,
-  AppleEvent *    resultEvt,
-  AEBuildError *  error,               /* can be NULL */
-  const char *    paramsFmt,
-  va_list         args);
-
+    AEEventClass  theClass,
+    AEEventID     theID,
+    DescType      addressType,
+    const void *  addressData,
+    long          addressLength,
+    short         returnID,
+    long          transactionID,
+    AppleEvent *  resultEvt,
+    AEBuildError *error, /* can be NULL */
+    const char *  paramsFmt,
+    va_list       args );
 
 /*
  * AEPrintDescToHandle
@@ -235,9 +227,8 @@ vAEBuildAppleEvent(
  */
 EXTERN_API_C( OSStatus )
 AEPrintDescToHandle(
-  const AEDesc *  desc,
-  Handle *        result);
-
+    const AEDesc *desc,
+    Handle *      result );
 
 /*
  * AEStream:
@@ -249,7 +240,7 @@ AEPrintDescToHandle(
  * AEDesc, which may be partially complete, or may be a complete
  * AppleEvent.
  */
-typedef struct OpaqueAEStreamRef*       AEStreamRef;
+typedef struct OpaqueAEStreamRef *AEStreamRef;
 /*
    Create and return an AEStreamRef
    Returns NULL on memory allocation failure
@@ -263,8 +254,7 @@ typedef struct OpaqueAEStreamRef*       AEStreamRef;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( AEStreamRef )
-AEStreamOpen(void);
-
+AEStreamOpen( void );
 
 /*
    Closes and disposes of an AEStreamRef, producing
@@ -281,9 +271,8 @@ AEStreamOpen(void);
  */
 EXTERN_API_C( OSStatus )
 AEStreamClose(
-  AEStreamRef   ref,
-  AEDesc *      desc);
-
+    AEStreamRef ref,
+    AEDesc *    desc );
 
 /*
    Prepares an AEStreamRef for appending data to a newly created desc.
@@ -299,9 +288,8 @@ AEStreamClose(
  */
 EXTERN_API_C( OSStatus )
 AEStreamOpenDesc(
-  AEStreamRef   ref,
-  DescType      newType);
-
+    AEStreamRef ref,
+    DescType    newType );
 
 /* Append data to the previously opened desc.*/
 /*
@@ -314,10 +302,9 @@ AEStreamOpenDesc(
  */
 EXTERN_API_C( OSStatus )
 AEStreamWriteData(
-  AEStreamRef   ref,
-  const void *  data,
-  Size          length);
-
+    AEStreamRef ref,
+    const void *data,
+    Size        length );
 
 /*
    Finish a desc.  After this, you can close the stream, or adding new
@@ -332,8 +319,7 @@ AEStreamWriteData(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-AEStreamCloseDesc(AEStreamRef ref);
-
+AEStreamCloseDesc( AEStreamRef ref );
 
 /* Write data as a desc to the stream*/
 /*
@@ -346,11 +332,10 @@ AEStreamCloseDesc(AEStreamRef ref);
  */
 EXTERN_API_C( OSStatus )
 AEStreamWriteDesc(
-  AEStreamRef   ref,
-  DescType      newType,
-  const void *  data,
-  Size          length);
-
+    AEStreamRef ref,
+    DescType    newType,
+    const void *data,
+    Size        length );
 
 /* Write an entire desc to the stream*/
 /*
@@ -363,9 +348,8 @@ AEStreamWriteDesc(
  */
 EXTERN_API_C( OSStatus )
 AEStreamWriteAEDesc(
-  AEStreamRef     ref,
-  const AEDesc *  desc);
-
+    AEStreamRef   ref,
+    const AEDesc *desc );
 
 /*
    Begin a list.  You can then append to the list by doing
@@ -380,8 +364,7 @@ AEStreamWriteAEDesc(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-AEStreamOpenList(AEStreamRef ref);
-
+AEStreamOpenList( AEStreamRef ref );
 
 /* Finish a list.*/
 /*
@@ -393,8 +376,7 @@ AEStreamOpenList(AEStreamRef ref);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-AEStreamCloseList(AEStreamRef ref);
-
+AEStreamCloseList( AEStreamRef ref );
 
 /*
    Begin a record.  A record usually has type 'reco', however, this is
@@ -410,9 +392,8 @@ AEStreamCloseList(AEStreamRef ref);
  */
 EXTERN_API_C( OSStatus )
 AEStreamOpenRecord(
-  AEStreamRef   ref,
-  DescType      newType);
-
+    AEStreamRef ref,
+    DescType    newType );
 
 /* Change the type of a record.*/
 /*
@@ -425,9 +406,8 @@ AEStreamOpenRecord(
  */
 EXTERN_API_C( OSStatus )
 AEStreamSetRecordType(
-  AEStreamRef   ref,
-  DescType      newType);
-
+    AEStreamRef ref,
+    DescType    newType );
 
 /* Finish a record*/
 /*
@@ -439,8 +419,7 @@ AEStreamSetRecordType(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-AEStreamCloseRecord(AEStreamRef ref);
-
+AEStreamCloseRecord( AEStreamRef ref );
 
 /*
    Add a keyed descriptor to a record.  This is analogous to AEPutParamDesc.
@@ -456,12 +435,11 @@ AEStreamCloseRecord(AEStreamRef ref);
  */
 EXTERN_API_C( OSStatus )
 AEStreamWriteKeyDesc(
-  AEStreamRef   ref,
-  AEKeyword     key,
-  DescType      newType,
-  const void *  data,
-  Size          length);
-
+    AEStreamRef ref,
+    AEKeyword   key,
+    DescType    newType,
+    const void *data,
+    Size        length );
 
 /*
    OpenDesc for a keyed record entry.  You can use AEStreamWriteData
@@ -477,10 +455,9 @@ AEStreamWriteKeyDesc(
  */
 EXTERN_API_C( OSStatus )
 AEStreamOpenKeyDesc(
-  AEStreamRef   ref,
-  AEKeyword     key,
-  DescType      newType);
-
+    AEStreamRef ref,
+    AEKeyword   key,
+    DescType    newType );
 
 /* Write a key to the stream - you can follow this with an AEWriteDesc.*/
 /*
@@ -493,9 +470,8 @@ AEStreamOpenKeyDesc(
  */
 EXTERN_API_C( OSStatus )
 AEStreamWriteKey(
-  AEStreamRef   ref,
-  AEKeyword     key);
-
+    AEStreamRef ref,
+    AEKeyword   key );
 
 /*
    Create a complete AppleEvent.  This creates and returns a new stream.
@@ -512,14 +488,13 @@ AEStreamWriteKey(
  */
 EXTERN_API_C( AEStreamRef )
 AEStreamCreateEvent(
-  AEEventClass   clazz,
-  AEEventID      id,
-  DescType       targetType,
-  const void *   targetData,
-  long           targetLength,
-  short          returnID,
-  long           transactionID);
-
+    AEEventClass clazz,
+    AEEventID    id,
+    DescType     targetType,
+    const void * targetData,
+    long         targetLength,
+    short        returnID,
+    long         transactionID );
 
 /*
    This call lets you augment an existing AppleEvent using the stream
@@ -538,8 +513,7 @@ AEStreamCreateEvent(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( AEStreamRef )
-AEStreamOpenEvent(AppleEvent * event);
-
+AEStreamOpenEvent( AppleEvent *event );
 
 /* Mark a keyword as being an optional parameter.*/
 /*
@@ -552,17 +526,15 @@ AEStreamOpenEvent(AppleEvent * event);
  */
 EXTERN_API_C( OSStatus )
 AEStreamOptionalParam(
-  AEStreamRef   ref,
-  AEKeyword     key);
-
-
+    AEStreamRef ref,
+    AEKeyword   key );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -576,4 +548,3 @@ AEStreamOptionalParam(
 #endif
 
 #endif /* __AEHELPERS__ */
-

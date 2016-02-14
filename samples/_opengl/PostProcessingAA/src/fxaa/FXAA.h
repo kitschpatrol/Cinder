@@ -22,17 +22,18 @@
 
 #pragma once
 
-#include "cinder/gl/gl.h"
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 
 class FXAA {
-public:
+  public:
 	FXAA();
 
 	void draw( const ci::gl::TextureRef &source, const ci::Area &bounds );
 	void apply( const ci::gl::FboRef &destination, const ci::gl::FboRef &source );
-private:
-	ci::gl::GlslProgRef	mGlslProg;
+
+  private:
+	ci::gl::GlslProgRef mGlslProg;
 };

@@ -24,34 +24,36 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/ip/Flip.h"
 
-#if defined( CINDER_COCOA ) && ( ! defined( __OBJC__ ) )
-	#error "This file must be compiled as Objective-C++ on the Mac"
+#if defined( CINDER_COCOA ) && ( !defined( __OBJC__ ) )
+#error "This file must be compiled as Objective-C++ on the Mac"
 #endif
 
 #if defined( CINDER_COCOA )
-	#if defined( CINDER_MAC )
-		#import "cinder/app/cocoa/RendererImplGlMac.h"
-	#elif defined( CINDER_COCOA_TOUCH )
-		#import "cinder/app/cocoa/RendererImplGlCocoaTouch.h"
-	#endif
+#if defined( CINDER_MAC )
+#import "cinder/app/cocoa/RendererImplGlMac.h"
+#elif defined( CINDER_COCOA_TOUCH )
+#import "cinder/app/cocoa/RendererImplGlCocoaTouch.h"
+#endif
 #elif defined( CINDER_MSW )
-	#if defined( CINDER_GL_ANGLE )
-		#include "cinder/app/msw/RendererImplGlAngle.h"
-	#else
-		#include "cinder/app/msw/RendererImplGlMsw.h"
-	#endif
+#if defined( CINDER_GL_ANGLE )
+#include "cinder/app/msw/RendererImplGlAngle.h"
+#else
+#include "cinder/app/msw/RendererImplGlMsw.h"
+#endif
 #elif defined( CINDER_WINRT )
-	#include "cinder/app/msw/RendererImplGlAngle.h"
+#include "cinder/app/msw/RendererImplGlAngle.h"
 #endif
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 RendererGl::RendererGl( const RendererGl::Options &options )
-	: Renderer(), mImpl( nullptr ), mOptions( options )
-{}
+    : Renderer(), mImpl( nullptr ), mOptions( options )
+{
+}
 
 RendererGl::RendererGl( const RendererGl &renderer )
-	: Renderer( renderer ), mImpl( nullptr ), mOptions( renderer.mOptions )
+    : Renderer( renderer ), mImpl( nullptr ), mOptions( renderer.mOptions )
 {
 #if defined( CINDER_MSW )
 	mWnd = renderer.mWnd;
@@ -68,7 +70,7 @@ RendererGl::~RendererGl()
 void RendererGl::setup( CGRect frame, NSView *cinderView, RendererRef sharedRenderer, bool retinaEnabled )
 {
 	RendererGlRef sharedGl = std::dynamic_pointer_cast<RendererGl>( sharedRenderer );
-	mImpl = [[RendererImplGlMac alloc] initWithFrame:NSRectFromCGRect(frame) cinderView:cinderView renderer:this sharedRenderer:sharedGl withRetina:retinaEnabled];
+	mImpl = [[RendererImplGlMac alloc] initWithFrame:NSRectFromCGRect( frame ) cinderView:cinderView renderer:this sharedRenderer:sharedGl withRetina:retinaEnabled];
 	// This is necessary for Objective-C garbage collection to do the right thing
 	::CFRetain( mImpl );
 }
@@ -91,7 +93,7 @@ void RendererGl::finishDraw()
 
 void RendererGl::setFrameSize( int width, int height )
 {
-	[mImpl setFrameSize:NSSizeToCGSize(NSMakeSize( width, height ))];
+	[mImpl setFrameSize:NSSizeToCGSize( NSMakeSize( width, height ) )];
 }
 
 void RendererGl::defaultResize()
@@ -104,10 +106,10 @@ Surface RendererGl::copyWindowSurface( const Area &area, int32_t windowHeightPix
 	Surface s( area.getWidth(), area.getHeight(), false );
 	glFlush(); // there is some disagreement about whether this is necessary, but ideally performance-conscious users will use FBOs anyway
 	GLint oldPackAlignment;
-	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment ); 
+	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment );
 	glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 	glReadPixels( area.x1, windowHeightPixels - area.y2, area.getWidth(), area.getHeight(), GL_RGB, GL_UNSIGNED_BYTE, s.getData() );
-	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );		
+	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );
 	ip::flipVertical( &s );
 	return s;
 }
@@ -122,7 +124,7 @@ CGLPixelFormatObj RendererGl::getCglPixelFormat()
 	return [mImpl getCglPixelFormat];
 }
 
-NSOpenGLContext* RendererGl::getNsOpenGlContext()
+NSOpenGLContext *RendererGl::getNsOpenGlContext()
 {
 	return [mImpl getNsOpenGlContext];
 }
@@ -137,7 +139,7 @@ void RendererGl::swapBuffers()
 	[mImpl flushBuffer];
 }
 
-#elif defined( CINDER_COCOA_TOUCH ) 
+#elif defined( CINDER_COCOA_TOUCH )
 RendererGl::~RendererGl()
 {
 }
@@ -145,10 +147,10 @@ RendererGl::~RendererGl()
 void RendererGl::setup( const Area &frame, UIView *cinderView, RendererRef sharedRenderer )
 {
 	RendererGlRef sharedRendererGl = std::dynamic_pointer_cast<RendererGl>( sharedRenderer );
-	mImpl = [[RendererImplGlCocoaTouch alloc] initWithFrame:cocoa::createCgRect( frame ) cinderView:(UIView*)cinderView renderer:this sharedRenderer:sharedRendererGl];
+	mImpl = [[RendererImplGlCocoaTouch alloc] initWithFrame:cocoa::createCgRect( frame ) cinderView:(UIView *)cinderView renderer:this sharedRenderer:sharedRendererGl];
 }
 
-EAGLContext* RendererGl::getEaglContext() const
+EAGLContext *RendererGl::getEaglContext() const
 {
 	return [mImpl getEaglContext];
 }
@@ -173,7 +175,7 @@ void RendererGl::defaultResize()
 	[mImpl defaultResize];
 }
 
-void RendererGl::makeCurrentContext( bool force)
+void RendererGl::makeCurrentContext( bool force )
 {
 	[mImpl makeCurrentContext:force];
 }
@@ -183,15 +185,15 @@ void RendererGl::swapBuffers()
 	[mImpl flushBuffer];
 }
 
-Surface	RendererGl::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
+Surface RendererGl::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
 {
 	Surface s( area.getWidth(), area.getHeight(), true );
 	glFlush(); // there is some disagreement about whether this is necessary, but ideally performance-conscious users will use FBOs anyway
 	GLint oldPackAlignment;
-	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment ); 
+	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment );
 	glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 	glReadPixels( area.x1, windowHeightPixels - area.y2, area.getWidth(), area.getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, s.getData() );
-	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );	
+	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );
 	ip::flipVertical( &s );
 
 	return s;
@@ -206,13 +208,13 @@ RendererGl::~RendererGl()
 void RendererGl::setup( HWND wnd, HDC dc, RendererRef sharedRenderer )
 {
 	mWnd = wnd;
-	if( ! mImpl )
+	if( !mImpl )
 #if defined( CINDER_GL_ANGLE )
 		mImpl = new RendererImplGlAngle( this );
 #else
 		mImpl = new RendererImplGlMsw( this );
 #endif
-	if( ! mImpl->initialize( wnd, dc, sharedRenderer ) )
+	if( !mImpl->initialize( wnd, dc, sharedRenderer ) )
 		throw ExcRendererAllocation( "RendererImplGlMsw initialization failed." );
 }
 
@@ -267,15 +269,15 @@ HDC RendererGl::getDc()
 	return mImpl->getDc();
 }
 
-Surface	RendererGl::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
+Surface RendererGl::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
 {
 	Surface s( area.getWidth(), area.getHeight(), false );
 	glFlush(); // there is some disagreement about whether this is necessary, but ideally performance-conscious users will use FBOs anyway
 	GLint oldPackAlignment;
-	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment ); 
+	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment );
 	glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 	glReadPixels( area.x1, windowHeightPixels - area.y2, area.getWidth(), area.getHeight(), GL_RGB, GL_UNSIGNED_BYTE, s.getData() );
-	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );	
+	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );
 	ip::flipVertical( &s );
 	return s;
 }
@@ -285,12 +287,12 @@ RendererGl::~RendererGl()
 	delete mImpl;
 }
 
-void RendererGl::setup( ::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer )
+void RendererGl::setup(::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer )
 {
 	mWnd = wnd;
-	if( ! mImpl )
+	if( !mImpl )
 		mImpl = new RendererImplGlAngle( this );
-	if( ! mImpl->initialize( wnd, sharedRenderer ) )
+	if( !mImpl->initialize( wnd, sharedRenderer ) )
 		throw ExcRendererAllocation( "RendererImplGlMsw initialization failed." );
 }
 
@@ -335,18 +337,18 @@ void RendererGl::defaultResize()
 	mImpl->defaultResize();
 }
 
-Surface	RendererGl::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
+Surface RendererGl::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
 {
 	Surface s( area.getWidth(), area.getHeight(), false );
 	glFlush(); // there is some disagreement about whether this is necessary, but ideally performance-conscious users will use FBOs anyway
 	GLint oldPackAlignment;
-	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment ); 
+	glGetIntegerv( GL_PACK_ALIGNMENT, &oldPackAlignment );
 	glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 	glReadPixels( area.x1, windowHeightPixels - area.y2, area.getWidth(), area.getHeight(), GL_RGB, GL_UNSIGNED_BYTE, s.getData() );
-	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );	
+	glPixelStorei( GL_PACK_ALIGNMENT, oldPackAlignment );
 	ip::flipVertical( &s );
 	return s;
 }
 #endif
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

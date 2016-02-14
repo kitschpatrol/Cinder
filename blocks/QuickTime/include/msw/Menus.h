@@ -68,9 +68,6 @@
 #include <HIObject.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -84,13 +81,12 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
-
 
 /*
  *  Menu Manager
@@ -99,7 +95,7 @@ extern "C" {
 /*  o Menu Constants                                                                    */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  noMark                        = 0     /* mark symbol for SetItemMark; other mark symbols are defined in Fonts.h */
+	noMark = 0 /* mark symbol for SetItemMark; other mark symbols are defined in Fonts.h */
 };
 
 /*
@@ -388,16 +384,16 @@ enum {
             If SafeToScroll returns false, the menu definition should not scroll the menu.
 */
 enum {
-                                        /* menu defProc messages */
-  kMenuDrawMsg                  = 0,
-  kMenuSizeMsg                  = 2,
-  kMenuPopUpMsg                 = 3,
-  kMenuCalcItemMsg              = 5,
-  kMenuThemeSavvyMsg            = 7,    /* is your MDEF theme-savvy?  If so, return kThemeSavvyMenuResponse in the whichItem parameter*/
-  mDrawMsg                      = 0,
-  mSizeMsg                      = 2,
-  mPopUpMsg                     = 3,    /* position the popup menu rect appropriately */
-  mCalcItemMsg                  = 5
+	/* menu defProc messages */
+	kMenuDrawMsg = 0,
+	kMenuSizeMsg = 2,
+	kMenuPopUpMsg = 3,
+	kMenuCalcItemMsg = 5,
+	kMenuThemeSavvyMsg = 7, /* is your MDEF theme-savvy?  If so, return kThemeSavvyMenuResponse in the whichItem parameter*/
+	mDrawMsg = 0,
+	mSizeMsg = 2,
+	mPopUpMsg = 3, /* position the popup menu rect appropriately */
+	mCalcItemMsg = 5
 };
 
 #if CALL_NOT_IN_CARBON
@@ -406,128 +402,127 @@ enum {
    mDrawItemMsg was used by the popup menu control before 8.5, but is no longer used. 
 */
 enum {
-  mChooseMsg                    = 1,
-  mDrawItemMsg                  = 4,
-  kMenuChooseMsg                = 1,
-  kMenuDrawItemMsg              = 4
+	mChooseMsg = 1,
+	mDrawItemMsg = 4,
+	kMenuChooseMsg = 1,
+	kMenuDrawItemMsg = 4
 };
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kThemeSavvyMenuResponse       = 0x7473 /* should be returned in *whichItem when handling kMenuThemeSavvyMsg*/
+	kThemeSavvyMenuResponse = 0x7473 /* should be returned in *whichItem when handling kMenuThemeSavvyMsg*/
 };
 
 /* these MDEF messages are only supported in Carbon*/
 enum {
-  kMenuInitMsg                  = 8,
-  kMenuDisposeMsg               = 9,
-  kMenuFindItemMsg              = 10,
-  kMenuHiliteItemMsg            = 11,
-  kMenuDrawItemsMsg             = 12
+	kMenuInitMsg = 8,
+	kMenuDisposeMsg = 9,
+	kMenuFindItemMsg = 10,
+	kMenuHiliteItemMsg = 11,
+	kMenuDrawItemsMsg = 12
 };
 
 enum {
-  textMenuProc                  = 0,
-  hMenuCmd                      = 27,   /*itemCmd == 0x001B ==> hierarchical menu*/
-  hierMenu                      = -1,   /*a hierarchical menu - for InsertMenu call*/
-  kInsertHierarchicalMenu       = -1,   /*a better name for hierMenu */
-  mctAllItems                   = -98,  /*search for all Items for the given ID*/
-  mctLastIDIndic                = -99   /*last color table entry has this in ID field*/
+	textMenuProc = 0,
+	hMenuCmd = 27, /*itemCmd == 0x001B ==> hierarchical menu*/
+	hierMenu = -1, /*a hierarchical menu - for InsertMenu call*/
+	kInsertHierarchicalMenu = -1, /*a better name for hierMenu */
+	mctAllItems = -98, /*search for all Items for the given ID*/
+	mctLastIDIndic = -99 /*last color table entry has this in ID field*/
 };
 
 /* Constants for use with MacOS 8.0 (Appearance 1.0) and later*/
 enum {
-  kMenuStdMenuProc              = 63,
-  kMenuStdMenuBarProc           = 63
+	kMenuStdMenuProc = 63,
+	kMenuStdMenuBarProc = 63
 };
 
 /* For use with Get/SetMenuItemModifiers*/
 enum {
-  kMenuNoModifiers              = 0,    /* Mask for no modifiers*/
-  kMenuShiftModifier            = (1 << 0), /* Mask for shift key modifier*/
-  kMenuOptionModifier           = (1 << 1), /* Mask for option key modifier*/
-  kMenuControlModifier          = (1 << 2), /* Mask for control key modifier*/
-  kMenuNoCommandModifier        = (1 << 3) /* Mask for no command key modifier*/
+	kMenuNoModifiers = 0, /* Mask for no modifiers*/
+	kMenuShiftModifier = ( 1 << 0 ), /* Mask for shift key modifier*/
+	kMenuOptionModifier = ( 1 << 1 ), /* Mask for option key modifier*/
+	kMenuControlModifier = ( 1 << 2 ), /* Mask for control key modifier*/
+	kMenuNoCommandModifier = ( 1 << 3 ) /* Mask for no command key modifier*/
 };
 
 /* For use with Get/SetMenuItemIconHandle*/
 enum {
-  kMenuNoIcon                   = 0,    /* No icon*/
-  kMenuIconType                 = 1,    /* Type for ICON*/
-  kMenuShrinkIconType           = 2,    /* Type for ICON plotted 16 x 16*/
-  kMenuSmallIconType            = 3,    /* Type for SICN*/
-  kMenuColorIconType            = 4,    /* Type for cicn*/
-  kMenuIconSuiteType            = 5,    /* Type for Icon Suite*/
-  kMenuIconRefType              = 6,    /* Type for Icon Ref*/
-  kMenuCGImageRefType           = 7,    /* Type for a CGImageRef (Mac OS X only)*/
-  kMenuSystemIconSelectorType   = 8,    /* Type for an IconRef registered with Icon Services under kSystemIconsCreator (Mac OS X 10.1 and later only)*/
-  kMenuIconResourceType         = 9     /* Type for a CFStringRef naming a resource in the main bundle of the process (Mac OS X 10.1 and later only)*/
+	kMenuNoIcon = 0, /* No icon*/
+	kMenuIconType = 1, /* Type for ICON*/
+	kMenuShrinkIconType = 2, /* Type for ICON plotted 16 x 16*/
+	kMenuSmallIconType = 3, /* Type for SICN*/
+	kMenuColorIconType = 4, /* Type for cicn*/
+	kMenuIconSuiteType = 5, /* Type for Icon Suite*/
+	kMenuIconRefType = 6, /* Type for Icon Ref*/
+	kMenuCGImageRefType = 7, /* Type for a CGImageRef (Mac OS X only)*/
+	kMenuSystemIconSelectorType = 8, /* Type for an IconRef registered with Icon Services under kSystemIconsCreator (Mac OS X 10.1 and later only)*/
+	kMenuIconResourceType = 9 /* Type for a CFStringRef naming a resource in the main bundle of the process (Mac OS X 10.1 and later only)*/
 };
 
 /* For use with Get/SetMenuItemKeyGlyph*/
 enum {
-  kMenuNullGlyph                = 0x00, /* Null (always glyph 1)*/
-  kMenuTabRightGlyph            = 0x02, /* Tab to the right key (for left-to-right script systems)*/
-  kMenuTabLeftGlyph             = 0x03, /* Tab to the left key (for right-to-left script systems)*/
-  kMenuEnterGlyph               = 0x04, /* Enter key*/
-  kMenuShiftGlyph               = 0x05, /* Shift key*/
-  kMenuControlGlyph             = 0x06, /* Control key*/
-  kMenuOptionGlyph              = 0x07, /* Option key*/
-  kMenuSpaceGlyph               = 0x09, /* Space (always glyph 3) key*/
-  kMenuDeleteRightGlyph         = 0x0A, /* Delete to the right key (for right-to-left script systems)*/
-  kMenuReturnGlyph              = 0x0B, /* Return key (for left-to-right script systems)*/
-  kMenuReturnR2LGlyph           = 0x0C, /* Return key (for right-to-left script systems)*/
-  kMenuNonmarkingReturnGlyph    = 0x0D, /* Nonmarking return key*/
-  kMenuPencilGlyph              = 0x0F, /* Pencil key*/
-  kMenuDownwardArrowDashedGlyph = 0x10, /* Downward dashed arrow key*/
-  kMenuCommandGlyph             = 0x11, /* Command key*/
-  kMenuCheckmarkGlyph           = 0x12, /* Checkmark key*/
-  kMenuDiamondGlyph             = 0x13, /* Diamond key*/
-  kMenuAppleLogoFilledGlyph     = 0x14, /* Apple logo key (filled)*/
-  kMenuParagraphKoreanGlyph     = 0x15, /* Unassigned (paragraph in Korean)*/
-  kMenuDeleteLeftGlyph          = 0x17, /* Delete to the left key (for left-to-right script systems)*/
-  kMenuLeftArrowDashedGlyph     = 0x18, /* Leftward dashed arrow key*/
-  kMenuUpArrowDashedGlyph       = 0x19, /* Upward dashed arrow key*/
-  kMenuRightArrowDashedGlyph    = 0x1A, /* Rightward dashed arrow key*/
-  kMenuEscapeGlyph              = 0x1B, /* Escape key*/
-  kMenuClearGlyph               = 0x1C, /* Clear key*/
-  kMenuLeftDoubleQuotesJapaneseGlyph = 0x1D, /* Unassigned (left double quotes in Japanese)*/
-  kMenuRightDoubleQuotesJapaneseGlyph = 0x1E, /* Unassigned (right double quotes in Japanese)*/
-  kMenuTrademarkJapaneseGlyph   = 0x1F, /* Unassigned (trademark in Japanese)*/
-  kMenuBlankGlyph               = 0x61, /* Blank key*/
-  kMenuPageUpGlyph              = 0x62, /* Page up key*/
-  kMenuCapsLockGlyph            = 0x63, /* Caps lock key*/
-  kMenuLeftArrowGlyph           = 0x64, /* Left arrow key*/
-  kMenuRightArrowGlyph          = 0x65, /* Right arrow key*/
-  kMenuNorthwestArrowGlyph      = 0x66, /* Northwest arrow key*/
-  kMenuHelpGlyph                = 0x67, /* Help key*/
-  kMenuUpArrowGlyph             = 0x68, /* Up arrow key*/
-  kMenuSoutheastArrowGlyph      = 0x69, /* Southeast arrow key*/
-  kMenuDownArrowGlyph           = 0x6A, /* Down arrow key*/
-  kMenuPageDownGlyph            = 0x6B, /* Page down key*/
-  kMenuAppleLogoOutlineGlyph    = 0x6C, /* Apple logo key (outline)*/
-  kMenuContextualMenuGlyph      = 0x6D, /* Contextual menu key*/
-  kMenuPowerGlyph               = 0x6E, /* Power key*/
-  kMenuF1Glyph                  = 0x6F, /* F1 key*/
-  kMenuF2Glyph                  = 0x70, /* F2 key*/
-  kMenuF3Glyph                  = 0x71, /* F3 key*/
-  kMenuF4Glyph                  = 0x72, /* F4 key*/
-  kMenuF5Glyph                  = 0x73, /* F5 key*/
-  kMenuF6Glyph                  = 0x74, /* F6 key*/
-  kMenuF7Glyph                  = 0x75, /* F7 key*/
-  kMenuF8Glyph                  = 0x76, /* F8 key*/
-  kMenuF9Glyph                  = 0x77, /* F9 key*/
-  kMenuF10Glyph                 = 0x78, /* F10 key*/
-  kMenuF11Glyph                 = 0x79, /* F11 key*/
-  kMenuF12Glyph                 = 0x7A, /* F12 key*/
-  kMenuF13Glyph                 = 0x87, /* F13 key*/
-  kMenuF14Glyph                 = 0x88, /* F14 key*/
-  kMenuF15Glyph                 = 0x89, /* F15 key*/
-  kMenuControlISOGlyph          = 0x8A, /* Control key (ISO standard)*/
-  kMenuEjectGlyph               = 0x8C  /* Eject key (available on Jaguar and later)*/
+	kMenuNullGlyph = 0x00, /* Null (always glyph 1)*/
+	kMenuTabRightGlyph = 0x02, /* Tab to the right key (for left-to-right script systems)*/
+	kMenuTabLeftGlyph = 0x03, /* Tab to the left key (for right-to-left script systems)*/
+	kMenuEnterGlyph = 0x04, /* Enter key*/
+	kMenuShiftGlyph = 0x05, /* Shift key*/
+	kMenuControlGlyph = 0x06, /* Control key*/
+	kMenuOptionGlyph = 0x07, /* Option key*/
+	kMenuSpaceGlyph = 0x09, /* Space (always glyph 3) key*/
+	kMenuDeleteRightGlyph = 0x0A, /* Delete to the right key (for right-to-left script systems)*/
+	kMenuReturnGlyph = 0x0B, /* Return key (for left-to-right script systems)*/
+	kMenuReturnR2LGlyph = 0x0C, /* Return key (for right-to-left script systems)*/
+	kMenuNonmarkingReturnGlyph = 0x0D, /* Nonmarking return key*/
+	kMenuPencilGlyph = 0x0F, /* Pencil key*/
+	kMenuDownwardArrowDashedGlyph = 0x10, /* Downward dashed arrow key*/
+	kMenuCommandGlyph = 0x11, /* Command key*/
+	kMenuCheckmarkGlyph = 0x12, /* Checkmark key*/
+	kMenuDiamondGlyph = 0x13, /* Diamond key*/
+	kMenuAppleLogoFilledGlyph = 0x14, /* Apple logo key (filled)*/
+	kMenuParagraphKoreanGlyph = 0x15, /* Unassigned (paragraph in Korean)*/
+	kMenuDeleteLeftGlyph = 0x17, /* Delete to the left key (for left-to-right script systems)*/
+	kMenuLeftArrowDashedGlyph = 0x18, /* Leftward dashed arrow key*/
+	kMenuUpArrowDashedGlyph = 0x19, /* Upward dashed arrow key*/
+	kMenuRightArrowDashedGlyph = 0x1A, /* Rightward dashed arrow key*/
+	kMenuEscapeGlyph = 0x1B, /* Escape key*/
+	kMenuClearGlyph = 0x1C, /* Clear key*/
+	kMenuLeftDoubleQuotesJapaneseGlyph = 0x1D, /* Unassigned (left double quotes in Japanese)*/
+	kMenuRightDoubleQuotesJapaneseGlyph = 0x1E, /* Unassigned (right double quotes in Japanese)*/
+	kMenuTrademarkJapaneseGlyph = 0x1F, /* Unassigned (trademark in Japanese)*/
+	kMenuBlankGlyph = 0x61, /* Blank key*/
+	kMenuPageUpGlyph = 0x62, /* Page up key*/
+	kMenuCapsLockGlyph = 0x63, /* Caps lock key*/
+	kMenuLeftArrowGlyph = 0x64, /* Left arrow key*/
+	kMenuRightArrowGlyph = 0x65, /* Right arrow key*/
+	kMenuNorthwestArrowGlyph = 0x66, /* Northwest arrow key*/
+	kMenuHelpGlyph = 0x67, /* Help key*/
+	kMenuUpArrowGlyph = 0x68, /* Up arrow key*/
+	kMenuSoutheastArrowGlyph = 0x69, /* Southeast arrow key*/
+	kMenuDownArrowGlyph = 0x6A, /* Down arrow key*/
+	kMenuPageDownGlyph = 0x6B, /* Page down key*/
+	kMenuAppleLogoOutlineGlyph = 0x6C, /* Apple logo key (outline)*/
+	kMenuContextualMenuGlyph = 0x6D, /* Contextual menu key*/
+	kMenuPowerGlyph = 0x6E, /* Power key*/
+	kMenuF1Glyph = 0x6F, /* F1 key*/
+	kMenuF2Glyph = 0x70, /* F2 key*/
+	kMenuF3Glyph = 0x71, /* F3 key*/
+	kMenuF4Glyph = 0x72, /* F4 key*/
+	kMenuF5Glyph = 0x73, /* F5 key*/
+	kMenuF6Glyph = 0x74, /* F6 key*/
+	kMenuF7Glyph = 0x75, /* F7 key*/
+	kMenuF8Glyph = 0x76, /* F8 key*/
+	kMenuF9Glyph = 0x77, /* F9 key*/
+	kMenuF10Glyph = 0x78, /* F10 key*/
+	kMenuF11Glyph = 0x79, /* F11 key*/
+	kMenuF12Glyph = 0x7A, /* F12 key*/
+	kMenuF13Glyph = 0x87, /* F13 key*/
+	kMenuF14Glyph = 0x88, /* F14 key*/
+	kMenuF15Glyph = 0x89, /* F15 key*/
+	kMenuControlISOGlyph = 0x8A, /* Control key (ISO standard)*/
+	kMenuEjectGlyph = 0x8C /* Eject key (available on Jaguar and later)*/
 };
-
 
 /*
  *  MenuAttributes
@@ -539,27 +534,27 @@ enum {
 typedef UInt32 MenuAttributes;
 enum {
 
-  /*
+	/*
    * No column space is allocated for the mark character when this menu
    * is drawn.
    */
-  kMenuAttrExcludesMarkColumn   = (1 << 0),
+	kMenuAttrExcludesMarkColumn = ( 1 << 0 ),
 
-  /*
+	/*
    * The menu title is automatically disabled when all items are
    * disabled.
    */
-  kMenuAttrAutoDisable          = (1 << 2),
+	kMenuAttrAutoDisable = ( 1 << 2 ),
 
-  /*
+	/*
    * The pencil glyph from the Keyboard font (kMenuPencilGlyph) is used
    * to draw the Control modifier key in menu keyboard equivalents.
    * This appearance is typically used only by Japanese input method
    * menus.
    */
-  kMenuAttrUsePencilGlyph       = (1 << 3),
+	kMenuAttrUsePencilGlyph = ( 1 << 3 ),
 
-  /*
+	/*
    * The menu title is not drawn in the menubar, even when the menu is
    * inserted in the menubar. Useful for adding command keys that don't
    * correspond to a visible menu item; menu items with the desired
@@ -567,9 +562,8 @@ enum {
    * without making the menu visible. This attribute is available in
    * Mac OS X after 10.1.
    */
-  kMenuAttrHidden               = (1 << 4)
+	kMenuAttrHidden = ( 1 << 4 )
 };
-
 
 /*
  *  MenuItemAttributes
@@ -581,78 +575,78 @@ enum {
 typedef UInt32 MenuItemAttributes;
 enum {
 
-  /*
+	/*
    * This item is disabled.
    */
-  kMenuItemAttrDisabled         = (1 << 0),
+	kMenuItemAttrDisabled = ( 1 << 0 ),
 
-  /*
+	/*
    * This item's icon is disabled.
    */
-  kMenuItemAttrIconDisabled     = (1 << 1),
+	kMenuItemAttrIconDisabled = ( 1 << 1 ),
 
-  /*
+	/*
    * Allows the parent item of a submenu to be selectable.
    */
-  kMenuItemAttrSubmenuParentChoosable = (1 << 2),
+	kMenuItemAttrSubmenuParentChoosable = ( 1 << 2 ),
 
-  /*
+	/*
    * This item changes dynamically based on modifier key state.
    */
-  kMenuItemAttrDynamic          = (1 << 3),
+	kMenuItemAttrDynamic = ( 1 << 3 ),
 
-  /*
+	/*
    * This item is not part of the same dynamic group as the previous
    * item.
    */
-  kMenuItemAttrNotPreviousAlternate = (1 << 4),
+	kMenuItemAttrNotPreviousAlternate = ( 1 << 4 ),
 
-  /*
+	/*
    * This item is not drawn when the menu is displayed. It is also not
    * included in command key matching, unless the item also has either
    * the Dynamic or IncludeInCmdKeyMatching attributes.
    */
-  kMenuItemAttrHidden           = (1 << 5),
+	kMenuItemAttrHidden = ( 1 << 5 ),
 
-  /*
+	/*
    * This item is a separator; the text of the item is ignored.
    */
-  kMenuItemAttrSeparator        = (1 << 6),
+	kMenuItemAttrSeparator = ( 1 << 6 ),
 
-  /*
+	/*
    * This item is a menu section header; it is disabled and
    * unselectable.
    */
-  kMenuItemAttrSectionHeader    = (1 << 7),
+	kMenuItemAttrSectionHeader = ( 1 << 7 ),
 
-  /*
+	/*
    * Metacharacters in the text of this item (such as the dash) are
    * ignored.
    */
-  kMenuItemAttrIgnoreMeta       = (1 << 8),
+	kMenuItemAttrIgnoreMeta = ( 1 << 8 ),
 
-  /*
+	/*
    * This item is recognized by IsMenuKeyEvent when it is passed an
    * auto-repeat keyboard event.
    */
-  kMenuItemAttrAutoRepeat       = (1 << 9),
+	kMenuItemAttrAutoRepeat = ( 1 << 9 ),
 
-  /*
+	/*
    * When MenuEvent and IsMenuKeyEvent compare this item's keyboard
    * equivalent against a keyboard event, they use the item's virtual
    * keycode equivalent rather than its character code equivalent.
    */
-  kMenuItemAttrUseVirtualKey    = (1 << 10),
+	kMenuItemAttrUseVirtualKey = ( 1 << 10 ),
 
-  /*
+	/*
    * This item is drawn in a customized fashion by the application.
    * Causes custom menu item drawing Carbon events to be sent. This
    * attribute is available in CarbonLib 1.4 and Mac OS X 10.1, and
    * later.
    */
-  kMenuItemAttrCustomDraw       = (1 << 11),
+	kMenuItemAttrCustomDraw = ( 1 << 11 ),
 
-  /*
+	/*
    * This item is examined during command key matching by MenuKey,
    * MenuEvent, and IsMenuKeyEvent. Normally, visible menu items are
    * included in command key matching, but hidden menu items are
@@ -662,9 +656,8 @@ enum {
    * key matching when it normally wouldn't. This attribute is
    * available in CarbonLib 1.6 and later, and in Mac OS X after 10.1.
    */
-  kMenuItemAttrIncludeInCmdKeyMatching = (1 << 12)
+	kMenuItemAttrIncludeInCmdKeyMatching = ( 1 << 12 )
 };
-
 
 /*
  *  MenuTrackingMode
@@ -678,17 +671,16 @@ enum {
 typedef UInt32 MenuTrackingMode;
 enum {
 
-  /*
+	/*
    * Menus are being tracked using the mouse.
    */
-  kMenuTrackingModeMouse        = 1,
+	kMenuTrackingModeMouse = 1,
 
-  /*
+	/*
    * Menus are being tracked using the keyboard.
    */
-  kMenuTrackingModeKeyboard     = 2
+	kMenuTrackingModeKeyboard = 2
 };
-
 
 /*
  *  MenuEventOptions
@@ -701,54 +693,53 @@ enum {
 typedef UInt32 MenuEventOptions;
 enum {
 
-  /*
+	/*
    * Disabled items are examined for a match.
    */
-  kMenuEventIncludeDisabledItems = 0x0001,
+	kMenuEventIncludeDisabledItems = 0x0001,
 
-  /*
+	/*
    * Don't hilite the menu title if a match is found.
    */
-  kMenuEventQueryOnly           = 0x0002,
+	kMenuEventQueryOnly = 0x0002,
 
-  /*
+	/*
    * Don't look for a match in submenus of the starting menu.
    */
-  kMenuEventDontCheckSubmenus   = 0x0004
+	kMenuEventDontCheckSubmenus = 0x0004
 };
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Types                                                                        */
 /*--------------------------------------------------------------------------------------*/
-typedef SInt16                          MenuID;
-typedef UInt16                          MenuItemIndex;
-typedef UInt32                          MenuCommand;
+typedef SInt16 MenuID;
+typedef UInt16 MenuItemIndex;
+typedef UInt32 MenuCommand;
 #if !OPAQUE_TOOLBOX_STRUCTS
 struct MenuInfo {
-  MenuID              menuID;                 /* in Carbon use Get/SetMenuID*/
-  short               menuWidth;              /* in Carbon use Get/SetMenuWidth*/
-  short               menuHeight;             /* in Carbon use Get/SetMenuHeight*/
-  Handle              menuProc;               /* not supported in Carbon*/
-  long                enableFlags;            /* in Carbon use Enable/DisableMenuItem, IsMenuItemEnable*/
-  Str255              menuData;               /* in Carbon use Get/SetMenuTitle*/
+	MenuID menuID; /* in Carbon use Get/SetMenuID*/
+	short  menuWidth; /* in Carbon use Get/SetMenuWidth*/
+	short  menuHeight; /* in Carbon use Get/SetMenuHeight*/
+	Handle menuProc; /* not supported in Carbon*/
+	long   enableFlags; /* in Carbon use Enable/DisableMenuItem, IsMenuItemEnable*/
+	Str255 menuData; /* in Carbon use Get/SetMenuTitle*/
 };
-typedef struct MenuInfo                 MenuInfo;
-typedef MenuInfo *                      MenuPtr;
-typedef MenuPtr *                       MenuHandle;
-typedef MenuHandle                      MenuRef;
+typedef struct MenuInfo MenuInfo;
+typedef MenuInfo *      MenuPtr;
+typedef MenuPtr *       MenuHandle;
+typedef MenuHandle      MenuRef;
 #else
-typedef struct OpaqueMenuRef*           MenuRef;
+typedef struct OpaqueMenuRef *MenuRef;
 /* MenuHandle is old name for MenuRef*/
-typedef MenuRef                         MenuHandle;
-#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
-
+typedef MenuRef MenuHandle;
+#endif /* !OPAQUE_TOOLBOX_STRUCTS */
 
 /*
    A MenuBarHandle is a handle to a MenuBarHeader. An instance of this structure is returned
    by the GetMenuBar and GetNewMBar APIs. It is typedef'd to a plain Handle to retain
    source compatibility with previous versions of this header file.
 */
-typedef Handle                          MenuBarHandle;
+typedef Handle MenuBarHandle;
 
 /*
  *  MenuBarHeader
@@ -767,26 +758,25 @@ typedef Handle                          MenuBarHandle;
  *    HMenuBarMenus, one for each hierarchical menu.
  */
 struct MenuBarHeader {
-
-  /*
+	/*
    * Offset in bytes from the start of the header to the last menu in
    * the array of MenuBarMenus.
    */
-  UInt16              lastMenu;
+	UInt16 lastMenu;
 
-  /*
+	/*
    * Global coordinate of the right edge of the rightmost menu; unused
    * in a MenuBarHandle returned by GetMenuBar or GetNewMBar.
    */
-  SInt16              lastRight;
+	SInt16 lastRight;
 
-  /*
+	/*
    * The MBDF resource ID; unused in a MenuBarHandle returned by
    * GetMenuBar or GetNewMBar.
    */
-  SInt16              mbResID;
+	SInt16 mbResID;
 };
-typedef struct MenuBarHeader            MenuBarHeader;
+typedef struct MenuBarHeader MenuBarHeader;
 
 /*
  *  HMenuBarHeader
@@ -803,20 +793,19 @@ typedef struct MenuBarHeader            MenuBarHeader;
  *    dynamically sized array of HMenuBarMenus.
  */
 struct HMenuBarHeader {
-
-  /*
+	/*
    * Offset in bytes from the start of the header to the last menu in
    * the array of HMenuBarMenus.
    */
-  UInt16              lastHMenu;
+	UInt16 lastHMenu;
 
-  /*
+	/*
    * Saved bits behind the hilited menu title; unused in a
    * MenuBarHandle returned by GetMenuBar or GetNewMBar.
    */
-  PixMapHandle        menuTitleBits;
+	PixMapHandle menuTitleBits;
 };
-typedef struct HMenuBarHeader           HMenuBarHeader;
+typedef struct HMenuBarHeader HMenuBarHeader;
 
 /*
  *  MenuBarMenu
@@ -826,19 +815,18 @@ typedef struct HMenuBarHeader           HMenuBarHeader;
  *    element in an array in the MenuBarHeader data strucuture.
  */
 struct MenuBarMenu {
-
-  /*
+	/*
    * A menu in the menubar.
    */
-  MenuRef             menu;
+	MenuRef menu;
 
-  /*
+	/*
    * The global coordinate of the left edge of the menu title; unused
    * in a MenuBarHandle returned by GetMenuBar or GetNewMBar.
    */
-  SInt16              menuLeft;
+	SInt16 menuLeft;
 };
-typedef struct MenuBarMenu              MenuBarMenu;
+typedef struct MenuBarMenu MenuBarMenu;
 
 /*
  *  HMenuBarMenu
@@ -849,49 +837,48 @@ typedef struct MenuBarMenu              MenuBarMenu;
  *    strucuture.
  */
 struct HMenuBarMenu {
-
-  /*
+	/*
    * An hierarchical menu in the menubar.
    */
-  MenuRef             menu;
+	MenuRef menu;
 
-  /*
+	/*
    * This field is currently unused.
    */
-  SInt16              reserved;
+	SInt16 reserved;
 };
-typedef struct HMenuBarMenu             HMenuBarMenu;
+typedef struct HMenuBarMenu HMenuBarMenu;
 struct MCEntry {
-  MenuID              mctID;                  /*menu ID.  ID = 0 is the menu bar*/
-  short               mctItem;                /*menu Item. Item = 0 is a title*/
-  RGBColor            mctRGB1;                /*usage depends on ID and Item*/
-  RGBColor            mctRGB2;                /*usage depends on ID and Item*/
-  RGBColor            mctRGB3;                /*usage depends on ID and Item*/
-  RGBColor            mctRGB4;                /*usage depends on ID and Item*/
-  short               mctReserved;            /*reserved for internal use*/
+	MenuID   mctID; /*menu ID.  ID = 0 is the menu bar*/
+	short    mctItem; /*menu Item. Item = 0 is a title*/
+	RGBColor mctRGB1; /*usage depends on ID and Item*/
+	RGBColor mctRGB2; /*usage depends on ID and Item*/
+	RGBColor mctRGB3; /*usage depends on ID and Item*/
+	RGBColor mctRGB4; /*usage depends on ID and Item*/
+	short    mctReserved; /*reserved for internal use*/
 };
-typedef struct MCEntry                  MCEntry;
-typedef MCEntry *                       MCEntryPtr;
-typedef MCEntry                         MCTable[1];
-typedef MCEntry *                       MCTablePtr;
-typedef MCTablePtr *                    MCTableHandle;
+typedef struct MCEntry MCEntry;
+typedef MCEntry *      MCEntryPtr;
+typedef MCEntry        MCTable[1];
+typedef MCEntry *      MCTablePtr;
+typedef MCTablePtr *   MCTableHandle;
 struct MenuCRsrc {
-  short               numEntries;             /*number of entries*/
-  MCTable             mcEntryRecs;            /*ARRAY [1..numEntries] of MCEntry*/
+	short   numEntries; /*number of entries*/
+	MCTable mcEntryRecs; /*ARRAY [1..numEntries] of MCEntry*/
 };
-typedef struct MenuCRsrc                MenuCRsrc;
-typedef MenuCRsrc *                     MenuCRsrcPtr;
-typedef MenuCRsrcPtr *                  MenuCRsrcHandle;
+typedef struct MenuCRsrc MenuCRsrc;
+typedef MenuCRsrc *      MenuCRsrcPtr;
+typedef MenuCRsrcPtr *   MenuCRsrcHandle;
 #if TARGET_OS_WIN32
 /* QuickTime 3.0 */
 struct MenuAccessKeyRec {
-  short               count;
-  long                flags;
-  unsigned char       keys[1];
+	short         count;
+	long          flags;
+	unsigned char keys[1];
 };
-typedef struct MenuAccessKeyRec         MenuAccessKeyRec;
-typedef MenuAccessKeyRec *              MenuAccessKeyPtr;
-typedef MenuAccessKeyPtr *              MenuAccessKeyHandle;
+typedef struct MenuAccessKeyRec MenuAccessKeyRec;
+typedef MenuAccessKeyRec *      MenuAccessKeyPtr;
+typedef MenuAccessKeyPtr *      MenuAccessKeyHandle;
 #if CALL_NOT_IN_CARBON
 /*
  *  SetMenuItemHotKey()
@@ -903,16 +890,14 @@ typedef MenuAccessKeyPtr *              MenuAccessKeyHandle;
  */
 EXTERN_API_C( void )
 SetMenuItemHotKey(
-  MenuRef   menu,
-  short     itemID,
-  char      hotKey,
-  long      flags);
+    MenuRef menu,
+    short   itemID,
+    char    hotKey,
+    long    flags );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_OS_WIN32 */
-
+#endif /* TARGET_OS_WIN32 */
 
 /*
  *  MenuTrackingData
@@ -923,15 +908,15 @@ SetMenuItemHotKey(
  *    GetMenuTrackingData API.
  */
 struct MenuTrackingData {
-  MenuRef             menu;
-  MenuItemIndex       itemSelected;
-  MenuItemIndex       itemUnderMouse;
-  Rect                itemRect;
-  SInt32              virtualMenuTop;
-  SInt32              virtualMenuBottom;
+	MenuRef       menu;
+	MenuItemIndex itemSelected;
+	MenuItemIndex itemUnderMouse;
+	Rect          itemRect;
+	SInt32        virtualMenuTop;
+	SInt32        virtualMenuBottom;
 };
-typedef struct MenuTrackingData         MenuTrackingData;
-typedef MenuTrackingData *              MenuTrackingDataPtr;
+typedef struct MenuTrackingData MenuTrackingData;
+typedef MenuTrackingData *      MenuTrackingDataPtr;
 
 /*
  *  MDEFHiliteItemData
@@ -944,29 +929,28 @@ typedef MenuTrackingData *              MenuTrackingDataPtr;
  *    whichItem parameter during kMenuHiliteItemMsg.
  */
 struct MDEFHiliteItemData {
-
-  /*
+	/*
    * The item that was previously selected. It should be redrawn in an
    * unhilited state. May be zero if no item was previously selected.
    */
-  MenuItemIndex       previousItem;
+	MenuItemIndex previousItem;
 
-  /*
+	/*
    * The item that is now selected. It should be redrawn in a hilited
    * state. May be zero if no item is now selected.
    */
-  MenuItemIndex       newItem;
+	MenuItemIndex newItem;
 
-  /*
+	/*
    * A CoreGraphics context that the MDEF should draw into. The Menu
    * Manager will flush the context after the MDEF has returned.
    */
-  void *              context;
+	void *context;
 };
-typedef struct MDEFHiliteItemData       MDEFHiliteItemData;
-typedef MDEFHiliteItemData *            MDEFHiliteItemDataPtr;
-typedef MDEFHiliteItemData              HiliteMenuItemData;
-typedef MDEFHiliteItemDataPtr           HiliteMenuItemDataPtr;
+typedef struct MDEFHiliteItemData MDEFHiliteItemData;
+typedef MDEFHiliteItemData *      MDEFHiliteItemDataPtr;
+typedef MDEFHiliteItemData        HiliteMenuItemData;
+typedef MDEFHiliteItemDataPtr     HiliteMenuItemDataPtr;
 
 /*
  *  MDEFDrawData
@@ -978,22 +962,21 @@ typedef MDEFHiliteItemDataPtr           HiliteMenuItemDataPtr;
  *    during kMenuDrawMsg.
  */
 struct MDEFDrawData {
-
-  /*
+	/*
    * Information about the menu being drawn. The MDEF should fill in
    * the virtualMenuTop and virtualMenuBottom fields of this structure
    * while drawing the menu.
    */
-  MenuTrackingData    trackingData;
+	MenuTrackingData trackingData;
 
-  /*
+	/*
    * A CoreGraphics context that the MDEF should draw into. The Menu
    * Manager will flush the context after the MDEF has returned.
    */
-  void *              context;
+	void *context;
 };
-typedef struct MDEFDrawData             MDEFDrawData;
-typedef MDEFDrawData *                  MDEFDrawDataPtr;
+typedef struct MDEFDrawData MDEFDrawData;
+typedef MDEFDrawData *      MDEFDrawDataPtr;
 
 /*
  *  MDEFFindItemData
@@ -1006,23 +989,22 @@ typedef MDEFDrawData *                  MDEFDrawDataPtr;
  *    kMenuFindItemMsg.
  */
 struct MDEFFindItemData {
-
-  /*
+	/*
    * Information about the menu being drawn. The MDEF should fill in
    * the itemSelected, itemUnderMouse, and itemRect fields of this
    * structure after determining which item is at the specified point.
    */
-  MenuTrackingData    trackingData;
+	MenuTrackingData trackingData;
 
-  /*
+	/*
    * A CoreGraphics context that the MDEF should draw into if it needs
    * to scroll the menu during the FindItem message. The Menu Manager
    * will flush the context after the MDEF has returned.
    */
-  void *              context;
+	void *context;
 };
-typedef struct MDEFFindItemData         MDEFFindItemData;
-typedef MDEFFindItemData *              MDEFFindItemDataPtr;
+typedef struct MDEFFindItemData MDEFFindItemData;
+typedef MDEFFindItemData *      MDEFFindItemDataPtr;
 
 /*
  *  MDEFDrawItemsData
@@ -1034,32 +1016,31 @@ typedef MDEFFindItemData *              MDEFFindItemDataPtr;
  *    whichItem parameter during kMenuDrawItemsMsg.
  */
 struct MDEFDrawItemsData {
-
-  /*
+	/*
    * The first item to draw.
    */
-  MenuItemIndex       firstItem;
+	MenuItemIndex firstItem;
 
-  /*
+	/*
    * The last item to draw.
    */
-  MenuItemIndex       lastItem;
+	MenuItemIndex lastItem;
 
-  /*
+	/*
    * Information about the menu's tracking state. The virtualMenuTop
    * and virtualMenuBottom fields in this structure will be the most
    * useful in handling the DrawItems message.
    */
-  MenuTrackingData *  trackingData;
+	MenuTrackingData *trackingData;
 
-  /*
+	/*
    * A CoreGraphics context that the MDEF should draw into. The Menu
    * Manager will flush the context after the MDEF returns.
    */
-  void *              context;
+	void *context;
 };
-typedef struct MDEFDrawItemsData        MDEFDrawItemsData;
-typedef MDEFDrawItemsData *             MDEFDrawItemsDataPtr;
+typedef struct MDEFDrawItemsData MDEFDrawItemsData;
+typedef MDEFDrawItemsData *      MDEFDrawItemsDataPtr;
 
 /*
  *  Summary:
@@ -1072,7 +1053,7 @@ typedef MDEFDrawItemsData *             MDEFDrawItemsDataPtr;
  */
 enum {
 
-  /*
+	/*
    * Set or return the Str255 text of a menu using the
    * MenuItemDataRec.text field. If getting the text, the text field
    * must be initialized with a pointer to a Str255 variable before
@@ -1083,58 +1064,58 @@ enum {
    * value for the other format will be cleared. Valid for both menu
    * items and the menu title (if item number is 0).
    */
-  kMenuItemDataText             = (1 << 0),
+	kMenuItemDataText = ( 1 << 0 ),
 
-  /*
+	/*
    * Set or return the mark character of a menu item using the
    * MenuItemDataRec.mark field. Valid only for menu items.
    */
-  kMenuItemDataMark             = (1 << 1),
+	kMenuItemDataMark = ( 1 << 1 ),
 
-  /*
+	/*
    * Set or return the command key of a menu item using the
    * MenuItemDataRec.cmdKey field. Valid only for menu items.
    */
-  kMenuItemDataCmdKey           = (1 << 2),
+	kMenuItemDataCmdKey = ( 1 << 2 ),
 
-  /*
+	/*
    * Set or return the command key glyph of a menu item using the
    * MenuItemDataRec.cmdKeyGlyph field. Valid only for menu items.
    */
-  kMenuItemDataCmdKeyGlyph      = (1 << 3),
+	kMenuItemDataCmdKeyGlyph = ( 1 << 3 ),
 
-  /*
+	/*
    * Set or return the command key modifiers of a menu item using the
    * MenuItemDataRec.cmdKeyModifiers field. Valid only for menu items.
    */
-  kMenuItemDataCmdKeyModifiers  = (1 << 4),
+	kMenuItemDataCmdKeyModifiers = ( 1 << 4 ),
 
-  /*
+	/*
    * Set or return the QuickDraw text style of a menu item using the
    * MenuItemDataRec.style field. Valid only for menu items.
    */
-  kMenuItemDataStyle            = (1 << 5),
+	kMenuItemDataStyle = ( 1 << 5 ),
 
-  /*
+	/*
    * Set or return the enable state of a menu using the
    * MenuItemDataRec.enabled field. Valid for both menu items and the
    * menu itself (if item number is 0).
    */
-  kMenuItemDataEnabled          = (1 << 6),
+	kMenuItemDataEnabled = ( 1 << 6 ),
 
-  /*
+	/*
    * Set or return the enable state of a menu item icon using the
    * MenuItemDataRec.iconEnabled field. Valid only for menu items.
    */
-  kMenuItemDataIconEnabled      = (1 << 7),
+	kMenuItemDataIconEnabled = ( 1 << 7 ),
 
-  /*
+	/*
    * Set or return the icon resource ID of a menu item using the
    * MenuItemDataRec.iconID field. Valid only for menu items.
    */
-  kMenuItemDataIconID           = (1 << 8),
+	kMenuItemDataIconID = ( 1 << 8 ),
 
-  /*
+	/*
    * Set or return the icon handle of a menu item using the
    * MenuItemDataRec.iconType and MenuItemDataRec.iconHandle fields.
    * Both fields must be initialized if setting the icon handle; both
@@ -1145,27 +1126,27 @@ enum {
    * handle to an ICON resource, a SICN resource, a cicn resource, an
    * IconSuite, or an IconRef. Valid only for menu items.
    */
-  kMenuItemDataIconHandle       = (1 << 9),
+	kMenuItemDataIconHandle = ( 1 << 9 ),
 
-  /*
+	/*
    * Set or return the command ID of a menu item using the
    * MenuItemDataRec.cmdID field. Valid only for menu items.
    */
-  kMenuItemDataCommandID        = (1 << 10),
+	kMenuItemDataCommandID = ( 1 << 10 ),
 
-  /*
+	/*
    * Set or return the text encoding of a menu item using the
    * MenuItemDataRec.encoding field. Valid only for menu items.
    */
-  kMenuItemDataTextEncoding     = (1 << 11),
-  kMenuItemDataSubmenuID        = (1 << 12),
-  kMenuItemDataSubmenuHandle    = (1 << 13),
-  kMenuItemDataFontID           = (1 << 14),
-  kMenuItemDataRefcon           = (1 << 15),
-  kMenuItemDataAttributes       = (1 << 16),
-  kMenuItemDataCFString         = (1 << 17),
+	kMenuItemDataTextEncoding = ( 1 << 11 ),
+	kMenuItemDataSubmenuID = ( 1 << 12 ),
+	kMenuItemDataSubmenuHandle = ( 1 << 13 ),
+	kMenuItemDataFontID = ( 1 << 14 ),
+	kMenuItemDataRefcon = ( 1 << 15 ),
+	kMenuItemDataAttributes = ( 1 << 16 ),
+	kMenuItemDataCFString = ( 1 << 17 ),
 
-  /*
+	/*
    * Set or return the properties of a menu using the
    * MenuItemDataRec.properties field. If setting the properties, the
    * properties field should contain a collection with the new
@@ -1178,26 +1159,26 @@ enum {
    * the properties of the menu. Valid for both menu items and the menu
    * itself (if item number is 0).
    */
-  kMenuItemDataProperties       = (1 << 18),
+	kMenuItemDataProperties = ( 1 << 18 ),
 
-  /*
+	/*
    * Set or return the item indent level of a menu item using the
    * MenuItemDataRec.indent field. Valid only for menu items.
    */
-  kMenuItemDataIndent           = (1 << 19),
+	kMenuItemDataIndent = ( 1 << 19 ),
 
-  /*
+	/*
    * Set or return the virtual key code keyboard equivalent of a menu
    * item using the MenuItemDataRec.cmdVirtualKey field. Valid only for
    * menu items. On output, only valid if the item has the
    * kMenuItemAttrUseVirtualKeyCode attribute.
    */
-  kMenuItemDataCmdVirtualKey    = (1 << 20),
-  kMenuItemDataAllDataVersionOne = 0x000FFFFF,
-  kMenuItemDataAllDataVersionTwo = kMenuItemDataAllDataVersionOne | kMenuItemDataCmdVirtualKey
+	kMenuItemDataCmdVirtualKey = ( 1 << 20 ),
+	kMenuItemDataAllDataVersionOne = 0x000FFFFF,
+	kMenuItemDataAllDataVersionTwo = kMenuItemDataAllDataVersionOne | kMenuItemDataCmdVirtualKey
 };
 
-typedef UInt64                          MenuItemDataFlags;
+typedef UInt64 MenuItemDataFlags;
 
 /*
  *  MenuItemDataRec
@@ -1215,42 +1196,42 @@ typedef UInt64                          MenuItemDataFlags;
  *    documentation for details.
  */
 struct MenuItemDataRec {
-  MenuItemDataFlags   whichData;
-  StringPtr           text;
-  UniChar             mark;
-  UniChar             cmdKey;
-  UInt32              cmdKeyGlyph;
-  UInt32              cmdKeyModifiers;
-  Style               style;
-  Boolean             enabled;
-  Boolean             iconEnabled;
-  UInt8               filler1;
-  SInt32              iconID;
-  UInt32              iconType;
-  Handle              iconHandle;
-  MenuCommand         cmdID;
-  TextEncoding        encoding;
-  MenuID              submenuID;
-  MenuRef             submenuHandle;
-  SInt32              fontID;
-  UInt32              refcon;
-  OptionBits          attr;
-  CFStringRef         cfText;
-  Collection          properties;
-  UInt32              indent;
-  UInt16              cmdVirtualKey;
+	MenuItemDataFlags whichData;
+	StringPtr         text;
+	UniChar           mark;
+	UniChar           cmdKey;
+	UInt32            cmdKeyGlyph;
+	UInt32            cmdKeyModifiers;
+	Style             style;
+	Boolean           enabled;
+	Boolean           iconEnabled;
+	UInt8             filler1;
+	SInt32            iconID;
+	UInt32            iconType;
+	Handle            iconHandle;
+	MenuCommand       cmdID;
+	TextEncoding      encoding;
+	MenuID            submenuID;
+	MenuRef           submenuHandle;
+	SInt32            fontID;
+	UInt32            refcon;
+	OptionBits        attr;
+	CFStringRef       cfText;
+	Collection        properties;
+	UInt32            indent;
+	UInt16            cmdVirtualKey;
 };
-typedef struct MenuItemDataRec          MenuItemDataRec;
-typedef MenuItemDataRec *               MenuItemDataPtr;
-typedef UInt32                          MenuItemID;
+typedef struct MenuItemDataRec MenuItemDataRec;
+typedef MenuItemDataRec *      MenuItemDataPtr;
+typedef UInt32                 MenuItemID;
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu ProcPtrs                                                                     */
 /*                                                                                      */
 /*  All of these procs are considered deprecated.  Developers interested in portability */
 /*  to Carbon should avoid them entirely, if at all possible.                           */
 /*--------------------------------------------------------------------------------------*/
-typedef CALLBACK_API( void , MenuDefProcPtr )(short message, MenuRef theMenu, Rect *menuRect, Point hitPt, short *whichItem);
-typedef STACK_UPP_TYPE(MenuDefProcPtr)                          MenuDefUPP;
+typedef CALLBACK_API( void, MenuDefProcPtr )( short message, MenuRef theMenu, Rect *menuRect, Point hitPt, short *whichItem );
+typedef STACK_UPP_TYPE( MenuDefProcPtr ) MenuDefUPP;
 /*
  *  NewMenuDefUPP()
  *  
@@ -1260,14 +1241,17 @@ typedef STACK_UPP_TYPE(MenuDefProcPtr)                          MenuDefUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( MenuDefUPP )
-NewMenuDefUPP(MenuDefProcPtr userRoutine);
+NewMenuDefUPP( MenuDefProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppMenuDefProcInfo = 0x0000FF80 };  /* pascal no_return_value Func(2_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(MenuDefUPP) NewMenuDefUPP(MenuDefProcPtr userRoutine) { return (MenuDefUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMenuDefProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewMenuDefUPP(userRoutine) (MenuDefUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMenuDefProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppMenuDefProcInfo = 0x0000FF80 }; /* pascal no_return_value Func(2_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( MenuDefUPP ) NewMenuDefUPP( MenuDefProcPtr userRoutine )
+{
+	return (MenuDefUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMenuDefProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewMenuDefUPP( userRoutine ) ( MenuDefUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMenuDefProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -1279,13 +1263,16 @@ NewMenuDefUPP(MenuDefProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeMenuDefUPP(MenuDefUPP userUPP);
+DisposeMenuDefUPP( MenuDefUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeMenuDefUPP(MenuDefUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeMenuDefUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeMenuDefUPP( MenuDefUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeMenuDefUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -1298,32 +1285,35 @@ DisposeMenuDefUPP(MenuDefUPP userUPP);
  */
 EXTERN_API_C( void )
 InvokeMenuDefUPP(
-  short       message,
-  MenuRef     theMenu,
-  Rect *      menuRect,
-  Point       hitPt,
-  short *     whichItem,
-  MenuDefUPP  userUPP);
+    short      message,
+    MenuRef    theMenu,
+    Rect *     menuRect,
+    Point      hitPt,
+    short *    whichItem,
+    MenuDefUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeMenuDefUPP(short message, MenuRef theMenu, Rect * menuRect, Point hitPt, short * whichItem, MenuDefUPP userUPP) { CALL_FIVE_PARAMETER_UPP(userUPP, uppMenuDefProcInfo, message, theMenu, menuRect, hitPt, whichItem); }
-  #else
-    #define InvokeMenuDefUPP(message, theMenu, menuRect, hitPt, whichItem, userUPP) CALL_FIVE_PARAMETER_UPP((userUPP), uppMenuDefProcInfo, (message), (theMenu), (menuRect), (hitPt), (whichItem))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeMenuDefUPP( short message, MenuRef theMenu, Rect *menuRect, Point hitPt, short *whichItem, MenuDefUPP userUPP )
+{
+	CALL_FIVE_PARAMETER_UPP( userUPP, uppMenuDefProcInfo, message, theMenu, menuRect, hitPt, whichItem );
+}
+#else
+#define InvokeMenuDefUPP( message, theMenu, menuRect, hitPt, whichItem, userUPP ) CALL_FIVE_PARAMETER_UPP( ( userUPP ), uppMenuDefProcInfo, ( message ), ( theMenu ), ( menuRect ), ( hitPt ), ( whichItem ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewMenuDefProc(userRoutine)                         NewMenuDefUPP(userRoutine)
-    #define CallMenuDefProc(userRoutine, message, theMenu, menuRect, hitPt, whichItem) InvokeMenuDefUPP(message, theMenu, menuRect, hitPt, whichItem, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewMenuDefProc( userRoutine ) NewMenuDefUPP( userRoutine )
+#define CallMenuDefProc( userRoutine, message, theMenu, menuRect, hitPt, whichItem ) InvokeMenuDefUPP( message, theMenu, menuRect, hitPt, whichItem, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
-typedef CALLBACK_API( long , MenuBarDefProcPtr )(short selector, short message, short parameter1, long parameter2);
-typedef CALLBACK_API( void , MenuHookProcPtr )(void);
-typedef CALLBACK_API_REGISTER68K( short , MBarHookProcPtr, (Rect * menuRect) );
-typedef STACK_UPP_TYPE(MenuBarDefProcPtr)                       MenuBarDefUPP;
-typedef STACK_UPP_TYPE(MenuHookProcPtr)                         MenuHookUPP;
-typedef REGISTER_UPP_TYPE(MBarHookProcPtr)                      MBarHookUPP;
+typedef CALLBACK_API( long, MenuBarDefProcPtr )( short selector, short message, short parameter1, long parameter2 );
+typedef CALLBACK_API( void, MenuHookProcPtr )( void );
+typedef CALLBACK_API_REGISTER68K( short, MBarHookProcPtr, ( Rect * menuRect ) );
+typedef STACK_UPP_TYPE( MenuBarDefProcPtr ) MenuBarDefUPP;
+typedef STACK_UPP_TYPE( MenuHookProcPtr ) MenuHookUPP;
+typedef REGISTER_UPP_TYPE( MBarHookProcPtr ) MBarHookUPP;
 #if CALL_NOT_IN_CARBON
 /*
  *  NewMenuBarDefUPP()
@@ -1334,14 +1324,17 @@ typedef REGISTER_UPP_TYPE(MBarHookProcPtr)                      MBarHookUPP;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( MenuBarDefUPP )
-NewMenuBarDefUPP(MenuBarDefProcPtr userRoutine);
+NewMenuBarDefUPP( MenuBarDefProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppMenuBarDefProcInfo = 0x00003AB0 };  /* pascal 4_bytes Func(2_bytes, 2_bytes, 2_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(MenuBarDefUPP) NewMenuBarDefUPP(MenuBarDefProcPtr userRoutine) { return (MenuBarDefUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMenuBarDefProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewMenuBarDefUPP(userRoutine) (MenuBarDefUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMenuBarDefProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppMenuBarDefProcInfo = 0x00003AB0 }; /* pascal 4_bytes Func(2_bytes, 2_bytes, 2_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( MenuBarDefUPP ) NewMenuBarDefUPP( MenuBarDefProcPtr userRoutine )
+{
+	return (MenuBarDefUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMenuBarDefProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewMenuBarDefUPP( userRoutine ) ( MenuBarDefUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMenuBarDefProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -1353,14 +1346,17 @@ NewMenuBarDefUPP(MenuBarDefProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( MenuHookUPP )
-NewMenuHookUPP(MenuHookProcPtr userRoutine);
+NewMenuHookUPP( MenuHookProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppMenuHookProcInfo = 0x00000000 };  /* pascal no_return_value Func() */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(MenuHookUPP) NewMenuHookUPP(MenuHookProcPtr userRoutine) { return (MenuHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMenuHookProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewMenuHookUPP(userRoutine) (MenuHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMenuHookProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppMenuHookProcInfo = 0x00000000 }; /* pascal no_return_value Func() */
+#ifdef __cplusplus
+inline DEFINE_API_C( MenuHookUPP ) NewMenuHookUPP( MenuHookProcPtr userRoutine )
+{
+	return (MenuHookUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMenuHookProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewMenuHookUPP( userRoutine ) ( MenuHookUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMenuHookProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -1372,14 +1368,17 @@ NewMenuHookUPP(MenuHookProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( MBarHookUPP )
-NewMBarHookUPP(MBarHookProcPtr userRoutine);
+NewMBarHookUPP( MBarHookProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppMBarHookProcInfo = 0x000000CF };  /* SPECIAL_CASE_PROCINFO(12) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(MBarHookUPP) NewMBarHookUPP(MBarHookProcPtr userRoutine) { return (MBarHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMBarHookProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewMBarHookUPP(userRoutine) (MBarHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppMBarHookProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppMBarHookProcInfo = 0x000000CF }; /* SPECIAL_CASE_PROCINFO(12) */
+#ifdef __cplusplus
+inline DEFINE_API_C( MBarHookUPP ) NewMBarHookUPP( MBarHookProcPtr userRoutine )
+{
+	return (MBarHookUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMBarHookProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewMBarHookUPP( userRoutine ) ( MBarHookUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppMBarHookProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -1391,13 +1390,16 @@ NewMBarHookUPP(MBarHookProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeMenuBarDefUPP(MenuBarDefUPP userUPP);
+DisposeMenuBarDefUPP( MenuBarDefUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeMenuBarDefUPP(MenuBarDefUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeMenuBarDefUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeMenuBarDefUPP( MenuBarDefUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeMenuBarDefUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -1409,13 +1411,16 @@ DisposeMenuBarDefUPP(MenuBarDefUPP userUPP);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeMenuHookUPP(MenuHookUPP userUPP);
+DisposeMenuHookUPP( MenuHookUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeMenuHookUPP(MenuHookUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeMenuHookUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeMenuHookUPP( MenuHookUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeMenuHookUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -1427,13 +1432,16 @@ DisposeMenuHookUPP(MenuHookUPP userUPP);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeMBarHookUPP(MBarHookUPP userUPP);
+DisposeMBarHookUPP( MBarHookUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeMBarHookUPP(MBarHookUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeMBarHookUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeMBarHookUPP( MBarHookUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeMBarHookUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -1446,17 +1454,20 @@ DisposeMBarHookUPP(MBarHookUPP userUPP);
  */
 EXTERN_API_C( long )
 InvokeMenuBarDefUPP(
-  short          selector,
-  short          message,
-  short          parameter1,
-  long           parameter2,
-  MenuBarDefUPP  userUPP);
+    short         selector,
+    short         message,
+    short         parameter1,
+    long          parameter2,
+    MenuBarDefUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(long) InvokeMenuBarDefUPP(short selector, short message, short parameter1, long parameter2, MenuBarDefUPP userUPP) { return (long)CALL_FOUR_PARAMETER_UPP(userUPP, uppMenuBarDefProcInfo, selector, message, parameter1, parameter2); }
-  #else
-    #define InvokeMenuBarDefUPP(selector, message, parameter1, parameter2, userUPP) (long)CALL_FOUR_PARAMETER_UPP((userUPP), uppMenuBarDefProcInfo, (selector), (message), (parameter1), (parameter2))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) InvokeMenuBarDefUPP( short selector, short message, short parameter1, long parameter2, MenuBarDefUPP userUPP )
+{
+	return (long)CALL_FOUR_PARAMETER_UPP( userUPP, uppMenuBarDefProcInfo, selector, message, parameter1, parameter2 );
+}
+#else
+#define InvokeMenuBarDefUPP( selector, message, parameter1, parameter2, userUPP ) ( long ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppMenuBarDefProcInfo, ( selector ), ( message ), ( parameter1 ), ( parameter2 ) )
+#endif
 #endif
 
 /*
@@ -1468,13 +1479,16 @@ InvokeMenuBarDefUPP(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-InvokeMenuHookUPP(MenuHookUPP userUPP);
+InvokeMenuHookUPP( MenuHookUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeMenuHookUPP(MenuHookUPP userUPP) { CALL_ZERO_PARAMETER_UPP(userUPP, uppMenuHookProcInfo); }
-  #else
-    #define InvokeMenuHookUPP(userUPP) CALL_ZERO_PARAMETER_UPP((userUPP), uppMenuHookProcInfo)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeMenuHookUPP( MenuHookUPP userUPP )
+{
+	CALL_ZERO_PARAMETER_UPP( userUPP, uppMenuHookProcInfo );
+}
+#else
+#define InvokeMenuHookUPP( userUPP ) CALL_ZERO_PARAMETER_UPP( ( userUPP ), uppMenuHookProcInfo )
+#endif
 #endif
 
 /*
@@ -1487,41 +1501,44 @@ InvokeMenuHookUPP(MenuHookUPP userUPP);
  */
 EXTERN_API_C( short )
 InvokeMBarHookUPP(
-  Rect *       menuRect,
-  MBarHookUPP  userUPP);
-#if !OPAQUE_UPP_TYPES && (!TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM)
-  #ifdef __cplusplus
-      inline DEFINE_API_C(short) InvokeMBarHookUPP(Rect * menuRect, MBarHookUPP userUPP) { return (short)CALL_ONE_PARAMETER_UPP(userUPP, uppMBarHookProcInfo, menuRect); }
-  #else
-    #define InvokeMBarHookUPP(menuRect, userUPP) (short)CALL_ONE_PARAMETER_UPP((userUPP), uppMBarHookProcInfo, (menuRect))
-  #endif
+    Rect *      menuRect,
+    MBarHookUPP userUPP );
+#if !OPAQUE_UPP_TYPES && ( !TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM )
+#ifdef __cplusplus
+inline DEFINE_API_C( short ) InvokeMBarHookUPP( Rect *menuRect, MBarHookUPP userUPP )
+{
+	return (short)CALL_ONE_PARAMETER_UPP( userUPP, uppMBarHookProcInfo, menuRect );
+}
+#else
+#define InvokeMBarHookUPP( menuRect, userUPP ) ( short ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppMBarHookProcInfo, ( menuRect ) )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewMenuBarDefProc(userRoutine)                      NewMenuBarDefUPP(userRoutine)
-    #define NewMenuHookProc(userRoutine)                        NewMenuHookUPP(userRoutine)
-    #define NewMBarHookProc(userRoutine)                        NewMBarHookUPP(userRoutine)
-    #define CallMenuBarDefProc(userRoutine, selector, message, parameter1, parameter2) InvokeMenuBarDefUPP(selector, message, parameter1, parameter2, userRoutine)
-    #define CallMenuHookProc(userRoutine)                       InvokeMenuHookUPP(userRoutine)
-    #define CallMBarHookProc(userRoutine, menuRect)             InvokeMBarHookUPP(menuRect, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewMenuBarDefProc( userRoutine ) NewMenuBarDefUPP( userRoutine )
+#define NewMenuHookProc( userRoutine ) NewMenuHookUPP( userRoutine )
+#define NewMBarHookProc( userRoutine ) NewMBarHookUPP( userRoutine )
+#define CallMenuBarDefProc( userRoutine, selector, message, parameter1, parameter2 ) InvokeMenuBarDefUPP( selector, message, parameter1, parameter2, userRoutine )
+#define CallMenuHookProc( userRoutine ) InvokeMenuHookUPP( userRoutine )
+#define CallMBarHookProc( userRoutine, menuRect ) InvokeMBarHookUPP( menuRect, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kMenuDefProcPtr               = 0     /* raw proc-ptr access based on old MDEF */
+	kMenuDefProcPtr = 0 /* raw proc-ptr access based on old MDEF */
 };
 
-typedef UInt32                          MenuDefType;
+typedef UInt32 MenuDefType;
 struct MenuDefSpec {
-  MenuDefType         defType;
-  union {
-    MenuDefUPP          defProc;
-  }                       u;
+	MenuDefType defType;
+	union {
+		MenuDefUPP defProc;
+	} u;
 };
-typedef struct MenuDefSpec              MenuDefSpec;
-typedef MenuDefSpec *                   MenuDefSpecPtr;
+typedef struct MenuDefSpec MenuDefSpec;
+typedef MenuDefSpec *      MenuDefSpecPtr;
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Manager Initialization                                                       */
 /*--------------------------------------------------------------------------------------*/
@@ -1535,8 +1552,7 @@ typedef MenuDefSpec *                   MenuDefSpecPtr;
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InitProcMenu(short resID)                                     ONEWORDINLINE(0xA808);
-
+InitProcMenu( short resID ) ONEWORDINLINE( 0xA808 );
 
 /*
  *  InitMenus()
@@ -1547,13 +1563,12 @@ InitProcMenu(short resID)                                     ONEWORDINLINE(0xA8
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InitMenus(void)                                               ONEWORDINLINE(0xA930);
-
+InitMenus( void ) ONEWORDINLINE( 0xA930 );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Manipulation                                                                 */
 /*--------------------------------------------------------------------------------------*/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  NewMenu()
@@ -1565,9 +1580,8 @@ InitMenus(void)                                               ONEWORDINLINE(0xA9
  */
 EXTERN_API( MenuRef )
 NewMenu(
-  MenuID             menuID,
-  ConstStr255Param   menuTitle)                               ONEWORDINLINE(0xA931);
-
+    MenuID           menuID,
+    ConstStr255Param menuTitle ) ONEWORDINLINE( 0xA931 );
 
 /*
  *  [Mac]GetMenu()
@@ -1578,11 +1592,10 @@ NewMenu(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacGetMenu GetMenu
+#define MacGetMenu GetMenu
 #endif
 EXTERN_API( MenuRef )
-MacGetMenu(short resourceID)                                  ONEWORDINLINE(0xA9BF);
-
+MacGetMenu( short resourceID ) ONEWORDINLINE( 0xA9BF );
 
 /*
  *  DisposeMenu()
@@ -1593,8 +1606,7 @@ MacGetMenu(short resourceID)                                  ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisposeMenu(MenuRef theMenu)                                  ONEWORDINLINE(0xA932);
-
+DisposeMenu( MenuRef theMenu ) ONEWORDINLINE( 0xA932 );
 
 /*
  *  CalcMenuSize()
@@ -1605,8 +1617,7 @@ DisposeMenu(MenuRef theMenu)                                  ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-CalcMenuSize(MenuRef theMenu)                                 ONEWORDINLINE(0xA948);
-
+CalcMenuSize( MenuRef theMenu ) ONEWORDINLINE( 0xA948 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1621,11 +1632,9 @@ CalcMenuSize(MenuRef theMenu)                                 ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( UInt16 )
-CountMItems(MenuRef theMenu)                                  ONEWORDINLINE(0xA950);
+CountMItems( MenuRef theMenu ) ONEWORDINLINE( 0xA950 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  CountMenuItems()
@@ -1636,17 +1645,17 @@ CountMItems(MenuRef theMenu)                                  ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt16 )
-CountMenuItems(MenuRef theMenu)                               ONEWORDINLINE(0xA950);
+CountMenuItems( MenuRef theMenu ) ONEWORDINLINE( 0xA950 );
 #if CALL_NOT_IN_CARBON && !TARGET_CPU_68K
-  #ifdef __cplusplus
-    inline DEFINE_API(UInt16 ) CountMenuItems(MenuRef theMenu) { return CountMItems(theMenu); }
-  #else
-    #define CountMenuItems(theMenu) (CountMItems(theMenu))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( UInt16 ) CountMenuItems( MenuRef theMenu )
+{
+	return CountMItems( theMenu );
+}
+#else
+#define CountMenuItems( theMenu ) ( CountMItems( theMenu ) )
 #endif
-
-
-
+#endif
 
 /* Routines available in Mac OS 8.5 and later, and on Mac OS 8.1 and later using CarbonLib 1.1 and later*/
 
@@ -1660,10 +1669,9 @@ CountMenuItems(MenuRef theMenu)                               ONEWORDINLINE(0xA9
  */
 EXTERN_API( OSStatus )
 GetMenuFont(
-  MenuRef   menu,
-  SInt16 *  outFontID,
-  UInt16 *  outFontSize);
-
+    MenuRef menu,
+    SInt16 *outFontID,
+    UInt16 *outFontSize );
 
 /*
  *  SetMenuFont()
@@ -1675,10 +1683,9 @@ GetMenuFont(
  */
 EXTERN_API( OSStatus )
 SetMenuFont(
-  MenuRef   menu,
-  SInt16    inFontID,
-  UInt16    inFontSize);
-
+    MenuRef menu,
+    SInt16  inFontID,
+    UInt16  inFontSize );
 
 /*
  *  GetMenuExcludesMarkColumn()
@@ -1689,8 +1696,7 @@ SetMenuFont(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-GetMenuExcludesMarkColumn(MenuRef menu);
-
+GetMenuExcludesMarkColumn( MenuRef menu );
 
 /*
  *  SetMenuExcludesMarkColumn()
@@ -1702,9 +1708,8 @@ GetMenuExcludesMarkColumn(MenuRef menu);
  */
 EXTERN_API( OSStatus )
 SetMenuExcludesMarkColumn(
-  MenuRef   menu,
-  Boolean   excludesMark);
-
+    MenuRef menu,
+    Boolean excludesMark );
 
 /*
  *  RegisterMenuDefinition()
@@ -1742,9 +1747,8 @@ SetMenuExcludesMarkColumn(
  */
 EXTERN_API( OSStatus )
 RegisterMenuDefinition(
-  SInt16           inResID,
-  MenuDefSpecPtr   inDefSpec);
-
+    SInt16         inResID,
+    MenuDefSpecPtr inDefSpec );
 
 /*
  *  CreateNewMenu()
@@ -1776,10 +1780,9 @@ RegisterMenuDefinition(
  */
 EXTERN_API( OSStatus )
 CreateNewMenu(
-  MenuID           inMenuID,
-  MenuAttributes   inMenuAttributes,
-  MenuRef *        outMenuRef);
-
+    MenuID         inMenuID,
+    MenuAttributes inMenuAttributes,
+    MenuRef *      outMenuRef );
 
 /*
  *  CreateCustomMenu()
@@ -1814,11 +1817,10 @@ CreateNewMenu(
  */
 EXTERN_API( OSStatus )
 CreateCustomMenu(
-  const MenuDefSpec *  inDefSpec,
-  MenuID               inMenuID,
-  MenuAttributes       inMenuAttributes,
-  MenuRef *            outMenuRef);
-
+    const MenuDefSpec *inDefSpec,
+    MenuID             inMenuID,
+    MenuAttributes     inMenuAttributes,
+    MenuRef *          outMenuRef );
 
 /*
  *  IsValidMenu()
@@ -1840,8 +1842,7 @@ CreateCustomMenu(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsValidMenu(MenuRef inMenu);
-
+IsValidMenu( MenuRef inMenu );
 
 /*
  *  GetMenuRetainCount()
@@ -1860,8 +1861,7 @@ IsValidMenu(MenuRef inMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ItemCount )
-GetMenuRetainCount(MenuRef inMenu);
-
+GetMenuRetainCount( MenuRef inMenu );
 
 /*
  *  RetainMenu()
@@ -1885,8 +1885,7 @@ GetMenuRetainCount(MenuRef inMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-RetainMenu(MenuRef inMenu);
-
+RetainMenu( MenuRef inMenu );
 
 /*
  *  ReleaseMenu()
@@ -1910,8 +1909,7 @@ RetainMenu(MenuRef inMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ReleaseMenu(MenuRef inMenu);
-
+ReleaseMenu( MenuRef inMenu );
 
 /*
  *  DuplicateMenu()
@@ -1940,9 +1938,8 @@ ReleaseMenu(MenuRef inMenu);
  */
 EXTERN_API( OSStatus )
 DuplicateMenu(
-  MenuRef    inSourceMenu,
-  MenuRef *  outMenu);
-
+    MenuRef  inSourceMenu,
+    MenuRef *outMenu );
 
 /*
  *  CopyMenuTitleAsCFString()
@@ -1966,9 +1963,8 @@ DuplicateMenu(
  */
 EXTERN_API( OSStatus )
 CopyMenuTitleAsCFString(
-  MenuRef        inMenu,
-  CFStringRef *  outString);
-
+    MenuRef      inMenu,
+    CFStringRef *outString );
 
 /*
  *  SetMenuTitleWithCFString()
@@ -2000,9 +1996,8 @@ CopyMenuTitleAsCFString(
  */
 EXTERN_API( OSStatus )
 SetMenuTitleWithCFString(
-  MenuRef       inMenu,
-  CFStringRef   inString);
-
+    MenuRef     inMenu,
+    CFStringRef inString );
 
 /*
  *  SetMenuTitleIcon()
@@ -2042,10 +2037,9 @@ SetMenuTitleWithCFString(
  */
 EXTERN_API( OSStatus )
 SetMenuTitleIcon(
-  MenuRef   inMenu,
-  UInt32    inType,
-  void *    inIcon);
-
+    MenuRef inMenu,
+    UInt32  inType,
+    void *  inIcon );
 
 /*
  *  GetMenuTitleIcon()
@@ -2079,10 +2073,9 @@ SetMenuTitleIcon(
  */
 EXTERN_API( OSStatus )
 GetMenuTitleIcon(
-  MenuRef   inMenu,
-  UInt32 *  outType,       /* can be NULL */
-  void **   outIcon);      /* can be NULL */
-
+    MenuRef inMenu,
+    UInt32 *outType, /* can be NULL */
+    void ** outIcon ); /* can be NULL */
 
 /*
  *  InvalidateMenuSize()
@@ -2109,8 +2102,7 @@ GetMenuTitleIcon(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-InvalidateMenuSize(MenuRef inMenu);
-
+InvalidateMenuSize( MenuRef inMenu );
 
 /*
  *  IsMenuSizeInvalid()
@@ -2136,8 +2128,7 @@ InvalidateMenuSize(MenuRef inMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsMenuSizeInvalid(MenuRef inMenu);
-
+IsMenuSizeInvalid( MenuRef inMenu );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o.MDEF support                                                                      */
@@ -2176,10 +2167,9 @@ IsMenuSizeInvalid(MenuRef inMenu);
  */
 EXTERN_API_C( OSStatus )
 EraseMenuBackground(
-  MenuRef        inMenu,
-  const Rect *   inEraseRect,
-  CGContextRef   inContext);        /* can be NULL */
-
+    MenuRef      inMenu,
+    const Rect * inEraseRect,
+    CGContextRef inContext ); /* can be NULL */
 
 /*
  *  ScrollMenuImage()
@@ -2220,12 +2210,11 @@ EraseMenuBackground(
  */
 EXTERN_API_C( OSStatus )
 ScrollMenuImage(
-  MenuRef        inMenu,
-  const Rect *   inScrollRect,
-  int            inHScroll,
-  int            inVScroll,
-  CGContextRef   inContext);         /* can be NULL */
-
+    MenuRef      inMenu,
+    const Rect * inScrollRect,
+    int          inHScroll,
+    int          inVScroll,
+    CGContextRef inContext ); /* can be NULL */
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Item Insertion                                                               */
@@ -2239,13 +2228,12 @@ ScrollMenuImage(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacAppendMenu AppendMenu
+#define MacAppendMenu AppendMenu
 #endif
 EXTERN_API( void )
 MacAppendMenu(
-  MenuRef            menu,
-  ConstStr255Param   data)                                    ONEWORDINLINE(0xA933);
-
+    MenuRef          menu,
+    ConstStr255Param data ) ONEWORDINLINE( 0xA933 );
 
 /*
  *  InsertResMenu()
@@ -2257,10 +2245,9 @@ MacAppendMenu(
  */
 EXTERN_API( void )
 InsertResMenu(
-  MenuRef   theMenu,
-  ResType   theType,
-  short     afterItem)                                        ONEWORDINLINE(0xA951);
-
+    MenuRef theMenu,
+    ResType theType,
+    short   afterItem ) ONEWORDINLINE( 0xA951 );
 
 /*
  *  AppendResMenu()
@@ -2272,9 +2259,8 @@ InsertResMenu(
  */
 EXTERN_API( void )
 AppendResMenu(
-  MenuRef   theMenu,
-  ResType   theType)                                          ONEWORDINLINE(0xA94D);
-
+    MenuRef theMenu,
+    ResType theType ) ONEWORDINLINE( 0xA94D );
 
 /*
  *  [Mac]InsertMenuItem()
@@ -2285,14 +2271,13 @@ AppendResMenu(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacInsertMenuItem InsertMenuItem
+#define MacInsertMenuItem InsertMenuItem
 #endif
 EXTERN_API( void )
 MacInsertMenuItem(
-  MenuRef            theMenu,
-  ConstStr255Param   itemString,
-  short              afterItem)                               ONEWORDINLINE(0xA826);
-
+    MenuRef          theMenu,
+    ConstStr255Param itemString,
+    short            afterItem ) ONEWORDINLINE( 0xA826 );
 
 /*
  *  DeleteMenuItem()
@@ -2304,9 +2289,8 @@ MacInsertMenuItem(
  */
 EXTERN_API( void )
 DeleteMenuItem(
-  MenuRef   theMenu,
-  short     item)                                             ONEWORDINLINE(0xA952);
-
+    MenuRef theMenu,
+    short   item ) ONEWORDINLINE( 0xA952 );
 
 /*
  *  InsertFontResMenu()
@@ -2318,10 +2302,9 @@ DeleteMenuItem(
  */
 EXTERN_API( void )
 InsertFontResMenu(
-  MenuRef   theMenu,
-  short     afterItem,
-  short     scriptFilter)                                     THREEWORDINLINE(0x303C, 0x0400, 0xA825);
-
+    MenuRef theMenu,
+    short   afterItem,
+    short   scriptFilter ) THREEWORDINLINE( 0x303C, 0x0400, 0xA825 );
 
 /*
  *  InsertIntlResMenu()
@@ -2333,11 +2316,10 @@ InsertFontResMenu(
  */
 EXTERN_API( void )
 InsertIntlResMenu(
-  MenuRef   theMenu,
-  ResType   theType,
-  short     afterItem,
-  short     scriptFilter)                                     THREEWORDINLINE(0x303C, 0x0601, 0xA825);
-
+    MenuRef theMenu,
+    ResType theType,
+    short   afterItem,
+    short   scriptFilter ) THREEWORDINLINE( 0x303C, 0x0601, 0xA825 );
 
 /*
  *  AppendMenuItemText()
@@ -2349,9 +2331,8 @@ InsertIntlResMenu(
  */
 EXTERN_API( OSStatus )
 AppendMenuItemText(
-  MenuRef            menu,
-  ConstStr255Param   inString);
-
+    MenuRef          menu,
+    ConstStr255Param inString );
 
 /*
  *  InsertMenuItemText()
@@ -2363,10 +2344,9 @@ AppendMenuItemText(
  */
 EXTERN_API( OSStatus )
 InsertMenuItemText(
-  MenuRef            menu,
-  ConstStr255Param   inString,
-  MenuItemIndex      afterItem);
-
+    MenuRef          menu,
+    ConstStr255Param inString,
+    MenuItemIndex    afterItem );
 
 /*
  *  CopyMenuItems()
@@ -2399,12 +2379,11 @@ InsertMenuItemText(
  */
 EXTERN_API( OSStatus )
 CopyMenuItems(
-  MenuRef         inSourceMenu,
-  MenuItemIndex   inFirstItem,
-  ItemCount       inNumItems,
-  MenuRef         inDestMenu,
-  MenuItemIndex   inInsertAfter);
-
+    MenuRef       inSourceMenu,
+    MenuItemIndex inFirstItem,
+    ItemCount     inNumItems,
+    MenuRef       inDestMenu,
+    MenuItemIndex inInsertAfter );
 
 /*
  *  DeleteMenuItems()
@@ -2434,10 +2413,9 @@ CopyMenuItems(
  */
 EXTERN_API( OSStatus )
 DeleteMenuItems(
-  MenuRef         inMenu,
-  MenuItemIndex   inFirstItem,
-  ItemCount       inNumItems);
-
+    MenuRef       inMenu,
+    MenuItemIndex inFirstItem,
+    ItemCount     inNumItems );
 
 /*
  *  AppendMenuItemTextWithCFString()
@@ -2479,12 +2457,11 @@ DeleteMenuItems(
  */
 EXTERN_API( OSStatus )
 AppendMenuItemTextWithCFString(
-  MenuRef              inMenu,
-  CFStringRef          inString,
-  MenuItemAttributes   inAttributes,
-  MenuCommand          inCommandID,
-  MenuItemIndex *      outNewItem);        /* can be NULL */
-
+    MenuRef            inMenu,
+    CFStringRef        inString,
+    MenuItemAttributes inAttributes,
+    MenuCommand        inCommandID,
+    MenuItemIndex *    outNewItem ); /* can be NULL */
 
 /*
  *  InsertMenuItemTextWithCFString()
@@ -2525,12 +2502,11 @@ AppendMenuItemTextWithCFString(
  */
 EXTERN_API( OSStatus )
 InsertMenuItemTextWithCFString(
-  MenuRef              inMenu,
-  CFStringRef          inString,
-  MenuItemIndex        inAfterItem,
-  MenuItemAttributes   inAttributes,
-  MenuCommand          inCommandID);
-
+    MenuRef            inMenu,
+    CFStringRef        inString,
+    MenuItemIndex      inAfterItem,
+    MenuItemAttributes inAttributes,
+    MenuCommand        inCommandID );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Events                                                                       */
@@ -2544,8 +2520,7 @@ InsertMenuItemTextWithCFString(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-MenuKey(CharParameter ch)                                     ONEWORDINLINE(0xA93E);
-
+MenuKey( CharParameter ch ) ONEWORDINLINE( 0xA93E );
 
 /*
  *  MenuSelect()
@@ -2556,8 +2531,7 @@ MenuKey(CharParameter ch)                                     ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-MenuSelect(Point startPt)                                     ONEWORDINLINE(0xA93D);
-
+MenuSelect( Point startPt ) ONEWORDINLINE( 0xA93D );
 
 /*
  *  PopUpMenuSelect()
@@ -2569,11 +2543,10 @@ MenuSelect(Point startPt)                                     ONEWORDINLINE(0xA9
  */
 EXTERN_API( long )
 PopUpMenuSelect(
-  MenuRef   menu,
-  short     top,
-  short     left,
-  short     popUpItem)                                        ONEWORDINLINE(0xA80B);
-
+    MenuRef menu,
+    short   top,
+    short   left,
+    short   popUpItem ) ONEWORDINLINE( 0xA80B );
 
 /*
  *  MenuChoice()
@@ -2584,8 +2557,7 @@ PopUpMenuSelect(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-MenuChoice(void)                                              ONEWORDINLINE(0xAA66);
-
+MenuChoice( void ) ONEWORDINLINE( 0xAA66 );
 
 /*
  *  MenuEvent()
@@ -2596,8 +2568,7 @@ MenuChoice(void)                                              ONEWORDINLINE(0xAA
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt32 )
-MenuEvent(const EventRecord * inEvent)                        THREEWORDINLINE(0x303C, 0x020C, 0xA825);
-
+MenuEvent( const EventRecord *inEvent ) THREEWORDINLINE( 0x303C, 0x020C, 0xA825 );
 
 /*
  *  IsMenuKeyEvent()
@@ -2637,12 +2608,11 @@ MenuEvent(const EventRecord * inEvent)                        THREEWORDINLINE(0x
  */
 EXTERN_API( Boolean )
 IsMenuKeyEvent(
-  MenuRef            inStartMenu,
-  EventRef           inEvent,
-  MenuEventOptions   inOptions,
-  MenuRef *          outMenu,           /* can be NULL */
-  MenuItemIndex *    outMenuItem);      /* can be NULL */
-
+    MenuRef          inStartMenu,
+    EventRef         inEvent,
+    MenuEventOptions inOptions,
+    MenuRef *        outMenu, /* can be NULL */
+    MenuItemIndex *  outMenuItem ); /* can be NULL */
 
 /*
  *  InvalidateMenuEnabling()
@@ -2678,9 +2648,7 @@ IsMenuKeyEvent(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-InvalidateMenuEnabling(MenuRef inMenu);
-
-
+InvalidateMenuEnabling( MenuRef inMenu );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Bar                                                                          */
@@ -2694,8 +2662,7 @@ InvalidateMenuEnabling(MenuRef inMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-GetMBarHeight(void)                                           TWOWORDINLINE(0x3EB8, 0x0BAA);
-
+GetMBarHeight( void ) TWOWORDINLINE( 0x3EB8, 0x0BAA );
 
 /*
  *  [Mac]DrawMenuBar()
@@ -2706,11 +2673,10 @@ GetMBarHeight(void)                                           TWOWORDINLINE(0x3E
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacDrawMenuBar DrawMenuBar
+#define MacDrawMenuBar DrawMenuBar
 #endif
 EXTERN_API( void )
-MacDrawMenuBar(void)                                          ONEWORDINLINE(0xA937);
-
+MacDrawMenuBar( void ) ONEWORDINLINE( 0xA937 );
 
 /*
  *  InvalMenuBar()
@@ -2721,8 +2687,7 @@ MacDrawMenuBar(void)                                          ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-InvalMenuBar(void)                                            ONEWORDINLINE(0xA81D);
-
+InvalMenuBar( void ) ONEWORDINLINE( 0xA81D );
 
 /*
  *  IsMenuBarInvalid()
@@ -2742,8 +2707,7 @@ InvalMenuBar(void)                                            ONEWORDINLINE(0xA8
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsMenuBarInvalid(MenuRef rootMenu);
-
+IsMenuBarInvalid( MenuRef rootMenu );
 
 /*
  *  HiliteMenu()
@@ -2754,8 +2718,7 @@ IsMenuBarInvalid(MenuRef rootMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-HiliteMenu(MenuID menuID)                                     ONEWORDINLINE(0xA938);
-
+HiliteMenu( MenuID menuID ) ONEWORDINLINE( 0xA938 );
 
 /*
  *  GetNewMBar()
@@ -2766,8 +2729,7 @@ HiliteMenu(MenuID menuID)                                     ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( MenuBarHandle )
-GetNewMBar(short menuBarID)                                   ONEWORDINLINE(0xA9C0);
-
+GetNewMBar( short menuBarID ) ONEWORDINLINE( 0xA9C0 );
 
 /*
  *  GetMenuBar()
@@ -2778,8 +2740,7 @@ GetNewMBar(short menuBarID)                                   ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( MenuBarHandle )
-GetMenuBar(void)                                              ONEWORDINLINE(0xA93B);
-
+GetMenuBar( void ) ONEWORDINLINE( 0xA93B );
 
 /*
  *  SetMenuBar()
@@ -2790,8 +2751,7 @@ GetMenuBar(void)                                              ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetMenuBar(MenuBarHandle mbar)                                ONEWORDINLINE(0xA93C);
-
+SetMenuBar( MenuBarHandle mbar ) ONEWORDINLINE( 0xA93C );
 
 /*
  *  DuplicateMenuBar()
@@ -2822,9 +2782,8 @@ SetMenuBar(MenuBarHandle mbar)                                ONEWORDINLINE(0xA9
  */
 EXTERN_API( OSStatus )
 DuplicateMenuBar(
-  MenuBarHandle    inMbar,
-  MenuBarHandle *  outMbar);
-
+    MenuBarHandle  inMbar,
+    MenuBarHandle *outMbar );
 
 /*
  *  DisposeMenuBar()
@@ -2850,8 +2809,7 @@ DuplicateMenuBar(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-DisposeMenuBar(MenuBarHandle inMbar);
-
+DisposeMenuBar( MenuBarHandle inMbar );
 
 /*
  *  GetMenuHandle()
@@ -2862,8 +2820,7 @@ DisposeMenuBar(MenuBarHandle inMbar);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( MenuRef )
-GetMenuHandle(MenuID menuID)                                  ONEWORDINLINE(0xA949);
-
+GetMenuHandle( MenuID menuID ) ONEWORDINLINE( 0xA949 );
 
 #define GetMenuRef GetMenuHandle
 /*
@@ -2875,13 +2832,12 @@ GetMenuHandle(MenuID menuID)                                  ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacInsertMenu InsertMenu
+#define MacInsertMenu InsertMenu
 #endif
 EXTERN_API( void )
 MacInsertMenu(
-  MenuRef   theMenu,
-  MenuID    beforeID)                                         ONEWORDINLINE(0xA935);
-
+    MenuRef theMenu,
+    MenuID  beforeID ) ONEWORDINLINE( 0xA935 );
 
 /*
  *  [Mac]DeleteMenu()
@@ -2892,11 +2848,10 @@ MacInsertMenu(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacDeleteMenu DeleteMenu
+#define MacDeleteMenu DeleteMenu
 #endif
 EXTERN_API( void )
-MacDeleteMenu(MenuID menuID)                                  ONEWORDINLINE(0xA936);
-
+MacDeleteMenu( MenuID menuID ) ONEWORDINLINE( 0xA936 );
 
 /*
  *  ClearMenuBar()
@@ -2907,8 +2862,7 @@ MacDeleteMenu(MenuID menuID)                                  ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-ClearMenuBar(void)                                            ONEWORDINLINE(0xA934);
-
+ClearMenuBar( void ) ONEWORDINLINE( 0xA934 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -2923,11 +2877,9 @@ ClearMenuBar(void)                                            ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-SetMenuFlash(short count)                                     ONEWORDINLINE(0xA94A);
+SetMenuFlash( short count ) ONEWORDINLINE( 0xA94A );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  SetMenuFlashCount()
@@ -2938,16 +2890,17 @@ SetMenuFlash(short count)                                     ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetMenuFlashCount(short count)                                ONEWORDINLINE(0xA94A);
+SetMenuFlashCount( short count ) ONEWORDINLINE( 0xA94A );
 #if CALL_NOT_IN_CARBON && !TARGET_CPU_68K
-  #ifdef __cplusplus
-    inline DEFINE_API(void) SetMenuFlashCount(short count) { SetMenuFlash(count); }
-  #else
-    #define SetMenuFlashCount(count) (SetMenuFlash(count))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( void ) SetMenuFlashCount( short count )
+{
+	SetMenuFlash( count );
+}
+#else
+#define SetMenuFlashCount( count ) ( SetMenuFlash( count ) )
 #endif
-
-
+#endif
 
 /*
  *  FlashMenuBar()
@@ -2958,8 +2911,7 @@ SetMenuFlashCount(short count)                                ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-FlashMenuBar(MenuID menuID)                                   ONEWORDINLINE(0xA94C);
-
+FlashMenuBar( MenuID menuID ) ONEWORDINLINE( 0xA94C );
 
 /* These are obsolete because Carbon does not support desk accessories.*/
 #if CALL_NOT_IN_CARBON
@@ -2972,8 +2924,7 @@ FlashMenuBar(MenuID menuID)                                   ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-SystemEdit(short editCmd)                                     ONEWORDINLINE(0xA9C2);
-
+SystemEdit( short editCmd ) ONEWORDINLINE( 0xA9C2 );
 
 /*
  *  SystemMenu()
@@ -2984,10 +2935,9 @@ SystemEdit(short editCmd)                                     ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-SystemMenu(long menuResult)                                   ONEWORDINLINE(0xA9B5);
+SystemMenu( long menuResult ) ONEWORDINLINE( 0xA9B5 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  IsMenuBarVisible()
@@ -2998,8 +2948,7 @@ SystemMenu(long menuResult)                                   ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsMenuBarVisible(void);
-
+IsMenuBarVisible( void );
 
 /*
  *  ShowMenuBar()
@@ -3010,8 +2959,7 @@ IsMenuBarVisible(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-ShowMenuBar(void);
-
+ShowMenuBar( void );
 
 /*
  *  HideMenuBar()
@@ -3022,8 +2970,7 @@ ShowMenuBar(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-HideMenuBar(void);
-
+HideMenuBar( void );
 
 /*
  *  AcquireRootMenu()
@@ -3042,8 +2989,7 @@ HideMenuBar(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( MenuRef )
-AcquireRootMenu(void);
-
+AcquireRootMenu( void );
 
 /*
  *  SetRootMenu()
@@ -3066,8 +3012,7 @@ AcquireRootMenu(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-SetRootMenu(MenuRef inMenu);
-
+SetRootMenu( MenuRef inMenu );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Item Accessors                                                               */
@@ -3086,13 +3031,11 @@ SetRootMenu(MenuRef inMenu);
  */
 EXTERN_API( void )
 CheckItem(
-  MenuRef   theMenu,
-  short     item,
-  Boolean   checked)                                          ONEWORDINLINE(0xA945);
+    MenuRef theMenu,
+    short   item,
+    Boolean checked ) ONEWORDINLINE( 0xA945 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  [Mac]CheckMenuItem()
@@ -3103,26 +3046,27 @@ CheckItem(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacCheckMenuItem CheckMenuItem
+#define MacCheckMenuItem CheckMenuItem
 #endif
 EXTERN_API( void )
 MacCheckMenuItem(
-  MenuRef   theMenu,
-  short     item,
-  Boolean   checked)                                          ONEWORDINLINE(0xA945);
+    MenuRef theMenu,
+    short   item,
+    Boolean checked ) ONEWORDINLINE( 0xA945 );
 #if CALL_NOT_IN_CARBON && !TARGET_CPU_68K
-  #ifdef __cplusplus
-    inline DEFINE_API(void) MacCheckMenuItem(MenuRef theMenu, short item, Boolean checked) { CheckItem(theMenu, item, checked); }
-  #else
-    #if TARGET_OS_MAC
-      #define CheckMenuItem(theMenu, item, checked) (CheckItem(theMenu, item, checked))
-    #else
-      #define MacCheckMenuItem(theMenu, item, checked) (CheckItem(theMenu, item, checked))
-    #endif
+#ifdef __cplusplus
+inline DEFINE_API( void ) MacCheckMenuItem( MenuRef theMenu, short item, Boolean checked )
+{
+	CheckItem( theMenu, item, checked );
+}
+#else
+#if TARGET_OS_MAC
+#define CheckMenuItem( theMenu, item, checked ) ( CheckItem( theMenu, item, checked ) )
+#else
+#define MacCheckMenuItem( theMenu, item, checked ) ( CheckItem( theMenu, item, checked ) )
 #endif
 #endif
-
-
+#endif
 
 /*
  *  SetMenuItemText()
@@ -3134,10 +3078,9 @@ MacCheckMenuItem(
  */
 EXTERN_API( void )
 SetMenuItemText(
-  MenuRef            theMenu,
-  short              item,
-  ConstStr255Param   itemString)                              ONEWORDINLINE(0xA947);
-
+    MenuRef          theMenu,
+    short            item,
+    ConstStr255Param itemString ) ONEWORDINLINE( 0xA947 );
 
 /*
  *  GetMenuItemText()
@@ -3149,10 +3092,9 @@ SetMenuItemText(
  */
 EXTERN_API( void )
 GetMenuItemText(
-  MenuRef   theMenu,
-  short     item,
-  Str255    itemString)                                       ONEWORDINLINE(0xA946);
-
+    MenuRef theMenu,
+    short   item,
+    Str255  itemString ) ONEWORDINLINE( 0xA946 );
 
 /*
  *  SetItemMark()
@@ -3164,10 +3106,9 @@ GetMenuItemText(
  */
 EXTERN_API( void )
 SetItemMark(
-  MenuRef         theMenu,
-  short           item,
-  CharParameter   markChar)                                   ONEWORDINLINE(0xA944);
-
+    MenuRef       theMenu,
+    short         item,
+    CharParameter markChar ) ONEWORDINLINE( 0xA944 );
 
 /*
  *  GetItemMark()
@@ -3179,10 +3120,9 @@ SetItemMark(
  */
 EXTERN_API( void )
 GetItemMark(
-  MenuRef          theMenu,
-  short            item,
-  CharParameter *  markChar)                                  ONEWORDINLINE(0xA943);
-
+    MenuRef        theMenu,
+    short          item,
+    CharParameter *markChar ) ONEWORDINLINE( 0xA943 );
 
 /*
  *  SetItemCmd()
@@ -3194,10 +3134,9 @@ GetItemMark(
  */
 EXTERN_API( void )
 SetItemCmd(
-  MenuRef         theMenu,
-  short           item,
-  CharParameter   cmdChar)                                    ONEWORDINLINE(0xA84F);
-
+    MenuRef       theMenu,
+    short         item,
+    CharParameter cmdChar ) ONEWORDINLINE( 0xA84F );
 
 /*
  *  GetItemCmd()
@@ -3209,10 +3148,9 @@ SetItemCmd(
  */
 EXTERN_API( void )
 GetItemCmd(
-  MenuRef          theMenu,
-  short            item,
-  CharParameter *  cmdChar)                                   ONEWORDINLINE(0xA84E);
-
+    MenuRef        theMenu,
+    short          item,
+    CharParameter *cmdChar ) ONEWORDINLINE( 0xA84E );
 
 /*
  *  SetItemIcon()
@@ -3224,10 +3162,9 @@ GetItemCmd(
  */
 EXTERN_API( void )
 SetItemIcon(
-  MenuRef   theMenu,
-  short     item,
-  short     iconIndex)                                        ONEWORDINLINE(0xA940);
-
+    MenuRef theMenu,
+    short   item,
+    short   iconIndex ) ONEWORDINLINE( 0xA940 );
 
 /* icon is returned in high byte of 16-bit iconIndex */
 /*
@@ -3240,10 +3177,9 @@ SetItemIcon(
  */
 EXTERN_API( void )
 GetItemIcon(
-  MenuRef   theMenu,
-  short     item,
-  short *   iconIndex)                                        ONEWORDINLINE(0xA93F);
-
+    MenuRef theMenu,
+    short   item,
+    short * iconIndex ) ONEWORDINLINE( 0xA93F );
 
 /*
  *  SetItemStyle()
@@ -3255,10 +3191,9 @@ GetItemIcon(
  */
 EXTERN_API( void )
 SetItemStyle(
-  MenuRef          theMenu,
-  short            item,
-  StyleParameter   chStyle)                                   ONEWORDINLINE(0xA942);
-
+    MenuRef        theMenu,
+    short          item,
+    StyleParameter chStyle ) ONEWORDINLINE( 0xA942 );
 
 /*
  *  GetItemStyle()
@@ -3270,10 +3205,9 @@ SetItemStyle(
  */
 EXTERN_API( void )
 GetItemStyle(
-  MenuRef   theMenu,
-  short     item,
-  Style *   chStyle);
-
+    MenuRef theMenu,
+    short   item,
+    Style * chStyle );
 
 /* These APIs are not supported in Carbon. Please use EnableMenuItem and */
 /* DisableMenuItem (available back through Mac OS 8.5) instead.          */
@@ -3288,9 +3222,8 @@ GetItemStyle(
  */
 EXTERN_API( void )
 DisableItem(
-  MenuRef   theMenu,
-  short     item)                                             ONEWORDINLINE(0xA93A);
-
+    MenuRef theMenu,
+    short   item ) ONEWORDINLINE( 0xA93A );
 
 /*
  *  EnableItem()
@@ -3302,11 +3235,10 @@ DisableItem(
  */
 EXTERN_API( void )
 EnableItem(
-  MenuRef   theMenu,
-  short     item)                                             ONEWORDINLINE(0xA939);
+    MenuRef theMenu,
+    short   item ) ONEWORDINLINE( 0xA939 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  SetMenuItemCommandID()
@@ -3318,10 +3250,9 @@ EnableItem(
  */
 EXTERN_API( OSErr )
 SetMenuItemCommandID(
-  MenuRef       inMenu,
-  SInt16        inItem,
-  MenuCommand   inCommandID)                                  THREEWORDINLINE(0x303C, 0x0502, 0xA825);
-
+    MenuRef     inMenu,
+    SInt16      inItem,
+    MenuCommand inCommandID ) THREEWORDINLINE( 0x303C, 0x0502, 0xA825 );
 
 /*
  *  GetMenuItemCommandID()
@@ -3333,10 +3264,9 @@ SetMenuItemCommandID(
  */
 EXTERN_API( OSErr )
 GetMenuItemCommandID(
-  MenuRef        inMenu,
-  SInt16         inItem,
-  MenuCommand *  outCommandID)                                THREEWORDINLINE(0x303C, 0x0503, 0xA825);
-
+    MenuRef      inMenu,
+    SInt16       inItem,
+    MenuCommand *outCommandID ) THREEWORDINLINE( 0x303C, 0x0503, 0xA825 );
 
 /*
  *  SetMenuItemModifiers()
@@ -3348,10 +3278,9 @@ GetMenuItemCommandID(
  */
 EXTERN_API( OSErr )
 SetMenuItemModifiers(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt8     inModifiers)                                      THREEWORDINLINE(0x303C, 0x0404, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt8   inModifiers ) THREEWORDINLINE( 0x303C, 0x0404, 0xA825 );
 
 /*
  *  GetMenuItemModifiers()
@@ -3363,10 +3292,9 @@ SetMenuItemModifiers(
  */
 EXTERN_API( OSErr )
 GetMenuItemModifiers(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt8 *   outModifiers)                                     THREEWORDINLINE(0x303C, 0x0505, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt8 * outModifiers ) THREEWORDINLINE( 0x303C, 0x0505, 0xA825 );
 
 /*
  *  SetMenuItemIconHandle()
@@ -3378,11 +3306,10 @@ GetMenuItemModifiers(
  */
 EXTERN_API( OSErr )
 SetMenuItemIconHandle(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt8     inIconType,
-  Handle    inIconHandle)                                     THREEWORDINLINE(0x303C, 0x0606, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt8   inIconType,
+    Handle  inIconHandle ) THREEWORDINLINE( 0x303C, 0x0606, 0xA825 );
 
 /*
  *  GetMenuItemIconHandle()
@@ -3394,11 +3321,10 @@ SetMenuItemIconHandle(
  */
 EXTERN_API( OSErr )
 GetMenuItemIconHandle(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt8 *   outIconType,
-  Handle *  outIconHandle)                                    THREEWORDINLINE(0x303C, 0x0707, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt8 * outIconType,
+    Handle *outIconHandle ) THREEWORDINLINE( 0x303C, 0x0707, 0xA825 );
 
 /*
  *  SetMenuItemTextEncoding()
@@ -3410,10 +3336,9 @@ GetMenuItemIconHandle(
  */
 EXTERN_API( OSErr )
 SetMenuItemTextEncoding(
-  MenuRef        inMenu,
-  SInt16         inItem,
-  TextEncoding   inScriptID)                                  THREEWORDINLINE(0x303C, 0x0408, 0xA825);
-
+    MenuRef      inMenu,
+    SInt16       inItem,
+    TextEncoding inScriptID ) THREEWORDINLINE( 0x303C, 0x0408, 0xA825 );
 
 /*
  *  GetMenuItemTextEncoding()
@@ -3425,10 +3350,9 @@ SetMenuItemTextEncoding(
  */
 EXTERN_API( OSErr )
 GetMenuItemTextEncoding(
-  MenuRef         inMenu,
-  SInt16          inItem,
-  TextEncoding *  outScriptID)                                THREEWORDINLINE(0x303C, 0x0509, 0xA825);
-
+    MenuRef       inMenu,
+    SInt16        inItem,
+    TextEncoding *outScriptID ) THREEWORDINLINE( 0x303C, 0x0509, 0xA825 );
 
 /*
  *  SetMenuItemHierarchicalID()
@@ -3440,10 +3364,9 @@ GetMenuItemTextEncoding(
  */
 EXTERN_API( OSErr )
 SetMenuItemHierarchicalID(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  MenuID    inHierID)                                         THREEWORDINLINE(0x303C, 0x040D, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    MenuID  inHierID ) THREEWORDINLINE( 0x303C, 0x040D, 0xA825 );
 
 /*
  *  GetMenuItemHierarchicalID()
@@ -3455,10 +3378,9 @@ SetMenuItemHierarchicalID(
  */
 EXTERN_API( OSErr )
 GetMenuItemHierarchicalID(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  MenuID *  outHierID)                                        THREEWORDINLINE(0x303C, 0x050E, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    MenuID *outHierID ) THREEWORDINLINE( 0x303C, 0x050E, 0xA825 );
 
 /*
  *  SetMenuItemFontID()
@@ -3470,10 +3392,9 @@ GetMenuItemHierarchicalID(
  */
 EXTERN_API( OSErr )
 SetMenuItemFontID(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  SInt16    inFontID)                                         THREEWORDINLINE(0x303C, 0x040F, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    SInt16  inFontID ) THREEWORDINLINE( 0x303C, 0x040F, 0xA825 );
 
 /*
  *  GetMenuItemFontID()
@@ -3485,10 +3406,9 @@ SetMenuItemFontID(
  */
 EXTERN_API( OSErr )
 GetMenuItemFontID(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  SInt16 *  outFontID)                                        THREEWORDINLINE(0x303C, 0x0510, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    SInt16 *outFontID ) THREEWORDINLINE( 0x303C, 0x0510, 0xA825 );
 
 /*
  *  SetMenuItemRefCon()
@@ -3500,10 +3420,9 @@ GetMenuItemFontID(
  */
 EXTERN_API( OSErr )
 SetMenuItemRefCon(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt32    inRefCon)                                         THREEWORDINLINE(0x303C, 0x050A, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt32  inRefCon ) THREEWORDINLINE( 0x303C, 0x050A, 0xA825 );
 
 /*
  *  GetMenuItemRefCon()
@@ -3515,10 +3434,9 @@ SetMenuItemRefCon(
  */
 EXTERN_API( OSErr )
 GetMenuItemRefCon(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt32 *  outRefCon)                                        THREEWORDINLINE(0x303C, 0x050B, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt32 *outRefCon ) THREEWORDINLINE( 0x303C, 0x050B, 0xA825 );
 
 /* Please use the menu item property APIs in Carbon.*/
 #if CALL_NOT_IN_CARBON
@@ -3532,10 +3450,9 @@ GetMenuItemRefCon(
  */
 EXTERN_API( OSErr )
 SetMenuItemRefCon2(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt32    inRefCon2)                                        THREEWORDINLINE(0x303C, 0x0511, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt32  inRefCon2 ) THREEWORDINLINE( 0x303C, 0x0511, 0xA825 );
 
 /*
  *  GetMenuItemRefCon2()
@@ -3547,12 +3464,11 @@ SetMenuItemRefCon2(
  */
 EXTERN_API( OSErr )
 GetMenuItemRefCon2(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  UInt32 *  outRefCon2)                                       THREEWORDINLINE(0x303C, 0x0512, 0xA825);
+    MenuRef inMenu,
+    SInt16  inItem,
+    UInt32 *outRefCon2 ) THREEWORDINLINE( 0x303C, 0x0512, 0xA825 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  SetMenuItemKeyGlyph()
@@ -3564,10 +3480,9 @@ GetMenuItemRefCon2(
  */
 EXTERN_API( OSErr )
 SetMenuItemKeyGlyph(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  SInt16    inGlyph)                                          THREEWORDINLINE(0x303C, 0x0513, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    SInt16  inGlyph ) THREEWORDINLINE( 0x303C, 0x0513, 0xA825 );
 
 /*
  *  GetMenuItemKeyGlyph()
@@ -3579,10 +3494,9 @@ SetMenuItemKeyGlyph(
  */
 EXTERN_API( OSErr )
 GetMenuItemKeyGlyph(
-  MenuRef   inMenu,
-  SInt16    inItem,
-  SInt16 *  outGlyph)                                         THREEWORDINLINE(0x303C, 0x0514, 0xA825);
-
+    MenuRef inMenu,
+    SInt16  inItem,
+    SInt16 *outGlyph ) THREEWORDINLINE( 0x303C, 0x0514, 0xA825 );
 
 /* Routines available in Mac OS 8.5 and later (supporting enabling/disabling of > 31 items)*/
 
@@ -3595,13 +3509,12 @@ GetMenuItemKeyGlyph(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacEnableMenuItem EnableMenuItem
+#define MacEnableMenuItem EnableMenuItem
 #endif
 EXTERN_API( void )
 MacEnableMenuItem(
-  MenuRef         theMenu,
-  MenuItemIndex   item);
-
+    MenuRef       theMenu,
+    MenuItemIndex item );
 
 /*
  *  DisableMenuItem()
@@ -3613,9 +3526,8 @@ MacEnableMenuItem(
  */
 EXTERN_API( void )
 DisableMenuItem(
-  MenuRef         theMenu,
-  MenuItemIndex   item);
-
+    MenuRef       theMenu,
+    MenuItemIndex item );
 
 /*
  *  IsMenuItemEnabled()
@@ -3627,9 +3539,8 @@ DisableMenuItem(
  */
 EXTERN_API( Boolean )
 IsMenuItemEnabled(
-  MenuRef         menu,
-  MenuItemIndex   item);
-
+    MenuRef       menu,
+    MenuItemIndex item );
 
 /*
  *  EnableMenuItemIcon()
@@ -3641,9 +3552,8 @@ IsMenuItemEnabled(
  */
 EXTERN_API( void )
 EnableMenuItemIcon(
-  MenuRef         theMenu,
-  MenuItemIndex   item)                                       THREEWORDINLINE(0x303C, 0x0019, 0xA825);
-
+    MenuRef       theMenu,
+    MenuItemIndex item ) THREEWORDINLINE( 0x303C, 0x0019, 0xA825 );
 
 /*
  *  DisableMenuItemIcon()
@@ -3655,9 +3565,8 @@ EnableMenuItemIcon(
  */
 EXTERN_API( void )
 DisableMenuItemIcon(
-  MenuRef         theMenu,
-  MenuItemIndex   item)                                       THREEWORDINLINE(0x303C, 0x0020, 0xA825);
-
+    MenuRef       theMenu,
+    MenuItemIndex item ) THREEWORDINLINE( 0x303C, 0x0020, 0xA825 );
 
 /*
  *  IsMenuItemIconEnabled()
@@ -3669,9 +3578,8 @@ DisableMenuItemIcon(
  */
 EXTERN_API( Boolean )
 IsMenuItemIconEnabled(
-  MenuRef         menu,
-  MenuItemIndex   item)                                       THREEWORDINLINE(0x303C, 0x0018, 0xA825);
-
+    MenuRef       menu,
+    MenuItemIndex item ) THREEWORDINLINE( 0x303C, 0x0018, 0xA825 );
 
 /*
  *  SetMenuItemHierarchicalMenu()
@@ -3709,10 +3617,9 @@ IsMenuItemIconEnabled(
  */
 EXTERN_API( OSStatus )
 SetMenuItemHierarchicalMenu(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  MenuRef         inHierMenu);      /* can be NULL */
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    MenuRef       inHierMenu ); /* can be NULL */
 
 /*
  *  GetMenuItemHierarchicalMenu()
@@ -3748,10 +3655,9 @@ SetMenuItemHierarchicalMenu(
  */
 EXTERN_API( OSStatus )
 GetMenuItemHierarchicalMenu(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  MenuRef *       outHierMenu);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    MenuRef *     outHierMenu );
 
 /*
  *  CopyMenuItemTextAsCFString()
@@ -3778,10 +3684,9 @@ GetMenuItemHierarchicalMenu(
  */
 EXTERN_API( OSStatus )
 CopyMenuItemTextAsCFString(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  CFStringRef *   outString);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    CFStringRef * outString );
 
 /*
  *  SetMenuItemTextWithCFString()
@@ -3816,10 +3721,9 @@ CopyMenuItemTextAsCFString(
  */
 EXTERN_API( OSStatus )
 SetMenuItemTextWithCFString(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  CFStringRef     inString);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    CFStringRef   inString );
 
 /*
  *  GetMenuItemIndent()
@@ -3852,10 +3756,9 @@ SetMenuItemTextWithCFString(
  */
 EXTERN_API( OSStatus )
 GetMenuItemIndent(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  UInt32 *        outIndent);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    UInt32 *      outIndent );
 
 /*
  *  SetMenuItemIndent()
@@ -3888,10 +3791,9 @@ GetMenuItemIndent(
  */
 EXTERN_API( OSStatus )
 SetMenuItemIndent(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  UInt32          inIndent);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    UInt32        inIndent );
 
 /*
  *  GetMenuItemCommandKey()
@@ -3935,11 +3837,10 @@ SetMenuItemIndent(
  */
 EXTERN_API( OSStatus )
 GetMenuItemCommandKey(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  Boolean         inGetVirtualKey,
-  UInt16 *        outKey);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    Boolean       inGetVirtualKey,
+    UInt16 *      outKey );
 
 /*
  *  SetMenuItemCommandKey()
@@ -3983,11 +3884,10 @@ GetMenuItemCommandKey(
  */
 EXTERN_API( OSStatus )
 SetMenuItemCommandKey(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem,
-  Boolean         inSetVirtualKey,
-  UInt16          inKey);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem,
+    Boolean       inSetVirtualKey,
+    UInt16        inKey );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu Item Color Tables                                                            */
@@ -4005,9 +3905,8 @@ SetMenuItemCommandKey(
  */
 EXTERN_API( void )
 DeleteMCEntries(
-  MenuID   menuID,
-  short    menuItem)                                          ONEWORDINLINE(0xAA60);
-
+    MenuID menuID,
+    short  menuItem ) ONEWORDINLINE( 0xAA60 );
 
 /*
  *  GetMCInfo()
@@ -4018,8 +3917,7 @@ DeleteMCEntries(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( MCTableHandle )
-GetMCInfo(void)                                               ONEWORDINLINE(0xAA61);
-
+GetMCInfo( void ) ONEWORDINLINE( 0xAA61 );
 
 /*
  *  SetMCInfo()
@@ -4030,8 +3928,7 @@ GetMCInfo(void)                                               ONEWORDINLINE(0xAA
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetMCInfo(MCTableHandle menuCTbl)                             ONEWORDINLINE(0xAA62);
-
+SetMCInfo( MCTableHandle menuCTbl ) ONEWORDINLINE( 0xAA62 );
 
 /*
  *  DisposeMCInfo()
@@ -4042,8 +3939,7 @@ SetMCInfo(MCTableHandle menuCTbl)                             ONEWORDINLINE(0xAA
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisposeMCInfo(MCTableHandle menuCTbl)                         ONEWORDINLINE(0xAA63);
-
+DisposeMCInfo( MCTableHandle menuCTbl ) ONEWORDINLINE( 0xAA63 );
 
 /*
  *  GetMCEntry()
@@ -4055,9 +3951,8 @@ DisposeMCInfo(MCTableHandle menuCTbl)                         ONEWORDINLINE(0xAA
  */
 EXTERN_API( MCEntryPtr )
 GetMCEntry(
-  MenuID   menuID,
-  short    menuItem)                                          ONEWORDINLINE(0xAA64);
-
+    MenuID menuID,
+    short  menuItem ) ONEWORDINLINE( 0xAA64 );
 
 /*
  *  SetMCEntries()
@@ -4069,10 +3964,8 @@ GetMCEntry(
  */
 EXTERN_API( void )
 SetMCEntries(
-  short        numEntries,
-  MCTablePtr   menuCEntries)                                  ONEWORDINLINE(0xAA65);
-
-
+    short      numEntries,
+    MCTablePtr menuCEntries ) ONEWORDINLINE( 0xAA65 );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Properties  (Mac OS 8.5 and later)                                                 */
@@ -4082,7 +3975,7 @@ SetMCEntries(
 /* to attach the data to the menu itself, and not to any specific menu item.            */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  kMenuPropertyPersistent       = 0x00000001 /* whether this property gets saved when flattening the menu*/
+	kMenuPropertyPersistent = 0x00000001 /* whether this property gets saved when flattening the menu*/
 };
 
 /*
@@ -4095,14 +3988,13 @@ enum {
  */
 EXTERN_API( OSStatus )
 GetMenuItemProperty(
-  MenuRef         menu,
-  MenuItemIndex   item,
-  OSType          propertyCreator,
-  OSType          propertyTag,
-  UInt32          bufferSize,
-  UInt32 *        actualSize,
-  void *          propertyBuffer);
-
+    MenuRef       menu,
+    MenuItemIndex item,
+    OSType        propertyCreator,
+    OSType        propertyTag,
+    UInt32        bufferSize,
+    UInt32 *      actualSize,
+    void *        propertyBuffer );
 
 /*
  *  GetMenuItemPropertySize()
@@ -4114,12 +4006,11 @@ GetMenuItemProperty(
  */
 EXTERN_API( OSStatus )
 GetMenuItemPropertySize(
-  MenuRef         menu,
-  MenuItemIndex   item,
-  OSType          propertyCreator,
-  OSType          propertyTag,
-  UInt32 *        size);
-
+    MenuRef       menu,
+    MenuItemIndex item,
+    OSType        propertyCreator,
+    OSType        propertyTag,
+    UInt32 *      size );
 
 /*
  *  SetMenuItemProperty()
@@ -4131,13 +4022,12 @@ GetMenuItemPropertySize(
  */
 EXTERN_API( OSStatus )
 SetMenuItemProperty(
-  MenuRef         menu,
-  MenuItemIndex   item,
-  OSType          propertyCreator,
-  OSType          propertyTag,
-  UInt32          propertySize,
-  const void *    propertyData);
-
+    MenuRef       menu,
+    MenuItemIndex item,
+    OSType        propertyCreator,
+    OSType        propertyTag,
+    UInt32        propertySize,
+    const void *  propertyData );
 
 /*
  *  RemoveMenuItemProperty()
@@ -4149,11 +4039,10 @@ SetMenuItemProperty(
  */
 EXTERN_API( OSStatus )
 RemoveMenuItemProperty(
-  MenuRef         menu,
-  MenuItemIndex   item,
-  OSType          propertyCreator,
-  OSType          propertyTag);
-
+    MenuRef       menu,
+    MenuItemIndex item,
+    OSType        propertyCreator,
+    OSType        propertyTag );
 
 /*
  *  GetMenuItemPropertyAttributes()
@@ -4185,12 +4074,11 @@ RemoveMenuItemProperty(
  */
 EXTERN_API( OSStatus )
 GetMenuItemPropertyAttributes(
-  MenuRef         menu,
-  MenuItemIndex   item,
-  OSType          propertyCreator,
-  OSType          propertyTag,
-  UInt32 *        attributes);
-
+    MenuRef       menu,
+    MenuItemIndex item,
+    OSType        propertyCreator,
+    OSType        propertyTag,
+    UInt32 *      attributes );
 
 /*
  *  ChangeMenuItemPropertyAttributes()
@@ -4225,13 +4113,12 @@ GetMenuItemPropertyAttributes(
  */
 EXTERN_API( OSStatus )
 ChangeMenuItemPropertyAttributes(
-  MenuRef         menu,
-  MenuItemIndex   item,
-  OSType          propertyCreator,
-  OSType          propertyTag,
-  UInt32          attributesToSet,
-  UInt32          attributesToClear);
-
+    MenuRef       menu,
+    MenuItemIndex item,
+    OSType        propertyCreator,
+    OSType        propertyTag,
+    UInt32        attributesToSet,
+    UInt32        attributesToClear );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Attributes (Carbon and later)                                                     */
@@ -4259,9 +4146,8 @@ ChangeMenuItemPropertyAttributes(
  */
 EXTERN_API( OSStatus )
 GetMenuAttributes(
-  MenuRef           menu,
-  MenuAttributes *  outAttributes);
-
+    MenuRef         menu,
+    MenuAttributes *outAttributes );
 
 /*
  *  ChangeMenuAttributes()
@@ -4287,10 +4173,9 @@ GetMenuAttributes(
  */
 EXTERN_API( OSStatus )
 ChangeMenuAttributes(
-  MenuRef          menu,
-  MenuAttributes   setTheseAttributes,
-  MenuAttributes   clearTheseAttributes);
-
+    MenuRef        menu,
+    MenuAttributes setTheseAttributes,
+    MenuAttributes clearTheseAttributes );
 
 /*
  *  GetMenuItemAttributes()
@@ -4316,10 +4201,9 @@ ChangeMenuAttributes(
  */
 EXTERN_API( OSStatus )
 GetMenuItemAttributes(
-  MenuRef               menu,
-  MenuItemIndex         item,
-  MenuItemAttributes *  outAttributes);
-
+    MenuRef             menu,
+    MenuItemIndex       item,
+    MenuItemAttributes *outAttributes );
 
 /*
  *  ChangeMenuItemAttributes()
@@ -4348,11 +4232,10 @@ GetMenuItemAttributes(
  */
 EXTERN_API( OSStatus )
 ChangeMenuItemAttributes(
-  MenuRef              menu,
-  MenuItemIndex        item,
-  MenuItemAttributes   setTheseAttributes,
-  MenuItemAttributes   clearTheseAttributes);
-
+    MenuRef            menu,
+    MenuItemIndex      item,
+    MenuItemAttributes setTheseAttributes,
+    MenuItemAttributes clearTheseAttributes );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Mass menu item enabling and disabling (Carbon and later)                          */
@@ -4382,8 +4265,7 @@ ChangeMenuItemAttributes(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisableAllMenuItems(MenuRef theMenu);
-
+DisableAllMenuItems( MenuRef theMenu );
 
 /*
  *  EnableAllMenuItems()
@@ -4408,8 +4290,7 @@ DisableAllMenuItems(MenuRef theMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-EnableAllMenuItems(MenuRef theMenu);
-
+EnableAllMenuItems( MenuRef theMenu );
 
 /*
  *  MenuHasEnabledItems()
@@ -4435,8 +4316,7 @@ EnableAllMenuItems(MenuRef theMenu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-MenuHasEnabledItems(MenuRef theMenu);
-
+MenuHasEnabledItems( MenuRef theMenu );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Menu tracking status (Carbon and later)                                           */
@@ -4476,9 +4356,8 @@ MenuHasEnabledItems(MenuRef theMenu);
  */
 EXTERN_API( OSStatus )
 GetMenuTrackingData(
-  MenuRef             theMenu,
-  MenuTrackingData *  outData);
-
+    MenuRef           theMenu,
+    MenuTrackingData *outData );
 
 /*
  *  GetMenuType()
@@ -4512,9 +4391,8 @@ GetMenuTrackingData(
  */
 EXTERN_API( OSStatus )
 GetMenuType(
-  MenuRef   theMenu,
-  UInt16 *  outType);
-
+    MenuRef theMenu,
+    UInt16 *outType );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o.Universal command ID access (Carbon and later)                                    */
@@ -4559,9 +4437,8 @@ GetMenuType(
  */
 EXTERN_API( ItemCount )
 CountMenuItemsWithCommandID(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID );
 
 /*
  *  GetIndMenuItemWithCommandID()
@@ -4615,12 +4492,11 @@ CountMenuItemsWithCommandID(
  */
 EXTERN_API( OSStatus )
 GetIndMenuItemWithCommandID(
-  MenuRef          inMenu,
-  MenuCommand      inCommandID,
-  UInt32           inItemIndex,
-  MenuRef *        outMenu,           /* can be NULL */
-  MenuItemIndex *  outIndex);         /* can be NULL */
-
+    MenuRef        inMenu,
+    MenuCommand    inCommandID,
+    UInt32         inItemIndex,
+    MenuRef *      outMenu, /* can be NULL */
+    MenuItemIndex *outIndex ); /* can be NULL */
 
 /*
  *  EnableMenuCommand()
@@ -4646,9 +4522,8 @@ GetIndMenuItemWithCommandID(
  */
 EXTERN_API( void )
 EnableMenuCommand(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID );
 
 /*
  *  DisableMenuCommand()
@@ -4674,9 +4549,8 @@ EnableMenuCommand(
  */
 EXTERN_API( void )
 DisableMenuCommand(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID );
 
 /*
  *  IsMenuCommandEnabled()
@@ -4703,9 +4577,8 @@ DisableMenuCommand(
  */
 EXTERN_API( Boolean )
 IsMenuCommandEnabled(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID );
 
 /*
  *  SetMenuCommandMark()
@@ -4738,10 +4611,9 @@ IsMenuCommandEnabled(
  */
 EXTERN_API( OSStatus )
 SetMenuCommandMark(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID,
-  UniChar       inMark);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID,
+    UniChar     inMark );
 
 /*
  *  GetMenuCommandMark()
@@ -4771,10 +4643,9 @@ SetMenuCommandMark(
  */
 EXTERN_API( OSStatus )
 GetMenuCommandMark(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID,
-  UniChar *     outMark);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID,
+    UniChar *   outMark );
 
 /*
  *  GetMenuCommandProperty()
@@ -4818,14 +4689,13 @@ GetMenuCommandMark(
  */
 EXTERN_API( OSStatus )
 GetMenuCommandProperty(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID,
-  OSType        inPropertyCreator,
-  OSType        inPropertyTag,
-  ByteCount     inBufferSize,
-  ByteCount *   outActualSize,           /* can be NULL */
-  void *        inPropertyBuffer);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID,
+    OSType      inPropertyCreator,
+    OSType      inPropertyTag,
+    ByteCount   inBufferSize,
+    ByteCount * outActualSize, /* can be NULL */
+    void *      inPropertyBuffer );
 
 /*
  *  GetMenuCommandPropertySize()
@@ -4862,12 +4732,11 @@ GetMenuCommandProperty(
  */
 EXTERN_API( OSStatus )
 GetMenuCommandPropertySize(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID,
-  OSType        inPropertyCreator,
-  OSType        inPropertyTag,
-  ByteCount *   outSize);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID,
+    OSType      inPropertyCreator,
+    OSType      inPropertyTag,
+    ByteCount * outSize );
 
 /*
  *  SetMenuCommandProperty()
@@ -4906,13 +4775,12 @@ GetMenuCommandPropertySize(
  */
 EXTERN_API( OSStatus )
 SetMenuCommandProperty(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID,
-  OSType        inPropertyCreator,
-  OSType        inPropertyTag,
-  ByteCount     inPropertySize,
-  const void *  inPropertyData);
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID,
+    OSType      inPropertyCreator,
+    OSType      inPropertyTag,
+    ByteCount   inPropertySize,
+    const void *inPropertyData );
 
 /*
  *  RemoveMenuCommandProperty()
@@ -4945,12 +4813,10 @@ SetMenuCommandProperty(
  */
 EXTERN_API( OSStatus )
 RemoveMenuCommandProperty(
-  MenuRef       inMenu,
-  MenuCommand   inCommandID,
-  OSType        inPropertyCreator,
-  OSType        inPropertyTag);
-
-
+    MenuRef     inMenu,
+    MenuCommand inCommandID,
+    OSType      inPropertyCreator,
+    OSType      inPropertyTag );
 
 /*
  *  CopyMenuItemData()
@@ -5002,11 +4868,10 @@ RemoveMenuCommandProperty(
  */
 EXTERN_API( OSStatus )
 CopyMenuItemData(
-  MenuRef           inMenu,              /* can be NULL */
-  MenuItemID        inItem,
-  Boolean           inIsCommandID,
-  MenuItemDataPtr   ioData);
-
+    MenuRef         inMenu, /* can be NULL */
+    MenuItemID      inItem,
+    Boolean         inIsCommandID,
+    MenuItemDataPtr ioData );
 
 /*
  *  SetMenuItemData()
@@ -5049,12 +4914,10 @@ CopyMenuItemData(
  */
 EXTERN_API( OSStatus )
 SetMenuItemData(
-  MenuRef                  inMenu,
-  MenuItemID               inItem,
-  Boolean                  inIsCommandID,
-  const MenuItemDataRec *  inData);
-
-
+    MenuRef                inMenu,
+    MenuItemID             inItem,
+    Boolean                inIsCommandID,
+    const MenuItemDataRec *inData );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Dynamic menu item support (CarbonLib 1.1 and Carbon for Mac OS X, and later)      */
@@ -5122,9 +4985,8 @@ SetMenuItemData(
  */
 EXTERN_API( Boolean )
 IsMenuItemInvalid(
-  MenuRef         inMenu,
-  MenuItemIndex   inItem);
-
+    MenuRef       inMenu,
+    MenuItemIndex inItem );
 
 /*
  *  InvalidateMenuItems()
@@ -5157,10 +5019,9 @@ IsMenuItemInvalid(
  */
 EXTERN_API( OSStatus )
 InvalidateMenuItems(
-  MenuRef         inMenu,
-  MenuItemIndex   inFirstItem,
-  ItemCount       inNumItems);
-
+    MenuRef       inMenu,
+    MenuItemIndex inFirstItem,
+    ItemCount     inNumItems );
 
 /*
  *  UpdateInvalidMenuItems()
@@ -5188,9 +5049,7 @@ InvalidateMenuItems(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-UpdateInvalidMenuItems(MenuRef inMenu);
-
-
+UpdateInvalidMenuItems( MenuRef inMenu );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o.Standard font menu (Carbon and later)                                             */
@@ -5198,7 +5057,7 @@ UpdateInvalidMenuItems(MenuRef inMenu);
 /*  These APIs allow you to create and use the standard font menu.                      */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  kHierarchicalFontMenuOption   = 0x00000001
+	kHierarchicalFontMenuOption = 0x00000001
 };
 
 /*
@@ -5211,12 +5070,11 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateStandardFontMenu(
-  MenuRef         menu,
-  MenuItemIndex   afterItem,
-  MenuID          firstHierMenuID,
-  OptionBits      options,
-  ItemCount *     outHierMenuCount);
-
+    MenuRef       menu,
+    MenuItemIndex afterItem,
+    MenuID        firstHierMenuID,
+    OptionBits    options,
+    ItemCount *   outHierMenuCount );
 
 /*
  *  UpdateStandardFontMenu()
@@ -5228,9 +5086,8 @@ CreateStandardFontMenu(
  */
 EXTERN_API( OSStatus )
 UpdateStandardFontMenu(
-  MenuRef      menu,
-  ItemCount *  outHierMenuCount);
-
+    MenuRef    menu,
+    ItemCount *outHierMenuCount );
 
 /*
  *  GetFontFamilyFromMenuSelection()
@@ -5242,12 +5099,10 @@ UpdateStandardFontMenu(
  */
 EXTERN_API( OSStatus )
 GetFontFamilyFromMenuSelection(
-  MenuRef         menu,
-  MenuItemIndex   item,
-  FMFontFamily *  outFontFamily,
-  FMFontStyle *   outStyle);
-
-
+    MenuRef       menu,
+    MenuItemIndex item,
+    FMFontFamily *outFontFamily,
+    FMFontStyle * outStyle );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Contextual Menu routines and constants                                            */
@@ -5256,13 +5111,12 @@ GetFontFamilyFromMenuSelection(
 /* Gestalt Selector for classic 68K apps only. */
 /* CFM apps should weak link and check the symbols. */
 enum {
-  gestaltContextualMenuAttr     = FOUR_CHAR_CODE('cmnu'),
-  gestaltContextualMenuUnusedBit = 0,
-  gestaltContextualMenuTrapAvailable = 1,
-  gestaltContextualMenuHasAttributeAndModifierKeys = 2, /* Contextual Menu Manager supports keyContextualMenuAttributes and keyContextualMenuModifiers */
-  gestaltContextualMenuHasUnicodeSupport = 3 /* Contextual Menu Manager supports typeUnicodeText and typeCFStringRef */
+	gestaltContextualMenuAttr = FOUR_CHAR_CODE( 'cmnu' ),
+	gestaltContextualMenuUnusedBit = 0,
+	gestaltContextualMenuTrapAvailable = 1,
+	gestaltContextualMenuHasAttributeAndModifierKeys = 2, /* Contextual Menu Manager supports keyContextualMenuAttributes and keyContextualMenuModifiers */
+	gestaltContextualMenuHasUnicodeSupport = 3 /* Contextual Menu Manager supports typeUnicodeText and typeCFStringRef */
 };
-
 
 /*
  *  Summary:
@@ -5270,39 +5124,38 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * The application does not support any help. The Menu Manager will
    * put an appropriate help string into the contextual menu and
    * disable the Help item.
    */
-  kCMHelpItemNoHelp             = 0,
+	kCMHelpItemNoHelp = 0,
 
-  /*
+	/*
    * The application supports Apple Guide help. The Menu Manager will
    * put the name of the main Guide file into the contextual menu and
    * enable the Help item.
    */
-  kCMHelpItemAppleGuide         = 1,
+	kCMHelpItemAppleGuide = 1,
 
-  /*
+	/*
    * The application supports some other form of help. In this case,
    * the application must also pass a valid string into the
    * inHelpItemString parameter of ContextualMenuSelect. This string
    * will be the text of the Help item in the contextual menu, and the
    * Help item will be enabled.
    */
-  kCMHelpItemOtherHelp          = 2,
+	kCMHelpItemOtherHelp = 2,
 
-  /*
+	/*
    * The application does not support any help. The Menu Manager will
    * remove the Help item from the contextual menu. This constant is
    * available in Mac OS X and CarbonLib 1.6, and later; however, in
    * CarbonLib it is translated to kCMHelpItemNoHelp, and the Help item
    * is only disabled, not removed.
    */
-  kCMHelpItemRemoveHelp         = 3
+	kCMHelpItemRemoveHelp = 3
 };
-
 
 /*
  *  Summary:
@@ -5310,30 +5163,28 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * The user did not choose an item from the contextual menu and the
    * application should do no further processing of the event.
    */
-  kCMNothingSelected            = 0,
+	kCMNothingSelected = 0,
 
-  /*
+	/*
    * The user chose one of the application's items from the menu. The
    * application can examine the outMenuID and outMenuItem parameters
    * of ContextualMenuSelect to see what the menu selection was, and it
    * should then handle the selection appropriately.
    */
-  kCMMenuItemSelected           = 1,
+	kCMMenuItemSelected = 1,
 
-  /*
+	/*
    * The user chose the Help item from the menu. The application should
    * open an Apple Guide database to a section appropriate for the
    * selection. If the application supports some other form of help, it
    * should be presented instead.
    */
-  kCMShowHelpSelected           = 3
+	kCMShowHelpSelected = 3
 };
-
-
 
 /*
  *  Summary:
@@ -5342,7 +5193,7 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * Specifies the text of an item in a contextual menu. Data for this
    * parameter can be in one of several formats. In Mac OS 7/8/9.x and
    * Mac OS X 10.0 and 10.1, typeChar and typeIntlText are supported.
@@ -5354,29 +5205,29 @@ enum {
    * your plugin should retain the CFStringRef before inserting it into
    * the AERecord.
    */
-  keyContextualMenuName         = FOUR_CHAR_CODE('pnam'),
+	keyContextualMenuName = FOUR_CHAR_CODE( 'pnam' ),
 
-  /*
+	/*
    * Specifies the command ID of an item in a contextual menu. Data for
    * this parameter should be typeLongInteger.
    */
-  keyContextualMenuCommandID    = FOUR_CHAR_CODE('cmcd'),
+	keyContextualMenuCommandID = FOUR_CHAR_CODE( 'cmcd' ),
 
-  /*
+	/*
    * Specifies a contextual menu item with a submenu. Typically used
    * with AEPutKeyDesc to add an entire AEDesc containing the submenu
    * as the data for the parameter.
    */
-  keyContextualMenuSubmenu      = FOUR_CHAR_CODE('cmsb'),
+	keyContextualMenuSubmenu = FOUR_CHAR_CODE( 'cmsb' ),
 
-  /*
+	/*
    * Specifies the menu item attributes of an item in a contextual
    * menu. Data for this parameter should be typeLongInteger. Available
    * in Mac OS X after 10.1.
    */
-  keyContextualMenuAttributes   = FOUR_CHAR_CODE('cmat'),
+	keyContextualMenuAttributes = FOUR_CHAR_CODE( 'cmat' ),
 
-  /*
+	/*
    * Specifies the modifier keys of an item in a contextual menu (see
    * kMenuShiftModifier, kMenuControlModifier, etc.) Data for this
    * parameter should be typeLongInteger. Using this parameter together
@@ -5385,7 +5236,7 @@ enum {
    * to the modifier keys pressed by the user. Available in Mac OS X
    * after 10.1.
    */
-  keyContextualMenuModifiers    = FOUR_CHAR_CODE('cmmd')
+	keyContextualMenuModifiers = FOUR_CHAR_CODE( 'cmmd' )
 };
 
 /*
@@ -5411,8 +5262,7 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-InitContextualMenus(void)                                     TWOWORDINLINE(0x7001, 0xAA72);
-
+InitContextualMenus( void ) TWOWORDINLINE( 0x7001, 0xAA72 );
 
 /*
  *  IsShowContextualMenuClick()
@@ -5449,8 +5299,7 @@ InitContextualMenus(void)                                     TWOWORDINLINE(0x70
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsShowContextualMenuClick(const EventRecord * inEvent)        TWOWORDINLINE(0x7002, 0xAA72);
-
+IsShowContextualMenuClick( const EventRecord *inEvent ) TWOWORDINLINE( 0x7002, 0xAA72 );
 
 /*
  *  IsShowContextualMenuEvent()
@@ -5481,8 +5330,7 @@ IsShowContextualMenuClick(const EventRecord * inEvent)        TWOWORDINLINE(0x70
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsShowContextualMenuEvent(EventRef inEvent);
-
+IsShowContextualMenuEvent( EventRef inEvent );
 
 /*
  *  ContextualMenuSelect()
@@ -5576,16 +5424,15 @@ IsShowContextualMenuEvent(EventRef inEvent);
  */
 EXTERN_API( OSStatus )
 ContextualMenuSelect(
-  MenuRef            inMenu,
-  Point              inGlobalLocation,
-  Boolean            inReserved,
-  UInt32             inHelpType,
-  ConstStr255Param   inHelpItemString,           /* can be NULL */
-  const AEDesc *     inSelection,                /* can be NULL */
-  UInt32 *           outUserSelectionType,
-  SInt16 *           outMenuID,
-  MenuItemIndex *    outMenuItem)                             TWOWORDINLINE(0x7003, 0xAA72);
-
+    MenuRef          inMenu,
+    Point            inGlobalLocation,
+    Boolean          inReserved,
+    UInt32           inHelpType,
+    ConstStr255Param inHelpItemString, /* can be NULL */
+    const AEDesc *   inSelection, /* can be NULL */
+    UInt32 *         outUserSelectionType,
+    SInt16 *         outMenuID,
+    MenuItemIndex *  outMenuItem ) TWOWORDINLINE( 0x7003, 0xAA72 );
 
 /*
  *  ProcessIsContextualMenuClient()
@@ -5616,9 +5463,7 @@ ContextualMenuSelect(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-ProcessIsContextualMenuClient(ProcessSerialNumber * inPSN)    TWOWORDINLINE(0x7004, 0xAA72);
-
-
+ProcessIsContextualMenuClient( ProcessSerialNumber *inPSN ) TWOWORDINLINE( 0x7004, 0xAA72 );
 
 /*--------------------------------------------------------------------------------------*/
 /*  Contextual Menu Plugin Interface                                                    */
@@ -5636,36 +5481,63 @@ ProcessIsContextualMenuClient(ProcessSerialNumber * inPSN)    TWOWORDINLINE(0x70
 
 /* The Contextual Menu Manager will only load CFPlugIns of type kContextualMenuTypeID */
 #define kContextualMenuTypeID ( CFUUIDGetConstantUUIDWithBytes( NULL, \
-  0x2F, 0x65, 0x22, 0xE9, 0x3E, 0x66, 0x11, 0xD5, \
-  0x80, 0xA7, 0x00, 0x30, 0x65, 0xB3, 0x00, 0xBC ) )
- /* 2F6522E9-3E66-11D5-80A7-003065B300BC */
+    0x2F,                                                             \
+    0x65,                                                             \
+    0x22,                                                             \
+    0xE9,                                                             \
+    0x3E,                                                             \
+    0x66,                                                             \
+    0x11,                                                             \
+    0xD5,                                                             \
+    0x80,                                                             \
+    0xA7,                                                             \
+    0x00,                                                             \
+    0x30,                                                             \
+    0x65,                                                             \
+    0xB3,                                                             \
+    0x00,                                                             \
+    0xBC ) )
+/* 2F6522E9-3E66-11D5-80A7-003065B300BC */
 
 /* Contextual Menu Plugins must implement this Contexual Menu Plugin Interface */
-#define kContextualMenuInterfaceID    ( CFUUIDGetConstantUUIDWithBytes( NULL, \
-  0x32, 0x99, 0x7B, 0x62, 0x3E, 0x66, 0x11, 0xD5, \
-  0xBE, 0xAB, 0x00, 0x30, 0x65, 0xB3, 0x00, 0xBC ) )
- /* 32997B62-3E66-11D5-BEAB-003065B300BC */
+#define kContextualMenuInterfaceID ( CFUUIDGetConstantUUIDWithBytes( NULL, \
+    0x32,                                                                  \
+    0x99,                                                                  \
+    0x7B,                                                                  \
+    0x62,                                                                  \
+    0x3E,                                                                  \
+    0x66,                                                                  \
+    0x11,                                                                  \
+    0xD5,                                                                  \
+    0xBE,                                                                  \
+    0xAB,                                                                  \
+    0x00,                                                                  \
+    0x30,                                                                  \
+    0x65,                                                                  \
+    0xB3,                                                                  \
+    0x00,                                                                  \
+    0xBC ) )
+/* 32997B62-3E66-11D5-BEAB-003065B300BC */
 
-#define CM_IUNKNOWN_C_GUTS \
-   void *_reserved; \
- SInt32 (*QueryInterface)(void *thisPointer, CFUUIDBytes iid, void ** ppv); \
-   UInt32 (*AddRef)(void *thisPointer); \
- UInt32 (*Release)(void *thisPointer)
+#define CM_IUNKNOWN_C_GUTS                                                        \
+	void *_reserved;                                                              \
+	SInt32 ( *QueryInterface )( void *thisPointer, CFUUIDBytes iid, void **ppv ); \
+	UInt32 ( *AddRef )( void *thisPointer );                                      \
+	UInt32 ( *Release )( void *thisPointer )
 
 /* The function table for the interface */
-struct ContextualMenuInterfaceStruct
-{
-    CM_IUNKNOWN_C_GUTS;
-    OSStatus ( *ExamineContext )(
-          void*               thisInstance,
-          const AEDesc*       inContext,
-         AEDescList*         outCommandPairs );
- OSStatus ( *HandleSelection )(
-         void*               thisInstance,
-          AEDesc*             inContext,
-         SInt32              inCommandID );
- void ( *PostMenuCleanup )(
-         void*               thisInstance );
+struct ContextualMenuInterfaceStruct {
+	CM_IUNKNOWN_C_GUTS;
+	OSStatus ( *ExamineContext )(
+	    void *        thisInstance,
+	    const AEDesc *inContext,
+	    AEDescList *  outCommandPairs );
+	OSStatus ( *HandleSelection )(
+	    void *  thisInstance,
+	    AEDesc *inContext,
+	    SInt32  inCommandID );
+	void ( *PostMenuCleanup )(
+	    void *thisInstance );
 };
 typedef struct ContextualMenuInterfaceStruct ContextualMenuInterfaceStruct;
 
@@ -5677,10 +5549,9 @@ typedef struct ContextualMenuInterfaceStruct ContextualMenuInterfaceStruct;
  */
 EXTERN_API_C( OSStatus )
 CMPluginExamineContext(
-  void *          thisInstance,
-  const AEDesc *  inContext,
-  AEDescList *    outCommandPairs);
-
+    void *        thisInstance,
+    const AEDesc *inContext,
+    AEDescList *  outCommandPairs );
 
 /*
  *  CMPluginHandleSelection()
@@ -5690,10 +5561,9 @@ CMPluginExamineContext(
  */
 EXTERN_API_C( OSStatus )
 CMPluginHandleSelection(
-  void *    thisInstance,
-  AEDesc *  inContext,
-  SInt32    inCommandID);
-
+    void *  thisInstance,
+    AEDesc *inContext,
+    SInt32  inCommandID );
 
 /*
  *  CMPluginPostMenuCleanup()
@@ -5702,9 +5572,7 @@ CMPluginHandleSelection(
  *    Implemented by client
  */
 EXTERN_API_C( void )
-CMPluginPostMenuCleanup(void * thisInstance);
-
-
+CMPluginPostMenuCleanup( void *thisInstance );
 
 /* previously in LowMem.h.  This functions return the menu ID of the hilited menu */
 /*
@@ -5716,10 +5584,7 @@ CMPluginPostMenuCleanup(void * thisInstance);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-LMGetTheMenu(void)                                            TWOWORDINLINE(0x3EB8, 0x0A26);
-
-
-
+LMGetTheMenu( void ) TWOWORDINLINE( 0x3EB8, 0x0A26 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -5732,9 +5597,8 @@ LMGetTheMenu(void)                                            TWOWORDINLINE(0x3E
  */
 EXTERN_API_C( MenuRef )
 newmenu(
-  MenuID        menuID,
-  const char *  menuTitle);
-
+    MenuID      menuID,
+    const char *menuTitle );
 
 /*
  *  appendmenu()
@@ -5746,9 +5610,8 @@ newmenu(
  */
 EXTERN_API_C( void )
 appendmenu(
-  MenuRef       menu,
-  const char *  data);
-
+    MenuRef     menu,
+    const char *data );
 
 /*
  *  insertmenuitem()
@@ -5760,10 +5623,9 @@ appendmenu(
  */
 EXTERN_API_C( void )
 insertmenuitem(
-  MenuRef       theMenu,
-  const char *  itemString,
-  short         afterItem);
-
+    MenuRef     theMenu,
+    const char *itemString,
+    short       afterItem );
 
 /*
  *  menuselect()
@@ -5774,8 +5636,7 @@ insertmenuitem(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-menuselect(const Point * startPt);
-
+menuselect( const Point *startPt );
 
 /*
  *  setmenuitemtext()
@@ -5787,10 +5648,9 @@ menuselect(const Point * startPt);
  */
 EXTERN_API_C( void )
 setmenuitemtext(
-  MenuRef       menu,
-  short         item,
-  const char *  itemString);
-
+    MenuRef     menu,
+    short       item,
+    const char *itemString );
 
 /*
  *  getmenuitemtext()
@@ -5802,33 +5662,32 @@ setmenuitemtext(
  */
 EXTERN_API_C( void )
 getmenuitemtext(
-  MenuRef   menu,
-  short     item,
-  char *    itemString);
+    MenuRef menu,
+    short   item,
+    char *  itemString );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if OLDROUTINENAMES
-#define AddResMenu(theMenu, theType) AppendResMenu(theMenu, theType)
-#define InsMenuItem(theMenu, itemString, afterItem) InsertMenuItem(theMenu, itemString, afterItem)
+#define AddResMenu( theMenu, theType ) AppendResMenu( theMenu, theType )
+#define InsMenuItem( theMenu, itemString, afterItem ) InsertMenuItem( theMenu, itemString, afterItem )
 #define DelMenuItem( theMenu, item ) DeleteMenuItem( theMenu, item )
 #if TARGET_OS_MAC
 #define SetItem MacSetItem
 #define GetItem MacGetItem
 #endif
-#define MacSetItem(theMenu, item, itemString) SetMenuItemText(theMenu, item, itemString)
-#define MacGetItem(theMenu, item, itemString) GetMenuItemText(theMenu, item, itemString)
-#define GetMHandle(menuID) GetMenuHandle(menuID)
-#define DelMCEntries(menuID, menuItem) DeleteMCEntries(menuID, menuItem)
-#define DispMCInfo(menuCTbl) DisposeMCInfo(menuCTbl)
+#define MacSetItem( theMenu, item, itemString ) SetMenuItemText( theMenu, item, itemString )
+#define MacGetItem( theMenu, item, itemString ) GetMenuItemText( theMenu, item, itemString )
+#define GetMHandle( menuID ) GetMenuHandle( menuID )
+#define DelMCEntries( menuID, menuItem ) DeleteMCEntries( menuID, menuItem )
+#define DispMCInfo( menuCTbl ) DisposeMCInfo( menuCTbl )
 #if CALL_NOT_IN_CARBON
-#define addresmenu(menu, data) appendresmenu(menu, data)
-#define getitem(menu, item, itemString) getmenuitemtext(menu, item, itemString)
-#define setitem(menu, item, itemString) setmenuitemtext(menu, item, itemString)
-#define insmenuitem(theMenu, itemString, afterItem) insertmenuitem(theMenu, itemString, afterItem)
+#define addresmenu( menu, data ) appendresmenu( menu, data )
+#define getitem( menu, item, itemString ) getmenuitemtext( menu, item, itemString )
+#define setitem( menu, item, itemString ) setmenuitemtext( menu, item, itemString )
+#define insmenuitem( theMenu, itemString, afterItem ) insertmenuitem( theMenu, itemString, afterItem )
 #endif
-#endif  /* OLDROUTINENAMES */
+#endif /* OLDROUTINENAMES */
 
 #if ACCESSOR_CALLS_ARE_FUNCTIONS
 /* Getters */
@@ -5841,8 +5700,7 @@ getmenuitemtext(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( MenuID )
-GetMenuID(MenuRef menu);
-
+GetMenuID( MenuRef menu );
 
 /*
  *  GetMenuWidth()
@@ -5853,8 +5711,7 @@ GetMenuID(MenuRef menu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-GetMenuWidth(MenuRef menu);
-
+GetMenuWidth( MenuRef menu );
 
 /*
  *  GetMenuHeight()
@@ -5865,8 +5722,7 @@ GetMenuWidth(MenuRef menu);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( SInt16 )
-GetMenuHeight(MenuRef menu);
-
+GetMenuHeight( MenuRef menu );
 
 /*
  *  GetMenuTitle()
@@ -5878,9 +5734,8 @@ GetMenuHeight(MenuRef menu);
  */
 EXTERN_API( StringPtr )
 GetMenuTitle(
-  MenuRef   menu,
-  Str255    title);
-
+    MenuRef menu,
+    Str255  title );
 
 /*
  *  GetMenuDefinition()
@@ -5892,9 +5747,8 @@ GetMenuTitle(
  */
 EXTERN_API( OSStatus )
 GetMenuDefinition(
-  MenuRef          menu,
-  MenuDefSpecPtr   outDefSpec);
-
+    MenuRef        menu,
+    MenuDefSpecPtr outDefSpec );
 
 /* Setters */
 /*
@@ -5907,9 +5761,8 @@ GetMenuDefinition(
  */
 EXTERN_API( void )
 SetMenuID(
-  MenuRef   menu,
-  MenuID    menuID);
-
+    MenuRef menu,
+    MenuID  menuID );
 
 /*
  *  SetMenuWidth()
@@ -5921,9 +5774,8 @@ SetMenuID(
  */
 EXTERN_API( void )
 SetMenuWidth(
-  MenuRef   menu,
-  SInt16    width);
-
+    MenuRef menu,
+    SInt16  width );
 
 /*
  *  SetMenuHeight()
@@ -5935,9 +5787,8 @@ SetMenuWidth(
  */
 EXTERN_API( void )
 SetMenuHeight(
-  MenuRef   menu,
-  SInt16    height);
-
+    MenuRef menu,
+    SInt16  height );
 
 /*
  *  SetMenuTitle()
@@ -5949,9 +5800,8 @@ SetMenuHeight(
  */
 EXTERN_API( OSStatus )
 SetMenuTitle(
-  MenuRef            menu,
-  ConstStr255Param   title);
-
+    MenuRef          menu,
+    ConstStr255Param title );
 
 /*
  *  SetMenuDefinition()
@@ -5963,25 +5813,20 @@ SetMenuTitle(
  */
 EXTERN_API( OSStatus )
 SetMenuDefinition(
-  MenuRef              menu,
-  const MenuDefSpec *  defSpec);
+    MenuRef            menu,
+    const MenuDefSpec *defSpec );
 
-
-#endif  /* ACCESSOR_CALLS_ARE_FUNCTIONS */
-
-
-
+#endif /* ACCESSOR_CALLS_ARE_FUNCTIONS */
 
 #if TARGET_OS_WIN32
-#endif  /* TARGET_OS_WIN32 */
-
+#endif /* TARGET_OS_WIN32 */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -5995,4 +5840,3 @@ SetMenuDefinition(
 #endif
 
 #endif /* __MENUS__ */
-

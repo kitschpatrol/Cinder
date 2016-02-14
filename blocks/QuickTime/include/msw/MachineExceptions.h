@@ -24,9 +24,6 @@
 #include <MixedMode.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,172 +37,170 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=power
+#pragma options align = power
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /* Some basic declarations used throughout the kernel */
-typedef struct OpaqueAreaID*            AreaID;
+typedef struct OpaqueAreaID *AreaID;
 #if TARGET_OS_MAC
 /* Machine Dependent types for PowerPC: */
 struct MachineInformationPowerPC {
-  UnsignedWide        CTR;
-  UnsignedWide        LR;
-  UnsignedWide        PC;
-  unsigned long       CR;
-  unsigned long       XER;
-  unsigned long       MSR;
-  unsigned long       MQ;
-  unsigned long       ExceptKind;
-  unsigned long       DSISR;
-  UnsignedWide        DAR;
-  UnsignedWide        Reserved;
+	UnsignedWide  CTR;
+	UnsignedWide  LR;
+	UnsignedWide  PC;
+	unsigned long CR;
+	unsigned long XER;
+	unsigned long MSR;
+	unsigned long MQ;
+	unsigned long ExceptKind;
+	unsigned long DSISR;
+	UnsignedWide  DAR;
+	UnsignedWide  Reserved;
 };
 typedef struct MachineInformationPowerPC MachineInformationPowerPC;
 struct RegisterInformationPowerPC {
-  UnsignedWide        R0;
-  UnsignedWide        R1;
-  UnsignedWide        R2;
-  UnsignedWide        R3;
-  UnsignedWide        R4;
-  UnsignedWide        R5;
-  UnsignedWide        R6;
-  UnsignedWide        R7;
-  UnsignedWide        R8;
-  UnsignedWide        R9;
-  UnsignedWide        R10;
-  UnsignedWide        R11;
-  UnsignedWide        R12;
-  UnsignedWide        R13;
-  UnsignedWide        R14;
-  UnsignedWide        R15;
-  UnsignedWide        R16;
-  UnsignedWide        R17;
-  UnsignedWide        R18;
-  UnsignedWide        R19;
-  UnsignedWide        R20;
-  UnsignedWide        R21;
-  UnsignedWide        R22;
-  UnsignedWide        R23;
-  UnsignedWide        R24;
-  UnsignedWide        R25;
-  UnsignedWide        R26;
-  UnsignedWide        R27;
-  UnsignedWide        R28;
-  UnsignedWide        R29;
-  UnsignedWide        R30;
-  UnsignedWide        R31;
+	UnsignedWide R0;
+	UnsignedWide R1;
+	UnsignedWide R2;
+	UnsignedWide R3;
+	UnsignedWide R4;
+	UnsignedWide R5;
+	UnsignedWide R6;
+	UnsignedWide R7;
+	UnsignedWide R8;
+	UnsignedWide R9;
+	UnsignedWide R10;
+	UnsignedWide R11;
+	UnsignedWide R12;
+	UnsignedWide R13;
+	UnsignedWide R14;
+	UnsignedWide R15;
+	UnsignedWide R16;
+	UnsignedWide R17;
+	UnsignedWide R18;
+	UnsignedWide R19;
+	UnsignedWide R20;
+	UnsignedWide R21;
+	UnsignedWide R22;
+	UnsignedWide R23;
+	UnsignedWide R24;
+	UnsignedWide R25;
+	UnsignedWide R26;
+	UnsignedWide R27;
+	UnsignedWide R28;
+	UnsignedWide R29;
+	UnsignedWide R30;
+	UnsignedWide R31;
 };
 typedef struct RegisterInformationPowerPC RegisterInformationPowerPC;
 struct FPUInformationPowerPC {
-  UnsignedWide        Registers[32];
-  unsigned long       FPSCR;
-  unsigned long       Reserved;
+	UnsignedWide  Registers[32];
+	unsigned long FPSCR;
+	unsigned long Reserved;
 };
-typedef struct FPUInformationPowerPC    FPUInformationPowerPC;
+typedef struct FPUInformationPowerPC FPUInformationPowerPC;
 union Vector128 {
 #ifdef __VEC__
- vector unsigned int         v;
+	vector unsigned int v;
 #endif
-  unsigned long       l[4];
-  unsigned short      s[8];
-  unsigned char       c[16];
+	unsigned long  l[4];
+	unsigned short s[8];
+	unsigned char  c[16];
 };
-typedef union Vector128                 Vector128;
+typedef union Vector128 Vector128;
 struct VectorInformationPowerPC {
-  Vector128           Registers[32];
-  Vector128           VSCR;
-  UInt32              VRsave;
+	Vector128 Registers[32];
+	Vector128 VSCR;
+	UInt32    VRsave;
 };
 typedef struct VectorInformationPowerPC VectorInformationPowerPC;
 /* Exception related declarations */
 enum {
-  kWriteReference               = 0,
-  kReadReference                = 1,
-  kFetchReference               = 2,
-  writeReference                = kWriteReference, /* Obsolete name*/
-  readReference                 = kReadReference, /* Obsolete name*/
-  fetchReference                = kFetchReference /* Obsolete name*/
+	kWriteReference = 0,
+	kReadReference = 1,
+	kFetchReference = 2,
+	writeReference = kWriteReference, /* Obsolete name*/
+	readReference = kReadReference, /* Obsolete name*/
+	fetchReference = kFetchReference /* Obsolete name*/
 };
 
-
-typedef unsigned long                   MemoryReferenceKind;
+typedef unsigned long MemoryReferenceKind;
 struct MemoryExceptionInformation {
-  AreaID              theArea;                /* The area related to the execption, same as MPAreaID.*/
-  LogicalAddress      theAddress;             /* The 32-bit address of the exception.*/
-  OSStatus            theError;               /* See enum below.*/
-  MemoryReferenceKind  theReference;          /* read, write, instruction fetch.*/
+	AreaID              theArea; /* The area related to the execption, same as MPAreaID.*/
+	LogicalAddress      theAddress; /* The 32-bit address of the exception.*/
+	OSStatus            theError; /* See enum below.*/
+	MemoryReferenceKind theReference; /* read, write, instruction fetch.*/
 };
 typedef struct MemoryExceptionInformation MemoryExceptionInformation;
 enum {
-  kUnknownException             = 0,
-  kIllegalInstructionException  = 1,
-  kTrapException                = 2,
-  kAccessException              = 3,
-  kUnmappedMemoryException      = 4,
-  kExcludedMemoryException      = 5,
-  kReadOnlyMemoryException      = 6,
-  kUnresolvablePageFaultException = 7,
-  kPrivilegeViolationException  = 8,
-  kTraceException               = 9,
-  kInstructionBreakpointException = 10, /* Optional*/
-  kDataBreakpointException      = 11,   /* Optional*/
-  kIntegerException             = 12,
-  kFloatingPointException       = 13,
-  kStackOverflowException       = 14,   /* Optional, may be implemented as kAccessException on some systems.*/
-  kTaskTerminationException     = 15,   /* Obsolete*/
-  kTaskCreationException        = 16,   /* Obsolete*/
-  kDataAlignmentException       = 17    /* May occur when a task is in little endian mode or created with kMPTaskTakesAllExceptions.*/
+	kUnknownException = 0,
+	kIllegalInstructionException = 1,
+	kTrapException = 2,
+	kAccessException = 3,
+	kUnmappedMemoryException = 4,
+	kExcludedMemoryException = 5,
+	kReadOnlyMemoryException = 6,
+	kUnresolvablePageFaultException = 7,
+	kPrivilegeViolationException = 8,
+	kTraceException = 9,
+	kInstructionBreakpointException = 10, /* Optional*/
+	kDataBreakpointException = 11, /* Optional*/
+	kIntegerException = 12,
+	kFloatingPointException = 13,
+	kStackOverflowException = 14, /* Optional, may be implemented as kAccessException on some systems.*/
+	kTaskTerminationException = 15, /* Obsolete*/
+	kTaskCreationException = 16, /* Obsolete*/
+	kDataAlignmentException = 17 /* May occur when a task is in little endian mode or created with kMPTaskTakesAllExceptions.*/
 };
 
 #if OLDROUTINENAMES
 enum {
-  unknownException              = kUnknownException, /* Obsolete name*/
-  illegalInstructionException   = kIllegalInstructionException, /* Obsolete name*/
-  trapException                 = kTrapException, /* Obsolete name*/
-  accessException               = kAccessException, /* Obsolete name*/
-  unmappedMemoryException       = kUnmappedMemoryException, /* Obsolete name*/
-  excludedMemoryException       = kExcludedMemoryException, /* Obsolete name*/
-  readOnlyMemoryException       = kReadOnlyMemoryException, /* Obsolete name*/
-  unresolvablePageFaultException = kUnresolvablePageFaultException, /* Obsolete name*/
-  privilegeViolationException   = kPrivilegeViolationException, /* Obsolete name*/
-  traceException                = kTraceException, /* Obsolete name*/
-  instructionBreakpointException = kInstructionBreakpointException, /* Obsolete name*/
-  dataBreakpointException       = kDataBreakpointException, /* Obsolete name*/
-  integerException              = kIntegerException, /* Obsolete name*/
-  floatingPointException        = kFloatingPointException, /* Obsolete name*/
-  stackOverflowException        = kStackOverflowException, /* Obsolete name*/
-  terminationException          = kTaskTerminationException, /* Obsolete name*/
-  kTerminationException         = kTaskTerminationException /* Obsolete name*/
+	unknownException = kUnknownException, /* Obsolete name*/
+	illegalInstructionException = kIllegalInstructionException, /* Obsolete name*/
+	trapException = kTrapException, /* Obsolete name*/
+	accessException = kAccessException, /* Obsolete name*/
+	unmappedMemoryException = kUnmappedMemoryException, /* Obsolete name*/
+	excludedMemoryException = kExcludedMemoryException, /* Obsolete name*/
+	readOnlyMemoryException = kReadOnlyMemoryException, /* Obsolete name*/
+	unresolvablePageFaultException = kUnresolvablePageFaultException, /* Obsolete name*/
+	privilegeViolationException = kPrivilegeViolationException, /* Obsolete name*/
+	traceException = kTraceException, /* Obsolete name*/
+	instructionBreakpointException = kInstructionBreakpointException, /* Obsolete name*/
+	dataBreakpointException = kDataBreakpointException, /* Obsolete name*/
+	integerException = kIntegerException, /* Obsolete name*/
+	floatingPointException = kFloatingPointException, /* Obsolete name*/
+	stackOverflowException = kStackOverflowException, /* Obsolete name*/
+	terminationException = kTaskTerminationException, /* Obsolete name*/
+	kTerminationException = kTaskTerminationException /* Obsolete name*/
 };
 
-#endif  /* OLDROUTINENAMES */
+#endif /* OLDROUTINENAMES */
 
-
-typedef unsigned long                   ExceptionKind;
+typedef unsigned long ExceptionKind;
 union ExceptionInfo {
-  MemoryExceptionInformation * memoryInfo;
+	MemoryExceptionInformation *memoryInfo;
 };
-typedef union ExceptionInfo             ExceptionInfo;
+typedef union ExceptionInfo ExceptionInfo;
 struct ExceptionInformationPowerPC {
-  ExceptionKind       theKind;
-  MachineInformationPowerPC * machineState;
-  RegisterInformationPowerPC * registerImage;
-  FPUInformationPowerPC * FPUImage;
-  ExceptionInfo       info;
-  VectorInformationPowerPC * vectorImage;
+	ExceptionKind               theKind;
+	MachineInformationPowerPC * machineState;
+	RegisterInformationPowerPC *registerImage;
+	FPUInformationPowerPC *     FPUImage;
+	ExceptionInfo               info;
+	VectorInformationPowerPC *  vectorImage;
 };
 typedef struct ExceptionInformationPowerPC ExceptionInformationPowerPC;
 #if TARGET_CPU_PPC || TARGET_CPU_68K
-typedef ExceptionInformationPowerPC     ExceptionInformation;
-typedef MachineInformationPowerPC       MachineInformation;
-typedef RegisterInformationPowerPC      RegisterInformation;
-typedef FPUInformationPowerPC           FPUInformation;
-typedef VectorInformationPowerPC        VectorInformation;
-#endif  /* TARGET_CPU_PPC || TARGET_CPU_68K */
+typedef ExceptionInformationPowerPC ExceptionInformation;
+typedef MachineInformationPowerPC   MachineInformation;
+typedef RegisterInformationPowerPC  RegisterInformation;
+typedef FPUInformationPowerPC       FPUInformation;
+typedef VectorInformationPowerPC    VectorInformation;
+#endif /* TARGET_CPU_PPC || TARGET_CPU_68K */
 
 /* 
     Note:   An ExceptionHandler is NOT a UniversalProcPtr, except in Carbon.
@@ -213,8 +208,8 @@ typedef VectorInformationPowerPC        VectorInformation;
             except on Carbon, where it must be a UniversalProcPtr (TPP actually)
             to allow the interface to work from both CFM and Mach-O.
 */
-typedef CALLBACK_API_C( OSStatus , ExceptionHandlerProcPtr )(ExceptionInformation * theException);
-typedef TVECTOR_UPP_TYPE(ExceptionHandlerProcPtr)               ExceptionHandlerUPP;
+typedef CALLBACK_API_C( OSStatus, ExceptionHandlerProcPtr )( ExceptionInformation *theException );
+typedef TVECTOR_UPP_TYPE( ExceptionHandlerProcPtr ) ExceptionHandlerUPP;
 /*
  *  NewExceptionHandlerUPP()
  *  
@@ -224,14 +219,17 @@ typedef TVECTOR_UPP_TYPE(ExceptionHandlerProcPtr)               ExceptionHandler
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ExceptionHandlerUPP )
-NewExceptionHandlerUPP(ExceptionHandlerProcPtr userRoutine);
+NewExceptionHandlerUPP( ExceptionHandlerProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppExceptionHandlerProcInfo = 0x000000F1 };  /* 4_bytes Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(ExceptionHandlerUPP) NewExceptionHandlerUPP(ExceptionHandlerProcPtr userRoutine) { return userRoutine; }
-  #else
-    #define NewExceptionHandlerUPP(userRoutine) (userRoutine)
-  #endif
+enum { uppExceptionHandlerProcInfo = 0x000000F1 }; /* 4_bytes Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( ExceptionHandlerUPP ) NewExceptionHandlerUPP( ExceptionHandlerProcPtr userRoutine )
+{
+	return userRoutine;
+}
+#else
+#define NewExceptionHandlerUPP( userRoutine ) ( userRoutine )
+#endif
 #endif
 
 /*
@@ -243,13 +241,15 @@ NewExceptionHandlerUPP(ExceptionHandlerProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeExceptionHandlerUPP(ExceptionHandlerUPP userUPP);
+DisposeExceptionHandlerUPP( ExceptionHandlerUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeExceptionHandlerUPP(ExceptionHandlerUPP) {}
-  #else
-      #define DisposeExceptionHandlerUPP(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeExceptionHandlerUPP( ExceptionHandlerUPP )
+{
+}
+#else
+#define DisposeExceptionHandlerUPP( userUPP )
+#endif
 #endif
 
 /*
@@ -262,14 +262,17 @@ DisposeExceptionHandlerUPP(ExceptionHandlerUPP userUPP);
  */
 EXTERN_API_C( OSStatus )
 InvokeExceptionHandlerUPP(
-  ExceptionInformation *  theException,
-  ExceptionHandlerUPP     userUPP);
+    ExceptionInformation *theException,
+    ExceptionHandlerUPP   userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSStatus) InvokeExceptionHandlerUPP(ExceptionInformation * theException, ExceptionHandlerUPP userUPP) { return (*userUPP)(theException); }
-  #else
-      #define InvokeExceptionHandlerUPP(theException, userUPP) (*userUPP)(theException)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSStatus ) InvokeExceptionHandlerUPP( ExceptionInformation *theException, ExceptionHandlerUPP userUPP )
+{
+	return ( *userUPP )( theException );
+}
+#else
+#define InvokeExceptionHandlerUPP( theException, userUPP ) ( *userUPP )( theException )
+#endif
 #endif
 
 /*
@@ -280,13 +283,13 @@ InvokeExceptionHandlerUPP(
 */
 #if TARGET_OS_MAC && !OPAQUE_UPP_TYPES
 /* use raw function pointers*/
-typedef ExceptionHandlerProcPtr         ExceptionHandlerTPP;
+typedef ExceptionHandlerProcPtr ExceptionHandlerTPP;
 #else
 /* use UPP's*/
-typedef ExceptionHandlerUPP             ExceptionHandlerTPP;
-#endif  /* TARGET_OS_MAC && !OPAQUE_UPP_TYPES */
+typedef ExceptionHandlerUPP ExceptionHandlerTPP;
+#endif /* TARGET_OS_MAC && !OPAQUE_UPP_TYPES */
 
-typedef ExceptionHandlerTPP             ExceptionHandler;
+typedef ExceptionHandlerTPP ExceptionHandler;
 /* Routine for installing per-process exception handlers */
 /*
  *  InstallExceptionHandler()
@@ -296,19 +299,17 @@ typedef ExceptionHandlerTPP             ExceptionHandler;
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( ExceptionHandlerTPP ) InstallExceptionHandler(ExceptionHandlerTPP theHandler);
+EXTERN_API( ExceptionHandlerTPP )
+InstallExceptionHandler( ExceptionHandlerTPP theHandler );
 
-
-#endif  /* TARGET_OS_MAC */
-
-
+#endif /* TARGET_OS_MAC */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -322,4 +323,3 @@ EXTERN_API( ExceptionHandlerTPP ) InstallExceptionHandler(ExceptionHandlerTPP th
 #endif
 
 #endif /* __MACHINEEXCEPTIONS__ */
-

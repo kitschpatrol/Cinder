@@ -37,14 +37,12 @@
 #include <CFXMLNode.h>
 #endif
 
-
 /*
     WebServicesCore
  */
 /*
     WebServicesCore error codes
  */
-
 
 #if PRAGMA_ONCE
 #pragma once
@@ -59,35 +57,34 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __WSMETHODINVOCATION__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __WSMETHODINVOCATION__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __WSMETHODINVOCATION__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __WSMETHODINVOCATION__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
 enum {
-  errWSInternalError            = -65793L, /* An internal framework error */
-  errWSTransportError           = -65794L, /* A network error occured */
-  errWSParseError               = -65795L, /* The server response wasn't valid XML */
-  errWSTimeoutError             = -65796L /* The invocation timed out */
+	errWSInternalError = -65793L, /* An internal framework error */
+	errWSTransportError = -65794L, /* A network error occured */
+	errWSParseError = -65795L, /* The server response wasn't valid XML */
+	errWSTimeoutError = -65796L /* The invocation timed out */
 };
-
 
 /*
  *  WSTypeID
@@ -102,55 +99,55 @@ enum {
  */
 enum WSTypeID {
 
-  /*
+	/*
    * No mapping is known for this type
    */
-  eWSUnknownType                = 0,
+	eWSUnknownType = 0,
 
-  /*
+	/*
    * CFNullRef
    */
-  eWSNullType                   = 1,
+	eWSNullType = 1,
 
-  /*
+	/*
    * CFBooleanRef
    */
-  eWSBooleanType                = 2,
+	eWSBooleanType = 2,
 
-  /*
+	/*
    * CFNumberRef for 8, 16, 32 bit integers
    */
-  eWSIntegerType                = 3,
+	eWSIntegerType = 3,
 
-  /*
+	/*
    * CFNumberRef for long double real numbers
    */
-  eWSDoubleType                 = 4,
+	eWSDoubleType = 4,
 
-  /*
+	/*
    * CFStringRef
    */
-  eWSStringType                 = 5,
+	eWSStringType = 5,
 
-  /*
+	/*
    * CFDateRef
    */
-  eWSDateType                   = 6,
+	eWSDateType = 6,
 
-  /*
+	/*
    * CFDataRef
    */
-  eWSDataType                   = 7,
+	eWSDataType = 7,
 
-  /*
+	/*
    * CFArrayRef
    */
-  eWSArrayType                  = 8,
+	eWSArrayType = 8,
 
-  /*
+	/*
    * CFDictionaryRef
    */
-  eWSDictionaryType             = 9
+	eWSDictionaryType = 9
 };
 typedef enum WSTypeID WSTypeID;
 
@@ -177,8 +174,7 @@ typedef enum WSTypeID WSTypeID;
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( WSTypeID )
-WSGetWSTypeIDFromCFType(CFTypeRef ref);
-
+WSGetWSTypeIDFromCFType( CFTypeRef ref );
 
 /*
  *  WSGetCFTypeIDFromWSTypeID()
@@ -202,12 +198,11 @@ WSGetWSTypeIDFromCFType(CFTypeRef ref);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( CFTypeID )
-WSGetCFTypeIDFromWSTypeID(WSTypeID typeID);
+WSGetCFTypeIDFromWSTypeID( WSTypeID typeID );
 
-
-typedef CALLBACK_API( void *, WSClientContextRetainCallBackProcPtr )(void * info);
-typedef CALLBACK_API( void , WSClientContextReleaseCallBackProcPtr )(void * info);
-typedef CALLBACK_API( CFStringRef , WSClientContextCopyDescriptionCallBackProcPtr )(void * info);
+typedef CALLBACK_API( void *, WSClientContextRetainCallBackProcPtr )( void *info );
+typedef CALLBACK_API( void, WSClientContextReleaseCallBackProcPtr )( void *info );
+typedef CALLBACK_API( CFStringRef, WSClientContextCopyDescriptionCallBackProcPtr )( void *info );
 
 /*
  *  WSClientContext
@@ -219,33 +214,32 @@ typedef CALLBACK_API( CFStringRef , WSClientContextCopyDescriptionCallBackProcPt
  *    to the callback.
  */
 struct WSClientContext {
-
-  /*
+	/*
    * set to zero (0)
    */
-  CFIndex             version;
+	CFIndex version;
 
-  /*
+	/*
    * info pointer to be passed to the callback
    */
-  void *              info;
+	void *info;
 
-  /*
+	/*
    * callback made on the info pointer. This field may be NULL.
    */
-  WSClientContextRetainCallBackProcPtr  retain;
+	WSClientContextRetainCallBackProcPtr retain;
 
-  /*
+	/*
    * callback made on the info pointer. This field may be NULL.
    */
-  WSClientContextReleaseCallBackProcPtr  release;
+	WSClientContextReleaseCallBackProcPtr release;
 
-  /*
+	/*
    * callback made on the info pointer. This field may be NULL.
    */
-  WSClientContextCopyDescriptionCallBackProcPtr  copyDescription;
+	WSClientContextCopyDescriptionCallBackProcPtr copyDescription;
 };
-typedef struct WSClientContext          WSClientContext;
+typedef struct WSClientContext WSClientContext;
 /*
     Web Service protocol types.  These constant strings specify the type
     of web service method invocation created.  These are passed to
@@ -260,7 +254,6 @@ typedef struct WSClientContext          WSClientContext;
 extern CFStringRef kWSXMLRPCProtocol;
 extern CFStringRef kWSSOAP1999Protocol;
 extern CFStringRef kWSSOAP2001Protocol;
-
 
 /*
     Dictionary entry if the invocation result is not a fault.  This is
@@ -283,9 +276,9 @@ extern CFStringRef kWSMethodInvocationResult;
 /*
     Dictionary entries if the result is a fault
 */
-extern CFStringRef kWSFaultString;  /* a CFString */
-extern CFStringRef kWSFaultCode;    /* a CFNumber */
-extern CFStringRef kWSFaultExtra;   /* a CFString or CFDictionary, or NULL */
+extern CFStringRef kWSFaultString; /* a CFString */
+extern CFStringRef kWSFaultCode; /* a CFNumber */
+extern CFStringRef kWSFaultExtra; /* a CFString or CFDictionary, or NULL */
 
 /*
     If the result is a fault, and if the value of kWSFaultString in
@@ -296,9 +289,9 @@ extern CFStringRef kWSFaultExtra;   /* a CFString or CFDictionary, or NULL */
     error numbers mean.
 */
 extern CFStringRef kWSNetworkStreamFaultString;
-extern CFStringRef kWSStreamErrorMessage;           /* A CFString (for debug purposes only) */
-extern CFStringRef kWSStreamErrorDomain;            /* A CFNumberRef */
-extern CFStringRef kWSStreamErrorError;             /* A CFNumberRef */
+extern CFStringRef kWSStreamErrorMessage; /* A CFString (for debug purposes only) */
+extern CFStringRef kWSStreamErrorDomain; /* A CFNumberRef */
+extern CFStringRef kWSStreamErrorError; /* A CFNumberRef */
 
 /* 
     For HTTP[S] based invocations, you can specify a CFHTTPMessageRef
@@ -315,17 +308,17 @@ extern CFStringRef kWSStreamErrorError;             /* A CFNumberRef */
    
     See: <CFNetwork/CFHTTPMessage.h> for more information.
 */
-extern CFStringRef kWSHTTPMessage;                  /* CFHTTPMessageRef */
-extern CFStringRef kWSHTTPResponseMessage;          /* CFHTTPMessageRef */
+extern CFStringRef kWSHTTPMessage; /* CFHTTPMessageRef */
+extern CFStringRef kWSHTTPResponseMessage; /* CFHTTPMessageRef */
 /*
     To avoid having to create an entire CFHTTPMessageRef, these properties are
     individually settable.  If they are set, they will override any CFHTTPMessageRef
     previously specified.
 */
-extern CFStringRef kWSHTTPVersion;                  /* "http/1.1" */
-extern CFStringRef kWSHTTPExtraHeaders;             /* a CFDictionary of { key (CFString), val (CFString) } pairs */
-extern CFStringRef kWSHTTPProxy;                    /* CFURfRefL */
-extern CFStringRef kWSHTTPFollowsRedirects;         /* kCFBooleanFalse */
+extern CFStringRef kWSHTTPVersion; /* "http/1.1" */
+extern CFStringRef kWSHTTPExtraHeaders; /* a CFDictionary of { key (CFString), val (CFString) } pairs */
+extern CFStringRef kWSHTTPProxy; /* CFURfRefL */
+extern CFStringRef kWSHTTPFollowsRedirects; /* kCFBooleanFalse */
 /* 
     SOCKS proxy support.  WSMethodInvocation uses the same flags as
     CFSocketStream.h in configuring SOCKS proxy support.  You can set
@@ -339,17 +332,17 @@ extern CFStringRef kWSHTTPFollowsRedirects;         /* kCFBooleanFalse */
     name of the flag is the same as the the field in the result
     dictionary.
 */
-extern CFStringRef kWSDebugOutgoingHeaders;             /* kCFBooleanFalse */
-extern CFStringRef kWSDebugOutgoingBody;                /* kCFBooleanFalse */
-extern CFStringRef kWSDebugIncomingHeaders;             /* kCFBooleanFalse */
-extern CFStringRef kWSDebugIncomingBody;                /* kCFBooleanFalse */
+extern CFStringRef kWSDebugOutgoingHeaders; /* kCFBooleanFalse */
+extern CFStringRef kWSDebugOutgoingBody; /* kCFBooleanFalse */
+extern CFStringRef kWSDebugIncomingHeaders; /* kCFBooleanFalse */
+extern CFStringRef kWSDebugIncomingBody; /* kCFBooleanFalse */
 /*
     Extra properties for SOAP messages.  These apply to the message
     namespace and format itself.  Individual message elements can
     be modified using the kWSRecord constants below.
 */
-extern CFStringRef kWSSOAPMethodNamespaceURI;   /* CFStringRef */
-extern CFStringRef kWSSOAPBodyEncodingStyle;    /* CFStringRef { kWSSOAPStyleDoc, kWSSOAPStyleRPC } */
+extern CFStringRef kWSSOAPMethodNamespaceURI; /* CFStringRef */
+extern CFStringRef kWSSOAPBodyEncodingStyle; /* CFStringRef { kWSSOAPStyleDoc, kWSSOAPStyleRPC } */
 extern CFStringRef kWSSOAPStyleDoc;
 extern CFStringRef kWSSOAPStyleRPC;
 
@@ -359,15 +352,15 @@ extern CFStringRef kWSSOAPStyleRPC;
     message.  These are only applicable to the Header of a SOAP
     message.
 */
-extern CFStringRef kWSSOAPMessageHeaders;               /* CFArrayRef */
+extern CFStringRef kWSSOAPMessageHeaders; /* CFArrayRef */
 
 /* 
     When serializing a record (dictionary) these keys present in
     the dictionary can modify the behavior of the serialization.
 */
-extern CFStringRef kWSRecordParameterOrder;     /* CFArrayRef of CFStringRef */
-extern CFStringRef kWSRecordNamespaceURI;       /* CFStringRef */
-extern CFStringRef kWSRecordType;               /* CFStringRef */
+extern CFStringRef kWSRecordParameterOrder; /* CFArrayRef of CFStringRef */
+extern CFStringRef kWSRecordNamespaceURI; /* CFStringRef */
+extern CFStringRef kWSRecordType; /* CFStringRef */
 
 /*
     Specifies that the result parameter will be found as this name.  This
@@ -380,7 +373,7 @@ extern CFStringRef kWSMethodInvocationResultParameterName;
     invocation times out before the server results are returned, 
     a fault will be returned with the error code errWSTimeoutError.  
 */
-extern CFStringRef  kWSMethodInvocationTimeoutValue;
+extern CFStringRef kWSMethodInvocationTimeoutValue;
 
 /*
  *  WSMethodInvocationRef
@@ -391,7 +384,7 @@ extern CFStringRef  kWSMethodInvocationTimeoutValue;
  *    therefore reference counted and and should be managed via
  *    CFRetain and CFRelease.
  */
-typedef struct OpaqueWSMethodInvocationRef*  WSMethodInvocationRef;
+typedef struct OpaqueWSMethodInvocationRef *WSMethodInvocationRef;
 /*
  *  WSMethodInvocationGetTypeID()
  *  
@@ -401,9 +394,7 @@ typedef struct OpaqueWSMethodInvocationRef*  WSMethodInvocationRef;
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( CFTypeID )
-WSMethodInvocationGetTypeID(void);
-
-
+WSMethodInvocationGetTypeID( void );
 
 /*
  *  WSMethodInvocationCreate()
@@ -436,11 +427,9 @@ WSMethodInvocationGetTypeID(void);
  */
 EXTERN_API_C( WSMethodInvocationRef )
 WSMethodInvocationCreate(
-  CFURLRef      url,
-  CFStringRef   methodName,
-  CFStringRef   protocol);
-
-
+    CFURLRef    url,
+    CFStringRef methodName,
+    CFStringRef protocol );
 
 /*
  *  WSMethodInvocationCreateFromSerialization()
@@ -464,9 +453,7 @@ WSMethodInvocationCreate(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( WSMethodInvocationRef )
-WSMethodInvocationCreateFromSerialization(CFDataRef contract);
-
-
+WSMethodInvocationCreateFromSerialization( CFDataRef contract );
 
 /*
  *  WSMethodInvocationCopySerialization()
@@ -489,9 +476,7 @@ WSMethodInvocationCreateFromSerialization(CFDataRef contract);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( CFDataRef )
-WSMethodInvocationCopySerialization(WSMethodInvocationRef invocation);
-
-
+WSMethodInvocationCopySerialization( WSMethodInvocationRef invocation );
 
 /*
  *  WSMethodInvocationSetParameters()
@@ -523,10 +508,9 @@ WSMethodInvocationCopySerialization(WSMethodInvocationRef invocation);
  */
 EXTERN_API_C( void )
 WSMethodInvocationSetParameters(
-  WSMethodInvocationRef   invocation,
-  CFDictionaryRef         parameters,
-  CFArrayRef              parameterOrder);      /* can be NULL */
-
+    WSMethodInvocationRef invocation,
+    CFDictionaryRef       parameters,
+    CFArrayRef            parameterOrder ); /* can be NULL */
 
 /*
  *  WSMethodInvocationCopyParameters()
@@ -557,9 +541,8 @@ WSMethodInvocationSetParameters(
  */
 EXTERN_API_C( CFDictionaryRef )
 WSMethodInvocationCopyParameters(
-  WSMethodInvocationRef   invocation,
-  CFArrayRef *            parameterOrder);      /* can be NULL */
-
+    WSMethodInvocationRef invocation,
+    CFArrayRef *          parameterOrder ); /* can be NULL */
 
 /*
  *  WSMethodInvocationSetProperty()
@@ -594,11 +577,9 @@ WSMethodInvocationCopyParameters(
  */
 EXTERN_API_C( void )
 WSMethodInvocationSetProperty(
-  WSMethodInvocationRef   invocation,
-  CFStringRef             propertyName,
-  CFTypeRef               propertyValue);
-
-
+    WSMethodInvocationRef invocation,
+    CFStringRef           propertyName,
+    CFTypeRef             propertyValue );
 
 /*
  *  WSMethodInvocationCopyProperty()
@@ -627,10 +608,8 @@ WSMethodInvocationSetProperty(
  */
 EXTERN_API_C( CFTypeRef )
 WSMethodInvocationCopyProperty(
-  WSMethodInvocationRef   invocation,
-  CFStringRef             propertyName);
-
-
+    WSMethodInvocationRef invocation,
+    CFStringRef           propertyName );
 
 /*
  *  WSMethodInvocationInvoke()
@@ -657,9 +636,7 @@ WSMethodInvocationCopyProperty(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( CFDictionaryRef )
-WSMethodInvocationInvoke(WSMethodInvocationRef invocation);
-
-
+WSMethodInvocationInvoke( WSMethodInvocationRef invocation );
 
 /*
     These calls implemented the asynchronous variant of the WSMethodInvocationInvoke.
@@ -681,7 +658,6 @@ WSMethodInvocationInvoke(WSMethodInvocationRef invocation);
     dictionary containing two CFNumber values called kWSStreamErrorDomain
     and kWSStreamErrorError.
 */
-
 
 /*
  *  WSMethodInvocationCallBackProcPtr
@@ -706,7 +682,7 @@ WSMethodInvocationInvoke(WSMethodInvocationRef invocation);
  *      a CFDictionaryRef containing the result of the execution or a
  *      fault, and optional debug information.
  */
-typedef CALLBACK_API( void , WSMethodInvocationCallBackProcPtr )(WSMethodInvocationRef invocation, void *info, CFDictionaryRef outRef);
+typedef CALLBACK_API( void, WSMethodInvocationCallBackProcPtr )( WSMethodInvocationRef invocation, void *info, CFDictionaryRef outRef );
 /*
  *  WSMethodInvocationSetCallBack()
  *  
@@ -733,11 +709,9 @@ typedef CALLBACK_API( void , WSMethodInvocationCallBackProcPtr )(WSMethodInvocat
  */
 EXTERN_API_C( void )
 WSMethodInvocationSetCallBack(
-  WSMethodInvocationRef               invocation,
-  WSMethodInvocationCallBackProcPtr   clientCB,
-  WSClientContext *                   context);
-
-
+    WSMethodInvocationRef             invocation,
+    WSMethodInvocationCallBackProcPtr clientCB,
+    WSClientContext *                 context );
 
 /*
     @function       WSMethodInvocationScheduleWithRunLoop
@@ -763,11 +737,9 @@ WSMethodInvocationSetCallBack(
  */
 EXTERN_API_C( void )
 WSMethodInvocationScheduleWithRunLoop(
-  WSMethodInvocationRef   invocation,
-  CFRunLoopRef            runLoop,
-  CFStringRef             runLoopMode);
-
-
+    WSMethodInvocationRef invocation,
+    CFRunLoopRef          runLoop,
+    CFStringRef           runLoopMode );
 
 /*
     @function       WSMethodInvocationUnscheduleFromRunLoop
@@ -796,11 +768,9 @@ WSMethodInvocationScheduleWithRunLoop(
  */
 EXTERN_API_C( void )
 WSMethodInvocationUnscheduleFromRunLoop(
-  WSMethodInvocationRef   invocation,
-  CFRunLoopRef            runLoop,
-  CFStringRef             runLoopMode);
-
-
+    WSMethodInvocationRef invocation,
+    CFRunLoopRef          runLoop,
+    CFStringRef           runLoopMode );
 
 /*
     Result interrogation.  
@@ -831,9 +801,7 @@ WSMethodInvocationUnscheduleFromRunLoop(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-WSMethodResultIsFault(CFDictionaryRef methodResult);
-
-
+WSMethodResultIsFault( CFDictionaryRef methodResult );
 
 /*
     Serialization / Deserialization override support.
@@ -842,7 +810,6 @@ WSMethodResultIsFault(CFDictionaryRef methodResult);
     types, or types not otherwise handled by the framework.  Note that these
     properties are *not* serialized if the invocation is serialized.
  */
-
 
 /*
  *  WSMethodInvocationSerializationProcPtr
@@ -869,7 +836,7 @@ WSMethodResultIsFault(CFDictionaryRef methodResult);
  *    a CFStringRef containing valid XML.  The caller of this callback
  *    will release the string.
  */
-typedef CALLBACK_API( CFStringRef , WSMethodInvocationSerializationProcPtr )(WSMethodInvocationRef invocation, CFTypeRef obj, void *info);
+typedef CALLBACK_API( CFStringRef, WSMethodInvocationSerializationProcPtr )( WSMethodInvocationRef invocation, CFTypeRef obj, void *info );
 /*
  *  WSMethodInvocationAddSerializationOverride()
  *  
@@ -901,13 +868,10 @@ typedef CALLBACK_API( CFStringRef , WSMethodInvocationSerializationProcPtr )(WSM
  */
 EXTERN_API_C( void )
 WSMethodInvocationAddSerializationOverride(
-  WSMethodInvocationRef                    invocation,
-  CFTypeID                                 objType,
-  WSMethodInvocationSerializationProcPtr   serializationProc,
-  WSClientContext *                        context);
-
-
-
+    WSMethodInvocationRef                  invocation,
+    CFTypeID                               objType,
+    WSMethodInvocationSerializationProcPtr serializationProc,
+    WSClientContext *                      context );
 
 /*
  *  WSMethodInvocationDeserializationProcPtr
@@ -938,7 +902,7 @@ WSMethodInvocationAddSerializationOverride(
  *    a CFTypeRef representing the deserialized data, or NULL to allow
  *    the default deserializers to act.
  */
-typedef CALLBACK_API( CFTypeRef , WSMethodInvocationDeserializationProcPtr )(WSMethodInvocationRef invocation, CFXMLTreeRef msgRoot, CFXMLTreeRef deserializeRoot, void *info);
+typedef CALLBACK_API( CFTypeRef, WSMethodInvocationDeserializationProcPtr )( WSMethodInvocationRef invocation, CFXMLTreeRef msgRoot, CFXMLTreeRef deserializeRoot, void *info );
 /*
  *  WSMethodInvocationAddDeserializationOverride()
  *  
@@ -974,31 +938,29 @@ typedef CALLBACK_API( CFTypeRef , WSMethodInvocationDeserializationProcPtr )(WSM
  */
 EXTERN_API_C( void )
 WSMethodInvocationAddDeserializationOverride(
-  WSMethodInvocationRef                      invocation,
-  CFStringRef                                typeNamespace,
-  CFStringRef                                typeName,
-  WSMethodInvocationDeserializationProcPtr   deserializationProc,
-  WSClientContext *                          context);
-
-
+    WSMethodInvocationRef                    invocation,
+    CFStringRef                              typeNamespace,
+    CFStringRef                              typeName,
+    WSMethodInvocationDeserializationProcPtr deserializationProc,
+    WSClientContext *                        context );
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __WSMETHODINVOCATION__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __WSMETHODINVOCATION__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__WSMETHODINVOCATION__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __WSMETHODINVOCATION__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF

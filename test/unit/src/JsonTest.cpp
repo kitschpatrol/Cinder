@@ -1,16 +1,16 @@
 #include "cinder/app/App.h"
 #include "cinder/Json.h"
 
-#include "jsoncpp/json.h"
 #include "catch.hpp"
+#include "jsoncpp/json.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-TEST_CASE("Json", "[noisy]")
+TEST_CASE( "Json", "[noisy]" )
 {
-	SECTION("Basic JSON Parsing")
+	SECTION( "Basic JSON Parsing" )
 	{
 		console() << "jsoncpp version: " << JSONCPP_VERSION_STRING << endl;
 
@@ -31,23 +31,23 @@ TEST_CASE("Json", "[noisy]")
 		}
 
 		for( JsonTree::ConstIter trackIt = tracks.begin(); trackIt != tracks.end(); ++trackIt ) {
-			JsonTree track = * trackIt;
+			JsonTree track = *trackIt;
 			console() << track["id"].getValue<int>() << endl;
 		}
 
 		JsonTree firstAlbum = doc.getChild( "library.albums[0]" );
 		for( JsonTree::Iter child = firstAlbum.begin(); child != firstAlbum.end(); ++child ) {
-			if ( !child->hasChildren() ) {
+			if( !child->hasChildren() ) {
 				console() << "Key: " << child->getKey() << "  Value: " << child->getValue<string>() << endl;
 			}
 		}
 
 		console() << doc.getChild( "library.owner" );
 		JsonTree &ownerCity = doc.getChild( "library.owner.city" );
-		string s = ownerCity.getPath();
+		string    s = ownerCity.getPath();
 		console() << "Path: " << ownerCity.getPath() << "\n  Value: " << ownerCity.getValue<string>() << endl;
 		console() << doc;
-		
+
 		JsonTree firstTrackCopy = doc.getChild( "library.albums[0].tracks[0].title" );
 		firstTrackCopy = JsonTree( firstTrackCopy.getKey(), string( "Replacement name" ) );
 		console() << doc.getChild( "library.albums[0].tracks[0]['title']" ) << endl;
@@ -60,10 +60,11 @@ TEST_CASE("Json", "[noisy]")
 		console() << "attempting invalid json (should cause ExcJsonParserError next).." << endl;
 		try {
 			JsonTree invalid( "%%%%%%%%" );
-		} catch ( JsonTree::ExcJsonParserError ex ) {
+		}
+		catch( JsonTree::ExcJsonParserError ex ) {
 			console() << ex.what() << endl;
 		}
-		
+
 		JsonTree test32u( "uint32", uint32_t( math<uint64_t>::pow( 2, 32 ) ) - 1 );
 		console() << test32u;
 		console() << test32u.getValue() << endl;
@@ -80,7 +81,7 @@ TEST_CASE("Json", "[noisy]")
 		console() << "complete." << endl;
 	}
 
-	SECTION("Cinder ignores c-style comments in JSON")
+	SECTION( "Cinder ignores c-style comments in JSON" )
 	{
 		console() << "testing json with comments.." << endl;
 
@@ -96,27 +97,27 @@ TEST_CASE("Json", "[noisy]")
 		}
 	}
 
-	SECTION("Cinder can build and write JSON trees to disk")
+	SECTION( "Cinder can build and write JSON trees to disk" )
 	{
 		JsonTree doc;
 		JsonTree library = JsonTree::makeObject( "library" );
 		JsonTree album = JsonTree::makeArray( "album" );
-		
-		album.addChild( 
-			JsonTree( "musician", string( "Sufjan Stevens" ) ) ).addChild( 
-			JsonTree( "year", string( "2004" ) ) ).addChild( 
-			JsonTree( "title", string( "Seven Swans" ) ) 
-			);
+
+		album.addChild(
+		         JsonTree( "musician", string( "Sufjan Stevens" ) ) )
+		    .addChild(
+		        JsonTree( "year", string( "2004" ) ) )
+		    .addChild(
+		        JsonTree( "title", string( "Seven Swans" ) ) );
 
 		JsonTree tracks = JsonTree::makeArray( "tracks" );
 
-		for ( int32_t i = 0; i < 6; i ++ ) {
-			
+		for( int32_t i = 0; i < 6; i++ ) {
 			JsonTree track;
 			track.pushBack( JsonTree( "id", i + 1 ) );
-			
+
 			JsonTree title;
-			switch ( i ) {
+			switch( i ) {
 			case 0:
 				title = JsonTree( "title", "All the Trees of the Field Will Clap Their Hands" );
 				break;
@@ -140,31 +141,32 @@ TEST_CASE("Json", "[noisy]")
 			track.addChild( title ).addChild( track );
 			tracks.pushBack( track );
 		}
-		
-		for ( JsonTree::Iter trackIt = tracks.begin(); trackIt != tracks.end(); ++trackIt ) {
-			if ( trackIt->getChild( "id" ).getValue<int>() == 3 ) {
+
+		for( JsonTree::Iter trackIt = tracks.begin(); trackIt != tracks.end(); ++trackIt ) {
+			if( trackIt->getChild( "id" ).getValue<int>() == 3 ) {
 				tracks.replaceChild( trackIt, JsonTree().addChild( JsonTree( "id", 3 ) ).addChild( JsonTree( "title", "In the Devil's Territory" ) ) );
 			}
 		}
-		
+
 		tracks.replaceChild( 3, JsonTree().addChild( JsonTree( "id", 4 ) ).addChild( JsonTree( "title", "To Be Alone With You" ) ) );
-		
+
 		tracks.removeChild( 4 );
-		
-		for ( JsonTree::Iter trackIt = tracks.begin(); trackIt != tracks.end(); ) {
-			if ( trackIt->getChild( "id" ).getValue<int>() == 6 ) {
+
+		for( JsonTree::Iter trackIt = tracks.begin(); trackIt != tracks.end(); ) {
+			if( trackIt->getChild( "id" ).getValue<int>() == 6 ) {
 				trackIt = tracks.removeChild( trackIt );
-			} else {
+			}
+			else {
 				++trackIt;
 			}
 		}
-		
+
 		album.pushBack( tracks );
 		library.pushBack( album );
 		doc.pushBack( library );
 
 		console() << doc;
-		
+
 		doc.write( writeFile( getDocumentsDirectory() / "testoutput.json" ), JsonTree::WriteOptions() );
 		doc.write( writeFile( getDocumentsDirectory() / "testoutput_fast.json" ), JsonTree::WriteOptions().indented( false ) );
 	}

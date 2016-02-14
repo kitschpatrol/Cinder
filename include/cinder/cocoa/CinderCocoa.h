@@ -22,46 +22,47 @@
 
 #pragma once
 
-#include "cinder/Cinder.h"
-#include "cinder/Surface.h"
-#include "cinder/Shape2d.h"
-#include "cinder/Color.h"
 #include "cinder/Buffer.h"
+#include "cinder/Cinder.h"
+#include "cinder/Color.h"
 #include "cinder/ImageIo.h"
+#include "cinder/Shape2d.h"
+#include "cinder/Surface.h"
 namespace cinder {
-	class Url;
-	class Font;
+class Url;
+class Font;
 }
 
 #include <CoreGraphics/CGGeometry.h>
 #if defined( __OBJC__ )
-	@class NSBitmapImageRep;
-	@class NSString;
-	@class NSData;
+@class NSBitmapImageRep;
+@class NSString;
+@class NSData;
 #else
-	class NSBitmapImageRep;
-	class NSString;
-	class NSData;	
+class NSBitmapImageRep;
+class NSString;
+class NSData;
 #endif
-typedef struct CGContext *CGContextRef;
-typedef struct CGColor *CGColorRef;
-typedef struct CGImage *CGImageRef;
-typedef const struct CGPath *CGPathRef;
-typedef const struct __CFURL * CFURLRef;
+typedef struct CGContext *                 CGContextRef;
+typedef struct CGColor *                   CGColorRef;
+typedef struct CGImage *                   CGImageRef;
+typedef const struct CGPath *              CGPathRef;
+typedef const struct __CFURL *             CFURLRef;
 typedef const struct __CFAttributedString *CFAttributedStringRef;
-typedef const struct __CFData * CFDataRef;
+typedef const struct __CFData *            CFDataRef;
 
 typedef struct __CVBuffer *CVBufferRef;
-typedef CVBufferRef CVImageBufferRef;
-typedef CVImageBufferRef CVPixelBufferRef;
+typedef CVBufferRef        CVImageBufferRef;
+typedef CVImageBufferRef   CVPixelBufferRef;
 
 #if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101000
-	typedef struct CF_BRIDGED_MUTABLE_TYPE(NSMutableData) __CFData * CFMutableDataRef;
+typedef struct CF_BRIDGED_MUTABLE_TYPE( NSMutableData ) __CFData *CFMutableDataRef;
 #else
-	typedef struct __CFData * CFMutableDataRef;
+typedef struct __CFData *CFMutableDataRef;
 #endif
 
-namespace cinder { namespace cocoa {
+namespace cinder {
+namespace cocoa {
 
 typedef std::shared_ptr<struct __CFString> SafeCfString;
 
@@ -73,14 +74,20 @@ class SafeNsString {
 	SafeNsString( NSString *str );
 	//! Creates a SafeNsString by converting a std::string.
 	SafeNsString( const std::string &str );
-	
-	operator NSString* const() { if( mPtr ) return mPtr.get(); else return 0; }
+
+	operator NSString *const()
+	{
+		if( mPtr )
+			return mPtr.get();
+		else
+			return 0;
+	}
 	operator std::string() const;
-	
+
   private:
 	static void safeRelease( NSString *ptr );
-	
-	std::shared_ptr<NSString>	mPtr;
+
+	std::shared_ptr<NSString> mPtr;
 };
 
 //! Represents an exception-safe Cocoa NSData which behaves like a shared_ptr but can implicitly cast itself to NSData*
@@ -89,14 +96,20 @@ class SafeNsData {
 	SafeNsData() {}
 	//! Creates a SafeNsData using an existing cinder::Buffer. The SafeNsData retains a copy of the buffer in order to prevent its deletion
 	SafeNsData( const BufferRef &buffer );
-	
-	operator NSData* const() { if( mPtr ) return mPtr.get(); else return 0; }
-	
+
+	operator NSData *const()
+	{
+		if( mPtr )
+			return mPtr.get();
+		else
+			return 0;
+	}
+
   private:
 	static void safeRelease( const NSData *ptr );
-	
-	std::shared_ptr<NSData>	mPtr;
-	const BufferRef			mBuffer;
+
+	std::shared_ptr<NSData> mPtr;
+	const BufferRef         mBuffer;
 };
 
 //! Represents an exception-safe NSAutoreleasePool. Replaces the global NSAutoreleasePool for its lifetime
@@ -104,9 +117,9 @@ class SafeNsAutoreleasePool {
   public:
 	SafeNsAutoreleasePool();
 	~SafeNsAutoreleasePool();
-	
+
   private:
-	void			*mPool;
+	void *mPool;
 };
 
 //! Safely release a CoreFoundation object, testing for null before calling CFRelease. Designed to be used as the deleter of a shared_ptr.
@@ -132,11 +145,11 @@ Surface8uRef convertNsBitmapDataRep( const NSBitmapImageRep *rep, bool assumeOwn
 //! Converts a CFStringRef into std::string with UTF8 encoding.
 std::string convertCfString( CFStringRef str );
 //! Converts a std::string into a CFStringRef. Assumes UTF8 encoding. User must call CFRelease() to free the result.
-CFStringRef	createCfString( const std::string &str );
+CFStringRef createCfString( const std::string &str );
 //! Converts a std::string into an exception-safe CFString pointer. Assumes UTF8 encoding. The deleter is set to free the string when appropriate.
 SafeCfString createSafeCfString( const std::string &str );
 //! Converts a NSString into a std::string with UTF8 encoding.
-std::string	convertNsString( NSString *str );
+std::string convertNsString( NSString *str );
 //! Converts a cinder::URL into a CFURLRef. User must call CFRelease() to free the result.
 CFURLRef createCfUrl( const cinder::Url &url );
 
@@ -156,9 +169,21 @@ CGRect createCgRect( const Area &area );
 Area CgRectToArea( const CGRect &rect );
 
 //! Creates a Cocoa CGSize from a cinder::ivec2
-inline CGSize createCgSize( const ivec2 &s ) { CGSize result; result.width = s.x; result.height = s.y; return result; }
+inline CGSize createCgSize( const ivec2 &s )
+{
+	CGSize result;
+	result.width = s.x;
+	result.height = s.y;
+	return result;
+}
 //! Creates a Cocoa CGSize from a cinder::vec2
-inline CGSize createCgSize( const vec2 &s ) { CGSize result; result.width = s.x; result.height = s.y; return result; }
+inline CGSize createCgSize( const vec2 &s )
+{
+	CGSize result;
+	result.width = s.x;
+	result.height = s.y;
+	return result;
+}
 
 //! Converts a CGPathRef to a cinder::Shape2d. If \a flipVertical then the path will be flipped vertically.
 void convertCgPath( CGPathRef cgPath, Shape2d *resultShape, bool flipVertical = true );
@@ -172,30 +197,27 @@ int getCvPixelFormatTypeFromSurfaceChannelOrder( const SurfaceChannelOrder &sco 
 //! Creates a CFDataRef from a cinder::Buffer \a buffer. The result does not copy or assume ownership of the data and should be freed using CFRelease().
 CFDataRef createCfDataRef( const cinder::Buffer &buffer );
 
-
 typedef std::shared_ptr<class ImageSourceCgImage> ImageSourceCgImageRef;
 
 class ImageSourceCgImage : public ImageSource {
   public:
 	//! Retains (and later releases) \a imageRef
-	static ImageSourceCgImageRef	createRef( ::CGImageRef imageRef, ImageSource::Options options = ImageSource::Options() );
+	static ImageSourceCgImageRef createRef(::CGImageRef imageRef, ImageSource::Options options = ImageSource::Options() );
 	virtual ~ImageSourceCgImage() {}
-
-	virtual void	load( ImageTargetRef target );
+	virtual void load( ImageTargetRef target );
 
   protected:
 	//! Retains (and later releases) \a imageRef
-	ImageSourceCgImage( ::CGImageRef imageRef, ImageSource::Options options );
+	ImageSourceCgImage(::CGImageRef imageRef, ImageSource::Options options );
 
-	bool						mIsIndexed, mIs16BitPacked;
-	Color8u						mColorTable[256];
-	std::shared_ptr<CGImage>	mImageRef;
+	bool                     mIsIndexed, mIs16BitPacked;
+	Color8u                  mColorTable[256];
+	std::shared_ptr<CGImage> mImageRef;
 
-	uint16_t					m16BitPackedRedOffset, m16BitPackedGreenOffset, m16BitPackedBlueOffset;
+	uint16_t m16BitPackedRedOffset, m16BitPackedGreenOffset, m16BitPackedBlueOffset;
 };
 
-ImageSourceCgImageRef createImageSource( ::CGImageRef imageRef, ImageSource::Options = ImageSource::Options() );
-
+ImageSourceCgImageRef createImageSource(::CGImageRef imageRef, ImageSource::Options = ImageSource::Options() );
 
 typedef std::shared_ptr<class ImageTargetCgImage> ImageTargetCgImageRef;
 
@@ -204,19 +226,18 @@ class ImageTargetCgImage : public ImageTarget {
 	static ImageTargetCgImageRef createRef( ImageSourceRef imageSource, ImageTarget::Options options );
 	~ImageTargetCgImage();
 
-	virtual void*	getRowPointer( int32_t row );
-	virtual void	finalize();
+	virtual void *getRowPointer( int32_t row );
+	virtual void finalize();
 
-	::CGImageRef	getCgImage() const { return mImageRef; }
-
+	::CGImageRef getCgImage() const { return mImageRef; }
   protected:
 	ImageTargetCgImage( ImageSourceRef imageSource, ImageTarget::Options options );
 
-	::CGImageRef		mImageRef;
-	size_t				mBitsPerComponent, mBitsPerPixel, mRowBytes;
-	uint32_t			mBitmapInfo; // CGBitmapInfo
-	::CFMutableDataRef	mDataRef;
-	uint8_t				*mDataPtr;
+	::CGImageRef       mImageRef;
+	size_t             mBitsPerComponent, mBitsPerPixel, mRowBytes;
+	uint32_t           mBitmapInfo; // CGBitmapInfo
+	::CFMutableDataRef mDataRef;
+	uint8_t *          mDataPtr;
 };
 
 //! Loads an ImageSource into a new CGImageRef. Release the result with ::CGImageRelease.
@@ -224,16 +245,16 @@ class ImageTargetCgImage : public ImageTarget {
 
 //! Returns a Surface8u that represents \a pixelBufferRef. Decrements the retain count on \a pixelBufferRef on destruction.
 Surface8uRef convertCVPixelBufferToSurface( CVPixelBufferRef pixelBufferRef );
-
-} } // namespace cinder::cocoa
+}
+} // namespace cinder::cocoa
 
 namespace cinder {
 
 //! \cond
 class SurfaceConstraintsCgBitmapContext : public cinder::SurfaceConstraints {
- public:
+  public:
 	virtual SurfaceChannelOrder getChannelOrder( bool alpha ) const;
-	virtual int32_t				getRowBytes( int requestedWidth, const SurfaceChannelOrder &sco, int elementSize ) const;
+	virtual int32_t getRowBytes( int requestedWidth, const SurfaceChannelOrder &sco, int elementSize ) const;
 };
 //! \endcond
 

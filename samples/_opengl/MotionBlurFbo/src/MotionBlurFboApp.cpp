@@ -14,17 +14,17 @@ using namespace ci;
 using namespace ci::app;
 
 class MotionBlurFboApp : public App {
-  public:	
+  public:
 	void setup();
 	void keyDown( KeyEvent event );
 	void updateCubeRotation( double time );
 	void draw();
-	
-	CameraPersp			mCam;
-	mat4			mCubeRotation;
-	gl::BatchRef		mBatch;
-	gl::FboRef			mFbo, mAccumFbo;
-	bool				mPaused;
+
+	CameraPersp  mCam;
+	mat4         mCubeRotation;
+	gl::BatchRef mBatch;
+	gl::FboRef   mFbo, mAccumFbo;
+	bool         mPaused;
 };
 
 const int SUBFRAMES = 16; // increasing this number increases quality
@@ -38,12 +38,9 @@ void MotionBlurFboApp::setup()
 	mFbo = gl::Fbo::create( toPixels( getWindowWidth() ), toPixels( getWindowHeight() ) );
 
 #if defined( CINDER_GL_ES_2 )
-	mAccumFbo = gl::Fbo::create( toPixels( getWindowWidth() ), toPixels( getWindowHeight() ),
-		gl::Fbo::Format().colorTexture( gl::Texture::Format().dataType( GL_HALF_FLOAT_OES )
-													.internalFormat( GL_RGB ) ).disableDepth() );
+	mAccumFbo = gl::Fbo::create( toPixels( getWindowWidth() ), toPixels( getWindowHeight() ), gl::Fbo::Format().colorTexture( gl::Texture::Format().dataType( GL_HALF_FLOAT_OES ).internalFormat( GL_RGB ) ).disableDepth() );
 #else
-	mAccumFbo = gl::Fbo::create( getWindowWidth(), getWindowHeight(),
-						gl::Fbo::Format().colorTexture( gl::Fbo::Format().getDefaultColorTextureFormat().internalFormat( GL_RGB16F ) ).disableDepth() );
+	mAccumFbo = gl::Fbo::create( getWindowWidth(), getWindowHeight(), gl::Fbo::Format().colorTexture( gl::Fbo::Format().getDefaultColorTextureFormat().internalFormat( GL_RGB16F ) ).disableDepth() );
 #endif
 
 	mPaused = false;
@@ -52,7 +49,7 @@ void MotionBlurFboApp::setup()
 void MotionBlurFboApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == ' ' )
-		mPaused = ! mPaused;
+		mPaused = !mPaused;
 }
 
 void MotionBlurFboApp::updateCubeRotation( double time )
@@ -66,7 +63,7 @@ void MotionBlurFboApp::draw()
 {
 	gl::viewport( vec2(), mAccumFbo->getSize() );
 
-	if( ! mPaused ) {
+	if( !mPaused ) {
 		// make 'mAccumFbo' the active framebuffer
 		gl::ScopedFramebuffer fbScp( mAccumFbo );
 		// clear out both of our FBOs
@@ -86,7 +83,7 @@ void MotionBlurFboApp::draw()
 			updateCubeRotation( startTime + i / (float)SUBFRAMES );
 			gl::multModelMatrix( mCubeRotation );
 			mBatch->draw();
-			
+
 			// now add this frame to the accumulation FBO
 			mAccumFbo->bindFramebuffer();
 			gl::setMatricesWindow( mAccumFbo->getSize() );
@@ -95,7 +92,7 @@ void MotionBlurFboApp::draw()
 			gl::draw( mFbo->getColorTexture() );
 		}
 	}
-	
+
 	gl::disableDepthRead();
 	gl::disableAlphaBlending();
 	// set the color to be 1/SUBFRAMES, which divides the HDR image by the number of sub-frames we rendered

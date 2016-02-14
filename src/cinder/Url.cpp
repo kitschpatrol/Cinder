@@ -24,27 +24,27 @@
 
 #include "cinder/Url.h"
 #include "cinder/DataSource.h"
-#include "cinder/Utilities.h"
 #include "cinder/Unicode.h"
+#include "cinder/Utilities.h"
 #if defined( CINDER_MSW )
-	#include <Shlwapi.h>
-	#include "cinder/UrlImplWinInet.h"
-	typedef cinder::IStreamUrlImplWinInet	IStreamUrlPlatformImpl;
+#include <Shlwapi.h>
+#include "cinder/UrlImplWinInet.h"
+typedef cinder::IStreamUrlImplWinInet IStreamUrlPlatformImpl;
 #elif defined( CINDER_COCOA )
-	#include <CoreFoundation/CoreFoundation.h>
-	#include "cinder/cocoa/CinderCocoa.h"
-	#include "cinder/UrlImplCocoa.h"
-	typedef cinder::IStreamUrlImplCocoa		IStreamUrlPlatformImpl;
+#include <CoreFoundation/CoreFoundation.h>
+#include "cinder/cocoa/CinderCocoa.h"
+#include "cinder/UrlImplCocoa.h"
+typedef cinder::IStreamUrlImplCocoa IStreamUrlPlatformImpl;
 #elif defined( CINDER_WINRT )
-	#include "cinder/winrt/WinRTUtils.h"
-	#include "cinder/msw/CinderMsw.h"
-	#include <wrl/client.h>
-	#include <agile.h>
-	using namespace Windows::Storage;
-	using namespace Windows::System;
+#include "cinder/winrt/WinRTUtils.h"
+#include "cinder/msw/CinderMsw.h"
+#include <wrl/client.h>
+#include <agile.h>
+using namespace Windows::Storage;
+using namespace Windows::System;
 #else
-	#include "cinder/UrlImplCurl.h"
-	typedef cinder::IStreamUrlImplCurl		IStreamUrlPlatformImpl;
+#include "cinder/UrlImplCurl.h"
+typedef cinder::IStreamUrlImplCurl IStreamUrlPlatformImpl;
 #endif
 
 namespace cinder {
@@ -52,8 +52,9 @@ namespace cinder {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Url
 Url::Url( const std::string &urlString, bool isEscaped )
-	: mStr( isEscaped ? 
-		urlString : encode( urlString ) )
+    : mStr( isEscaped ?
+              urlString :
+              encode( urlString ) )
 {
 }
 
@@ -61,24 +62,24 @@ std::string Url::encode( const std::string &unescaped )
 {
 #if defined( CINDER_COCOA )
 	cocoa::SafeCfString unescapedStr = cocoa::createSafeCfString( unescaped );
-	CFStringRef escaped = ::CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, unescapedStr.get(), NULL, NULL, kCFStringEncodingUTF8 );
-	std::string result = cocoa::convertCfString( escaped );
+	CFStringRef         escaped = ::CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, unescapedStr.get(), NULL, NULL, kCFStringEncodingUTF8 );
+	std::string         result = cocoa::convertCfString( escaped );
 	::CFRelease( escaped );
 	return result;
 #elif defined( CINDER_MSW )
-	char16_t buffer[4096];
-	DWORD bufferSize = 4096;
+	char16_t       buffer[4096];
+	DWORD          bufferSize = 4096;
 	std::u16string wideUnescaped = toUtf16( unescaped );
-	UrlEscape( (wchar_t*)wideUnescaped.c_str(), (wchar_t*)buffer, &bufferSize, 0 );
+	UrlEscape( (wchar_t *)wideUnescaped.c_str(), (wchar_t *)buffer, &bufferSize, 0 );
 	return toUtf8( buffer );
 #elif defined( CINDER_WINRT )
 	std::wstring urlStr = msw::toWideString( unescaped );
-	auto uri = ref new Windows::Foundation::Uri(ref new Platform::String(urlStr.c_str()));
-	return msw::toUtf8String( std::wstring( uri->AbsoluteCanonicalUri->Data()));
-#endif	
+	auto         uri = ref new Windows::Foundation::Uri( ref new Platform::String( urlStr.c_str() ) );
+	return msw::toUtf8String( std::wstring( uri->AbsoluteCanonicalUri->Data() ) );
+#endif
 }
 
-#if !defined( CINDER_WINRT)
+#if !defined( CINDER_WINRT )
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // IStreamUrl
@@ -88,7 +89,7 @@ IStreamUrlRef IStreamUrl::create( const Url &url, const std::string &user, const
 }
 
 IStreamUrl::IStreamUrl( const std::string &url, const std::string &user, const std::string &password, const UrlOptions &options )
-	: IStreamCinder()
+    : IStreamCinder()
 {
 	setFileName( url );
 	mImpl = std::shared_ptr<IStreamUrlImpl>( new IStreamUrlPlatformImpl( url, user, password, options ) );
@@ -110,7 +111,7 @@ IStreamUrlRef loadUrlStream( const std::string &url, const std::string &user, co
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // UrlLoadExc
 UrlLoadExc::UrlLoadExc( int code, const std::string &message )
-	: Exception( message ), mStatusCode( code )
+    : Exception( message ), mStatusCode( code )
 {
 }
 

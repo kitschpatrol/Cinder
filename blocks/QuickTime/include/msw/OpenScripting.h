@@ -20,11 +20,9 @@
 #include <CoreServices.h>
 #endif
 
-
 #ifndef __HITOOLBOX__
 #include <HIToolbox.h>
 #endif
-
 
 #ifndef __OSA__
 #include <OSA.h>
@@ -58,6 +56,4 @@
 #include <DigitalHubRegistry.h>
 #endif
 
-
 #endif /* __OPENSCRIPTING__ */
-

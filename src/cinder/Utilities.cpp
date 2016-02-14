@@ -23,17 +23,17 @@
 */
 
 #include "cinder/Cinder.h"
-#include "cinder/Utilities.h"
 #include "cinder/Unicode.h"
+#include "cinder/Utilities.h"
 #include "cinder/app/Platform.h"
 
 #if defined( CINDER_COCOA )
-	#include "cinder/cocoa/CinderCocoa.h"
+#include "cinder/cocoa/CinderCocoa.h"
 #endif
 
-#include <vector>
-#include <boost/tokenizer.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/tokenizer.hpp>
+#include <vector>
 
 using std::vector;
 using std::string;
@@ -75,15 +75,14 @@ std::vector<std::string> split( const std::string &str, const std::string &separ
 {
 	vector<string> result;
 
-	boost::algorithm::split( result, str, boost::is_any_of(separators), 
-		compress ? boost::token_compress_on : boost::token_compress_off );
+	boost::algorithm::split( result, str, boost::is_any_of( separators ), compress ? boost::token_compress_on : boost::token_compress_off );
 
 	return result;
 }
 
 string loadString( const DataSourceRef &dataSource )
 {
-	Buffer buffer( dataSource );
+	Buffer      buffer( dataSource );
 	const char *data = static_cast<const char *>( buffer.getData() );
 
 	return string( data, data + buffer.getSize() );
@@ -99,52 +98,50 @@ vector<string> stackTrace()
 	return app::Platform::get()->stackTrace();
 }
 
-int16_t swapEndian( int16_t val ) { 
-	return (int16_t) (	(((uint16_t) (val) & (uint16_t) 0x00ffU) << 8) | 
-						(((uint16_t) (val) & (uint16_t) 0xff00U) >> 8) );
+int16_t swapEndian( int16_t val )
+{
+	return ( int16_t )( ( ( ( uint16_t )( val ) & (uint16_t)0x00ffU ) << 8 ) | ( ( ( uint16_t )( val ) & (uint16_t)0xff00U ) >> 8 ) );
 }
 
-uint16_t swapEndian( uint16_t val ) { 
-	return (uint16_t) (	(((uint16_t) (val) & (uint16_t) 0x00ffU) << 8) | 
-						(((uint16_t) (val) & (uint16_t) 0xff00U) >> 8) );
+uint16_t swapEndian( uint16_t val )
+{
+	return ( uint16_t )( ( ( ( uint16_t )( val ) & (uint16_t)0x00ffU ) << 8 ) | ( ( ( uint16_t )( val ) & (uint16_t)0xff00U ) >> 8 ) );
 }
 
-int32_t swapEndian( int32_t val ) { 
-	return (int32_t)((((uint32_t) (val) & (uint32_t) 0x000000FFU) << 24) |
-					 (((uint32_t) (val) & (uint32_t) 0x0000FF00U) <<  8) |
-					 (((uint32_t) (val) & (uint32_t) 0x00FF0000U) >>  8) |
-					 (((uint32_t) (val) & (uint32_t) 0xFF000000U) >> 24));
+int32_t swapEndian( int32_t val )
+{
+	return ( int32_t )( ( ( ( uint32_t )( val ) & (uint32_t)0x000000FFU ) << 24 ) | ( ( ( uint32_t )( val ) & (uint32_t)0x0000FF00U ) << 8 ) | ( ( ( uint32_t )( val ) & (uint32_t)0x00FF0000U ) >> 8 ) | ( ( ( uint32_t )( val ) & (uint32_t)0xFF000000U ) >> 24 ) );
 }
 
-uint32_t swapEndian( uint32_t val ) { 
-	return (uint32_t)((((uint32_t) (val) & (uint32_t) 0x000000FFU) << 24) |
-					 (((uint32_t) (val) & (uint32_t) 0x0000FF00U) <<  8) |
-					 (((uint32_t) (val) & (uint32_t) 0x00FF0000U) >>  8) |
-					 (((uint32_t) (val) & (uint32_t) 0xFF000000U) >> 24));
+uint32_t swapEndian( uint32_t val )
+{
+	return ( uint32_t )( ( ( ( uint32_t )( val ) & (uint32_t)0x000000FFU ) << 24 ) | ( ( ( uint32_t )( val ) & (uint32_t)0x0000FF00U ) << 8 ) | ( ( ( uint32_t )( val ) & (uint32_t)0x00FF0000U ) >> 8 ) | ( ( ( uint32_t )( val ) & (uint32_t)0xFF000000U ) >> 24 ) );
 }
 
-float swapEndian( float val ) { 
-	uint32_t temp = swapEndian( * reinterpret_cast<uint32_t*>( &val ) );
-	return *(reinterpret_cast<float*>( &temp ) );
+float swapEndian( float val )
+{
+	uint32_t temp = swapEndian( *reinterpret_cast<uint32_t *>( &val ) );
+	return *( reinterpret_cast<float *>( &temp ) );
 }
 
-double swapEndian( double val ) {
+double swapEndian( double val )
+{
 	union {
 		double d;
-		struct {  
+		struct {
 			uint32_t a;
 			uint32_t b;
 		} i;
 	} s1, s2;
 	s1.d = val;
 	s2.i.a = swapEndian( s1.i.b );
-	s2.i.b = swapEndian( s1.i.a	);
+	s2.i.b = swapEndian( s1.i.a );
 	return s2.d;
 }
 
 void swapEndianBlock( uint16_t *blockPtr, size_t blockSizeInBytes )
 {
-	size_t blockSize = blockSizeInBytes / sizeof(uint16_t);
+	size_t blockSize = blockSizeInBytes / sizeof( uint16_t );
 
 	for( size_t b = 0; b < blockSize; b++ ) {
 		*blockPtr = swapEndian( *blockPtr );
@@ -154,13 +151,12 @@ void swapEndianBlock( uint16_t *blockPtr, size_t blockSizeInBytes )
 
 void swapEndianBlock( float *blockPtr, size_t blockSizeInBytes )
 {
-	size_t blockSize = blockSizeInBytes / sizeof(float);
+	size_t blockSize = blockSizeInBytes / sizeof( float );
 
 	for( size_t b = 0; b < blockSize; b++ ) {
-		*(reinterpret_cast<uint32_t*>(blockPtr)) = swapEndian( *(reinterpret_cast<uint32_t*>(blockPtr)) );
+		*( reinterpret_cast<uint32_t *>( blockPtr ) ) = swapEndian( *( reinterpret_cast<uint32_t *>( blockPtr ) ) );
 		blockPtr++;
 	}
 }
 
 } // namespace cinder
-

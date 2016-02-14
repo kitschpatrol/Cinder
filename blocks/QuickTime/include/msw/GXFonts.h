@@ -33,9 +33,6 @@
 #include <ScalerStreamTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -49,18 +46,18 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-#if defined(__MWERKS__) && TARGET_CPU_68K
-    #pragma push
-    #pragma pointers_in_D0
+#if defined( __MWERKS__ ) && TARGET_CPU_68K
+#pragma push
+#pragma pointers_in_D0
 #endif
- 
+
 #if CALL_NOT_IN_CARBON
 /*
  *  GXNewFont()
@@ -72,10 +69,9 @@ extern "C" {
  */
 EXTERN_API_C( gxFont )
 GXNewFont(
-  gxFontStorageTag         storage,
-  gxFontStorageReference   reference,
-  gxFontAttribute          attributes)                        THREEWORDINLINE(0x303C, 0x0201, 0xA832);
-
+    gxFontStorageTag       storage,
+    gxFontStorageReference reference,
+    gxFontAttribute        attributes ) THREEWORDINLINE( 0x303C, 0x0201, 0xA832 );
 
 /*
  *  GXGetFont()
@@ -87,10 +83,9 @@ GXNewFont(
  */
 EXTERN_API_C( gxFontStorageTag )
 GXGetFont(
-  gxFont                    fontID,
-  gxFontStorageReference *  reference,
-  gxFontAttribute *         attributes)                       THREEWORDINLINE(0x303C, 0x0202, 0xA832);
-
+    gxFont                  fontID,
+    gxFontStorageReference *reference,
+    gxFontAttribute *       attributes ) THREEWORDINLINE( 0x303C, 0x0202, 0xA832 );
 
 /*
  *  GXFindFont()
@@ -102,10 +97,9 @@ GXGetFont(
  */
 EXTERN_API_C( gxFont )
 GXFindFont(
-  gxFontStorageTag         storage,
-  gxFontStorageReference   reference,
-  gxFontAttribute *        attributes)                        THREEWORDINLINE(0x303C, 0x0203, 0xA832);
-
+    gxFontStorageTag       storage,
+    gxFontStorageReference reference,
+    gxFontAttribute *      attributes ) THREEWORDINLINE( 0x303C, 0x0203, 0xA832 );
 
 /*
  *  GXSetFont()
@@ -117,11 +111,10 @@ GXFindFont(
  */
 EXTERN_API_C( void )
 GXSetFont(
-  gxFont                   fontID,
-  gxFontStorageTag         storage,
-  gxFontStorageReference   reference,
-  gxFontAttribute          attributes)                        THREEWORDINLINE(0x303C, 0x0204, 0xA832);
-
+    gxFont                 fontID,
+    gxFontStorageTag       storage,
+    gxFontStorageReference reference,
+    gxFontAttribute        attributes ) THREEWORDINLINE( 0x303C, 0x0204, 0xA832 );
 
 /*
  *  GXDisposeFont()
@@ -132,8 +125,7 @@ GXSetFont(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-GXDisposeFont(gxFont fontID)                                  THREEWORDINLINE(0x303C, 0x0205, 0xA832);
-
+GXDisposeFont( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0205, 0xA832 );
 
 /*
  *  GXChangedFont()
@@ -144,8 +136,7 @@ GXDisposeFont(gxFont fontID)                                  THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-GXChangedFont(gxFont fontID)                                  THREEWORDINLINE(0x303C, 0x0206, 0xA832);
-
+GXChangedFont( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0206, 0xA832 );
 
 /*
  *  GXGetFontFormat()
@@ -156,8 +147,7 @@ GXChangedFont(gxFont fontID)                                  THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 EXTERN_API_C( gxFontFormatTag )
-GXGetFontFormat(gxFont fontID)                                THREEWORDINLINE(0x303C, 0x0207, 0xA832);
-
+GXGetFontFormat( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0207, 0xA832 );
 
 /*
  *  GXGetDefaultFont()
@@ -168,8 +158,7 @@ GXGetFontFormat(gxFont fontID)                                THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 EXTERN_API_C( gxFont )
-GXGetDefaultFont(void)                                        THREEWORDINLINE(0x303C, 0x0208, 0xA832);
-
+GXGetDefaultFont( void ) THREEWORDINLINE( 0x303C, 0x0208, 0xA832 );
 
 /*
  *  GXSetDefaultFont()
@@ -180,8 +169,7 @@ GXGetDefaultFont(void)                                        THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 EXTERN_API_C( gxFont )
-GXSetDefaultFont(gxFont fontID)                               THREEWORDINLINE(0x303C, 0x0209, 0xA832);
-
+GXSetDefaultFont( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0209, 0xA832 );
 
 /*
  *  GXFindFonts()
@@ -193,17 +181,16 @@ GXSetDefaultFont(gxFont fontID)                               THREEWORDINLINE(0x
  */
 EXTERN_API_C( long )
 GXFindFonts(
-  gxFont                familyID,
-  gxFontName            name,
-  gxFontPlatform        platform,
-  gxFontScript          script,
-  gxFontLanguage        language,
-  long                  length,
-  const unsigned char   text[],
-  long                  index,
-  long                  count,
-  gxFont                fonts[])                              THREEWORDINLINE(0x303C, 0x020A, 0xA832);
-
+    gxFont              familyID,
+    gxFontName          name,
+    gxFontPlatform      platform,
+    gxFontScript        script,
+    gxFontLanguage      language,
+    long                length,
+    const unsigned char text[],
+    long                index,
+    long                count,
+    gxFont              fonts[] ) THREEWORDINLINE( 0x303C, 0x020A, 0xA832 );
 
 /*
  *  GXCountFontGlyphs()
@@ -214,8 +201,7 @@ GXFindFonts(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontGlyphs(gxFont fontID)                              THREEWORDINLINE(0x303C, 0x020B, 0xA832);
-
+GXCountFontGlyphs( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x020B, 0xA832 );
 
 /*
  *  GXCountFontTables()
@@ -226,8 +212,7 @@ GXCountFontGlyphs(gxFont fontID)                              THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontTables(gxFont fontID)                              THREEWORDINLINE(0x303C, 0x020C, 0xA832);
-
+GXCountFontTables( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x020C, 0xA832 );
 
 /*
  *  GXGetFontTable()
@@ -239,11 +224,10 @@ GXCountFontTables(gxFont fontID)                              THREEWORDINLINE(0x
  */
 EXTERN_API_C( long )
 GXGetFontTable(
-  gxFont            fontID,
-  long              index,
-  void *            tableData,
-  gxFontTableTag *  tableTag)                                 THREEWORDINLINE(0x303C, 0x020D, 0xA832);
-
+    gxFont          fontID,
+    long            index,
+    void *          tableData,
+    gxFontTableTag *tableTag ) THREEWORDINLINE( 0x303C, 0x020D, 0xA832 );
 
 /*
  *  GXFindFontTable()
@@ -255,11 +239,10 @@ GXGetFontTable(
  */
 EXTERN_API_C( long )
 GXFindFontTable(
-  gxFont           fontID,
-  gxFontTableTag   tableTag,
-  void *           tableData,
-  long *           index)                                     THREEWORDINLINE(0x303C, 0x020E, 0xA832);
-
+    gxFont         fontID,
+    gxFontTableTag tableTag,
+    void *         tableData,
+    long *         index ) THREEWORDINLINE( 0x303C, 0x020E, 0xA832 );
 
 /*
  *  GXGetFontTableParts()
@@ -271,13 +254,12 @@ GXFindFontTable(
  */
 EXTERN_API_C( long )
 GXGetFontTableParts(
-  gxFont            fontID,
-  long              index,
-  long              offset,
-  long              length,
-  void *            tableData,
-  gxFontTableTag *  tableTag)                                 THREEWORDINLINE(0x303C, 0x020F, 0xA832);
-
+    gxFont          fontID,
+    long            index,
+    long            offset,
+    long            length,
+    void *          tableData,
+    gxFontTableTag *tableTag ) THREEWORDINLINE( 0x303C, 0x020F, 0xA832 );
 
 /*
  *  GXFindFontTableParts()
@@ -289,13 +271,12 @@ GXGetFontTableParts(
  */
 EXTERN_API_C( long )
 GXFindFontTableParts(
-  gxFont           fontID,
-  gxFontTableTag   tableTag,
-  long             offset,
-  long             length,
-  void *           tableData,
-  long *           index)                                     THREEWORDINLINE(0x303C, 0x0210, 0xA832);
-
+    gxFont         fontID,
+    gxFontTableTag tableTag,
+    long           offset,
+    long           length,
+    void *         tableData,
+    long *         index ) THREEWORDINLINE( 0x303C, 0x0210, 0xA832 );
 
 /*
  *  GXSetFontTable()
@@ -307,12 +288,11 @@ GXFindFontTableParts(
  */
 EXTERN_API_C( long )
 GXSetFontTable(
-  gxFont           fontID,
-  long             index,
-  gxFontTableTag   tableTag,
-  long             length,
-  const void *     tableData)                                 THREEWORDINLINE(0x303C, 0x0211, 0xA832);
-
+    gxFont         fontID,
+    long           index,
+    gxFontTableTag tableTag,
+    long           length,
+    const void *   tableData ) THREEWORDINLINE( 0x303C, 0x0211, 0xA832 );
 
 /*
  *  GXSetFontTableParts()
@@ -324,14 +304,13 @@ GXSetFontTable(
  */
 EXTERN_API_C( long )
 GXSetFontTableParts(
-  gxFont           fontID,
-  long             index,
-  gxFontTableTag   tableTag,
-  long             offset,
-  long             oldLength,
-  long             newLength,
-  const void *     tableData)                                 THREEWORDINLINE(0x303C, 0x0212, 0xA832);
-
+    gxFont         fontID,
+    long           index,
+    gxFontTableTag tableTag,
+    long           offset,
+    long           oldLength,
+    long           newLength,
+    const void *   tableData ) THREEWORDINLINE( 0x303C, 0x0212, 0xA832 );
 
 /*
  *  GXDeleteFontTable()
@@ -343,10 +322,9 @@ GXSetFontTableParts(
  */
 EXTERN_API_C( long )
 GXDeleteFontTable(
-  gxFont           fontID,
-  long             index,
-  gxFontTableTag   tableTag)                                  THREEWORDINLINE(0x303C, 0x0213, 0xA832);
-
+    gxFont         fontID,
+    long           index,
+    gxFontTableTag tableTag ) THREEWORDINLINE( 0x303C, 0x0213, 0xA832 );
 
 /*
  *  GXCountFontNames()
@@ -357,8 +335,7 @@ GXDeleteFontTable(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontNames(gxFont fontID)                               THREEWORDINLINE(0x303C, 0x0214, 0xA832);
-
+GXCountFontNames( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0214, 0xA832 );
 
 /*
  *  GXGetFontName()
@@ -370,14 +347,13 @@ GXCountFontNames(gxFont fontID)                               THREEWORDINLINE(0x
  */
 EXTERN_API_C( long )
 GXGetFontName(
-  gxFont            fontID,
-  long              index,
-  gxFontName *      name,
-  gxFontPlatform *  platform,
-  gxFontScript *    script,
-  gxFontLanguage *  language,
-  unsigned char     text[])                                   THREEWORDINLINE(0x303C, 0x0215, 0xA832);
-
+    gxFont          fontID,
+    long            index,
+    gxFontName *    name,
+    gxFontPlatform *platform,
+    gxFontScript *  script,
+    gxFontLanguage *language,
+    unsigned char   text[] ) THREEWORDINLINE( 0x303C, 0x0215, 0xA832 );
 
 /*
  *  GXFindFontName()
@@ -389,14 +365,13 @@ GXGetFontName(
  */
 EXTERN_API_C( long )
 GXFindFontName(
-  gxFont           fontID,
-  gxFontName       name,
-  gxFontPlatform   platform,
-  gxFontScript     script,
-  gxFontLanguage   language,
-  unsigned char    text[],
-  long *           index)                                     THREEWORDINLINE(0x303C, 0x0216, 0xA832);
-
+    gxFont         fontID,
+    gxFontName     name,
+    gxFontPlatform platform,
+    gxFontScript   script,
+    gxFontLanguage language,
+    unsigned char  text[],
+    long *         index ) THREEWORDINLINE( 0x303C, 0x0216, 0xA832 );
 
 /*
  *  GXSetFontName()
@@ -408,14 +383,13 @@ GXFindFontName(
  */
 EXTERN_API_C( long )
 GXSetFontName(
-  gxFont                fontID,
-  gxFontName            name,
-  gxFontPlatform        platform,
-  gxFontScript          script,
-  gxFontLanguage        language,
-  long                  length,
-  const unsigned char   text[])                               THREEWORDINLINE(0x303C, 0x0217, 0xA832);
-
+    gxFont              fontID,
+    gxFontName          name,
+    gxFontPlatform      platform,
+    gxFontScript        script,
+    gxFontLanguage      language,
+    long                length,
+    const unsigned char text[] ) THREEWORDINLINE( 0x303C, 0x0217, 0xA832 );
 
 /*
  *  GXDeleteFontName()
@@ -427,13 +401,12 @@ GXSetFontName(
  */
 EXTERN_API_C( long )
 GXDeleteFontName(
-  gxFont           fontID,
-  long             index,
-  gxFontName       name,
-  gxFontPlatform   platform,
-  gxFontScript     script,
-  gxFontLanguage   language)                                  THREEWORDINLINE(0x303C, 0x0218, 0xA832);
-
+    gxFont         fontID,
+    long           index,
+    gxFontName     name,
+    gxFontPlatform platform,
+    gxFontScript   script,
+    gxFontLanguage language ) THREEWORDINLINE( 0x303C, 0x0218, 0xA832 );
 
 /*
  *  GXNewFontNameID()
@@ -444,8 +417,7 @@ GXDeleteFontName(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( gxFontName )
-GXNewFontNameID(gxFont fontID)                                THREEWORDINLINE(0x303C, 0x0219, 0xA832);
-
+GXNewFontNameID( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0219, 0xA832 );
 
 /*
  *  GXCountFontEncodings()
@@ -456,8 +428,7 @@ GXNewFontNameID(gxFont fontID)                                THREEWORDINLINE(0x
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontEncodings(gxFont fontID)                           THREEWORDINLINE(0x303C, 0x021A, 0xA832);
-
+GXCountFontEncodings( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x021A, 0xA832 );
 
 /*
  *  GXGetFontEncoding()
@@ -469,11 +440,10 @@ GXCountFontEncodings(gxFont fontID)                           THREEWORDINLINE(0x
  */
 EXTERN_API_C( gxFontPlatform )
 GXGetFontEncoding(
-  gxFont            fontID,
-  long              index,
-  gxFontScript *    script,
-  gxFontLanguage *  language)                                 THREEWORDINLINE(0x303C, 0x021B, 0xA832);
-
+    gxFont          fontID,
+    long            index,
+    gxFontScript *  script,
+    gxFontLanguage *language ) THREEWORDINLINE( 0x303C, 0x021B, 0xA832 );
 
 /*
  *  GXFindFontEncoding()
@@ -485,11 +455,10 @@ GXGetFontEncoding(
  */
 EXTERN_API_C( long )
 GXFindFontEncoding(
-  gxFont           fontID,
-  gxFontPlatform   platform,
-  gxFontScript     script,
-  gxFontLanguage   language)                                  THREEWORDINLINE(0x303C, 0x021C, 0xA832);
-
+    gxFont         fontID,
+    gxFontPlatform platform,
+    gxFontScript   script,
+    gxFontLanguage language ) THREEWORDINLINE( 0x303C, 0x021C, 0xA832 );
 
 /*
  *  GXApplyFontEncoding()
@@ -501,14 +470,13 @@ GXFindFontEncoding(
  */
 EXTERN_API_C( long )
 GXApplyFontEncoding(
-  gxFont                fontID,
-  long                  index,
-  long *                length,
-  const unsigned char   text[],
-  long                  count,
-  unsigned short        glyphs[],
-  char                  was16Bit[])                           THREEWORDINLINE(0x303C, 0x021D, 0xA832);
-
+    gxFont              fontID,
+    long                index,
+    long *              length,
+    const unsigned char text[],
+    long                count,
+    unsigned short      glyphs[],
+    char                was16Bit[] ) THREEWORDINLINE( 0x303C, 0x021D, 0xA832 );
 
 /*
  *  GXCountFontVariations()
@@ -519,8 +487,7 @@ GXApplyFontEncoding(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontVariations(gxFont fontID)                          THREEWORDINLINE(0x303C, 0x021E, 0xA832);
-
+GXCountFontVariations( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x021E, 0xA832 );
 
 /*
  *  GXFindFontVariation()
@@ -532,13 +499,12 @@ GXCountFontVariations(gxFont fontID)                          THREEWORDINLINE(0x
  */
 EXTERN_API_C( long )
 GXFindFontVariation(
-  gxFont               fontID,
-  gxFontVariationTag   variationTag,
-  Fixed *              minValue,
-  Fixed *              defaultValue,
-  Fixed *              maxValue,
-  gxFontName *         name)                                  THREEWORDINLINE(0x303C, 0x021F, 0xA832);
-
+    gxFont             fontID,
+    gxFontVariationTag variationTag,
+    Fixed *            minValue,
+    Fixed *            defaultValue,
+    Fixed *            maxValue,
+    gxFontName *       name ) THREEWORDINLINE( 0x303C, 0x021F, 0xA832 );
 
 /*
  *  GXGetFontVariation()
@@ -550,13 +516,12 @@ GXFindFontVariation(
  */
 EXTERN_API_C( gxFontVariationTag )
 GXGetFontVariation(
-  gxFont        fontID,
-  long          index,
-  Fixed *       minValue,
-  Fixed *       defaultValue,
-  Fixed *       maxValue,
-  gxFontName *  name)                                         THREEWORDINLINE(0x303C, 0x0220, 0xA832);
-
+    gxFont      fontID,
+    long        index,
+    Fixed *     minValue,
+    Fixed *     defaultValue,
+    Fixed *     maxValue,
+    gxFontName *name ) THREEWORDINLINE( 0x303C, 0x0220, 0xA832 );
 
 /*
  *  GXCountFontInstances()
@@ -567,8 +532,7 @@ GXGetFontVariation(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontInstances(gxFont fontID)                           THREEWORDINLINE(0x303C, 0x0221, 0xA832);
-
+GXCountFontInstances( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0221, 0xA832 );
 
 /*
  *  GXGetFontInstance()
@@ -580,10 +544,9 @@ GXCountFontInstances(gxFont fontID)                           THREEWORDINLINE(0x
  */
 EXTERN_API_C( gxFontName )
 GXGetFontInstance(
-  gxFont            fontID,
-  long              index,
-  gxFontVariation   variation[])                              THREEWORDINLINE(0x303C, 0x0222, 0xA832);
-
+    gxFont          fontID,
+    long            index,
+    gxFontVariation variation[] ) THREEWORDINLINE( 0x303C, 0x0222, 0xA832 );
 
 /*
  *  GXSetFontInstance()
@@ -595,11 +558,10 @@ GXGetFontInstance(
  */
 EXTERN_API_C( long )
 GXSetFontInstance(
-  gxFont                  fontID,
-  long                    index,
-  gxFontName              name,
-  const gxFontVariation   variation[])                        THREEWORDINLINE(0x303C, 0x0223, 0xA832);
-
+    gxFont                fontID,
+    long                  index,
+    gxFontName            name,
+    const gxFontVariation variation[] ) THREEWORDINLINE( 0x303C, 0x0223, 0xA832 );
 
 /*
  *  GXDeleteFontInstance()
@@ -611,10 +573,9 @@ GXSetFontInstance(
  */
 EXTERN_API_C( long )
 GXDeleteFontInstance(
-  gxFont       fontID,
-  long         index,
-  gxFontName   name)                                          THREEWORDINLINE(0x303C, 0x0224, 0xA832);
-
+    gxFont     fontID,
+    long       index,
+    gxFontName name ) THREEWORDINLINE( 0x303C, 0x0224, 0xA832 );
 
 /*
  *  GXCountFontDescriptors()
@@ -625,8 +586,7 @@ GXDeleteFontInstance(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontDescriptors(gxFont fontID)                         THREEWORDINLINE(0x303C, 0x0225, 0xA832);
-
+GXCountFontDescriptors( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x0225, 0xA832 );
 
 /*
  *  GXGetFontDescriptor()
@@ -638,10 +598,9 @@ GXCountFontDescriptors(gxFont fontID)                         THREEWORDINLINE(0x
  */
 EXTERN_API_C( gxFontDescriptorTag )
 GXGetFontDescriptor(
-  gxFont   fontID,
-  long     index,
-  Fixed *  descriptorValue)                                   THREEWORDINLINE(0x303C, 0x0226, 0xA832);
-
+    gxFont fontID,
+    long   index,
+    Fixed *descriptorValue ) THREEWORDINLINE( 0x303C, 0x0226, 0xA832 );
 
 /*
  *  GXFindFontDescriptor()
@@ -653,10 +612,9 @@ GXGetFontDescriptor(
  */
 EXTERN_API_C( long )
 GXFindFontDescriptor(
-  gxFont                fontID,
-  gxFontDescriptorTag   descriptorTag,
-  Fixed *               descriptorValue)                      THREEWORDINLINE(0x303C, 0x0227, 0xA832);
-
+    gxFont              fontID,
+    gxFontDescriptorTag descriptorTag,
+    Fixed *             descriptorValue ) THREEWORDINLINE( 0x303C, 0x0227, 0xA832 );
 
 /*
  *  GXSetFontDescriptor()
@@ -668,11 +626,10 @@ GXFindFontDescriptor(
  */
 EXTERN_API_C( long )
 GXSetFontDescriptor(
-  gxFont                fontID,
-  long                  index,
-  gxFontDescriptorTag   descriptorTag,
-  Fixed                 descriptorValue)                      THREEWORDINLINE(0x303C, 0x0228, 0xA832);
-
+    gxFont              fontID,
+    long                index,
+    gxFontDescriptorTag descriptorTag,
+    Fixed               descriptorValue ) THREEWORDINLINE( 0x303C, 0x0228, 0xA832 );
 
 /*
  *  GXDeleteFontDescriptor()
@@ -684,10 +641,9 @@ GXSetFontDescriptor(
  */
 EXTERN_API_C( long )
 GXDeleteFontDescriptor(
-  gxFont                fontID,
-  long                  index,
-  gxFontDescriptorTag   descriptorTag)                        THREEWORDINLINE(0x303C, 0x0229, 0xA832);
-
+    gxFont              fontID,
+    long                index,
+    gxFontDescriptorTag descriptorTag ) THREEWORDINLINE( 0x303C, 0x0229, 0xA832 );
 
 /*
  *  GXCountFontFeatures()
@@ -698,8 +654,7 @@ GXDeleteFontDescriptor(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( long )
-GXCountFontFeatures(gxFont fontID)                            THREEWORDINLINE(0x303C, 0x022A, 0xA832);
-
+GXCountFontFeatures( gxFont fontID ) THREEWORDINLINE( 0x303C, 0x022A, 0xA832 );
 
 /*
  *  GXGetFontFeature()
@@ -711,13 +666,12 @@ GXCountFontFeatures(gxFont fontID)                            THREEWORDINLINE(0x
  */
 EXTERN_API_C( gxFontName )
 GXGetFontFeature(
-  gxFont                 fontID,
-  long                   index,
-  gxFontFeatureFlag *    flags,
-  long *                 settingCount,
-  gxFontFeatureSetting   settings[],
-  gxFontFeature *        feature)                             THREEWORDINLINE(0x303C, 0x022B, 0xA832);
-
+    gxFont               fontID,
+    long                 index,
+    gxFontFeatureFlag *  flags,
+    long *               settingCount,
+    gxFontFeatureSetting settings[],
+    gxFontFeature *      feature ) THREEWORDINLINE( 0x303C, 0x022B, 0xA832 );
 
 /*
  *  GXFindFontFeature()
@@ -729,13 +683,12 @@ GXGetFontFeature(
  */
 EXTERN_API_C( gxFontName )
 GXFindFontFeature(
-  gxFont                 fontID,
-  gxFontFeature          feature,
-  gxFontFeatureFlag *    flags,
-  long *                 settingCount,
-  gxFontFeatureSetting   settings[],
-  long *                 index)                               THREEWORDINLINE(0x303C, 0x022C, 0xA832);
-
+    gxFont               fontID,
+    gxFontFeature        feature,
+    gxFontFeatureFlag *  flags,
+    long *               settingCount,
+    gxFontFeatureSetting settings[],
+    long *               index ) THREEWORDINLINE( 0x303C, 0x022C, 0xA832 );
 
 /*
  *  GXGetFontDefaultFeatures()
@@ -747,9 +700,8 @@ GXFindFontFeature(
  */
 EXTERN_API_C( long )
 GXGetFontDefaultFeatures(
-  gxFont         fontID,
-  gxRunFeature   features[])                                  THREEWORDINLINE(0x303C, 0x0274, 0xA832);
-
+    gxFont       fontID,
+    gxRunFeature features[] ) THREEWORDINLINE( 0x303C, 0x0274, 0xA832 );
 
 /*
  *  GXFlattenFont()
@@ -761,25 +713,22 @@ GXGetFontDefaultFeatures(
  */
 EXTERN_API_C( void )
 GXFlattenFont(
-  gxFont          source,
-  scalerStream *  stream,
-  gxSpoolBlock *  block)                                      THREEWORDINLINE(0x303C, 0x022D, 0xA832);
+    gxFont        source,
+    scalerStream *stream,
+    gxSpoolBlock *block ) THREEWORDINLINE( 0x303C, 0x022D, 0xA832 );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-
-#endif  /* CALL_NOT_IN_CARBON */
-
- 
-#if defined(__MWERKS__) && TARGET_CPU_68K
-    #pragma pop
+#if defined( __MWERKS__ ) && TARGET_CPU_68K
+#pragma pop
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -793,4 +742,3 @@ GXFlattenFont(
 #endif
 
 #endif /* __GXFONTS__ */
-

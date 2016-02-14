@@ -24,8 +24,6 @@
 #include <AEDataModel.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -54,9 +52,8 @@ extern "C" {
  */
 EXTERN_API( OSErr )
 OSAGetStorageType(
-  AEDataStorage   scriptData,
-  DescType *      dscType);
-
+    AEDataStorage scriptData,
+    DescType *    dscType );
 
 /*
  *  OSAAddStorageType()
@@ -68,9 +65,8 @@ OSAGetStorageType(
  */
 EXTERN_API( OSErr )
 OSAAddStorageType(
-  AEDataStorage   scriptData,
-  DescType        dscType);
-
+    AEDataStorage scriptData,
+    DescType      dscType );
 
 /*
  *  OSARemoveStorageType()
@@ -81,9 +77,7 @@ OSAAddStorageType(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-OSARemoveStorageType(AEDataStorage scriptData);
-
-
+OSARemoveStorageType( AEDataStorage scriptData );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -96,4 +90,3 @@ OSARemoveStorageType(AEDataStorage scriptData);
 #endif
 
 #endif /* __OSACOMP__ */
-

@@ -25,9 +25,10 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "cinder/audio/NodeMath.h"
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
-typedef std::shared_ptr<class GainNode>			GainNodeRef;
+typedef std::shared_ptr<class GainNode> GainNodeRef;
 
 //! \brief Node for changing the gain, or amplitude, of a signal.
 //!
@@ -38,12 +39,14 @@ class GainNode : public MultiplyNode {
   public:
 	//! Constructs a GainNode with an initial gain of 1 and optional \a format.
 	GainNode( const Format &format = Format() )
-		: MultiplyNode( 1, format )
-	{}
+	    : MultiplyNode( 1, format )
+	{
+	}
 	//! Constructs a GainNode with an initial gain of \a initialValue and optional \a format.
 	GainNode( float initialValue, const Format &format = Format() )
-		: MultiplyNode( initialValue, format )
-	{}
+	    : MultiplyNode( initialValue, format )
+	{
+	}
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

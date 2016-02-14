@@ -20,9 +20,6 @@
 #include <CGContext.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -35,7 +32,7 @@ extern "C" {
 #pragma import on
 #endif
 
-typedef struct QDPict*                  QDPictRef;
+typedef struct QDPict *QDPictRef;
 /*
     Note: QuickDraw picture data typically comes in two forms: a PICT resource
     that begins the picture header data at the beginning of the resource and PICT
@@ -61,8 +58,7 @@ typedef struct QDPict*                  QDPictRef;
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( QDPictRef )
-QDPictCreateWithProvider(CGDataProviderRef provider);
-
+QDPictCreateWithProvider( CGDataProviderRef provider );
 
 /* Create a QDPict reference from `url'. 
  * It is assumed that either the first byte or the 513th byte of data
@@ -79,8 +75,7 @@ QDPictCreateWithProvider(CGDataProviderRef provider);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( QDPictRef )
-QDPictCreateWithURL(CFURLRef url);
-
+QDPictCreateWithURL( CFURLRef url );
 
 /* Increment the retain count of `pictRef' and return it.  All 
  * pictRefs are created with an initial retain count of 1. */
@@ -93,8 +88,7 @@ QDPictCreateWithURL(CFURLRef url);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( QDPictRef )
-QDPictRetain(QDPictRef pictRef);
-
+QDPictRetain( QDPictRef pictRef );
 
 /* Decrement the retain count of `pictRef'.  If the retain count reaches 0,
  * then free it and any associated resources. */
@@ -107,8 +101,7 @@ QDPictRetain(QDPictRef pictRef);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( void )
-QDPictRelease(QDPictRef pictRef);
-
+QDPictRelease( QDPictRef pictRef );
 
 /* Return the Picture Bounds of the QuickDraw picture represented by `pictRef'. This
     rectangle is in the default user space with one unit = 1/72 inch.
@@ -122,8 +115,7 @@ QDPictRelease(QDPictRef pictRef);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( CGRect )
-QDPictGetBounds(QDPictRef pictRef);
-
+QDPictGetBounds( QDPictRef pictRef );
 
 /* Return the resolution of the QuickDraw picture represented by `pictRef'.
     This data, together with the CGRect returned by QDPictGetBounds, can be
@@ -140,10 +132,9 @@ QDPictGetBounds(QDPictRef pictRef);
  */
 EXTERN_API_C( void )
 QDPictGetResolution(
-  QDPictRef   pictRef,
-  float *     xRes,
-  float *     yRes);
-
+    QDPictRef pictRef,
+    float *   xRes,
+    float *   yRes );
 
 /* Draw `pictRef' in the rectangular area specified by `rect'.
  * The PICT bounds of the page is scaled, if necessary, to fit into
@@ -160,11 +151,9 @@ QDPictGetResolution(
  */
 EXTERN_API_C( OSStatus )
 QDPictDrawToCGContext(
-  CGContextRef   ctx,
-  CGRect         rect,
-  QDPictRef      pictRef);
-
-
+    CGContextRef ctx,
+    CGRect       rect,
+    QDPictRef    pictRef );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -177,4 +166,3 @@ QDPictDrawToCGContext(
 #endif
 
 #endif /* __QDPICTTOCGCONTEXT__ */
-

@@ -23,18 +23,19 @@
 #include "cinder/ip/Premultiply.h"
 #include "cinder/ChanTraits.h"
 
-#include <boost/preprocessor/seq.hpp>
 #include <algorithm>
+#include <boost/preprocessor/seq.hpp>
 
-namespace cinder { namespace ip {
+namespace cinder {
+namespace ip {
 
 // this is a candidate for sse2
-template<typename T>
+template <typename T>
 void premultiply( SurfaceT<T> *surface )
 {
 	const Area clippedArea = surface->getBounds();
 
-	if( ! surface->hasAlpha() )
+	if( !surface->hasAlpha() )
 		return;
 
 	surface->setPremultiplied( true );
@@ -43,11 +44,11 @@ void premultiply( SurfaceT<T> *surface )
 	uint8_t pixelInc = surface->getPixelInc();
 	uint8_t redOffset = surface->getRedOffset(), greenOffset = surface->getGreenOffset(), blueOffset = surface->getBlueOffset(), alphaOffset = surface->getAlphaOffset();
 	for( int32_t y = clippedArea.getY1(); y < clippedArea.getY2(); ++y ) {
-		T *dstPtr = reinterpret_cast<T*>( reinterpret_cast<uint8_t*>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
+		T *dstPtr = reinterpret_cast<T *>( reinterpret_cast<uint8_t *>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
 		for( int32_t x = 0; x < clippedArea.getWidth(); ++x ) {
 			// The basic formula for unpremultiplication is to divide by the alpha
 			T alpha = dstPtr[alphaOffset];
-			
+
 			dstPtr[redOffset] = CHANTRAIT<T>::premultiply( dstPtr[redOffset], alpha );
 			dstPtr[greenOffset] = CHANTRAIT<T>::premultiply( dstPtr[greenOffset], alpha );
 			dstPtr[blueOffset] = CHANTRAIT<T>::premultiply( dstPtr[blueOffset], alpha );
@@ -57,12 +58,12 @@ void premultiply( SurfaceT<T> *surface )
 }
 
 // this is a candidate for sse2
-template<>
+template <>
 void unpremultiply<uint8_t>( SurfaceT<uint8_t> *surface )
 {
 	const Area clippedArea = surface->getBounds();
 
-	if( ! surface->hasAlpha() )
+	if( !surface->hasAlpha() )
 		return;
 
 	surface->setPremultiplied( false );
@@ -71,7 +72,7 @@ void unpremultiply<uint8_t>( SurfaceT<uint8_t> *surface )
 	uint8_t pixelInc = surface->getPixelInc();
 	uint8_t redOffset = surface->getRedOffset(), greenOffset = surface->getGreenOffset(), blueOffset = surface->getBlueOffset(), alphaOffset = surface->getAlphaOffset();
 	for( int32_t y = clippedArea.getY1(); y < clippedArea.getY2(); ++y ) {
-		uint8_t *dstPtr = reinterpret_cast<uint8_t*>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes;
+		uint8_t *dstPtr = reinterpret_cast<uint8_t *>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes;
 		for( int32_t x = 0; x < clippedArea.getWidth(); ++x ) {
 			// The basic formula for unpremultiplication is to divide by the alpha
 			// which in 8bit pixel arithmetic is to multiply by 255 and divide by the alpha
@@ -83,15 +84,15 @@ void unpremultiply<uint8_t>( SurfaceT<uint8_t> *surface )
 			}
 			dstPtr += pixelInc;
 		}
-	}	
+	}
 }
 
-template<>
+template <>
 void unpremultiply<float>( SurfaceT<float> *surface )
 {
 	const Area clippedArea = surface->getBounds();
 
-	if( ! surface->hasAlpha() )
+	if( !surface->hasAlpha() )
 		return;
 
 	surface->setPremultiplied( false );
@@ -100,7 +101,7 @@ void unpremultiply<float>( SurfaceT<float> *surface )
 	uint8_t pixelInc = surface->getPixelInc();
 	uint8_t redOffset = surface->getRedOffset(), greenOffset = surface->getGreenOffset(), blueOffset = surface->getBlueOffset(), alphaOffset = surface->getAlphaOffset();
 	for( int32_t y = clippedArea.getY1(); y < clippedArea.getY2(); ++y ) {
-		float *dstPtr = reinterpret_cast<float*>( reinterpret_cast<uint8_t*>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
+		float *dstPtr = reinterpret_cast<float *>( reinterpret_cast<uint8_t *>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
 		for( int32_t x = 0; x < clippedArea.getWidth(); ++x ) {
 			// The basic formula for unpremultiplication is to divide by the alpha
 			if( dstPtr[alphaOffset] != 0 ) {
@@ -111,15 +112,12 @@ void unpremultiply<float>( SurfaceT<float> *surface )
 			}
 			dstPtr += pixelInc;
 		}
-	}	
+	}
 }
 
-
-
-#define premult_PROTOTYPES(r,data,T)\
+#define premult_PROTOTYPES( r, data, T ) \
 	template void premultiply( SurfaceT<T> *Surface );
 
 BOOST_PP_SEQ_FOR_EACH( premult_PROTOTYPES, ~, CHANNEL_TYPES )
-	
-
-} } // namespace cinder::ip
+}
+} // namespace cinder::ip

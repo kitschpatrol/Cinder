@@ -28,9 +28,6 @@
 #include <AEDataModel.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -71,12 +68,12 @@ extern "C" {
  * tech note.
  **/
 enum {
-  keyReplyPortAttr              = FOUR_CHAR_CODE('repp')
+	keyReplyPortAttr = FOUR_CHAR_CODE( 'repp' )
 };
 
 /* typeReplyPortAttr was misnamed and is deprecated; use keyReplyPortAttr instead. */
 enum {
-  typeReplyPortAttr             = keyReplyPortAttr
+	typeReplyPortAttr = keyReplyPortAttr
 };
 
 /*-
@@ -97,8 +94,7 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( mach_port_t )
-AEGetRegisteredMachPort(void);
-
+AEGetRegisteredMachPort( void );
 
 /*-
  * Decode a mach_msg into an AppleEvent and its related reply.  (The
@@ -120,10 +116,9 @@ AEGetRegisteredMachPort(void);
  */
 EXTERN_API_C( OSStatus )
 AEDecodeMessage(
-  mach_msg_header_t *  header,
-  AppleEvent *         event,
-  AppleEvent *         reply);       /* can be NULL */
-
+    mach_msg_header_t *header,
+    AppleEvent *       event,
+    AppleEvent *       reply ); /* can be NULL */
 
 /*-
  * Decodes and dispatches an event to an event handler.  Handles
@@ -140,8 +135,7 @@ AEDecodeMessage(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-AEProcessMessage(mach_msg_header_t * header);
-
+AEProcessMessage( mach_msg_header_t *header );
 
 /*-
  * Send an AppleEvent to a target process.  If the target is the
@@ -159,13 +153,10 @@ AEProcessMessage(mach_msg_header_t * header);
  */
 EXTERN_API_C( OSStatus )
 AESendMessage(
-  const AppleEvent *  event,
-  AppleEvent *        reply,                /* can be NULL */
-  AESendMode          sendMode,
-  long                timeOutInTicks);
-
-
-
+    const AppleEvent *event,
+    AppleEvent *      reply, /* can be NULL */
+    AESendMode        sendMode,
+    long              timeOutInTicks );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -178,4 +169,3 @@ AESendMessage(
 #endif
 
 #endif /* __AEMACH__ */
-

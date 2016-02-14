@@ -21,9 +21,6 @@
 #include <CGBase.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,22 +34,22 @@ extern "C" {
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __CGFONT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __CGFONT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __CGFONT__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __CGFONT__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
-typedef struct CGFont*                  CGFontRef;
-typedef unsigned short                  CGGlyph;
+typedef struct CGFont *CGFontRef;
+typedef unsigned short CGGlyph;
 /*** Font creation. ***/
 /* Create a CGFont using `platformFontReference', a pointer to a
  * platform-specific font reference.  For MacOS X, `platformFontReference'
@@ -66,8 +63,7 @@ typedef unsigned short                  CGGlyph;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGFontRef )
-CGFontCreateWithPlatformFont(void * platformFontReference);
-
+CGFontCreateWithPlatformFont( void *platformFontReference );
 
 /*** Retain & release. ***/
 /* Increment the retain count of `font' and return it.  All fonts are
@@ -81,8 +77,7 @@ CGFontCreateWithPlatformFont(void * platformFontReference);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGFontRef )
-CGFontRetain(CGFontRef font);
-
+CGFontRetain( CGFontRef font );
 
 /* Decrement the retain count of `font'.  If the retain count reaches 0,
  * then release it and any associated resources. */
@@ -95,22 +90,17 @@ CGFontRetain(CGFontRef font);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGFontRelease(CGFontRef font);
-
-
-
-
-
+CGFontRelease( CGFontRef font );
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __CGFONT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __CGFONT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__CGFONT__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __CGFONT__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -124,4 +114,3 @@ CGFontRelease(CGFontRef font);
 #endif
 
 #endif /* CGFONT_H_ */
-

@@ -49,37 +49,37 @@ class MotionBlurVelocityBufferApp : public App {
 	void drawVelocityBuffers();
 
   private:
-	gl::TextureRef					mBackground;
-	std::vector<BlurrableMeshRef>	mMeshes;
+	gl::TextureRef                mBackground;
+	std::vector<BlurrableMeshRef> mMeshes;
 
-	gl::GlslProgRef	mVelocityProg;		// Renders RGBA color and screen-space velocity.
-	gl::GlslProgRef	mTileProg;			// Downsamples velocity, preserving local maxima
-	gl::GlslProgRef	mNeighborProg;		// Finds dominant velocities in downsampled map
-	gl::GlslProgRef	mMotionBlurProg;	// Generates final image from color and velocity buffers
+	gl::GlslProgRef mVelocityProg; // Renders RGBA color and screen-space velocity.
+	gl::GlslProgRef mTileProg; // Downsamples velocity, preserving local maxima
+	gl::GlslProgRef mNeighborProg; // Finds dominant velocities in downsampled map
+	gl::GlslProgRef mMotionBlurProg; // Generates final image from color and velocity buffers
 
-	gl::GlslProgRef	mVelocityRenderProg;		// Debug rendering of velocity to screen.
+	gl::GlslProgRef mVelocityRenderProg; // Debug rendering of velocity to screen.
 
-	gl::FboRef		mGBuffer;					// Full-resolution RGBA color and velocity.
-	gl::FboRef		mVelocityDilationBuffer;	// Dilated, downsampled velocity and dominant region velocities.
+	gl::FboRef mGBuffer; // Full-resolution RGBA color and velocity.
+	gl::FboRef mVelocityDilationBuffer; // Dilated, downsampled velocity and dominant region velocities.
 	// Name our framebuffer attachment points.
-	const GLenum G_COLOR				= GL_COLOR_ATTACHMENT0;
-	const GLenum G_VELOCITY				= GL_COLOR_ATTACHMENT1;
-	const GLenum DILATE_TILE_MAX		= GL_COLOR_ATTACHMENT0;
-	const GLenum DILATE_NEIGHBOR_MAX	= GL_COLOR_ATTACHMENT1;
+	const GLenum G_COLOR = GL_COLOR_ATTACHMENT0;
+	const GLenum G_VELOCITY = GL_COLOR_ATTACHMENT1;
+	const GLenum DILATE_TILE_MAX = GL_COLOR_ATTACHMENT0;
+	const GLenum DILATE_NEIGHBOR_MAX = GL_COLOR_ATTACHMENT1;
 
 	gl::QueryTimeSwappedRef mGpuTimer;
-	Timer					mCpuTimer;
-	float					mAverageGpuTime = 0.0f;
-	float					mAverageCpuTime = 0.0f;
+	Timer                   mCpuTimer;
+	float                   mAverageGpuTime = 0.0f;
+	float                   mAverageCpuTime = 0.0f;
 
-	params::InterfaceGlRef	mParams;
-	int						mTileSize = 20;		// TileMax program samples a TileSize x TileSize region of pixels for each of its output pixels.
-	int						mSampleCount = 31;	// Number of samples used when calculating motion blur. Low-movement areas skip calculation.
-	float					mAnimationSpeed = 1.0f;
-	float					mBlurNoise = 0.0f;
-	bool					mBlurEnabled = true;
-	bool					mPaused = false;
-	bool					mDisplayVelocityBuffers = true;
+	params::InterfaceGlRef mParams;
+	int                    mTileSize = 20; // TileMax program samples a TileSize x TileSize region of pixels for each of its output pixels.
+	int                    mSampleCount = 31; // Number of samples used when calculating motion blur. Low-movement areas skip calculation.
+	float                  mAnimationSpeed = 1.0f;
+	float                  mBlurNoise = 0.0f;
+	bool                   mBlurEnabled = true;
+	bool                   mPaused = false;
+	bool                   mDisplayVelocityBuffers = true;
 };
 
 void MotionBlurVelocityBufferApp::setup()
@@ -110,9 +110,8 @@ void MotionBlurVelocityBufferApp::setup()
 
 void MotionBlurVelocityBufferApp::createGeometry()
 {
-	for( int i = 0; i < 20; ++i )
-	{	// create some randomized geometry
-		vec3 pos = vec3( randFloat( 200.0f, getWindowWidth() - 200.0f ), randFloat( 150.0f, getWindowHeight() - 150.0f ), randFloat( -50.0f, 10.0f ) );
+	for( int i = 0; i < 20; ++i ) { // create some randomized geometry
+		vec3  pos = vec3( randFloat( 200.0f, getWindowWidth() - 200.0f ), randFloat( 150.0f, getWindowHeight() - 150.0f ), randFloat( -50.0f, 10.0f ) );
 		float base = randFloat( 50.0f, 100.0f );
 		float height = randFloat( 100.0f, 300.0f );
 
@@ -141,7 +140,6 @@ void MotionBlurVelocityBufferApp::createBuffers()
 	auto tileMaxBuffer = gl::Texture::create( tileWidth, tileHeight, velocityFormat );
 	auto neighborMaxBuffer = gl::Texture::create( tileWidth, tileHeight, velocityFormat );
 
-
 	auto format = gl::Fbo::Format().depthBuffer();
 	format.enableDepthBuffer();
 	format.attachment( G_COLOR, colorBuffer );
@@ -158,51 +156,41 @@ void MotionBlurVelocityBufferApp::createBuffers()
 
 void MotionBlurVelocityBufferApp::loadShaders()
 {
-	try
-	{
-		mVelocityProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "velocity.vs" ) )
-						.fragment( loadAsset( "velocity.fs" ) ) );
-		mMotionBlurProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) )
-								.fragment( loadAsset( "motion-blur.fs" ) ) );
-		mVelocityRenderProg	= gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) )
-								.fragment( loadAsset( "velocity-render.fs" ) ) );
-		mTileProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) )
-					.fragment( loadAsset( "tilemax.fs" ) ) );
-		mNeighborProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) )
-						.fragment( loadAsset( "neighbormax.fs" ) ) );
+	try {
+		mVelocityProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "velocity.vs" ) ).fragment( loadAsset( "velocity.fs" ) ) );
+		mMotionBlurProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) ).fragment( loadAsset( "motion-blur.fs" ) ) );
+		mVelocityRenderProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) ).fragment( loadAsset( "velocity-render.fs" ) ) );
+		mTileProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) ).fragment( loadAsset( "tilemax.fs" ) ) );
+		mNeighborProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "passthrough.vs" ) ).fragment( loadAsset( "neighbormax.fs" ) ) );
 	}
-	catch( ci::gl::GlslProgCompileExc &exc )
-	{
+	catch( ci::gl::GlslProgCompileExc &exc ) {
 		CI_LOG_E( "Shader load error: " << exc.what() );
 	}
-	catch( ci::Exception &exc )
-	{
+	catch( ci::Exception &exc ) {
 		CI_LOG_E( "Shader load error: " << exc.what() );
 	}
 }
 
 void MotionBlurVelocityBufferApp::keyDown( KeyEvent event )
 {
-	switch ( event.getCode() )
-	{
-		case KeyEvent::KEY_SPACE:
-			mPaused = ! mPaused;
+	switch( event.getCode() ) {
+	case KeyEvent::KEY_SPACE:
+		mPaused = !mPaused;
 		break;
-		case KeyEvent::KEY_b:
-			mBlurEnabled = ! mBlurEnabled;
+	case KeyEvent::KEY_b:
+		mBlurEnabled = !mBlurEnabled;
 		break;
-		case KeyEvent::KEY_r:
-			loadShaders();
+	case KeyEvent::KEY_r:
+		loadShaders();
 		break;
-		default:
+	default:
 		break;
 	}
 }
 
 void MotionBlurVelocityBufferApp::update()
 {
-	if( ! mPaused )
-	{
+	if( !mPaused ) {
 		for( auto &mesh : mMeshes ) {
 			mesh->update( mAnimationSpeed / 60.0f );
 		}
@@ -215,14 +203,13 @@ void MotionBlurVelocityBufferApp::fillGBuffer()
 	gl::enableDepthWrite();
 
 	gl::ScopedFramebuffer fbo( mGBuffer );
-	gl::ScopedBlendAlpha blend;
+	gl::ScopedBlendAlpha  blend;
 	gl::clear( ColorA( 0.0f, 0.0f, 0.0f, 0.0f ) );
 
 	gl::ScopedGlslProg prog( mVelocityProg );
 	mVelocityProg->uniform( "uViewProjection", gl::getProjectionMatrix() * gl::getViewMatrix() );
 
-	for( auto &mesh : mMeshes )
-	{
+	for( auto &mesh : mMeshes ) {
 		gl::ScopedColor meshColor( mesh->getColor() );
 		mVelocityProg->uniform( "uModelMatrix", mesh->getTransform() );
 		mVelocityProg->uniform( "uPrevModelMatrix", mesh->getPreviousTransform() );
@@ -236,13 +223,13 @@ void MotionBlurVelocityBufferApp::fillGBuffer()
 void MotionBlurVelocityBufferApp::dilateVelocity()
 {
 	gl::ScopedFramebuffer fbo( mVelocityDilationBuffer );
-	gl::ScopedViewport viewport( ivec2( 0, 0 ), mVelocityDilationBuffer->getSize() );
-	gl::ScopedMatrices	matrices;
+	gl::ScopedViewport    viewport( ivec2( 0, 0 ), mVelocityDilationBuffer->getSize() );
+	gl::ScopedMatrices    matrices;
 	gl::setMatricesWindowPersp( mVelocityDilationBuffer->getSize() );
 
 	{ // downsample velocity into tilemax
 		gl::ScopedTextureBind tex( mGBuffer->getTexture2d( G_VELOCITY ), 0 );
-		gl::ScopedGlslProg prog( mTileProg );
+		gl::ScopedGlslProg    prog( mTileProg );
 		gl::drawBuffer( DILATE_TILE_MAX );
 
 		mTileProg->uniform( "uVelocityMap", 0 );
@@ -252,7 +239,7 @@ void MotionBlurVelocityBufferApp::dilateVelocity()
 	}
 	{ // build max neighbors from tilemax
 		gl::ScopedTextureBind tex( mVelocityDilationBuffer->getTexture2d( DILATE_TILE_MAX ), 0 );
-		gl::ScopedGlslProg prog( mNeighborProg );
+		gl::ScopedGlslProg    prog( mNeighborProg );
 		gl::drawBuffer( DILATE_NEIGHBOR_MAX );
 
 		mNeighborProg->uniform( "uTileMap", 0 );
@@ -263,10 +250,10 @@ void MotionBlurVelocityBufferApp::dilateVelocity()
 
 void MotionBlurVelocityBufferApp::drawBlurredContent()
 {
-	gl::ScopedTextureBind colorTex( mGBuffer->getTexture2d( G_COLOR ), 0 );
-	gl::ScopedTextureBind velTex( mGBuffer->getTexture2d( G_VELOCITY ), 1 );
-	gl::ScopedTextureBind neigborTex( mVelocityDilationBuffer->getTexture2d( DILATE_NEIGHBOR_MAX ), 2 );
-	gl::ScopedGlslProg prog( mMotionBlurProg );
+	gl::ScopedTextureBind  colorTex( mGBuffer->getTexture2d( G_COLOR ), 0 );
+	gl::ScopedTextureBind  velTex( mGBuffer->getTexture2d( G_VELOCITY ), 1 );
+	gl::ScopedTextureBind  neigborTex( mVelocityDilationBuffer->getTexture2d( DILATE_NEIGHBOR_MAX ), 2 );
+	gl::ScopedGlslProg     prog( mMotionBlurProg );
 	gl::ScopedBlendPremult blend;
 
 	mMotionBlurProg->uniform( "uColorMap", 0 );
@@ -286,13 +273,13 @@ void MotionBlurVelocityBufferApp::draw()
 	gl::clear( Color( 0, 0, 0 ) );
 	gl::ScopedMatrices matrices;
 	gl::setMatricesWindowPersp( getWindowSize(), 60.0f, 1.0f, 5000.0f );
-	gl::ScopedViewport viewport( vec2(0), getWindowSize() );
+	gl::ScopedViewport viewport( vec2( 0 ), getWindowSize() );
 
 	gl::draw( mBackground, getWindowBounds() );
 
 	fillGBuffer();
 
-	if( ! mBlurEnabled ) {
+	if( !mBlurEnabled ) {
 		gl::ScopedBlendAlpha blend;
 		gl::draw( mGBuffer->getColorTexture() );
 	}
@@ -308,7 +295,7 @@ void MotionBlurVelocityBufferApp::draw()
 	mCpuTimer.stop();
 	mGpuTimer->end();
 
-	mAverageCpuTime = (mCpuTimer.getSeconds() * 200) + mAverageCpuTime * 0.8f;
+	mAverageCpuTime = ( mCpuTimer.getSeconds() * 200 ) + mAverageCpuTime * 0.8f;
 	mAverageGpuTime = mGpuTimer->getElapsedMilliseconds() * 0.2f + mAverageGpuTime * 0.8f;
 
 	mParams->draw();
@@ -316,7 +303,7 @@ void MotionBlurVelocityBufferApp::draw()
 
 void MotionBlurVelocityBufferApp::drawVelocityBuffers()
 {
-	gl::ScopedGlslProg prog( mVelocityRenderProg );
+	gl::ScopedGlslProg    prog( mVelocityRenderProg );
 	gl::ScopedModelMatrix matrix;
 	gl::setDefaultShaderVars();
 

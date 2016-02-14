@@ -24,10 +24,6 @@
 #include <Events.h>
 #endif
 
-
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -41,35 +37,35 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-typedef CALLBACK_API( void , CalibrateEventProcPtr )(EventRecord * event);
-typedef STACK_UPP_TYPE(CalibrateEventProcPtr)                   CalibrateEventUPP;
+typedef CALLBACK_API( void, CalibrateEventProcPtr )( EventRecord *event );
+typedef STACK_UPP_TYPE( CalibrateEventProcPtr ) CalibrateEventUPP;
 
 /* Interface for new ColorSync monitor calibrators (ColorSync 2.6 and greater) */
 
 enum {
-  kCalibratorNamePrefix         = FOUR_CHAR_CODE('cali')
+	kCalibratorNamePrefix = FOUR_CHAR_CODE( 'cali' )
 };
 
 struct CalibratorInfo {
-  UInt32              dataSize;               /* Size of this structure - compatibility */
-  CMDisplayIDType     displayID;              /* Contains an hDC on Win32 */
-  UInt32              profileLocationSize;    /* Max size for returned profile location */
-  CMProfileLocation * profileLocationPtr;     /* For returning the profile */
-  CalibrateEventUPP   eventProc;              /* Ignored on Win32 */
-  Boolean             isGood;                 /* true or false */
+	UInt32             dataSize; /* Size of this structure - compatibility */
+	CMDisplayIDType    displayID; /* Contains an hDC on Win32 */
+	UInt32             profileLocationSize; /* Max size for returned profile location */
+	CMProfileLocation *profileLocationPtr; /* For returning the profile */
+	CalibrateEventUPP  eventProc; /* Ignored on Win32 */
+	Boolean            isGood; /* true or false */
 };
-typedef struct CalibratorInfo           CalibratorInfo;
-typedef CALLBACK_API( Boolean , CanCalibrateProcPtr )(CMDisplayIDType displayID, Str255 errMessage);
-typedef CALLBACK_API( OSErr , CalibrateProcPtr )(CalibratorInfo * theInfo);
-typedef STACK_UPP_TYPE(CanCalibrateProcPtr)                     CanCalibrateUPP;
-typedef STACK_UPP_TYPE(CalibrateProcPtr)                        CalibrateUPP;
+typedef struct CalibratorInfo CalibratorInfo;
+typedef CALLBACK_API( Boolean, CanCalibrateProcPtr )( CMDisplayIDType displayID, Str255 errMessage );
+typedef CALLBACK_API( OSErr, CalibrateProcPtr )( CalibratorInfo *theInfo );
+typedef STACK_UPP_TYPE( CanCalibrateProcPtr ) CanCalibrateUPP;
+typedef STACK_UPP_TYPE( CalibrateProcPtr ) CalibrateUPP;
 /*
  *  NewCalibrateEventUPP()
  *  
@@ -79,14 +75,17 @@ typedef STACK_UPP_TYPE(CalibrateProcPtr)                        CalibrateUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CalibrateEventUPP )
-NewCalibrateEventUPP(CalibrateEventProcPtr userRoutine);
+NewCalibrateEventUPP( CalibrateEventProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppCalibrateEventProcInfo = 0x000000C0 };  /* pascal no_return_value Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(CalibrateEventUPP) NewCalibrateEventUPP(CalibrateEventProcPtr userRoutine) { return (CalibrateEventUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCalibrateEventProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewCalibrateEventUPP(userRoutine) (CalibrateEventUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCalibrateEventProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppCalibrateEventProcInfo = 0x000000C0 }; /* pascal no_return_value Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( CalibrateEventUPP ) NewCalibrateEventUPP( CalibrateEventProcPtr userRoutine )
+{
+	return (CalibrateEventUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCalibrateEventProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewCalibrateEventUPP( userRoutine ) ( CalibrateEventUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCalibrateEventProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -98,14 +97,17 @@ NewCalibrateEventUPP(CalibrateEventProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( CanCalibrateUPP )
-NewCanCalibrateUPP(CanCalibrateProcPtr userRoutine);
+NewCanCalibrateUPP( CanCalibrateProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppCanCalibrateProcInfo = 0x000003D0 };  /* pascal 1_byte Func(4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(CanCalibrateUPP) NewCanCalibrateUPP(CanCalibrateProcPtr userRoutine) { return (CanCalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCanCalibrateProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewCanCalibrateUPP(userRoutine) (CanCalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCanCalibrateProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppCanCalibrateProcInfo = 0x000003D0 }; /* pascal 1_byte Func(4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( CanCalibrateUPP ) NewCanCalibrateUPP( CanCalibrateProcPtr userRoutine )
+{
+	return (CanCalibrateUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCanCalibrateProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewCanCalibrateUPP( userRoutine ) ( CanCalibrateUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCanCalibrateProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -117,14 +119,17 @@ NewCanCalibrateUPP(CanCalibrateProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( CalibrateUPP )
-NewCalibrateUPP(CalibrateProcPtr userRoutine);
+NewCalibrateUPP( CalibrateProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppCalibrateProcInfo = 0x000000E0 };  /* pascal 2_bytes Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(CalibrateUPP) NewCalibrateUPP(CalibrateProcPtr userRoutine) { return (CalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCalibrateProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewCalibrateUPP(userRoutine) (CalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppCalibrateProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppCalibrateProcInfo = 0x000000E0 }; /* pascal 2_bytes Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( CalibrateUPP ) NewCalibrateUPP( CalibrateProcPtr userRoutine )
+{
+	return (CalibrateUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCalibrateProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewCalibrateUPP( userRoutine ) ( CalibrateUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppCalibrateProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -136,13 +141,16 @@ NewCalibrateUPP(CalibrateProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeCalibrateEventUPP(CalibrateEventUPP userUPP);
+DisposeCalibrateEventUPP( CalibrateEventUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeCalibrateEventUPP(CalibrateEventUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeCalibrateEventUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeCalibrateEventUPP( CalibrateEventUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeCalibrateEventUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -154,13 +162,16 @@ DisposeCalibrateEventUPP(CalibrateEventUPP userUPP);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeCanCalibrateUPP(CanCalibrateUPP userUPP);
+DisposeCanCalibrateUPP( CanCalibrateUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeCanCalibrateUPP(CanCalibrateUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeCanCalibrateUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeCanCalibrateUPP( CanCalibrateUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeCanCalibrateUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -172,13 +183,16 @@ DisposeCanCalibrateUPP(CanCalibrateUPP userUPP);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeCalibrateUPP(CalibrateUPP userUPP);
+DisposeCalibrateUPP( CalibrateUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeCalibrateUPP(CalibrateUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeCalibrateUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeCalibrateUPP( CalibrateUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeCalibrateUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -191,14 +205,17 @@ DisposeCalibrateUPP(CalibrateUPP userUPP);
  */
 EXTERN_API_C( void )
 InvokeCalibrateEventUPP(
-  EventRecord *      event,
-  CalibrateEventUPP  userUPP);
+    EventRecord *     event,
+    CalibrateEventUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeCalibrateEventUPP(EventRecord * event, CalibrateEventUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppCalibrateEventProcInfo, event); }
-  #else
-    #define InvokeCalibrateEventUPP(event, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppCalibrateEventProcInfo, (event))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeCalibrateEventUPP( EventRecord *event, CalibrateEventUPP userUPP )
+{
+	CALL_ONE_PARAMETER_UPP( userUPP, uppCalibrateEventProcInfo, event );
+}
+#else
+#define InvokeCalibrateEventUPP( event, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppCalibrateEventProcInfo, ( event ) )
+#endif
 #endif
 
 /*
@@ -211,15 +228,18 @@ InvokeCalibrateEventUPP(
  */
 EXTERN_API_C( Boolean )
 InvokeCanCalibrateUPP(
-  CMDisplayIDType  displayID,
-  Str255           errMessage,
-  CanCalibrateUPP  userUPP);
+    CMDisplayIDType displayID,
+    Str255          errMessage,
+    CanCalibrateUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(Boolean) InvokeCanCalibrateUPP(CMDisplayIDType displayID, Str255 errMessage, CanCalibrateUPP userUPP) { return (Boolean)CALL_TWO_PARAMETER_UPP(userUPP, uppCanCalibrateProcInfo, displayID, errMessage); }
-  #else
-    #define InvokeCanCalibrateUPP(displayID, errMessage, userUPP) (Boolean)CALL_TWO_PARAMETER_UPP((userUPP), uppCanCalibrateProcInfo, (displayID), (errMessage))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) InvokeCanCalibrateUPP( CMDisplayIDType displayID, Str255 errMessage, CanCalibrateUPP userUPP )
+{
+	return (Boolean)CALL_TWO_PARAMETER_UPP( userUPP, uppCanCalibrateProcInfo, displayID, errMessage );
+}
+#else
+#define InvokeCanCalibrateUPP( displayID, errMessage, userUPP ) ( Boolean ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppCanCalibrateProcInfo, ( displayID ), ( errMessage ) )
+#endif
 #endif
 
 /*
@@ -232,24 +252,27 @@ InvokeCanCalibrateUPP(
  */
 EXTERN_API_C( OSErr )
 InvokeCalibrateUPP(
-  CalibratorInfo *  theInfo,
-  CalibrateUPP      userUPP);
+    CalibratorInfo *theInfo,
+    CalibrateUPP    userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSErr) InvokeCalibrateUPP(CalibratorInfo * theInfo, CalibrateUPP userUPP) { return (OSErr)CALL_ONE_PARAMETER_UPP(userUPP, uppCalibrateProcInfo, theInfo); }
-  #else
-    #define InvokeCalibrateUPP(theInfo, userUPP) (OSErr)CALL_ONE_PARAMETER_UPP((userUPP), uppCalibrateProcInfo, (theInfo))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSErr ) InvokeCalibrateUPP( CalibratorInfo *theInfo, CalibrateUPP userUPP )
+{
+	return (OSErr)CALL_ONE_PARAMETER_UPP( userUPP, uppCalibrateProcInfo, theInfo );
+}
+#else
+#define InvokeCalibrateUPP( theInfo, userUPP ) ( OSErr ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppCalibrateProcInfo, ( theInfo ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewCalibrateEventProc(userRoutine)                  NewCalibrateEventUPP(userRoutine)
-    #define NewCanCalibrateProc(userRoutine)                    NewCanCalibrateUPP(userRoutine)
-    #define NewCalibrateProc(userRoutine)                       NewCalibrateUPP(userRoutine)
-    #define CallCalibrateEventProc(userRoutine, event)          InvokeCalibrateEventUPP(event, userRoutine)
-    #define CallCanCalibrateProc(userRoutine, displayID, errMessage) InvokeCanCalibrateUPP(displayID, errMessage, userRoutine)
-    #define CallCalibrateProc(userRoutine, theInfo)             InvokeCalibrateUPP(theInfo, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewCalibrateEventProc( userRoutine ) NewCalibrateEventUPP( userRoutine )
+#define NewCanCalibrateProc( userRoutine ) NewCanCalibrateUPP( userRoutine )
+#define NewCalibrateProc( userRoutine ) NewCalibrateUPP( userRoutine )
+#define CallCalibrateEventProc( userRoutine, event ) InvokeCalibrateEventUPP( event, userRoutine )
+#define CallCanCalibrateProc( userRoutine, displayID, errMessage ) InvokeCanCalibrateUPP( displayID, errMessage, userRoutine )
+#define CallCalibrateProc( userRoutine, theInfo ) InvokeCalibrateUPP( theInfo, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -261,30 +284,28 @@ InvokeCalibrateUPP(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-CMCalibrateDisplay(CalibratorInfo * theInfo);
-
-
+CMCalibrateDisplay( CalibratorInfo *theInfo );
 
 #if OLDROUTINENAMES
 /* Interface for original ColorSync monitor calibrators (ColorSync 2.5.x) */
 enum {
-  kOldCalibratorNamePrefix      = FOUR_CHAR_CODE('Cali')
+	kOldCalibratorNamePrefix = FOUR_CHAR_CODE( 'Cali' )
 };
 
 struct OldCalibratorInfo {
-  CMDisplayIDType     displayID;              /* Contains an hDC on Win32 */
-  CMProfileLocation   profileLocation;
-  CalibrateEventUPP   eventProc;              /* Ignored on Win32 */
-  UInt32              reserved;               /* Unused */
-  UInt32              flags;                  /* Unused */
-  Boolean             isGood;                 /* true or false */
-  SInt8               byteFiller;             /* Unused */
+	CMDisplayIDType   displayID; /* Contains an hDC on Win32 */
+	CMProfileLocation profileLocation;
+	CalibrateEventUPP eventProc; /* Ignored on Win32 */
+	UInt32            reserved; /* Unused */
+	UInt32            flags; /* Unused */
+	Boolean           isGood; /* true or false */
+	SInt8             byteFiller; /* Unused */
 };
-typedef struct OldCalibratorInfo        OldCalibratorInfo;
-typedef CALLBACK_API( Boolean , OldCanCalibrateProcPtr )(CMDisplayIDType displayID);
-typedef CALLBACK_API( OSErr , OldCalibrateProcPtr )(OldCalibratorInfo * theInfo);
-typedef STACK_UPP_TYPE(OldCanCalibrateProcPtr)                  OldCanCalibrateUPP;
-typedef STACK_UPP_TYPE(OldCalibrateProcPtr)                     OldCalibrateUPP;
+typedef struct OldCalibratorInfo OldCalibratorInfo;
+typedef CALLBACK_API( Boolean, OldCanCalibrateProcPtr )( CMDisplayIDType displayID );
+typedef CALLBACK_API( OSErr, OldCalibrateProcPtr )( OldCalibratorInfo *theInfo );
+typedef STACK_UPP_TYPE( OldCanCalibrateProcPtr ) OldCanCalibrateUPP;
+typedef STACK_UPP_TYPE( OldCalibrateProcPtr ) OldCalibrateUPP;
 #if CALL_NOT_IN_CARBON
 /*
  *  NewOldCanCalibrateUPP()
@@ -295,14 +316,17 @@ typedef STACK_UPP_TYPE(OldCalibrateProcPtr)                     OldCalibrateUPP;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OldCanCalibrateUPP )
-NewOldCanCalibrateUPP(OldCanCalibrateProcPtr userRoutine);
+NewOldCanCalibrateUPP( OldCanCalibrateProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppOldCanCalibrateProcInfo = 0x000000D0 };  /* pascal 1_byte Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(OldCanCalibrateUPP) NewOldCanCalibrateUPP(OldCanCalibrateProcPtr userRoutine) { return (OldCanCalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOldCanCalibrateProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewOldCanCalibrateUPP(userRoutine) (OldCanCalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOldCanCalibrateProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppOldCanCalibrateProcInfo = 0x000000D0 }; /* pascal 1_byte Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( OldCanCalibrateUPP ) NewOldCanCalibrateUPP( OldCanCalibrateProcPtr userRoutine )
+{
+	return (OldCanCalibrateUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOldCanCalibrateProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewOldCanCalibrateUPP( userRoutine ) ( OldCanCalibrateUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOldCanCalibrateProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -314,14 +338,17 @@ NewOldCanCalibrateUPP(OldCanCalibrateProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( OldCalibrateUPP )
-NewOldCalibrateUPP(OldCalibrateProcPtr userRoutine);
+NewOldCalibrateUPP( OldCalibrateProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppOldCalibrateProcInfo = 0x000000E0 };  /* pascal 2_bytes Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(OldCalibrateUPP) NewOldCalibrateUPP(OldCalibrateProcPtr userRoutine) { return (OldCalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOldCalibrateProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewOldCalibrateUPP(userRoutine) (OldCalibrateUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOldCalibrateProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppOldCalibrateProcInfo = 0x000000E0 }; /* pascal 2_bytes Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( OldCalibrateUPP ) NewOldCalibrateUPP( OldCalibrateProcPtr userRoutine )
+{
+	return (OldCalibrateUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOldCalibrateProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewOldCalibrateUPP( userRoutine ) ( OldCalibrateUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOldCalibrateProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -333,13 +360,16 @@ NewOldCalibrateUPP(OldCalibrateProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeOldCanCalibrateUPP(OldCanCalibrateUPP userUPP);
+DisposeOldCanCalibrateUPP( OldCanCalibrateUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeOldCanCalibrateUPP(OldCanCalibrateUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeOldCanCalibrateUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeOldCanCalibrateUPP( OldCanCalibrateUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeOldCanCalibrateUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -351,13 +381,16 @@ DisposeOldCanCalibrateUPP(OldCanCalibrateUPP userUPP);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeOldCalibrateUPP(OldCalibrateUPP userUPP);
+DisposeOldCalibrateUPP( OldCalibrateUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeOldCalibrateUPP(OldCalibrateUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeOldCalibrateUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeOldCalibrateUPP( OldCalibrateUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeOldCalibrateUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -370,14 +403,17 @@ DisposeOldCalibrateUPP(OldCalibrateUPP userUPP);
  */
 EXTERN_API_C( Boolean )
 InvokeOldCanCalibrateUPP(
-  CMDisplayIDType     displayID,
-  OldCanCalibrateUPP  userUPP);
+    CMDisplayIDType    displayID,
+    OldCanCalibrateUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(Boolean) InvokeOldCanCalibrateUPP(CMDisplayIDType displayID, OldCanCalibrateUPP userUPP) { return (Boolean)CALL_ONE_PARAMETER_UPP(userUPP, uppOldCanCalibrateProcInfo, displayID); }
-  #else
-    #define InvokeOldCanCalibrateUPP(displayID, userUPP) (Boolean)CALL_ONE_PARAMETER_UPP((userUPP), uppOldCanCalibrateProcInfo, (displayID))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) InvokeOldCanCalibrateUPP( CMDisplayIDType displayID, OldCanCalibrateUPP userUPP )
+{
+	return (Boolean)CALL_ONE_PARAMETER_UPP( userUPP, uppOldCanCalibrateProcInfo, displayID );
+}
+#else
+#define InvokeOldCanCalibrateUPP( displayID, userUPP ) ( Boolean ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppOldCanCalibrateProcInfo, ( displayID ) )
+#endif
 #endif
 
 /*
@@ -390,35 +426,37 @@ InvokeOldCanCalibrateUPP(
  */
 EXTERN_API_C( OSErr )
 InvokeOldCalibrateUPP(
-  OldCalibratorInfo *  theInfo,
-  OldCalibrateUPP      userUPP);
+    OldCalibratorInfo *theInfo,
+    OldCalibrateUPP    userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSErr) InvokeOldCalibrateUPP(OldCalibratorInfo * theInfo, OldCalibrateUPP userUPP) { return (OSErr)CALL_ONE_PARAMETER_UPP(userUPP, uppOldCalibrateProcInfo, theInfo); }
-  #else
-    #define InvokeOldCalibrateUPP(theInfo, userUPP) (OSErr)CALL_ONE_PARAMETER_UPP((userUPP), uppOldCalibrateProcInfo, (theInfo))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSErr ) InvokeOldCalibrateUPP( OldCalibratorInfo *theInfo, OldCalibrateUPP userUPP )
+{
+	return (OSErr)CALL_ONE_PARAMETER_UPP( userUPP, uppOldCalibrateProcInfo, theInfo );
+}
+#else
+#define InvokeOldCalibrateUPP( theInfo, userUPP ) ( OSErr ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppOldCalibrateProcInfo, ( theInfo ) )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewOldCanCalibrateProc(userRoutine)                 NewOldCanCalibrateUPP(userRoutine)
-    #define NewOldCalibrateProc(userRoutine)                    NewOldCalibrateUPP(userRoutine)
-    #define CallOldCanCalibrateProc(userRoutine, displayID)     InvokeOldCanCalibrateUPP(displayID, userRoutine)
-    #define CallOldCalibrateProc(userRoutine, theInfo)          InvokeOldCalibrateUPP(theInfo, userRoutine)
 #endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* OLDROUTINENAMES */
+#if CALL_NOT_IN_CARBON || OLDROUTINENAMES
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewOldCanCalibrateProc( userRoutine ) NewOldCanCalibrateUPP( userRoutine )
+#define NewOldCalibrateProc( userRoutine ) NewOldCalibrateUPP( userRoutine )
+#define CallOldCanCalibrateProc( userRoutine, displayID ) InvokeOldCanCalibrateUPP( displayID, userRoutine )
+#define CallOldCalibrateProc( userRoutine, theInfo ) InvokeOldCalibrateUPP( theInfo, userRoutine )
+#endif /* CALL_NOT_IN_CARBON */
 
+#endif /* OLDROUTINENAMES */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -432,4 +470,3 @@ InvokeOldCalibrateUPP(
 #endif
 
 #endif /* __CMCALIBRATOR__ */
-

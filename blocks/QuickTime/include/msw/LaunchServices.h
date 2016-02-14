@@ -36,8 +36,6 @@
 #include <AEDataModel.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -51,152 +49,149 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
-
-
 
 /* ======================================================================================================== */
 /* LaunchServices Structures and Enums                                                                      */
 /* ======================================================================================================== */
 
 enum {
-  kLSUnknownErr                 = -10810,
-  kLSNotAnApplicationErr        = -10811,
-  kLSNotInitializedErr          = -10812,
-  kLSDataUnavailableErr         = -10813, /* e.g. no kind string*/
-  kLSApplicationNotFoundErr     = -10814, /* e.g. no application claims the file*/
-  kLSUnknownTypeErr             = -10815,
-  kLSDataTooOldErr              = -10816,
-  kLSDataErr                    = -10817,
-  kLSLaunchInProgressErr        = -10818, /* e.g. opening an alreay opening application*/
-  kLSNotRegisteredErr           = -10819,
-  kLSAppDoesNotClaimTypeErr     = -10820,
-  kLSAppDoesNotSupportSchemeWarning = -10821, /* not an error, just a warning*/
-  kLSServerCommunicationErr     = -10822, /* cannot set recent items*/
-  kLSCannotSetInfoErr           = -10823 /* you may not set item info for this item*/
+	kLSUnknownErr = -10810,
+	kLSNotAnApplicationErr = -10811,
+	kLSNotInitializedErr = -10812,
+	kLSDataUnavailableErr = -10813, /* e.g. no kind string*/
+	kLSApplicationNotFoundErr = -10814, /* e.g. no application claims the file*/
+	kLSUnknownTypeErr = -10815,
+	kLSDataTooOldErr = -10816,
+	kLSDataErr = -10817,
+	kLSLaunchInProgressErr = -10818, /* e.g. opening an alreay opening application*/
+	kLSNotRegisteredErr = -10819,
+	kLSAppDoesNotClaimTypeErr = -10820,
+	kLSAppDoesNotSupportSchemeWarning = -10821, /* not an error, just a warning*/
+	kLSServerCommunicationErr = -10822, /* cannot set recent items*/
+	kLSCannotSetInfoErr = -10823 /* you may not set item info for this item*/
 };
 
-typedef OptionBits                      LSInitializeFlags;
+typedef OptionBits LSInitializeFlags;
 enum {
-  kLSInitializeDefaults         = 0x00000001
-};
-
-enum {
-  kLSMinCatInfoBitmap           = (kFSCatInfoNodeFlags | kFSCatInfoParentDirID | kFSCatInfoFinderInfo | kFSCatInfoFinderXInfo) /* minimum info needed to avoid a FSGetCatalogInfo call when fetching item information */
+	kLSInitializeDefaults = 0x00000001
 };
 
 enum {
-  kLSInvalidExtensionIndex      = (unsigned long)0xFFFFFFFF /* Index returned from LSGetExtensionInfo when name has no extension*/
-};
-
-typedef OptionBits                      LSRequestedInfo;
-enum {
-  kLSRequestExtension           = 0x00000001, /* safe to use from threads*/
-  kLSRequestTypeCreator         = 0x00000002, /* safe to use from threads*/
-  kLSRequestBasicFlagsOnly      = 0x00000004, /* all but type of application and extension flags - safe to use from threads*/
-  kLSRequestAppTypeFlags        = 0x00000008, /* NOT SAFE to use from threads*/
-  kLSRequestAllFlags            = 0x00000010, /* NOT SAFE to use from threads*/
-  kLSRequestIconAndKind         = 0x00000020, /* NOT SAFE to use from threads*/
-  kLSRequestExtensionFlagsOnly  = 0x00000040, /* safe to use from threads*/
-  kLSRequestAllInfo             = (unsigned long)0xFFFFFFFF /* NOT SAFE to use from threads*/
-};
-
-typedef OptionBits                      LSItemInfoFlags;
-enum {
-  kLSItemInfoIsPlainFile        = 0x00000001, /* none of the following applies*/
-  kLSItemInfoIsPackage          = 0x00000002, /* app, doc, or bundle package*/
-  kLSItemInfoIsApplication      = 0x00000004, /* single-file or packaged*/
-  kLSItemInfoIsContainer        = 0x00000008, /* folder or volume*/
-  kLSItemInfoIsAliasFile        = 0x00000010, /* Alias file (includes sym links)*/
-  kLSItemInfoIsSymlink          = 0x00000020, /* UNIX sym link*/
-  kLSItemInfoIsInvisible        = 0x00000040, /* does not include '.' files or '.hidden' entries*/
-  kLSItemInfoIsNativeApp        = 0x00000080, /* Carbon or Cocoa native app*/
-  kLSItemInfoIsClassicApp       = 0x00000100, /* CFM Classic app*/
-  kLSItemInfoAppPrefersNative   = 0x00000200, /* Carbon app that prefers to be launched natively*/
-  kLSItemInfoAppPrefersClassic  = 0x00000400, /* Carbon app that prefers to be launched in Classic*/
-  kLSItemInfoAppIsScriptable    = 0x00000800, /* App can be scripted*/
-  kLSItemInfoIsVolume           = 0x00001000, /* item is a volume*/
-  kLSItemInfoExtensionIsHidden  = 0x00100000 /* item has a hidden extension*/
-};
-
-typedef OptionBits                      LSRolesMask;
-enum {
-  kLSRolesNone                  = 0x00000001, /* no claim is made about support for this type/scheme*/
-  kLSRolesViewer                = 0x00000002, /* claim to be able to view this type/scheme*/
-  kLSRolesEditor                = 0x00000004, /* claim to be able to edit this type/scheme*/
-  kLSRolesAll                   = (unsigned long)0xFFFFFFFF /* claim to do it all*/
-};
-
-typedef UInt32                          LSKindID;
-enum {
-  kLSUnknownKindID              = 0
+	kLSMinCatInfoBitmap = ( kFSCatInfoNodeFlags | kFSCatInfoParentDirID | kFSCatInfoFinderInfo | kFSCatInfoFinderXInfo ) /* minimum info needed to avoid a FSGetCatalogInfo call when fetching item information */
 };
 
 enum {
-  kLSUnknownType                = 0,
-  kLSUnknownCreator             = 0
+	kLSInvalidExtensionIndex = (unsigned long)0xFFFFFFFF /* Index returned from LSGetExtensionInfo when name has no extension*/
+};
+
+typedef OptionBits LSRequestedInfo;
+enum {
+	kLSRequestExtension = 0x00000001, /* safe to use from threads*/
+	kLSRequestTypeCreator = 0x00000002, /* safe to use from threads*/
+	kLSRequestBasicFlagsOnly = 0x00000004, /* all but type of application and extension flags - safe to use from threads*/
+	kLSRequestAppTypeFlags = 0x00000008, /* NOT SAFE to use from threads*/
+	kLSRequestAllFlags = 0x00000010, /* NOT SAFE to use from threads*/
+	kLSRequestIconAndKind = 0x00000020, /* NOT SAFE to use from threads*/
+	kLSRequestExtensionFlagsOnly = 0x00000040, /* safe to use from threads*/
+	kLSRequestAllInfo = (unsigned long)0xFFFFFFFF /* NOT SAFE to use from threads*/
+};
+
+typedef OptionBits LSItemInfoFlags;
+enum {
+	kLSItemInfoIsPlainFile = 0x00000001, /* none of the following applies*/
+	kLSItemInfoIsPackage = 0x00000002, /* app, doc, or bundle package*/
+	kLSItemInfoIsApplication = 0x00000004, /* single-file or packaged*/
+	kLSItemInfoIsContainer = 0x00000008, /* folder or volume*/
+	kLSItemInfoIsAliasFile = 0x00000010, /* Alias file (includes sym links)*/
+	kLSItemInfoIsSymlink = 0x00000020, /* UNIX sym link*/
+	kLSItemInfoIsInvisible = 0x00000040, /* does not include '.' files or '.hidden' entries*/
+	kLSItemInfoIsNativeApp = 0x00000080, /* Carbon or Cocoa native app*/
+	kLSItemInfoIsClassicApp = 0x00000100, /* CFM Classic app*/
+	kLSItemInfoAppPrefersNative = 0x00000200, /* Carbon app that prefers to be launched natively*/
+	kLSItemInfoAppPrefersClassic = 0x00000400, /* Carbon app that prefers to be launched in Classic*/
+	kLSItemInfoAppIsScriptable = 0x00000800, /* App can be scripted*/
+	kLSItemInfoIsVolume = 0x00001000, /* item is a volume*/
+	kLSItemInfoExtensionIsHidden = 0x00100000 /* item has a hidden extension*/
+};
+
+typedef OptionBits LSRolesMask;
+enum {
+	kLSRolesNone = 0x00000001, /* no claim is made about support for this type/scheme*/
+	kLSRolesViewer = 0x00000002, /* claim to be able to view this type/scheme*/
+	kLSRolesEditor = 0x00000004, /* claim to be able to edit this type/scheme*/
+	kLSRolesAll = (unsigned long)0xFFFFFFFF /* claim to do it all*/
+};
+
+typedef UInt32 LSKindID;
+enum {
+	kLSUnknownKindID = 0
+};
+
+enum {
+	kLSUnknownType = 0,
+	kLSUnknownCreator = 0
 };
 
 struct LSItemInfoRecord {
-  LSItemInfoFlags     flags;
-  OSType              filetype;
-  OSType              creator;                /* release when finished*/
-  CFStringRef         extension;              /* release when finished*/
-  CFStringRef         iconFileName;           /* not for general use*/
-  LSKindID            kindID;                 /* not for general use*/
+	LSItemInfoFlags flags;
+	OSType          filetype;
+	OSType          creator; /* release when finished*/
+	CFStringRef     extension; /* release when finished*/
+	CFStringRef     iconFileName; /* not for general use*/
+	LSKindID        kindID; /* not for general use*/
 };
-typedef struct LSItemInfoRecord         LSItemInfoRecord;
+typedef struct LSItemInfoRecord LSItemInfoRecord;
 
-typedef OptionBits                      LSAcceptanceFlags;
+typedef OptionBits LSAcceptanceFlags;
 enum {
-  kLSAcceptDefault              = 0x00000001,
-  kLSAcceptAllowLoginUI         = 0x00000002 /* show UI to log in if necessary*/
+	kLSAcceptDefault = 0x00000001,
+	kLSAcceptAllowLoginUI = 0x00000002 /* show UI to log in if necessary*/
 };
 
-typedef OptionBits                      LSLaunchFlags;
+typedef OptionBits LSLaunchFlags;
 enum {
-  kLSLaunchDefaults             = 0x00000001, /* default = open, async, use Info.plist, start Classic*/
-  kLSLaunchAndPrint             = 0x00000002, /* print items instead of open them*/
-  kLSLaunchReserved2            = 0x00000004,
-  kLSLaunchReserved3            = 0x00000008,
-  kLSLaunchReserved4            = 0x00000010,
-  kLSLaunchReserved5            = 0x00000020,
-  kLSLaunchReserved6            = 0x00000040,
-  kLSLaunchInhibitBGOnly        = 0x00000080, /* causes launch to fail if target is background-only.*/
-  kLSLaunchDontAddToRecents     = 0x00000100, /* do not add app or documents to recents menus.*/
-  kLSLaunchDontSwitch           = 0x00000200, /* don't bring new app to the foreground.*/
-  kLSLaunchNoParams             = 0x00000800, /* Use Info.plist to determine launch parameters*/
-  kLSLaunchAsync                = 0x00010000, /* launch async; obtain results from kCPSNotifyLaunch.*/
-  kLSLaunchStartClassic         = 0x00020000, /* start up Classic environment if required for app.*/
-  kLSLaunchInClassic            = 0x00040000, /* force app to launch in Classic environment.*/
-  kLSLaunchNewInstance          = 0x00080000, /* Instantiate app even if it is already running.*/
-  kLSLaunchAndHide              = 0x00100000, /* Send child a "hide" request as soon as it checks in.*/
-  kLSLaunchAndHideOthers        = 0x00200000 /* Hide all other apps when child checks in.*/
+	kLSLaunchDefaults = 0x00000001, /* default = open, async, use Info.plist, start Classic*/
+	kLSLaunchAndPrint = 0x00000002, /* print items instead of open them*/
+	kLSLaunchReserved2 = 0x00000004,
+	kLSLaunchReserved3 = 0x00000008,
+	kLSLaunchReserved4 = 0x00000010,
+	kLSLaunchReserved5 = 0x00000020,
+	kLSLaunchReserved6 = 0x00000040,
+	kLSLaunchInhibitBGOnly = 0x00000080, /* causes launch to fail if target is background-only.*/
+	kLSLaunchDontAddToRecents = 0x00000100, /* do not add app or documents to recents menus.*/
+	kLSLaunchDontSwitch = 0x00000200, /* don't bring new app to the foreground.*/
+	kLSLaunchNoParams = 0x00000800, /* Use Info.plist to determine launch parameters*/
+	kLSLaunchAsync = 0x00010000, /* launch async; obtain results from kCPSNotifyLaunch.*/
+	kLSLaunchStartClassic = 0x00020000, /* start up Classic environment if required for app.*/
+	kLSLaunchInClassic = 0x00040000, /* force app to launch in Classic environment.*/
+	kLSLaunchNewInstance = 0x00080000, /* Instantiate app even if it is already running.*/
+	kLSLaunchAndHide = 0x00100000, /* Send child a "hide" request as soon as it checks in.*/
+	kLSLaunchAndHideOthers = 0x00200000 /* Hide all other apps when child checks in.*/
 };
 
 struct LSLaunchFSRefSpec {
-  const FSRef *       appRef;                 /* app to use, can be NULL*/
-  UInt32              numDocs;                /* items to open/print, can be NULL*/
-  const FSRef *       itemRefs;               /* array of FSRefs*/
-  const AEDesc *      passThruParams;         /* passed untouched to application as optional parameter*/
-  LSLaunchFlags       launchFlags;
-  void *              asyncRefCon;            /* used if you register for app birth/death notification*/
+	const FSRef * appRef; /* app to use, can be NULL*/
+	UInt32        numDocs; /* items to open/print, can be NULL*/
+	const FSRef * itemRefs; /* array of FSRefs*/
+	const AEDesc *passThruParams; /* passed untouched to application as optional parameter*/
+	LSLaunchFlags launchFlags;
+	void *        asyncRefCon; /* used if you register for app birth/death notification*/
 };
-typedef struct LSLaunchFSRefSpec        LSLaunchFSRefSpec;
+typedef struct LSLaunchFSRefSpec LSLaunchFSRefSpec;
 struct LSLaunchURLSpec {
-  CFURLRef            appURL;                 /* app to use, can be NULL*/
-  CFArrayRef          itemURLs;               /* items to open/print, can be NULL*/
-  const AEDesc *      passThruParams;         /* passed untouched to application as optional parameter*/
-  LSLaunchFlags       launchFlags;
-  void *              asyncRefCon;            /* used if you register for app birth/death notification*/
+	CFURLRef      appURL; /* app to use, can be NULL*/
+	CFArrayRef    itemURLs; /* items to open/print, can be NULL*/
+	const AEDesc *passThruParams; /* passed untouched to application as optional parameter*/
+	LSLaunchFlags launchFlags;
+	void *        asyncRefCon; /* used if you register for app birth/death notification*/
 };
-typedef struct LSLaunchURLSpec          LSLaunchURLSpec;
-
+typedef struct LSLaunchURLSpec LSLaunchURLSpec;
 
 /* ======================================================================================================== */
 /* LaunchServices Public Entry Points                                                                       */
@@ -223,9 +218,7 @@ typedef struct LSLaunchURLSpec          LSLaunchURLSpec;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-LSInit(LSInitializeFlags inFlags);
-
-
+LSInit( LSInitializeFlags inFlags );
 
 /*
  *  LSTerm()
@@ -242,9 +235,7 @@ LSInit(LSInitializeFlags inFlags);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-LSTerm(void);
-
-
+LSTerm( void );
 
 /*
  *  LSCopyItemInfoForRef()
@@ -275,11 +266,9 @@ LSTerm(void);
  */
 EXTERN_API( OSStatus )
 LSCopyItemInfoForRef(
-  const FSRef *       inItemRef,
-  LSRequestedInfo     inWhichInfo,
-  LSItemInfoRecord *  outItemInfo);
-
-
+    const FSRef *     inItemRef,
+    LSRequestedInfo   inWhichInfo,
+    LSItemInfoRecord *outItemInfo );
 
 /*
  *  LSCopyItemInfoForURL()
@@ -310,10 +299,9 @@ LSCopyItemInfoForRef(
  */
 EXTERN_API( OSStatus )
 LSCopyItemInfoForURL(
-  CFURLRef            inURL,
-  LSRequestedInfo     inWhichInfo,
-  LSItemInfoRecord *  outItemInfo);
-
+    CFURLRef          inURL,
+    LSRequestedInfo   inWhichInfo,
+    LSItemInfoRecord *outItemInfo );
 
 /*
  *  LSGetExtensionInfo()
@@ -346,11 +334,9 @@ LSCopyItemInfoForURL(
  */
 EXTERN_API( OSStatus )
 LSGetExtensionInfo(
-  UniCharCount    inNameLen,
-  const UniChar   inNameBuffer[],
-  UniCharCount *  outExtStartIndex);
-
-
+    UniCharCount  inNameLen,
+    const UniChar inNameBuffer[],
+    UniCharCount *outExtStartIndex );
 
 /*
  *  LSCopyDisplayNameForRef()
@@ -378,10 +364,8 @@ LSGetExtensionInfo(
  */
 EXTERN_API( OSStatus )
 LSCopyDisplayNameForRef(
-  const FSRef *  inRef,
-  CFStringRef *  outDisplayName);
-
-
+    const FSRef *inRef,
+    CFStringRef *outDisplayName );
 
 /*
  *  LSCopyDisplayNameForURL()
@@ -409,10 +393,8 @@ LSCopyDisplayNameForRef(
  */
 EXTERN_API( OSStatus )
 LSCopyDisplayNameForURL(
-  CFURLRef       inURL,
-  CFStringRef *  outDisplayName);
-
-
+    CFURLRef     inURL,
+    CFStringRef *outDisplayName );
 
 /*
  *  LSSetExtensionHiddenForRef()
@@ -441,10 +423,8 @@ LSCopyDisplayNameForURL(
  */
 EXTERN_API( OSStatus )
 LSSetExtensionHiddenForRef(
-  const FSRef *  inRef,
-  Boolean        inHide);
-
-
+    const FSRef *inRef,
+    Boolean      inHide );
 
 /*
  *  LSSetExtensionHiddenForURL()
@@ -473,10 +453,8 @@ LSSetExtensionHiddenForRef(
  */
 EXTERN_API( OSStatus )
 LSSetExtensionHiddenForURL(
-  CFURLRef   inURL,
-  Boolean    inHide);
-
-
+    CFURLRef inURL,
+    Boolean  inHide );
 
 /*
  *  LSCopyKindStringForRef()
@@ -504,10 +482,8 @@ LSSetExtensionHiddenForURL(
  */
 EXTERN_API( OSStatus )
 LSCopyKindStringForRef(
-  const FSRef *  inFSRef,
-  CFStringRef *  outKindString);
-
-
+    const FSRef *inFSRef,
+    CFStringRef *outKindString );
 
 /*
  *  LSCopyKindStringForURL()
@@ -535,10 +511,8 @@ LSCopyKindStringForRef(
  */
 EXTERN_API( OSStatus )
 LSCopyKindStringForURL(
-  CFURLRef       inURL,
-  CFStringRef *  outKindString);
-
-
+    CFURLRef     inURL,
+    CFStringRef *outKindString );
 
 /*
  *  LSCopyKindStringForTypeInfo()
@@ -583,12 +557,10 @@ LSCopyKindStringForURL(
  */
 EXTERN_API( OSStatus )
 LSCopyKindStringForTypeInfo(
-  OSType         inType,
-  OSType         inCreator,
-  CFStringRef    inExtension,         /* can be NULL */
-  CFStringRef *  outKindString);
-
-
+    OSType       inType,
+    OSType       inCreator,
+    CFStringRef  inExtension, /* can be NULL */
+    CFStringRef *outKindString );
 
 /*
  *  LSCopyKindStringForMIMEType()
@@ -616,9 +588,8 @@ LSCopyKindStringForTypeInfo(
  */
 EXTERN_API( OSStatus )
 LSCopyKindStringForMIMEType(
-  CFStringRef    inMIMEType,
-  CFStringRef *  outKindString);
-
+    CFStringRef  inMIMEType,
+    CFStringRef *outKindString );
 
 /*
  *  LSGetApplicationForItem()
@@ -656,12 +627,10 @@ LSCopyKindStringForMIMEType(
  */
 EXTERN_API( OSStatus )
 LSGetApplicationForItem(
-  const FSRef *  inItemRef,
-  LSRolesMask    inRoleMask,
-  FSRef *        outAppRef,        /* can be NULL */
-  CFURLRef *     outAppURL);       /* can be NULL */
-
-
+    const FSRef *inItemRef,
+    LSRolesMask  inRoleMask,
+    FSRef *      outAppRef, /* can be NULL */
+    CFURLRef *   outAppURL ); /* can be NULL */
 
 /*
  *  LSGetApplicationForInfo()
@@ -707,14 +676,12 @@ LSGetApplicationForItem(
  */
 EXTERN_API( OSStatus )
 LSGetApplicationForInfo(
-  OSType        inType,
-  OSType        inCreator,
-  CFStringRef   inExtension,       /* can be NULL */
-  LSRolesMask   inRoleMask,
-  FSRef *       outAppRef,         /* can be NULL */
-  CFURLRef *    outAppURL);        /* can be NULL */
-
-
+    OSType      inType,
+    OSType      inCreator,
+    CFStringRef inExtension, /* can be NULL */
+    LSRolesMask inRoleMask,
+    FSRef *     outAppRef, /* can be NULL */
+    CFURLRef *  outAppURL ); /* can be NULL */
 
 /*
  *  LSCopyApplicationForMIMEType()
@@ -750,11 +717,9 @@ LSGetApplicationForInfo(
  */
 EXTERN_API( OSStatus )
 LSCopyApplicationForMIMEType(
-  CFStringRef   inMIMEType,
-  LSRolesMask   inRoleMask,
-  CFURLRef *    outAppURL);
-
-
+    CFStringRef inMIMEType,
+    LSRolesMask inRoleMask,
+    CFURLRef *  outAppURL );
 
 /*
  *  LSGetApplicationForURL()
@@ -792,12 +757,10 @@ LSCopyApplicationForMIMEType(
  */
 EXTERN_API( OSStatus )
 LSGetApplicationForURL(
-  CFURLRef      inURL,
-  LSRolesMask   inRoleMask,
-  FSRef *       outAppRef,        /* can be NULL */
-  CFURLRef *    outAppURL);       /* can be NULL */
-
-
+    CFURLRef    inURL,
+    LSRolesMask inRoleMask,
+    FSRef *     outAppRef, /* can be NULL */
+    CFURLRef *  outAppURL ); /* can be NULL */
 
 /*
  *  LSFindApplicationForInfo()
@@ -837,13 +800,11 @@ LSGetApplicationForURL(
  */
 EXTERN_API( OSStatus )
 LSFindApplicationForInfo(
-  OSType        inCreator,
-  CFStringRef   inBundleID,       /* can be NULL */
-  CFStringRef   inName,           /* can be NULL */
-  FSRef *       outAppRef,        /* can be NULL */
-  CFURLRef *    outAppURL);       /* can be NULL */
-
-
+    OSType      inCreator,
+    CFStringRef inBundleID, /* can be NULL */
+    CFStringRef inName, /* can be NULL */
+    FSRef *     outAppRef, /* can be NULL */
+    CFURLRef *  outAppURL ); /* can be NULL */
 
 /*
  *  LSCanRefAcceptItem()
@@ -882,13 +843,11 @@ LSFindApplicationForInfo(
  */
 EXTERN_API( OSStatus )
 LSCanRefAcceptItem(
-  const FSRef *       inItemFSRef,
-  const FSRef *       inTargetRef,
-  LSRolesMask         inRoleMask,
-  LSAcceptanceFlags   inFlags,
-  Boolean *           outAcceptsItem);
-
-
+    const FSRef *     inItemFSRef,
+    const FSRef *     inTargetRef,
+    LSRolesMask       inRoleMask,
+    LSAcceptanceFlags inFlags,
+    Boolean *         outAcceptsItem );
 
 /*
  *  LSCanURLAcceptURL()
@@ -927,13 +886,11 @@ LSCanRefAcceptItem(
  */
 EXTERN_API( OSStatus )
 LSCanURLAcceptURL(
-  CFURLRef            inItemURL,
-  CFURLRef            inTargetURL,
-  LSRolesMask         inRoleMask,
-  LSAcceptanceFlags   inFlags,
-  Boolean *           outAcceptsItem);
-
-
+    CFURLRef          inItemURL,
+    CFURLRef          inTargetURL,
+    LSRolesMask       inRoleMask,
+    LSAcceptanceFlags inFlags,
+    Boolean *         outAcceptsItem );
 
 /*
  *  LSOpenFSRef()
@@ -965,10 +922,8 @@ LSCanURLAcceptURL(
  */
 EXTERN_API( OSStatus )
 LSOpenFSRef(
-  const FSRef *  inRef,
-  FSRef *        outLaunchedRef);      /* can be NULL */
-
-
+    const FSRef *inRef,
+    FSRef *      outLaunchedRef ); /* can be NULL */
 
 /*
  *  LSOpenCFURLRef()
@@ -1000,10 +955,8 @@ LSOpenFSRef(
  */
 EXTERN_API( OSStatus )
 LSOpenCFURLRef(
-  CFURLRef    inURL,
-  CFURLRef *  outLaunchedURL);      /* can be NULL */
-
-
+    CFURLRef  inURL,
+    CFURLRef *outLaunchedURL ); /* can be NULL */
 
 /*
  *  LSOpenFromRefSpec()
@@ -1031,10 +984,8 @@ LSOpenCFURLRef(
  */
 EXTERN_API( OSStatus )
 LSOpenFromRefSpec(
-  const LSLaunchFSRefSpec *  inLaunchSpec,
-  FSRef *                    outLaunchedRef);      /* can be NULL */
-
-
+    const LSLaunchFSRefSpec *inLaunchSpec,
+    FSRef *                  outLaunchedRef ); /* can be NULL */
 
 /*
  *  LSOpenFromURLSpec()
@@ -1062,18 +1013,15 @@ LSOpenFromRefSpec(
  */
 EXTERN_API( OSStatus )
 LSOpenFromURLSpec(
-  const LSLaunchURLSpec *  inLaunchSpec,
-  CFURLRef *               outLaunchedURL);      /* can be NULL */
-
-
-
+    const LSLaunchURLSpec *inLaunchSpec,
+    CFURLRef *             outLaunchedURL ); /* can be NULL */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1087,4 +1035,3 @@ LSOpenFromURLSpec(
 #endif
 
 #endif /* __LAUNCHSERVICES__ */
-

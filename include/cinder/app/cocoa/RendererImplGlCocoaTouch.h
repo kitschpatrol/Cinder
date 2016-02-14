@@ -25,32 +25,31 @@
 #import "cinder/app/AppBase.h"
 #import "cinder/app/RendererGl.h"
 
-@interface RendererImplGlCocoaTouch : NSObject
-{
-	cinder::app::RendererGl			*mRenderer; // equivalent of a weak_ptr; 'renderer' owns this // TODO: remove, this is unused
-	UIView							*mCinderView;
-	EAGLContext						*mContext;
-	cinder::gl::ContextRef			mCinderContext;
+@interface RendererImplGlCocoaTouch : NSObject {
+	cinder::app::RendererGl *mRenderer; // equivalent of a weak_ptr; 'renderer' owns this // TODO: remove, this is unused
+	UIView *                 mCinderView;
+	EAGLContext *            mContext;
+	cinder::gl::ContextRef   mCinderContext;
 
 	// The pixel dimensions of the CAEAGLLayer
-	GLint 			mBackingWidth, mBackingHeight;
-	
+	GLint mBackingWidth, mBackingHeight;
+
 	// The dimensions of the CAEAGLLayer in points
-	GLint			mPointsWidth, mPointsHeight;
-	
+	GLint mPointsWidth, mPointsHeight;
+
 	// The OpenGL names for the framebuffer and renderbuffer used to render to this view
-	GLuint 			mViewFramebuffer, mViewRenderbuffer, mDepthRenderbuffer;
-	GLuint			mMsaaFramebuffer, mMsaaRenderbuffer;
-	GLint			mColorInternalFormat, mDepthInternalFormat;
-	BOOL			mUsingMsaa;
-    BOOL            mUsingStencil;
-	BOOL			mObjectTracking;
-	int				mMsaaSamples;
+	GLuint mViewFramebuffer, mViewRenderbuffer, mDepthRenderbuffer;
+	GLuint mMsaaFramebuffer, mMsaaRenderbuffer;
+	GLint  mColorInternalFormat, mDepthInternalFormat;
+	BOOL   mUsingMsaa;
+	BOOL   mUsingStencil;
+	BOOL   mObjectTracking;
+	int    mMsaaSamples;
 }
 
 - (id)initWithFrame:(CGRect)frame cinderView:(UIView *)cinderView renderer:(cinder::app::RendererGl *)renderer sharedRenderer:(cinder::app::RendererGlRef)sharedRenderer;
 
-- (EAGLContext*)getEaglContext;
+- (EAGLContext *)getEaglContext;
 - (void)makeCurrentContext:(bool)force;
 - (void)flushBuffer;
 - (void)setFrameSize:(CGSize)newSize;

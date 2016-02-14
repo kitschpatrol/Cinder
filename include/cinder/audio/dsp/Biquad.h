@@ -53,10 +53,12 @@
 
 #pragma once
 
-#include "cinder/audio/dsp/Dsp.h"
 #include "cinder/audio/Buffer.h"
+#include "cinder/audio/dsp/Dsp.h"
 
-namespace cinder { namespace audio { namespace dsp {
+namespace cinder {
+namespace audio {
+namespace dsp {
 
 //! \brief General filtering class (two-pole, two-zero).
 //!
@@ -67,50 +69,51 @@ namespace cinder { namespace audio { namespace dsp {
 class Biquad {
   public:
 	Biquad();
-    virtual ~Biquad();
+	virtual ~Biquad();
 
-    void setLowpassParams( double cutoffFreq, double resonance );
-    void setHighpassParams( double frequency, double resonance );
-    void setBandpassParams( double frequency, double Q );
-    void setLowShelfParams( double frequency, double dbGain );
-    void setHighShelfParams( double frequency, double dbGain );
-    void setPeakingParams( double frequency, double Q, double dbGain );
-    void setAllpassParams( double frequency, double Q );
-    void setNotchParams( double frequency, double Q );
+	void setLowpassParams( double cutoffFreq, double resonance );
+	void setHighpassParams( double frequency, double resonance );
+	void setBandpassParams( double frequency, double Q );
+	void setLowShelfParams( double frequency, double dbGain );
+	void setHighShelfParams( double frequency, double dbGain );
+	void setPeakingParams( double frequency, double Q, double dbGain );
+	void setAllpassParams( double frequency, double Q );
+	void setNotchParams( double frequency, double Q );
 
 	//! Processes the audio array of length \a framesToProcess provided in \a source, leaving the result in \a dest.  \a source and \a dest can be the same.
 	void process( const float *source, float *dest, size_t framesToProcess );
 	//! Filter response at a set of n frequencies. The magnitude and phase response are returned in magResponse and phaseResponse. The phase response is in radians.
-    void getFrequencyResponse( int nFrequencies, const float *frequency, float *magResponse, float *phaseResponse );
+	void getFrequencyResponse( int nFrequencies, const float *frequency, float *magResponse, float *phaseResponse );
 	//! Resets filter state
-    void reset();
+	void reset();
 
   private:
-    void setNormalizedCoefficients( double b0, double b1, double b2, double a0, double a1, double a2 );
+	void setNormalizedCoefficients( double b0, double b1, double b2, double a0, double a1, double a2 );
 
 	// Filter coefficients. The filter is defined as
-    //
-    // y[n] + mA1 * y[n-1] + mA2 * y[n-2] = mB0 * x[n] + mB1 * x[n-1] + mB2 * x[n-2].
-    double mB0;
-    double mB1;
-    double mB2;
-    double mA1;
-    double mA2;
+	//
+	// y[n] + mA1 * y[n-1] + mA2 * y[n-2] = mB0 * x[n] + mB1 * x[n-1] + mB2 * x[n-2].
+	double mB0;
+	double mB1;
+	double mB2;
+	double mA1;
+	double mA2;
 
 	// Filter memory
-    double mX1; // input delayed by 1 sample
-    double mX2; // input delayed by 2 samples
-    double mY1; // output delayed by 1 sample
-    double mY2; // output delayed by 2 samples
+	double mX1; // input delayed by 1 sample
+	double mX2; // input delayed by 2 samples
+	double mY1; // output delayed by 1 sample
+	double mY2; // output delayed by 2 samples
 
 #if defined( CINDER_AUDIO_VDSP )
 	void processVDsp( const float *source, float *dest, size_t framesToProcess );
-    void processSliceVDsp( double *source, double *dest, double *coefficientsP, size_t framesToProcess );
+	void processSliceVDsp( double *source, double *dest, double *coefficientsP, size_t framesToProcess );
 
 	// used with vDSP only
-//	AlignedArrayPtrd mInputBuffer, mOutputBuffer;
+	//	AlignedArrayPtrd mInputBuffer, mOutputBuffer;
 	std::vector<double> mInputBuffer, mOutputBuffer;
 #endif
 };
-
-} } } // namespace cinder::audio::dsp
+}
+}
+} // namespace cinder::audio::dsp

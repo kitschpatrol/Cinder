@@ -22,22 +22,21 @@
 
 #include "cinder/UrlImplCurl.h"
 
-#include <curl/curl.h>
 #include <boost/noncopyable.hpp>
+#include <curl/curl.h>
 
 namespace cinder {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // CURLLib
-class CURLLib : private boost::noncopyable
-{
-public:
+class CURLLib : private boost::noncopyable {
+  public:
 	CURLLib();
 	~CURLLib();
 
-	static CURLLib*		instance();
+	static CURLLib *instance();
 
-	static CURLLib	*sInstance;
+	static CURLLib *sInstance;
 };
 
 CURLLib *CURLLib::sInstance = 0;
@@ -48,28 +47,28 @@ CURLLib::CURLLib()
 	curl_global_init( CURL_GLOBAL_WIN32 );
 #else
 	curl_global_init( CURL_GLOBAL_NOTHING );
-#endif	
+#endif
 }
 
 CURLLib::~CURLLib()
 {
-	curl_global_cleanup();	
+	curl_global_cleanup();
 }
 
-CURLLib* CURLLib::instance()
+CURLLib *CURLLib::instance()
 {
-	if( ! sInstance )
+	if( !sInstance )
 		sInstance = new CURLLib;
 	return sInstance;
 }
 
 IStreamUrlImplCurl::IStreamUrlImplCurl( const std::string &url, const std::string &user, const std::string &password )
-	: IStreamUrlImpl( user, password ), still_running( 1 ), mSizeCached( false ), mBufferFileOffset( 0 ), mStartedRead( false ),
-	mEffectiveUrl( 0 ), mResponseCode( 0 )
-{	
-	if( ! CURLLib::instance() )
+    : IStreamUrlImpl( user, password ), still_running( 1 ), mSizeCached( false ), mBufferFileOffset( 0 ), mStartedRead( false ),
+      mEffectiveUrl( 0 ), mResponseCode( 0 )
+{
+	if( !CURLLib::instance() )
 		throw StreamExc(); // for some reason the curl lib isn't initialized, and we're screwed
-	
+
 	mMulti = curl_multi_init();
 
 	mCurl = curl_easy_init();
@@ -79,28 +78,28 @@ IStreamUrlImplCurl::IStreamUrlImplCurl( const std::string &url, const std::strin
 	curl_easy_setopt( mCurl, CURLOPT_FOLLOWLOCATION, 1L );
 	curl_easy_setopt( mCurl, CURLOPT_WRITEFUNCTION, IStreamUrlImplCurl::writeCallback );
 
-	if( ( ! mUser.empty() ) || ( ! mPassword.empty() ) ) {
+	if( ( !mUser.empty() ) || ( !mPassword.empty() ) ) {
 		mUserColonPassword = mUser + ":" + mPassword;
 		curl_easy_setopt( mCurl, CURLOPT_USERPWD, mUserColonPassword.c_str() );
 		curl_easy_setopt( mCurl, CURLOPT_HTTPAUTH, CURLAUTH_ANY );
 	}
-		
+
 	curl_multi_add_handle( mMulti, mCurl );
 
 	// we fill the buffer just to get things rolling
 	mBufferSize = DEFAULT_BUFFER_SIZE;
-	mBuffer = (uint8_t*)malloc( mBufferSize );
+	mBuffer = (uint8_t *)malloc( mBufferSize );
 	mBufferOffset = 0;
 	mBufferedBytes = 0;
 	mBufferFileOffset = 0;
-//	fillBuffer( Stream::MINIMUM_BUFFER_SIZE );
+	//	fillBuffer( Stream::MINIMUM_BUFFER_SIZE );
 }
 
 extern "C" {
 
 size_t IStreamUrlImplCurl::writeCallback( char *buffer, size_t size, size_t nitems, void *userp )
 {
-	cinder::IStreamUrlImplCurl *stream = (cinder::IStreamUrlImplCurl*)userp;
+	cinder::IStreamUrlImplCurl *stream = (cinder::IStreamUrlImplCurl *)userp;
 	size *= nitems;
 
 	int roomInBuffer = stream->mBufferSize - stream->mBufferedBytes;
@@ -110,8 +109,8 @@ size_t IStreamUrlImplCurl::writeCallback( char *buffer, size_t size, size_t nite
 		int oldBufferSize = stream->mBufferSize;
 		while( stream->mBufferSize - stream->mBufferedBytes <= (off_t)size )
 			stream->mBufferSize *= 2;
-		uint8_t *newBuff = reinterpret_cast<uint8_t*>( realloc( stream->mBuffer, stream->mBufferSize ) );
-		if( ! newBuff ) { // allocation failed - just copy the bytes we can fit
+		uint8_t *newBuff = reinterpret_cast<uint8_t *>( realloc( stream->mBuffer, stream->mBufferSize ) );
+		if( !newBuff ) { // allocation failed - just copy the bytes we can fit
 			size = stream->bufferRemaining();
 			stream->mBufferSize = oldBufferSize;
 		}
@@ -143,7 +142,7 @@ IStreamUrlImplCurl::~IStreamUrlImplCurl()
 
 bool IStreamUrlImplCurl::isEof() const
 {
-	return ( mBufferedBytes - mBufferOffset == 0 ) && ( ! still_running );
+	return ( mBufferedBytes - mBufferOffset == 0 ) && ( !still_running );
 }
 
 void IStreamUrlImplCurl::seekRelative( off_t relativeOffset )
@@ -153,11 +152,11 @@ void IStreamUrlImplCurl::seekRelative( off_t relativeOffset )
 		mBufferOffset += relativeOffset;
 		return;
 	}
-	else if( relativeOffset < 0 ) {	// if we're moving backwards out of the buffer, we have to reset
+	else if( relativeOffset < 0 ) { // if we're moving backwards out of the buffer, we have to reset
 		throw StreamExc(); // need to implement this
 	}
 	else { // moving forward off the end of the buffer - keep buffering til we're in range
-		throw StreamExc(); // need to implement this		
+		throw StreamExc(); // need to implement this
 	}
 }
 
@@ -173,14 +172,14 @@ off_t IStreamUrlImplCurl::tell() const
 
 off_t IStreamUrlImplCurl::size() const
 {
-	if( ! mStartedRead )
+	if( !mStartedRead )
 		fillBuffer( 1 );
 
 	if( mSizeCached )
 		return mSize;
 	else {
-		if( still_running ) {			
-			double tempSize = 0;
+		if( still_running ) {
+			double   tempSize = 0;
 			CURLcode result = curl_easy_getinfo( mCurl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &tempSize );
 			if( ( result == CURLE_OK ) && ( tempSize > 0 ) ) {
 				mSize = (off_t)tempSize;
@@ -189,15 +188,15 @@ off_t IStreamUrlImplCurl::size() const
 			else
 				mSize = 0;
 		}
-		else { // transfer is done, so use CURLINFO_SIZE_DOWNLOAD 
-			double tempSize = 0;
+		else { // transfer is done, so use CURLINFO_SIZE_DOWNLOAD
+			double   tempSize = 0;
 			CURLcode result = curl_easy_getinfo( mCurl, CURLINFO_SIZE_DOWNLOAD, &tempSize );
 			if( ( result == CURLE_OK ) && ( tempSize > 0 ) ) {
 				mSize = (off_t)tempSize;
 				mSizeCached = true;
 			}
 			else
-				mSize = 0;			
+				mSize = 0;
 		}
 		return mSize;
 	}
@@ -206,20 +205,20 @@ off_t IStreamUrlImplCurl::size() const
 void IStreamUrlImplCurl::fillBuffer( int wantBytes ) const
 {
 	// first make sure we've started reading, and do so if not
-	if( ! mStartedRead ) {
-		while( curl_multi_perform( mMulti, &still_running ) == CURLM_CALL_MULTI_PERFORM );
-		if( ( bufferRemaining() == 0 ) && ( ! still_running ) ) {			
+	if( !mStartedRead ) {
+		while( curl_multi_perform( mMulti, &still_running ) == CURLM_CALL_MULTI_PERFORM )
+			;
+		if( ( bufferRemaining() == 0 ) && ( !still_running ) ) {
 			throw StreamExc();
 		}
-		
+
 		mStartedRead = true;
 	}
-	
 
-    // only attempt to fill buffer if transactions still running and buffer
-    // doesnt exceed required size already
-    if( ( ! still_running ) || ( bufferRemaining() >= wantBytes ) )
-        return;
+	// only attempt to fill buffer if transactions still running and buffer
+	// doesnt exceed required size already
+	if( ( !still_running ) || ( bufferRemaining() >= wantBytes ) )
+		return;
 
 	// if we want more bytes than will fit in the rest of the buffer, let's make some room
 	if( mBufferSize - mBufferedBytes < wantBytes ) {
@@ -230,12 +229,12 @@ void IStreamUrlImplCurl::fillBuffer( int wantBytes ) const
 		mBufferFileOffset += bytesCulled;
 	}
 
-    // attempt to fill buffer
-    do {
-		fd_set fdread;
-		fd_set fdwrite;
-		fd_set fdexcep;
-		int maxfd;
+	// attempt to fill buffer
+	do {
+		fd_set         fdread;
+		fd_set         fdwrite;
+		fd_set         fdexcep;
+		int            maxfd;
 		struct timeval timeout;
 
 		FD_ZERO( &fdread );
@@ -252,26 +251,27 @@ void IStreamUrlImplCurl::fillBuffer( int wantBytes ) const
 		int rc = select( maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout );
 
 		switch( rc ) {
-			case -1:
-				throw StreamExc();
+		case -1:
+			throw StreamExc();
 			break;
-			case 0:
+		case 0:
 			break;
-			default:
-				// timeout or readable/writable sockets
-				// note we *could* be more efficient and not wait for
-				// CURLM_CALL_MULTI_PERFORM to clear here and check it on re-entry
-				// but that gets messy
-				while( curl_multi_perform( mMulti, &still_running ) == CURLM_CALL_MULTI_PERFORM );
+		default:
+			// timeout or readable/writable sockets
+			// note we *could* be more efficient and not wait for
+			// CURLM_CALL_MULTI_PERFORM to clear here and check it on re-entry
+			// but that gets messy
+			while( curl_multi_perform( mMulti, &still_running ) == CURLM_CALL_MULTI_PERFORM )
+				;
 			break;
 		}
-    } while( still_running && ( bufferRemaining() < wantBytes ) );
+	} while( still_running && ( bufferRemaining() < wantBytes ) );
 }
 
 void IStreamUrlImplCurl::IORead( void *dest, size_t size )
 {
 	fillBuffer( size );
-	
+
 	// check if theres data in the buffer - if not fillBuffer() either errored or EOF
 	if( bufferRemaining() < (off_t)size )
 		throw StreamExc();
@@ -283,12 +283,12 @@ void IStreamUrlImplCurl::IORead( void *dest, size_t size )
 size_t IStreamUrlImplCurl::readDataAvailable( void *dest, size_t maxSize )
 {
 	fillBuffer( maxSize );
-	
+
 	if( bufferRemaining() < (off_t)maxSize )
 		maxSize = bufferRemaining();
-		
+
 	memcpy( dest, mBuffer + mBufferOffset, maxSize );
-	
+
 	mBufferOffset += maxSize;
 	return maxSize;
 }

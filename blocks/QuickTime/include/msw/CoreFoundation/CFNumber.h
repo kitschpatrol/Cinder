@@ -2,20 +2,20 @@
 	Copyright (c) 1999-2003, Apple, Inc. All rights reserved.
 */
 
-#if !defined(__COREFOUNDATION_CFNUMBER__)
+#if !defined( __COREFOUNDATION_CFNUMBER__ )
 #define __COREFOUNDATION_CFNUMBER__ 1
 
 #include <CoreFoundation/CFBase.h>
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 extern "C" {
 #endif
 
-typedef const struct __CFBoolean * CFBooleanRef;
+typedef const struct __CFBoolean *CFBooleanRef;
 
 #if TARGET_OS_WIN32
-#define kCFBooleanTrue (*((const CFBooleanRef *)QTGetCFConstant("kCFBooleanTrue")))
-#define kCFBooleanFalse (*((const CFBooleanRef *)QTGetCFConstant("kCFBooleanFalse")))
+#define kCFBooleanTrue ( *( (const CFBooleanRef *)QTGetCFConstant( "kCFBooleanTrue" ) ) )
+#define kCFBooleanFalse ( *( (const CFBooleanRef *)QTGetCFConstant( "kCFBooleanFalse" ) ) )
 #else
 CF_EXPORT
 const CFBooleanRef kCFBooleanTrue;
@@ -24,38 +24,38 @@ const CFBooleanRef kCFBooleanFalse;
 #endif
 
 CF_EXPORT
-CFTypeID CFBooleanGetTypeID(void);
+CFTypeID CFBooleanGetTypeID( void );
 
 CF_EXPORT
-Boolean CFBooleanGetValue(CFBooleanRef boolean);
+Boolean CFBooleanGetValue( CFBooleanRef boolean );
 
 typedef enum {
-    /* Types from MacTypes.h */
-    kCFNumberSInt8Type = 1,
-    kCFNumberSInt16Type = 2,
-    kCFNumberSInt32Type = 3,
-    kCFNumberSInt64Type = 4,
-    kCFNumberFloat32Type = 5,
-    kCFNumberFloat64Type = 6,	/* 64-bit IEEE 754 */
-    /* Basic C types */
-    kCFNumberCharType = 7,
-    kCFNumberShortType = 8,
-    kCFNumberIntType = 9,
-    kCFNumberLongType = 10,
-    kCFNumberLongLongType = 11,
-    kCFNumberFloatType = 12,
-    kCFNumberDoubleType = 13,
-    /* Other */
-    kCFNumberCFIndexType = 14,
-    kCFNumberMaxType = 14
+	/* Types from MacTypes.h */
+	kCFNumberSInt8Type = 1,
+	kCFNumberSInt16Type = 2,
+	kCFNumberSInt32Type = 3,
+	kCFNumberSInt64Type = 4,
+	kCFNumberFloat32Type = 5,
+	kCFNumberFloat64Type = 6, /* 64-bit IEEE 754 */
+	/* Basic C types */
+	kCFNumberCharType = 7,
+	kCFNumberShortType = 8,
+	kCFNumberIntType = 9,
+	kCFNumberLongType = 10,
+	kCFNumberLongLongType = 11,
+	kCFNumberFloatType = 12,
+	kCFNumberDoubleType = 13,
+	/* Other */
+	kCFNumberCFIndexType = 14,
+	kCFNumberMaxType = 14
 } CFNumberType;
 
-typedef const struct __CFNumber * CFNumberRef;
+typedef const struct __CFNumber *CFNumberRef;
 
 #if TARGET_OS_WIN32
-#define kCFNumberPositiveInfinity (*((const CFNumberRef *)QTGetCFConstant("kCFNumberPositiveInfinity")))
-#define kCFNumberNegativeInfinity (*((const CFNumberRef *)QTGetCFConstant("kCFNumberNegativeInfinity")))
-#define kCFNumberNaN (*((const CFNumberRef *)QTGetCFConstant("kCFNumberNaN")))
+#define kCFNumberPositiveInfinity ( *( (const CFNumberRef *)QTGetCFConstant( "kCFNumberPositiveInfinity" ) ) )
+#define kCFNumberNegativeInfinity ( *( (const CFNumberRef *)QTGetCFConstant( "kCFNumberNegativeInfinity" ) ) )
+#define kCFNumberNaN ( *( (const CFNumberRef *)QTGetCFConstant( "kCFNumberNaN" ) ) )
 #else
 CF_EXPORT
 const CFNumberRef kCFNumberPositiveInfinity;
@@ -66,7 +66,7 @@ const CFNumberRef kCFNumberNaN;
 #endif
 
 CF_EXPORT
-CFTypeID CFNumberGetTypeID(void);
+CFTypeID CFNumberGetTypeID( void );
 
 /*
 	Creates a CFNumber with the given value. The type of number pointed
@@ -76,27 +76,27 @@ CFTypeID CFNumberGetTypeID(void);
 	valuePtr or type is an invalid value, the result is undefined.
 */
 CF_EXPORT
-CFNumberRef CFNumberCreate(CFAllocatorRef allocator, CFNumberType theType, const void *valuePtr);
+CFNumberRef CFNumberCreate( CFAllocatorRef allocator, CFNumberType theType, const void *valuePtr );
 
 /*
 	Returns the storage format of the CFNumber's value.  Note that
 	this is not necessarily the type provided in CFNumberCreate().
 */
 CF_EXPORT
-CFNumberType CFNumberGetType(CFNumberRef number);
+CFNumberType CFNumberGetType( CFNumberRef number );
 
 /*
 	Returns the size in bytes of the type of the number.
 */
 CF_EXPORT
-CFIndex CFNumberGetByteSize(CFNumberRef number);
+CFIndex CFNumberGetByteSize( CFNumberRef number );
 
 /*
 	Returns true if the type of the CFNumber's value is one of
 	the defined floating point types.
 */
 CF_EXPORT
-Boolean CFNumberIsFloatType(CFNumberRef number);
+Boolean CFNumberIsFloatType( CFNumberRef number );
 
 /*
 	Copies the CFNumber's value into the space pointed to by
@@ -107,7 +107,7 @@ Boolean CFNumberIsFloatType(CFNumberRef number);
 	attempt at conversion will still be in *valuePtr.
 */
 CF_EXPORT
-Boolean CFNumberGetValue(CFNumberRef number, CFNumberType theType, void *valuePtr);
+Boolean CFNumberGetValue( CFNumberRef number, CFNumberType theType, void *valuePtr );
 
 /*
 	Compares the two CFNumber instances. If conversion of the
@@ -125,11 +125,10 @@ Boolean CFNumberGetValue(CFNumberRef number, CFNumberType theType, void *valuePt
 	is NaN, true is returned.)
 */
 CF_EXPORT
-CFComparisonResult CFNumberCompare(CFNumberRef number, CFNumberRef otherNumber, void *context);
+CFComparisonResult CFNumberCompare( CFNumberRef number, CFNumberRef otherNumber, void *context );
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 }
 #endif
 
 #endif /* ! __COREFOUNDATION_CFNUMBER__ */
-

@@ -19,4 +19,3 @@
 #error this file is for use as a framework master only
 
 #endif /* __HISERVICES__ */
-

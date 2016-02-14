@@ -1,6 +1,6 @@
 #include "cinder/Cinder.h"
-#include "cinder/Rand.h"
 #import "_TBOX_PREFIX_Delegate.h"
+#include "cinder/Rand.h"
 
 @implementation _TBOX_PREFIX_Delegate
 
@@ -8,9 +8,9 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+	[super dealloc];
 }
-	
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	mApp = new _TBOX_PREFIX_App;
@@ -19,8 +19,8 @@
 	mApp->launch();
 
 	[window setAcceptsMouseMovedEvents:YES];
-	
-	colorWell.color = [NSColor colorWithCalibratedRed:mApp->mColor.r green:mApp->mColor.g blue:mApp->mColor.b alpha:1.0f]; 
+
+	colorWell.color = [NSColor colorWithCalibratedRed:mApp->mColor.r green:mApp->mColor.g blue:mApp->mColor.b alpha:1.0f];
 }
 
 - (IBAction)subdivisionSliderChanged:(id)sender

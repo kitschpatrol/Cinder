@@ -4,16 +4,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
-{
-	IBOutlet CinderViewMac	*cinderView;
-	IBOutlet NSWindow		*window;
-	IBOutlet NSColorWell	*colorWell;
-	
-	MyCinderApp				*mApp;
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+	IBOutlet CinderViewMac *cinderView;
+	IBOutlet NSWindow *window;
+	IBOutlet NSColorWell *colorWell;
+
+	MyCinderApp *mApp;
 }
 
-@property (assign) IBOutlet NSWindow *window;
+@property ( assign ) IBOutlet NSWindow *window;
 
 - (IBAction)subdivisionSliderChanged:(id)sender;
 - (IBAction)colorChanged:(id)sender;

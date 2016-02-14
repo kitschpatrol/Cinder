@@ -6,29 +6,29 @@
  *
  */
 
- /*! @header CVPixelBufferPool.h
+/*! @header CVPixelBufferPool.h
 	@copyright 2004 Apple Computer, Inc. All rights reserved.
 	@availability Mac OS X 10.4 or later
     @discussion CVPixelBufferPool is a utility object for managing a set of CVPixelBuffer objects that are going to be recycled.
 		   
 */
 
-#if !defined(__COREVIDEO__CVPIXELBUFFERPOOL_H__)
+#if !defined( __COREVIDEO__CVPIXELBUFFERPOOL_H__ )
 #define __COREVIDEO__CVPIXELBUFFERPOOL_H__ 1
 
 #include <TargetConditionals.h>
 
 #if TARGET_OS_MAC
 #include <QuartzCore/CVBase.h>
-#include <QuartzCore/CVReturn.h>
 #include <QuartzCore/CVPixelBuffer.h>
+#include <QuartzCore/CVReturn.h>
 #else
 #include <CVBase.h>
-#include <CVReturn.h>
 #include <CVPixelBuffer.h>
+#include <CVReturn.h>
 #endif
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 extern "C" {
 #endif
 
@@ -41,8 +41,8 @@ typedef struct __CVPixelBufferPool *CVPixelBufferPoolRef;
 CV_EXPORT const CFStringRef kCVPixelBufferPoolMinimumBufferCountKey AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 CV_EXPORT const CFStringRef kCVPixelBufferPoolMaximumBufferAgeKey AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 #else
-#define kCVPixelBufferPoolMinimumBufferCountKey	CFSTR("MinimumBufferCount")
-#define kCVPixelBufferPoolMaximumBufferAgeKey		CFSTR("MaximumBufferAge")
+#define kCVPixelBufferPoolMinimumBufferCountKey CFSTR( "MinimumBufferCount" )
+#define kCVPixelBufferPoolMaximumBufferAgeKey CFSTR( "MaximumBufferAge" )
 #endif
 
 CV_EXPORT CFTypeID CVPixelBufferPoolGetTypeID() AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
@@ -72,10 +72,10 @@ CV_EXPORT void CVPixelBufferPoolRelease( CVPixelBufferPoolRef pixelBufferPool ) 
     @param      poolOut   The newly created pool will be placed here
     @result     Returns kCVReturnSuccess on success
 */
-CV_EXPORT CVReturn CVPixelBufferPoolCreate(CFAllocatorRef allocator,
-					   CFDictionaryRef poolAttributes,
-					   CFDictionaryRef pixelBufferAttributes,
-					   CVPixelBufferPoolRef *poolOut) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+CV_EXPORT CVReturn CVPixelBufferPoolCreate( CFAllocatorRef allocator,
+    CFDictionaryRef                                        poolAttributes,
+    CFDictionaryRef                                        pixelBufferAttributes,
+    CVPixelBufferPoolRef *                                 poolOut ) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
 /*!
     @function   CVPixelBufferPoolGetAttributes
@@ -83,7 +83,7 @@ CV_EXPORT CVReturn CVPixelBufferPoolCreate(CFAllocatorRef allocator,
     @param      pool  The CVPixelBufferPoolRef to retrieve the attributes from
     @result     Returns the pool attributes dictionary, or NULL on failure.
 */
-CV_EXPORT CFDictionaryRef CVPixelBufferPoolGetAttributes(CVPixelBufferPoolRef pool) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+CV_EXPORT CFDictionaryRef CVPixelBufferPoolGetAttributes( CVPixelBufferPoolRef pool ) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
 /*!
     @function   CVPixelBufferPoolGetPixelBufferAttributes
@@ -93,7 +93,7 @@ CV_EXPORT CFDictionaryRef CVPixelBufferPoolGetAttributes(CVPixelBufferPoolRef po
     @param      pool  The CVPixelBufferPoolRef to retrieve the attributes from
     @result     Returns the pixel buffer attributes dictionary, or NULL on failure.
 */
-CV_EXPORT CFDictionaryRef CVPixelBufferPoolGetPixelBufferAttributes(CVPixelBufferPoolRef pool) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+CV_EXPORT CFDictionaryRef CVPixelBufferPoolGetPixelBufferAttributes( CVPixelBufferPoolRef pool ) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
 /*!
     @function   CVPixelBufferPoolCreatePixelBuffer
@@ -104,11 +104,11 @@ CV_EXPORT CFDictionaryRef CVPixelBufferPoolGetPixelBufferAttributes(CVPixelBuffe
     @param      pixelBufferOut   The newly created pixel buffer will be placed here
     @result     Returns kCVReturnSuccess on success
 */
-CV_EXPORT CVReturn CVPixelBufferPoolCreatePixelBuffer(CFAllocatorRef allocator, 
-						         CVPixelBufferPoolRef pixelBufferPool,
-							 CVPixelBufferRef *pixelBufferOut) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
+CV_EXPORT CVReturn CVPixelBufferPoolCreatePixelBuffer( CFAllocatorRef allocator,
+    CVPixelBufferPoolRef                                              pixelBufferPool,
+    CVPixelBufferRef *                                                pixelBufferOut ) AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER;
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 }
 #endif
 

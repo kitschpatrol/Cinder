@@ -24,9 +24,6 @@
 #include <CarbonEvents.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -38,7 +35,6 @@ extern "C" {
 #if PRAGMA_IMPORT
 #pragma import on
 #endif
-
 
 /*
  *  HIShape
@@ -57,9 +53,8 @@ extern "C" {
  *    the handle-to-handle copies that occur right now with
  *    RgnHandle-based APIs.
  */
-typedef const struct __HIShape*         HIShapeRef;
-typedef struct __HIShape*               HIMutableShapeRef;
-
+typedef const struct __HIShape *HIShapeRef;
+typedef struct __HIShape *      HIMutableShapeRef;
 
 /*
  *  HIShapeGetTypeID()
@@ -76,11 +71,7 @@ typedef struct __HIShape*               HIMutableShapeRef;
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( CFTypeID )
-HIShapeGetTypeID(void);
-
-
-
-
+HIShapeGetTypeID( void );
 
 /*======================================================================================*/
 /*  IMMUTABLE FUNCTIONS                                                                 */
@@ -106,8 +97,7 @@ HIShapeGetTypeID(void);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIShapeRef )
-HIShapeCreateWithQDRgn(RgnHandle inRgn);
-
+HIShapeCreateWithQDRgn( RgnHandle inRgn );
 
 /*
  *  HIShapeCreateWithRect()
@@ -130,8 +120,7 @@ HIShapeCreateWithQDRgn(RgnHandle inRgn);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIShapeRef )
-HIShapeCreateWithRect(const HIRect * inRect);
-
+HIShapeCreateWithRect( const HIRect *inRect );
 
 /*
  *  HIShapeCreateCopy()
@@ -153,8 +142,7 @@ HIShapeCreateWithRect(const HIRect * inRect);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIShapeRef )
-HIShapeCreateCopy(HIShapeRef inShape);
-
+HIShapeCreateCopy( HIShapeRef inShape );
 
 /*
  *  HIShapeCreateIntersection()
@@ -181,9 +169,8 @@ HIShapeCreateCopy(HIShapeRef inShape);
  */
 EXTERN_API_C( HIShapeRef )
 HIShapeCreateIntersection(
-  HIShapeRef   inShape1,
-  HIShapeRef   inShape2);
-
+    HIShapeRef inShape1,
+    HIShapeRef inShape2 );
 
 /*
  *  HIShapeCreateDifference()
@@ -210,9 +197,8 @@ HIShapeCreateIntersection(
  */
 EXTERN_API_C( HIShapeRef )
 HIShapeCreateDifference(
-  HIShapeRef   inShape1,
-  HIShapeRef   inShape2);
-
+    HIShapeRef inShape1,
+    HIShapeRef inShape2 );
 
 /*
  *  HIShapeCreateUnion()
@@ -238,9 +224,8 @@ HIShapeCreateDifference(
  */
 EXTERN_API_C( HIShapeRef )
 HIShapeCreateUnion(
-  HIShapeRef   inShape1,
-  HIShapeRef   inShape2);
-
+    HIShapeRef inShape1,
+    HIShapeRef inShape2 );
 
 /*
  *  HIShapeIsEmpty()
@@ -263,8 +248,7 @@ HIShapeCreateUnion(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIShapeIsEmpty(HIShapeRef inShape);
-
+HIShapeIsEmpty( HIShapeRef inShape );
 
 /*
  *  HIShapeIsRectangular()
@@ -286,8 +270,7 @@ HIShapeIsEmpty(HIShapeRef inShape);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIShapeIsRectangular(HIShapeRef inShape);
-
+HIShapeIsRectangular( HIShapeRef inShape );
 
 /*
  *  HIShapeContainsPoint()
@@ -313,9 +296,8 @@ HIShapeIsRectangular(HIShapeRef inShape);
  */
 EXTERN_API_C( Boolean )
 HIShapeContainsPoint(
-  HIShapeRef       inShape,
-  const HIPoint *  inPoint);
-
+    HIShapeRef     inShape,
+    const HIPoint *inPoint );
 
 /*
  *  HIShapeGetBounds()
@@ -341,9 +323,8 @@ HIShapeContainsPoint(
  */
 EXTERN_API_C( HIRect * )
 HIShapeGetBounds(
-  HIShapeRef   inShape,
-  HIRect *     outRect);
-
+    HIShapeRef inShape,
+    HIRect *   outRect );
 
 /*
  *  HIShapeGetAsQDRgn()
@@ -372,9 +353,8 @@ HIShapeGetBounds(
  */
 EXTERN_API_C( OSStatus )
 HIShapeGetAsQDRgn(
-  HIShapeRef   inShape,
-  RgnHandle    outRgn);
-
+    HIShapeRef inShape,
+    RgnHandle  outRgn );
 
 /*
  *  HIShapeReplacePathInCGContext()
@@ -403,9 +383,8 @@ HIShapeGetAsQDRgn(
  */
 EXTERN_API_C( OSStatus )
 HIShapeReplacePathInCGContext(
-  HIShapeRef     inShape,
-  CGContextRef   inContext);
-
+    HIShapeRef   inShape,
+    CGContextRef inContext );
 
 /*
  *  HIShapeSetQDClip()
@@ -432,11 +411,8 @@ HIShapeReplacePathInCGContext(
  */
 EXTERN_API_C( OSStatus )
 HIShapeSetQDClip(
-  HIShapeRef   inShape,
-  CGrafPtr     inPort);
-
-
-
+    HIShapeRef inShape,
+    CGrafPtr   inPort );
 
 /*======================================================================================*/
 /*  MUTABLE FUNCTIONS                                                                   */
@@ -456,8 +432,7 @@ HIShapeSetQDClip(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIMutableShapeRef )
-HIShapeCreateMutable(void);
-
+HIShapeCreateMutable( void );
 
 /*
  *  HIShapeCreateMutableCopy()
@@ -479,8 +454,7 @@ HIShapeCreateMutable(void);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIMutableShapeRef )
-HIShapeCreateMutableCopy(HIShapeRef inOrig);
-
+HIShapeCreateMutableCopy( HIShapeRef inOrig );
 
 /*
  *  HIShapeSetEmpty()
@@ -502,8 +476,7 @@ HIShapeCreateMutableCopy(HIShapeRef inOrig);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-HIShapeSetEmpty(HIMutableShapeRef inShape);
-
+HIShapeSetEmpty( HIMutableShapeRef inShape );
 
 /*
  *  HIShapeIntersect()
@@ -533,10 +506,9 @@ HIShapeSetEmpty(HIMutableShapeRef inShape);
  */
 EXTERN_API_C( OSStatus )
 HIShapeIntersect(
-  HIShapeRef          inShape1,
-  HIShapeRef          inShape2,
-  HIMutableShapeRef   outResult);
-
+    HIShapeRef        inShape1,
+    HIShapeRef        inShape2,
+    HIMutableShapeRef outResult );
 
 /*
  *  HIShapeDifference()
@@ -567,10 +539,9 @@ HIShapeIntersect(
  */
 EXTERN_API_C( OSStatus )
 HIShapeDifference(
-  HIShapeRef          inShape1,
-  HIShapeRef          inShape2,
-  HIMutableShapeRef   outResult);
-
+    HIShapeRef        inShape1,
+    HIShapeRef        inShape2,
+    HIMutableShapeRef outResult );
 
 /*
  *  HIShapeUnion()
@@ -600,10 +571,9 @@ HIShapeDifference(
  */
 EXTERN_API_C( OSStatus )
 HIShapeUnion(
-  HIShapeRef          inShape1,
-  HIShapeRef          inShape2,
-  HIMutableShapeRef   outResult);
-
+    HIShapeRef        inShape1,
+    HIShapeRef        inShape2,
+    HIMutableShapeRef outResult );
 
 /*
  *  HIShapeOffset()
@@ -632,12 +602,9 @@ HIShapeUnion(
  */
 EXTERN_API_C( OSStatus )
 HIShapeOffset(
-  HIMutableShapeRef   inShape,
-  float               inDX,
-  float               inDY);
-
-
-
+    HIMutableShapeRef inShape,
+    float             inDX,
+    float             inDY );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -650,4 +617,3 @@ HIShapeOffset(
 #endif
 
 #endif /* __HISHAPE__ */
-

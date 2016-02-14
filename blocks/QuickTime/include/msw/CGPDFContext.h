@@ -32,9 +32,6 @@
 #include <CFDictionary.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -70,10 +67,9 @@ extern "C" {
  */
 EXTERN_API_C( CGContextRef )
 CGPDFContextCreate(
-  CGDataConsumerRef   consumer,
-  const CGRect *      mediaBox,
-  CFDictionaryRef     auxiliaryInfo);
-
+    CGDataConsumerRef consumer,
+    const CGRect *    mediaBox,
+    CFDictionaryRef   auxiliaryInfo );
 
 /* Convenience function: create a PDF context, writing to `url'. */
 /*
@@ -86,11 +82,9 @@ CGPDFContextCreate(
  */
 EXTERN_API_C( CGContextRef )
 CGPDFContextCreateWithURL(
-  CFURLRef          url,
-  const CGRect *    mediaBox,
-  CFDictionaryRef   auxiliaryInfo);
-
-
+    CFURLRef        url,
+    const CGRect *  mediaBox,
+    CFDictionaryRef auxiliaryInfo );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -103,4 +97,3 @@ CGPDFContextCreateWithURL(
 #endif
 
 #endif /* CGPDFCONTEXT_H_ */
-

@@ -24,9 +24,6 @@
 #include <Dialogs.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,14 +37,14 @@ extern "C" {
 #endif
 
 /* Callbacks */
-typedef CALLBACK_API( void , PMItemProcPtr )(DialogRef theDialog, short item);
-typedef CALLBACK_API( void , PMPrintDialogInitProcPtr )(PMPrintSettings printSettings, PMDialog *theDialog);
-typedef CALLBACK_API( void , PMPageSetupDialogInitProcPtr )(PMPageFormat pageFormat, PMDialog *theDialog);
-typedef CALLBACK_API( void , PMSheetDoneProcPtr )(PMPrintSession printSession, WindowRef documentWindow, Boolean accepted);
-typedef STACK_UPP_TYPE(PMItemProcPtr)                           PMItemUPP;
-typedef STACK_UPP_TYPE(PMPrintDialogInitProcPtr)                PMPrintDialogInitUPP;
-typedef STACK_UPP_TYPE(PMPageSetupDialogInitProcPtr)            PMPageSetupDialogInitUPP;
-typedef STACK_UPP_TYPE(PMSheetDoneProcPtr)                      PMSheetDoneUPP;
+typedef CALLBACK_API( void, PMItemProcPtr )( DialogRef theDialog, short item );
+typedef CALLBACK_API( void, PMPrintDialogInitProcPtr )( PMPrintSettings printSettings, PMDialog *theDialog );
+typedef CALLBACK_API( void, PMPageSetupDialogInitProcPtr )( PMPageFormat pageFormat, PMDialog *theDialog );
+typedef CALLBACK_API( void, PMSheetDoneProcPtr )( PMPrintSession printSession, WindowRef documentWindow, Boolean accepted );
+typedef STACK_UPP_TYPE( PMItemProcPtr ) PMItemUPP;
+typedef STACK_UPP_TYPE( PMPrintDialogInitProcPtr ) PMPrintDialogInitUPP;
+typedef STACK_UPP_TYPE( PMPageSetupDialogInitProcPtr ) PMPageSetupDialogInitUPP;
+typedef STACK_UPP_TYPE( PMSheetDoneProcPtr ) PMSheetDoneUPP;
 /*
  *  NewPMItemUPP()
  *  
@@ -57,7 +54,7 @@ typedef STACK_UPP_TYPE(PMSheetDoneProcPtr)                      PMSheetDoneUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( PMItemUPP )
-NewPMItemUPP(PMItemProcPtr userRoutine);
+NewPMItemUPP( PMItemProcPtr userRoutine );
 
 /*
  *  NewPMPrintDialogInitUPP()
@@ -68,7 +65,7 @@ NewPMItemUPP(PMItemProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( PMPrintDialogInitUPP )
-NewPMPrintDialogInitUPP(PMPrintDialogInitProcPtr userRoutine);
+NewPMPrintDialogInitUPP( PMPrintDialogInitProcPtr userRoutine );
 
 /*
  *  NewPMPageSetupDialogInitUPP()
@@ -79,7 +76,7 @@ NewPMPrintDialogInitUPP(PMPrintDialogInitProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( PMPageSetupDialogInitUPP )
-NewPMPageSetupDialogInitUPP(PMPageSetupDialogInitProcPtr userRoutine);
+NewPMPageSetupDialogInitUPP( PMPageSetupDialogInitProcPtr userRoutine );
 
 /*
  *  NewPMSheetDoneUPP()
@@ -90,7 +87,7 @@ NewPMPageSetupDialogInitUPP(PMPageSetupDialogInitProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( PMSheetDoneUPP )
-NewPMSheetDoneUPP(PMSheetDoneProcPtr userRoutine);
+NewPMSheetDoneUPP( PMSheetDoneProcPtr userRoutine );
 
 /*
  *  DisposePMItemUPP()
@@ -101,7 +98,7 @@ NewPMSheetDoneUPP(PMSheetDoneProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposePMItemUPP(PMItemUPP userUPP);
+DisposePMItemUPP( PMItemUPP userUPP );
 
 /*
  *  DisposePMPrintDialogInitUPP()
@@ -112,7 +109,7 @@ DisposePMItemUPP(PMItemUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposePMPrintDialogInitUPP(PMPrintDialogInitUPP userUPP);
+DisposePMPrintDialogInitUPP( PMPrintDialogInitUPP userUPP );
 
 /*
  *  DisposePMPageSetupDialogInitUPP()
@@ -123,7 +120,7 @@ DisposePMPrintDialogInitUPP(PMPrintDialogInitUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposePMPageSetupDialogInitUPP(PMPageSetupDialogInitUPP userUPP);
+DisposePMPageSetupDialogInitUPP( PMPageSetupDialogInitUPP userUPP );
 
 /*
  *  DisposePMSheetDoneUPP()
@@ -134,7 +131,7 @@ DisposePMPageSetupDialogInitUPP(PMPageSetupDialogInitUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposePMSheetDoneUPP(PMSheetDoneUPP userUPP);
+DisposePMSheetDoneUPP( PMSheetDoneUPP userUPP );
 
 /*
  *  InvokePMItemUPP()
@@ -146,9 +143,9 @@ DisposePMSheetDoneUPP(PMSheetDoneUPP userUPP);
  */
 EXTERN_API_C( void )
 InvokePMItemUPP(
-  DialogRef  theDialog,
-  short      item,
-  PMItemUPP  userUPP);
+    DialogRef theDialog,
+    short     item,
+    PMItemUPP userUPP );
 
 /*
  *  InvokePMPrintDialogInitUPP()
@@ -160,9 +157,9 @@ InvokePMItemUPP(
  */
 EXTERN_API_C( void )
 InvokePMPrintDialogInitUPP(
-  PMPrintSettings       printSettings,
-  PMDialog *            theDialog,
-  PMPrintDialogInitUPP  userUPP);
+    PMPrintSettings      printSettings,
+    PMDialog *           theDialog,
+    PMPrintDialogInitUPP userUPP );
 
 /*
  *  InvokePMPageSetupDialogInitUPP()
@@ -174,9 +171,9 @@ InvokePMPrintDialogInitUPP(
  */
 EXTERN_API_C( void )
 InvokePMPageSetupDialogInitUPP(
-  PMPageFormat              pageFormat,
-  PMDialog *                theDialog,
-  PMPageSetupDialogInitUPP  userUPP);
+    PMPageFormat             pageFormat,
+    PMDialog *               theDialog,
+    PMPageSetupDialogInitUPP userUPP );
 
 /*
  *  InvokePMSheetDoneUPP()
@@ -188,10 +185,10 @@ InvokePMPageSetupDialogInitUPP(
  */
 EXTERN_API_C( void )
 InvokePMSheetDoneUPP(
-  PMPrintSession  printSession,
-  WindowRef       documentWindow,
-  Boolean         accepted,
-  PMSheetDoneUPP  userUPP);
+    PMPrintSession printSession,
+    WindowRef      documentWindow,
+    Boolean        accepted,
+    PMSheetDoneUPP userUPP );
 
 #if PM_USE_SESSION_APIS
 #else
@@ -206,10 +203,9 @@ InvokePMSheetDoneUPP(
  */
 EXTERN_API( OSStatus )
 PMBeginDocument(
-  PMPrintSettings   printSettings,
-  PMPageFormat      pageFormat,
-  PMPrintContext *  printContext);
-
+    PMPrintSettings printSettings,
+    PMPageFormat    pageFormat,
+    PMPrintContext *printContext );
 
 /*
  *  PMEndDocument()
@@ -220,8 +216,7 @@ PMBeginDocument(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMEndDocument(PMPrintContext printContext);
-
+PMEndDocument( PMPrintContext printContext );
 
 /*
  *  PMBeginPage()
@@ -233,9 +228,8 @@ PMEndDocument(PMPrintContext printContext);
  */
 EXTERN_API( OSStatus )
 PMBeginPage(
-  PMPrintContext   printContext,
-  const PMRect *   pageFrame);
-
+    PMPrintContext printContext,
+    const PMRect * pageFrame );
 
 /*
  *  PMEndPage()
@@ -246,8 +240,7 @@ PMBeginPage(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMEndPage(PMPrintContext printContext);
-
+PMEndPage( PMPrintContext printContext );
 
 /* Printing Dialogs */
 /*
@@ -260,9 +253,8 @@ PMEndPage(PMPrintContext printContext);
  */
 EXTERN_API( OSStatus )
 PMPageSetupDialog(
-  PMPageFormat   pageFormat,
-  Boolean *      accepted);
-
+    PMPageFormat pageFormat,
+    Boolean *    accepted );
 
 /*
  *  PMPrintDialog()
@@ -274,10 +266,9 @@ PMPageSetupDialog(
  */
 EXTERN_API( OSStatus )
 PMPrintDialog(
-  PMPrintSettings   printSettings,
-  PMPageFormat      constPageFormat,
-  Boolean *         accepted);
-
+    PMPrintSettings printSettings,
+    PMPageFormat    constPageFormat,
+    Boolean *       accepted );
 
 /*
  *  PMPageSetupDialogInit()
@@ -289,9 +280,8 @@ PMPrintDialog(
  */
 EXTERN_API( OSStatus )
 PMPageSetupDialogInit(
-  PMPageFormat   pageFormat,
-  PMDialog *     newDialog);
-
+    PMPageFormat pageFormat,
+    PMDialog *   newDialog );
 
 /************************/
 /*  PMPrintDialogInit is not recommended. You should instead use */
@@ -307,9 +297,8 @@ PMPageSetupDialogInit(
  */
 EXTERN_API( OSStatus )
 PMPrintDialogInit(
-  PMPrintSettings   printSettings,
-  PMDialog *        newDialog);
-
+    PMPrintSettings printSettings,
+    PMDialog *      newDialog );
 
 /*
  *  PMPrintDialogInitWithPageFormat()
@@ -321,10 +310,9 @@ PMPrintDialogInit(
  */
 EXTERN_API( OSStatus )
 PMPrintDialogInitWithPageFormat(
-  PMPrintSettings   printSettings,
-  PMPageFormat      constPageFormat,
-  PMDialog *        newDialog);
-
+    PMPrintSettings printSettings,
+    PMPageFormat    constPageFormat,
+    PMDialog *      newDialog );
 
 /*
  *  PMPrintDialogMain()
@@ -336,11 +324,10 @@ PMPrintDialogInitWithPageFormat(
  */
 EXTERN_API( OSStatus )
 PMPrintDialogMain(
-  PMPrintSettings        printSettings,
-  PMPageFormat           constPageFormat,
-  Boolean *              accepted,
-  PMPrintDialogInitUPP   myInitProc);
-
+    PMPrintSettings      printSettings,
+    PMPageFormat         constPageFormat,
+    Boolean *            accepted,
+    PMPrintDialogInitUPP myInitProc );
 
 /*
  *  PMPageSetupDialogMain()
@@ -352,12 +339,11 @@ PMPrintDialogMain(
  */
 EXTERN_API( OSStatus )
 PMPageSetupDialogMain(
-  PMPageFormat               pageFormat,
-  Boolean *                  accepted,
-  PMPageSetupDialogInitUPP   myInitProc);
+    PMPageFormat             pageFormat,
+    Boolean *                accepted,
+    PMPageSetupDialogInitUPP myInitProc );
 
-
-#endif  /* PM_USE_SESSION_APIS */
+#endif /* PM_USE_SESSION_APIS */
 
 /* Printing Dialog accessors */
 /*
@@ -370,9 +356,8 @@ PMPageSetupDialogMain(
  */
 EXTERN_API( OSStatus )
 PMGetDialogPtr(
-  PMDialog     pmDialog,
-  DialogRef *  theDialog);
-
+    PMDialog   pmDialog,
+    DialogRef *theDialog );
 
 #define PMGetDialogRef PMGetDialogPtr
 /*
@@ -385,9 +370,8 @@ PMGetDialogPtr(
  */
 EXTERN_API( OSStatus )
 PMGetModalFilterProc(
-  PMDialog          pmDialog,
-  ModalFilterUPP *  filterProc);
-
+    PMDialog        pmDialog,
+    ModalFilterUPP *filterProc );
 
 /*
  *  PMSetModalFilterProc()
@@ -399,9 +383,8 @@ PMGetModalFilterProc(
  */
 EXTERN_API( OSStatus )
 PMSetModalFilterProc(
-  PMDialog         pmDialog,
-  ModalFilterUPP   filterProc);
-
+    PMDialog       pmDialog,
+    ModalFilterUPP filterProc );
 
 /*
  *  PMGetItemProc()
@@ -413,9 +396,8 @@ PMSetModalFilterProc(
  */
 EXTERN_API( OSStatus )
 PMGetItemProc(
-  PMDialog     pmDialog,
-  PMItemUPP *  itemProc);
-
+    PMDialog   pmDialog,
+    PMItemUPP *itemProc );
 
 /*
  *  PMSetItemProc()
@@ -427,9 +409,8 @@ PMGetItemProc(
  */
 EXTERN_API( OSStatus )
 PMSetItemProc(
-  PMDialog    pmDialog,
-  PMItemUPP   itemProc);
-
+    PMDialog  pmDialog,
+    PMItemUPP itemProc );
 
 /*
  *  PMGetDialogAccepted()
@@ -441,9 +422,8 @@ PMSetItemProc(
  */
 EXTERN_API( OSStatus )
 PMGetDialogAccepted(
-  PMDialog   pmDialog,
-  Boolean *  process);
-
+    PMDialog pmDialog,
+    Boolean *process );
 
 /*
  *  PMSetDialogAccepted()
@@ -455,9 +435,8 @@ PMGetDialogAccepted(
  */
 EXTERN_API( OSStatus )
 PMSetDialogAccepted(
-  PMDialog   pmDialog,
-  Boolean    process);
-
+    PMDialog pmDialog,
+    Boolean  process );
 
 /*
  *  PMGetDialogDone()
@@ -469,9 +448,8 @@ PMSetDialogAccepted(
  */
 EXTERN_API( OSStatus )
 PMGetDialogDone(
-  PMDialog   pmDialog,
-  Boolean *  done);
-
+    PMDialog pmDialog,
+    Boolean *done );
 
 /*
  *  PMSetDialogDone()
@@ -483,9 +461,8 @@ PMGetDialogDone(
  */
 EXTERN_API( OSStatus )
 PMSetDialogDone(
-  PMDialog   pmDialog,
-  Boolean    done);
-
+    PMDialog pmDialog,
+    Boolean  done );
 
 /* Presets */
 /*
@@ -517,9 +494,8 @@ PMSetDialogDone(
  */
 EXTERN_API( OSStatus )
 PMSessionEnablePrinterPresets(
-  PMPrintSession   session,
-  CFStringRef      graphicsType);
-
+    PMPrintSession session,
+    CFStringRef    graphicsType );
 
 /*
  *  PMSessionDisablePrinterPresets()
@@ -542,9 +518,7 @@ PMSessionEnablePrinterPresets(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( OSStatus )
-PMSessionDisablePrinterPresets(PMPrintSession session);
-
-
+PMSessionDisablePrinterPresets( PMPrintSession session );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -557,4 +531,3 @@ PMSessionDisablePrinterPresets(PMPrintSession session);
 #endif
 
 #endif /* __PMAPPLICATION__ */
-

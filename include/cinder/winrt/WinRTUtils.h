@@ -1,23 +1,24 @@
 #pragma once
 
-#include <string>
 #include <filesystem.h>
 #include <ppltasks.h>
+#include <string>
 
-namespace cinder { namespace winrt {
+namespace cinder {
+namespace winrt {
 
-float ConvertDipsToPixels(float dips);
-void WinRTMessageBox(Platform::String^ message, Platform::String^ buttonText);
-void GetPlatformWindowDimensions(Windows::UI::Core::CoreWindow^ wnd, float* width, float* height);
-std::string PlatformStringToString(Platform::String^ path);
-Platform::String^ toPlatformString( const std::string &utf8 );
-bool ensureUnsnapped();
+float ConvertDipsToPixels( float dips );
+void WinRTMessageBox( Platform::String ^ message, Platform::String ^ buttonText );
+void GetPlatformWindowDimensions( Windows::UI::Core::CoreWindow ^ wnd, float *width, float *height );
+std::string PlatformStringToString( Platform::String ^ path );
+Platform::String ^ toPlatformString( const std::string &utf8 );
+bool  ensureUnsnapped();
 float getScaleFactor();
-float getScaledDPIValue(float v);
-int getUniqueID();
+float getScaledDPIValue( float v );
+int         getUniqueID();
 std::string getUniqueIDString();
 
-void deleteFileAsync( const std::tr2::sys::path &path);
-Concurrency::task<Windows::Storage::StorageFile^> copyFileToTempDirAsync(const std::tr2::sys::path &path);
-
-} } // namespace cinder::winrt
+void deleteFileAsync( const std::tr2::sys::path &path );
+Concurrency::task<Windows::Storage::StorageFile ^> copyFileToTempDirAsync( const std::tr2::sys::path &path );
+}
+} // namespace cinder::winrt

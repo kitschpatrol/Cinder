@@ -28,8 +28,6 @@
 #include <Threads.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -43,78 +41,78 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-
 enum {
-  kNSLMinSystemVersion          = 0x0900, /* equivalent to 9.0*/
-  kNSLMinOTVersion              = 0x0130 /* equivalent to 1.3*/
+	kNSLMinSystemVersion = 0x0900, /* equivalent to 9.0*/
+	kNSLMinOTVersion = 0x0130 /* equivalent to 1.3*/
 };
 
 enum {
-  kNSLDefaultListSize           = 256   /* default list size for service and protocol lists*/
+	kNSLDefaultListSize = 256 /* default list size for service and protocol lists*/
 };
 
 enum {
-  kNSLURLDelimiter              = ','   /* delimits URL's within memory buffers*/
+	kNSLURLDelimiter = ',' /* delimits URL's within memory buffers*/
 };
 
-
-#define    kNSLErrorNoErr              {noErr, kNSLNoContext}      /* an initializer for the NSLError struct */
+#define kNSLErrorNoErr       \
+	{                        \
+		noErr, kNSLNoContext \
+	} /* an initializer for the NSLError struct */
 
 enum {
-  kNSLNoContext                 = 0     /* the default context for NSLError structs*/
+	kNSLNoContext = 0 /* the default context for NSLError structs*/
 };
 
 struct NSLError {
-  OSStatus            theErr;
-  UInt32              theContext;
+	OSStatus theErr;
+	UInt32   theContext;
 };
-typedef struct NSLError                 NSLError;
-typedef NSLError *                      NSLErrorPtr;
+typedef struct NSLError NSLError;
+typedef NSLError *      NSLErrorPtr;
 enum {
-                                        /* Constants to use with NSLPrepareRequest*/
-                                        /* kNSLDuplicateSearchInProgress is not strictly an error.  The client is free to ignore*/
-                                        /* this result, and nothing bad will happen if it does.  It is*/
-                                        /* informational only.*/
-  kNSLDuplicateSearchInProgress = 100,
-  kNSLUserCanceled              = userCanceledErr, /* User hit cancel from the NSLStandardGetURL dialog */
-                                        /* Invalid enumeratorRef  */
-  kNSLInvalidEnumeratorRef      = 0     /* this is not an error; it is the equiv to a NULL ptr*/
+	/* Constants to use with NSLPrepareRequest*/
+	/* kNSLDuplicateSearchInProgress is not strictly an error.  The client is free to ignore*/
+	/* this result, and nothing bad will happen if it does.  It is*/
+	/* informational only.*/
+	kNSLDuplicateSearchInProgress = 100,
+	kNSLUserCanceled = userCanceledErr, /* User hit cancel from the NSLStandardGetURL dialog */
+	/* Invalid enumeratorRef  */
+	kNSLInvalidEnumeratorRef = 0 /* this is not an error; it is the equiv to a NULL ptr*/
 };
 
 typedef UInt16 NSLSearchState;
 enum {
-                                        /* State codes for notifiers.*/
-  kNSLSearchStateBufferFull     = 1,
-  kNSLSearchStateOnGoing        = 2,
-  kNSLSearchStateComplete       = 3,
-  kNSLSearchStateStalled        = 4,
-  kNSLWaitingForContinue        = 5
+	/* State codes for notifiers.*/
+	kNSLSearchStateBufferFull = 1,
+	kNSLSearchStateOnGoing = 2,
+	kNSLSearchStateComplete = 3,
+	kNSLSearchStateStalled = 4,
+	kNSLWaitingForContinue = 5
 };
 
 typedef UInt32 NSLEventCode;
 enum {
-                                        /* Event codes*/
-  kNSLServicesLookupDataEvent   = 6,
-  kNSLNeighborhoodLookupDataEvent = 7,
-  kNSLNewDataEvent              = 8,
-  kNSLContinueLookupEvent       = 9
+	/* Event codes*/
+	kNSLServicesLookupDataEvent = 6,
+	kNSLNeighborhoodLookupDataEvent = 7,
+	kNSLNewDataEvent = 8,
+	kNSLContinueLookupEvent = 9
 };
 
-
-typedef UInt32                          NSLClientRef;
-typedef UInt32                          NSLRequestRef;
-typedef UInt32                          NSLOneBasedIndex;
-typedef char *                          NSLPath;
-typedef char *                          NSLServiceType;
-typedef Handle                          NSLServicesList;
-typedef unsigned char *                 NSLNeighborhood;
+typedef UInt32         NSLClientRef;
+typedef UInt32         NSLRequestRef;
+typedef UInt32         NSLOneBasedIndex;
+typedef char *         NSLPath;
+typedef char *         NSLServiceType;
+typedef Handle         NSLServicesList;
+typedef unsigned char *NSLNeighborhood;
 /*
    cstring which is a comma delimited list of protocols which can be used to
    create a NSLProtocolList internally
@@ -122,52 +120,52 @@ typedef unsigned char *                 NSLNeighborhood;
 
 /* the async information block for client<->manager interaction*/
 struct NSLClientAsyncInfo {
-  void *              clientContextPtr;       /* set by the client for its own use*/
-  void *              mgrContextPtr;          /* set by NSL mgr; ptr to request object ptr*/
-  char *              resultBuffer;
-  long                bufferLen;
-  long                maxBufferSize;
-  UInt32              startTime;              /* when the search starts, to use with maxSearchTime to determine time-out condition*/
-  UInt32              intStartTime;           /* used with alertInterval*/
-  UInt32              maxSearchTime;          /* total time for search, in ticks (0 == no time limit)*/
-  UInt32              alertInterval;          /* call client's notifier or return, every this many ticks ( 0 == don't use this param)*/
-  UInt32              totalItems;             /* total number of tuples currently in buffer*/
-  UInt32              alertThreshold;         /* call client's notifier or return, every this many items found ( 0 == don't use this param)*/
-  NSLSearchState      searchState;
-  NSLError            searchResult;
-  NSLEventCode        searchDataType;         /* this is a data type code which allows the client's asyncNotifier to properly*/
-                                              /* handle the data in resultBuffer.*/
+	void *         clientContextPtr; /* set by the client for its own use*/
+	void *         mgrContextPtr; /* set by NSL mgr; ptr to request object ptr*/
+	char *         resultBuffer;
+	long           bufferLen;
+	long           maxBufferSize;
+	UInt32         startTime; /* when the search starts, to use with maxSearchTime to determine time-out condition*/
+	UInt32         intStartTime; /* used with alertInterval*/
+	UInt32         maxSearchTime; /* total time for search, in ticks (0 == no time limit)*/
+	UInt32         alertInterval; /* call client's notifier or return, every this many ticks ( 0 == don't use this param)*/
+	UInt32         totalItems; /* total number of tuples currently in buffer*/
+	UInt32         alertThreshold; /* call client's notifier or return, every this many items found ( 0 == don't use this param)*/
+	NSLSearchState searchState;
+	NSLError       searchResult;
+	NSLEventCode   searchDataType; /* this is a data type code which allows the client's asyncNotifier to properly*/
+	/* handle the data in resultBuffer.*/
 };
-typedef struct NSLClientAsyncInfo       NSLClientAsyncInfo;
-typedef NSLClientAsyncInfo *            NSLClientAsyncInfoPtr;
+typedef struct NSLClientAsyncInfo NSLClientAsyncInfo;
+typedef NSLClientAsyncInfo *      NSLClientAsyncInfoPtr;
 
 /* the async information block plugin<->manager interaction*/
 struct NSLPluginAsyncInfo {
-  void *              mgrContextPtr;          /* set by NSL mgr; ptr to request object ptr*/
-  void *              pluginContextPtr;       /* set/used by individual plugins*/
-  void *              pluginPtr;              /* ptr to the plugin object waiting for continue lookup call*/
-  char *              resultBuffer;           /* set by plugin to point at data*/
-  long                bufferLen;
-  long                maxBufferSize;
-  UInt32              maxSearchTime;          /* total time for search, in ticks (0 == no time limit)*/
-  UInt32              reserved1;
-  UInt32              reserved2;
-  UInt32              reserved3;
-  NSLClientRef        clientRef;
-  NSLRequestRef       requestRef;
-  NSLSearchState      searchState;
-  OSStatus            searchResult;
+	void *         mgrContextPtr; /* set by NSL mgr; ptr to request object ptr*/
+	void *         pluginContextPtr; /* set/used by individual plugins*/
+	void *         pluginPtr; /* ptr to the plugin object waiting for continue lookup call*/
+	char *         resultBuffer; /* set by plugin to point at data*/
+	long           bufferLen;
+	long           maxBufferSize;
+	UInt32         maxSearchTime; /* total time for search, in ticks (0 == no time limit)*/
+	UInt32         reserved1;
+	UInt32         reserved2;
+	UInt32         reserved3;
+	NSLClientRef   clientRef;
+	NSLRequestRef  requestRef;
+	NSLSearchState searchState;
+	OSStatus       searchResult;
 };
-typedef struct NSLPluginAsyncInfo       NSLPluginAsyncInfo;
-typedef NSLPluginAsyncInfo *            NSLPluginAsyncInfoPtr;
+typedef struct NSLPluginAsyncInfo NSLPluginAsyncInfo;
+typedef NSLPluginAsyncInfo *      NSLPluginAsyncInfoPtr;
 
 /* the manager asynchronous notifier routine.*/
-typedef CALLBACK_API( void , NSLMgrNotifyProcPtr )(NSLPluginAsyncInfo * thePluginAsyncInfo);
+typedef CALLBACK_API( void, NSLMgrNotifyProcPtr )( NSLPluginAsyncInfo *thePluginAsyncInfo );
 
 /* the client asynchronous notifier routine.*/
-typedef CALLBACK_API( void , NSLClientNotifyProcPtr )(NSLClientAsyncInfo * theClientAsyncInfo);
-typedef STACK_UPP_TYPE(NSLMgrNotifyProcPtr)                     NSLMgrNotifyUPP;
-typedef STACK_UPP_TYPE(NSLClientNotifyProcPtr)                  NSLClientNotifyUPP;
+typedef CALLBACK_API( void, NSLClientNotifyProcPtr )( NSLClientAsyncInfo *theClientAsyncInfo );
+typedef STACK_UPP_TYPE( NSLMgrNotifyProcPtr ) NSLMgrNotifyUPP;
+typedef STACK_UPP_TYPE( NSLClientNotifyProcPtr ) NSLClientNotifyUPP;
 /*
  *  NewNSLMgrNotifyUPP()
  *  
@@ -177,14 +175,17 @@ typedef STACK_UPP_TYPE(NSLClientNotifyProcPtr)                  NSLClientNotifyU
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( NSLMgrNotifyUPP )
-NewNSLMgrNotifyUPP(NSLMgrNotifyProcPtr userRoutine);
+NewNSLMgrNotifyUPP( NSLMgrNotifyProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppNSLMgrNotifyProcInfo = 0x000000C0 };  /* pascal no_return_value Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(NSLMgrNotifyUPP) NewNSLMgrNotifyUPP(NSLMgrNotifyProcPtr userRoutine) { return (NSLMgrNotifyUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLMgrNotifyProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewNSLMgrNotifyUPP(userRoutine) (NSLMgrNotifyUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLMgrNotifyProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppNSLMgrNotifyProcInfo = 0x000000C0 }; /* pascal no_return_value Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( NSLMgrNotifyUPP ) NewNSLMgrNotifyUPP( NSLMgrNotifyProcPtr userRoutine )
+{
+	return (NSLMgrNotifyUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLMgrNotifyProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewNSLMgrNotifyUPP( userRoutine ) ( NSLMgrNotifyUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLMgrNotifyProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -196,14 +197,17 @@ NewNSLMgrNotifyUPP(NSLMgrNotifyProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( NSLClientNotifyUPP )
-NewNSLClientNotifyUPP(NSLClientNotifyProcPtr userRoutine);
+NewNSLClientNotifyUPP( NSLClientNotifyProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppNSLClientNotifyProcInfo = 0x000000C0 };  /* pascal no_return_value Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(NSLClientNotifyUPP) NewNSLClientNotifyUPP(NSLClientNotifyProcPtr userRoutine) { return (NSLClientNotifyUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLClientNotifyProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewNSLClientNotifyUPP(userRoutine) (NSLClientNotifyUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLClientNotifyProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppNSLClientNotifyProcInfo = 0x000000C0 }; /* pascal no_return_value Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( NSLClientNotifyUPP ) NewNSLClientNotifyUPP( NSLClientNotifyProcPtr userRoutine )
+{
+	return (NSLClientNotifyUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLClientNotifyProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewNSLClientNotifyUPP( userRoutine ) ( NSLClientNotifyUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLClientNotifyProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -215,13 +219,16 @@ NewNSLClientNotifyUPP(NSLClientNotifyProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeNSLMgrNotifyUPP(NSLMgrNotifyUPP userUPP);
+DisposeNSLMgrNotifyUPP( NSLMgrNotifyUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeNSLMgrNotifyUPP(NSLMgrNotifyUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeNSLMgrNotifyUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeNSLMgrNotifyUPP( NSLMgrNotifyUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeNSLMgrNotifyUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -233,13 +240,16 @@ DisposeNSLMgrNotifyUPP(NSLMgrNotifyUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeNSLClientNotifyUPP(NSLClientNotifyUPP userUPP);
+DisposeNSLClientNotifyUPP( NSLClientNotifyUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeNSLClientNotifyUPP(NSLClientNotifyUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeNSLClientNotifyUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeNSLClientNotifyUPP( NSLClientNotifyUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeNSLClientNotifyUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -252,14 +262,17 @@ DisposeNSLClientNotifyUPP(NSLClientNotifyUPP userUPP);
  */
 EXTERN_API_C( void )
 InvokeNSLMgrNotifyUPP(
-  NSLPluginAsyncInfo *  thePluginAsyncInfo,
-  NSLMgrNotifyUPP       userUPP);
+    NSLPluginAsyncInfo *thePluginAsyncInfo,
+    NSLMgrNotifyUPP     userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeNSLMgrNotifyUPP(NSLPluginAsyncInfo * thePluginAsyncInfo, NSLMgrNotifyUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppNSLMgrNotifyProcInfo, thePluginAsyncInfo); }
-  #else
-    #define InvokeNSLMgrNotifyUPP(thePluginAsyncInfo, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppNSLMgrNotifyProcInfo, (thePluginAsyncInfo))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeNSLMgrNotifyUPP( NSLPluginAsyncInfo *thePluginAsyncInfo, NSLMgrNotifyUPP userUPP )
+{
+	CALL_ONE_PARAMETER_UPP( userUPP, uppNSLMgrNotifyProcInfo, thePluginAsyncInfo );
+}
+#else
+#define InvokeNSLMgrNotifyUPP( thePluginAsyncInfo, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppNSLMgrNotifyProcInfo, ( thePluginAsyncInfo ) )
+#endif
 #endif
 
 /*
@@ -272,60 +285,60 @@ InvokeNSLMgrNotifyUPP(
  */
 EXTERN_API_C( void )
 InvokeNSLClientNotifyUPP(
-  NSLClientAsyncInfo *  theClientAsyncInfo,
-  NSLClientNotifyUPP    userUPP);
+    NSLClientAsyncInfo *theClientAsyncInfo,
+    NSLClientNotifyUPP  userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeNSLClientNotifyUPP(NSLClientAsyncInfo * theClientAsyncInfo, NSLClientNotifyUPP userUPP) { CALL_ONE_PARAMETER_UPP(userUPP, uppNSLClientNotifyProcInfo, theClientAsyncInfo); }
-  #else
-    #define InvokeNSLClientNotifyUPP(theClientAsyncInfo, userUPP) CALL_ONE_PARAMETER_UPP((userUPP), uppNSLClientNotifyProcInfo, (theClientAsyncInfo))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeNSLClientNotifyUPP( NSLClientAsyncInfo *theClientAsyncInfo, NSLClientNotifyUPP userUPP )
+{
+	CALL_ONE_PARAMETER_UPP( userUPP, uppNSLClientNotifyProcInfo, theClientAsyncInfo );
+}
+#else
+#define InvokeNSLClientNotifyUPP( theClientAsyncInfo, userUPP ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppNSLClientNotifyProcInfo, ( theClientAsyncInfo ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewNSLMgrNotifyProc(userRoutine)                    NewNSLMgrNotifyUPP(userRoutine)
-    #define NewNSLClientNotifyProc(userRoutine)                 NewNSLClientNotifyUPP(userRoutine)
-    #define CallNSLMgrNotifyProc(userRoutine, thePluginAsyncInfo) InvokeNSLMgrNotifyUPP(thePluginAsyncInfo, userRoutine)
-    #define CallNSLClientNotifyProc(userRoutine, theClientAsyncInfo) InvokeNSLClientNotifyUPP(theClientAsyncInfo, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewNSLMgrNotifyProc( userRoutine ) NewNSLMgrNotifyUPP( userRoutine )
+#define NewNSLClientNotifyProc( userRoutine ) NewNSLClientNotifyUPP( userRoutine )
+#define CallNSLMgrNotifyProc( userRoutine, thePluginAsyncInfo ) InvokeNSLMgrNotifyUPP( thePluginAsyncInfo, userRoutine )
+#define CallNSLClientNotifyProc( userRoutine, theClientAsyncInfo ) InvokeNSLClientNotifyUPP( theClientAsyncInfo, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
-
 
 /*
    this struct is a format for dealing with our internal data representation.  Typed data will be contiguous chunk of
    memory, with the first 4 bytes being a data "descriptor".
 */
 struct NSLTypedData {
-  unsigned long       dataType;
-  unsigned long       lengthOfData;
-/*  void*                           theData; */
-
+	unsigned long dataType;
+	unsigned long lengthOfData;
+	/*  void*                           theData; */
 };
-typedef struct NSLTypedData             NSLTypedData;
-typedef NSLTypedData *                  NSLTypedDataPtr;
+typedef struct NSLTypedData NSLTypedData;
+typedef NSLTypedData *      NSLTypedDataPtr;
 
-#define kNSLDataType                'NSL_'
+#define kNSLDataType 'NSL_'
 /*
    This is just a header at the beginning of a handle that stores our list of service types.
    Each service type is a pascal string, so each service type starts after the end of the
    previous one.
 */
 struct NSLServicesListHeader {
-  unsigned long       numServices;
-  unsigned long       logicalLen;             /* length of all usable data in handle*/
-/*  Ptr                             firstService; */
-
+	unsigned long numServices;
+	unsigned long logicalLen; /* length of all usable data in handle*/
+	/*  Ptr                             firstService; */
 };
-typedef struct NSLServicesListHeader    NSLServicesListHeader;
-typedef NSLServicesListHeader *         NSLServicesListHeaderPtr;
+typedef struct NSLServicesListHeader NSLServicesListHeader;
+typedef NSLServicesListHeader *      NSLServicesListHeaderPtr;
 
 /* some defs for common protocols*/
 
-#define    kSLPProtocolType                    "SLP"
-#define   kDNSProtocolType                    "DNS"
-#define   kLDAPProtocolType                   "LDAP"
-#define kNBPProtocolType                 "NBP"
-#define kNSLDirectoryServiceProtocolType  "DirService"
+#define kSLPProtocolType "SLP"
+#define kDNSProtocolType "DNS"
+#define kLDAPProtocolType "LDAP"
+#define kNBPProtocolType "NBP"
+#define kNSLDirectoryServiceProtocolType "DirService"
 
 /*
    general information from a plug-in.  Includes supported protocols, data types and services,
@@ -334,21 +347,21 @@ typedef NSLServicesListHeader *         NSLServicesListHeaderPtr;
    data offset is the startOfData member of the struct
 */
 struct NSLPluginData {
-  long                reserved1;
-  long                reserved2;
-  long                reserved3;
-  Boolean             supportsRegistration;
-  Boolean             isPurgeable;
-  UInt16              totalLen;               /* length of everything, including header*/
-  UInt16              dataTypeOffset;
-  UInt16              serviceListOffset;
-  UInt16              protocolListOffset;
-  UInt16              commentStringOffset;
-/*  char*                           startOfData; */
-                                              /* protocol data is first on the list*/
+	long    reserved1;
+	long    reserved2;
+	long    reserved3;
+	Boolean supportsRegistration;
+	Boolean isPurgeable;
+	UInt16  totalLen; /* length of everything, including header*/
+	UInt16  dataTypeOffset;
+	UInt16  serviceListOffset;
+	UInt16  protocolListOffset;
+	UInt16  commentStringOffset;
+	/*  char*                           startOfData; */
+	/* protocol data is first on the list*/
 };
-typedef struct NSLPluginData            NSLPluginData;
-typedef NSLPluginData *                 NSLPluginDataPtr;
+typedef struct NSLPluginData NSLPluginData;
+typedef NSLPluginData *      NSLPluginDataPtr;
 
 /*
   -----------------------------------------------------------------------------
@@ -365,17 +378,16 @@ typedef NSLPluginData *                 NSLPluginDataPtr;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( UInt32 )
-NSLLibraryVersion(void);
+NSLLibraryVersion( void );
 
-
-
-
-   #ifdef __cplusplus
-     inline pascal Boolean NSLLibraryPresent() { return NSLLibraryVersion != (void*)kUnresolvedCFragSymbolAddress; }
-    #else
-      #define NSLLibraryPresent()     ((NSLLibraryVersion != (void*)kUnresolvedCFragSymbolAddress))
-  #endif
- 
+#ifdef __cplusplus
+inline pascal Boolean NSLLibraryPresent()
+{
+	return NSLLibraryVersion != (void *)kUnresolvedCFragSymbolAddress;
+}
+#else
+#define NSLLibraryPresent() ( ( NSLLibraryVersion != (void *)kUnresolvedCFragSymbolAddress ) )
+#endif
 
 /*
   -----------------------------------------------------------------------------
@@ -401,9 +413,8 @@ NSLLibraryVersion(void);
  */
 EXTERN_API( NSLError )
 NSLStandardRegisterURL(
-  NSLPath           urlToRegister,
-  NSLNeighborhood   neighborhoodToRegisterIn);      /* can be NULL */
-
+    NSLPath         urlToRegister,
+    NSLNeighborhood neighborhoodToRegisterIn ); /* can be NULL */
 
 /* <--- error code from registration */
 /* ---> urlToRegister is a null terminated url that has only legal characters defined for URLs.  Use HexEncodeText to encode*/
@@ -420,10 +431,8 @@ NSLStandardRegisterURL(
  */
 EXTERN_API( NSLError )
 NSLStandardDeregisterURL(
-  NSLPath           urlToDeregister,
-  NSLNeighborhood   neighborhoodToDeregisterIn);      /* can be NULL */
-
-
+    NSLPath         urlToDeregister,
+    NSLNeighborhood neighborhoodToDeregisterIn ); /* can be NULL */
 
 /*-----------------------------------------------------------------------------*/
 
@@ -437,12 +446,11 @@ NSLStandardDeregisterURL(
  */
 EXTERN_API( OSStatus )
 NSLHexEncodeText(
-  const char *  rawText,
-  UInt16        rawTextLen,
-  char *        newTextBuffer,
-  UInt16 *      newTextBufferLen,
-  Boolean *     textChanged);
-
+    const char *rawText,
+    UInt16      rawTextLen,
+    char *      newTextBuffer,
+    UInt16 *    newTextBufferLen,
+    Boolean *   textChanged );
 
 /*
  *  NSLHexDecodeText()
@@ -454,12 +462,11 @@ NSLHexEncodeText(
  */
 EXTERN_API( OSStatus )
 NSLHexDecodeText(
-  const char *  encodedText,
-  UInt16        encodedTextLen,
-  char *        decodedTextBuffer,
-  UInt16 *      decodedTextBufferLen,
-  Boolean *     textChanged);
-
+    const char *encodedText,
+    UInt16      encodedTextLen,
+    char *      decodedTextBuffer,
+    UInt16 *    decodedTextBufferLen,
+    Boolean *   textChanged );
 
 /*
   -----------------------------------------------------------------------------
@@ -476,8 +483,7 @@ NSLHexDecodeText(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( NSLServicesList )
-NSLMakeNewServicesList(const char * initialServiceList);
-
+NSLMakeNewServicesList( const char *initialServiceList );
 
 /*
  *  NSLAddServiceToServicesList()
@@ -489,9 +495,8 @@ NSLMakeNewServicesList(const char * initialServiceList);
  */
 EXTERN_API( NSLError )
 NSLAddServiceToServicesList(
-  NSLServicesList   serviceList,
-  NSLServiceType    serviceType);
-
+    NSLServicesList serviceList,
+    NSLServiceType  serviceType );
 
 /*
  *  NSLDisposeServicesList()
@@ -502,8 +507,7 @@ NSLAddServiceToServicesList(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-NSLDisposeServicesList(NSLServicesList theList);
-
+NSLDisposeServicesList( NSLServicesList theList );
 
 /*
     The name reflects the name of the Neighborhood, i.e. "apple.com." or "AppleTalk Zone One".
@@ -521,9 +525,8 @@ NSLDisposeServicesList(NSLServicesList theList);
  */
 EXTERN_API( NSLNeighborhood )
 NSLMakeNewNeighborhood(
-  const char *  name,
-  const char *  protocolList);      /* can be NULL */
-
+    const char *name,
+    const char *protocolList ); /* can be NULL */
 
 /* creates an exact copy of an existing neighborhood */
 /*
@@ -535,8 +538,7 @@ NSLMakeNewNeighborhood(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( NSLNeighborhood )
-NSLCopyNeighborhood(NSLNeighborhood neighborhood);
-
+NSLCopyNeighborhood( NSLNeighborhood neighborhood );
 
 /*
  *  NSLFreeNeighborhood()
@@ -547,8 +549,7 @@ NSLCopyNeighborhood(NSLNeighborhood neighborhood);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( NSLNeighborhood )
-NSLFreeNeighborhood(NSLNeighborhood neighborhood);
-
+NSLFreeNeighborhood( NSLNeighborhood neighborhood );
 
 /*
  *  NSLGetNameFromNeighborhood()
@@ -560,10 +561,9 @@ NSLFreeNeighborhood(NSLNeighborhood neighborhood);
  */
 EXTERN_API( void )
 NSLGetNameFromNeighborhood(
-  NSLNeighborhood   neighborhood,
-  char **           name,
-  long *            length);
-
+    NSLNeighborhood neighborhood,
+    char **         name,
+    long *          length );
 
 /*
    create a block of formatted data, pointed to by newDataPtr.  This will be used
@@ -579,9 +579,8 @@ NSLGetNameFromNeighborhood(
  */
 EXTERN_API( OSStatus )
 NSLMakeServicesRequestPB(
-  NSLServicesList    serviceList,
-  NSLTypedDataPtr *  newDataPtr);
-
+    NSLServicesList  serviceList,
+    NSLTypedDataPtr *newDataPtr );
 
 /* releases any storage created with MakeXXXPB calls, associated with TypedData.*/
 /*
@@ -593,8 +592,7 @@ NSLMakeServicesRequestPB(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( NSLTypedDataPtr )
-NSLFreeTypedDataPtr(NSLTypedDataPtr nslTypeData);
-
+NSLFreeTypedDataPtr( NSLTypedDataPtr nslTypeData );
 
 /*
    utility function that returns whether a url was found, a pointer to the beginning
@@ -610,10 +608,9 @@ NSLFreeTypedDataPtr(NSLTypedDataPtr nslTypeData);
  */
 EXTERN_API( Boolean )
 NSLGetNextUrl(
-  NSLClientAsyncInfoPtr   infoPtr,
-  char **                 urlPtr,
-  long *                  urlLength);
-
+    NSLClientAsyncInfoPtr infoPtr,
+    char **               urlPtr,
+    long *                urlLength );
 
 /*
    utility function that returns whether a Neighborhood was found, a pointer to the beginning
@@ -629,11 +626,9 @@ NSLGetNextUrl(
  */
 EXTERN_API( Boolean )
 NSLGetNextNeighborhood(
-  NSLClientAsyncInfoPtr   infoPtr,
-  NSLNeighborhood *       neighborhood,
-  long *                  neighborhoodLength);
-
-
+    NSLClientAsyncInfoPtr infoPtr,
+    NSLNeighborhood *     neighborhood,
+    long *                neighborhoodLength );
 
 /*
    NSLErrorToString:    convert a numeric error code to its string equivalent.  Caller must
@@ -653,11 +648,9 @@ NSLGetNextNeighborhood(
  */
 EXTERN_API( OSStatus )
 NSLErrorToString(
-  NSLError   theErr,
-  char *     errorString,
-  char *     solutionString);
-
-
+    NSLError theErr,
+    char *   errorString,
+    char *   solutionString );
 
 /*
   -----------------------------------------------------------------------------
@@ -674,8 +667,7 @@ NSLErrorToString(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-NSLOpenNavigationAPI(NSLClientRef * newRef);
-
+NSLOpenNavigationAPI( NSLClientRef *newRef );
 
 /*
  *  NSLCloseNavigationAPI()
@@ -686,8 +678,7 @@ NSLOpenNavigationAPI(NSLClientRef * newRef);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-NSLCloseNavigationAPI(NSLClientRef theClient);
-
+NSLCloseNavigationAPI( NSLClientRef theClient );
 
 /*
     NSLPrepareRequest:  creates an NSLRequestRef, sets up some internal data
@@ -715,15 +706,13 @@ NSLCloseNavigationAPI(NSLClientRef theClient);
  */
 EXTERN_API( NSLError )
 NSLPrepareRequest(
-  NSLClientNotifyUPP       notifier,
-  void *                   contextPtr,
-  NSLClientRef             theClient,
-  NSLRequestRef *          ref,
-  char *                   bufPtr,
-  unsigned long            bufLen,
-  NSLClientAsyncInfoPtr *  infoPtr);
-
-
+    NSLClientNotifyUPP     notifier,
+    void *                 contextPtr,
+    NSLClientRef           theClient,
+    NSLRequestRef *        ref,
+    char *                 bufPtr,
+    unsigned long          bufLen,
+    NSLClientAsyncInfoPtr *infoPtr );
 
 /*
    NSLStartNeighborhoodLookup: looking for neighborhoods associated with or neighboring a particular neighborhood
@@ -741,10 +730,9 @@ NSLPrepareRequest(
  */
 EXTERN_API( NSLError )
 NSLStartNeighborhoodLookup(
-  NSLRequestRef         ref,
-  NSLNeighborhood       neighborhood,
-  NSLClientAsyncInfo *  asyncInfo);
-
+    NSLRequestRef       ref,
+    NSLNeighborhood     neighborhood,
+    NSLClientAsyncInfo *asyncInfo );
 
 /*
    NSLStartServicesLookup: starts looking for entities if the specified type in the specified neighborhood
@@ -761,12 +749,10 @@ NSLStartNeighborhoodLookup(
  */
 EXTERN_API( NSLError )
 NSLStartServicesLookup(
-  NSLRequestRef         ref,
-  NSLNeighborhood       neighborhood,
-  NSLTypedDataPtr       requestData,
-  NSLClientAsyncInfo *  asyncInfo);
-
-
+    NSLRequestRef       ref,
+    NSLNeighborhood     neighborhood,
+    NSLTypedDataPtr     requestData,
+    NSLClientAsyncInfo *asyncInfo );
 
 /* NSLContinueLookup:  continues a paused/outstanding lookup*/
 
@@ -779,9 +765,7 @@ NSLStartServicesLookup(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( NSLError )
-NSLContinueLookup(NSLClientAsyncInfo * asyncInfo);
-
-
+NSLContinueLookup( NSLClientAsyncInfo *asyncInfo );
 
 /* NSLCancelRequest: cancels an ongoing search*/
 
@@ -794,8 +778,7 @@ NSLContinueLookup(NSLClientAsyncInfo * asyncInfo);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( NSLError )
-NSLCancelRequest(NSLRequestRef ref);
-
+NSLCancelRequest( NSLRequestRef ref );
 
 /*
    NSLDeleteRequest: deletes info associated with this ref.  The ClientAsyncInfoPtr will no longer be valid
@@ -811,9 +794,7 @@ NSLCancelRequest(NSLRequestRef ref);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( NSLError )
-NSLDeleteRequest(NSLRequestRef ref);
-
-
+NSLDeleteRequest( NSLRequestRef ref );
 
 /*
   -----------------------------------------------------------------------------
@@ -836,11 +817,9 @@ NSLDeleteRequest(NSLRequestRef ref);
  */
 EXTERN_API( OSStatus )
 NSLParseServicesRequestPB(
-  NSLTypedDataPtr   newDataPtr,
-  char **           serviceListPtr,
-  UInt16 *          serviceListLen);
-
-
+    NSLTypedDataPtr newDataPtr,
+    char **         serviceListPtr,
+    UInt16 *        serviceListLen );
 
 /* NSLParseServiceRegistrationPB provides for breaking apart a registration request from a client to a plugin */
 /* <--- returns an OSStatus if any errors occur parsing the data */
@@ -859,12 +838,11 @@ NSLParseServicesRequestPB(
  */
 EXTERN_API( OSStatus )
 NSLParseServiceRegistrationPB(
-  NSLTypedDataPtr    newDataPtr,
-  NSLNeighborhood *  neighborhoodPtr,
-  UInt16 *           neighborhoodLen,
-  char **            urlPtr,
-  UInt16 *           urlLen);
-
+    NSLTypedDataPtr  newDataPtr,
+    NSLNeighborhood *neighborhoodPtr,
+    UInt16 *         neighborhoodLen,
+    char **          urlPtr,
+    UInt16 *         urlLen );
 
 /* NSLGetErrorStringsFromResource is obsolete in X.  It will ignore the fileSpecPtr */
 /* and errorResID parameters and return the standard error strings. */
@@ -886,12 +864,11 @@ NSLParseServiceRegistrationPB(
  */
 EXTERN_API( OSStatus )
 NSLGetErrorStringsFromResource(
-  OSStatus        theErr,
-  const FSSpec *  fileSpecPtr,
-  SInt16          errorResID,
-  char *          errorString,
-  char *          solutionString);
-
+    OSStatus      theErr,
+    const FSSpec *fileSpecPtr,
+    SInt16        errorResID,
+    char *        errorString,
+    char *        solutionString );
 
 /* <--- Returns true if given service is in the given service list */
 /* ---> serviceList is a valid NSLServicesList containing information about services to be searched */
@@ -906,9 +883,8 @@ NSLGetErrorStringsFromResource(
  */
 EXTERN_API( Boolean )
 NSLServiceIsInServiceList(
-  NSLServicesList   serviceList,
-  NSLServiceType    svcToFind);
-
+    NSLServicesList serviceList,
+    NSLServiceType  svcToFind );
 
 /* <--- returns an OSStatus if any errors occur parsing the data */
 /* ---> svcString is the address of a pointer which will be set to point at the portion of theURL that holds the serviceType of theURL */
@@ -923,10 +899,9 @@ NSLServiceIsInServiceList(
  */
 EXTERN_API( OSStatus )
 NSLGetServiceFromURL(
-  char *    theURL,
-  char **   svcString,
-  UInt16 *  svcLen);
-
+    char *  theURL,
+    char ** svcString,
+    UInt16 *svcLen );
 
 /* <--- returns the length of a Neighborhood data structure */
 /* ---> neighborhood is a valid NSLNeighborhood */
@@ -939,8 +914,7 @@ NSLGetServiceFromURL(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-NSLGetNeighborhoodLength(NSLNeighborhood neighborhood);
-
+NSLGetNeighborhoodLength( NSLNeighborhood neighborhood );
 
 /*
   -------------------------------------------------------------------------------------
@@ -960,14 +934,13 @@ NSLGetNeighborhoodLength(NSLNeighborhood neighborhood);
  */
 EXTERN_API( OSErr )
 NSLNewThread(
-  ThreadStyle          threadStyle,
-  ThreadEntryProcPtr   threadEntry,
-  void *               threadParam,
-  Size                 stackSize,
-  ThreadOptions        options,
-  void **              threadResult,
-  ThreadID *           threadMade);
-
+    ThreadStyle        threadStyle,
+    ThreadEntryProcPtr threadEntry,
+    void *             threadParam,
+    Size               stackSize,
+    ThreadOptions      options,
+    void **            threadResult,
+    ThreadID *         threadMade );
 
 /* this routine works the same as the Thread manager's routine DisposeThread, except */
 /* that the thread is removed from the NSL manager's thread list. */
@@ -981,31 +954,28 @@ NSLNewThread(
  */
 EXTERN_API( OSErr )
 NSLDisposeThread(
-  ThreadID   threadToDump,
-  void *     threadResult,
-  Boolean    recycleThread);
-
-
+    ThreadID threadToDump,
+    void *   threadResult,
+    Boolean  recycleThread );
 
 #if OLDROUTINENAMES
-typedef NSLClientAsyncInfo              ClientAsyncInfo;
-typedef NSLPluginAsyncInfo              PluginAsyncInfo;
-typedef NSLTypedData                    TypedData;
-typedef NSLPluginData                   PluginData;
-typedef NSLClientAsyncInfoPtr           ClientAsyncInfoPtr;
-typedef NSLPluginAsyncInfoPtr           PluginAsyncInfoPtr;
-typedef NSLTypedDataPtr                 TypedDataPtr;
-typedef NSLPluginDataPtr                PluginDataPtr;
+typedef NSLClientAsyncInfo    ClientAsyncInfo;
+typedef NSLPluginAsyncInfo    PluginAsyncInfo;
+typedef NSLTypedData          TypedData;
+typedef NSLPluginData         PluginData;
+typedef NSLClientAsyncInfoPtr ClientAsyncInfoPtr;
+typedef NSLPluginAsyncInfoPtr PluginAsyncInfoPtr;
+typedef NSLTypedDataPtr       TypedDataPtr;
+typedef NSLPluginDataPtr      PluginDataPtr;
 
-#endif  /* OLDROUTINENAMES */
-
+#endif /* OLDROUTINENAMES */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1019,4 +989,3 @@ typedef NSLPluginDataPtr                PluginDataPtr;
 #endif
 
 #endif /* __NSLCORE__ */
-

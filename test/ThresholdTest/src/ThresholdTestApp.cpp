@@ -1,16 +1,16 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/params/Params.h"
-#include "cinder/ip/Threshold.h"
 #include "cinder/ip/Grayscale.h"
+#include "cinder/ip/Threshold.h"
+#include "cinder/params/Params.h"
 
 using namespace std;
 using namespace ci;
 using namespace ci::app;
 
 class ThresholdTestApp : public App {
- public:
+  public:
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -18,18 +18,18 @@ class ThresholdTestApp : public App {
   private:
 	void loadFile( const fs::path &path );
 
-	bool					mUseAdaptiveThreshold = false;
-	bool					mUseAdaptivePercentage = false;
-	bool					mShowOriginalGrayScale = false;
-	bool					mUseClassVersion = true;
-	int						mThresholdValue, mAdaptiveThresholdKernel;
-	float					mAdaptiveThresholdPercentage;
-	params::InterfaceGlRef	mParams;
-	gl::TextureRef			mTexture;
-	Surface8uRef			mSurface;
-	Channel8u				mGraySurface, mThresholded;
+	bool                   mUseAdaptiveThreshold = false;
+	bool                   mUseAdaptivePercentage = false;
+	bool                   mShowOriginalGrayScale = false;
+	bool                   mUseClassVersion = true;
+	int                    mThresholdValue, mAdaptiveThresholdKernel;
+	float                  mAdaptiveThresholdPercentage;
+	params::InterfaceGlRef mParams;
+	gl::TextureRef         mTexture;
+	Surface8uRef           mSurface;
+	Channel8u              mGraySurface, mThresholded;
 
-	ip::AdaptiveThreshold		mThresholdClass;
+	ip::AdaptiveThreshold mThresholdClass;
 };
 
 void ThresholdTestApp::setup()
@@ -44,17 +44,17 @@ void ThresholdTestApp::setup()
 	mParams->addParam( "Show Grayscale", &mShowOriginalGrayScale );
 	mParams->addParam( "Adaptive Kernel", &mAdaptiveThresholdKernel, "min=0 max=1000 keyIncr=k keyDecr=K" );
 	mParams->addParam( "Adaptive Percentage", &mAdaptiveThresholdPercentage, "min=0 max=1.0 step=0.01 keyIncr=p keyDecr=P" );
-	
+
 	mThresholdValue = 128;
 	mAdaptiveThresholdPercentage = 0.01f;
 	mAdaptiveThresholdKernel = 64;
-	
+
 	loadFile( getOpenFilePath() );
 }
 
 void ThresholdTestApp::loadFile( const fs::path &path )
 {
-	if( ! path.empty() ) {
+	if( !path.empty() ) {
 		mSurface = Surface8u::create( loadImage( path ) );
 		mGraySurface = Channel( mSurface->getWidth(), mSurface->getHeight() );
 		mThresholded = Channel( mSurface->getWidth(), mSurface->getHeight() );
@@ -75,7 +75,7 @@ void ThresholdTestApp::update()
 				ip::adaptiveThreshold<uint8_t>( mGraySurface, mAdaptiveThresholdKernel, mAdaptiveThresholdPercentage, &mThresholded );
 			else {
 				ip::adaptiveThresholdZero<uint8_t>( mGraySurface, mAdaptiveThresholdKernel, &mThresholded );
-//				ip::adaptiveThresholdZero<uint8_t>( &mGraySurface, mAdaptiveThresholdKernel );
+				//				ip::adaptiveThresholdZero<uint8_t>( &mGraySurface, mAdaptiveThresholdKernel );
 			}
 		}
 		else {
@@ -95,7 +95,7 @@ void ThresholdTestApp::draw()
 
 	if( mTexture )
 		gl::draw( mTexture );
-	
+
 	mParams->draw();
 }
 

@@ -20,7 +20,6 @@
  POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 #pragma once
 
 #include "cinder/Cinder.h"
@@ -30,15 +29,15 @@
 #include "cinder/Matrix44.h"
 #include "cinder/Vector.h"
 
-#include "glm/mat3x3.hpp"
-#include "glm/mat4x4.hpp"
+#include "glm/gtc/matrix_access.hpp"
 #include "glm/gtc/matrix_inverse.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "glm/gtc/matrix_access.hpp"
-#include "glm/gtx/transform.hpp"
-#include "glm/gtx/matrix_transform_2d.hpp"
 #include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/io.hpp"
+#include "glm/gtx/matrix_transform_2d.hpp"
+#include "glm/gtx/transform.hpp"
+#include "glm/mat3x3.hpp"
+#include "glm/mat4x4.hpp"
 
 namespace cinder {
 
@@ -64,7 +63,7 @@ inline glm::mat4 transform2dTo3d( const glm::mat3 &m )
 	result[3][1] = m[2][1];
 	result[3][2] = 0;
 	result[3][3] = m[2][2];
-	
+
 	return result;
 }
 
@@ -74,10 +73,10 @@ glm::mat4 alignZAxisWithTarget( vec3 targetDir, vec3 upDir );
 // Parallel Transport Frames
 //
 //  These methods compute a set of reference frames, defined by their
-//  transformation matrix, along a curve. It is designed so that the 
-//  array of points and the array of matrices used to fetch these routines 
+//  transformation matrix, along a curve. It is designed so that the
+//  array of points and the array of matrices used to fetch these routines
 //  don't need to be ordered as the curve.
-//  
+//
 //  A typical usage would be :
 //
 //      m[0] = firstFrame( p[0], p[1], p[2] );
@@ -97,36 +96,35 @@ class ParallelTransport {
 
 	mat4 nextFrame( const vec3 &point, const vec3 &tangent );
 	mat4 lastFrame();
-	
+
   protected:
-	bool	mFirstFrame;
-	vec3	mFirstFrameFirstPoint, mFirstFrameSecondPoint;
-	
-	mat4	mPrevMatrix;
-	vec3	mPrevPoint, mPrevTangent;
+	bool mFirstFrame;
+	vec3 mFirstFrameFirstPoint, mFirstFrameSecondPoint;
+
+	mat4 mPrevMatrix;
+	vec3 mPrevPoint, mPrevTangent;
 };
 
-template<typename T>
-glm::tmat4x4<T,glm::defaultp> firstFrame(
-	const glm::tvec3<T,glm::defaultp> &firstPoint,
-	const glm::tvec3<T,glm::defaultp> &secondPoint, 
-	const glm::tvec3<T,glm::defaultp> &thirdPoint
-);
+template <typename T>
+glm::tmat4x4<T, glm::defaultp> firstFrame(
+    const glm::tvec3<T, glm::defaultp> &firstPoint,
+    const glm::tvec3<T, glm::defaultp> &secondPoint,
+    const glm::tvec3<T, glm::defaultp> &thirdPoint );
 
-template<typename T>
-glm::tmat4x4<T,glm::defaultp> nextFrame( 
-	const glm::tmat4x4<T,glm::defaultp> &prevMatrix, 
-	const glm::tvec3<T,glm::defaultp> &prevPoint,
-	const glm::tvec3<T,glm::defaultp> &curPoint,
-	glm::tvec3<T,glm::defaultp> prevTangent,
-	glm::tvec3<T,glm::defaultp> curTangent 
-);
-			
-template<typename T>
-glm::tmat4x4<T,glm::defaultp> lastFrame( 
-	const glm::tmat4x4<T,glm::defaultp> &prevMatrix, 
-	const glm::tvec3<T,glm::defaultp> &prevPoint, 
-	const glm::tvec3<T,glm::defaultp> &lastPoint 
-);
+template <typename T>
+glm::tmat4x4<T, glm::defaultp> nextFrame(
+    const glm::tmat4x4<T, glm::defaultp> &prevMatrix,
+    const glm::tvec3<T, glm::defaultp> &  prevPoint,
+    const glm::tvec3<T, glm::defaultp> &  curPoint,
+    glm::tvec3<T, glm::defaultp>
+        prevTangent,
+    glm::tvec3<T, glm::defaultp>
+        curTangent );
+
+template <typename T>
+glm::tmat4x4<T, glm::defaultp> lastFrame(
+    const glm::tmat4x4<T, glm::defaultp> &prevMatrix,
+    const glm::tvec3<T, glm::defaultp> &  prevPoint,
+    const glm::tvec3<T, glm::defaultp> &  lastPoint );
 
 } // namespace cinder

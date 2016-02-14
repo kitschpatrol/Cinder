@@ -26,56 +26,57 @@
 #include "cinder/app/AppBase.h"
 
 #if defined( __OBJC__ )
-	@class AppImplMac;
+@class AppImplMac;
 #else
-	class AppImplMac;
+class AppImplMac;
 #endif
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class AppMac : public AppBase {
   public:
-	typedef std::function<void ( Settings *settings )>	SettingsFn;
+	typedef std::function<void( Settings *settings )> SettingsFn;
 
 	AppMac();
 	virtual ~AppMac();
 
-	void		enablePowerManagement( bool powerManagement = true ) override;
-	bool		isPowerManagementEnabled() const override;
+	void enablePowerManagement( bool powerManagement = true ) override;
+	bool isPowerManagementEnabled() const override;
 
-	WindowRef	createWindow( const Window::Format &format = Window::Format() ) override;
-	void		quit() override;
+	WindowRef createWindow( const Window::Format &format = Window::Format() ) override;
+	void quit() override;
 
-	float		getFrameRate() const override;
-	void		setFrameRate( float frameRate ) override;
-	void		disableFrameRate() override;
-	bool		isFrameRateEnabled() const override;
+	float getFrameRate() const override;
+	void setFrameRate( float frameRate ) override;
+	void disableFrameRate() override;
+	bool isFrameRateEnabled() const override;
 
-	WindowRef	getWindow() const override;
-	WindowRef	getWindowIndex( size_t index ) const override;
-	size_t		getNumWindows() const override;
+	WindowRef getWindow() const override;
+	WindowRef getWindowIndex( size_t index ) const override;
+	size_t getNumWindows() const override;
 
-	WindowRef	getForegroundWindow() const override;
+	WindowRef getForegroundWindow() const override;
 
-	void		hideCursor() override;
-	void		showCursor() override;
-	ivec2		getMousePos() const override;
+	void  hideCursor() override;
+	void  showCursor() override;
+	ivec2 getMousePos() const override;
 
 	//! \cond
 	// Called during application instanciation via CINDER_APP_MAC macro
-	template<typename AppT>
-	static void main( const RendererRef &defaultRenderer, const char *title, int argc, char * const argv[], const SettingsFn &settingsFn = SettingsFn() );
+	template <typename AppT>
+	static void main( const RendererRef &defaultRenderer, const char *title, int argc, char *const argv[], const SettingsFn &settingsFn = SettingsFn() );
 	//! \endcond
 
   protected:
-	void	launch() override;
+	void launch() override;
 
   private:
-	AppImplMac*	mImpl;
+	AppImplMac *mImpl;
 };
 
-template<typename AppT>
-void AppMac::main( const RendererRef &defaultRenderer, const char *title, int argc, char * const argv[], const SettingsFn &settingsFn )
+template <typename AppT>
+void AppMac::main( const RendererRef &defaultRenderer, const char *title, int argc, char *const argv[], const SettingsFn &settingsFn )
 {
 	AppBase::prepareLaunch();
 
@@ -95,12 +96,12 @@ void AppMac::main( const RendererRef &defaultRenderer, const char *title, int ar
 	AppBase::cleanupLaunch();
 }
 
-#define CINDER_APP_MAC( APP, RENDERER, ... )										\
-int main( int argc, char* argv[] )											\
-{																					\
-	cinder::app::RendererRef renderer( new RENDERER );								\
-	cinder::app::AppMac::main<APP>( renderer, #APP, argc, argv, ##__VA_ARGS__ );	\
-	return 0;																		\
+#define CINDER_APP_MAC( APP, RENDERER, ... )                                         \
+	int main( int argc, char *argv[] )                                               \
+	{                                                                                \
+		cinder::app::RendererRef renderer( new RENDERER );                           \
+		cinder::app::AppMac::main<APP>( renderer, #APP, argc, argv, ##__VA_ARGS__ ); \
+		return 0;                                                                    \
+	}
 }
-
-} } // namespace cinder::app
+} // namespace cinder::app

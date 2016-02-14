@@ -36,16 +36,12 @@
 #include <Resources.h>
 #endif
 
-
-
 #if !OPAQUE_TOOLBOX_STRUCTS
 #ifndef __MACWINDOWS__
 #include <MacWindows.h>
 #endif
 
-#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
-
-
+#endif /* !OPAQUE_TOOLBOX_STRUCTS */
 
 #if PRAGMA_ONCE
 #pragma once
@@ -60,11 +56,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /**************************************************************************************
@@ -136,8 +132,8 @@ extern "C" {
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetMemTop(void)                           TWOWORDINLINE(0x2EB8, 0x0108);
-
+EXTERN_API( Ptr )
+LMGetMemTop( void ) TWOWORDINLINE( 0x2EB8, 0x0108 );
 
 /*
  *  LMSetMemTop()
@@ -147,9 +143,8 @@ EXTERN_API( Ptr ) LMGetMemTop(void)                           TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetMemTop(Ptr value)                     TWOWORDINLINE(0x21DF, 0x0108);
-
-
+EXTERN_API( void )
+LMSetMemTop( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0108 );
 
 /*
  *  LMGetBufPtr()
@@ -159,8 +154,8 @@ EXTERN_API( void ) LMSetMemTop(Ptr value)                     TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetBufPtr(void)                           TWOWORDINLINE(0x2EB8, 0x010C);
-
+EXTERN_API( Ptr )
+LMGetBufPtr( void ) TWOWORDINLINE( 0x2EB8, 0x010C );
 
 /*
  *  LMSetBufPtr()
@@ -170,9 +165,8 @@ EXTERN_API( Ptr ) LMGetBufPtr(void)                           TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetBufPtr(Ptr value)                     TWOWORDINLINE(0x21DF, 0x010C);
-
-
+EXTERN_API( void )
+LMSetBufPtr( Ptr value ) TWOWORDINLINE( 0x21DF, 0x010C );
 
 /*
  *  LMGetHeapEnd()
@@ -182,8 +176,8 @@ EXTERN_API( void ) LMSetBufPtr(Ptr value)                     TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetHeapEnd(void)                          TWOWORDINLINE(0x2EB8, 0x0114);
-
+EXTERN_API( Ptr )
+LMGetHeapEnd( void ) TWOWORDINLINE( 0x2EB8, 0x0114 );
 
 /*
  *  LMSetHeapEnd()
@@ -193,9 +187,8 @@ EXTERN_API( Ptr ) LMGetHeapEnd(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetHeapEnd(Ptr value)                    TWOWORDINLINE(0x21DF, 0x0114);
-
-
+EXTERN_API( void )
+LMSetHeapEnd( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0114 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -206,8 +199,8 @@ EXTERN_API( void ) LMSetHeapEnd(Ptr value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( THz ) LMGetTheZone(void)                          TWOWORDINLINE(0x2EB8, 0x0118);
-
+EXTERN_API( THz )
+LMGetTheZone( void ) TWOWORDINLINE( 0x2EB8, 0x0118 );
 
 /*
  *  LMSetTheZone()
@@ -217,9 +210,8 @@ EXTERN_API( THz ) LMGetTheZone(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTheZone(THz value)                    TWOWORDINLINE(0x21DF, 0x0118);
-
-
+EXTERN_API( void )
+LMSetTheZone( THz value ) TWOWORDINLINE( 0x21DF, 0x0118 );
 
 /*
  *  LMGetUTableBase()
@@ -229,8 +221,8 @@ EXTERN_API( void ) LMSetTheZone(THz value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetUTableBase(void)                       TWOWORDINLINE(0x2EB8, 0x011C);
-
+EXTERN_API( Ptr )
+LMGetUTableBase( void ) TWOWORDINLINE( 0x2EB8, 0x011C );
 
 /*
  *  LMSetUTableBase()
@@ -240,11 +232,10 @@ EXTERN_API( Ptr ) LMGetUTableBase(void)                       TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetUTableBase(Ptr value)                 TWOWORDINLINE(0x21DF, 0x011C);
+EXTERN_API( void )
+LMSetUTableBase( Ptr value ) TWOWORDINLINE( 0x21DF, 0x011C );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetCPUFlag()
@@ -254,8 +245,8 @@ EXTERN_API( void ) LMSetUTableBase(Ptr value)                 TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UInt8 ) LMGetCPUFlag(void)                        TWOWORDINLINE(0x1EB8, 0x012F);
-
+EXTERN_API( UInt8 )
+LMGetCPUFlag( void ) TWOWORDINLINE( 0x1EB8, 0x012F );
 
 /*
  *  LMSetCPUFlag()
@@ -265,9 +256,8 @@ EXTERN_API( UInt8 ) LMGetCPUFlag(void)                        TWOWORDINLINE(0x1E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetCPUFlag(UInt8 value)                  TWOWORDINLINE(0x11DF, 0x012F);
-
-
+EXTERN_API( void )
+LMSetCPUFlag( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x012F );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -278,8 +268,8 @@ EXTERN_API( void ) LMSetCPUFlag(UInt8 value)                  TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetApplLimit(void)                        TWOWORDINLINE(0x2EB8, 0x0130);
-
+EXTERN_API( Ptr )
+LMGetApplLimit( void ) TWOWORDINLINE( 0x2EB8, 0x0130 );
 
 /*
  *  LMSetApplLimit()
@@ -289,9 +279,8 @@ EXTERN_API( Ptr ) LMGetApplLimit(void)                        TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetApplLimit(Ptr value)                  TWOWORDINLINE(0x21DF, 0x0130);
-
-
+EXTERN_API( void )
+LMSetApplLimit( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0130 );
 
 /*
  *  LMGetSysEvtMask()
@@ -301,8 +290,8 @@ EXTERN_API( void ) LMSetApplLimit(Ptr value)                  TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetSysEvtMask(void)                    TWOWORDINLINE(0x3EB8, 0x0144);
-
+EXTERN_API( SInt16 )
+LMGetSysEvtMask( void ) TWOWORDINLINE( 0x3EB8, 0x0144 );
 
 /* Carbon Usage: use SetEventMask*/
 /*
@@ -313,11 +302,10 @@ EXTERN_API( SInt16 ) LMGetSysEvtMask(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSysEvtMask(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0144);
+EXTERN_API( void )
+LMSetSysEvtMask( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0144 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetRndSeed()
@@ -327,8 +315,8 @@ EXTERN_API( void ) LMSetSysEvtMask(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt32 ) LMGetRndSeed(void)                       TWOWORDINLINE(0x2EB8, 0x0156);
-
+EXTERN_API( SInt32 )
+LMGetRndSeed( void ) TWOWORDINLINE( 0x2EB8, 0x0156 );
 
 /*
  *  LMSetRndSeed()
@@ -338,9 +326,8 @@ EXTERN_API( SInt32 ) LMGetRndSeed(void)                       TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetRndSeed(SInt32 value)                 TWOWORDINLINE(0x21DF, 0x0156);
-
-
+EXTERN_API( void )
+LMSetRndSeed( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0156 );
 
 /*
  *  LMGetSEvtEnb()
@@ -350,8 +337,8 @@ EXTERN_API( void ) LMSetRndSeed(SInt32 value)                 TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UInt8 ) LMGetSEvtEnb(void)                        TWOWORDINLINE(0x1EB8, 0x015C);
-
+EXTERN_API( UInt8 )
+LMGetSEvtEnb( void ) TWOWORDINLINE( 0x1EB8, 0x015C );
 
 /*
  *  LMSetSEvtEnb()
@@ -361,9 +348,8 @@ EXTERN_API( UInt8 ) LMGetSEvtEnb(void)                        TWOWORDINLINE(0x1E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSEvtEnb(UInt8 value)                  TWOWORDINLINE(0x11DF, 0x015C);
-
-
+EXTERN_API( void )
+LMSetSEvtEnb( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x015C );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -374,8 +360,8 @@ EXTERN_API( void ) LMSetSEvtEnb(UInt8 value)                  TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt32 ) LMGetTicks(void)                         TWOWORDINLINE(0x2EB8, 0x016A);
-
+EXTERN_API( UInt32 )
+LMGetTicks( void ) TWOWORDINLINE( 0x2EB8, 0x016A );
 
 /*
  *  LMSetTicks()
@@ -385,9 +371,8 @@ EXTERN_API( UInt32 ) LMGetTicks(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTicks(UInt32 value)                   TWOWORDINLINE(0x21DF, 0x016A);
-
-
+EXTERN_API( void )
+LMSetTicks( UInt32 value ) TWOWORDINLINE( 0x21DF, 0x016A );
 
 /*
  *  LMGetVIA()
@@ -397,8 +382,8 @@ EXTERN_API( void ) LMSetTicks(UInt32 value)                   TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetVIA(void)                              TWOWORDINLINE(0x2EB8, 0x01D4);
-
+EXTERN_API( Ptr )
+LMGetVIA( void ) TWOWORDINLINE( 0x2EB8, 0x01D4 );
 
 /*
  *  LMSetVIA()
@@ -408,9 +393,8 @@ EXTERN_API( Ptr ) LMGetVIA(void)                              TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetVIA(Ptr value)                        TWOWORDINLINE(0x21DF, 0x01D4);
-
-
+EXTERN_API( void )
+LMSetVIA( Ptr value ) TWOWORDINLINE( 0x21DF, 0x01D4 );
 
 /*
  *  LMGetSCCRd()
@@ -420,8 +404,8 @@ EXTERN_API( void ) LMSetVIA(Ptr value)                        TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetSCCRd(void)                            TWOWORDINLINE(0x2EB8, 0x01D8);
-
+EXTERN_API( Ptr )
+LMGetSCCRd( void ) TWOWORDINLINE( 0x2EB8, 0x01D8 );
 
 /*
  *  LMSetSCCRd()
@@ -431,9 +415,8 @@ EXTERN_API( Ptr ) LMGetSCCRd(void)                            TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSCCRd(Ptr value)                      TWOWORDINLINE(0x21DF, 0x01D8);
-
-
+EXTERN_API( void )
+LMSetSCCRd( Ptr value ) TWOWORDINLINE( 0x21DF, 0x01D8 );
 
 /*
  *  LMGetSCCWr()
@@ -443,8 +426,8 @@ EXTERN_API( void ) LMSetSCCRd(Ptr value)                      TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetSCCWr(void)                            TWOWORDINLINE(0x2EB8, 0x01DC);
-
+EXTERN_API( Ptr )
+LMGetSCCWr( void ) TWOWORDINLINE( 0x2EB8, 0x01DC );
 
 /*
  *  LMSetSCCWr()
@@ -454,9 +437,8 @@ EXTERN_API( Ptr ) LMGetSCCWr(void)                            TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSCCWr(Ptr value)                      TWOWORDINLINE(0x21DF, 0x01DC);
-
-
+EXTERN_API( void )
+LMSetSCCWr( Ptr value ) TWOWORDINLINE( 0x21DF, 0x01DC );
 
 /*
  *  LMGetSPValid()
@@ -466,8 +448,8 @@ EXTERN_API( void ) LMSetSCCWr(Ptr value)                      TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPValid(void)                        TWOWORDINLINE(0x1EB8, 0x01F8);
-
+EXTERN_API( UInt8 )
+LMGetSPValid( void ) TWOWORDINLINE( 0x1EB8, 0x01F8 );
 
 /*
  *  LMSetSPValid()
@@ -477,9 +459,8 @@ EXTERN_API( UInt8 ) LMGetSPValid(void)                        TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPValid(UInt8 value)                  TWOWORDINLINE(0x11DF, 0x01F8);
-
-
+EXTERN_API( void )
+LMSetSPValid( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x01F8 );
 
 /*
  *  LMGetSPATalkA()
@@ -489,8 +470,8 @@ EXTERN_API( void ) LMSetSPValid(UInt8 value)                  TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPATalkA(void)                       TWOWORDINLINE(0x1EB8, 0x01F9);
-
+EXTERN_API( UInt8 )
+LMGetSPATalkA( void ) TWOWORDINLINE( 0x1EB8, 0x01F9 );
 
 /*
  *  LMSetSPATalkA()
@@ -500,9 +481,8 @@ EXTERN_API( UInt8 ) LMGetSPATalkA(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPATalkA(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x01F9);
-
-
+EXTERN_API( void )
+LMSetSPATalkA( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x01F9 );
 
 /*
  *  LMGetSPATalkB()
@@ -512,8 +492,8 @@ EXTERN_API( void ) LMSetSPATalkA(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPATalkB(void)                       TWOWORDINLINE(0x1EB8, 0x01FA);
-
+EXTERN_API( UInt8 )
+LMGetSPATalkB( void ) TWOWORDINLINE( 0x1EB8, 0x01FA );
 
 /*
  *  LMSetSPATalkB()
@@ -523,9 +503,8 @@ EXTERN_API( UInt8 ) LMGetSPATalkB(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPATalkB(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x01FA);
-
-
+EXTERN_API( void )
+LMSetSPATalkB( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x01FA );
 
 /*
  *  LMGetSPConfig()
@@ -535,8 +514,8 @@ EXTERN_API( void ) LMSetSPATalkB(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPConfig(void)                       TWOWORDINLINE(0x1EB8, 0x01FB);
-
+EXTERN_API( UInt8 )
+LMGetSPConfig( void ) TWOWORDINLINE( 0x1EB8, 0x01FB );
 
 /*
  *  LMSetSPConfig()
@@ -546,9 +525,8 @@ EXTERN_API( UInt8 ) LMGetSPConfig(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPConfig(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x01FB);
-
-
+EXTERN_API( void )
+LMSetSPConfig( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x01FB );
 
 /*
  *  LMGetSPPortA()
@@ -558,8 +536,8 @@ EXTERN_API( void ) LMSetSPConfig(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetSPPortA(void)                       TWOWORDINLINE(0x3EB8, 0x01FC);
-
+EXTERN_API( SInt16 )
+LMGetSPPortA( void ) TWOWORDINLINE( 0x3EB8, 0x01FC );
 
 /*
  *  LMSetSPPortA()
@@ -569,9 +547,8 @@ EXTERN_API( SInt16 ) LMGetSPPortA(void)                       TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPPortA(SInt16 value)                 TWOWORDINLINE(0x31DF, 0x01FC);
-
-
+EXTERN_API( void )
+LMSetSPPortA( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x01FC );
 
 /*
  *  LMGetSPPortB()
@@ -581,8 +558,8 @@ EXTERN_API( void ) LMSetSPPortA(SInt16 value)                 TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetSPPortB(void)                       TWOWORDINLINE(0x3EB8, 0x01FE);
-
+EXTERN_API( SInt16 )
+LMGetSPPortB( void ) TWOWORDINLINE( 0x3EB8, 0x01FE );
 
 /*
  *  LMSetSPPortB()
@@ -592,9 +569,8 @@ EXTERN_API( SInt16 ) LMGetSPPortB(void)                       TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPPortB(SInt16 value)                 TWOWORDINLINE(0x31DF, 0x01FE);
-
-
+EXTERN_API( void )
+LMSetSPPortB( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x01FE );
 
 /*
  *  LMGetSPAlarm()
@@ -604,8 +580,8 @@ EXTERN_API( void ) LMSetSPPortB(SInt16 value)                 TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt32 ) LMGetSPAlarm(void)                       TWOWORDINLINE(0x2EB8, 0x0200);
-
+EXTERN_API( SInt32 )
+LMGetSPAlarm( void ) TWOWORDINLINE( 0x2EB8, 0x0200 );
 
 /*
  *  LMSetSPAlarm()
@@ -615,9 +591,8 @@ EXTERN_API( SInt32 ) LMGetSPAlarm(void)                       TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPAlarm(SInt32 value)                 TWOWORDINLINE(0x21DF, 0x0200);
-
-
+EXTERN_API( void )
+LMSetSPAlarm( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0200 );
 
 /*
  *  LMGetSPFont()
@@ -627,8 +602,8 @@ EXTERN_API( void ) LMSetSPAlarm(SInt32 value)                 TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetSPFont(void)                        TWOWORDINLINE(0x3EB8, 0x0204);
-
+EXTERN_API( SInt16 )
+LMGetSPFont( void ) TWOWORDINLINE( 0x3EB8, 0x0204 );
 
 /*
  *  LMSetSPFont()
@@ -638,9 +613,8 @@ EXTERN_API( SInt16 ) LMGetSPFont(void)                        TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPFont(SInt16 value)                  TWOWORDINLINE(0x31DF, 0x0204);
-
-
+EXTERN_API( void )
+LMSetSPFont( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0204 );
 
 /*
  *  LMGetSPKbd()
@@ -650,8 +624,8 @@ EXTERN_API( void ) LMSetSPFont(SInt16 value)                  TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPKbd(void)                          TWOWORDINLINE(0x1EB8, 0x0206);
-
+EXTERN_API( UInt8 )
+LMGetSPKbd( void ) TWOWORDINLINE( 0x1EB8, 0x0206 );
 
 /*
  *  LMSetSPKbd()
@@ -661,9 +635,8 @@ EXTERN_API( UInt8 ) LMGetSPKbd(void)                          TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPKbd(UInt8 value)                    TWOWORDINLINE(0x11DF, 0x0206);
-
-
+EXTERN_API( void )
+LMSetSPKbd( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0206 );
 
 /*
  *  LMGetSPPrint()
@@ -673,8 +646,8 @@ EXTERN_API( void ) LMSetSPKbd(UInt8 value)                    TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPPrint(void)                        TWOWORDINLINE(0x1EB8, 0x0207);
-
+EXTERN_API( UInt8 )
+LMGetSPPrint( void ) TWOWORDINLINE( 0x1EB8, 0x0207 );
 
 /*
  *  LMSetSPPrint()
@@ -684,9 +657,8 @@ EXTERN_API( UInt8 ) LMGetSPPrint(void)                        TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPPrint(UInt8 value)                  TWOWORDINLINE(0x11DF, 0x0207);
-
-
+EXTERN_API( void )
+LMSetSPPrint( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0207 );
 
 /*
  *  LMGetSPVolCtl()
@@ -696,8 +668,8 @@ EXTERN_API( void ) LMSetSPPrint(UInt8 value)                  TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPVolCtl(void)                       TWOWORDINLINE(0x1EB8, 0x0208);
-
+EXTERN_API( UInt8 )
+LMGetSPVolCtl( void ) TWOWORDINLINE( 0x1EB8, 0x0208 );
 
 /*
  *  LMSetSPVolCtl()
@@ -707,9 +679,8 @@ EXTERN_API( UInt8 ) LMGetSPVolCtl(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPVolCtl(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x0208);
-
-
+EXTERN_API( void )
+LMSetSPVolCtl( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0208 );
 
 /*
  *  LMGetSPClikCaret()
@@ -719,8 +690,8 @@ EXTERN_API( void ) LMSetSPVolCtl(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPClikCaret(void)                    TWOWORDINLINE(0x1EB8, 0x0209);
-
+EXTERN_API( UInt8 )
+LMGetSPClikCaret( void ) TWOWORDINLINE( 0x1EB8, 0x0209 );
 
 /*
  *  LMSetSPClikCaret()
@@ -730,9 +701,8 @@ EXTERN_API( UInt8 ) LMGetSPClikCaret(void)                    TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPClikCaret(UInt8 value)              TWOWORDINLINE(0x11DF, 0x0209);
-
-
+EXTERN_API( void )
+LMSetSPClikCaret( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0209 );
 
 /*
  *  LMGetSPMisc2()
@@ -742,8 +712,8 @@ EXTERN_API( void ) LMSetSPClikCaret(UInt8 value)              TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetSPMisc2(void)                        TWOWORDINLINE(0x1EB8, 0x020B);
-
+EXTERN_API( UInt8 )
+LMGetSPMisc2( void ) TWOWORDINLINE( 0x1EB8, 0x020B );
 
 /*
  *  LMSetSPMisc2()
@@ -753,10 +723,8 @@ EXTERN_API( UInt8 ) LMGetSPMisc2(void)                        TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSPMisc2(UInt8 value)                  TWOWORDINLINE(0x11DF, 0x020B);
-
-
-
+EXTERN_API( void )
+LMSetSPMisc2( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x020B );
 
 /* Carbon Usage: use GetDateTime*/
 /*
@@ -767,8 +735,8 @@ EXTERN_API( void ) LMSetSPMisc2(UInt8 value)                  TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt32 ) LMGetTime(void)                          TWOWORDINLINE(0x2EB8, 0x020C);
-
+EXTERN_API( SInt32 )
+LMGetTime( void ) TWOWORDINLINE( 0x2EB8, 0x020C );
 
 /* Carbon Usage: use SetDateTime*/
 /*
@@ -779,11 +747,10 @@ EXTERN_API( SInt32 ) LMGetTime(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTime(SInt32 value)                    TWOWORDINLINE(0x21DF, 0x020C);
+EXTERN_API( void )
+LMSetTime( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x020C );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetBootDrive()
@@ -793,8 +760,8 @@ EXTERN_API( void ) LMSetTime(SInt32 value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetBootDrive(void)                     TWOWORDINLINE(0x3EB8, 0x0210);
-
+EXTERN_API( SInt16 )
+LMGetBootDrive( void ) TWOWORDINLINE( 0x3EB8, 0x0210 );
 
 /*
  *  LMSetBootDrive()
@@ -804,9 +771,8 @@ EXTERN_API( SInt16 ) LMGetBootDrive(void)                     TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetBootDrive(SInt16 value)               TWOWORDINLINE(0x31DF, 0x0210);
-
-
+EXTERN_API( void )
+LMSetBootDrive( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0210 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -817,8 +783,8 @@ EXTERN_API( void ) LMSetBootDrive(SInt16 value)               TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetSFSaveDisk(void)                    TWOWORDINLINE(0x3EB8, 0x0214);
-
+EXTERN_API( SInt16 )
+LMGetSFSaveDisk( void ) TWOWORDINLINE( 0x3EB8, 0x0214 );
 
 /*
  *  LMSetSFSaveDisk()
@@ -828,11 +794,10 @@ EXTERN_API( SInt16 ) LMGetSFSaveDisk(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSFSaveDisk(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0214);
+EXTERN_API( void )
+LMSetSFSaveDisk( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0214 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetMemErr()
@@ -842,8 +807,8 @@ EXTERN_API( void ) LMSetSFSaveDisk(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetMemErr(void)                        TWOWORDINLINE(0x3EB8, 0x0220);
-
+EXTERN_API( SInt16 )
+LMGetMemErr( void ) TWOWORDINLINE( 0x3EB8, 0x0220 );
 
 /*
  *  LMSetMemErr()
@@ -853,9 +818,8 @@ EXTERN_API( SInt16 ) LMGetMemErr(void)                        TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetMemErr(SInt16 value)                  TWOWORDINLINE(0x31DF, 0x0220);
-
-
+EXTERN_API( void )
+LMSetMemErr( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0220 );
 
 /*
  *  LMGetSdVolume()
@@ -865,8 +829,8 @@ EXTERN_API( void ) LMSetMemErr(SInt16 value)                  TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UInt8 ) LMGetSdVolume(void)                       TWOWORDINLINE(0x1EB8, 0x0260);
-
+EXTERN_API( UInt8 )
+LMGetSdVolume( void ) TWOWORDINLINE( 0x1EB8, 0x0260 );
 
 /*
  *  LMSetSdVolume()
@@ -876,9 +840,8 @@ EXTERN_API( UInt8 ) LMGetSdVolume(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSdVolume(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x0260);
-
-
+EXTERN_API( void )
+LMSetSdVolume( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0260 );
 
 /*
  *  LMGetSoundPtr()
@@ -888,8 +851,8 @@ EXTERN_API( void ) LMSetSdVolume(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetSoundPtr(void)                         TWOWORDINLINE(0x2EB8, 0x0262);
-
+EXTERN_API( Ptr )
+LMGetSoundPtr( void ) TWOWORDINLINE( 0x2EB8, 0x0262 );
 
 /*
  *  LMSetSoundPtr()
@@ -899,9 +862,8 @@ EXTERN_API( Ptr ) LMGetSoundPtr(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSoundPtr(Ptr value)                   TWOWORDINLINE(0x21DF, 0x0262);
-
-
+EXTERN_API( void )
+LMSetSoundPtr( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0262 );
 
 /*
  *  LMGetSoundBase()
@@ -911,8 +873,8 @@ EXTERN_API( void ) LMSetSoundPtr(Ptr value)                   TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetSoundBase(void)                        TWOWORDINLINE(0x2EB8, 0x0266);
-
+EXTERN_API( Ptr )
+LMGetSoundBase( void ) TWOWORDINLINE( 0x2EB8, 0x0266 );
 
 /*
  *  LMSetSoundBase()
@@ -922,9 +884,8 @@ EXTERN_API( Ptr ) LMGetSoundBase(void)                        TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSoundBase(Ptr value)                  TWOWORDINLINE(0x21DF, 0x0266);
-
-
+EXTERN_API( void )
+LMSetSoundBase( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0266 );
 
 /*
  *  LMGetSoundLevel()
@@ -934,8 +895,8 @@ EXTERN_API( void ) LMSetSoundBase(Ptr value)                  TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UInt8 ) LMGetSoundLevel(void)                     TWOWORDINLINE(0x1EB8, 0x027F);
-
+EXTERN_API( UInt8 )
+LMGetSoundLevel( void ) TWOWORDINLINE( 0x1EB8, 0x027F );
 
 /*
  *  LMSetSoundLevel()
@@ -945,9 +906,8 @@ EXTERN_API( UInt8 ) LMGetSoundLevel(void)                     TWOWORDINLINE(0x1E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSoundLevel(UInt8 value)               TWOWORDINLINE(0x11DF, 0x027F);
-
-
+EXTERN_API( void )
+LMSetSoundLevel( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x027F );
 
 /*
  *  LMGetCurPitch()
@@ -957,8 +917,8 @@ EXTERN_API( void ) LMSetSoundLevel(UInt8 value)               TWOWORDINLINE(0x11
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetCurPitch(void)                      TWOWORDINLINE(0x3EB8, 0x0280);
-
+EXTERN_API( SInt16 )
+LMGetCurPitch( void ) TWOWORDINLINE( 0x3EB8, 0x0280 );
 
 /*
  *  LMSetCurPitch()
@@ -968,9 +928,8 @@ EXTERN_API( SInt16 ) LMGetCurPitch(void)                      TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetCurPitch(SInt16 value)                TWOWORDINLINE(0x31DF, 0x0280);
-
-
+EXTERN_API( void )
+LMSetCurPitch( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0280 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -981,8 +940,8 @@ EXTERN_API( void ) LMSetCurPitch(SInt16 value)                TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetROM85(void)                         TWOWORDINLINE(0x3EB8, 0x028E);
-
+EXTERN_API( SInt16 )
+LMGetROM85( void ) TWOWORDINLINE( 0x3EB8, 0x028E );
 
 /*
  *  LMSetROM85()
@@ -992,9 +951,8 @@ EXTERN_API( SInt16 ) LMGetROM85(void)                         TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetROM85(SInt16 value)                   TWOWORDINLINE(0x31DF, 0x028E);
-
-
+EXTERN_API( void )
+LMSetROM85( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x028E );
 
 /*
  *  LMGetPortBUse()
@@ -1004,8 +962,8 @@ EXTERN_API( void ) LMSetROM85(SInt16 value)                   TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetPortBUse(void)                       TWOWORDINLINE(0x1EB8, 0x0291);
-
+EXTERN_API( UInt8 )
+LMGetPortBUse( void ) TWOWORDINLINE( 0x1EB8, 0x0291 );
 
 /*
  *  LMSetPortBUse()
@@ -1015,9 +973,8 @@ EXTERN_API( UInt8 ) LMGetPortBUse(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetPortBUse(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x0291);
-
-
+EXTERN_API( void )
+LMSetPortBUse( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0291 );
 
 /*
  *  LMGetGNEFilter()
@@ -1027,8 +984,8 @@ EXTERN_API( void ) LMSetPortBUse(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( GetNextEventFilterUPP ) LMGetGNEFilter(void)      TWOWORDINLINE(0x2EB8, 0x029A);
-
+EXTERN_API( GetNextEventFilterUPP )
+LMGetGNEFilter( void ) TWOWORDINLINE( 0x2EB8, 0x029A );
 
 /*
  *  LMSetGNEFilter()
@@ -1038,11 +995,10 @@ EXTERN_API( GetNextEventFilterUPP ) LMGetGNEFilter(void)      TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetGNEFilter(GetNextEventFilterUPP value) TWOWORDINLINE(0x21DF, 0x029A);
+EXTERN_API( void )
+LMSetGNEFilter( GetNextEventFilterUPP value ) TWOWORDINLINE( 0x21DF, 0x029A );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetSysZone()
@@ -1052,8 +1008,8 @@ EXTERN_API( void ) LMSetGNEFilter(GetNextEventFilterUPP value) TWOWORDINLINE(0x2
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( THz ) LMGetSysZone(void)                          TWOWORDINLINE(0x2EB8, 0x02A6);
-
+EXTERN_API( THz )
+LMGetSysZone( void ) TWOWORDINLINE( 0x2EB8, 0x02A6 );
 
 /*
  *  LMSetSysZone()
@@ -1063,9 +1019,8 @@ EXTERN_API( THz ) LMGetSysZone(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSysZone(THz value)                    TWOWORDINLINE(0x21DF, 0x02A6);
-
-
+EXTERN_API( void )
+LMSetSysZone( THz value ) TWOWORDINLINE( 0x21DF, 0x02A6 );
 
 /*
  *  LMGetApplZone()
@@ -1075,8 +1030,8 @@ EXTERN_API( void ) LMSetSysZone(THz value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( THz ) LMGetApplZone(void)                         TWOWORDINLINE(0x2EB8, 0x02AA);
-
+EXTERN_API( THz )
+LMGetApplZone( void ) TWOWORDINLINE( 0x2EB8, 0x02AA );
 
 /*
  *  LMSetApplZone()
@@ -1086,9 +1041,8 @@ EXTERN_API( THz ) LMGetApplZone(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetApplZone(THz value)                   TWOWORDINLINE(0x21DF, 0x02AA);
-
-
+EXTERN_API( void )
+LMSetApplZone( THz value ) TWOWORDINLINE( 0x21DF, 0x02AA );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1099,8 +1053,8 @@ EXTERN_API( void ) LMSetApplZone(THz value)                   TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetROMBase(void)                          TWOWORDINLINE(0x2EB8, 0x02AE);
-
+EXTERN_API( Ptr )
+LMGetROMBase( void ) TWOWORDINLINE( 0x2EB8, 0x02AE );
 
 /*
  *  LMSetROMBase()
@@ -1110,9 +1064,8 @@ EXTERN_API( Ptr ) LMGetROMBase(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetROMBase(Ptr value)                    TWOWORDINLINE(0x21DF, 0x02AE);
-
-
+EXTERN_API( void )
+LMSetROMBase( Ptr value ) TWOWORDINLINE( 0x21DF, 0x02AE );
 
 /*
  *  LMGetRAMBase()
@@ -1122,8 +1075,8 @@ EXTERN_API( void ) LMSetROMBase(Ptr value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetRAMBase(void)                          TWOWORDINLINE(0x2EB8, 0x02B2);
-
+EXTERN_API( Ptr )
+LMGetRAMBase( void ) TWOWORDINLINE( 0x2EB8, 0x02B2 );
 
 /*
  *  LMSetRAMBase()
@@ -1133,10 +1086,8 @@ EXTERN_API( Ptr ) LMGetRAMBase(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetRAMBase(Ptr value)                    TWOWORDINLINE(0x21DF, 0x02B2);
-
-
-
+EXTERN_API( void )
+LMSetRAMBase( Ptr value ) TWOWORDINLINE( 0x21DF, 0x02B2 );
 
 /*
  *  LMGetDSAlertTab()
@@ -1146,8 +1097,8 @@ EXTERN_API( void ) LMSetRAMBase(Ptr value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetDSAlertTab(void)                       TWOWORDINLINE(0x2EB8, 0x02BA);
-
+EXTERN_API( Ptr )
+LMGetDSAlertTab( void ) TWOWORDINLINE( 0x2EB8, 0x02BA );
 
 /*
  *  LMSetDSAlertTab()
@@ -1157,10 +1108,8 @@ EXTERN_API( Ptr ) LMGetDSAlertTab(void)                       TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDSAlertTab(Ptr value)                 TWOWORDINLINE(0x21DF, 0x02BA);
-
-
-
+EXTERN_API( void )
+LMSetDSAlertTab( Ptr value ) TWOWORDINLINE( 0x21DF, 0x02BA );
 
 /*
     NOTE:   LMGetABusVars and LMSetABusVars have been removed.
@@ -1184,8 +1133,8 @@ EXTERN_API( void ) LMSetDSAlertTab(Ptr value)                 TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetABusGlobals(void)                      TWOWORDINLINE(0x2EB8, 0x02D8);
-
+EXTERN_API( Ptr )
+LMGetABusGlobals( void ) TWOWORDINLINE( 0x2EB8, 0x02D8 );
 
 /*
  *  LMGetABusDCE()
@@ -1195,9 +1144,8 @@ EXTERN_API( Ptr ) LMGetABusGlobals(void)                      TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetABusDCE(void)                          TWOWORDINLINE(0x2EB8, 0x02DC);
-
-
+EXTERN_API( Ptr )
+LMGetABusDCE( void ) TWOWORDINLINE( 0x2EB8, 0x02DC );
 
 /*
  *  LMSetABusGlobals()
@@ -1207,8 +1155,8 @@ EXTERN_API( Ptr ) LMGetABusDCE(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetABusGlobals(Ptr value)                TWOWORDINLINE(0x21DF, 0x02D8);
-
+EXTERN_API( void )
+LMSetABusGlobals( Ptr value ) TWOWORDINLINE( 0x21DF, 0x02D8 );
 
 /*
  *  LMSetABusDCE()
@@ -1218,9 +1166,8 @@ EXTERN_API( void ) LMSetABusGlobals(Ptr value)                TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetABusDCE(Ptr value)                    TWOWORDINLINE(0x21DF, 0x02DC);
-
-
+EXTERN_API( void )
+LMSetABusDCE( Ptr value ) TWOWORDINLINE( 0x21DF, 0x02DC );
 
 /* Carbon Usage: use GetDblTime*/
 /*
@@ -1231,8 +1178,8 @@ EXTERN_API( void ) LMSetABusDCE(Ptr value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt32 ) LMGetDoubleTime(void)                    TWOWORDINLINE(0x2EB8, 0x02F0);
-
+EXTERN_API( UInt32 )
+LMGetDoubleTime( void ) TWOWORDINLINE( 0x2EB8, 0x02F0 );
 
 /*
  *  LMSetDoubleTime()
@@ -1242,8 +1189,8 @@ EXTERN_API( UInt32 ) LMGetDoubleTime(void)                    TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDoubleTime(UInt32 value)              TWOWORDINLINE(0x21DF, 0x02F0);
-
+EXTERN_API( void )
+LMSetDoubleTime( UInt32 value ) TWOWORDINLINE( 0x21DF, 0x02F0 );
 
 /* Carbon Usage: use GetCaretTime*/
 /*
@@ -1254,8 +1201,8 @@ EXTERN_API( void ) LMSetDoubleTime(UInt32 value)              TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt32 ) LMGetCaretTime(void)                     TWOWORDINLINE(0x2EB8, 0x02F4);
-
+EXTERN_API( UInt32 )
+LMGetCaretTime( void ) TWOWORDINLINE( 0x2EB8, 0x02F4 );
 
 /*
  *  LMSetCaretTime()
@@ -1265,11 +1212,10 @@ EXTERN_API( UInt32 ) LMGetCaretTime(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCaretTime(UInt32 value)               TWOWORDINLINE(0x21DF, 0x02F4);
+EXTERN_API( void )
+LMSetCaretTime( UInt32 value ) TWOWORDINLINE( 0x21DF, 0x02F4 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetScrDmpEnb()
@@ -1279,8 +1225,8 @@ EXTERN_API( void ) LMSetCaretTime(UInt32 value)               TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UInt8 ) LMGetScrDmpEnb(void)                      TWOWORDINLINE(0x1EB8, 0x02F8);
-
+EXTERN_API( UInt8 )
+LMGetScrDmpEnb( void ) TWOWORDINLINE( 0x1EB8, 0x02F8 );
 
 /*
  *  LMSetScrDmpEnb()
@@ -1290,9 +1236,8 @@ EXTERN_API( UInt8 ) LMGetScrDmpEnb(void)                      TWOWORDINLINE(0x1E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetScrDmpEnb(UInt8 value)                TWOWORDINLINE(0x11DF, 0x02F8);
-
-
+EXTERN_API( void )
+LMSetScrDmpEnb( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x02F8 );
 
 /*
  *  LMGetBufTgFNum()
@@ -1302,8 +1247,8 @@ EXTERN_API( void ) LMSetScrDmpEnb(UInt8 value)                TWOWORDINLINE(0x11
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt32 ) LMGetBufTgFNum(void)                     TWOWORDINLINE(0x2EB8, 0x02FC);
-
+EXTERN_API( SInt32 )
+LMGetBufTgFNum( void ) TWOWORDINLINE( 0x2EB8, 0x02FC );
 
 /*
  *  LMSetBufTgFNum()
@@ -1313,9 +1258,8 @@ EXTERN_API( SInt32 ) LMGetBufTgFNum(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetBufTgFNum(SInt32 value)               TWOWORDINLINE(0x21DF, 0x02FC);
-
-
+EXTERN_API( void )
+LMSetBufTgFNum( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x02FC );
 
 /*
  *  LMGetBufTgFFlg()
@@ -1325,8 +1269,8 @@ EXTERN_API( void ) LMSetBufTgFNum(SInt32 value)               TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetBufTgFFlg(void)                     TWOWORDINLINE(0x3EB8, 0x0300);
-
+EXTERN_API( SInt16 )
+LMGetBufTgFFlg( void ) TWOWORDINLINE( 0x3EB8, 0x0300 );
 
 /*
  *  LMSetBufTgFFlg()
@@ -1336,9 +1280,8 @@ EXTERN_API( SInt16 ) LMGetBufTgFFlg(void)                     TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetBufTgFFlg(SInt16 value)               TWOWORDINLINE(0x31DF, 0x0300);
-
-
+EXTERN_API( void )
+LMSetBufTgFFlg( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0300 );
 
 /*
  *  LMGetBufTgFBkNum()
@@ -1348,8 +1291,8 @@ EXTERN_API( void ) LMSetBufTgFFlg(SInt16 value)               TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetBufTgFBkNum(void)                   TWOWORDINLINE(0x3EB8, 0x0302);
-
+EXTERN_API( SInt16 )
+LMGetBufTgFBkNum( void ) TWOWORDINLINE( 0x3EB8, 0x0302 );
 
 /*
  *  LMSetBufTgFBkNum()
@@ -1359,9 +1302,8 @@ EXTERN_API( SInt16 ) LMGetBufTgFBkNum(void)                   TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetBufTgFBkNum(SInt16 value)             TWOWORDINLINE(0x31DF, 0x0302);
-
-
+EXTERN_API( void )
+LMSetBufTgFBkNum( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0302 );
 
 /*
  *  LMGetBufTgDate()
@@ -1371,8 +1313,8 @@ EXTERN_API( void ) LMSetBufTgFBkNum(SInt16 value)             TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt32 ) LMGetBufTgDate(void)                     TWOWORDINLINE(0x2EB8, 0x0304);
-
+EXTERN_API( SInt32 )
+LMGetBufTgDate( void ) TWOWORDINLINE( 0x2EB8, 0x0304 );
 
 /*
  *  LMSetBufTgDate()
@@ -1382,9 +1324,8 @@ EXTERN_API( SInt32 ) LMGetBufTgDate(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetBufTgDate(SInt32 value)               TWOWORDINLINE(0x21DF, 0x0304);
-
-
+EXTERN_API( void )
+LMSetBufTgDate( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0304 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1395,8 +1336,8 @@ EXTERN_API( void ) LMSetBufTgDate(SInt32 value)               TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt32 ) LMGetLo3Bytes(void)                      TWOWORDINLINE(0x2EB8, 0x031A);
-
+EXTERN_API( SInt32 )
+LMGetLo3Bytes( void ) TWOWORDINLINE( 0x2EB8, 0x031A );
 
 /*
  *  LMSetLo3Bytes()
@@ -1406,11 +1347,10 @@ EXTERN_API( SInt32 ) LMGetLo3Bytes(void)                      TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetLo3Bytes(SInt32 value)                TWOWORDINLINE(0x21DF, 0x031A);
+EXTERN_API( void )
+LMSetLo3Bytes( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x031A );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetMinStack()
@@ -1420,8 +1360,8 @@ EXTERN_API( void ) LMSetLo3Bytes(SInt32 value)                TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt32 ) LMGetMinStack(void)                      TWOWORDINLINE(0x2EB8, 0x031E);
-
+EXTERN_API( SInt32 )
+LMGetMinStack( void ) TWOWORDINLINE( 0x2EB8, 0x031E );
 
 /*
  *  LMSetMinStack()
@@ -1431,9 +1371,8 @@ EXTERN_API( SInt32 ) LMGetMinStack(void)                      TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetMinStack(SInt32 value)                TWOWORDINLINE(0x21DF, 0x031E);
-
-
+EXTERN_API( void )
+LMSetMinStack( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x031E );
 
 /*
  *  LMGetDefltStack()
@@ -1443,8 +1382,8 @@ EXTERN_API( void ) LMSetMinStack(SInt32 value)                TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt32 ) LMGetDefltStack(void)                    TWOWORDINLINE(0x2EB8, 0x0322);
-
+EXTERN_API( SInt32 )
+LMGetDefltStack( void ) TWOWORDINLINE( 0x2EB8, 0x0322 );
 
 /*
  *  LMSetDefltStack()
@@ -1454,9 +1393,8 @@ EXTERN_API( SInt32 ) LMGetDefltStack(void)                    TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetDefltStack(SInt32 value)              TWOWORDINLINE(0x21DF, 0x0322);
-
-
+EXTERN_API( void )
+LMSetDefltStack( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0322 );
 
 /*
  *  LMGetGZRootHnd()
@@ -1466,8 +1404,8 @@ EXTERN_API( void ) LMSetDefltStack(SInt32 value)              TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Handle ) LMGetGZRootHnd(void)                     TWOWORDINLINE(0x2EB8, 0x0328);
-
+EXTERN_API( Handle )
+LMGetGZRootHnd( void ) TWOWORDINLINE( 0x2EB8, 0x0328 );
 
 /*
  *  LMSetGZRootHnd()
@@ -1477,9 +1415,8 @@ EXTERN_API( Handle ) LMGetGZRootHnd(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetGZRootHnd(Handle value)               TWOWORDINLINE(0x21DF, 0x0328);
-
-
+EXTERN_API( void )
+LMSetGZRootHnd( Handle value ) TWOWORDINLINE( 0x21DF, 0x0328 );
 
 /*
  *  LMGetGZMoveHnd()
@@ -1489,8 +1426,8 @@ EXTERN_API( void ) LMSetGZRootHnd(Handle value)               TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Handle ) LMGetGZMoveHnd(void)                     TWOWORDINLINE(0x2EB8, 0x0330);
-
+EXTERN_API( Handle )
+LMGetGZMoveHnd( void ) TWOWORDINLINE( 0x2EB8, 0x0330 );
 
 /*
  *  LMSetGZMoveHnd()
@@ -1500,9 +1437,8 @@ EXTERN_API( Handle ) LMGetGZMoveHnd(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetGZMoveHnd(Handle value)               TWOWORDINLINE(0x21DF, 0x0330);
-
-
+EXTERN_API( void )
+LMSetGZMoveHnd( Handle value ) TWOWORDINLINE( 0x21DF, 0x0330 );
 
 /*
    LMGetFCBSPtr, LMSetFCBSPtr and LMSetFSFCBLen are not supported with Mac OS 9
@@ -1518,7 +1454,7 @@ EXTERN_API( void ) LMSetGZMoveHnd(Handle value)               TWOWORDINLINE(0x21
 */
 #ifndef ENABLE_FCB_ARRAY_ACCESS
 #define ENABLE_FCB_ARRAY_ACCESS 0
-#endif  /* !defined(ENABLE_FCB_ARRAY_ACCESS) */
+#endif /* !defined(ENABLE_FCB_ARRAY_ACCESS) */
 
 #if ENABLE_FCB_ARRAY_ACCESS
 #if CALL_NOT_IN_CARBON
@@ -1530,8 +1466,8 @@ EXTERN_API( void ) LMSetGZMoveHnd(Handle value)               TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetFCBSPtr(void)                          TWOWORDINLINE(0x2EB8, 0x034E);
-
+EXTERN_API( Ptr )
+LMGetFCBSPtr( void ) TWOWORDINLINE( 0x2EB8, 0x034E );
 
 /*
  *  LMSetFCBSPtr()
@@ -1541,8 +1477,8 @@ EXTERN_API( Ptr ) LMGetFCBSPtr(void)                          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetFCBSPtr(Ptr value)                    TWOWORDINLINE(0x21DF, 0x034E);
-
+EXTERN_API( void )
+LMSetFCBSPtr( Ptr value ) TWOWORDINLINE( 0x21DF, 0x034E );
 
 /*
  *  LMSetFSFCBLen()
@@ -1552,12 +1488,12 @@ EXTERN_API( void ) LMSetFCBSPtr(Ptr value)                    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetFSFCBLen(SInt16 value)                TWOWORDINLINE(0x31DF, 0x03F6);
+EXTERN_API( void )
+LMSetFSFCBLen( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x03F6 );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* ENABLE_FCB_ARRAY_ACCESS */
+#endif /* ENABLE_FCB_ARRAY_ACCESS */
 
 /*
    LMGetFSFCBLen is supported only for the purpose of determining that the HFS
@@ -1574,9 +1510,8 @@ EXTERN_API( void ) LMSetFSFCBLen(SInt16 value)                TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetFSFCBLen(void)                      TWOWORDINLINE(0x3EB8, 0x03F6);
-
-
+EXTERN_API( SInt16 )
+LMGetFSFCBLen( void ) TWOWORDINLINE( 0x3EB8, 0x03F6 );
 
 /*
  *  LMGetDefVCBPtr()
@@ -1586,8 +1521,8 @@ EXTERN_API( SInt16 ) LMGetFSFCBLen(void)                      TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetDefVCBPtr(void)                        TWOWORDINLINE(0x2EB8, 0x0352);
-
+EXTERN_API( Ptr )
+LMGetDefVCBPtr( void ) TWOWORDINLINE( 0x2EB8, 0x0352 );
 
 /*
  *  LMSetDefVCBPtr()
@@ -1597,9 +1532,8 @@ EXTERN_API( Ptr ) LMGetDefVCBPtr(void)                        TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDefVCBPtr(Ptr value)                  TWOWORDINLINE(0x21DF, 0x0352);
-
-
+EXTERN_API( void )
+LMSetDefVCBPtr( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0352 );
 
 /*
  *  LMGetCurDirStore()
@@ -1609,8 +1543,8 @@ EXTERN_API( void ) LMSetDefVCBPtr(Ptr value)                  TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt32 ) LMGetCurDirStore(void)                   TWOWORDINLINE(0x2EB8, 0x0398);
-
+EXTERN_API( SInt32 )
+LMGetCurDirStore( void ) TWOWORDINLINE( 0x2EB8, 0x0398 );
 
 /*
  *  LMSetCurDirStore()
@@ -1620,11 +1554,10 @@ EXTERN_API( SInt32 ) LMGetCurDirStore(void)                   TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCurDirStore(SInt32 value)             TWOWORDINLINE(0x21DF, 0x0398);
+EXTERN_API( void )
+LMSetCurDirStore( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0398 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetToExtFS()
@@ -1634,8 +1567,8 @@ EXTERN_API( void ) LMSetCurDirStore(SInt32 value)             TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UniversalProcPtr ) LMGetToExtFS(void)             TWOWORDINLINE(0x2EB8, 0x03F2);
-
+EXTERN_API( UniversalProcPtr )
+LMGetToExtFS( void ) TWOWORDINLINE( 0x2EB8, 0x03F2 );
 
 /*
  *  LMSetToExtFS()
@@ -1645,8 +1578,8 @@ EXTERN_API( UniversalProcPtr ) LMGetToExtFS(void)             TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetToExtFS(UniversalProcPtr value)       TWOWORDINLINE(0x21DF, 0x03F2);
-
+EXTERN_API( void )
+LMSetToExtFS( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x03F2 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1657,8 +1590,8 @@ EXTERN_API( void ) LMSetToExtFS(UniversalProcPtr value)       TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetScrnBase(void)                         TWOWORDINLINE(0x2EB8, 0x0824);
-
+EXTERN_API( Ptr )
+LMGetScrnBase( void ) TWOWORDINLINE( 0x2EB8, 0x0824 );
 
 /*
  *  LMSetScrnBase()
@@ -1668,10 +1601,8 @@ EXTERN_API( Ptr ) LMGetScrnBase(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetScrnBase(Ptr value)                   TWOWORDINLINE(0x21DF, 0x0824);
-
-
-
+EXTERN_API( void )
+LMSetScrnBase( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0824 );
 
 /*
  *  LMGetCrsrBusy()
@@ -1681,8 +1612,8 @@ EXTERN_API( void ) LMSetScrnBase(Ptr value)                   TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetCrsrBusy(void)                       TWOWORDINLINE(0x1EB8, 0x08CD);
-
+EXTERN_API( UInt8 )
+LMGetCrsrBusy( void ) TWOWORDINLINE( 0x1EB8, 0x08CD );
 
 /*
  *  LMSetCrsrBusy()
@@ -1692,9 +1623,8 @@ EXTERN_API( UInt8 ) LMGetCrsrBusy(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCrsrBusy(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x08CD);
-
-
+EXTERN_API( void )
+LMSetCrsrBusy( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x08CD );
 
 /*
  *  LMGetJournalRef()
@@ -1704,8 +1634,8 @@ EXTERN_API( void ) LMSetCrsrBusy(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetJournalRef(void)                    TWOWORDINLINE(0x3EB8, 0x08E8);
-
+EXTERN_API( SInt16 )
+LMGetJournalRef( void ) TWOWORDINLINE( 0x3EB8, 0x08E8 );
 
 /*
  *  LMSetJournalRef()
@@ -1715,9 +1645,8 @@ EXTERN_API( SInt16 ) LMGetJournalRef(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetJournalRef(SInt16 value)              TWOWORDINLINE(0x31DF, 0x08E8);
-
-
+EXTERN_API( void )
+LMSetJournalRef( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x08E8 );
 
 /*
  *  LMGetCrsrThresh()
@@ -1727,8 +1656,8 @@ EXTERN_API( void ) LMSetJournalRef(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetCrsrThresh(void)                    TWOWORDINLINE(0x3EB8, 0x08EC);
-
+EXTERN_API( SInt16 )
+LMGetCrsrThresh( void ) TWOWORDINLINE( 0x3EB8, 0x08EC );
 
 /*
  *  LMSetCrsrThresh()
@@ -1738,9 +1667,8 @@ EXTERN_API( SInt16 ) LMGetCrsrThresh(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCrsrThresh(SInt16 value)              TWOWORDINLINE(0x31DF, 0x08EC);
-
-
+EXTERN_API( void )
+LMSetCrsrThresh( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x08EC );
 
 /*
  *  LMGetJFetch()
@@ -1750,8 +1678,8 @@ EXTERN_API( void ) LMSetCrsrThresh(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetJFetch(void)              TWOWORDINLINE(0x2EB8, 0x08F4);
-
+EXTERN_API( UniversalProcPtr )
+LMGetJFetch( void ) TWOWORDINLINE( 0x2EB8, 0x08F4 );
 
 /*
  *  LMSetJFetch()
@@ -1761,11 +1689,10 @@ EXTERN_API( UniversalProcPtr ) LMGetJFetch(void)              TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetJFetch(UniversalProcPtr value)        TWOWORDINLINE(0x21DF, 0x08F4);
+EXTERN_API( void )
+LMSetJFetch( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x08F4 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetJStash()
@@ -1775,8 +1702,8 @@ EXTERN_API( void ) LMSetJFetch(UniversalProcPtr value)        TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UniversalProcPtr ) LMGetJStash(void)              TWOWORDINLINE(0x2EB8, 0x08F8);
-
+EXTERN_API( UniversalProcPtr )
+LMGetJStash( void ) TWOWORDINLINE( 0x2EB8, 0x08F8 );
 
 /*
  *  LMSetJStash()
@@ -1786,9 +1713,8 @@ EXTERN_API( UniversalProcPtr ) LMGetJStash(void)              TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetJStash(UniversalProcPtr value)        TWOWORDINLINE(0x21DF, 0x08F8);
-
-
+EXTERN_API( void )
+LMSetJStash( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x08F8 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1799,8 +1725,8 @@ EXTERN_API( void ) LMSetJStash(UniversalProcPtr value)        TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetJIODone(void)             TWOWORDINLINE(0x2EB8, 0x08FC);
-
+EXTERN_API( UniversalProcPtr )
+LMGetJIODone( void ) TWOWORDINLINE( 0x2EB8, 0x08FC );
 
 /*
  *  LMSetJIODone()
@@ -1810,11 +1736,10 @@ EXTERN_API( UniversalProcPtr ) LMGetJIODone(void)             TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetJIODone(UniversalProcPtr value)       TWOWORDINLINE(0x21DF, 0x08FC);
+EXTERN_API( void )
+LMSetJIODone( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x08FC );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetCurApRefNum()
@@ -1824,8 +1749,8 @@ EXTERN_API( void ) LMSetJIODone(UniversalProcPtr value)       TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetCurApRefNum(void)                   TWOWORDINLINE(0x3EB8, 0x0900);
-
+EXTERN_API( SInt16 )
+LMGetCurApRefNum( void ) TWOWORDINLINE( 0x3EB8, 0x0900 );
 
 /*
  *  LMSetCurApRefNum()
@@ -1835,9 +1760,8 @@ EXTERN_API( SInt16 ) LMGetCurApRefNum(void)                   TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetCurApRefNum(SInt16 value)             TWOWORDINLINE(0x31DF, 0x0900);
-
-
+EXTERN_API( void )
+LMSetCurApRefNum( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0900 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1848,8 +1772,8 @@ EXTERN_API( void ) LMSetCurApRefNum(SInt16 value)             TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetCurrentA5(void)                        TWOWORDINLINE(0x2EB8, 0x0904);
-
+EXTERN_API( Ptr )
+LMGetCurrentA5( void ) TWOWORDINLINE( 0x2EB8, 0x0904 );
 
 /*
  *  LMSetCurrentA5()
@@ -1859,11 +1783,10 @@ EXTERN_API( Ptr ) LMGetCurrentA5(void)                        TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCurrentA5(Ptr value)                  TWOWORDINLINE(0x21DF, 0x0904);
+EXTERN_API( void )
+LMSetCurrentA5( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0904 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetCurStackBase()
@@ -1873,8 +1796,8 @@ EXTERN_API( void ) LMSetCurrentA5(Ptr value)                  TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetCurStackBase(void)                     TWOWORDINLINE(0x2EB8, 0x0908);
-
+EXTERN_API( Ptr )
+LMGetCurStackBase( void ) TWOWORDINLINE( 0x2EB8, 0x0908 );
 
 /*
  *  LMSetCurStackBase()
@@ -1884,9 +1807,8 @@ EXTERN_API( Ptr ) LMGetCurStackBase(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetCurStackBase(Ptr value)               TWOWORDINLINE(0x21DF, 0x0908);
-
-
+EXTERN_API( void )
+LMSetCurStackBase( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0908 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1897,8 +1819,8 @@ EXTERN_API( void ) LMSetCurStackBase(Ptr value)               TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetCurJTOffset(void)                   TWOWORDINLINE(0x3EB8, 0x0934);
-
+EXTERN_API( SInt16 )
+LMGetCurJTOffset( void ) TWOWORDINLINE( 0x3EB8, 0x0934 );
 
 /*
  *  LMSetCurJTOffset()
@@ -1908,11 +1830,10 @@ EXTERN_API( SInt16 ) LMGetCurJTOffset(void)                   TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCurJTOffset(SInt16 value)             TWOWORDINLINE(0x31DF, 0x0934);
+EXTERN_API( void )
+LMSetCurJTOffset( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0934 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetCurPageOption()
@@ -1922,8 +1843,8 @@ EXTERN_API( void ) LMSetCurJTOffset(SInt16 value)             TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetCurPageOption(void)                 TWOWORDINLINE(0x3EB8, 0x0936);
-
+EXTERN_API( SInt16 )
+LMGetCurPageOption( void ) TWOWORDINLINE( 0x3EB8, 0x0936 );
 
 /*
  *  LMSetCurPageOption()
@@ -1933,10 +1854,8 @@ EXTERN_API( SInt16 ) LMGetCurPageOption(void)                 TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetCurPageOption(SInt16 value)           TWOWORDINLINE(0x31DF, 0x0936);
-
-
-
+EXTERN_API( void )
+LMSetCurPageOption( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0936 );
 
 /*
  *  LMGetPrintErr()
@@ -1946,8 +1865,8 @@ EXTERN_API( void ) LMSetCurPageOption(SInt16 value)           TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetPrintErr(void)                      TWOWORDINLINE(0x3EB8, 0x0944);
-
+EXTERN_API( SInt16 )
+LMGetPrintErr( void ) TWOWORDINLINE( 0x3EB8, 0x0944 );
 
 /*
  *  LMSetPrintErr()
@@ -1957,10 +1876,8 @@ EXTERN_API( SInt16 ) LMGetPrintErr(void)                      TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetPrintErr(SInt16 value)                TWOWORDINLINE(0x31DF, 0x0944);
-
-
-
+EXTERN_API( void )
+LMSetPrintErr( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0944 );
 
 /*  Carbon Scrap Manager does not support low memory.*/
 
@@ -1973,8 +1890,8 @@ EXTERN_API( void ) LMSetPrintErr(SInt16 value)                TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt32 ) LMGetScrapSize(void)                     TWOWORDINLINE(0x2EB8, 0x0960);
-
+EXTERN_API( SInt32 )
+LMGetScrapSize( void ) TWOWORDINLINE( 0x2EB8, 0x0960 );
 
 /*
  *  LMSetScrapSize()
@@ -1984,8 +1901,8 @@ EXTERN_API( SInt32 ) LMGetScrapSize(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetScrapSize(SInt32 value)               TWOWORDINLINE(0x21DF, 0x0960);
-
+EXTERN_API( void )
+LMSetScrapSize( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0960 );
 
 /*
  *  LMGetScrapHandle()
@@ -1995,8 +1912,8 @@ EXTERN_API( void ) LMSetScrapSize(SInt32 value)               TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetScrapHandle(void)                   TWOWORDINLINE(0x2EB8, 0x0964);
-
+EXTERN_API( Handle )
+LMGetScrapHandle( void ) TWOWORDINLINE( 0x2EB8, 0x0964 );
 
 /*
  *  LMSetScrapHandle()
@@ -2006,8 +1923,8 @@ EXTERN_API( Handle ) LMGetScrapHandle(void)                   TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetScrapHandle(Handle value)             TWOWORDINLINE(0x21DF, 0x0964);
-
+EXTERN_API( void )
+LMSetScrapHandle( Handle value ) TWOWORDINLINE( 0x21DF, 0x0964 );
 
 /*
  *  LMGetScrapCount()
@@ -2017,8 +1934,8 @@ EXTERN_API( void ) LMSetScrapHandle(Handle value)             TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetScrapCount(void)                    TWOWORDINLINE(0x3EB8, 0x0968);
-
+EXTERN_API( SInt16 )
+LMGetScrapCount( void ) TWOWORDINLINE( 0x3EB8, 0x0968 );
 
 /*
  *  LMSetScrapCount()
@@ -2028,8 +1945,8 @@ EXTERN_API( SInt16 ) LMGetScrapCount(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetScrapCount(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0968);
-
+EXTERN_API( void )
+LMSetScrapCount( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0968 );
 
 /*
  *  LMGetScrapState()
@@ -2039,8 +1956,8 @@ EXTERN_API( void ) LMSetScrapCount(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetScrapState(void)                    TWOWORDINLINE(0x3EB8, 0x096A);
-
+EXTERN_API( SInt16 )
+LMGetScrapState( void ) TWOWORDINLINE( 0x3EB8, 0x096A );
 
 /*
  *  LMSetScrapState()
@@ -2050,8 +1967,8 @@ EXTERN_API( SInt16 ) LMGetScrapState(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetScrapState(SInt16 value)              TWOWORDINLINE(0x31DF, 0x096A);
-
+EXTERN_API( void )
+LMSetScrapState( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x096A );
 
 /*
  *  LMGetScrapName()
@@ -2061,8 +1978,8 @@ EXTERN_API( void ) LMSetScrapState(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( StringPtr ) LMGetScrapName(void)                  TWOWORDINLINE(0x2EB8, 0x096C);
-
+EXTERN_API( StringPtr )
+LMGetScrapName( void ) TWOWORDINLINE( 0x2EB8, 0x096C );
 
 /*
  *  LMSetScrapName()
@@ -2072,9 +1989,8 @@ EXTERN_API( StringPtr ) LMGetScrapName(void)                  TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetScrapName(StringPtr value)            TWOWORDINLINE(0x21DF, 0x096C);
-
-
+EXTERN_API( void )
+LMSetScrapName( StringPtr value ) TWOWORDINLINE( 0x21DF, 0x096C );
 
 /*
  *  LMGetROMFont0()
@@ -2084,8 +2000,8 @@ EXTERN_API( void ) LMSetScrapName(StringPtr value)            TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetROMFont0(void)                      TWOWORDINLINE(0x2EB8, 0x0980);
-
+EXTERN_API( Handle )
+LMGetROMFont0( void ) TWOWORDINLINE( 0x2EB8, 0x0980 );
 
 /*
  *  LMSetROMFont0()
@@ -2095,10 +2011,10 @@ EXTERN_API( Handle ) LMGetROMFont0(void)                      TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetROMFont0(Handle value)                TWOWORDINLINE(0x21DF, 0x0980);
+EXTERN_API( void )
+LMSetROMFont0( Handle value ) TWOWORDINLINE( 0x21DF, 0x0980 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetApFontID()
@@ -2108,8 +2024,8 @@ EXTERN_API( void ) LMSetROMFont0(Handle value)                TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetApFontID(void)                      TWOWORDINLINE(0x3EB8, 0x0984);
-
+EXTERN_API( SInt16 )
+LMGetApFontID( void ) TWOWORDINLINE( 0x3EB8, 0x0984 );
 
 /*
  *  LMSetApFontID()
@@ -2119,10 +2035,8 @@ EXTERN_API( SInt16 ) LMGetApFontID(void)                      TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetApFontID(SInt16 value)                TWOWORDINLINE(0x31DF, 0x0984);
-
-
-
+EXTERN_API( void )
+LMSetApFontID( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0984 );
 
 /* Carbon versions of the Window Manager do not support LowMem. */
 /* Carbon Usage: use GetWindowList*/
@@ -2135,8 +2049,8 @@ EXTERN_API( void ) LMSetApFontID(SInt16 value)                TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( WindowRef ) LMGetWindowList(void)                 TWOWORDINLINE(0x2EB8, 0x09D6);
-
+EXTERN_API( WindowRef )
+LMGetWindowList( void ) TWOWORDINLINE( 0x2EB8, 0x09D6 );
 
 /*
  *  LMGetSaveUpdate()
@@ -2146,8 +2060,8 @@ EXTERN_API( WindowRef ) LMGetWindowList(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetSaveUpdate(void)                    TWOWORDINLINE(0x3EB8, 0x09DA);
-
+EXTERN_API( SInt16 )
+LMGetSaveUpdate( void ) TWOWORDINLINE( 0x3EB8, 0x09DA );
 
 /*
  *  LMSetSaveUpdate()
@@ -2157,8 +2071,8 @@ EXTERN_API( SInt16 ) LMGetSaveUpdate(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSaveUpdate(SInt16 value)              TWOWORDINLINE(0x31DF, 0x09DA);
-
+EXTERN_API( void )
+LMSetSaveUpdate( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x09DA );
 
 /*
  *  LMGetPaintWhite()
@@ -2168,8 +2082,8 @@ EXTERN_API( void ) LMSetSaveUpdate(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetPaintWhite(void)                    TWOWORDINLINE(0x3EB8, 0x09DC);
-
+EXTERN_API( SInt16 )
+LMGetPaintWhite( void ) TWOWORDINLINE( 0x3EB8, 0x09DC );
 
 /* Carbon Usage : use InstallWindowContentPaintProc*/
 /*
@@ -2180,8 +2094,8 @@ EXTERN_API( SInt16 ) LMGetPaintWhite(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetPaintWhite(SInt16 value)              TWOWORDINLINE(0x31DF, 0x09DC);
-
+EXTERN_API( void )
+LMSetPaintWhite( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x09DC );
 
 /*
  *  LMGetWMgrPort()
@@ -2191,8 +2105,8 @@ EXTERN_API( void ) LMSetPaintWhite(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( GrafPtr ) LMGetWMgrPort(void)                     TWOWORDINLINE(0x2EB8, 0x09DE);
-
+EXTERN_API( GrafPtr )
+LMGetWMgrPort( void ) TWOWORDINLINE( 0x2EB8, 0x09DE );
 
 /*
  *  LMSetWMgrPort()
@@ -2202,8 +2116,8 @@ EXTERN_API( GrafPtr ) LMGetWMgrPort(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetWMgrPort(GrafPtr value)               TWOWORDINLINE(0x21DF, 0x09DE);
-
+EXTERN_API( void )
+LMSetWMgrPort( GrafPtr value ) TWOWORDINLINE( 0x21DF, 0x09DE );
 
 /* Carbon Usage: use GetGrayRgn*/
 /*
@@ -2214,8 +2128,8 @@ EXTERN_API( void ) LMSetWMgrPort(GrafPtr value)               TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( RgnHandle ) LMGetGrayRgn(void)                    TWOWORDINLINE(0x2EB8, 0x09EE);
-
+EXTERN_API( RgnHandle )
+LMGetGrayRgn( void ) TWOWORDINLINE( 0x2EB8, 0x09EE );
 
 /*
  *  LMGetDragHook()
@@ -2225,8 +2139,8 @@ EXTERN_API( RgnHandle ) LMGetGrayRgn(void)                    TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( DragGrayRgnUPP ) LMGetDragHook(void)              TWOWORDINLINE(0x2EB8, 0x09F6);
-
+EXTERN_API( DragGrayRgnUPP )
+LMGetDragHook( void ) TWOWORDINLINE( 0x2EB8, 0x09F6 );
 
 /*
  *  LMSetDragHook()
@@ -2236,8 +2150,8 @@ EXTERN_API( DragGrayRgnUPP ) LMGetDragHook(void)              TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDragHook(DragGrayRgnUPP value)        TWOWORDINLINE(0x21DF, 0x09F6);
-
+EXTERN_API( void )
+LMSetDragHook( DragGrayRgnUPP value ) TWOWORDINLINE( 0x21DF, 0x09F6 );
 
 /*
  *  LMSetWindowList()
@@ -2247,8 +2161,8 @@ EXTERN_API( void ) LMSetDragHook(DragGrayRgnUPP value)        TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetWindowList(WindowRef value)           TWOWORDINLINE(0x21DF, 0x09D6);
-
+EXTERN_API( void )
+LMSetWindowList( WindowRef value ) TWOWORDINLINE( 0x21DF, 0x09D6 );
 
 /*
  *  LMGetGhostWindow()
@@ -2258,8 +2172,8 @@ EXTERN_API( void ) LMSetWindowList(WindowRef value)           TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( WindowRef ) LMGetGhostWindow(void)                TWOWORDINLINE(0x2EB8, 0x0A84);
-
+EXTERN_API( WindowRef )
+LMGetGhostWindow( void ) TWOWORDINLINE( 0x2EB8, 0x0A84 );
 
 /*
  *  LMSetGhostWindow()
@@ -2269,10 +2183,10 @@ EXTERN_API( WindowRef ) LMGetGhostWindow(void)                TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetGhostWindow(WindowRef value)          TWOWORDINLINE(0x21DF, 0x0A84);
+EXTERN_API( void )
+LMSetGhostWindow( WindowRef value ) TWOWORDINLINE( 0x21DF, 0x0A84 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if !OPAQUE_TOOLBOX_STRUCTS
 #if CALL_NOT_IN_CARBON
@@ -2284,8 +2198,8 @@ EXTERN_API( void ) LMSetGhostWindow(WindowRef value)          TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( AuxWinHandle ) LMGetAuxWinHead(void)              TWOWORDINLINE(0x2EB8, 0x0CD0);
-
+EXTERN_API( AuxWinHandle )
+LMGetAuxWinHead( void ) TWOWORDINLINE( 0x2EB8, 0x0CD0 );
 
 /*
  *  LMSetAuxWinHead()
@@ -2295,12 +2209,12 @@ EXTERN_API( AuxWinHandle ) LMGetAuxWinHead(void)              TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetAuxWinHead(AuxWinHandle value)        TWOWORDINLINE(0x21DF, 0x0CD0);
+EXTERN_API( void )
+LMSetAuxWinHead( AuxWinHandle value ) TWOWORDINLINE( 0x21DF, 0x0CD0 );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
+#endif /* !OPAQUE_TOOLBOX_STRUCTS */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -2311,8 +2225,8 @@ EXTERN_API( void ) LMSetAuxWinHead(AuxWinHandle value)        TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( WindowRef ) LMGetCurActivate(void)                TWOWORDINLINE(0x2EB8, 0x0A64);
-
+EXTERN_API( WindowRef )
+LMGetCurActivate( void ) TWOWORDINLINE( 0x2EB8, 0x0A64 );
 
 /*
  *  LMSetCurActivate()
@@ -2322,8 +2236,8 @@ EXTERN_API( WindowRef ) LMGetCurActivate(void)                TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCurActivate(WindowRef value)          TWOWORDINLINE(0x21DF, 0x0A64);
-
+EXTERN_API( void )
+LMSetCurActivate( WindowRef value ) TWOWORDINLINE( 0x21DF, 0x0A64 );
 
 /*
  *  LMGetCurDeactive()
@@ -2333,8 +2247,8 @@ EXTERN_API( void ) LMSetCurActivate(WindowRef value)          TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( WindowRef ) LMGetCurDeactive(void)                TWOWORDINLINE(0x2EB8, 0x0A68);
-
+EXTERN_API( WindowRef )
+LMGetCurDeactive( void ) TWOWORDINLINE( 0x2EB8, 0x0A68 );
 
 /*
  *  LMSetCurDeactive()
@@ -2344,8 +2258,8 @@ EXTERN_API( WindowRef ) LMGetCurDeactive(void)                TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCurDeactive(WindowRef value)          TWOWORDINLINE(0x21DF, 0x0A68);
-
+EXTERN_API( void )
+LMSetCurDeactive( WindowRef value ) TWOWORDINLINE( 0x21DF, 0x0A68 );
 
 /*
  *  LMGetOldStructure()
@@ -2355,8 +2269,8 @@ EXTERN_API( void ) LMSetCurDeactive(WindowRef value)          TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( RgnHandle ) LMGetOldStructure(void)               TWOWORDINLINE(0x2EB8, 0x09E6);
-
+EXTERN_API( RgnHandle )
+LMGetOldStructure( void ) TWOWORDINLINE( 0x2EB8, 0x09E6 );
 
 /*
  *  LMSetOldStructure()
@@ -2366,8 +2280,8 @@ EXTERN_API( RgnHandle ) LMGetOldStructure(void)               TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetOldStructure(RgnHandle value)         TWOWORDINLINE(0x21DF, 0x09E6);
-
+EXTERN_API( void )
+LMSetOldStructure( RgnHandle value ) TWOWORDINLINE( 0x21DF, 0x09E6 );
 
 /*
  *  LMGetOldContent()
@@ -2377,8 +2291,8 @@ EXTERN_API( void ) LMSetOldStructure(RgnHandle value)         TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( RgnHandle ) LMGetOldContent(void)                 TWOWORDINLINE(0x2EB8, 0x09EA);
-
+EXTERN_API( RgnHandle )
+LMGetOldContent( void ) TWOWORDINLINE( 0x2EB8, 0x09EA );
 
 /*
  *  LMSetOldContent()
@@ -2388,8 +2302,8 @@ EXTERN_API( RgnHandle ) LMGetOldContent(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetOldContent(RgnHandle value)           TWOWORDINLINE(0x21DF, 0x09EA);
-
+EXTERN_API( void )
+LMSetOldContent( RgnHandle value ) TWOWORDINLINE( 0x21DF, 0x09EA );
 
 /*
  *  LMSetGrayRgn()
@@ -2399,8 +2313,8 @@ EXTERN_API( void ) LMSetOldContent(RgnHandle value)           TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetGrayRgn(RgnHandle value)              TWOWORDINLINE(0x21DF, 0x09EE);
-
+EXTERN_API( void )
+LMSetGrayRgn( RgnHandle value ) TWOWORDINLINE( 0x21DF, 0x09EE );
 
 /*
  *  LMGetSaveVisRgn()
@@ -2410,8 +2324,8 @@ EXTERN_API( void ) LMSetGrayRgn(RgnHandle value)              TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( RgnHandle ) LMGetSaveVisRgn(void)                 TWOWORDINLINE(0x2EB8, 0x09F2);
-
+EXTERN_API( RgnHandle )
+LMGetSaveVisRgn( void ) TWOWORDINLINE( 0x2EB8, 0x09F2 );
 
 /*
  *  LMSetSaveVisRgn()
@@ -2421,11 +2335,10 @@ EXTERN_API( RgnHandle ) LMGetSaveVisRgn(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSaveVisRgn(RgnHandle value)           TWOWORDINLINE(0x21DF, 0x09F2);
+EXTERN_API( void )
+LMSetSaveVisRgn( RgnHandle value ) TWOWORDINLINE( 0x21DF, 0x09F2 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetOneOne()
@@ -2435,8 +2348,8 @@ EXTERN_API( void ) LMSetSaveVisRgn(RgnHandle value)           TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt32 ) LMGetOneOne(void)                        TWOWORDINLINE(0x2EB8, 0x0A02);
-
+EXTERN_API( SInt32 )
+LMGetOneOne( void ) TWOWORDINLINE( 0x2EB8, 0x0A02 );
 
 /*
  *  LMSetOneOne()
@@ -2446,9 +2359,8 @@ EXTERN_API( SInt32 ) LMGetOneOne(void)                        TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetOneOne(SInt32 value)                  TWOWORDINLINE(0x21DF, 0x0A02);
-
-
+EXTERN_API( void )
+LMSetOneOne( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0A02 );
 
 /*
  *  LMGetMinusOne()
@@ -2458,8 +2370,8 @@ EXTERN_API( void ) LMSetOneOne(SInt32 value)                  TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt32 ) LMGetMinusOne(void)                      TWOWORDINLINE(0x2EB8, 0x0A06);
-
+EXTERN_API( SInt32 )
+LMGetMinusOne( void ) TWOWORDINLINE( 0x2EB8, 0x0A06 );
 
 /*
  *  LMSetMinusOne()
@@ -2469,9 +2381,8 @@ EXTERN_API( SInt32 ) LMGetMinusOne(void)                      TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetMinusOne(SInt32 value)                TWOWORDINLINE(0x21DF, 0x0A06);
-
-
+EXTERN_API( void )
+LMSetMinusOne( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0A06 );
 
 /* Carbon Usage: use GetMenuTrackingData*/
 #if CALL_NOT_IN_CARBON
@@ -2483,8 +2394,8 @@ EXTERN_API( void ) LMSetMinusOne(SInt32 value)                TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetTopMenuItem(void)                   TWOWORDINLINE(0x3EB8, 0x0A0A);
-
+EXTERN_API( SInt16 )
+LMGetTopMenuItem( void ) TWOWORDINLINE( 0x3EB8, 0x0A0A );
 
 /* Carbon Usage: replaced by MDEF messages and GetMenuTrackingData API*/
 /*
@@ -2495,9 +2406,8 @@ EXTERN_API( SInt16 ) LMGetTopMenuItem(void)                   TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTopMenuItem(SInt16 value)             TWOWORDINLINE(0x31DF, 0x0A0A);
-
-
+EXTERN_API( void )
+LMSetTopMenuItem( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A0A );
 
 /* Carbon Usage: use GetMenuTrackingData*/
 /*
@@ -2508,8 +2418,8 @@ EXTERN_API( void ) LMSetTopMenuItem(SInt16 value)             TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetAtMenuBottom(void)                  TWOWORDINLINE(0x3EB8, 0x0A0C);
-
+EXTERN_API( SInt16 )
+LMGetAtMenuBottom( void ) TWOWORDINLINE( 0x3EB8, 0x0A0C );
 
 /* Carbon Usage: replaced by MDEF messages and GetMenuTrackingData API*/
 /*
@@ -2520,9 +2430,8 @@ EXTERN_API( SInt16 ) LMGetAtMenuBottom(void)                  TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetAtMenuBottom(SInt16 value)            TWOWORDINLINE(0x31DF, 0x0A0C);
-
-
+EXTERN_API( void )
+LMSetAtMenuBottom( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A0C );
 
 /*
    Carbon usage: use GetMenuBar (which returns a newly allocated handle in
@@ -2537,8 +2446,8 @@ EXTERN_API( void ) LMSetAtMenuBottom(SInt16 value)            TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetMenuList(void)                      TWOWORDINLINE(0x2EB8, 0x0A1C);
-
+EXTERN_API( Handle )
+LMGetMenuList( void ) TWOWORDINLINE( 0x2EB8, 0x0A1C );
 
 /*
  *  LMSetMenuList()
@@ -2548,9 +2457,8 @@ EXTERN_API( Handle ) LMGetMenuList(void)                      TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMenuList(Handle value)                TWOWORDINLINE(0x21DF, 0x0A1C);
-
-
+EXTERN_API( void )
+LMSetMenuList( Handle value ) TWOWORDINLINE( 0x21DF, 0x0A1C );
 
 /* Carbon usage: no replacement*/
 /*
@@ -2561,8 +2469,8 @@ EXTERN_API( void ) LMSetMenuList(Handle value)                TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetMBarEnable(void)                    TWOWORDINLINE(0x3EB8, 0x0A20);
-
+EXTERN_API( SInt16 )
+LMGetMBarEnable( void ) TWOWORDINLINE( 0x3EB8, 0x0A20 );
 
 /*
  *  LMSetMBarEnable()
@@ -2572,9 +2480,8 @@ EXTERN_API( SInt16 ) LMGetMBarEnable(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMBarEnable(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0A20);
-
-
+EXTERN_API( void )
+LMSetMBarEnable( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A20 );
 
 /* Carbon usage: no replacement*/
 /*
@@ -2585,8 +2492,8 @@ EXTERN_API( void ) LMSetMBarEnable(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetMenuFlash(void)                     TWOWORDINLINE(0x3EB8, 0x0A24);
-
+EXTERN_API( SInt16 )
+LMGetMenuFlash( void ) TWOWORDINLINE( 0x3EB8, 0x0A24 );
 
 /*
  *  LMSetMenuFlash()
@@ -2596,9 +2503,8 @@ EXTERN_API( SInt16 ) LMGetMenuFlash(void)                     TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMenuFlash(SInt16 value)               TWOWORDINLINE(0x31DF, 0x0A24);
-
-
+EXTERN_API( void )
+LMSetMenuFlash( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A24 );
 
 /* LMGetTheMenu() moved to Menus.h */
 /*
@@ -2609,8 +2515,8 @@ EXTERN_API( void ) LMSetMenuFlash(SInt16 value)               TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTheMenu(SInt16 value)                 TWOWORDINLINE(0x31DF, 0x0A26);
-
+EXTERN_API( void )
+LMSetTheMenu( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A26 );
 
 /*
  *  LMGetMBarHook()
@@ -2620,8 +2526,8 @@ EXTERN_API( void ) LMSetTheMenu(SInt16 value)                 TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( MBarHookUPP ) LMGetMBarHook(void)                 TWOWORDINLINE(0x2EB8, 0x0A2C);
-
+EXTERN_API( MBarHookUPP )
+LMGetMBarHook( void ) TWOWORDINLINE( 0x2EB8, 0x0A2C );
 
 /*
  *  LMSetMBarHook()
@@ -2631,9 +2537,8 @@ EXTERN_API( MBarHookUPP ) LMGetMBarHook(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMBarHook(MBarHookUPP value)           TWOWORDINLINE(0x21DF, 0x0A2C);
-
-
+EXTERN_API( void )
+LMSetMBarHook( MBarHookUPP value ) TWOWORDINLINE( 0x21DF, 0x0A2C );
 
 /*
  *  LMGetMenuHook()
@@ -2643,8 +2548,8 @@ EXTERN_API( void ) LMSetMBarHook(MBarHookUPP value)           TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( MenuHookUPP ) LMGetMenuHook(void)                 TWOWORDINLINE(0x2EB8, 0x0A30);
-
+EXTERN_API( MenuHookUPP )
+LMGetMenuHook( void ) TWOWORDINLINE( 0x2EB8, 0x0A30 );
 
 /*
  *  LMSetMenuHook()
@@ -2654,8 +2559,8 @@ EXTERN_API( MenuHookUPP ) LMGetMenuHook(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMenuHook(MenuHookUPP value)           TWOWORDINLINE(0x21DF, 0x0A30);
-
+EXTERN_API( void )
+LMSetMenuHook( MenuHookUPP value ) TWOWORDINLINE( 0x21DF, 0x0A30 );
 
 /*
  *  LMGetTopMapHndl()
@@ -2665,8 +2570,8 @@ EXTERN_API( void ) LMSetMenuHook(MenuHookUPP value)           TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetTopMapHndl(void)                    TWOWORDINLINE(0x2EB8, 0x0A50);
-
+EXTERN_API( Handle )
+LMGetTopMapHndl( void ) TWOWORDINLINE( 0x2EB8, 0x0A50 );
 
 /*
  *  LMSetTopMapHndl()
@@ -2676,9 +2581,8 @@ EXTERN_API( Handle ) LMGetTopMapHndl(void)                    TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTopMapHndl(Handle value)              TWOWORDINLINE(0x21DF, 0x0A50);
-
-
+EXTERN_API( void )
+LMSetTopMapHndl( Handle value ) TWOWORDINLINE( 0x21DF, 0x0A50 );
 
 /*
  *  LMGetSysMapHndl()
@@ -2688,8 +2592,8 @@ EXTERN_API( void ) LMSetTopMapHndl(Handle value)              TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetSysMapHndl(void)                    TWOWORDINLINE(0x2EB8, 0x0A54);
-
+EXTERN_API( Handle )
+LMGetSysMapHndl( void ) TWOWORDINLINE( 0x2EB8, 0x0A54 );
 
 /*
  *  LMSetSysMapHndl()
@@ -2699,11 +2603,10 @@ EXTERN_API( Handle ) LMGetSysMapHndl(void)                    TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSysMapHndl(Handle value)              TWOWORDINLINE(0x21DF, 0x0A54);
+EXTERN_API( void )
+LMSetSysMapHndl( Handle value ) TWOWORDINLINE( 0x21DF, 0x0A54 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetSysMap()
@@ -2713,8 +2616,8 @@ EXTERN_API( void ) LMSetSysMapHndl(Handle value)              TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetSysMap(void)                        TWOWORDINLINE(0x3EB8, 0x0A58);
-
+EXTERN_API( SInt16 )
+LMGetSysMap( void ) TWOWORDINLINE( 0x3EB8, 0x0A58 );
 
 /*
  *  LMSetSysMap()
@@ -2724,10 +2627,8 @@ EXTERN_API( SInt16 ) LMGetSysMap(void)                        TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSysMap(SInt16 value)                  TWOWORDINLINE(0x31DF, 0x0A58);
-
-
-
+EXTERN_API( void )
+LMSetSysMap( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A58 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -2738,8 +2639,8 @@ EXTERN_API( void ) LMSetSysMap(SInt16 value)                  TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetCurMap(void)                        TWOWORDINLINE(0x3EB8, 0x0A5A);
-
+EXTERN_API( SInt16 )
+LMGetCurMap( void ) TWOWORDINLINE( 0x3EB8, 0x0A5A );
 
 /*
  *  LMSetCurMap()
@@ -2749,11 +2650,10 @@ EXTERN_API( SInt16 ) LMGetCurMap(void)                        TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetCurMap(SInt16 value)                  TWOWORDINLINE(0x31DF, 0x0A5A);
+EXTERN_API( void )
+LMSetCurMap( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A5A );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetResLoad()
@@ -2763,8 +2663,8 @@ EXTERN_API( void ) LMSetCurMap(SInt16 value)                  TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UInt8 ) LMGetResLoad(void)                        TWOWORDINLINE(0x1EB8, 0x0A5E);
-
+EXTERN_API( UInt8 )
+LMGetResLoad( void ) TWOWORDINLINE( 0x1EB8, 0x0A5E );
 
 /*
  *  LMSetResLoad()
@@ -2774,9 +2674,8 @@ EXTERN_API( UInt8 ) LMGetResLoad(void)                        TWOWORDINLINE(0x1E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetResLoad(UInt8 value)                  TWOWORDINLINE(0x11DF, 0x0A5E);
-
-
+EXTERN_API( void )
+LMSetResLoad( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0A5E );
 
 /*
  *  LMGetResErr()
@@ -2786,8 +2685,8 @@ EXTERN_API( void ) LMSetResLoad(UInt8 value)                  TWOWORDINLINE(0x11
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetResErr(void)                        TWOWORDINLINE(0x3EB8, 0x0A60);
-
+EXTERN_API( SInt16 )
+LMGetResErr( void ) TWOWORDINLINE( 0x3EB8, 0x0A60 );
 
 /*
  *  LMSetResErr()
@@ -2797,9 +2696,8 @@ EXTERN_API( SInt16 ) LMGetResErr(void)                        TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetResErr(SInt16 value)                  TWOWORDINLINE(0x31DF, 0x0A60);
-
-
+EXTERN_API( void )
+LMSetResErr( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A60 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -2810,8 +2708,8 @@ EXTERN_API( void ) LMSetResErr(SInt16 value)                  TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetFScaleDisable(void)                  TWOWORDINLINE(0x1EB8, 0x0A63);
-
+EXTERN_API( UInt8 )
+LMGetFScaleDisable( void ) TWOWORDINLINE( 0x1EB8, 0x0A63 );
 
 /*
  *  LMSetFScaleDisable()
@@ -2821,10 +2719,8 @@ EXTERN_API( UInt8 ) LMGetFScaleDisable(void)                  TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetFScaleDisable(UInt8 value)            TWOWORDINLINE(0x11DF, 0x0A63);
-
-
-
+EXTERN_API( void )
+LMSetFScaleDisable( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0A63 );
 
 /*
  *  LMGetDeskHook()
@@ -2834,8 +2730,8 @@ EXTERN_API( void ) LMSetFScaleDisable(UInt8 value)            TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetDeskHook(void)            TWOWORDINLINE(0x2EB8, 0x0A6C);
-
+EXTERN_API( UniversalProcPtr )
+LMGetDeskHook( void ) TWOWORDINLINE( 0x2EB8, 0x0A6C );
 
 /*
  *  LMSetDeskHook()
@@ -2845,9 +2741,8 @@ EXTERN_API( UniversalProcPtr ) LMGetDeskHook(void)            TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDeskHook(UniversalProcPtr value)      TWOWORDINLINE(0x21DF, 0x0A6C);
-
-
+EXTERN_API( void )
+LMSetDeskHook( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x0A6C );
 
 /* Carbon Usage: Use TEGetDoTextHook.*/
 /*
@@ -2858,8 +2753,8 @@ EXTERN_API( void ) LMSetDeskHook(UniversalProcPtr value)      TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetTEDoText(void)            TWOWORDINLINE(0x2EB8, 0x0A70);
-
+EXTERN_API( UniversalProcPtr )
+LMGetTEDoText( void ) TWOWORDINLINE( 0x2EB8, 0x0A70 );
 
 /* Carbon Usage: Use TESetDoTextHook.*/
 /*
@@ -2870,9 +2765,8 @@ EXTERN_API( UniversalProcPtr ) LMGetTEDoText(void)            TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTEDoText(UniversalProcPtr value)      TWOWORDINLINE(0x21DF, 0x0A70);
-
-
+EXTERN_API( void )
+LMSetTEDoText( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x0A70 );
 
 /* Carbon Usage: Use TEGetRecalcHook.*/
 /*
@@ -2883,8 +2777,8 @@ EXTERN_API( void ) LMSetTEDoText(UniversalProcPtr value)      TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetTERecal(void)             TWOWORDINLINE(0x2EB8, 0x0A74);
-
+EXTERN_API( UniversalProcPtr )
+LMGetTERecal( void ) TWOWORDINLINE( 0x2EB8, 0x0A74 );
 
 /* Carbon Usage: Use TESetRecalcHook.*/
 /*
@@ -2895,8 +2789,8 @@ EXTERN_API( UniversalProcPtr ) LMGetTERecal(void)             TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTERecal(UniversalProcPtr value)       TWOWORDINLINE(0x21DF, 0x0A74);
-
+EXTERN_API( void )
+LMSetTERecal( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x0A74 );
 
 /*
  *  LMGetResumeProc()
@@ -2906,8 +2800,8 @@ EXTERN_API( void ) LMSetTERecal(UniversalProcPtr value)       TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetResumeProc(void)          TWOWORDINLINE(0x2EB8, 0x0A8C);
-
+EXTERN_API( UniversalProcPtr )
+LMGetResumeProc( void ) TWOWORDINLINE( 0x2EB8, 0x0A8C );
 
 /*
  *  LMSetResumeProc()
@@ -2917,8 +2811,8 @@ EXTERN_API( UniversalProcPtr ) LMGetResumeProc(void)          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetResumeProc(UniversalProcPtr value)    TWOWORDINLINE(0x21DF, 0x0A8C);
-
+EXTERN_API( void )
+LMSetResumeProc( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x0A8C );
 
 /*
  *  LMGetANumber()
@@ -2928,8 +2822,8 @@ EXTERN_API( void ) LMSetResumeProc(UniversalProcPtr value)    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetANumber(void)                       TWOWORDINLINE(0x3EB8, 0x0A98);
-
+EXTERN_API( SInt16 )
+LMGetANumber( void ) TWOWORDINLINE( 0x3EB8, 0x0A98 );
 
 /*
  *  LMSetANumber()
@@ -2939,8 +2833,8 @@ EXTERN_API( SInt16 ) LMGetANumber(void)                       TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetANumber(SInt16 value)                 TWOWORDINLINE(0x31DF, 0x0A98);
-
+EXTERN_API( void )
+LMSetANumber( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A98 );
 
 /* Carbon Usage: Use GetAlertStage.*/
 /*
@@ -2951,8 +2845,8 @@ EXTERN_API( void ) LMSetANumber(SInt16 value)                 TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetACount(void)                        TWOWORDINLINE(0x3EB8, 0x0A9A);
-
+EXTERN_API( SInt16 )
+LMGetACount( void ) TWOWORDINLINE( 0x3EB8, 0x0A9A );
 
 /* Carbon Usage: Use ResetAlertStage.*/
 /*
@@ -2963,8 +2857,8 @@ EXTERN_API( SInt16 ) LMGetACount(void)                        TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetACount(SInt16 value)                  TWOWORDINLINE(0x31DF, 0x0A9A);
-
+EXTERN_API( void )
+LMSetACount( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0A9A );
 
 /*
  *  LMGetDABeeper()
@@ -2974,8 +2868,8 @@ EXTERN_API( void ) LMSetACount(SInt16 value)                  TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetDABeeper(void)            TWOWORDINLINE(0x2EB8, 0x0A9C);
-
+EXTERN_API( UniversalProcPtr )
+LMGetDABeeper( void ) TWOWORDINLINE( 0x2EB8, 0x0A9C );
 
 /*
  *  LMSetDABeeper()
@@ -2985,8 +2879,8 @@ EXTERN_API( UniversalProcPtr ) LMGetDABeeper(void)            TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDABeeper(UniversalProcPtr value)      TWOWORDINLINE(0x21DF, 0x0A9C);
-
+EXTERN_API( void )
+LMSetDABeeper( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x0A9C );
 
 /* Carbon Usage: use TEGetScrapLength*/
 /*
@@ -2997,8 +2891,8 @@ EXTERN_API( void ) LMSetDABeeper(UniversalProcPtr value)      TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt16 ) LMGetTEScrpLength(void)                  TWOWORDINLINE(0x3EB8, 0x0AB0);
-
+EXTERN_API( UInt16 )
+LMGetTEScrpLength( void ) TWOWORDINLINE( 0x3EB8, 0x0AB0 );
 
 /* Carbon Usage: use TESetScrapLength*/
 /*
@@ -3009,9 +2903,8 @@ EXTERN_API( UInt16 ) LMGetTEScrpLength(void)                  TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTEScrpLength(UInt16 value)            TWOWORDINLINE(0x31DF, 0x0AB0);
-
-
+EXTERN_API( void )
+LMSetTEScrpLength( UInt16 value ) TWOWORDINLINE( 0x31DF, 0x0AB0 );
 
 /* Carbon Usage: use TEGetScrapHandle*/
 /*
@@ -3022,8 +2915,8 @@ EXTERN_API( void ) LMSetTEScrpLength(UInt16 value)            TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetTEScrpHandle(void)                  TWOWORDINLINE(0x2EB8, 0x0AB4);
-
+EXTERN_API( Handle )
+LMGetTEScrpHandle( void ) TWOWORDINLINE( 0x2EB8, 0x0AB4 );
 
 /* Carbon Usage: use TESetScrapHandle*/
 /*
@@ -3034,9 +2927,8 @@ EXTERN_API( Handle ) LMGetTEScrpHandle(void)                  TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTEScrpHandle(Handle value)            TWOWORDINLINE(0x21DF, 0x0AB4);
-
-
+EXTERN_API( void )
+LMSetTEScrpHandle( Handle value ) TWOWORDINLINE( 0x21DF, 0x0AB4 );
 
 /*
  *  LMGetAppParmHandle()
@@ -3046,8 +2938,8 @@ EXTERN_API( void ) LMSetTEScrpHandle(Handle value)            TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetAppParmHandle(void)                 TWOWORDINLINE(0x2EB8, 0x0AEC);
-
+EXTERN_API( Handle )
+LMGetAppParmHandle( void ) TWOWORDINLINE( 0x2EB8, 0x0AEC );
 
 /*
  *  LMSetAppParmHandle()
@@ -3057,9 +2949,8 @@ EXTERN_API( Handle ) LMGetAppParmHandle(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetAppParmHandle(Handle value)           TWOWORDINLINE(0x21DF, 0x0AEC);
-
-
+EXTERN_API( void )
+LMSetAppParmHandle( Handle value ) TWOWORDINLINE( 0x21DF, 0x0AEC );
 
 /*
  *  LMGetDSErrCode()
@@ -3069,8 +2960,8 @@ EXTERN_API( void ) LMSetAppParmHandle(Handle value)           TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetDSErrCode(void)                     TWOWORDINLINE(0x3EB8, 0x0AF0);
-
+EXTERN_API( SInt16 )
+LMGetDSErrCode( void ) TWOWORDINLINE( 0x3EB8, 0x0AF0 );
 
 /*
  *  LMSetDSErrCode()
@@ -3080,9 +2971,8 @@ EXTERN_API( SInt16 ) LMGetDSErrCode(void)                     TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDSErrCode(SInt16 value)               TWOWORDINLINE(0x31DF, 0x0AF0);
-
-
+EXTERN_API( void )
+LMSetDSErrCode( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0AF0 );
 
 /*
  *  LMGetResErrProc()
@@ -3092,8 +2982,8 @@ EXTERN_API( void ) LMSetDSErrCode(SInt16 value)               TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( ResErrUPP ) LMGetResErrProc(void)                 TWOWORDINLINE(0x2EB8, 0x0AF2);
-
+EXTERN_API( ResErrUPP )
+LMGetResErrProc( void ) TWOWORDINLINE( 0x2EB8, 0x0AF2 );
 
 /*
  *  LMSetResErrProc()
@@ -3103,9 +2993,8 @@ EXTERN_API( ResErrUPP ) LMGetResErrProc(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetResErrProc(ResErrUPP value)           TWOWORDINLINE(0x21DF, 0x0AF2);
-
-
+EXTERN_API( void )
+LMSetResErrProc( ResErrUPP value ) TWOWORDINLINE( 0x21DF, 0x0AF2 );
 
 /*
  *  LMGetDlgFont()
@@ -3115,8 +3004,8 @@ EXTERN_API( void ) LMSetResErrProc(ResErrUPP value)           TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetDlgFont(void)                       TWOWORDINLINE(0x3EB8, 0x0AFA);
-
+EXTERN_API( SInt16 )
+LMGetDlgFont( void ) TWOWORDINLINE( 0x3EB8, 0x0AFA );
 
 /* Carbon Usage: use SetDialogFont*/
 /*
@@ -3127,8 +3016,8 @@ EXTERN_API( SInt16 ) LMGetDlgFont(void)                       TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDlgFont(SInt16 value)                 TWOWORDINLINE(0x31DF, 0x0AFA);
-
+EXTERN_API( void )
+LMSetDlgFont( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0AFA );
 
 /*
  *  LMGetATalkHk2()
@@ -3138,8 +3027,8 @@ EXTERN_API( void ) LMSetDlgFont(SInt16 value)                 TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetATalkHk2(void)                         TWOWORDINLINE(0x2EB8, 0x0B18);
-
+EXTERN_API( Ptr )
+LMGetATalkHk2( void ) TWOWORDINLINE( 0x2EB8, 0x0B18 );
 
 /*
  *  LMSetATalkHk2()
@@ -3149,9 +3038,8 @@ EXTERN_API( Ptr ) LMGetATalkHk2(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetATalkHk2(Ptr value)                   TWOWORDINLINE(0x21DF, 0x0B18);
-
-
+EXTERN_API( void )
+LMSetATalkHk2( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0B18 );
 
 /*
  *  LMGetHWCfgFlags()
@@ -3161,8 +3049,8 @@ EXTERN_API( void ) LMSetATalkHk2(Ptr value)                   TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetHWCfgFlags(void)                    TWOWORDINLINE(0x3EB8, 0x0B22);
-
+EXTERN_API( SInt16 )
+LMGetHWCfgFlags( void ) TWOWORDINLINE( 0x3EB8, 0x0B22 );
 
 /*
  *  LMSetHWCfgFlags()
@@ -3172,10 +3060,8 @@ EXTERN_API( SInt16 ) LMGetHWCfgFlags(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetHWCfgFlags(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0B22);
-
-
-
+EXTERN_API( void )
+LMSetHWCfgFlags( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0B22 );
 
 /* Carbon Usage: use GetMenuTrackingData*/
 /*
@@ -3186,8 +3072,8 @@ EXTERN_API( void ) LMSetHWCfgFlags(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt32 ) LMGetMenuDisable(void)                   TWOWORDINLINE(0x2EB8, 0x0B54);
-
+EXTERN_API( SInt32 )
+LMGetMenuDisable( void ) TWOWORDINLINE( 0x2EB8, 0x0B54 );
 
 /* Carbon Usage: use new MDEF messages*/
 /*
@@ -3198,9 +3084,8 @@ EXTERN_API( SInt32 ) LMGetMenuDisable(void)                   TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMenuDisable(SInt32 value)             TWOWORDINLINE(0x21DF, 0x0B54);
-
-
+EXTERN_API( void )
+LMSetMenuDisable( SInt32 value ) TWOWORDINLINE( 0x21DF, 0x0B54 );
 
 /*
  *  LMGetROMMapInsert()
@@ -3210,8 +3095,8 @@ EXTERN_API( void ) LMSetMenuDisable(SInt32 value)             TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetROMMapInsert(void)                   TWOWORDINLINE(0x1EB8, 0x0B9E);
-
+EXTERN_API( UInt8 )
+LMGetROMMapInsert( void ) TWOWORDINLINE( 0x1EB8, 0x0B9E );
 
 /*
  *  LMSetROMMapInsert()
@@ -3221,11 +3106,10 @@ EXTERN_API( UInt8 ) LMGetROMMapInsert(void)                   TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetROMMapInsert(UInt8 value)             TWOWORDINLINE(0x11DF, 0x0B9E);
+EXTERN_API( void )
+LMSetROMMapInsert( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0B9E );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetTmpResLoad()
@@ -3235,8 +3119,8 @@ EXTERN_API( void ) LMSetROMMapInsert(UInt8 value)             TWOWORDINLINE(0x11
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UInt8 ) LMGetTmpResLoad(void)                     TWOWORDINLINE(0x1EB8, 0x0B9F);
-
+EXTERN_API( UInt8 )
+LMGetTmpResLoad( void ) TWOWORDINLINE( 0x1EB8, 0x0B9F );
 
 /*
  *  LMSetTmpResLoad()
@@ -3246,9 +3130,8 @@ EXTERN_API( UInt8 ) LMGetTmpResLoad(void)                     TWOWORDINLINE(0x1E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetTmpResLoad(UInt8 value)               TWOWORDINLINE(0x11DF, 0x0B9F);
-
-
+EXTERN_API( void )
+LMSetTmpResLoad( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0B9F );
 
 /*
  *  LMGetIntlSpec()
@@ -3258,8 +3141,8 @@ EXTERN_API( void ) LMSetTmpResLoad(UInt8 value)               TWOWORDINLINE(0x11
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetIntlSpec(void)                         TWOWORDINLINE(0x2EB8, 0x0BA0);
-
+EXTERN_API( Ptr )
+LMGetIntlSpec( void ) TWOWORDINLINE( 0x2EB8, 0x0BA0 );
 
 /*
  *  LMSetIntlSpec()
@@ -3269,8 +3152,8 @@ EXTERN_API( Ptr ) LMGetIntlSpec(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetIntlSpec(Ptr value)                   TWOWORDINLINE(0x21DF, 0x0BA0);
-
+EXTERN_API( void )
+LMSetIntlSpec( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0BA0 );
 
 /* LMGetWordRedraw and LMSetWordRedraw moved to TextEdit.h */
 /*
@@ -3281,8 +3164,8 @@ EXTERN_API( void ) LMSetIntlSpec(Ptr value)                   TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetSysFontFam(void)                    TWOWORDINLINE(0x3EB8, 0x0BA6);
-
+EXTERN_API( SInt16 )
+LMGetSysFontFam( void ) TWOWORDINLINE( 0x3EB8, 0x0BA6 );
 
 /*
  *  LMSetSysFontFam()
@@ -3292,8 +3175,8 @@ EXTERN_API( SInt16 ) LMGetSysFontFam(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSysFontFam(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0BA6);
-
+EXTERN_API( void )
+LMSetSysFontFam( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0BA6 );
 
 /*
  *  LMGetSysFontSize()
@@ -3303,8 +3186,8 @@ EXTERN_API( void ) LMSetSysFontFam(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( SInt16 ) LMGetSysFontSize(void)                   TWOWORDINLINE(0x3EB8, 0x0BA8);
-
+EXTERN_API( SInt16 )
+LMGetSysFontSize( void ) TWOWORDINLINE( 0x3EB8, 0x0BA8 );
 
 /*
  *  LMSetSysFontSize()
@@ -3314,9 +3197,8 @@ EXTERN_API( SInt16 ) LMGetSysFontSize(void)                   TWOWORDINLINE(0x3E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSysFontSize(SInt16 value)             TWOWORDINLINE(0x31DF, 0x0BA8);
-
-
+EXTERN_API( void )
+LMSetSysFontSize( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0BA8 );
 
 /* Carbon Usge: use GetMBarHeight*/
 #if CALL_NOT_IN_CARBON
@@ -3328,8 +3210,8 @@ EXTERN_API( void ) LMSetSysFontSize(SInt16 value)             TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetMBarHeight(void)                    TWOWORDINLINE(0x3EB8, 0x0BAA);
-
+EXTERN_API( SInt16 )
+LMGetMBarHeight( void ) TWOWORDINLINE( 0x3EB8, 0x0BAA );
 
 /* Carbon Usage: use Hide/ShowMenuBar*/
 /*
@@ -3340,9 +3222,8 @@ EXTERN_API( SInt16 ) LMGetMBarHeight(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMBarHeight(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0BAA);
-
-
+EXTERN_API( void )
+LMSetMBarHeight( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0BAA );
 
 /*
  *  LMGetTESysJust()
@@ -3352,8 +3233,8 @@ EXTERN_API( void ) LMSetMBarHeight(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetTESysJust(void)                     TWOWORDINLINE(0x3EB8, 0x0BAC);
-
+EXTERN_API( SInt16 )
+LMGetTESysJust( void ) TWOWORDINLINE( 0x3EB8, 0x0BAC );
 
 /*
  *  LMSetTESysJust()
@@ -3363,10 +3244,8 @@ EXTERN_API( SInt16 ) LMGetTESysJust(void)                     TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTESysJust(SInt16 value)               TWOWORDINLINE(0x31DF, 0x0BAC);
-
-
-
+EXTERN_API( void )
+LMSetTESysJust( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0BAC );
 
 /*
  *  LMGetMMU32Bit()
@@ -3376,8 +3255,8 @@ EXTERN_API( void ) LMSetTESysJust(SInt16 value)               TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetMMU32Bit(void)                       TWOWORDINLINE(0x1EB8, 0x0CB2);
-
+EXTERN_API( UInt8 )
+LMGetMMU32Bit( void ) TWOWORDINLINE( 0x1EB8, 0x0CB2 );
 
 /*
  *  LMSetMMU32Bit()
@@ -3387,10 +3266,8 @@ EXTERN_API( UInt8 ) LMGetMMU32Bit(void)                       TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMMU32Bit(UInt8 value)                 TWOWORDINLINE(0x11DF, 0x0CB2);
-
-
-
+EXTERN_API( void )
+LMSetMMU32Bit( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0CB2 );
 
 /*
  *  LMGetDeskCPat()
@@ -3400,8 +3277,8 @@ EXTERN_API( void ) LMSetMMU32Bit(UInt8 value)                 TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( PixPatHandle ) LMGetDeskCPat(void)                TWOWORDINLINE(0x2EB8, 0x0CD8);
-
+EXTERN_API( PixPatHandle )
+LMGetDeskCPat( void ) TWOWORDINLINE( 0x2EB8, 0x0CD8 );
 
 /*
  *  LMSetDeskCPat()
@@ -3411,9 +3288,8 @@ EXTERN_API( PixPatHandle ) LMGetDeskCPat(void)                TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDeskCPat(PixPatHandle value)          TWOWORDINLINE(0x21DF, 0x0CD8);
-
-
+EXTERN_API( void )
+LMSetDeskCPat( PixPatHandle value ) TWOWORDINLINE( 0x21DF, 0x0CD8 );
 
 /*
  *  LMGetTimeDBRA()
@@ -3423,8 +3299,8 @@ EXTERN_API( void ) LMSetDeskCPat(PixPatHandle value)          TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetTimeDBRA(void)                      TWOWORDINLINE(0x3EB8, 0x0D00);
-
+EXTERN_API( SInt16 )
+LMGetTimeDBRA( void ) TWOWORDINLINE( 0x3EB8, 0x0D00 );
 
 /*
  *  LMSetTimeDBRA()
@@ -3434,9 +3310,8 @@ EXTERN_API( SInt16 ) LMGetTimeDBRA(void)                      TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTimeDBRA(SInt16 value)                TWOWORDINLINE(0x31DF, 0x0D00);
-
-
+EXTERN_API( void )
+LMSetTimeDBRA( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0D00 );
 
 /*
  *  LMGetTimeSCCDB()
@@ -3446,8 +3321,8 @@ EXTERN_API( void ) LMSetTimeDBRA(SInt16 value)                TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetTimeSCCDB(void)                     TWOWORDINLINE(0x3EB8, 0x0D02);
-
+EXTERN_API( SInt16 )
+LMGetTimeSCCDB( void ) TWOWORDINLINE( 0x3EB8, 0x0D02 );
 
 /*
  *  LMSetTimeSCCDB()
@@ -3457,9 +3332,8 @@ EXTERN_API( SInt16 ) LMGetTimeSCCDB(void)                     TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTimeSCCDB(SInt16 value)               TWOWORDINLINE(0x31DF, 0x0D02);
-
-
+EXTERN_API( void )
+LMSetTimeSCCDB( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0D02 );
 
 /*
  *  LMGetJVBLTask()
@@ -3469,8 +3343,8 @@ EXTERN_API( void ) LMSetTimeSCCDB(SInt16 value)               TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetJVBLTask(void)            TWOWORDINLINE(0x2EB8, 0x0D28);
-
+EXTERN_API( UniversalProcPtr )
+LMGetJVBLTask( void ) TWOWORDINLINE( 0x2EB8, 0x0D28 );
 
 /*
  *  LMSetJVBLTask()
@@ -3480,9 +3354,8 @@ EXTERN_API( UniversalProcPtr ) LMGetJVBLTask(void)            TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetJVBLTask(UniversalProcPtr value)      TWOWORDINLINE(0x21DF, 0x0D28);
-
-
+EXTERN_API( void )
+LMSetJVBLTask( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x0D28 );
 
 /*
  *  LMGetSynListHandle()
@@ -3492,8 +3365,8 @@ EXTERN_API( void ) LMSetJVBLTask(UniversalProcPtr value)      TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetSynListHandle(void)                 TWOWORDINLINE(0x2EB8, 0x0D32);
-
+EXTERN_API( Handle )
+LMGetSynListHandle( void ) TWOWORDINLINE( 0x2EB8, 0x0D32 );
 
 /*
  *  LMSetSynListHandle()
@@ -3503,9 +3376,8 @@ EXTERN_API( Handle ) LMGetSynListHandle(void)                 TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetSynListHandle(Handle value)           TWOWORDINLINE(0x21DF, 0x0D32);
-
-
+EXTERN_API( void )
+LMSetSynListHandle( Handle value ) TWOWORDINLINE( 0x21DF, 0x0D32 );
 
 /*
  *  LMGetMenuCInfo()
@@ -3515,8 +3387,8 @@ EXTERN_API( void ) LMSetSynListHandle(Handle value)           TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( MCTableHandle ) LMGetMenuCInfo(void)              TWOWORDINLINE(0x2EB8, 0x0D50);
-
+EXTERN_API( MCTableHandle )
+LMGetMenuCInfo( void ) TWOWORDINLINE( 0x2EB8, 0x0D50 );
 
 /*
  *  LMSetMenuCInfo()
@@ -3526,9 +3398,8 @@ EXTERN_API( MCTableHandle ) LMGetMenuCInfo(void)              TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMenuCInfo(MCTableHandle value)        TWOWORDINLINE(0x21DF, 0x0D50);
-
-
+EXTERN_API( void )
+LMSetMenuCInfo( MCTableHandle value ) TWOWORDINLINE( 0x21DF, 0x0D50 );
 
 /*
  *  LMGetJDTInstall()
@@ -3538,8 +3409,8 @@ EXTERN_API( void ) LMSetMenuCInfo(MCTableHandle value)        TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetJDTInstall(void)          TWOWORDINLINE(0x2EB8, 0x0D9C);
-
+EXTERN_API( UniversalProcPtr )
+LMGetJDTInstall( void ) TWOWORDINLINE( 0x2EB8, 0x0D9C );
 
 /*
  *  LMSetJDTInstall()
@@ -3549,9 +3420,8 @@ EXTERN_API( UniversalProcPtr ) LMGetJDTInstall(void)          TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetJDTInstall(UniversalProcPtr value)    TWOWORDINLINE(0x21DF, 0x0D9C);
-
-
+EXTERN_API( void )
+LMSetJDTInstall( UniversalProcPtr value ) TWOWORDINLINE( 0x21DF, 0x0D9C );
 
 /*
  *  LMGetTimeSCSIDB()
@@ -3561,8 +3431,8 @@ EXTERN_API( void ) LMSetJDTInstall(UniversalProcPtr value)    TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( SInt16 ) LMGetTimeSCSIDB(void)                    TWOWORDINLINE(0x3EB8, 0x0B24);
-
+EXTERN_API( SInt16 )
+LMGetTimeSCSIDB( void ) TWOWORDINLINE( 0x3EB8, 0x0B24 );
 
 /*
  *  LMSetTimeSCSIDB()
@@ -3572,17 +3442,15 @@ EXTERN_API( SInt16 ) LMGetTimeSCSIDB(void)                    TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetTimeSCSIDB(SInt16 value)              TWOWORDINLINE(0x31DF, 0x0B24);
-
-
-
+EXTERN_API( void )
+LMSetTimeSCSIDB( SInt16 value ) TWOWORDINLINE( 0x31DF, 0x0B24 );
 
 /**************************************************************************************
 
     MORE COMPLEX LOWMEM ACCESSORS
 
 **************************************************************************************/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if TARGET_CPU_68K && !TARGET_RT_MAC_CFM
 /**************************************************************************************
@@ -3590,40 +3458,40 @@ EXTERN_API( void ) LMSetTimeSCSIDB(SInt16 value)              TWOWORDINLINE(0x31
     
         These lowmem accessors access big (> 4 bytes) values.
 **************************************************************************************/
-#define LMGetDSAlertRect(dsAlertRectValue)  (*(dsAlertRectValue) = * (Rect*) 0x03F8)
-#define LMSetDSAlertRect(dsAlertRectValue)  ((* (Rect *) 0x03F8) = *(dsAlertRectValue))
-#define LMGetDragPattern(dragPatternValue)  (*(dragPatternValue) = * (Pattern *) 0x0A34)
-#define LMSetDragPattern(dragPatternValue)  ((* (Pattern *) 0x0A34) = *(dragPatternValue))
-#define LMGetDeskPattern(deskPatternValue)  (*(deskPatternValue) = * (Pattern *) 0x0A3C)
-#define LMSetDeskPattern(deskPatternValue)  ((* (Pattern *) 0x0A3C) = *(deskPatternValue))
-#define LMGetEventQueue()   ( (QHdrPtr) 0x014A)
-#define LMSetEventQueue(eventQueueValue)    ((* (QHdrPtr) 0x014A) = *(QHdrPtr)(eventQueueValue))
-#define LMGetVBLQueue() ( (QHdrPtr) 0x0160)
-#define LMSetVBLQueue(vblQueueValue)    ((* (QHdrPtr) 0x0160) = *(QHdrPtr)(vblQueueValue))
-#define LMGetDrvQHdr()  ( (QHdrPtr) 0x0308)
-#define LMSetDrvQHdr(drvQHdrValue)  ((* (QHdrPtr) 0x0308) = *(QHdrPtr)(drvQHdrValue))
-#define LMGetVCBQHdr()  ( (QHdrPtr) 0x0356)
-#define LMSetVCBQHdr(vcbQHdrValue)  ((* (QHdrPtr) 0x0356) = *(QHdrPtr)(vcbQHdrValue))
-#define LMGetDTQueue()  ( (QHdrPtr) 0x0D92)
-#define LMSetDTQueue(dtQueueValue)  ((* (QHdrPtr) 0x0D92) = *(QHdrPtr)(dtQueueValue))
-#define LMGetFSQHdr()   ( (QHdrPtr) 0x0360)
+#define LMGetDSAlertRect( dsAlertRectValue ) ( *( dsAlertRectValue ) = *(Rect *)0x03F8 )
+#define LMSetDSAlertRect( dsAlertRectValue ) ( ( *(Rect *)0x03F8 ) = *( dsAlertRectValue ) )
+#define LMGetDragPattern( dragPatternValue ) ( *( dragPatternValue ) = *(Pattern *)0x0A34 )
+#define LMSetDragPattern( dragPatternValue ) ( ( *(Pattern *)0x0A34 ) = *( dragPatternValue ) )
+#define LMGetDeskPattern( deskPatternValue ) ( *( deskPatternValue ) = *(Pattern *)0x0A3C )
+#define LMSetDeskPattern( deskPatternValue ) ( ( *(Pattern *)0x0A3C ) = *( deskPatternValue ) )
+#define LMGetEventQueue() ( (QHdrPtr)0x014A )
+#define LMSetEventQueue( eventQueueValue ) ( ( *(QHdrPtr)0x014A ) = *( QHdrPtr )( eventQueueValue ) )
+#define LMGetVBLQueue() ( (QHdrPtr)0x0160 )
+#define LMSetVBLQueue( vblQueueValue ) ( ( *(QHdrPtr)0x0160 ) = *( QHdrPtr )( vblQueueValue ) )
+#define LMGetDrvQHdr() ( (QHdrPtr)0x0308 )
+#define LMSetDrvQHdr( drvQHdrValue ) ( ( *(QHdrPtr)0x0308 ) = *( QHdrPtr )( drvQHdrValue ) )
+#define LMGetVCBQHdr() ( (QHdrPtr)0x0356 )
+#define LMSetVCBQHdr( vcbQHdrValue ) ( ( *(QHdrPtr)0x0356 ) = *( QHdrPtr )( vcbQHdrValue ) )
+#define LMGetDTQueue() ( (QHdrPtr)0x0D92 )
+#define LMSetDTQueue( dtQueueValue ) ( ( *(QHdrPtr)0x0D92 ) = *( QHdrPtr )( dtQueueValue ) )
+#define LMGetFSQHdr() ( (QHdrPtr)0x0360 )
 /**************************************************************************************
     "BLOCKMOVE ACCESSORS"
     
         These lowmem accessors use the BlockMove to set
 **************************************************************************************/
-#define LMGetCurApName()    ((StringPtr) 0x0910)
-#define LMSetCurApName(curApNameValue)  (BlockMoveData((Ptr)(curApNameValue), (Ptr)0x0910, sizeof(Str31)))
-#define LMGetSysResName()   ( (StringPtr) 0x0AD8)
-#define LMSetSysResName(sysResNameValue)    (BlockMoveData((Ptr)(sysResNameValue), (Ptr)0x0AD8, sizeof(Str15)))
-#define LMGetFinderName()   ((StringPtr)0x02E0)
-#define LMSetFinderName(finderName) (BlockMoveData((Ptr)(finderName), (Ptr)0x02E0, sizeof(Str15)))
-#define LMGetScratch20()    ((Ptr) 0x01E4)
-#define LMSetScratch20(scratch20Value)  (BlockMoveData((Ptr) (scratch20Value), (Ptr) 0x01E4, 20))
-#define LMGetToolScratch()  ((Ptr) 0x09CE)
-#define LMSetToolScratch(toolScratchValue)  (BlockMoveData((Ptr)(toolScratchValue), (Ptr) 0x09CE, 8))
-#define LMGetApplScratch()  ((Ptr) 0x0A78)
-#define LMSetApplScratch(applScratchValue)  (BlockMoveData((Ptr) (applScratchValue), (Ptr) 0x0A78, 12))
+#define LMGetCurApName() ( (StringPtr)0x0910 )
+#define LMSetCurApName( curApNameValue ) ( BlockMoveData( ( Ptr )( curApNameValue ), (Ptr)0x0910, sizeof( Str31 ) ) )
+#define LMGetSysResName() ( (StringPtr)0x0AD8 )
+#define LMSetSysResName( sysResNameValue ) ( BlockMoveData( ( Ptr )( sysResNameValue ), (Ptr)0x0AD8, sizeof( Str15 ) ) )
+#define LMGetFinderName() ( (StringPtr)0x02E0 )
+#define LMSetFinderName( finderName ) ( BlockMoveData( ( Ptr )( finderName ), (Ptr)0x02E0, sizeof( Str15 ) ) )
+#define LMGetScratch20() ( (Ptr)0x01E4 )
+#define LMSetScratch20( scratch20Value ) ( BlockMoveData( ( Ptr )( scratch20Value ), (Ptr)0x01E4, 20 ) )
+#define LMGetToolScratch() ( (Ptr)0x09CE )
+#define LMSetToolScratch( toolScratchValue ) ( BlockMoveData( ( Ptr )( toolScratchValue ), (Ptr)0x09CE, 8 ) )
+#define LMGetApplScratch() ( (Ptr)0x0A78 )
+#define LMSetApplScratch( applScratchValue ) ( BlockMoveData( ( Ptr )( applScratchValue ), (Ptr)0x0A78, 12 ) )
 /**************************************************************************************
     "INDEXED ACCESSORS"
     
@@ -3634,12 +3502,12 @@ EXTERN_API( void ) LMSetTimeSCSIDB(SInt16 value)              TWOWORDINLINE(0x31
     The DAString accessors are gone with Carbon. Please use ParamText and
     GetParamText instead.
 **************************************************************************************/
-#define LMGetDAStrings(whichString) ( ((StringHandle*)0x0AA0)[whichString] )
-#define LMSetDAStrings(stringsValue, whichString) ( ((StringHandle*)0x0AA0)[whichString] = (stringsValue) )
-#define LMGetLvl2DT(vectorNumber)   ( ((UniversalProcPtr*)0x01B2)[vectorNumber] )
-#define LMSetLvl2DT(lvl2DTValue, vectorNumber)  ( ((UniversalProcPtr*)0x01B2)[vectorNumber] = (lvl2DTValue) )
-#define LMGetExtStsDT(vectorNumber) ( ((UniversalProcPtr*)0x02BE)[vectorNumber] )
-#define LMSetExtStsDT(extStsDTValue, vectorNumber)  ( ((UniversalProcPtr*)0x02BE)[vectorNumber] = (extStsDTValue) )
+#define LMGetDAStrings( whichString ) ( ( (StringHandle *)0x0AA0 )[whichString] )
+#define LMSetDAStrings( stringsValue, whichString ) ( ( (StringHandle *)0x0AA0 )[whichString] = ( stringsValue ) )
+#define LMGetLvl2DT( vectorNumber ) ( ( (UniversalProcPtr *)0x01B2 )[vectorNumber] )
+#define LMSetLvl2DT( lvl2DTValue, vectorNumber ) ( ( (UniversalProcPtr *)0x01B2 )[vectorNumber] = ( lvl2DTValue ) )
+#define LMGetExtStsDT( vectorNumber ) ( ( (UniversalProcPtr *)0x02BE )[vectorNumber] )
+#define LMSetExtStsDT( extStsDTValue, vectorNumber ) ( ( (UniversalProcPtr *)0x02BE )[vectorNumber] = ( extStsDTValue ) )
 
 #else
 /**************************************************************************************
@@ -3657,8 +3525,8 @@ EXTERN_API( void ) LMSetTimeSCSIDB(SInt16 value)              TWOWORDINLINE(0x31
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMGetDSAlertRect(Rect * dsAlertRectValue);
-
+EXTERN_API( void )
+LMGetDSAlertRect( Rect *dsAlertRectValue );
 
 /*
  *  LMSetDSAlertRect()
@@ -3668,8 +3536,8 @@ EXTERN_API( void ) LMGetDSAlertRect(Rect * dsAlertRectValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDSAlertRect(const Rect * dsAlertRectValue);
-
+EXTERN_API( void )
+LMSetDSAlertRect( const Rect *dsAlertRectValue );
 
 /*
  *  LMGetDragPattern()
@@ -3679,8 +3547,8 @@ EXTERN_API( void ) LMSetDSAlertRect(const Rect * dsAlertRectValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMGetDragPattern(Pattern * dragPatternValue);
-
+EXTERN_API( void )
+LMGetDragPattern( Pattern *dragPatternValue );
 
 /*
  *  LMSetDragPattern()
@@ -3690,8 +3558,8 @@ EXTERN_API( void ) LMGetDragPattern(Pattern * dragPatternValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDragPattern(const Pattern * dragPatternValue);
-
+EXTERN_API( void )
+LMSetDragPattern( const Pattern *dragPatternValue );
 
 /*
  *  LMGetDeskPattern()
@@ -3701,8 +3569,8 @@ EXTERN_API( void ) LMSetDragPattern(const Pattern * dragPatternValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMGetDeskPattern(Pattern * deskPatternValue);
-
+EXTERN_API( void )
+LMGetDeskPattern( Pattern *deskPatternValue );
 
 /*
  *  LMSetDeskPattern()
@@ -3712,8 +3580,8 @@ EXTERN_API( void ) LMGetDeskPattern(Pattern * deskPatternValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDeskPattern(const Pattern * deskPatternValue);
-
+EXTERN_API( void )
+LMSetDeskPattern( const Pattern *deskPatternValue );
 
 /*
  *  LMGetEventQueue()
@@ -3723,8 +3591,8 @@ EXTERN_API( void ) LMSetDeskPattern(const Pattern * deskPatternValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( QHdrPtr ) LMGetEventQueue(void);
-
+EXTERN_API( QHdrPtr )
+LMGetEventQueue( void );
 
 /*
  *  LMSetEventQueue()
@@ -3734,9 +3602,8 @@ EXTERN_API( QHdrPtr ) LMGetEventQueue(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetEventQueue(QHdrPtr eventQueueValue);
-
-
+EXTERN_API( void )
+LMSetEventQueue( QHdrPtr eventQueueValue );
 
 /*
  *  LMGetVBLQueue()
@@ -3746,8 +3613,8 @@ EXTERN_API( void ) LMSetEventQueue(QHdrPtr eventQueueValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( QHdrPtr ) LMGetVBLQueue(void);
-
+EXTERN_API( QHdrPtr )
+LMGetVBLQueue( void );
 
 /*
  *  LMSetVBLQueue()
@@ -3757,8 +3624,8 @@ EXTERN_API( QHdrPtr ) LMGetVBLQueue(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetVBLQueue(QHdrPtr vblQueueValue);
-
+EXTERN_API( void )
+LMSetVBLQueue( QHdrPtr vblQueueValue );
 
 /*
  *  LMGetDrvQHdr()
@@ -3768,8 +3635,8 @@ EXTERN_API( void ) LMSetVBLQueue(QHdrPtr vblQueueValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( QHdrPtr ) LMGetDrvQHdr(void);
-
+EXTERN_API( QHdrPtr )
+LMGetDrvQHdr( void );
 
 /*
  *  LMSetDrvQHdr()
@@ -3779,8 +3646,8 @@ EXTERN_API( QHdrPtr ) LMGetDrvQHdr(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDrvQHdr(QHdrPtr drvQHdrValue);
-
+EXTERN_API( void )
+LMSetDrvQHdr( QHdrPtr drvQHdrValue );
 
 /*
  *  LMGetVCBQHdr()
@@ -3790,8 +3657,8 @@ EXTERN_API( void ) LMSetDrvQHdr(QHdrPtr drvQHdrValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( QHdrPtr ) LMGetVCBQHdr(void);
-
+EXTERN_API( QHdrPtr )
+LMGetVCBQHdr( void );
 
 /*
  *  LMSetVCBQHdr()
@@ -3801,8 +3668,8 @@ EXTERN_API( QHdrPtr ) LMGetVCBQHdr(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetVCBQHdr(QHdrPtr vcbQHdrValue);
-
+EXTERN_API( void )
+LMSetVCBQHdr( QHdrPtr vcbQHdrValue );
 
 /*
  *  LMGetDTQueue()
@@ -3812,8 +3679,8 @@ EXTERN_API( void ) LMSetVCBQHdr(QHdrPtr vcbQHdrValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( QHdrPtr ) LMGetDTQueue(void);
-
+EXTERN_API( QHdrPtr )
+LMGetDTQueue( void );
 
 /*
  *  LMSetDTQueue()
@@ -3823,8 +3690,8 @@ EXTERN_API( QHdrPtr ) LMGetDTQueue(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDTQueue(QHdrPtr dtQueueValue);
-
+EXTERN_API( void )
+LMSetDTQueue( QHdrPtr dtQueueValue );
 
 /*
  *  LMGetFSQHdr()
@@ -3834,15 +3701,15 @@ EXTERN_API( void ) LMSetDTQueue(QHdrPtr dtQueueValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( QHdrPtr ) LMGetFSQHdr(void);
-
+EXTERN_API( QHdrPtr )
+LMGetFSQHdr( void );
 
 /**************************************************************************************
     "BLOCKMOVE ACCESSORS"
     
         These lowmem accessors use the BlockMove to set
 **************************************************************************************/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetCurApName()
@@ -3852,8 +3719,8 @@ EXTERN_API( QHdrPtr ) LMGetFSQHdr(void);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( StringPtr ) LMGetCurApName(void);
-
+EXTERN_API( StringPtr )
+LMGetCurApName( void );
 
 /*
  *  LMSetCurApName()
@@ -3863,8 +3730,8 @@ EXTERN_API( StringPtr ) LMGetCurApName(void);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetCurApName(ConstStr31Param curApNameValue);
-
+EXTERN_API( void )
+LMSetCurApName( ConstStr31Param curApNameValue );
 
 /*
  *  LMGetSysResName()
@@ -3874,8 +3741,8 @@ EXTERN_API( void ) LMSetCurApName(ConstStr31Param curApNameValue);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( StringPtr ) LMGetSysResName(void);
-
+EXTERN_API( StringPtr )
+LMGetSysResName( void );
 
 /*
  *  LMSetSysResName()
@@ -3885,8 +3752,8 @@ EXTERN_API( StringPtr ) LMGetSysResName(void);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetSysResName(ConstStr15Param sysResNameValue);
-
+EXTERN_API( void )
+LMSetSysResName( ConstStr15Param sysResNameValue );
 
 /*
  *  LMGetFinderName()
@@ -3896,8 +3763,8 @@ EXTERN_API( void ) LMSetSysResName(ConstStr15Param sysResNameValue);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( StringPtr ) LMGetFinderName(void);
-
+EXTERN_API( StringPtr )
+LMGetFinderName( void );
 
 /*
  *  LMSetFinderName()
@@ -3907,8 +3774,8 @@ EXTERN_API( StringPtr ) LMGetFinderName(void);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetFinderName(ConstStr15Param finderNameValue);
-
+EXTERN_API( void )
+LMSetFinderName( ConstStr15Param finderNameValue );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -3919,8 +3786,8 @@ EXTERN_API( void ) LMSetFinderName(ConstStr15Param finderNameValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetScratch20(void);
-
+EXTERN_API( Ptr )
+LMGetScratch20( void );
 
 /*
  *  LMSetScratch20()
@@ -3930,10 +3797,10 @@ EXTERN_API( Ptr ) LMGetScratch20(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetScratch20(const void * scratch20Value);
+EXTERN_API( void )
+LMSetScratch20( const void *scratch20Value );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetToolScratch()
@@ -3943,8 +3810,8 @@ EXTERN_API( void ) LMSetScratch20(const void * scratch20Value);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetToolScratch(void);
-
+EXTERN_API( Ptr )
+LMGetToolScratch( void );
 
 /*
  *  LMSetToolScratch()
@@ -3954,8 +3821,8 @@ EXTERN_API( Ptr ) LMGetToolScratch(void);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetToolScratch(const void * toolScratchValue);
-
+EXTERN_API( void )
+LMSetToolScratch( const void *toolScratchValue );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -3966,8 +3833,8 @@ EXTERN_API( void ) LMSetToolScratch(const void * toolScratchValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Ptr ) LMGetApplScratch(void);
-
+EXTERN_API( Ptr )
+LMGetApplScratch( void );
 
 /*
  *  LMSetApplScratch()
@@ -3977,9 +3844,8 @@ EXTERN_API( Ptr ) LMGetApplScratch(void);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetApplScratch(const void * applScratchValue);
-
-
+EXTERN_API( void )
+LMSetApplScratch( const void *applScratchValue );
 
 /**************************************************************************************
     "INDEXED ACCESSORS"
@@ -3997,8 +3863,8 @@ EXTERN_API( void ) LMSetApplScratch(const void * applScratchValue);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( StringHandle ) LMGetDAStrings(short whichString);
-
+EXTERN_API( StringHandle )
+LMGetDAStrings( short whichString );
 
 /* Carbon Usage: use ParamText*/
 /*
@@ -4009,11 +3875,10 @@ EXTERN_API( StringHandle ) LMGetDAStrings(short whichString);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetDAStrings(StringHandle stringsValue, short whichString);
+EXTERN_API( void )
+LMSetDAStrings( StringHandle stringsValue, short whichString );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetLvl2DT()
@@ -4023,8 +3888,8 @@ EXTERN_API( void ) LMSetDAStrings(StringHandle stringsValue, short whichString);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( UniversalProcPtr ) LMGetLvl2DT(short vectorNumber);
-
+EXTERN_API( UniversalProcPtr )
+LMGetLvl2DT( short vectorNumber );
 
 /*
  *  LMSetLvl2DT()
@@ -4034,8 +3899,8 @@ EXTERN_API( UniversalProcPtr ) LMGetLvl2DT(short vectorNumber);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetLvl2DT(UniversalProcPtr Lvl2DTValue, short vectorNumber);
-
+EXTERN_API( void )
+LMSetLvl2DT( UniversalProcPtr Lvl2DTValue, short vectorNumber );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -4046,8 +3911,8 @@ EXTERN_API( void ) LMSetLvl2DT(UniversalProcPtr Lvl2DTValue, short vectorNumber)
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UniversalProcPtr ) LMGetExtStsDT(short vectorNumber);
-
+EXTERN_API( UniversalProcPtr )
+LMGetExtStsDT( short vectorNumber );
 
 /*
  *  LMSetExtStsDT()
@@ -4057,12 +3922,12 @@ EXTERN_API( UniversalProcPtr ) LMGetExtStsDT(short vectorNumber);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetExtStsDT(UniversalProcPtr ExtStsDTValue, short vectorNumber);
+EXTERN_API( void )
+LMSetExtStsDT( UniversalProcPtr ExtStsDTValue, short vectorNumber );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_CPU_68K && !TARGET_RT_MAC_CFM */
+#endif /* TARGET_CPU_68K && !TARGET_RT_MAC_CFM */
 
 /**************************************************************************************
     "Missing Accessors"
@@ -4075,7 +3940,6 @@ EXTERN_API( void ) LMSetExtStsDT(UniversalProcPtr ExtStsDTValue, short vectorNum
     
 **************************************************************************************/
 
-
 #if CALL_NOT_IN_CARBON
 /*
  *  LMSetMouseTemp()
@@ -4085,9 +3949,8 @@ EXTERN_API( void ) LMSetExtStsDT(UniversalProcPtr ExtStsDTValue, short vectorNum
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMouseTemp(Point value)                TWOWORDINLINE(0x21DF, 0x0828);
-
-
+EXTERN_API( void )
+LMSetMouseTemp( Point value ) TWOWORDINLINE( 0x21DF, 0x0828 );
 
 /* accesses "MTemp"*/
 /*
@@ -4098,8 +3961,8 @@ EXTERN_API( void ) LMSetMouseTemp(Point value)                TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Point ) LMGetMouseTemp(void)                      TWOWORDINLINE(0x2EB8, 0x0828);
-
+EXTERN_API( Point )
+LMGetMouseTemp( void ) TWOWORDINLINE( 0x2EB8, 0x0828 );
 
 /*
    accesses "MBState"
@@ -4113,8 +3976,8 @@ EXTERN_API( Point ) LMGetMouseTemp(void)                      TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetMouseButtonState(void)               TWOWORDINLINE(0x1EB8, 0x0172);
-
+EXTERN_API( UInt8 )
+LMGetMouseButtonState( void ) TWOWORDINLINE( 0x1EB8, 0x0172 );
 
 /*
  *  LMSetMouseButtonState()
@@ -4124,8 +3987,8 @@ EXTERN_API( UInt8 ) LMGetMouseButtonState(void)               TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMouseButtonState(UInt8 value)         TWOWORDINLINE(0x11DF, 0x0172);
-
+EXTERN_API( void )
+LMSetMouseButtonState( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0172 );
 
 /*
    accesses "RawMouse"
@@ -4139,8 +4002,8 @@ EXTERN_API( void ) LMSetMouseButtonState(UInt8 value)         TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Point ) LMGetRawMouseLocation(void)               TWOWORDINLINE(0x2EB8, 0x082C);
-
+EXTERN_API( Point )
+LMGetRawMouseLocation( void ) TWOWORDINLINE( 0x2EB8, 0x082C );
 
 /* Carbon Usage: use GetGlobalMouse*/
 /*
@@ -4151,9 +4014,8 @@ EXTERN_API( Point ) LMGetRawMouseLocation(void)               TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetRawMouseLocation(Point value)         TWOWORDINLINE(0x21DF, 0x082C);
-
-
+EXTERN_API( void )
+LMSetRawMouseLocation( Point value ) TWOWORDINLINE( 0x21DF, 0x082C );
 
 /*
    accesses "Mouse"
@@ -4167,8 +4029,8 @@ EXTERN_API( void ) LMSetRawMouseLocation(Point value)         TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Point ) LMGetMouseLocation(void)                  TWOWORDINLINE(0x2EB8, 0x0830);
-
+EXTERN_API( Point )
+LMGetMouseLocation( void ) TWOWORDINLINE( 0x2EB8, 0x0830 );
 
 /*
  *  LMSetMouseLocation()
@@ -4178,8 +4040,8 @@ EXTERN_API( Point ) LMGetMouseLocation(void)                  TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMouseLocation(Point value)            TWOWORDINLINE(0x21DF, 0x0830);
-
+EXTERN_API( void )
+LMSetMouseLocation( Point value ) TWOWORDINLINE( 0x21DF, 0x0830 );
 
 /* accesses "TheCrsr"*/
 /*
@@ -4190,8 +4052,8 @@ EXTERN_API( void ) LMSetMouseLocation(Point value)            TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API_C( void ) LMGetTheCursor(Cursor * currentCursor);
-
+EXTERN_API_C( void )
+LMGetTheCursor( Cursor *currentCursor );
 
 /*
  *  LMSetTheCursor()
@@ -4201,12 +4063,11 @@ EXTERN_API_C( void ) LMGetTheCursor(Cursor * currentCursor);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API_C( void ) LMSetTheCursor(const Cursor * newCursor);
-
-
+EXTERN_API_C( void )
+LMSetTheCursor( const Cursor *newCursor );
 
 /* accesses "HiHeapMark"*/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetHighHeapMark()
@@ -4216,8 +4077,8 @@ EXTERN_API_C( void ) LMSetTheCursor(const Cursor * newCursor);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetHighHeapMark(void)                     TWOWORDINLINE(0x2EB8, 0x0BAE);
-
+EXTERN_API( Ptr )
+LMGetHighHeapMark( void ) TWOWORDINLINE( 0x2EB8, 0x0BAE );
 
 /*
  *  LMSetHighHeapMark()
@@ -4227,9 +4088,8 @@ EXTERN_API( Ptr ) LMGetHighHeapMark(void)                     TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetHighHeapMark(Ptr value)               TWOWORDINLINE(0x21DF, 0x0BAE);
-
-
+EXTERN_API( void )
+LMSetHighHeapMark( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0BAE );
 
 /* accesses "StkLowPt"*/
 /*
@@ -4240,8 +4100,8 @@ EXTERN_API( void ) LMSetHighHeapMark(Ptr value)               TWOWORDINLINE(0x21
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetStackLowPoint(void)                    TWOWORDINLINE(0x2EB8, 0x0110);
-
+EXTERN_API( Ptr )
+LMGetStackLowPoint( void ) TWOWORDINLINE( 0x2EB8, 0x0110 );
 
 /*
  *  LMSetStackLowPoint()
@@ -4251,9 +4111,8 @@ EXTERN_API( Ptr ) LMGetStackLowPoint(void)                    TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetStackLowPoint(Ptr value)              TWOWORDINLINE(0x21DF, 0x0110);
-
-
+EXTERN_API( void )
+LMSetStackLowPoint( Ptr value ) TWOWORDINLINE( 0x21DF, 0x0110 );
 
 /* accesses "ROMMapHndl"*/
 #if CALL_NOT_IN_CARBON
@@ -4265,8 +4124,8 @@ EXTERN_API( void ) LMSetStackLowPoint(Ptr value)              TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( Handle ) LMGetROMMapHandle(void)                  TWOWORDINLINE(0x2EB8, 0x0B06);
-
+EXTERN_API( Handle )
+LMGetROMMapHandle( void ) TWOWORDINLINE( 0x2EB8, 0x0B06 );
 
 /*
  *  LMSetROMMapHandle()
@@ -4276,9 +4135,8 @@ EXTERN_API( Handle ) LMGetROMMapHandle(void)                  TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetROMMapHandle(Handle value)            TWOWORDINLINE(0x21DF, 0x0B06);
-
-
+EXTERN_API( void )
+LMSetROMMapHandle( Handle value ) TWOWORDINLINE( 0x21DF, 0x0B06 );
 
 /* accesses "UnitNtryCnt"*/
 /*
@@ -4289,8 +4147,8 @@ EXTERN_API( void ) LMSetROMMapHandle(Handle value)            TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( short ) LMGetUnitTableEntryCount(void)            TWOWORDINLINE(0x3EB8, 0x01D2);
-
+EXTERN_API( short )
+LMGetUnitTableEntryCount( void ) TWOWORDINLINE( 0x3EB8, 0x01D2 );
 
 /*
  *  LMSetUnitTableEntryCount()
@@ -4300,12 +4158,11 @@ EXTERN_API( short ) LMGetUnitTableEntryCount(void)            TWOWORDINLINE(0x3E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetUnitTableEntryCount(short value)      TWOWORDINLINE(0x31DF, 0x01D2);
-
-
+EXTERN_API( void )
+LMSetUnitTableEntryCount( short value ) TWOWORDINLINE( 0x31DF, 0x01D2 );
 
 /* accesses "FmtDefaults"*/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  LMGetDiskFormatingHFSDefaults()
@@ -4315,8 +4172,8 @@ EXTERN_API( void ) LMSetUnitTableEntryCount(short value)      TWOWORDINLINE(0x31
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( Ptr ) LMGetDiskFormatingHFSDefaults(void)         TWOWORDINLINE(0x2EB8, 0x039E);
-
+EXTERN_API( Ptr )
+LMGetDiskFormatingHFSDefaults( void ) TWOWORDINLINE( 0x2EB8, 0x039E );
 
 /*
  *  LMSetDiskFormatingHFSDefaults()
@@ -4326,9 +4183,8 @@ EXTERN_API( Ptr ) LMGetDiskFormatingHFSDefaults(void)         TWOWORDINLINE(0x2E
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API( void ) LMSetDiskFormatingHFSDefaults(Ptr value)   TWOWORDINLINE(0x21DF, 0x039E);
-
-
+EXTERN_API( void )
+LMSetDiskFormatingHFSDefaults( Ptr value ) TWOWORDINLINE( 0x21DF, 0x039E );
 
 /* accesses "PortAUse"*/
 #if CALL_NOT_IN_CARBON
@@ -4340,8 +4196,8 @@ EXTERN_API( void ) LMSetDiskFormatingHFSDefaults(Ptr value)   TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( UInt8 ) LMGetPortAInfo(void)                      TWOWORDINLINE(0x1EB8, 0x0290);
-
+EXTERN_API( UInt8 )
+LMGetPortAInfo( void ) TWOWORDINLINE( 0x1EB8, 0x0290 );
 
 /*
  *  LMSetPortAInfo()
@@ -4351,9 +4207,8 @@ EXTERN_API( UInt8 ) LMGetPortAInfo(void)                      TWOWORDINLINE(0x1E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetPortAInfo(UInt8 value)                TWOWORDINLINE(0x11DF, 0x0290);
-
-
+EXTERN_API( void )
+LMSetPortAInfo( UInt8 value ) TWOWORDINLINE( 0x11DF, 0x0290 );
 
 /*
  *  LMGetMBTicks()
@@ -4363,8 +4218,8 @@ EXTERN_API( void ) LMSetPortAInfo(UInt8 value)                TWOWORDINLINE(0x11
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( long ) LMGetMBTicks(void)                         TWOWORDINLINE(0x2EB8, 0x016E);
-
+EXTERN_API( long )
+LMGetMBTicks( void ) TWOWORDINLINE( 0x2EB8, 0x016E );
 
 /*
  *  LMSetMBTicks()
@@ -4374,9 +4229,8 @@ EXTERN_API( long ) LMGetMBTicks(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetMBTicks(long value)                   TWOWORDINLINE(0x21DF, 0x016E);
-
-
+EXTERN_API( void )
+LMSetMBTicks( long value ) TWOWORDINLINE( 0x21DF, 0x016E );
 
 /*
  *  LMGetKeyTime()
@@ -4386,8 +4240,8 @@ EXTERN_API( void ) LMSetMBTicks(long value)                   TWOWORDINLINE(0x21
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( long ) LMGetKeyTime(void)                         TWOWORDINLINE(0x2EB8, 0x0186);
-
+EXTERN_API( long )
+LMGetKeyTime( void ) TWOWORDINLINE( 0x2EB8, 0x0186 );
 
 /*
  *  LMSetKeyTime()
@@ -4397,20 +4251,17 @@ EXTERN_API( long ) LMGetKeyTime(void)                         TWOWORDINLINE(0x2E
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API( void ) LMSetKeyTime(long value)                   TWOWORDINLINE(0x21DF, 0x0186);
+EXTERN_API( void )
+LMSetKeyTime( long value ) TWOWORDINLINE( 0x21DF, 0x0186 );
 
-
-
-
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -4424,4 +4275,3 @@ EXTERN_API( void ) LMSetKeyTime(long value)                   TWOWORDINLINE(0x21
 #endif
 
 #endif /* __LOWMEM__ */
-

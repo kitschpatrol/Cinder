@@ -32,28 +32,29 @@
 #include <sstream>
 
 #if defined( CINDER_COCOA )
-	#include "cinder/audio/cocoa/ContextAudioUnit.h"
-	#if defined( CINDER_MAC )
-		#include "cinder/audio/cocoa/DeviceManagerCoreAudio.h"
-	#else // CINDER_COCOA_TOUCH
-		#include "cinder/audio/cocoa/DeviceManagerAudioSession.h"
-	#endif
+#include "cinder/audio/cocoa/ContextAudioUnit.h"
+#if defined( CINDER_MAC )
+#include "cinder/audio/cocoa/DeviceManagerCoreAudio.h"
+#else // CINDER_COCOA_TOUCH
+#include "cinder/audio/cocoa/DeviceManagerAudioSession.h"
+#endif
 #elif defined( CINDER_MSW ) && ( _WIN32_WINNT >= 0x0600 ) // Windows Vista+
-	#define CINDER_AUDIO_WASAPI
-	#include "cinder/audio/msw/ContextWasapi.h"
-	#include "cinder/audio/msw/DeviceManagerWasapi.h"
+#define CINDER_AUDIO_WASAPI
+#include "cinder/audio/msw/ContextWasapi.h"
+#include "cinder/audio/msw/DeviceManagerWasapi.h"
 #else
-	#define CINDER_AUDIO_DISABLED
+#define CINDER_AUDIO_DISABLED
 #endif
 
-#if ! defined( CINDER_AUDIO_DISABLED )
+#if !defined( CINDER_AUDIO_DISABLED )
 
 using namespace std;
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
-std::shared_ptr<Context>		Context::sMasterContext;
-std::unique_ptr<DeviceManager>	Context::sDeviceManager;
+std::shared_ptr<Context>       Context::sMasterContext;
+std::unique_ptr<DeviceManager> Context::sDeviceManager;
 
 bool sIsRegisteredForCleanup = false;
 
@@ -73,40 +74,40 @@ void Context::registerClearStatics()
 }
 
 // static
-Context* Context::master()
+Context *Context::master()
 {
-	if( ! sMasterContext ) {
+	if( !sMasterContext ) {
 #if defined( CINDER_COCOA )
 		sMasterContext.reset( new cocoa::ContextAudioUnit() );
 #elif defined( CINDER_MSW )
-	#if( _WIN32_WINNT >= 0x0600 ) // requires Windows Vista+
+#if( _WIN32_WINNT >= 0x0600 ) // requires Windows Vista+
 		sMasterContext.reset( new msw::ContextWasapi() );
-	#else
+#else
 		sMasterContext.reset( new msw::ContextXAudio() );
-	#endif
 #endif
-		if( ! sIsRegisteredForCleanup )
+#endif
+		if( !sIsRegisteredForCleanup )
 			registerClearStatics();
 	}
 	return sMasterContext.get();
 }
 
 // static
-DeviceManager* Context::deviceManager()
+DeviceManager *Context::deviceManager()
 {
-	if( ! sDeviceManager ) {
+	if( !sDeviceManager ) {
 #if defined( CINDER_MAC )
 		sDeviceManager.reset( new cocoa::DeviceManagerCoreAudio() );
 #elif defined( CINDER_COCOA_TOUCH )
 		sDeviceManager.reset( new cocoa::DeviceManagerAudioSession() );
 #elif defined( CINDER_MSW )
-	#if( _WIN32_WINNT > 0x0600 ) // requires Windows Vista+
+#if( _WIN32_WINNT > 0x0600 ) // requires Windows Vista+
 		sDeviceManager.reset( new msw::DeviceManagerWasapi() );
-	//#else
-	//	CI_ASSERT( 0 && "TODO: simple DeviceManagerXp" );
-	#endif
+//#else
+//	CI_ASSERT( 0 && "TODO: simple DeviceManagerXp" );
 #endif
-		if( ! sIsRegisteredForCleanup )
+#endif
+		if( !sIsRegisteredForCleanup )
 			registerClearStatics();
 	}
 	return sDeviceManager.get();
@@ -120,7 +121,7 @@ void Context::setMaster( Context *masterContext, DeviceManager *deviceManager )
 }
 
 Context::Context()
-	: mEnabled( false ), mAutoPullRequired( false ), mAutoPullCacheDirty( false ), mNumProcessedFrames( 0 )
+    : mEnabled( false ), mAutoPullRequired( false ), mAutoPullCacheDirty( false ), mNumProcessedFrames( 0 )
 {
 }
 
@@ -139,7 +140,7 @@ void Context::enable()
 	const auto &output = getOutput();
 
 	// output may not yet be initialized if no Node's are connected to it.
-	if( ! output->isInitialized() )
+	if( !output->isInitialized() )
 		output->initializeImpl();
 
 	mEnabled = true;
@@ -148,7 +149,7 @@ void Context::enable()
 
 void Context::disable()
 {
-	if( ! mEnabled )
+	if( !mEnabled )
 		return;
 
 	mEnabled = false;
@@ -168,7 +169,7 @@ void Context::initializeAllNodes()
 	set<NodeRef> traversedNodes;
 	initRecursisve( mOutput, traversedNodes );
 
-	for( const auto& node : mAutoPulledNodes )
+	for( const auto &node : mAutoPulledNodes )
 		initRecursisve( node, traversedNodes );
 }
 
@@ -177,7 +178,7 @@ void Context::uninitializeAllNodes()
 	set<NodeRef> traversedNodes;
 	uninitRecursive( mOutput, traversedNodes );
 
-	for( const auto& node : mAutoPulledNodes )
+	for( const auto &node : mAutoPulledNodes )
 		uninitRecursive( node, traversedNodes );
 }
 
@@ -186,7 +187,7 @@ void Context::disconnectAllNodes()
 	set<NodeRef> traversedNodes;
 	disconnectRecursive( mOutput, traversedNodes );
 
-	for( const auto& node : mAutoPulledNodes )
+	for( const auto &node : mAutoPulledNodes )
 		disconnectRecursive( node, traversedNodes );
 }
 
@@ -195,9 +196,9 @@ void Context::setOutput( const OutputNodeRef &output )
 	mOutput = output;
 }
 
-const OutputNodeRef& Context::getOutput()
+const OutputNodeRef &Context::getOutput()
 {
-	if( ! mOutput )
+	if( !mOutput )
 		mOutput = createOutputDeviceNode();
 	return mOutput;
 }
@@ -214,7 +215,7 @@ void Context::uninitializeNode( const NodeRef &node )
 
 void Context::disconnectRecursive( const NodeRef &node, set<NodeRef> &traversedNodes )
 {
-	if( ! node || traversedNodes.count( node ) )
+	if( !node || traversedNodes.count( node ) )
 		return;
 
 	traversedNodes.insert( node );
@@ -227,7 +228,7 @@ void Context::disconnectRecursive( const NodeRef &node, set<NodeRef> &traversedN
 
 void Context::initRecursisve( const NodeRef &node, set<NodeRef> &traversedNodes )
 {
-	if( ! node || traversedNodes.count( node ) )
+	if( !node || traversedNodes.count( node ) )
 		return;
 
 	traversedNodes.insert( node );
@@ -240,7 +241,7 @@ void Context::initRecursisve( const NodeRef &node, set<NodeRef> &traversedNodes 
 
 void Context::uninitRecursive( const NodeRef &node, set<NodeRef> &traversedNodes )
 {
-	if( ! node || traversedNodes.count( node ) )
+	if( !node || traversedNodes.count( node ) )
 		return;
 
 	traversedNodes.insert( node );
@@ -273,10 +274,10 @@ void Context::removeAutoPulledNode( const NodeRef &node )
 		mAutoPullRequired = false;
 }
 
-void Context::schedule( double when, const NodeRef &node, bool enable, const std::function<void ()> &func )
+void Context::schedule( double when, const NodeRef &node, bool enable, const std::function<void()> &func )
 {
 	const uint64_t framesPerBlock = (uint64_t)getFramesPerBlock();
-	uint64_t eventFrameThreshold = timeToFrame( when, getSampleRate() );
+	uint64_t       eventFrameThreshold = timeToFrame( when, getSampleRate() );
 
 	// Place the threshold back one block so we can process the block first, guarding against wrap around
 	if( eventFrameThreshold >= framesPerBlock )
@@ -312,13 +313,13 @@ void Context::incrementFrameCount()
 
 void Context::processAutoPulledNodes()
 {
-	if( ! mAutoPullRequired )
+	if( !mAutoPullRequired )
 		return;
 
 	for( Node *node : getAutoPulledNodes() ) {
 		mAutoPullBuffer.setNumChannels( node->getNumChannels() );
 		node->pullInputs( &mAutoPullBuffer );
-		if( ! node->getProcessesInPlace() )
+		if( !node->getProcessesInPlace() )
 			dsp::mixBuffers( node->getInternalBuffer(), &mAutoPullBuffer );
 	}
 }
@@ -349,7 +350,7 @@ void Context::postProcessScheduledEvents()
 {
 	for( auto eventIt = mScheduledEvents.begin(); eventIt != mScheduledEvents.end(); /* */ ) {
 		if( eventIt->mFinished ) {
-			if( ! eventIt->mEnable )
+			if( !eventIt->mEnable )
 				eventIt->mFunc();
 
 			// reset process frame range
@@ -364,7 +365,7 @@ void Context::postProcessScheduledEvents()
 	}
 }
 
-const std::vector<Node *>& Context::getAutoPulledNodes()
+const std::vector<Node *> &Context::getAutoPulledNodes()
 {
 	if( mAutoPullCacheDirty ) {
 		mAutoPullCache.clear();
@@ -378,7 +379,7 @@ namespace {
 
 void printRecursive( ostream &stream, const NodeRef &node, size_t depth, set<NodeRef> &traversedNodes )
 {
-	if( ! node )
+	if( !node )
 		return;
 	for( size_t i = 0; i < depth; i++ )
 		stream << "-- ";
@@ -392,9 +393,15 @@ void printRecursive( ostream &stream, const NodeRef &node, size_t depth, set<Nod
 
 	string channelMode;
 	switch( node->getChannelMode() ) {
-		case Node::ChannelMode::SPECIFIED: channelMode = "specified"; break;
-		case Node::ChannelMode::MATCHES_INPUT: channelMode = "matches input"; break;
-		case Node::ChannelMode::MATCHES_OUTPUT: channelMode = "matches output"; break;
+	case Node::ChannelMode::SPECIFIED:
+		channelMode = "specified";
+		break;
+	case Node::ChannelMode::MATCHES_INPUT:
+		channelMode = "matches input";
+		break;
+	case Node::ChannelMode::MATCHES_OUTPUT:
+		channelMode = "matches output";
+		break;
 	}
 
 	stream << node->getName() << "\t[ " << ( node->isEnabled() ? "enabled" : "disabled" );
@@ -416,9 +423,9 @@ string Context::printGraphToString()
 
 	printRecursive( stream, getOutput(), 0, traversedNodes );
 
-	if( ! mAutoPulledNodes.empty() ) {
+	if( !mAutoPulledNodes.empty() ) {
 		stream << "(auto-pulled:)" << endl;
-		for( const auto& node : mAutoPulledNodes )
+		for( const auto &node : mAutoPulledNodes )
 			printRecursive( stream, node, 0, traversedNodes );
 	}
 
@@ -430,13 +437,13 @@ string Context::printGraphToString()
 // ----------------------------------------------------------------------------------------------------
 
 ScopedEnableContext::ScopedEnableContext( Context *context )
-	: mContext( context )
+    : mContext( context )
 {
 	mWasEnabled = ( mContext ? mContext->isEnabled() : false );
 }
 
 ScopedEnableContext::ScopedEnableContext( Context *context, bool enable )
-	: mContext( context )
+    : mContext( context )
 {
 	if( mContext ) {
 		mWasEnabled = mContext->isEnabled();
@@ -451,7 +458,7 @@ ScopedEnableContext::~ScopedEnableContext()
 	if( mContext )
 		mContext->setEnabled( mWasEnabled );
 }
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio
 
 #endif // ! defined( CINDER_AUDIO_DISABLED )

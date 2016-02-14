@@ -1,66 +1,63 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/System.h"
-#include "cinder/Rand.h"
 #include "Tuio.h"
+#include "cinder/Rand.h"
+#include "cinder/System.h"
+#include "cinder/app/RendererGl.h"
 
 using namespace ci;
 using namespace ci::app;
 
-#include <vector>
-#include <map>
 #include <list>
+#include <map>
+#include <vector>
 using namespace std;
 
 struct TouchPoint {
 	TouchPoint() {}
 	TouchPoint( const vec2 &initialPt, const Color &color )
-		: mColor( color ), mTimeOfDeath( -1.0 )
+	    : mColor( color ), mTimeOfDeath( -1.0 )
 	{
-		mLine.push_back( initialPt ); 
+		mLine.push_back( initialPt );
 	}
-	
+
 	void addPoint( const vec2 &pt ) { mLine.push_back( pt ); }
-	
-	void draw() const
+	void                       draw() const
 	{
 		if( mTimeOfDeath > 0 ) // are we dying? then fade out
 			gl::color( ColorA( mColor, ( mTimeOfDeath - getElapsedSeconds() ) / 2.0f ) );
 		else
 			gl::color( mColor );
-		
+
 		gl::draw( mLine );
 	}
-	
-	void startDying() { mTimeOfDeath = getElapsedSeconds() + 2.0f; } // two seconds til dead
 
-	bool isDead() const { return getElapsedSeconds() > mTimeOfDeath; }
-	
-	PolyLine2	mLine;
-	Color		mColor;
-	float		mTimeOfDeath;
+	void      startDying() { mTimeOfDeath = getElapsedSeconds() + 2.0f; } // two seconds til dead
+	bool      isDead() const { return getElapsedSeconds() > mTimeOfDeath; }
+	PolyLine2 mLine;
+	Color     mColor;
+	float     mTimeOfDeath;
 };
 
 // We'll create a new Cinder Application by deriving from the BasicApp class
 class MultiTouchApp : public App {
- public:
+  public:
 	MultiTouchApp();
 
-	void	touchesBegan( TouchEvent event ) override;
-	void	touchesMoved( TouchEvent event ) override;
-	void	touchesEnded( TouchEvent event ) override;
+	void touchesBegan( TouchEvent event ) override;
+	void touchesMoved( TouchEvent event ) override;
+	void touchesEnded( TouchEvent event ) override;
 
-	void	setup() override;
-	void	draw() override;
-	void	keyDown( KeyEvent event ) override;
-	
-	map<uint32_t,TouchPoint>	mActivePoints;
-	list<TouchPoint>			mDyingPoints;
-	tuio::Receiver				mTuio;
+	void setup() override;
+	void draw() override;
+	void keyDown( KeyEvent event ) override;
+
+	map<uint32_t, TouchPoint> mActivePoints;
+	list<TouchPoint> mDyingPoints;
+	tuio::Receiver   mTuio;
 };
 
 MultiTouchApp::MultiTouchApp()
-: App(), mTuio( app::getWindow() )
+    : App(), mTuio( app::getWindow() )
 {
 }
 
@@ -71,7 +68,7 @@ void MultiTouchApp::setup()
 
 void MultiTouchApp::touchesBegan( TouchEvent event )
 {
-	for( auto & touch : event.getTouches() ) {
+	for( auto &touch : event.getTouches() ) {
 		Color newColor( CM_HSV, Rand::randFloat(), 1, 1 );
 		mActivePoints.insert( make_pair( touch.getId(), TouchPoint( touch.getPos(), newColor ) ) );
 	}
@@ -79,13 +76,13 @@ void MultiTouchApp::touchesBegan( TouchEvent event )
 
 void MultiTouchApp::touchesMoved( TouchEvent event )
 {
-	for( auto & touch : event.getTouches() )
+	for( auto &touch : event.getTouches() )
 		mActivePoints[touch.getId()].addPoint( touch.getPos() );
 }
 
 void MultiTouchApp::touchesEnded( TouchEvent event )
 {
-	for( auto & touch : event.getTouches() ) {
+	for( auto &touch : event.getTouches() ) {
 		mActivePoints[touch.getId()].startDying();
 		mDyingPoints.push_back( mActivePoints[touch.getId()] );
 		mActivePoints.erase( touch.getId() );
@@ -94,8 +91,8 @@ void MultiTouchApp::touchesEnded( TouchEvent event )
 
 void MultiTouchApp::keyDown( KeyEvent event )
 {
-	 if( event.getChar() == 'f' )
-		 setFullScreen( ! isFullScreen() );
+	if( event.getChar() == 'f' )
+		setFullScreen( !isFullScreen() );
 }
 
 void MultiTouchApp::draw()
@@ -103,7 +100,7 @@ void MultiTouchApp::draw()
 	gl::enableAlphaBlending();
 	gl::clear( Color( 0.1f, 0.1f, 0.1f ) );
 
-	for( auto & active : mActivePoints ) {
+	for( auto &active : mActivePoints ) {
 		active.second.draw();
 	}
 
@@ -114,12 +111,12 @@ void MultiTouchApp::draw()
 		else
 			++dyingIt;
 	}
-	
+
 	// draw yellow circles at the active touch points
 	gl::color( Color( 1, 1, 0 ) );
-//	vector<TouchEvent::Touch> activeTouches( mTuio.getActiveTouches() );
-//	for( auto touchIt = activeTouches.begin(); touchIt != activeTouches.end(); ++touchIt )
-//		gl::drawStrokedCircle( touchIt->getPos(), 20.0f );
+	//	vector<TouchEvent::Touch> activeTouches( mTuio.getActiveTouches() );
+	//	for( auto touchIt = activeTouches.begin(); touchIt != activeTouches.end(); ++touchIt )
+	//		gl::drawStrokedCircle( touchIt->getPos(), 20.0f );
 }
 
 CINDER_APP( MultiTouchApp, RendererGl, []( App::Settings *settings ) {

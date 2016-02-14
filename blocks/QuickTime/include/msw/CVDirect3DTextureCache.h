@@ -6,15 +6,15 @@
  *
  */
 
-#if !defined(__COREVIDEO__CVDIRECT3DTEXTURECACHE_H__)
+#if !defined( __COREVIDEO__CVDIRECT3DTEXTURECACHE_H__ )
 #define __COREVIDEO__CVDIRECT3DTEXTURECACHE_H__ 1
 
 #include <CVBase.h>
-#include <CVReturn.h>
 #include <CVBuffer.h>
 #include <CVDirect3DTexture.h>
+#include <CVReturn.h>
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 extern "C" {
 #endif
 
@@ -56,12 +56,12 @@ CV_EXPORT void CVDirect3DTextureCacheRelease( CVDirect3DTextureCacheRef textureC
     @result     Returns kCVReturnSuccess on success
 */
 CV_EXPORT CVReturn CVDirect3DTextureCacheCreate(
-					CFAllocatorRef allocator,
-					CFDictionaryRef cacheAttributes,
-					void *d3dDevice,  /*CVDIRECT3DDEVICE*/
-					UInt32 d3dFormat, /*D3DFORMAT*/
-					CFDictionaryRef textureAttributes,
-					CVDirect3DTextureCacheRef *cacheOut);
+    CFAllocatorRef             allocator,
+    CFDictionaryRef            cacheAttributes,
+    void *                     d3dDevice, /*CVDIRECT3DDEVICE*/
+    UInt32                     d3dFormat, /*D3DFORMAT*/
+    CFDictionaryRef            textureAttributes,
+    CVDirect3DTextureCacheRef *cacheOut );
 
 /*!
     @function   CVDirect3DTextureCacheCreateTextureFromImage
@@ -72,11 +72,11 @@ CV_EXPORT CVReturn CVDirect3DTextureCacheCreate(
     @param      textureOut The newly created texture object will be placed here.
     @result     Returns kCVReturnSuccess on success
 */
-CV_EXPORT CVReturn CVDirect3DTextureCacheCreateTextureFromImage(CFAllocatorRef allocator,
-								       CVDirect3DTextureCacheRef textureCache,
-								       CVImageBufferRef sourceImage,
-								       CFDictionaryRef *attribs,
-								       CVDirect3DTextureRef *textureOut);
+CV_EXPORT CVReturn CVDirect3DTextureCacheCreateTextureFromImage( CFAllocatorRef allocator,
+    CVDirect3DTextureCacheRef                                                   textureCache,
+    CVImageBufferRef                                                            sourceImage,
+    CFDictionaryRef *                                                           attribs,
+    CVDirect3DTextureRef *                                                      textureOut );
 
 /*!
     @function   CVDirect3DTextureCacheFlush
@@ -87,9 +87,9 @@ CV_EXPORT CVReturn CVDirect3DTextureCacheCreateTextureFromImage(CFAllocatorRef a
     @param      options Currently unused, set to 0.
     @result     Returns kCVReturnSuccess on success
 */
-CV_EXPORT void CVDirect3DTextureCacheFlush(CVDirect3DTextureCacheRef textureCache, CVOptionFlags options);
+CV_EXPORT void CVDirect3DTextureCacheFlush( CVDirect3DTextureCacheRef textureCache, CVOptionFlags options );
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 }
 #endif
 

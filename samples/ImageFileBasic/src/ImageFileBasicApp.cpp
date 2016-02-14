@@ -1,9 +1,9 @@
 ﻿#include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
-#include "cinder/Log.h"
 #include "cinder/ImageIo.h"
+#include "cinder/Log.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -15,15 +15,15 @@ class ImageFileBasicApp : public App {
 	void keyDown( KeyEvent event ) override;
 	void fileDrop( FileDropEvent event ) override;
 	void draw() override;
-	
-	gl::TextureRef		mTexture;
+
+	gl::TextureRef mTexture;
 };
 
 void ImageFileBasicApp::setup()
 {
 	try {
 		fs::path path = getOpenFilePath( "", ImageIo::getLoadExtensions() );
-		if( ! path.empty() ) {
+		if( !path.empty() ) {
 			mTexture = gl::Texture::create( loadImage( path ) );
 		}
 	}
@@ -36,12 +36,12 @@ void ImageFileBasicApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'o' ) {
 		fs::path path = getOpenFilePath( "", ImageIo::getLoadExtensions() );
-		if( ! path.empty() )
+		if( !path.empty() )
 			mTexture = gl::Texture::create( loadImage( path ) );
 	}
 	else if( event.getChar() == 's' ) {
 		fs::path path = getSaveFilePath();
-		if( ! path.empty() ) {
+		if( !path.empty() ) {
 			Surface s8( mTexture->createSource() );
 			writeImage( writeFile( path ), s8 );
 		}
@@ -62,7 +62,7 @@ void ImageFileBasicApp::draw()
 {
 	gl::clear( Color( 0.5f, 0.5f, 0.5f ) );
 	gl::enableAlphaBlending();
-	
+
 	if( mTexture ) {
 		Rectf destRect = Rectf( mTexture->getBounds() ).getCenteredFit( getWindowBounds(), true ).scaledCentered( 0.85f );
 		gl::draw( mTexture, destRect );

@@ -24,33 +24,35 @@
 
 #include "cinder/Cinder.h"
 #if defined( CINDER_COCOA )
-	#include "cinder/cocoa/CinderCocoa.h"
+#include "cinder/cocoa/CinderCocoa.h"
 #endif
 #if defined( CINDER_MAC )
-	#include <objc/objc-auto.h>
+#include <objc/objc-auto.h>
 #endif
 
-#include <thread>
-#include <mutex>
 #include <condition_variable>
 #include <future>
+#include <mutex>
+#include <thread>
 
 namespace cinder {
 //! Create an instance of this class at the beginning of any multithreaded code that makes use of Cinder functionality
 class ThreadSetup {
   public:
-	ThreadSetup() {
+	ThreadSetup()
+	{
 #if defined( CINDER_MAC )
 		objc_registerThreadWithCollector();
 #endif
 	}
-	
-	~ThreadSetup() {	
+
+	~ThreadSetup()
+	{
 	}
-	
+
   protected:
 #if defined( CINDER_COCOA )
-	cocoa::SafeNsAutoreleasePool	mAutoreleasePool;
+	cocoa::SafeNsAutoreleasePool mAutoreleasePool;
 #endif
 };
 

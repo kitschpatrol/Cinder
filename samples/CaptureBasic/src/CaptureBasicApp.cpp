@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/Capture.h"
 #include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -17,8 +17,8 @@ class CaptureBasicApp : public App {
   private:
 	void printDevices();
 
-	CaptureRef			mCapture;
-	gl::TextureRef		mTexture;
+	CaptureRef     mCapture;
+	gl::TextureRef mTexture;
 };
 
 void CaptureBasicApp::setup()
@@ -37,7 +37,7 @@ void CaptureBasicApp::setup()
 void CaptureBasicApp::update()
 {
 	if( mCapture && mCapture->checkNewFrame() ) {
-		if( ! mTexture ) {
+		if( !mTexture ) {
 			// Capture images come back as top-down, and it's more efficient to keep them that way
 			mTexture = gl::Texture::create( *mCapture->getSurface(), gl::Texture::Format().loadTopDown() );
 		}
@@ -57,7 +57,7 @@ void CaptureBasicApp::draw()
 #if defined( CINDER_COCOA_TOUCH )
 		// change iphone to landscape orientation
 		gl::rotate( M_PI / 2 );
-		gl::translate( 0, - getWindowWidth() );
+		gl::translate( 0, -getWindowWidth() );
 
 		Rectf flippedBounds( 0, 0, getWindowHeight(), getWindowWidth() );
 		gl::draw( mTexture, flippedBounds );
@@ -72,9 +72,9 @@ void CaptureBasicApp::printDevices()
 	for( const auto &device : Capture::getDevices() ) {
 		console() << "Device: " << device->getName() << " "
 #if defined( CINDER_COCOA_TOUCH )
-		<< ( device->isFrontFacing() ? "Front" : "Rear" ) << "-facing"
+		          << ( device->isFrontFacing() ? "Front" : "Rear" ) << "-facing"
 #endif
-		<< endl;
+		          << endl;
 	}
 }
 

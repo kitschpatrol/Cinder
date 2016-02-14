@@ -1,7 +1,7 @@
 #include "cinder/app/App.h"
-#include "cinder/gl/gl.h"
 #include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -29,6 +29,5 @@ void assetTestApp::draw()
 	if( img )
 		gl::draw( img );
 }
-
 
 CINDER_APP( assetTestApp, RendererGl )

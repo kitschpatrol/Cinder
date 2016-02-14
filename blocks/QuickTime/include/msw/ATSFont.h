@@ -44,9 +44,6 @@
 #include <SFNTTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -60,103 +57,103 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __ATSFONT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __ATSFONT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __ATSFONT__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __ATSFONT__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
 enum {
-  kATSOptionFlagsDefault        = kNilOptions,
-  kATSOptionFlagsComposeFontPostScriptName = 1 << 0, /* ATSFontGetPostScriptName */
-  kATSOptionFlagsUseDataForkAsResourceFork = 1 << 8, /* ATSFontActivateFromFileSpecification */
-  kATSOptionFlagsUseResourceFork = 2 << 8,
-  kATSOptionFlagsUseDataFork    = 3 << 8
+	kATSOptionFlagsDefault = kNilOptions,
+	kATSOptionFlagsComposeFontPostScriptName = 1 << 0, /* ATSFontGetPostScriptName */
+	kATSOptionFlagsUseDataForkAsResourceFork = 1 << 8, /* ATSFontActivateFromFileSpecification */
+	kATSOptionFlagsUseResourceFork = 2 << 8,
+	kATSOptionFlagsUseDataFork = 3 << 8
 };
 
 enum {
-  kATSIterationCompleted        = -980L,
-  kATSInvalidFontFamilyAccess   = -981L,
-  kATSInvalidFontAccess         = -982L,
-  kATSIterationScopeModified    = -983L,
-  kATSInvalidFontTableAccess    = -984L,
-  kATSInvalidFontContainerAccess = -985L
+	kATSIterationCompleted = -980L,
+	kATSInvalidFontFamilyAccess = -981L,
+	kATSInvalidFontAccess = -982L,
+	kATSIterationScopeModified = -983L,
+	kATSInvalidFontTableAccess = -984L,
+	kATSInvalidFontContainerAccess = -985L
 };
 
 /* Activation Option Flags */
-typedef UInt32                          ATSFontContext;
+typedef UInt32 ATSFontContext;
 enum {
-  kATSFontContextUnspecified    = 0,
-  kATSFontContextGlobal         = 1,
-  kATSFontContextLocal          = 2
+	kATSFontContextUnspecified = 0,
+	kATSFontContextGlobal = 1,
+	kATSFontContextLocal = 2
 };
 
 enum {
-  kATSOptionFlagsDoNotNotify    = 0x00000001 << 8, /* Do not notify after global activation/deactivation */
-  kATSOptionFlagsIterationScopeMask = 0x00000007 << 12, /* Mask option bits 12-14 for iteration scopes */
-  kATSOptionFlagsDefaultScope   = 0x00000000 << 12,
-  kATSOptionFlagsUnRestrictedScope = 0x00000001 << 12,
-  kATSOptionFlagsRestrictedScope = 0x00000002 << 12,
-  kATSOptionFlagsProcessSubdirectories = 0x00000001 << 6
+	kATSOptionFlagsDoNotNotify = 0x00000001 << 8, /* Do not notify after global activation/deactivation */
+	kATSOptionFlagsIterationScopeMask = 0x00000007 << 12, /* Mask option bits 12-14 for iteration scopes */
+	kATSOptionFlagsDefaultScope = 0x00000000 << 12,
+	kATSOptionFlagsUnRestrictedScope = 0x00000001 << 12,
+	kATSOptionFlagsRestrictedScope = 0x00000002 << 12,
+	kATSOptionFlagsProcessSubdirectories = 0x00000001 << 6
 };
 
 /* Iteration Option Flags */
 enum {
-  kATSOptionFlagsIterateByPrecedenceMask = 0x00000001 << 5
+	kATSOptionFlagsIterateByPrecedenceMask = 0x00000001 << 5
 };
 
-typedef UInt32                          ATSFontFormat;
+typedef UInt32 ATSFontFormat;
 enum {
-  kATSFontFormatUnspecified     = 0
+	kATSFontFormatUnspecified = 0
 };
 
-typedef CALLBACK_API_C( OSStatus , ATSFontFamilyApplierFunction )(ATSFontFamilyRef iFamily, void *iRefCon);
-typedef CALLBACK_API_C( OSStatus , ATSFontApplierFunction )(ATSFontRef iFont, void *iRefCon);
-typedef struct ATSFontFamilyIterator_*  ATSFontFamilyIterator;
-typedef struct ATSFontIterator_*        ATSFontIterator;
+typedef CALLBACK_API_C( OSStatus, ATSFontFamilyApplierFunction )( ATSFontFamilyRef iFamily, void *iRefCon );
+typedef CALLBACK_API_C( OSStatus, ATSFontApplierFunction )( ATSFontRef iFont, void *iRefCon );
+typedef struct ATSFontFamilyIterator_ *ATSFontFamilyIterator;
+typedef struct ATSFontIterator_ *      ATSFontIterator;
 enum {
-  kATSFontFilterCurrentVersion  = 0
+	kATSFontFilterCurrentVersion = 0
 };
 
 enum ATSFontFilterSelector {
-  kATSFontFilterSelectorUnspecified = 0,
-  kATSFontFilterSelectorGeneration = 3,
-  kATSFontFilterSelectorFontFamily = 7,
-  kATSFontFilterSelectorFontFamilyApplierFunction = 8,
-  kATSFontFilterSelectorFontApplierFunction = 9
+	kATSFontFilterSelectorUnspecified = 0,
+	kATSFontFilterSelectorGeneration = 3,
+	kATSFontFilterSelectorFontFamily = 7,
+	kATSFontFilterSelectorFontFamilyApplierFunction = 8,
+	kATSFontFilterSelectorFontApplierFunction = 9
 };
 typedef enum ATSFontFilterSelector ATSFontFilterSelector;
 
 struct ATSFontFilter {
-  UInt32              version;
-  ATSFontFilterSelector  filterSelector;
-  union {
-    ATSGeneration       generationFilter;
-    ATSFontFamilyRef    fontFamilyFilter;
-    ATSFontFamilyApplierFunction  fontFamilyApplierFunctionFilter;
-    ATSFontApplierFunction  fontApplierFunctionFilter;
-  }                       filter;
+	UInt32                version;
+	ATSFontFilterSelector filterSelector;
+	union {
+		ATSGeneration                generationFilter;
+		ATSFontFamilyRef             fontFamilyFilter;
+		ATSFontFamilyApplierFunction fontFamilyApplierFunctionFilter;
+		ATSFontApplierFunction       fontApplierFunctionFilter;
+	} filter;
 };
-typedef struct ATSFontFilter            ATSFontFilter;
+typedef struct ATSFontFilter ATSFontFilter;
 /* Notification related */
-typedef struct ATSFontNotificationRef_*  ATSFontNotificationRef;
-typedef struct ATSFontNotificationInfoRef_*  ATSFontNotificationInfoRef;
+typedef struct ATSFontNotificationRef_ *    ATSFontNotificationRef;
+typedef struct ATSFontNotificationInfoRef_ *ATSFontNotificationInfoRef;
 
 /*
  *  ATSFontNotifyOption
@@ -168,12 +165,12 @@ typedef struct ATSFontNotificationInfoRef_*  ATSFontNotificationInfoRef;
  */
 enum ATSFontNotifyOption {
 
-  /*
+	/*
    * Default behavior of ATSFontNotificationSubscribe.
    */
-  kATSFontNotifyOptionDefault   = 0,
+	kATSFontNotifyOptionDefault = 0,
 
-  /*
+	/*
    * Normally applications will only receive ATS notifications while in
    * the foreground.   If suspended, the notification will be delivered
    * when then application comes to the foreground.  This is the
@@ -181,12 +178,9 @@ enum ATSFontNotifyOption {
    * that performs font management functions and require immediate
    * notification when something changes.
    */
-  kATSFontNotifyOptionReceiveWhileSuspended = 1L << 0
+	kATSFontNotifyOptionReceiveWhileSuspended = 1L << 0
 };
 typedef enum ATSFontNotifyOption ATSFontNotifyOption;
-
-
-
 
 /*
  *  ATSFontNotifyAction
@@ -198,16 +192,16 @@ typedef enum ATSFontNotifyOption ATSFontNotifyOption;
  */
 enum ATSFontNotifyAction {
 
-  /*
+	/*
    * Used after a batch (de)activation of fonts occurs.   Typically the
    * caller has exercised multiple global (De)Activation calls with the
    * kATSOptionFlagsDoNotNotify set. Once all calls are completed, one
    * may use ATSFontNotify with this action to ask ATS to notify all
    * clients.
    */
-  kATSFontNotifyActionFontsChanged = 1,
+	kATSFontNotifyActionFontsChanged = 1,
 
-  /*
+	/*
    * The ATS system with the help of the Finder keeps track of changes
    * to any of the fonts directories ( System, Local, Network, User, &
    * Classic). However, one may wish to add/remove fonts to these
@@ -215,11 +209,9 @@ enum ATSFontNotifyAction {
    * server to rescan these directories and post notifications if
    * necessary.
    */
-  kATSFontNotifyActionDirectoriesChanged = 2
+	kATSFontNotifyActionDirectoriesChanged = 2
 };
 typedef enum ATSFontNotifyAction ATSFontNotifyAction;
-
-
 
 /*
  *  ATSNotificationCallback
@@ -236,7 +228,7 @@ typedef enum ATSFontNotifyAction ATSFontNotifyAction;
  *    refCon:
  *      User data/state to be supplied to callback function
  */
-typedef CALLBACK_API_C( void , ATSNotificationCallback )(ATSFontNotificationInfoRef info, void *refCon);
+typedef CALLBACK_API_C( void, ATSNotificationCallback )( ATSFontNotificationInfoRef info, void *refCon );
 /* ----------------------------------------------------------------------------------------- */
 /* Font container                                                                            */
 /* ----------------------------------------------------------------------------------------- */
@@ -249,8 +241,7 @@ typedef CALLBACK_API_C( void , ATSNotificationCallback )(ATSFontNotificationInfo
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSGeneration )
-ATSGetGeneration(void);
-
+ATSGetGeneration( void );
 
 /*
  *  ATSFontActivateFromFileSpecification()
@@ -262,13 +253,12 @@ ATSGetGeneration(void);
  */
 EXTERN_API_C( OSStatus )
 ATSFontActivateFromFileSpecification(
-  const FSSpec *         iFile,
-  ATSFontContext         iContext,
-  ATSFontFormat          iFormat,
-  void *                 iReserved,
-  ATSOptionFlags         iOptions,
-  ATSFontContainerRef *  oContainer);
-
+    const FSSpec *       iFile,
+    ATSFontContext       iContext,
+    ATSFontFormat        iFormat,
+    void *               iReserved,
+    ATSOptionFlags       iOptions,
+    ATSFontContainerRef *oContainer );
 
 /*
  *  ATSFontActivateFromMemory()
@@ -280,14 +270,13 @@ ATSFontActivateFromFileSpecification(
  */
 EXTERN_API_C( OSStatus )
 ATSFontActivateFromMemory(
-  LogicalAddress         iData,
-  ByteCount              iLength,
-  ATSFontContext         iContext,
-  ATSFontFormat          iFormat,
-  void *                 iReserved,
-  ATSOptionFlags         iOptions,
-  ATSFontContainerRef *  oContainer);
-
+    LogicalAddress       iData,
+    ByteCount            iLength,
+    ATSFontContext       iContext,
+    ATSFontFormat        iFormat,
+    void *               iReserved,
+    ATSOptionFlags       iOptions,
+    ATSFontContainerRef *oContainer );
 
 /*
  *  ATSFontDeactivate()
@@ -299,10 +288,9 @@ ATSFontActivateFromMemory(
  */
 EXTERN_API_C( OSStatus )
 ATSFontDeactivate(
-  ATSFontContainerRef   iContainer,
-  void *                iRefCon,
-  ATSOptionFlags        iOptions);
-
+    ATSFontContainerRef iContainer,
+    void *              iRefCon,
+    ATSOptionFlags      iOptions );
 
 /* ----------------------------------------------------------------------------------------- */
 /* Font family                                                                               */
@@ -317,9 +305,8 @@ ATSFontDeactivate(
  */
 EXTERN_API_C( OSStatus )
 ATSFontFamilyApplyFunction(
-  ATSFontFamilyApplierFunction   iFunction,
-  void *                         iRefCon);
-
+    ATSFontFamilyApplierFunction iFunction,
+    void *                       iRefCon );
 
 /*
  *  ATSFontFamilyIteratorCreate()
@@ -331,12 +318,11 @@ ATSFontFamilyApplyFunction(
  */
 EXTERN_API_C( OSStatus )
 ATSFontFamilyIteratorCreate(
-  ATSFontContext           iContext,
-  const ATSFontFilter *    iFilter,          /* can be NULL */
-  void *                   iRefCon,
-  ATSOptionFlags           iOptions,
-  ATSFontFamilyIterator *  ioIterator);
-
+    ATSFontContext         iContext,
+    const ATSFontFilter *  iFilter, /* can be NULL */
+    void *                 iRefCon,
+    ATSOptionFlags         iOptions,
+    ATSFontFamilyIterator *ioIterator );
 
 /*
  *  ATSFontFamilyIteratorRelease()
@@ -347,8 +333,7 @@ ATSFontFamilyIteratorCreate(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSFontFamilyIteratorRelease(ATSFontFamilyIterator * ioIterator);
-
+ATSFontFamilyIteratorRelease( ATSFontFamilyIterator *ioIterator );
 
 /*
  *  ATSFontFamilyIteratorReset()
@@ -360,12 +345,11 @@ ATSFontFamilyIteratorRelease(ATSFontFamilyIterator * ioIterator);
  */
 EXTERN_API_C( OSStatus )
 ATSFontFamilyIteratorReset(
-  ATSFontContext           iContext,
-  const ATSFontFilter *    iFilter,          /* can be NULL */
-  void *                   iRefCon,
-  ATSOptionFlags           iOptions,
-  ATSFontFamilyIterator *  ioIterator);
-
+    ATSFontContext         iContext,
+    const ATSFontFilter *  iFilter, /* can be NULL */
+    void *                 iRefCon,
+    ATSOptionFlags         iOptions,
+    ATSFontFamilyIterator *ioIterator );
 
 /*
  *  ATSFontFamilyIteratorNext()
@@ -377,9 +361,8 @@ ATSFontFamilyIteratorReset(
  */
 EXTERN_API_C( OSStatus )
 ATSFontFamilyIteratorNext(
-  ATSFontFamilyIterator   iIterator,
-  ATSFontFamilyRef *      oFamily);
-
+    ATSFontFamilyIterator iIterator,
+    ATSFontFamilyRef *    oFamily );
 
 /*
  *  ATSFontFamilyFindFromName()
@@ -391,9 +374,8 @@ ATSFontFamilyIteratorNext(
  */
 EXTERN_API_C( ATSFontFamilyRef )
 ATSFontFamilyFindFromName(
-  CFStringRef      iName,
-  ATSOptionFlags   iOptions);
-
+    CFStringRef    iName,
+    ATSOptionFlags iOptions );
 
 /*
  *  ATSFontFamilyGetGeneration()
@@ -404,8 +386,7 @@ ATSFontFamilyFindFromName(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSGeneration )
-ATSFontFamilyGetGeneration(ATSFontFamilyRef iFamily);
-
+ATSFontFamilyGetGeneration( ATSFontFamilyRef iFamily );
 
 /*
  *  ATSFontFamilyGetName()
@@ -417,10 +398,9 @@ ATSFontFamilyGetGeneration(ATSFontFamilyRef iFamily);
  */
 EXTERN_API_C( OSStatus )
 ATSFontFamilyGetName(
-  ATSFontFamilyRef   iFamily,
-  ATSOptionFlags     iOptions,
-  CFStringRef *      oName);
-
+    ATSFontFamilyRef iFamily,
+    ATSOptionFlags   iOptions,
+    CFStringRef *    oName );
 
 /*
  *  ATSFontFamilyGetEncoding()
@@ -431,8 +411,7 @@ ATSFontFamilyGetName(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( TextEncoding )
-ATSFontFamilyGetEncoding(ATSFontFamilyRef iFamily);
-
+ATSFontFamilyGetEncoding( ATSFontFamilyRef iFamily );
 
 /* ----------------------------------------------------------------------------------------- */
 /* Font                                                                                      */
@@ -447,9 +426,8 @@ ATSFontFamilyGetEncoding(ATSFontFamilyRef iFamily);
  */
 EXTERN_API_C( OSStatus )
 ATSFontApplyFunction(
-  ATSFontApplierFunction   iFunction,
-  void *                   iRefCon);
-
+    ATSFontApplierFunction iFunction,
+    void *                 iRefCon );
 
 /*
  *  ATSFontIteratorCreate()
@@ -461,12 +439,11 @@ ATSFontApplyFunction(
  */
 EXTERN_API_C( OSStatus )
 ATSFontIteratorCreate(
-  ATSFontContext         iContext,
-  const ATSFontFilter *  iFilter,          /* can be NULL */
-  void *                 iRefCon,
-  ATSOptionFlags         iOptions,
-  ATSFontIterator *      ioIterator);
-
+    ATSFontContext       iContext,
+    const ATSFontFilter *iFilter, /* can be NULL */
+    void *               iRefCon,
+    ATSOptionFlags       iOptions,
+    ATSFontIterator *    ioIterator );
 
 /*
  *  ATSFontIteratorRelease()
@@ -477,8 +454,7 @@ ATSFontIteratorCreate(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ATSFontIteratorRelease(ATSFontIterator * ioIterator);
-
+ATSFontIteratorRelease( ATSFontIterator *ioIterator );
 
 /*
  *  ATSFontIteratorReset()
@@ -490,12 +466,11 @@ ATSFontIteratorRelease(ATSFontIterator * ioIterator);
  */
 EXTERN_API_C( OSStatus )
 ATSFontIteratorReset(
-  ATSFontContext         iContext,
-  const ATSFontFilter *  iFilter,          /* can be NULL */
-  void *                 iRefCon,
-  ATSOptionFlags         iOptions,
-  ATSFontIterator *      ioIterator);
-
+    ATSFontContext       iContext,
+    const ATSFontFilter *iFilter, /* can be NULL */
+    void *               iRefCon,
+    ATSOptionFlags       iOptions,
+    ATSFontIterator *    ioIterator );
 
 /*
  *  ATSFontIteratorNext()
@@ -507,9 +482,8 @@ ATSFontIteratorReset(
  */
 EXTERN_API_C( OSStatus )
 ATSFontIteratorNext(
-  ATSFontIterator   iIterator,
-  ATSFontRef *      oFont);
-
+    ATSFontIterator iIterator,
+    ATSFontRef *    oFont );
 
 /*
  *  ATSFontFindFromName()
@@ -521,9 +495,8 @@ ATSFontIteratorNext(
  */
 EXTERN_API_C( ATSFontRef )
 ATSFontFindFromName(
-  CFStringRef      iName,
-  ATSOptionFlags   iOptions);
-
+    CFStringRef    iName,
+    ATSOptionFlags iOptions );
 
 /*
  *  ATSFontFindFromPostScriptName()
@@ -535,9 +508,8 @@ ATSFontFindFromName(
  */
 EXTERN_API_C( ATSFontRef )
 ATSFontFindFromPostScriptName(
-  CFStringRef      iName,
-  ATSOptionFlags   iOptions);
-
+    CFStringRef    iName,
+    ATSOptionFlags iOptions );
 
 /*
  *  ATSFontFindFromContainer()
@@ -549,12 +521,11 @@ ATSFontFindFromPostScriptName(
  */
 EXTERN_API_C( OSStatus )
 ATSFontFindFromContainer(
-  ATSFontContainerRef   iContainer,
-  ATSOptionFlags        iOptions,
-  ItemCount             iCount,
-  ATSFontRef            ioArray[],
-  ItemCount *           oCount);
-
+    ATSFontContainerRef iContainer,
+    ATSOptionFlags      iOptions,
+    ItemCount           iCount,
+    ATSFontRef          ioArray[],
+    ItemCount *         oCount );
 
 /*
  *  ATSFontGetGeneration()
@@ -565,8 +536,7 @@ ATSFontFindFromContainer(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSGeneration )
-ATSFontGetGeneration(ATSFontRef iFont);
-
+ATSFontGetGeneration( ATSFontRef iFont );
 
 /*
  *  ATSFontGetName()
@@ -578,10 +548,9 @@ ATSFontGetGeneration(ATSFontRef iFont);
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetName(
-  ATSFontRef       iFont,
-  ATSOptionFlags   iOptions,
-  CFStringRef *    oName);
-
+    ATSFontRef     iFont,
+    ATSOptionFlags iOptions,
+    CFStringRef *  oName );
 
 /*
  *  ATSFontGetPostScriptName()
@@ -593,10 +562,9 @@ ATSFontGetName(
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetPostScriptName(
-  ATSFontRef       iFont,
-  ATSOptionFlags   iOptions,
-  CFStringRef *    oName);
-
+    ATSFontRef     iFont,
+    ATSOptionFlags iOptions,
+    CFStringRef *  oName );
 
 /*
  *  ATSFontGetTableDirectory()
@@ -608,11 +576,10 @@ ATSFontGetPostScriptName(
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetTableDirectory(
-  ATSFontRef   iFont,
-  ByteCount    iBufferSize,
-  void *       ioBuffer,
-  ByteCount *  oSize);            /* can be NULL */
-
+    ATSFontRef iFont,
+    ByteCount  iBufferSize,
+    void *     ioBuffer,
+    ByteCount *oSize ); /* can be NULL */
 
 /*
  *  ATSFontGetTable()
@@ -624,13 +591,12 @@ ATSFontGetTableDirectory(
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetTable(
-  ATSFontRef     iFont,
-  FourCharCode   iTag,
-  ByteOffset     iOffset,
-  ByteCount      iBufferSize,
-  void *         ioBuffer,
-  ByteCount *    oSize);            /* can be NULL */
-
+    ATSFontRef   iFont,
+    FourCharCode iTag,
+    ByteOffset   iOffset,
+    ByteCount    iBufferSize,
+    void *       ioBuffer,
+    ByteCount *  oSize ); /* can be NULL */
 
 /*
  *  ATSFontGetHorizontalMetrics()
@@ -642,10 +608,9 @@ ATSFontGetTable(
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetHorizontalMetrics(
-  ATSFontRef        iFont,
-  ATSOptionFlags    iOptions,
-  ATSFontMetrics *  oMetrics);
-
+    ATSFontRef      iFont,
+    ATSOptionFlags  iOptions,
+    ATSFontMetrics *oMetrics );
 
 /*
  *  ATSFontGetVerticalMetrics()
@@ -657,10 +622,9 @@ ATSFontGetHorizontalMetrics(
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetVerticalMetrics(
-  ATSFontRef        iFont,
-  ATSOptionFlags    iOptions,
-  ATSFontMetrics *  oMetrics);
-
+    ATSFontRef      iFont,
+    ATSOptionFlags  iOptions,
+    ATSFontMetrics *oMetrics );
 
 /* ----------------------------------------------------------------------------------------- */
 /* Compatibility                                                                             */
@@ -674,8 +638,7 @@ ATSFontGetVerticalMetrics(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( ATSFontFamilyRef )
-ATSFontFamilyFindFromQuickDrawName(ConstStr255Param iName);
-
+ATSFontFamilyFindFromQuickDrawName( ConstStr255Param iName );
 
 /*
  *  ATSFontFamilyGetQuickDrawName()
@@ -687,9 +650,8 @@ ATSFontFamilyFindFromQuickDrawName(ConstStr255Param iName);
  */
 EXTERN_API_C( OSStatus )
 ATSFontFamilyGetQuickDrawName(
-  ATSFontFamilyRef   iFamily,
-  Str255             oName);
-
+    ATSFontFamilyRef iFamily,
+    Str255           oName );
 
 /*
  *  ATSFontGetFileSpecification()
@@ -701,9 +663,8 @@ ATSFontFamilyGetQuickDrawName(
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetFileSpecification(
-  ATSFontRef   iFont,
-  FSSpec *     oFile);
-
+    ATSFontRef iFont,
+    FSSpec *   oFile );
 
 /*
  *  ATSFontGetFontFamilyResource()
@@ -715,13 +676,10 @@ ATSFontGetFileSpecification(
  */
 EXTERN_API_C( OSStatus )
 ATSFontGetFontFamilyResource(
-  ATSFontRef   iFont,
-  ByteCount    iBufferSize,
-  void *       ioBuffer,
-  ByteCount *  oSize);            /* can be NULL */
-
-
-
+    ATSFontRef iFont,
+    ByteCount  iBufferSize,
+    void *     ioBuffer,
+    ByteCount *oSize ); /* can be NULL */
 
 /* ----------------------------------------------------------------------------------------- */
 /* Notification                                                                              */
@@ -752,10 +710,8 @@ ATSFontGetFontFamilyResource(
  */
 EXTERN_API_C( OSStatus )
 ATSFontNotify(
-  ATSFontNotifyAction   action,
-  void *                info);        /* can be NULL */
-
-
+    ATSFontNotifyAction action,
+    void *              info ); /* can be NULL */
 
 /*
  *  ATSFontNotificationSubscribe()
@@ -794,12 +750,10 @@ ATSFontNotify(
  */
 EXTERN_API_C( OSStatus )
 ATSFontNotificationSubscribe(
-  ATSNotificationCallback   callback,
-  ATSFontNotifyOption       options,
-  void *                    iRefcon,                /* can be NULL */
-  ATSFontNotificationRef *  oNotificationRef);      /* can be NULL */
-
-
+    ATSNotificationCallback callback,
+    ATSFontNotifyOption     options,
+    void *                  iRefcon, /* can be NULL */
+    ATSFontNotificationRef *oNotificationRef ); /* can be NULL */
 
 /*
  *  ATSFontNotificationUnsubscribe()
@@ -826,9 +780,7 @@ ATSFontNotificationSubscribe(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-ATSFontNotificationUnsubscribe(ATSFontNotificationRef notificationRef);
-
-
+ATSFontNotificationUnsubscribe( ATSFontNotificationRef notificationRef );
 
 /* ----------------------------------------------------------------------------------------- */
 /* Font query message hooks                                                                  */
@@ -842,28 +794,27 @@ ATSFontNotificationUnsubscribe(ATSFontNotificationRef notificationRef);
  *    and passed back to an ATSFontQueryCallback function.
  */
 struct ATSFontQuerySourceContext {
-
-  /*
+	/*
    * A 32-bit unsigned integer that indicates the version of this
    * structure. This should be set to 0.
    */
-  UInt32              version;
+	UInt32 version;
 
-  /*
+	/*
    * A pointer-sized client datum that should be passed back to an
    * ATSFontQueryCallback function.
    */
-  void *              refCon;
+	void *refCon;
 
-  /*
+	/*
    * The callback used to add a retain to the refCon.
    */
-  CFAllocatorRetainCallBack  retain;
+	CFAllocatorRetainCallBack retain;
 
-  /*
+	/*
    * The callback used to remove a retain to the refCon.
    */
-  CFAllocatorReleaseCallBack  release;
+	CFAllocatorReleaseCallBack release;
 };
 typedef struct ATSFontQuerySourceContext ATSFontQuerySourceContext;
 
@@ -875,16 +826,15 @@ typedef struct ATSFontQuerySourceContext ATSFontQuerySourceContext;
  */
 enum ATSFontQueryMessageID {
 
-  /*
+	/*
    * The message ID for a font request query. The data for a message
    * with this ID is a flattened CFDictionaryRef with keys and values
    * as decribed below. A query dictionary may have any or all of these
    * entries.
    */
-  kATSQueryActivateFontMessage  = FOUR_CHAR_CODE('atsa')
+	kATSQueryActivateFontMessage = FOUR_CHAR_CODE( 'atsa' )
 };
 typedef enum ATSFontQueryMessageID ATSFontQueryMessageID;
-
 
 /*
  *  ATSFontQueryCallback
@@ -909,7 +859,7 @@ typedef enum ATSFontQueryMessageID ATSFontQueryMessageID;
  *    A CFPropertyListRef that represents the message type-specific
  *    response to the query. May be NULL.
  */
-typedef CALLBACK_API_C( CFPropertyListRef , ATSFontQueryCallback )(ATSFontQueryMessageID msgid, CFPropertyListRef data, void *refCon);
+typedef CALLBACK_API_C( CFPropertyListRef, ATSFontQueryCallback )( ATSFontQueryMessageID msgid, CFPropertyListRef data, void *refCon );
 /*
  *  ATSCreateFontQueryRunLoopSource()
  *  
@@ -948,11 +898,10 @@ typedef CALLBACK_API_C( CFPropertyListRef , ATSFontQueryCallback )(ATSFontQueryM
  */
 EXTERN_API_C( CFRunLoopSourceRef )
 ATSCreateFontQueryRunLoopSource(
-  CFIndex                            queryOrder,
-  CFIndex                            sourceOrder,
-  ATSFontQueryCallback               callout,
-  const ATSFontQuerySourceContext *  context);          /* can be NULL */
-
+    CFIndex                          queryOrder,
+    CFIndex                          sourceOrder,
+    ATSFontQueryCallback             callout,
+    const ATSFontQuerySourceContext *context ); /* can be NULL */
 
 /* ----------------------------------------------------------------------------------------- */
 /* Font request query message content                                                        */
@@ -967,7 +916,7 @@ ATSCreateFontQueryRunLoopSource(
  *    The process ID of the application making the query. The
  *    corresponding value is a CFNumberRef that contains a pid_t.
  */
-#define kATSQueryClientPID              CFSTR("ATS client pid")
+#define kATSQueryClientPID CFSTR( "ATS client pid" )
 
 /*
  *  kATSQueryQDFamilyName
@@ -977,7 +926,7 @@ ATSCreateFontQueryRunLoopSource(
  *    the name passed to GetFNum. The corresponding value is a
  *    CFStringRef.
  */
-#define kATSQueryQDFamilyName           CFSTR("font family name")
+#define kATSQueryQDFamilyName CFSTR( "font family name" )
 
 /*
  *  kATSQueryFontName
@@ -987,7 +936,7 @@ ATSCreateFontQueryRunLoopSource(
  *    a CFStringRef suitable as an argument to ATSFontFindFromName().
  *    This should match a candidate font's unique or full name.
  */
-#define kATSQueryFontName               CFSTR("font name")
+#define kATSQueryFontName CFSTR( "font name" )
 
 /*
  *  kATSQueryFontPostScriptName
@@ -999,7 +948,7 @@ ATSCreateFontQueryRunLoopSource(
  *    PostScript name derived from the font's FOND resource or its sfnt
  *    name table, with preference given to the FOND PostScript name.
  */
-#define kATSQueryFontPostScriptName     CFSTR("font PS name")
+#define kATSQueryFontPostScriptName CFSTR( "font PS name" )
 
 /*
  *  kATSQueryFontNameTableEntries
@@ -1010,7 +959,7 @@ ATSCreateFontQueryRunLoopSource(
  *    CFDictionaryRefs that describe name table entries. A font must
  *    have all of the specified entries to be considered a match.
  */
-#define kATSQueryFontNameTableEntries   CFSTR("font name table entries")
+#define kATSQueryFontNameTableEntries CFSTR( "font name table entries" )
 /* Keys in a font raw name descriptor dictionary. */
 
 /*
@@ -1020,7 +969,7 @@ ATSCreateFontQueryRunLoopSource(
  *    The font name's name code. The corresponding value is a
  *    CFNumberRef. If missing, assume kFontNoNameCode.
  */
-#define kATSFontNameTableCode           CFSTR("font name code")
+#define kATSFontNameTableCode CFSTR( "font name code" )
 
 /*
  *  kATSFontNameTablePlatform
@@ -1029,7 +978,7 @@ ATSCreateFontQueryRunLoopSource(
  *    The font name's platform code. The corresponding value is a
  *    CFNumberRef. If missing, assume kFontNoPlatformCode.
  */
-#define kATSFontNameTablePlatform       CFSTR("font platform code")
+#define kATSFontNameTablePlatform CFSTR( "font platform code" )
 
 /*
  *  kATSFontNameTableScript
@@ -1038,7 +987,7 @@ ATSCreateFontQueryRunLoopSource(
  *    The font name's script code. The corresponding value is a
  *    CFNumberRef. If missing, assume kFontNoScriptCode.
  */
-#define kATSFontNameTableScript         CFSTR("font script code")
+#define kATSFontNameTableScript CFSTR( "font script code" )
 
 /*
  *  kATSFontNameTableLanguage
@@ -1047,7 +996,7 @@ ATSCreateFontQueryRunLoopSource(
  *    The font name's language code. The corresponding value is a
  *    CFNumberRef. If missing, assume kFontNoLanguageCode.
  */
-#define kATSFontNameTableLanguage       CFSTR("font language code")
+#define kATSFontNameTableLanguage CFSTR( "font language code" )
 
 /*
  *  kATSFontNameTableBytes
@@ -1056,25 +1005,25 @@ ATSCreateFontQueryRunLoopSource(
  *    The raw bytes of the font name. The corresponding value is a
  *    CFDataRef that contains the raw name bytes.
  */
-#define kATSFontNameTableBytes          CFSTR("font name table bytes")
+#define kATSFontNameTableBytes CFSTR( "font name table bytes" )
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __ATSFONT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __ATSFONT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__ATSFONT__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __ATSFONT__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1088,4 +1037,3 @@ ATSCreateFontQueryRunLoopSource(
 #endif
 
 #endif /* __ATSFONT__ */
-

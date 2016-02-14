@@ -40,8 +40,6 @@
 *                                                                               *
 ********************************************************************************/
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -55,11 +53,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /********************************************************************************
@@ -76,30 +74,30 @@ extern "C" {
 *    x86              double(64)                   double(64)                   *
 *                                                                               *
 ********************************************************************************/
-#if (defined(__MWERKS__) && defined(__cmath__)) || (TARGET_RT_MAC_MACHO && defined(__MATH__))
+#if( defined( __MWERKS__ ) && defined( __cmath__ ) ) || ( TARGET_RT_MAC_MACHO && defined( __MATH__ ) )
 /* these types were already defined in math.h */
 #else
 #if TARGET_CPU_PPC
-typedef float                           float_t;
-typedef double                          double_t;
+typedef float  float_t;
+typedef double double_t;
 #elif TARGET_CPU_68K
-typedef long double                     float_t;
-typedef long double                     double_t;
+typedef long double float_t;
+typedef long double double_t;
 #elif TARGET_CPU_X86
-typedef double                          float_t;
-typedef double                          double_t;
+typedef double float_t;
+typedef double double_t;
 #elif TARGET_CPU_MIPS
-typedef double                          float_t;
-typedef double                          double_t;
+typedef double float_t;
+typedef double double_t;
 #elif TARGET_CPU_ALPHA
-typedef double                          float_t;
-typedef double                          double_t;
+typedef double float_t;
+typedef double double_t;
 #elif TARGET_CPU_SPARC
-typedef double                          float_t;
-typedef double                          double_t;
+typedef double float_t;
+typedef double double_t;
 #else
 #error unsupported CPU
-#endif  /*  */
+#endif /*  */
 
 /********************************************************************************
 *                                                                               *
@@ -113,24 +111,24 @@ typedef double                          double_t;
 *                                                                               *
 ********************************************************************************/
 #if TARGET_OS_MAC
-  #if !TARGET_RT_MAC_MACHO
-    #define   HUGE_VAL                __inf()
-    #define   INFINITY                __inf()
-    #define   NAN                     nan("255")
-  #endif
+#if !TARGET_RT_MAC_MACHO
+#define HUGE_VAL __inf()
+#define INFINITY __inf()
+#define NAN nan( "255" )
+#endif
 #else
-  #define     NAN                     sqrt(-1)
+#define NAN sqrt( -1 )
 #endif
 
 #if TARGET_CPU_PPC
-  #define      DECIMAL_DIG              17 /* does not exist for double-double */
+#define DECIMAL_DIG 17 /* does not exist for double-double */
 #elif TARGET_CPU_68K
-  #define      DECIMAL_DIG              21
-#endif      
-#endif  /* (defined(__MWERKS__) && defined(__cmath__)) || (TARGET_RT_MAC_MACHO && defined(__MATH__)) */
+#define DECIMAL_DIG 21
+#endif
+#endif /* (defined(__MWERKS__) && defined(__cmath__)) || (TARGET_RT_MAC_MACHO && defined(__MATH__)) */
 #if TARGET_OS_MAC
 /* MSL or math.h already defines these */
-#if (!defined(__MWERKS__) || !defined(__cmath__)) && (!TARGET_RT_MAC_MACHO || !defined(__MATH__))
+#if( !defined( __MWERKS__ ) || !defined( __cmath__ ) ) && ( !TARGET_RT_MAC_MACHO || !defined( __MATH__ ) )
 /********************************************************************************
 *                                                                               *
 *                            Trigonometric functions                            *
@@ -150,8 +148,8 @@ typedef double                          double_t;
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) cos(double_t x);
-
+EXTERN_API_C( double_t )
+cos( double_t x );
 
 /*
  *  sin()
@@ -161,8 +159,8 @@ EXTERN_API_C( double_t ) cos(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) sin(double_t x);
-
+EXTERN_API_C( double_t )
+sin( double_t x );
 
 /*
  *  tan()
@@ -172,8 +170,8 @@ EXTERN_API_C( double_t ) sin(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) tan(double_t x);
-
+EXTERN_API_C( double_t )
+tan( double_t x );
 
 /*
  *  acos()
@@ -183,8 +181,8 @@ EXTERN_API_C( double_t ) tan(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) acos(double_t x);
-
+EXTERN_API_C( double_t )
+acos( double_t x );
 
 /*
  *  asin()
@@ -194,8 +192,8 @@ EXTERN_API_C( double_t ) acos(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) asin(double_t x);
-
+EXTERN_API_C( double_t )
+asin( double_t x );
 
 /*
  *  atan()
@@ -205,8 +203,8 @@ EXTERN_API_C( double_t ) asin(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) atan(double_t x);
-
+EXTERN_API_C( double_t )
+atan( double_t x );
 
 /*
  *  atan2()
@@ -216,10 +214,8 @@ EXTERN_API_C( double_t ) atan(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) atan2(double_t y, double_t x);
-
-
-
+EXTERN_API_C( double_t )
+atan2( double_t y, double_t x );
 
 /********************************************************************************
 *                                                                               *
@@ -234,8 +230,8 @@ EXTERN_API_C( double_t ) atan2(double_t y, double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) cosh(double_t x);
-
+EXTERN_API_C( double_t )
+cosh( double_t x );
 
 /*
  *  sinh()
@@ -245,8 +241,8 @@ EXTERN_API_C( double_t ) cosh(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) sinh(double_t x);
-
+EXTERN_API_C( double_t )
+sinh( double_t x );
 
 /*
  *  tanh()
@@ -256,8 +252,8 @@ EXTERN_API_C( double_t ) sinh(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) tanh(double_t x);
-
+EXTERN_API_C( double_t )
+tanh( double_t x );
 
 /*
  *  acosh()
@@ -267,8 +263,8 @@ EXTERN_API_C( double_t ) tanh(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) acosh(double_t x);
-
+EXTERN_API_C( double_t )
+acosh( double_t x );
 
 /*
  *  asinh()
@@ -278,8 +274,8 @@ EXTERN_API_C( double_t ) acosh(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) asinh(double_t x);
-
+EXTERN_API_C( double_t )
+asinh( double_t x );
 
 /*
  *  atanh()
@@ -289,10 +285,8 @@ EXTERN_API_C( double_t ) asinh(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) atanh(double_t x);
-
-
-
+EXTERN_API_C( double_t )
+atanh( double_t x );
 
 /********************************************************************************
 *                                                                               *
@@ -324,8 +318,8 @@ EXTERN_API_C( double_t ) atanh(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) exp(double_t x);
-
+EXTERN_API_C( double_t )
+exp( double_t x );
 
 /*
  *  expm1()
@@ -335,8 +329,8 @@ EXTERN_API_C( double_t ) exp(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) expm1(double_t x);
-
+EXTERN_API_C( double_t )
+expm1( double_t x );
 
 /*
  *  exp2()
@@ -346,8 +340,8 @@ EXTERN_API_C( double_t ) expm1(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) exp2(double_t x);
-
+EXTERN_API_C( double_t )
+exp2( double_t x );
 
 /*
  *  frexp()
@@ -357,8 +351,8 @@ EXTERN_API_C( double_t ) exp2(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) frexp(double_t x, int *exponent);
-
+EXTERN_API_C( double_t )
+frexp( double_t x, int *exponent );
 
 /*
  *  ldexp()
@@ -368,8 +362,8 @@ EXTERN_API_C( double_t ) frexp(double_t x, int *exponent);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) ldexp(double_t x, int n);
-
+EXTERN_API_C( double_t )
+ldexp( double_t x, int n );
 
 /*
  *  log()
@@ -379,8 +373,8 @@ EXTERN_API_C( double_t ) ldexp(double_t x, int n);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) log(double_t x);
-
+EXTERN_API_C( double_t )
+log( double_t x );
 
 /*
  *  log2()
@@ -390,8 +384,8 @@ EXTERN_API_C( double_t ) log(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) log2(double_t x);
-
+EXTERN_API_C( double_t )
+log2( double_t x );
 
 /*
  *  log1p()
@@ -401,8 +395,8 @@ EXTERN_API_C( double_t ) log2(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) log1p(double_t x);
-
+EXTERN_API_C( double_t )
+log1p( double_t x );
 
 /*
  *  log10()
@@ -412,8 +406,8 @@ EXTERN_API_C( double_t ) log1p(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) log10(double_t x);
-
+EXTERN_API_C( double_t )
+log10( double_t x );
 
 /*
  *  logb()
@@ -423,8 +417,8 @@ EXTERN_API_C( double_t ) log10(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) logb(double_t x);
-
+EXTERN_API_C( double_t )
+logb( double_t x );
 
 #if !TYPE_LONGDOUBLE_IS_DOUBLE
 /*
@@ -435,10 +429,10 @@ EXTERN_API_C( double_t ) logb(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) modfl(long double x, long double *iptrl);
+EXTERN_API_C( long double )
+modfl( long double x, long double *iptrl );
 
-
-#endif  /* !TYPE_LONGDOUBLE_IS_DOUBLE */
+#endif /* !TYPE_LONGDOUBLE_IS_DOUBLE */
 
 /*
  *  modf()
@@ -448,8 +442,8 @@ EXTERN_API_C( long double ) modfl(long double x, long double *iptrl);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) modf(double_t x, double_t *iptr);
-
+EXTERN_API_C( double_t )
+modf( double_t x, double_t *iptr );
 
 /*
  *  modff()
@@ -459,16 +453,15 @@ EXTERN_API_C( double_t ) modf(double_t x, double_t *iptr);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( float ) modff(float x, float *iptrf);
-
-
+EXTERN_API_C( float )
+modff( float x, float *iptrf );
 
 /*
     Note: For compatiblity scalb(x,n) has n of type
             int  on Mac OS X 
             long on Mac OS
 */
-typedef long                            _scalb_n_type;
+typedef long _scalb_n_type;
 /*
  *  scalb()
  *  
@@ -477,10 +470,8 @@ typedef long                            _scalb_n_type;
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) scalb(double_t x, _scalb_n_type n);
-
-
-
+EXTERN_API_C( double_t )
+scalb( double_t x, _scalb_n_type n );
 
 /********************************************************************************
 *                                                                               *
@@ -500,8 +491,8 @@ EXTERN_API_C( double_t ) scalb(double_t x, _scalb_n_type n);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) fabs(double_t x);
-
+EXTERN_API_C( double_t )
+fabs( double_t x );
 
 /*
  *  hypot()
@@ -511,8 +502,8 @@ EXTERN_API_C( double_t ) fabs(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) hypot(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+hypot( double_t x, double_t y );
 
 /*
  *  pow()
@@ -522,8 +513,8 @@ EXTERN_API_C( double_t ) hypot(double_t x, double_t y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) pow(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+pow( double_t x, double_t y );
 
 /*
  *  sqrt()
@@ -533,10 +524,8 @@ EXTERN_API_C( double_t ) pow(double_t x, double_t y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) sqrt(double_t x);
-
-
-
+EXTERN_API_C( double_t )
+sqrt( double_t x );
 
 /********************************************************************************
 *                                                                               *
@@ -557,8 +546,8 @@ EXTERN_API_C( double_t ) sqrt(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) erf(double_t x);
-
+EXTERN_API_C( double_t )
+erf( double_t x );
 
 /*
  *  erfc()
@@ -568,8 +557,8 @@ EXTERN_API_C( double_t ) erf(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) erfc(double_t x);
-
+EXTERN_API_C( double_t )
+erfc( double_t x );
 
 /*
  *  gamma()
@@ -579,8 +568,8 @@ EXTERN_API_C( double_t ) erfc(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) gamma(double_t x);
-
+EXTERN_API_C( double_t )
+gamma( double_t x );
 
 /*
  *  lgamma()
@@ -590,10 +579,8 @@ EXTERN_API_C( double_t ) gamma(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) lgamma(double_t x);
-
-
-
+EXTERN_API_C( double_t )
+lgamma( double_t x );
 
 /********************************************************************************
 *                                                                               *
@@ -631,8 +618,8 @@ EXTERN_API_C( double_t ) lgamma(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) ceil(double_t x);
-
+EXTERN_API_C( double_t )
+ceil( double_t x );
 
 /*
  *  floor()
@@ -642,8 +629,8 @@ EXTERN_API_C( double_t ) ceil(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) floor(double_t x);
-
+EXTERN_API_C( double_t )
+floor( double_t x );
 
 /*
  *  rint()
@@ -653,8 +640,8 @@ EXTERN_API_C( double_t ) floor(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) rint(double_t x);
-
+EXTERN_API_C( double_t )
+rint( double_t x );
 
 /*
  *  nearbyint()
@@ -664,8 +651,8 @@ EXTERN_API_C( double_t ) rint(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) nearbyint(double_t x);
-
+EXTERN_API_C( double_t )
+nearbyint( double_t x );
 
 /*
  *  rinttol()
@@ -675,8 +662,8 @@ EXTERN_API_C( double_t ) nearbyint(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) rinttol(double_t x);
-
+EXTERN_API_C( long )
+rinttol( double_t x );
 
 /*
  *  round()
@@ -686,8 +673,8 @@ EXTERN_API_C( long ) rinttol(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) round(double_t x);
-
+EXTERN_API_C( double_t )
+round( double_t x );
 
 /*
  *  roundtol()
@@ -697,8 +684,8 @@ EXTERN_API_C( double_t ) round(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) roundtol(double_t round);
-
+EXTERN_API_C( long )
+roundtol( double_t round );
 
 /*
     Note: For compatiblity trunc(x) has a return type of
@@ -706,10 +693,10 @@ EXTERN_API_C( long ) roundtol(double_t round);
             double_t  everywhere else
 */
 #if TARGET_RT_MAC_68881
-typedef int                             _trunc_return_type;
+typedef int _trunc_return_type;
 #else
-typedef double_t                        _trunc_return_type;
-#endif  /* TARGET_RT_MAC_68881 */
+typedef double_t _trunc_return_type;
+#endif /* TARGET_RT_MAC_68881 */
 
 /*
  *  trunc()
@@ -719,11 +706,8 @@ typedef double_t                        _trunc_return_type;
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( _trunc_return_type ) trunc(double_t x);
-
-
-
-
+EXTERN_API_C( _trunc_return_type )
+trunc( double_t x );
 
 /********************************************************************************
 *                                                                               *
@@ -743,8 +727,8 @@ EXTERN_API_C( _trunc_return_type ) trunc(double_t x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) fmod(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+fmod( double_t x, double_t y );
 
 /*
  *  remainder()
@@ -754,8 +738,8 @@ EXTERN_API_C( double_t ) fmod(double_t x, double_t y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) remainder(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+remainder( double_t x, double_t y );
 
 /*
  *  remquo()
@@ -765,10 +749,8 @@ EXTERN_API_C( double_t ) remainder(double_t x, double_t y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) remquo(double_t x, double_t y, int *quo);
-
-
-
+EXTERN_API_C( double_t )
+remquo( double_t x, double_t y, int *quo );
 
 /********************************************************************************
 *                                                                               *
@@ -796,8 +778,8 @@ EXTERN_API_C( double_t ) remquo(double_t x, double_t y, int *quo);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) copysign(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+copysign( double_t x, double_t y );
 
 /*
  *  nan()
@@ -807,8 +789,8 @@ EXTERN_API_C( double_t ) copysign(double_t x, double_t y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double ) nan(const char * tagp);
-
+EXTERN_API_C( double )
+nan( const char *tagp );
 
 /*
  *  nanf()
@@ -818,9 +800,8 @@ EXTERN_API_C( double ) nan(const char * tagp);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( float ) nanf(const char * tagp);
-
-
+EXTERN_API_C( float )
+nanf( const char *tagp );
 
 /*
  *  nanl()
@@ -830,15 +811,18 @@ EXTERN_API_C( float ) nanf(const char * tagp);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) nanl(const char * tagp);
+EXTERN_API_C( long double )
+nanl( const char *tagp );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) nanl(const char *tagp) { return (long double) nan(tagp); }
-  #else
-    #define nanl(tagp) ((long double) nan(tagp))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) nanl( const char *tagp )
+{
+	return (long double)nan( tagp );
+}
+#else
+#define nanl( tagp ) ( (long double)nan( tagp ) )
 #endif
-
+#endif
 
 /*
  *  nextafterd()
@@ -848,8 +832,8 @@ EXTERN_API_C( long double ) nanl(const char * tagp);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double ) nextafterd(double x, double y);
-
+EXTERN_API_C( double )
+nextafterd( double x, double y );
 
 /*
  *  nextafterf()
@@ -859,9 +843,8 @@ EXTERN_API_C( double ) nextafterd(double x, double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( float ) nextafterf(float x, float y);
-
-
+EXTERN_API_C( float )
+nextafterf( float x, float y );
 
 /*
  *  nextafterl()
@@ -871,17 +854,18 @@ EXTERN_API_C( float ) nextafterf(float x, float y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) nextafterl(long double x, long double y);
+EXTERN_API_C( long double )
+nextafterl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) nextafterl(long double x, long double y) { return (long double) nextafterd((double)(x),(double)(y)); }
-  #else
-    #define nextafterl(x, y) ((long double) nextafterd((double)(x),(double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) nextafterl( long double x, long double y )
+{
+	return (long double)nextafterd( (double)( x ), (double)( y ) );
+}
+#else
+#define nextafterl( x, y ) ( (long double)nextafterd( (double)( x ), (double)( y ) ) )
 #endif
-
-
-
+#endif
 
 /*
  *  __fpclassifyd()
@@ -891,8 +875,8 @@ EXTERN_API_C( long double ) nextafterl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __fpclassifyd(double x);
-
+EXTERN_API_C( long )
+__fpclassifyd( double x );
 
 /*
  *  __fpclassifyf()
@@ -902,9 +886,8 @@ EXTERN_API_C( long ) __fpclassifyd(double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __fpclassifyf(float x);
-
-
+EXTERN_API_C( long )
+__fpclassifyf( float x );
 
 /*
  *  __fpclassify()
@@ -914,15 +897,18 @@ EXTERN_API_C( long ) __fpclassifyf(float x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long ) __fpclassify(long double x);
+EXTERN_API_C( long )
+__fpclassify( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long ) __fpclassify(long double x) { return __fpclassifyd((double)(x)); }
-  #else
-    #define __fpclassify(x) (__fpclassifyd((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) __fpclassify( long double x )
+{
+	return __fpclassifyd( (double)( x ) );
+}
+#else
+#define __fpclassify( x ) ( __fpclassifyd( (double)( x ) ) )
 #endif
-
+#endif
 
 /*
  *  __isnormald()
@@ -932,8 +918,8 @@ EXTERN_API_C( long ) __fpclassify(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __isnormald(double x);
-
+EXTERN_API_C( long )
+__isnormald( double x );
 
 /*
  *  __isnormalf()
@@ -943,9 +929,8 @@ EXTERN_API_C( long ) __isnormald(double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __isnormalf(float x);
-
-
+EXTERN_API_C( long )
+__isnormalf( float x );
 
 /*
  *  __isnormal()
@@ -955,16 +940,18 @@ EXTERN_API_C( long ) __isnormalf(float x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long ) __isnormal(long double x);
+EXTERN_API_C( long )
+__isnormal( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long ) __isnormal(long double x) { return __isnormald((double)(x)); }
-  #else
-    #define __isnormal(x) (__isnormald((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) __isnormal( long double x )
+{
+	return __isnormald( (double)( x ) );
+}
+#else
+#define __isnormal( x ) ( __isnormald( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  __isfinited()
@@ -974,8 +961,8 @@ EXTERN_API_C( long ) __isnormal(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __isfinited(double x);
-
+EXTERN_API_C( long )
+__isfinited( double x );
 
 /*
  *  __isfinitef()
@@ -985,9 +972,8 @@ EXTERN_API_C( long ) __isfinited(double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __isfinitef(float x);
-
-
+EXTERN_API_C( long )
+__isfinitef( float x );
 
 /*
  *  __isfinite()
@@ -997,15 +983,18 @@ EXTERN_API_C( long ) __isfinitef(float x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long ) __isfinite(long double x);
+EXTERN_API_C( long )
+__isfinite( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long ) __isfinite(long double x) { return __isfinited((double)(x)); }
-  #else
-    #define __isfinite(x) (__isfinited((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) __isfinite( long double x )
+{
+	return __isfinited( (double)( x ) );
+}
+#else
+#define __isfinite( x ) ( __isfinited( (double)( x ) ) )
 #endif
-
+#endif
 
 /*
  *  __isnand()
@@ -1015,8 +1004,8 @@ EXTERN_API_C( long ) __isfinite(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __isnand(double x);
-
+EXTERN_API_C( long )
+__isnand( double x );
 
 /*
  *  __isnanf()
@@ -1026,9 +1015,8 @@ EXTERN_API_C( long ) __isnand(double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __isnanf(float x);
-
-
+EXTERN_API_C( long )
+__isnanf( float x );
 
 /*
  *  __isnan()
@@ -1038,16 +1026,18 @@ EXTERN_API_C( long ) __isnanf(float x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long ) __isnan(long double x);
+EXTERN_API_C( long )
+__isnan( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long ) __isnan(long double x) { return __isnand((double)(x)); }
-  #else
-    #define __isnan(x) (__isnand((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) __isnan( long double x )
+{
+	return __isnand( (double)( x ) );
+}
+#else
+#define __isnan( x ) ( __isnand( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  __signbitd()
@@ -1057,8 +1047,8 @@ EXTERN_API_C( long ) __isnan(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __signbitd(double x);
-
+EXTERN_API_C( long )
+__signbitd( double x );
 
 /*
  *  __signbitf()
@@ -1068,9 +1058,8 @@ EXTERN_API_C( long ) __signbitd(double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) __signbitf(float x);
-
-
+EXTERN_API_C( long )
+__signbitf( float x );
 
 /*
  *  __signbit()
@@ -1080,15 +1069,18 @@ EXTERN_API_C( long ) __signbitf(float x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long ) __signbit(long double x);
+EXTERN_API_C( long )
+__signbit( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long ) __signbit(long double x) { return __signbitd((double)(x)); }
-  #else
-    #define __signbit(x) (__signbitd((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) __signbit( long double x )
+{
+	return __signbitd( (double)( x ) );
+}
+#else
+#define __signbit( x ) ( __signbitd( (double)( x ) ) )
 #endif
-
+#endif
 
 /*
  *  __inf()
@@ -1098,10 +1090,8 @@ EXTERN_API_C( long ) __signbit(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) __inf(void);
-
-
-
+EXTERN_API_C( double_t )
+__inf( void );
 
 /********************************************************************************
 *                                                                               *
@@ -1116,41 +1106,39 @@ EXTERN_API_C( double_t ) __inf(void);
 *                                                                               *
 ********************************************************************************/
 enum {
-  FP_SNAN                       = 0,    /*      signaling NaN                         */
-  FP_QNAN                       = 1,    /*      quiet NaN                             */
-  FP_INFINITE                   = 2,    /*      + or - infinity                       */
-  FP_ZERO                       = 3,    /*      + or - zero                           */
-  FP_NORMAL                     = 4,    /*      all normal numbers                    */
-  FP_SUBNORMAL                  = 5     /*      denormal numbers                      */
+	FP_SNAN = 0, /*      signaling NaN                         */
+	FP_QNAN = 1, /*      quiet NaN                             */
+	FP_INFINITE = 2, /*      + or - infinity                       */
+	FP_ZERO = 3, /*      + or - zero                           */
+	FP_NORMAL = 4, /*      all normal numbers                    */
+	FP_SUBNORMAL = 5 /*      denormal numbers                      */
 };
 
-#define      fpclassify(x)    ( ( sizeof ( x ) == sizeof(double) ) ?           \
-                              __fpclassifyd  ( x ) :                           \
-                                ( sizeof ( x ) == sizeof(float) ) ?            \
-                              __fpclassifyf ( x ) :                            \
-                              __fpclassify  ( x ) )
-#define      isnormal(x)      ( ( sizeof ( x ) == sizeof(double) ) ?           \
-                              __isnormald ( x ) :                              \
-                                ( sizeof ( x ) == sizeof(float) ) ?            \
-                              __isnormalf ( x ) :                              \
-                              __isnormal  ( x ) )
-#define      isfinite(x)      ( ( sizeof ( x ) == sizeof(double) ) ?           \
-                              __isfinited ( x ) :                              \
-                                ( sizeof ( x ) == sizeof(float) ) ?            \
-                              __isfinitef ( x ) :                              \
-                              __isfinite  ( x ) )
-#define      isnan(x)         ( ( sizeof ( x ) == sizeof(double) ) ?           \
-                              __isnand ( x ) :                                 \
-                                ( sizeof ( x ) == sizeof(float) ) ?            \
-                              __isnanf ( x ) :                                 \
-                              __isnan  ( x ) )
-#define      signbit(x)       ( ( sizeof ( x ) == sizeof(double) ) ?           \
-                              __signbitd ( x ) :                               \
-                                ( sizeof ( x ) == sizeof(float) ) ?            \
-                              __signbitf ( x ) :                               \
-                              __signbit  ( x ) )
-
-
+#define fpclassify( x ) ( ( sizeof( x ) == sizeof( double ) ) ? \
+        __fpclassifyd( x ) :                                    \
+        ( sizeof( x ) == sizeof( float ) ) ?                    \
+        __fpclassifyf( x ) :                                    \
+        __fpclassify( x ) )
+#define isnormal( x ) ( ( sizeof( x ) == sizeof( double ) ) ? \
+        __isnormald( x ) :                                    \
+        ( sizeof( x ) == sizeof( float ) ) ?                  \
+        __isnormalf( x ) :                                    \
+        __isnormal( x ) )
+#define isfinite( x ) ( ( sizeof( x ) == sizeof( double ) ) ? \
+        __isfinited( x ) :                                    \
+        ( sizeof( x ) == sizeof( float ) ) ?                  \
+        __isfinitef( x ) :                                    \
+        __isfinite( x ) )
+#define isnan( x ) ( ( sizeof( x ) == sizeof( double ) ) ? \
+        __isnand( x ) :                                    \
+        ( sizeof( x ) == sizeof( float ) ) ?               \
+        __isnanf( x ) :                                    \
+        __isnan( x ) )
+#define signbit( x ) ( ( sizeof( x ) == sizeof( double ) ) ? \
+        __signbitd( x ) :                                    \
+        ( sizeof( x ) == sizeof( float ) ) ?                 \
+        __signbitf( x ) :                                    \
+        __signbit( x ) )
 
 /********************************************************************************
 *                                                                               *
@@ -1182,8 +1170,8 @@ enum {
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) fdim(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+fdim( double_t x, double_t y );
 
 /*
  *  fmax()
@@ -1193,8 +1181,8 @@ EXTERN_API_C( double_t ) fdim(double_t x, double_t y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) fmax(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+fmax( double_t x, double_t y );
 
 /*
  *  fmin()
@@ -1204,8 +1192,8 @@ EXTERN_API_C( double_t ) fmax(double_t x, double_t y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) fmin(double_t x, double_t y);
-
+EXTERN_API_C( double_t )
+fmin( double_t x, double_t y );
 
 #endif /* (defined(__MWERKS__) && defined(__cmath__)) || (TARGET_RT_MAC_MACHO && defined(__MATH__)) */
 
@@ -1249,8 +1237,8 @@ extern const double_t pi;
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) compound(double_t rate, double_t periods);
-
+EXTERN_API_C( double_t )
+compound( double_t rate, double_t periods );
 
 /*
  *  annuity()
@@ -1260,10 +1248,8 @@ EXTERN_API_C( double_t ) compound(double_t rate, double_t periods);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) annuity(double_t rate, double_t periods);
-
-
-
+EXTERN_API_C( double_t )
+annuity( double_t rate, double_t periods );
 
 /********************************************************************************
 *                                                                               *
@@ -1281,24 +1267,22 @@ EXTERN_API_C( double_t ) annuity(double_t rate, double_t periods);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) randomx(double_t * x);
-
-
-
+EXTERN_API_C( double_t )
+randomx( double_t *x );
 
 /*******************************************************************************
 *                              Relational operator                             *
 *******************************************************************************/
 /*      relational operator      */
-typedef short                           relop;
+typedef short relop;
 enum {
-  GREATERTHAN                   = 0,
-  LESSTHAN                      = 1,
-  EQUALTO                       = 2,
-  UNORDERED                     = 3
+	GREATERTHAN = 0,
+	LESSTHAN = 1,
+	EQUALTO = 2,
+	UNORDERED = 3
 };
 
-#if !defined(__MWERKS__) || !defined(__cmath__)
+#if !defined( __MWERKS__ ) || !defined( __cmath__ )
 /*
  *  relation()
  *  
@@ -1307,11 +1291,10 @@ enum {
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( relop ) relation(double_t x, double_t y);
-
+EXTERN_API_C( relop )
+relation( double_t x, double_t y );
 
 #endif /* !defined(__MWERKS__) || !defined(__cmath__) */
-
 
 /********************************************************************************
 *                                                                               *
@@ -1340,31 +1323,31 @@ EXTERN_API_C( relop ) relation(double_t x, double_t y);
 *                                                                               *
 ********************************************************************************/
 #if TARGET_CPU_PPC
-    #define SIGDIGLEN      36  
+#define SIGDIGLEN 36
 #elif TARGET_CPU_68K
-    #define SIGDIGLEN      20
+#define SIGDIGLEN 20
 #elif TARGET_CPU_X86
-    #define SIGDIGLEN      20
+#define SIGDIGLEN 20
 #endif
-#define      DECSTROUTLEN   80               /* max length for dec2str output */
-#define      FLOATDECIMAL   ((char)(0))
-#define      FIXEDDECIMAL   ((char)(1))
+#define DECSTROUTLEN 80 /* max length for dec2str output */
+#define FLOATDECIMAL ( (char)( 0 ) )
+#define FIXEDDECIMAL ( (char)( 1 ) )
 struct decimal {
-    char                            sgn;                        /* sign 0 for +, 1 for - */
-    char                            unused;
-    short                           exp;                        /* decimal exponent */
-    struct {
-        unsigned char                   length;
-        unsigned char                   text[SIGDIGLEN];        /* significant digits */
-        unsigned char                   unused;
-    }                               sig;
+	char  sgn; /* sign 0 for +, 1 for - */
+	char  unused;
+	short exp; /* decimal exponent */
+	struct {
+		unsigned char length;
+		unsigned char text[SIGDIGLEN]; /* significant digits */
+		unsigned char unused;
+	} sig;
 };
 typedef struct decimal decimal;
 
 struct decform {
-    char                            style;                      /*  FLOATDECIMAL or FIXEDDECIMAL */
-    char                            unused;
-    short                           digits;
+	char  style; /*  FLOATDECIMAL or FIXEDDECIMAL */
+	char  unused;
+	short digits;
 };
 typedef struct decform decform;
 /*
@@ -1375,8 +1358,8 @@ typedef struct decform decform;
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) num2dec(const decform *f, double_t x, decimal *d);
-
+EXTERN_API_C( void )
+num2dec( const decform *f, double_t x, decimal *d );
 
 /*
  *  dec2num()
@@ -1386,8 +1369,8 @@ EXTERN_API_C( void ) num2dec(const decform *f, double_t x, decimal *d);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double_t ) dec2num(const decimal * d);
-
+EXTERN_API_C( double_t )
+dec2num( const decimal *d );
 
 /*
  *  dec2str()
@@ -1397,8 +1380,8 @@ EXTERN_API_C( double_t ) dec2num(const decimal * d);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) dec2str(const decform *f, const decimal *d, char *s);
-
+EXTERN_API_C( void )
+dec2str( const decform *f, const decimal *d, char *s );
 
 /*
  *  str2dec()
@@ -1408,8 +1391,8 @@ EXTERN_API_C( void ) dec2str(const decform *f, const decimal *d, char *s);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) str2dec(const char *s, short *ix, decimal *d, short *vp);
-
+EXTERN_API_C( void )
+str2dec( const char *s, short *ix, decimal *d, short *vp );
 
 #if TARGET_CPU_68K
 #if CALL_NOT_IN_CARBON
@@ -1421,12 +1404,12 @@ EXTERN_API_C( void ) str2dec(const char *s, short *ix, decimal *d, short *vp);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API_C( double ) dec2d(const decimal * d);
+EXTERN_API_C( double )
+dec2d( const decimal *d );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_CPU_68K */
+#endif /* TARGET_CPU_68K */
 
 /*
  *  dec2f()
@@ -1436,8 +1419,8 @@ EXTERN_API_C( double ) dec2d(const decimal * d);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( float ) dec2f(const decimal * d);
-
+EXTERN_API_C( float )
+dec2f( const decimal *d );
 
 /*
  *  dec2s()
@@ -1447,8 +1430,8 @@ EXTERN_API_C( float ) dec2f(const decimal * d);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( short ) dec2s(const decimal * d);
-
+EXTERN_API_C( short )
+dec2s( const decimal *d );
 
 /*
  *  dec2l()
@@ -1458,11 +1441,8 @@ EXTERN_API_C( short ) dec2s(const decimal * d);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( long ) dec2l(const decimal * d);
-
-
-
-
+EXTERN_API_C( long )
+dec2l( const decimal *d );
 
 /********************************************************************************
 *                                                                               *
@@ -1479,8 +1459,8 @@ EXTERN_API_C( long ) dec2l(const decimal * d);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API_C( void ) x96tox80(const extended96 *x, extended80 *x80);
-
+EXTERN_API_C( void )
+x96tox80( const extended96 *x, extended80 *x80 );
 
 /*
  *  x80tox96()
@@ -1490,14 +1470,14 @@ EXTERN_API_C( void ) x96tox80(const extended96 *x, extended80 *x80);
  *    CarbonLib:        not available
  *    Mac OS X:         not available
  */
-EXTERN_API_C( void ) x80tox96(const extended80 *x80, extended96 *x);
+EXTERN_API_C( void )
+x80tox96( const extended80 *x80, extended96 *x );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* TARGET_CPU_68K */
 
-#endif  /* TARGET_CPU_68K */
-
-#endif  /* !defined(__NOEXTENSIONS__) */
+#endif /* !defined(__NOEXTENSIONS__) */
 
 /********************************************************************************
 *                                                                               *
@@ -1506,7 +1486,7 @@ EXTERN_API_C( void ) x80tox96(const extended80 *x80, extended96 *x);
 ********************************************************************************/
 
 #if TARGET_CPU_PPC
-#ifndef __MWERKS__  /* Metrowerks does not support double double */
+#ifndef __MWERKS__ /* Metrowerks does not support double double */
 
 /*
  *  cosl()
@@ -1516,16 +1496,18 @@ EXTERN_API_C( void ) x80tox96(const extended80 *x80, extended96 *x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) cosl(long double x);
+EXTERN_API_C( long double )
+cosl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) cosl(long double x) { return (long double) cos((double)(x)); }
-  #else
-    #define cosl(x) ((long double) cos((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) cosl( long double x )
+{
+	return (long double)cos( (double)( x ) );
+}
+#else
+#define cosl( x ) ( (long double)cos( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  sinl()
@@ -1535,16 +1517,18 @@ EXTERN_API_C( long double ) cosl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) sinl(long double x);
+EXTERN_API_C( long double )
+sinl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) sinl(long double x) { return (long double) sin((double)(x)); }
-  #else
-    #define sinl(x) ((long double) sin((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) sinl( long double x )
+{
+	return (long double)sin( (double)( x ) );
+}
+#else
+#define sinl( x ) ( (long double)sin( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  tanl()
@@ -1554,16 +1538,18 @@ EXTERN_API_C( long double ) sinl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) tanl(long double x);
+EXTERN_API_C( long double )
+tanl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) tanl(long double x) { return (long double) tan((double)(x)); }
-  #else
-    #define tanl(x) ((long double) tan((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) tanl( long double x )
+{
+	return (long double)tan( (double)( x ) );
+}
+#else
+#define tanl( x ) ( (long double)tan( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  acosl()
@@ -1573,16 +1559,18 @@ EXTERN_API_C( long double ) tanl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) acosl(long double x);
+EXTERN_API_C( long double )
+acosl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) acosl(long double x) { return (long double) acos((double)(x)); }
-  #else
-    #define acosl(x) ((long double) acos((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) acosl( long double x )
+{
+	return (long double)acos( (double)( x ) );
+}
+#else
+#define acosl( x ) ( (long double)acos( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  asinl()
@@ -1592,16 +1580,18 @@ EXTERN_API_C( long double ) acosl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) asinl(long double x);
+EXTERN_API_C( long double )
+asinl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) asinl(long double x) { return (long double) asin((double)(x)); }
-  #else
-    #define asinl(x) ((long double) asin((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) asinl( long double x )
+{
+	return (long double)asin( (double)( x ) );
+}
+#else
+#define asinl( x ) ( (long double)asin( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  atanl()
@@ -1611,16 +1601,18 @@ EXTERN_API_C( long double ) asinl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) atanl(long double x);
+EXTERN_API_C( long double )
+atanl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) atanl(long double x) { return (long double) atan((double)(x)); }
-  #else
-    #define atanl(x) ((long double) atan((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) atanl( long double x )
+{
+	return (long double)atan( (double)( x ) );
+}
+#else
+#define atanl( x ) ( (long double)atan( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  atan2l()
@@ -1630,16 +1622,18 @@ EXTERN_API_C( long double ) atanl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) atan2l(long double y, long double x);
+EXTERN_API_C( long double )
+atan2l( long double y, long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) atan2l(long double y, long double x) { return (long double) atan2((double)(y), (double)(x)); }
-  #else
-    #define atan2l(y, x) ((long double) atan2((double)(y), (double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) atan2l( long double y, long double x )
+{
+	return (long double)atan2( (double)( y ), (double)( x ) );
+}
+#else
+#define atan2l( y, x ) ( (long double)atan2( (double)( y ), (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  coshl()
@@ -1649,16 +1643,18 @@ EXTERN_API_C( long double ) atan2l(long double y, long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) coshl(long double x);
+EXTERN_API_C( long double )
+coshl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) coshl(long double x) { return (long double) cosh((double)(x)); }
-  #else
-    #define coshl(x) ((long double) cosh((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) coshl( long double x )
+{
+	return (long double)cosh( (double)( x ) );
+}
+#else
+#define coshl( x ) ( (long double)cosh( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  sinhl()
@@ -1668,16 +1664,18 @@ EXTERN_API_C( long double ) coshl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) sinhl(long double x);
+EXTERN_API_C( long double )
+sinhl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) sinhl(long double x) { return (long double) sinh((double)(x)); }
-  #else
-    #define sinhl(x) ((long double) sinh((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) sinhl( long double x )
+{
+	return (long double)sinh( (double)( x ) );
+}
+#else
+#define sinhl( x ) ( (long double)sinh( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  tanhl()
@@ -1687,16 +1685,18 @@ EXTERN_API_C( long double ) sinhl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) tanhl(long double x);
+EXTERN_API_C( long double )
+tanhl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) tanhl(long double x) { return (long double) tanh((double)(x)); }
-  #else
-    #define tanhl(x) ((long double) tanh((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) tanhl( long double x )
+{
+	return (long double)tanh( (double)( x ) );
+}
+#else
+#define tanhl( x ) ( (long double)tanh( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  acoshl()
@@ -1706,16 +1706,18 @@ EXTERN_API_C( long double ) tanhl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) acoshl(long double x);
+EXTERN_API_C( long double )
+acoshl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) acoshl(long double x) { return (long double) acosh((double)(x)); }
-  #else
-    #define acoshl(x) ((long double) acosh((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) acoshl( long double x )
+{
+	return (long double)acosh( (double)( x ) );
+}
+#else
+#define acoshl( x ) ( (long double)acosh( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  asinhl()
@@ -1725,16 +1727,18 @@ EXTERN_API_C( long double ) acoshl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) asinhl(long double x);
+EXTERN_API_C( long double )
+asinhl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) asinhl(long double x) { return (long double) asinh((double)(x)); }
-  #else
-    #define asinhl(x) ((long double) asinh((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) asinhl( long double x )
+{
+	return (long double)asinh( (double)( x ) );
+}
+#else
+#define asinhl( x ) ( (long double)asinh( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  atanhl()
@@ -1744,16 +1748,18 @@ EXTERN_API_C( long double ) asinhl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) atanhl(long double x);
+EXTERN_API_C( long double )
+atanhl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) atanhl(long double x) { return (long double) atanh((double)(x)); }
-  #else
-    #define atanhl(x) ((long double) atanh((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) atanhl( long double x )
+{
+	return (long double)atanh( (double)( x ) );
+}
+#else
+#define atanhl( x ) ( (long double)atanh( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  expl()
@@ -1763,16 +1769,18 @@ EXTERN_API_C( long double ) atanhl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) expl(long double x);
+EXTERN_API_C( long double )
+expl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) expl(long double x) { return (long double) exp((double)(x)); }
-  #else
-    #define expl(x) ((long double) exp((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) expl( long double x )
+{
+	return (long double)exp( (double)( x ) );
+}
+#else
+#define expl( x ) ( (long double)exp( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  expm1l()
@@ -1782,16 +1790,18 @@ EXTERN_API_C( long double ) expl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) expm1l(long double x);
+EXTERN_API_C( long double )
+expm1l( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) expm1l(long double x) { return (long double) expm1((double)(x)); }
-  #else
-    #define expm1l(x) ((long double) expm1((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) expm1l( long double x )
+{
+	return (long double)expm1( (double)( x ) );
+}
+#else
+#define expm1l( x ) ( (long double)expm1( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  exp2l()
@@ -1801,16 +1811,18 @@ EXTERN_API_C( long double ) expm1l(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) exp2l(long double x);
+EXTERN_API_C( long double )
+exp2l( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) exp2l(long double x) { return (long double) exp2((double)(x)); }
-  #else
-    #define exp2l(x) ((long double) exp2((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) exp2l( long double x )
+{
+	return (long double)exp2( (double)( x ) );
+}
+#else
+#define exp2l( x ) ( (long double)exp2( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  frexpl()
@@ -1820,16 +1832,18 @@ EXTERN_API_C( long double ) exp2l(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) frexpl(long double x, int *exponent);
+EXTERN_API_C( long double )
+frexpl( long double x, int *exponent );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) frexpl(long double x, int *exponent) { return (long double) frexp((double)(x), (exponent)); }
-  #else
-    #define frexpl(x, exponent) ((long double) frexp((double)(x), (exponent)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) frexpl( long double x, int *exponent )
+{
+	return (long double)frexp( (double)( x ), ( exponent ) );
+}
+#else
+#define frexpl( x, exponent ) ( (long double)frexp( (double)( x ), ( exponent ) ) )
 #endif
-
-
+#endif
 
 /*
  *  ldexpl()
@@ -1839,16 +1853,18 @@ EXTERN_API_C( long double ) frexpl(long double x, int *exponent);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) ldexpl(long double x, int n);
+EXTERN_API_C( long double )
+ldexpl( long double x, int n );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) ldexpl(long double x, int n) { return (long double) ldexp((double)(x), (n)); }
-  #else
-    #define ldexpl(x, n) ((long double) ldexp((double)(x), (n)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) ldexpl( long double x, int n )
+{
+	return (long double)ldexp( (double)( x ), ( n ) );
+}
+#else
+#define ldexpl( x, n ) ( (long double)ldexp( (double)( x ), ( n ) ) )
 #endif
-
-
+#endif
 
 /*
  *  logl()
@@ -1858,16 +1874,18 @@ EXTERN_API_C( long double ) ldexpl(long double x, int n);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) logl(long double x);
+EXTERN_API_C( long double )
+logl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) logl(long double x) { return (long double) log((double)(x)); }
-  #else
-    #define logl(x) ((long double) log((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) logl( long double x )
+{
+	return (long double)log( (double)( x ) );
+}
+#else
+#define logl( x ) ( (long double)log( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  log1pl()
@@ -1877,16 +1895,18 @@ EXTERN_API_C( long double ) logl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) log1pl(long double x);
+EXTERN_API_C( long double )
+log1pl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) log1pl(long double x) { return (long double) log1p((double)(x)); }
-  #else
-    #define log1pl(x) ((long double) log1p((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) log1pl( long double x )
+{
+	return (long double)log1p( (double)( x ) );
+}
+#else
+#define log1pl( x ) ( (long double)log1p( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  log10l()
@@ -1896,16 +1916,18 @@ EXTERN_API_C( long double ) log1pl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) log10l(long double x);
+EXTERN_API_C( long double )
+log10l( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) log10l(long double x) { return (long double) log10((double)(x)); }
-  #else
-    #define log10l(x) ((long double) log10((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) log10l( long double x )
+{
+	return (long double)log10( (double)( x ) );
+}
+#else
+#define log10l( x ) ( (long double)log10( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  log2l()
@@ -1915,16 +1937,18 @@ EXTERN_API_C( long double ) log10l(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) log2l(long double x);
+EXTERN_API_C( long double )
+log2l( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) log2l(long double x) { return (long double) log2((double)(x)); }
-  #else
-    #define log2l(x) ((long double) log2((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) log2l( long double x )
+{
+	return (long double)log2( (double)( x ) );
+}
+#else
+#define log2l( x ) ( (long double)log2( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  logbl()
@@ -1934,16 +1958,18 @@ EXTERN_API_C( long double ) log2l(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) logbl(long double x);
+EXTERN_API_C( long double )
+logbl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) logbl(long double x) { return (long double) logb((double)(x)); }
-  #else
-    #define logbl(x) ((long double) logb((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) logbl( long double x )
+{
+	return (long double)logb( (double)( x ) );
+}
+#else
+#define logbl( x ) ( (long double)logb( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  scalbl()
@@ -1953,16 +1979,18 @@ EXTERN_API_C( long double ) logbl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) scalbl(long double x, long n);
+EXTERN_API_C( long double )
+scalbl( long double x, long n );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) scalbl(long double x, long n) { return (long double) scalb((double)(x), (n)); }
-  #else
-    #define scalbl(x, n) ((long double) scalb((double)(x), (n)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) scalbl( long double x, long n )
+{
+	return (long double)scalb( (double)( x ), ( n ) );
+}
+#else
+#define scalbl( x, n ) ( (long double)scalb( (double)( x ), ( n ) ) )
 #endif
-
-
+#endif
 
 /*
  *  fabsl()
@@ -1972,16 +2000,18 @@ EXTERN_API_C( long double ) scalbl(long double x, long n);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) fabsl(long double x);
+EXTERN_API_C( long double )
+fabsl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) fabsl(long double x) { return (long double) fabs((double)(x)); }
-  #else
-    #define fabsl(x) ((long double) fabs((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) fabsl( long double x )
+{
+	return (long double)fabs( (double)( x ) );
+}
+#else
+#define fabsl( x ) ( (long double)fabs( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  hypotl()
@@ -1991,16 +2021,18 @@ EXTERN_API_C( long double ) fabsl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) hypotl(long double x, long double y);
+EXTERN_API_C( long double )
+hypotl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) hypotl(long double x, long double y) { return (long double) hypot((double)(x), (double)(y)); }
-  #else
-    #define hypotl(x, y) ((long double) hypot((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) hypotl( long double x, long double y )
+{
+	return (long double)hypot( (double)( x ), (double)( y ) );
+}
+#else
+#define hypotl( x, y ) ( (long double)hypot( (double)( x ), (double)( y ) ) )
 #endif
-
-
+#endif
 
 /*
  *  powl()
@@ -2010,16 +2042,18 @@ EXTERN_API_C( long double ) hypotl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) powl(long double x, long double y);
+EXTERN_API_C( long double )
+powl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) powl(long double x, long double y) { return (long double) pow((double)(x), (double)(y)); }
-  #else
-    #define powl(x, y) ((long double) pow((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) powl( long double x, long double y )
+{
+	return (long double)pow( (double)( x ), (double)( y ) );
+}
+#else
+#define powl( x, y ) ( (long double)pow( (double)( x ), (double)( y ) ) )
 #endif
-
-
+#endif
 
 /*
  *  sqrtl()
@@ -2029,16 +2063,18 @@ EXTERN_API_C( long double ) powl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) sqrtl(long double x);
+EXTERN_API_C( long double )
+sqrtl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) sqrtl(long double x) { return (long double) sqrt((double)(x)); }
-  #else
-    #define sqrtl(x) ((long double) sqrt((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) sqrtl( long double x )
+{
+	return (long double)sqrt( (double)( x ) );
+}
+#else
+#define sqrtl( x ) ( (long double)sqrt( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  erfl()
@@ -2048,16 +2084,18 @@ EXTERN_API_C( long double ) sqrtl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) erfl(long double x);
+EXTERN_API_C( long double )
+erfl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) erfl(long double x) { return (long double) erf((double)(x)); }
-  #else
-    #define erfl(x) ((long double) erf((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) erfl( long double x )
+{
+	return (long double)erf( (double)( x ) );
+}
+#else
+#define erfl( x ) ( (long double)erf( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  erfcl()
@@ -2067,16 +2105,18 @@ EXTERN_API_C( long double ) erfl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) erfcl(long double x);
+EXTERN_API_C( long double )
+erfcl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) erfcl(long double x) { return (long double) erfc((double)(x)); }
-  #else
-    #define erfcl(x) ((long double) erfc((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) erfcl( long double x )
+{
+	return (long double)erfc( (double)( x ) );
+}
+#else
+#define erfcl( x ) ( (long double)erfc( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  gammal()
@@ -2086,16 +2126,18 @@ EXTERN_API_C( long double ) erfcl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) gammal(long double x);
+EXTERN_API_C( long double )
+gammal( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) gammal(long double x) { return (long double) gamma((double)(x)); }
-  #else
-    #define gammal(x) ((long double) gamma((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) gammal( long double x )
+{
+	return (long double)gamma( (double)( x ) );
+}
+#else
+#define gammal( x ) ( (long double)gamma( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  lgammal()
@@ -2105,16 +2147,18 @@ EXTERN_API_C( long double ) gammal(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) lgammal(long double x);
+EXTERN_API_C( long double )
+lgammal( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) lgammal(long double x) { return (long double) lgamma((double)(x)); }
-  #else
-    #define lgammal(x) ((long double) lgamma((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) lgammal( long double x )
+{
+	return (long double)lgamma( (double)( x ) );
+}
+#else
+#define lgammal( x ) ( (long double)lgamma( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  ceill()
@@ -2124,16 +2168,18 @@ EXTERN_API_C( long double ) lgammal(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) ceill(long double x);
+EXTERN_API_C( long double )
+ceill( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) ceill(long double x) { return (long double) ceil((double)(x)); }
-  #else
-    #define ceill(x) ((long double) ceil((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) ceill( long double x )
+{
+	return (long double)ceil( (double)( x ) );
+}
+#else
+#define ceill( x ) ( (long double)ceil( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  floorl()
@@ -2143,16 +2189,18 @@ EXTERN_API_C( long double ) ceill(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) floorl(long double x);
+EXTERN_API_C( long double )
+floorl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) floorl(long double x) { return (long double) floor((double)(x)); }
-  #else
-    #define floorl(x) ((long double) floor((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) floorl( long double x )
+{
+	return (long double)floor( (double)( x ) );
+}
+#else
+#define floorl( x ) ( (long double)floor( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  rintl()
@@ -2162,16 +2210,18 @@ EXTERN_API_C( long double ) floorl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) rintl(long double x);
+EXTERN_API_C( long double )
+rintl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) rintl(long double x) { return (long double) rint((double)(x)); }
-  #else
-    #define rintl(x) ((long double) rint((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) rintl( long double x )
+{
+	return (long double)rint( (double)( x ) );
+}
+#else
+#define rintl( x ) ( (long double)rint( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  nearbyintl()
@@ -2181,16 +2231,18 @@ EXTERN_API_C( long double ) rintl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) nearbyintl(long double x);
+EXTERN_API_C( long double )
+nearbyintl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) nearbyintl(long double x) { return (long double) nearbyint((double)(x)); }
-  #else
-    #define nearbyintl(x) ((long double) nearbyint((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) nearbyintl( long double x )
+{
+	return (long double)nearbyint( (double)( x ) );
+}
+#else
+#define nearbyintl( x ) ( (long double)nearbyint( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  rinttoll()
@@ -2200,16 +2252,18 @@ EXTERN_API_C( long double ) nearbyintl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long ) rinttoll(long double x);
+EXTERN_API_C( long )
+rinttoll( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long ) rinttoll(long double x) { return rinttol((double)(x)); }
-  #else
-    #define rinttoll(x) (rinttol((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) rinttoll( long double x )
+{
+	return rinttol( (double)( x ) );
+}
+#else
+#define rinttoll( x ) ( rinttol( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  roundl()
@@ -2219,16 +2273,18 @@ EXTERN_API_C( long ) rinttoll(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) roundl(long double x);
+EXTERN_API_C( long double )
+roundl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) roundl(long double x) { return (long double) round((double)(x)); }
-  #else
-    #define roundl(x) ((long double) round((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) roundl( long double x )
+{
+	return (long double)round( (double)( x ) );
+}
+#else
+#define roundl( x ) ( (long double)round( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  roundtoll()
@@ -2238,16 +2294,18 @@ EXTERN_API_C( long double ) roundl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long ) roundtoll(long double x);
+EXTERN_API_C( long )
+roundtoll( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long ) roundtoll(long double x) { return roundtol((double)(x)); }
-  #else
-    #define roundtoll(x) (roundtol((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) roundtoll( long double x )
+{
+	return roundtol( (double)( x ) );
+}
+#else
+#define roundtoll( x ) ( roundtol( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  truncl()
@@ -2257,16 +2315,18 @@ EXTERN_API_C( long ) roundtoll(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) truncl(long double x);
+EXTERN_API_C( long double )
+truncl( long double x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) truncl(long double x) { return (long double) trunc((double)(x)); }
-  #else
-    #define truncl(x) ((long double) trunc((double)(x)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) truncl( long double x )
+{
+	return (long double)trunc( (double)( x ) );
+}
+#else
+#define truncl( x ) ( (long double)trunc( (double)( x ) ) )
 #endif
-
-
+#endif
 
 /*
  *  remainderl()
@@ -2276,16 +2336,18 @@ EXTERN_API_C( long double ) truncl(long double x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) remainderl(long double x, long double y);
+EXTERN_API_C( long double )
+remainderl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) remainderl(long double x, long double y) { return (long double) remainder((double)(x), (double)(y)); }
-  #else
-    #define remainderl(x, y) ((long double) remainder((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) remainderl( long double x, long double y )
+{
+	return (long double)remainder( (double)( x ), (double)( y ) );
+}
+#else
+#define remainderl( x, y ) ( (long double)remainder( (double)( x ), (double)( y ) ) )
 #endif
-
-
+#endif
 
 /*
  *  remquol()
@@ -2295,16 +2357,18 @@ EXTERN_API_C( long double ) remainderl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) remquol(long double x, long double y, int *quo);
+EXTERN_API_C( long double )
+remquol( long double x, long double y, int *quo );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) remquol(long double x, long double y, int *quo) { return (long double) remquo((double)(x), (double)(y), (quo)); }
-  #else
-    #define remquol(x, y, quo) ((long double) remquo((double)(x), (double)(y), (quo)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) remquol( long double x, long double y, int *quo )
+{
+	return (long double)remquo( (double)( x ), (double)( y ), ( quo ) );
+}
+#else
+#define remquol( x, y, quo ) ( (long double)remquo( (double)( x ), (double)( y ), ( quo ) ) )
 #endif
-
-
+#endif
 
 /*
  *  copysignl()
@@ -2314,16 +2378,18 @@ EXTERN_API_C( long double ) remquol(long double x, long double y, int *quo);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) copysignl(long double x, long double y);
+EXTERN_API_C( long double )
+copysignl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) copysignl(long double x, long double y) { return (long double) copysign((double)(x), (double)(y)); }
-  #else
-    #define copysignl(x, y) ((long double) copysign((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) copysignl( long double x, long double y )
+{
+	return (long double)copysign( (double)( x ), (double)( y ) );
+}
+#else
+#define copysignl( x, y ) ( (long double)copysign( (double)( x ), (double)( y ) ) )
 #endif
-
-
+#endif
 
 /*
  *  fdiml()
@@ -2333,16 +2399,18 @@ EXTERN_API_C( long double ) copysignl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) fdiml(long double x, long double y);
+EXTERN_API_C( long double )
+fdiml( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) fdiml(long double x, long double y) { return (long double) fdim((double)(x), (double)(y)); }
-  #else
-    #define fdiml(x, y) ((long double) fdim((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) fdiml( long double x, long double y )
+{
+	return (long double)fdim( (double)( x ), (double)( y ) );
+}
+#else
+#define fdiml( x, y ) ( (long double)fdim( (double)( x ), (double)( y ) ) )
 #endif
-
-
+#endif
 
 /*
  *  fmaxl()
@@ -2352,16 +2420,18 @@ EXTERN_API_C( long double ) fdiml(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) fmaxl(long double x, long double y);
+EXTERN_API_C( long double )
+fmaxl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) fmaxl(long double x, long double y) { return (long double) fmax((double)(x), (double)(y)); }
-  #else
-    #define fmaxl(x, y) ((long double) fmax((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) fmaxl( long double x, long double y )
+{
+	return (long double)fmax( (double)( x ), (double)( y ) );
+}
+#else
+#define fmaxl( x, y ) ( (long double)fmax( (double)( x ), (double)( y ) ) )
 #endif
-
-
+#endif
 
 /*
  *  fminl()
@@ -2371,15 +2441,18 @@ EXTERN_API_C( long double ) fmaxl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) fminl(long double x, long double y);
+EXTERN_API_C( long double )
+fminl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) fminl(long double x, long double y) { return (long double) fmin((double)(x), (double)(y)); }
-  #else
-    #define fminl(x, y) ((long double) fmin((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) fminl( long double x, long double y )
+{
+	return (long double)fmin( (double)( x ), (double)( y ) );
+}
+#else
+#define fminl( x, y ) ( (long double)fmin( (double)( x ), (double)( y ) ) )
 #endif
-
+#endif
 
 #endif /* __MWERKS__ */
 #ifndef __NOEXTENSIONS__
@@ -2391,16 +2464,18 @@ EXTERN_API_C( long double ) fminl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( relop ) relationl(long double x, long double y);
+EXTERN_API_C( relop )
+relationl( long double x, long double y );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(relop ) relationl(long double x, long double y) { return relation((double)(x), (double)(y)); }
-  #else
-    #define relationl(x, y) (relation((double)(x), (double)(y)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( relop ) relationl( long double x, long double y )
+{
+	return relation( (double)( x ), (double)( y ) );
+}
+#else
+#define relationl( x, y ) ( relation( (double)( x ), (double)( y ) ) )
 #endif
-
-
+#endif
 
 /*
  *  num2decl()
@@ -2410,16 +2485,18 @@ EXTERN_API_C( relop ) relationl(long double x, long double y);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( void ) num2decl(const decform *f, long double x, decimal *d);
+EXTERN_API_C( void )
+num2decl( const decform *f, long double x, decimal *d );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(void) num2decl(const decform *f, long double x, decimal *d) { num2dec((f), (double)(x), (d)); }
-  #else
-    #define num2decl(f, x, d) (num2dec((f), (double)(x), (d)))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) num2decl( const decform *f, long double x, decimal *d )
+{
+	num2dec( ( f ), (double)( x ), ( d ) );
+}
+#else
+#define num2decl( f, x, d ) ( num2dec( ( f ), (double)( x ), ( d ) ) )
 #endif
-
-
+#endif
 
 /*
  *  dec2numl()
@@ -2429,21 +2506,24 @@ EXTERN_API_C( void ) num2decl(const decform *f, long double x, decimal *d);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( long double ) dec2numl(const decimal * d);
+EXTERN_API_C( long double )
+dec2numl( const decimal *d );
 #if TYPE_LONGDOUBLE_IS_DOUBLE
-  #ifdef __cplusplus
-    inline DEFINE_API_C(long double ) dec2numl(const decimal *d) { return (long double) dec2num(d); }
-  #else
-    #define dec2numl(d) ((long double) dec2num(d))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long double ) dec2numl( const decimal *d )
+{
+	return (long double)dec2num( d );
+}
+#else
+#define dec2numl( d ) ( (long double)dec2num( d ) )
+#endif
 #endif
 
+#endif /* !defined(__NOEXTENSIONS__) */
 
-#endif  /* !defined(__NOEXTENSIONS__) */
+#endif /* TARGET_CPU_PPC */
 
-#endif  /* TARGET_CPU_PPC */
-
-#endif  /* TARGET_OS_MAC */
+#endif /* TARGET_OS_MAC */
 
 #ifndef __NOEXTENSIONS__
 /*    
@@ -2460,8 +2540,8 @@ EXTERN_API_C( long double ) dec2numl(const decimal * d);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( double ) x80tod(const extended80 * x80);
-
+EXTERN_API_C( double )
+x80tod( const extended80 *x80 );
 
 /*
  *  dtox80()
@@ -2471,8 +2551,8 @@ EXTERN_API_C( double ) x80tod(const extended80 * x80);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( void ) dtox80(const double *x, extended80 *x80);
-
+EXTERN_API_C( void )
+dtox80( const double *x, extended80 *x80 );
 
 /*
  *  x80told()
@@ -2482,16 +2562,18 @@ EXTERN_API_C( void ) dtox80(const double *x, extended80 *x80);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( void ) x80told(const extended80 *x80, long double *x);
+EXTERN_API_C( void )
+x80told( const extended80 *x80, long double *x );
 #if TYPE_LONGDOUBLE_IS_DOUBLE && !TARGET_OS_WIN32
-  #ifdef __cplusplus
-    inline DEFINE_API_C(void) x80told(const extended80 *x80, long double *x) { *(x) = (long double) x80tod(x80); }
-  #else
-    #define x80told(x80, x) (*(x) = (long double) x80tod(x80))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) x80told( const extended80 *x80, long double *x )
+{
+	*( x ) = (long double)x80tod( x80 );
+}
+#else
+#define x80told( x80, x ) ( *( x ) = (long double)x80tod( x80 ) )
 #endif
-
-
+#endif
 
 /*
  *  ldtox80()
@@ -2501,25 +2583,32 @@ EXTERN_API_C( void ) x80told(const extended80 *x80, long double *x);
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Mac OS X:         not available
  */
-EXTERN_API_C( void ) ldtox80(const long double *x, extended80 *x80);
+EXTERN_API_C( void )
+ldtox80( const long double *x, extended80 *x80 );
 #if TYPE_LONGDOUBLE_IS_DOUBLE && !TARGET_OS_WIN32
-  #ifdef __cplusplus
-    inline DEFINE_API_C(void) ldtox80(const long double *x, extended80 *x80) { double d = (double) *(x); dtox80(&d, (x80)); }
-  #else
-    #define ldtox80(x, x80) do { double d = (double) *(x); dtox80(&d, (x80)); } while (false)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) ldtox80( const long double *x, extended80 *x80 )
+{
+	double d = (double)*( x );
+	dtox80( &d, ( x80 ) );
+}
+#else
+#define ldtox80( x, x80 )          \
+	do {                           \
+		double d = (double)*( x ); \
+		dtox80( &d, ( x80 ) );     \
+	} while( false )
+#endif
 #endif
 
-
-#endif  /* !defined(__NOEXTENSIONS__) */
-
+#endif /* !defined(__NOEXTENSIONS__) */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2533,4 +2622,3 @@ EXTERN_API_C( void ) ldtox80(const long double *x, extended80 *x80);
 #endif
 
 #endif /* __FP__ */
-

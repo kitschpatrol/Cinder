@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
+#include "cinder/Log.h"
+#include "cinder/Rand.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/Rand.h"
-#include "cinder/Log.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -11,12 +11,13 @@ using namespace std;
 struct Monitor {
   public:
 	Monitor( DisplayRef display, Colorf color, bool mainDisplay )
-		: mArea( display->getBounds() ), mColor( color ), mMainDisplay( mainDisplay )
+	    : mArea( display->getBounds() ), mColor( color ), mMainDisplay( mainDisplay )
 	{
-		app::console() << mArea << std::endl;	
+		app::console() << mArea << std::endl;
 	}
 
-	void draw() {
+	void draw()
+	{
 		gl::color( mColor * 0.25f );
 		Rectf r = Rectf( mArea ).scaledCentered( 0.99f );
 		gl::drawSolidRect( r );
@@ -26,9 +27,9 @@ struct Monitor {
 			gl::drawSolidRect( Rectf( r.x1, r.y1, r.x2, r.y1 + 40 ) );
 	}
 
-	bool		mMainDisplay;
-	Colorf		mColor;
-	Area		mArea;
+	bool   mMainDisplay;
+	Colorf mColor;
+	Area   mArea;
 };
 
 class DisplayTestApp : public App {
@@ -37,20 +38,20 @@ class DisplayTestApp : public App {
 	void draw() override;
 	void populateMonitors();
 
-	std::vector<Monitor>		mMonitors;
-	Rectf						mGlobalBounds;
+	std::vector<Monitor> mMonitors;
+	Rectf                mGlobalBounds;
 };
 
 void DisplayTestApp::populateMonitors()
 {
 	mMonitors.clear();
-	mGlobalBounds = Rectf(0, 0, 0, 0);
-	float hueDelta = 1.0f / (Display::getDisplays().size() + 3);
+	mGlobalBounds = Rectf( 0, 0, 0, 0 );
+	float hueDelta = 1.0f / ( Display::getDisplays().size() + 3 );
 	float hue = 0;
-	bool mainDisplay = true;
-	for( auto &display : Display::getDisplays()) {
-		mGlobalBounds.include(display->getBounds());
-		mMonitors.push_back( Monitor( display, Colorf(CM_HSV, hue, 1, 0.4f), mainDisplay ) );
+	bool  mainDisplay = true;
+	for( auto &display : Display::getDisplays() ) {
+		mGlobalBounds.include( display->getBounds() );
+		mMonitors.push_back( Monitor( display, Colorf( CM_HSV, hue, 1, 0.4f ), mainDisplay ) );
 		hue += hueDelta;
 		mainDisplay = false;
 	}
@@ -64,11 +65,11 @@ void DisplayTestApp::setup()
 		console() << "Display connected." << std::endl;
 		populateMonitors();
 	} );
-	getSignalDisplayDisconnected().connect([this](const DisplayRef &display) {
+	getSignalDisplayDisconnected().connect( [this]( const DisplayRef &display ) {
 		console() << "Display disconnected." << std::endl;
 		populateMonitors();
 	} );
-	getSignalDisplayChanged().connect([this](const DisplayRef &display) {
+	getSignalDisplayChanged().connect( [this]( const DisplayRef &display ) {
 		console() << "Display changed." << std::endl;
 		populateMonitors();
 	} );
@@ -82,10 +83,10 @@ void DisplayTestApp::draw()
 	if( mGlobalBounds.getAspectRatio() > getWindowAspectRatio() )
 		scaledBounds.scaleCentered( vec2( 1, mGlobalBounds.getAspectRatio() / getWindowAspectRatio() ) );
 	else
-		scaledBounds.scaleCentered( vec2(getWindowAspectRatio() / mGlobalBounds.getAspectRatio(), 1 ) );
+		scaledBounds.scaleCentered( vec2( getWindowAspectRatio() / mGlobalBounds.getAspectRatio(), 1 ) );
 	scaledBounds.scaleCentered( 1.1f );
 
-	gl::clear( Color( 0, 0, 0 ) ); 
+	gl::clear( Color( 0, 0, 0 ) );
 	gl::setMatrices( CameraOrtho( scaledBounds.getLowerLeft().x, scaledBounds.getLowerRight().x, scaledBounds.getLowerLeft().y, scaledBounds.getUpperLeft().y, -1, 1 ) );
 
 	// draw the monitors
@@ -95,8 +96,8 @@ void DisplayTestApp::draw()
 	// draw the window
 	gl::color( 1.0f, 1.0f, 1.0f, 0.55f );
 	gl::drawSolidRect( Rectf( getWindowBounds() + getWindowPos() ) );
-	gl::color(1.0f, 1.0f, 1.0f, 1 );
-	gl::drawStrokedRect(Rectf(getWindowBounds() + getWindowPos()));
+	gl::color( 1.0f, 1.0f, 1.0f, 1 );
+	gl::drawStrokedRect( Rectf( getWindowBounds() + getWindowPos() ) );
 }
 
 CINDER_APP( DisplayTestApp, RendererGl )

@@ -22,16 +22,17 @@
 
 #include "cinder/ip/Trim.h"
 
-#include <boost/preprocessor/seq.hpp>
 #include <algorithm>
+#include <boost/preprocessor/seq.hpp>
 
-namespace cinder { namespace ip {
+namespace cinder {
+namespace ip {
 
-template<typename T>
+template <typename T>
 bool transparentHorizontalScanline( const SurfaceT<T> &surface, int32_t row, int32_t x1, int32_t x2 )
 {
 	const T *dstPtr = surface.getDataAlpha( ivec2( x1, row ) );
-	uint8_t inc = surface.getPixelInc();
+	uint8_t  inc = surface.getPixelInc();
 	for( int32_t x = x1; x < x2; ++x ) {
 		if( *dstPtr ) return false;
 		dstPtr += inc;
@@ -39,11 +40,11 @@ bool transparentHorizontalScanline( const SurfaceT<T> &surface, int32_t row, int
 	return true;
 }
 
-template<typename T>
+template <typename T>
 bool transparentVerticalScanline( const SurfaceT<T> &surface, int32_t column, int32_t y1, int32_t y2 )
 {
 	const T *dstPtr = surface.getDataAlpha( ivec2( column, y1 ) );
-	int32_t rowBytes = surface.getRowBytes();
+	int32_t  rowBytes = surface.getRowBytes();
 	for( int32_t y = y1; y < y2; ++y ) {
 		if( *dstPtr ) return false;
 		dstPtr += rowBytes;
@@ -51,37 +52,37 @@ bool transparentVerticalScanline( const SurfaceT<T> &surface, int32_t column, in
 	return true;
 }
 
-template<typename T>
+template <typename T>
 Area findNonTransparentArea( const SurfaceT<T> &surface, const Area &unclippedBounds )
 {
 	const Area bounds = unclippedBounds.getClipBy( surface.getBounds() );
 	// if no alpha we'll fail over the to alpha-less fill
-	if( ! surface.hasAlpha() ) {
+	if( !surface.hasAlpha() ) {
 		return surface.getBounds();
 	}
-	
+
 	int32_t topLine, bottomLine;
 	int32_t leftColumn, rightColumn;
 	// find the top and bottom lines
 	for( topLine = bounds.getY1(); topLine < bounds.getY2(); ++topLine ) {
-		if( ! transparentHorizontalScanline( surface, topLine, bounds.getX1(), bounds.getX2() ) ) {
+		if( !transparentHorizontalScanline( surface, topLine, bounds.getX1(), bounds.getX2() ) ) {
 			break;
 		}
 	}
 	for( bottomLine = bounds.getY2() - 1; bottomLine > topLine; --bottomLine ) {
-		if( ! transparentHorizontalScanline( surface, bottomLine, bounds.getX1(), bounds.getX2() ) ) {
+		if( !transparentHorizontalScanline( surface, bottomLine, bounds.getX1(), bounds.getX2() ) ) {
 			break;
 		}
 	}
 
 	// find the left and right columns
 	for( leftColumn = bounds.getX1(); leftColumn < bounds.getX2(); ++leftColumn ) {
-		if( ! transparentVerticalScanline( surface, leftColumn, topLine, bottomLine ) ) {
+		if( !transparentVerticalScanline( surface, leftColumn, topLine, bottomLine ) ) {
 			break;
 		}
 	}
 	for( rightColumn = bounds.getX2(); rightColumn > leftColumn; --rightColumn ) {
-		if( ! transparentVerticalScanline( surface, rightColumn, topLine, bottomLine ) ) {
+		if( !transparentVerticalScanline( surface, rightColumn, topLine, bottomLine ) ) {
 			break;
 		}
 	}
@@ -92,9 +93,9 @@ Area findNonTransparentArea( const SurfaceT<T> &surface, const Area &unclippedBo
 	return Area( leftColumn, topLine, rightColumn, bottomLine );
 }
 
-#define TRIM_PROTOTYPES(r,data,T)\
+#define TRIM_PROTOTYPES( r, data, T ) \
 	template Area findNonTransparentArea( const SurfaceT<T> &surface, const Area &unclippedBounds );
 
 BOOST_PP_SEQ_FOR_EACH( TRIM_PROTOTYPES, ~, CHANNEL_TYPES )
-
-} } // namespace cinder::ip
+}
+} // namespace cinder::ip

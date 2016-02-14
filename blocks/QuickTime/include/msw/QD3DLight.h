@@ -21,9 +21,6 @@
 #include <QD3D.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,26 +34,26 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=power
+#pragma options align = power
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __QD3DLIGHT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __QD3DLIGHT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __QD3DLIGHT__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __QD3DLIGHT__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
 /******************************************************************************
@@ -65,21 +62,19 @@ extern "C" {
  **                                                                          **
  *****************************************************************************/
 enum TQ3AttenuationType {
-  kQ3AttenuationTypeNone        = 0,
-  kQ3AttenuationTypeInverseDistance = 1,
-  kQ3AttenuationTypeInverseDistanceSquared = 2
+	kQ3AttenuationTypeNone = 0,
+	kQ3AttenuationTypeInverseDistance = 1,
+	kQ3AttenuationTypeInverseDistanceSquared = 2
 };
 typedef enum TQ3AttenuationType TQ3AttenuationType;
 
-
 enum TQ3FallOffType {
-  kQ3FallOffTypeNone            = 0,
-  kQ3FallOffTypeLinear          = 1,
-  kQ3FallOffTypeExponential     = 2,
-  kQ3FallOffTypeCosine          = 3
+	kQ3FallOffTypeNone = 0,
+	kQ3FallOffTypeLinear = 1,
+	kQ3FallOffTypeExponential = 2,
+	kQ3FallOffTypeCosine = 3
 };
 typedef enum TQ3FallOffType TQ3FallOffType;
-
 
 /******************************************************************************
  **                                                                          **
@@ -87,35 +82,35 @@ typedef enum TQ3FallOffType TQ3FallOffType;
  **                                                                          **
  *****************************************************************************/
 struct TQ3LightData {
-  TQ3Boolean          isOn;
-  float               brightness;
-  TQ3ColorRGB         color;
+	TQ3Boolean  isOn;
+	float       brightness;
+	TQ3ColorRGB color;
 };
-typedef struct TQ3LightData             TQ3LightData;
+typedef struct TQ3LightData TQ3LightData;
 struct TQ3DirectionalLightData {
-  TQ3LightData        lightData;
-  TQ3Boolean          castsShadows;
-  TQ3Vector3D         direction;
+	TQ3LightData lightData;
+	TQ3Boolean   castsShadows;
+	TQ3Vector3D  direction;
 };
-typedef struct TQ3DirectionalLightData  TQ3DirectionalLightData;
+typedef struct TQ3DirectionalLightData TQ3DirectionalLightData;
 struct TQ3PointLightData {
-  TQ3LightData        lightData;
-  TQ3Boolean          castsShadows;
-  TQ3AttenuationType  attenuation;
-  TQ3Point3D          location;
+	TQ3LightData       lightData;
+	TQ3Boolean         castsShadows;
+	TQ3AttenuationType attenuation;
+	TQ3Point3D         location;
 };
-typedef struct TQ3PointLightData        TQ3PointLightData;
+typedef struct TQ3PointLightData TQ3PointLightData;
 struct TQ3SpotLightData {
-  TQ3LightData        lightData;
-  TQ3Boolean          castsShadows;
-  TQ3AttenuationType  attenuation;
-  TQ3Point3D          location;
-  TQ3Vector3D         direction;
-  float               hotAngle;
-  float               outerAngle;
-  TQ3FallOffType      fallOff;
+	TQ3LightData       lightData;
+	TQ3Boolean         castsShadows;
+	TQ3AttenuationType attenuation;
+	TQ3Point3D         location;
+	TQ3Vector3D        direction;
+	float              hotAngle;
+	float              outerAngle;
+	TQ3FallOffType     fallOff;
 };
-typedef struct TQ3SpotLightData         TQ3SpotLightData;
+typedef struct TQ3SpotLightData TQ3SpotLightData;
 /******************************************************************************
  **                                                                          **
  **                 Light routines (apply to all TQ3LightObjects)            **
@@ -131,8 +126,7 @@ typedef struct TQ3SpotLightData         TQ3SpotLightData;
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3ObjectType )
-Q3Light_GetType(TQ3LightObject light);
-
+Q3Light_GetType( TQ3LightObject light );
 
 /*
  *  Q3Light_GetState()
@@ -144,9 +138,8 @@ Q3Light_GetType(TQ3LightObject light);
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_GetState(
-  TQ3LightObject   light,
-  TQ3Boolean *     isOn);
-
+    TQ3LightObject light,
+    TQ3Boolean *   isOn );
 
 /*
  *  Q3Light_GetBrightness()
@@ -158,9 +151,8 @@ Q3Light_GetState(
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_GetBrightness(
-  TQ3LightObject   light,
-  float *          brightness);
-
+    TQ3LightObject light,
+    float *        brightness );
 
 /*
  *  Q3Light_GetColor()
@@ -172,9 +164,8 @@ Q3Light_GetBrightness(
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_GetColor(
-  TQ3LightObject   light,
-  TQ3ColorRGB *    color);
-
+    TQ3LightObject light,
+    TQ3ColorRGB *  color );
 
 /*
  *  Q3Light_SetState()
@@ -186,9 +177,8 @@ Q3Light_GetColor(
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_SetState(
-  TQ3LightObject   light,
-  TQ3Boolean       isOn);
-
+    TQ3LightObject light,
+    TQ3Boolean     isOn );
 
 /*
  *  Q3Light_SetBrightness()
@@ -200,9 +190,8 @@ Q3Light_SetState(
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_SetBrightness(
-  TQ3LightObject   light,
-  float            brightness);
-
+    TQ3LightObject light,
+    float          brightness );
 
 /*
  *  Q3Light_SetColor()
@@ -214,9 +203,8 @@ Q3Light_SetBrightness(
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_SetColor(
-  TQ3LightObject       light,
-  const TQ3ColorRGB *  color);
-
+    TQ3LightObject     light,
+    const TQ3ColorRGB *color );
 
 /*
  *  Q3Light_GetData()
@@ -228,9 +216,8 @@ Q3Light_SetColor(
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_GetData(
-  TQ3LightObject   light,
-  TQ3LightData *   lightData);
-
+    TQ3LightObject light,
+    TQ3LightData * lightData );
 
 /*
  *  Q3Light_SetData()
@@ -242,10 +229,8 @@ Q3Light_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3Light_SetData(
-  TQ3LightObject        light,
-  const TQ3LightData *  lightData);
-
-
+    TQ3LightObject      light,
+    const TQ3LightData *lightData );
 
 /******************************************************************************
  **                                                                          **
@@ -266,8 +251,7 @@ Q3Light_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3LightObject )
-Q3AmbientLight_New(const TQ3LightData * lightData);
-
+Q3AmbientLight_New( const TQ3LightData *lightData );
 
 /*
  *  Q3AmbientLight_GetData()
@@ -279,9 +263,8 @@ Q3AmbientLight_New(const TQ3LightData * lightData);
  */
 EXTERN_API_C( TQ3Status )
 Q3AmbientLight_GetData(
-  TQ3LightObject   light,
-  TQ3LightData *   lightData);
-
+    TQ3LightObject light,
+    TQ3LightData * lightData );
 
 /*
  *  Q3AmbientLight_SetData()
@@ -293,10 +276,8 @@ Q3AmbientLight_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3AmbientLight_SetData(
-  TQ3LightObject        light,
-  const TQ3LightData *  lightData);
-
-
+    TQ3LightObject      light,
+    const TQ3LightData *lightData );
 
 /******************************************************************************
  **                                                                          **
@@ -312,8 +293,7 @@ Q3AmbientLight_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3LightObject )
-Q3DirectionalLight_New(const TQ3DirectionalLightData * directionalLightData);
-
+Q3DirectionalLight_New( const TQ3DirectionalLightData *directionalLightData );
 
 /*
  *  Q3DirectionalLight_GetCastShadowsState()
@@ -325,9 +305,8 @@ Q3DirectionalLight_New(const TQ3DirectionalLightData * directionalLightData);
  */
 EXTERN_API_C( TQ3Status )
 Q3DirectionalLight_GetCastShadowsState(
-  TQ3LightObject   light,
-  TQ3Boolean *     castsShadows);
-
+    TQ3LightObject light,
+    TQ3Boolean *   castsShadows );
 
 /*
  *  Q3DirectionalLight_GetDirection()
@@ -339,9 +318,8 @@ Q3DirectionalLight_GetCastShadowsState(
  */
 EXTERN_API_C( TQ3Status )
 Q3DirectionalLight_GetDirection(
-  TQ3LightObject   light,
-  TQ3Vector3D *    direction);
-
+    TQ3LightObject light,
+    TQ3Vector3D *  direction );
 
 /*
  *  Q3DirectionalLight_SetCastShadowsState()
@@ -353,9 +331,8 @@ Q3DirectionalLight_GetDirection(
  */
 EXTERN_API_C( TQ3Status )
 Q3DirectionalLight_SetCastShadowsState(
-  TQ3LightObject   light,
-  TQ3Boolean       castsShadows);
-
+    TQ3LightObject light,
+    TQ3Boolean     castsShadows );
 
 /*
  *  Q3DirectionalLight_SetDirection()
@@ -367,9 +344,8 @@ Q3DirectionalLight_SetCastShadowsState(
  */
 EXTERN_API_C( TQ3Status )
 Q3DirectionalLight_SetDirection(
-  TQ3LightObject       light,
-  const TQ3Vector3D *  direction);
-
+    TQ3LightObject     light,
+    const TQ3Vector3D *direction );
 
 /*
  *  Q3DirectionalLight_GetData()
@@ -381,9 +357,8 @@ Q3DirectionalLight_SetDirection(
  */
 EXTERN_API_C( TQ3Status )
 Q3DirectionalLight_GetData(
-  TQ3LightObject             light,
-  TQ3DirectionalLightData *  directionalLightData);
-
+    TQ3LightObject           light,
+    TQ3DirectionalLightData *directionalLightData );
 
 /*
  *  Q3DirectionalLight_SetData()
@@ -395,10 +370,8 @@ Q3DirectionalLight_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3DirectionalLight_SetData(
-  TQ3LightObject                   light,
-  const TQ3DirectionalLightData *  directionalLightData);
-
-
+    TQ3LightObject                 light,
+    const TQ3DirectionalLightData *directionalLightData );
 
 /******************************************************************************
  **                                                                          **
@@ -414,8 +387,7 @@ Q3DirectionalLight_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3LightObject )
-Q3PointLight_New(const TQ3PointLightData * pointLightData);
-
+Q3PointLight_New( const TQ3PointLightData *pointLightData );
 
 /*
  *  Q3PointLight_GetCastShadowsState()
@@ -427,9 +399,8 @@ Q3PointLight_New(const TQ3PointLightData * pointLightData);
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_GetCastShadowsState(
-  TQ3LightObject   light,
-  TQ3Boolean *     castsShadows);
-
+    TQ3LightObject light,
+    TQ3Boolean *   castsShadows );
 
 /*
  *  Q3PointLight_GetAttenuation()
@@ -441,9 +412,8 @@ Q3PointLight_GetCastShadowsState(
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_GetAttenuation(
-  TQ3LightObject        light,
-  TQ3AttenuationType *  attenuation);
-
+    TQ3LightObject      light,
+    TQ3AttenuationType *attenuation );
 
 /*
  *  Q3PointLight_GetLocation()
@@ -455,9 +425,8 @@ Q3PointLight_GetAttenuation(
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_GetLocation(
-  TQ3LightObject   light,
-  TQ3Point3D *     location);
-
+    TQ3LightObject light,
+    TQ3Point3D *   location );
 
 /*
  *  Q3PointLight_GetData()
@@ -469,9 +438,8 @@ Q3PointLight_GetLocation(
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_GetData(
-  TQ3LightObject       light,
-  TQ3PointLightData *  pointLightData);
-
+    TQ3LightObject     light,
+    TQ3PointLightData *pointLightData );
 
 /*
  *  Q3PointLight_SetCastShadowsState()
@@ -483,9 +451,8 @@ Q3PointLight_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_SetCastShadowsState(
-  TQ3LightObject   light,
-  TQ3Boolean       castsShadows);
-
+    TQ3LightObject light,
+    TQ3Boolean     castsShadows );
 
 /*
  *  Q3PointLight_SetAttenuation()
@@ -497,9 +464,8 @@ Q3PointLight_SetCastShadowsState(
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_SetAttenuation(
-  TQ3LightObject       light,
-  TQ3AttenuationType   attenuation);
-
+    TQ3LightObject     light,
+    TQ3AttenuationType attenuation );
 
 /*
  *  Q3PointLight_SetLocation()
@@ -511,9 +477,8 @@ Q3PointLight_SetAttenuation(
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_SetLocation(
-  TQ3LightObject      light,
-  const TQ3Point3D *  location);
-
+    TQ3LightObject    light,
+    const TQ3Point3D *location );
 
 /*
  *  Q3PointLight_SetData()
@@ -525,10 +490,8 @@ Q3PointLight_SetLocation(
  */
 EXTERN_API_C( TQ3Status )
 Q3PointLight_SetData(
-  TQ3LightObject             light,
-  const TQ3PointLightData *  pointLightData);
-
-
+    TQ3LightObject           light,
+    const TQ3PointLightData *pointLightData );
 
 /******************************************************************************
  **                                                                          **
@@ -544,8 +507,7 @@ Q3PointLight_SetData(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( TQ3LightObject )
-Q3SpotLight_New(const TQ3SpotLightData * spotLightData);
-
+Q3SpotLight_New( const TQ3SpotLightData *spotLightData );
 
 /*
  *  Q3SpotLight_GetCastShadowsState()
@@ -557,9 +519,8 @@ Q3SpotLight_New(const TQ3SpotLightData * spotLightData);
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetCastShadowsState(
-  TQ3LightObject   light,
-  TQ3Boolean *     castsShadows);
-
+    TQ3LightObject light,
+    TQ3Boolean *   castsShadows );
 
 /*
  *  Q3SpotLight_GetAttenuation()
@@ -571,9 +532,8 @@ Q3SpotLight_GetCastShadowsState(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetAttenuation(
-  TQ3LightObject        light,
-  TQ3AttenuationType *  attenuation);
-
+    TQ3LightObject      light,
+    TQ3AttenuationType *attenuation );
 
 /*
  *  Q3SpotLight_GetLocation()
@@ -585,9 +545,8 @@ Q3SpotLight_GetAttenuation(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetLocation(
-  TQ3LightObject   light,
-  TQ3Point3D *     location);
-
+    TQ3LightObject light,
+    TQ3Point3D *   location );
 
 /*
  *  Q3SpotLight_GetDirection()
@@ -599,9 +558,8 @@ Q3SpotLight_GetLocation(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetDirection(
-  TQ3LightObject   light,
-  TQ3Vector3D *    direction);
-
+    TQ3LightObject light,
+    TQ3Vector3D *  direction );
 
 /*
  *  Q3SpotLight_GetHotAngle()
@@ -613,9 +571,8 @@ Q3SpotLight_GetDirection(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetHotAngle(
-  TQ3LightObject   light,
-  float *          hotAngle);
-
+    TQ3LightObject light,
+    float *        hotAngle );
 
 /*
  *  Q3SpotLight_GetOuterAngle()
@@ -627,9 +584,8 @@ Q3SpotLight_GetHotAngle(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetOuterAngle(
-  TQ3LightObject   light,
-  float *          outerAngle);
-
+    TQ3LightObject light,
+    float *        outerAngle );
 
 /*
  *  Q3SpotLight_GetFallOff()
@@ -641,9 +597,8 @@ Q3SpotLight_GetOuterAngle(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetFallOff(
-  TQ3LightObject    light,
-  TQ3FallOffType *  fallOff);
-
+    TQ3LightObject  light,
+    TQ3FallOffType *fallOff );
 
 /*
  *  Q3SpotLight_GetData()
@@ -655,9 +610,8 @@ Q3SpotLight_GetFallOff(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_GetData(
-  TQ3LightObject      light,
-  TQ3SpotLightData *  spotLightData);
-
+    TQ3LightObject    light,
+    TQ3SpotLightData *spotLightData );
 
 /*
  *  Q3SpotLight_SetCastShadowsState()
@@ -669,9 +623,8 @@ Q3SpotLight_GetData(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetCastShadowsState(
-  TQ3LightObject   light,
-  TQ3Boolean       castsShadows);
-
+    TQ3LightObject light,
+    TQ3Boolean     castsShadows );
 
 /*
  *  Q3SpotLight_SetAttenuation()
@@ -683,9 +636,8 @@ Q3SpotLight_SetCastShadowsState(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetAttenuation(
-  TQ3LightObject       light,
-  TQ3AttenuationType   attenuation);
-
+    TQ3LightObject     light,
+    TQ3AttenuationType attenuation );
 
 /*
  *  Q3SpotLight_SetLocation()
@@ -697,9 +649,8 @@ Q3SpotLight_SetAttenuation(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetLocation(
-  TQ3LightObject      light,
-  const TQ3Point3D *  location);
-
+    TQ3LightObject    light,
+    const TQ3Point3D *location );
 
 /*
  *  Q3SpotLight_SetDirection()
@@ -711,9 +662,8 @@ Q3SpotLight_SetLocation(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetDirection(
-  TQ3LightObject       light,
-  const TQ3Vector3D *  direction);
-
+    TQ3LightObject     light,
+    const TQ3Vector3D *direction );
 
 /*
  *  Q3SpotLight_SetHotAngle()
@@ -725,9 +675,8 @@ Q3SpotLight_SetDirection(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetHotAngle(
-  TQ3LightObject   light,
-  float            hotAngle);
-
+    TQ3LightObject light,
+    float          hotAngle );
 
 /*
  *  Q3SpotLight_SetOuterAngle()
@@ -739,9 +688,8 @@ Q3SpotLight_SetHotAngle(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetOuterAngle(
-  TQ3LightObject   light,
-  float            outerAngle);
-
+    TQ3LightObject light,
+    float          outerAngle );
 
 /*
  *  Q3SpotLight_SetFallOff()
@@ -753,9 +701,8 @@ Q3SpotLight_SetOuterAngle(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetFallOff(
-  TQ3LightObject   light,
-  TQ3FallOffType   fallOff);
-
+    TQ3LightObject light,
+    TQ3FallOffType fallOff );
 
 /*
  *  Q3SpotLight_SetData()
@@ -767,33 +714,28 @@ Q3SpotLight_SetFallOff(
  */
 EXTERN_API_C( TQ3Status )
 Q3SpotLight_SetData(
-  TQ3LightObject            light,
-  const TQ3SpotLightData *  spotLightData);
+    TQ3LightObject          light,
+    const TQ3SpotLightData *spotLightData );
 
-
-
-
-
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __QD3DLIGHT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __QD3DLIGHT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__QD3DLIGHT__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __QD3DLIGHT__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -807,4 +749,3 @@ Q3SpotLight_SetData(
 #endif
 
 #endif /* __QD3DLIGHT__ */
-

@@ -22,28 +22,28 @@
  */
 
 #include "cinder/app/msw/PlatformMsw.h"
-#include "cinder/msw/OutputDebugStringStream.h"
-#include "cinder/Unicode.h"
-#include "cinder/msw/StackWalker.h"
-#include "cinder/msw/CinderMsw.h"
-#include "cinder/app/msw/AppImplMsw.h" // this is needed for file dialog methods, but it doesn't necessarily require an App instance
-#include "cinder/app/AppBase.h"
+#include "cinder/ImageFileTinyExr.h"
+#include "cinder/ImageSourceFileRadiance.h"
 #include "cinder/ImageSourceFileWic.h"
 #include "cinder/ImageTargetFileWic.h"
-#include "cinder/ImageSourceFileRadiance.h"
-#include "cinder/ImageFileTinyExr.h"
+#include "cinder/Unicode.h"
+#include "cinder/app/AppBase.h"
+#include "cinder/app/msw/AppImplMsw.h" // this is needed for file dialog methods, but it doesn't necessarily require an App instance
+#include "cinder/msw/CinderMsw.h"
+#include "cinder/msw/OutputDebugStringStream.h"
+#include "cinder/msw/StackWalker.h"
 
-#include <windows.h>
 #include <Shlwapi.h>
 #include <shlobj.h>
-
+#include <windows.h>
 
 using namespace std;
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 PlatformMsw::PlatformMsw()
-	: mDirectConsoleToCout( false ), mDisplaysInitialized( false )
+    : mDirectConsoleToCout( false ), mDisplaysInitialized( false )
 {
 	ImageSourceFileWic::registerSelf();
 	ImageTargetFileWic::registerSelf();
@@ -54,10 +54,10 @@ PlatformMsw::PlatformMsw()
 
 DataSourceRef PlatformMsw::loadResource( const fs::path &resourcePath, int mswID, const std::string &mswType )
 {
-	HRSRC resInfoHandle;
+	HRSRC   resInfoHandle;
 	HGLOBAL resHandle;
-	void *dataPtr;
-	size_t dataSize;
+	void *  dataPtr;
+	size_t  dataSize;
 
 	wchar_t unicodeType[1024];
 	wsprintfW( unicodeType, L"%S", mswType.c_str() );
@@ -95,36 +95,36 @@ fs::path PlatformMsw::getSaveFilePath( const fs::path &initialPath, const std::v
 	return AppImplMsw::getSaveFilePath( initialPath, extensions );
 }
 
-std::ostream& PlatformMsw::console()
+std::ostream &PlatformMsw::console()
 {
 	if( mDirectConsoleToCout )
 		return std::cout;
 
-	if( ! mOutputStream )
+	if( !mOutputStream )
 		mOutputStream.reset( new cinder::msw::dostream );
-	
+
 	return *mOutputStream;
 }
 
-map<string,string> PlatformMsw::getEnvironmentVariables()
+map<string, string> PlatformMsw::getEnvironmentVariables()
 {
-	map<string,string> result;
-	
-	WCHAR* env = ::GetEnvironmentStrings();
-	if( ! env )
+	map<string, string> result;
+
+	WCHAR *env = ::GetEnvironmentStrings();
+	if( !env )
 		return result;
 
-	size_t prevIdx = 0, idx = 0;
+	size_t      prevIdx = 0, idx = 0;
 	std::string keyString;
 	while( true ) {
-		if( ( env[idx] == TCHAR('=') ) && keyString.empty() ) {
-			keyString = msw::toUtf8String( std::wstring(env + prevIdx, env + idx) );
+		if( ( env[idx] == TCHAR( '=' ) ) && keyString.empty() ) {
+			keyString = msw::toUtf8String( std::wstring( env + prevIdx, env + idx ) );
 			prevIdx = idx + 1;
 		}
-		else if( env[idx] == TCHAR('\0') ) {
-			result[keyString] = msw::toUtf8String( std::wstring(env + prevIdx, env + idx) );
+		else if( env[idx] == TCHAR( '\0' ) ) {
+			result[keyString] = msw::toUtf8String( std::wstring( env + prevIdx, env + idx ) );
 			prevIdx = idx + 1;
-			if( env[idx + 1] == TCHAR('\0'))
+			if( env[idx + 1] == TCHAR( '\0' ) )
 				break;
 			keyString.clear();
 		}
@@ -141,21 +141,21 @@ fs::path PlatformMsw::expandPath( const fs::path &path )
 {
 	wchar_t buffer[MAX_PATH];
 	::PathCanonicalize( buffer, path.wstring().c_str() );
-	return fs::path( buffer ); 
+	return fs::path( buffer );
 }
 
 fs::path PlatformMsw::getDocumentsDirectory() const
 {
 	wchar_t buffer[MAX_PATH];
 	::SHGetFolderPath( 0, CSIDL_MYDOCUMENTS, NULL, SHGFP_TYPE_CURRENT, buffer );
-	return fs::path( wstring(buffer) + L"\\" );
+	return fs::path( wstring( buffer ) + L"\\" );
 }
 
 fs::path PlatformMsw::getHomeDirectory() const
 {
 	wchar_t buffer[MAX_PATH];
 	::SHGetFolderPath( 0, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, buffer );
-	wstring result = wstring(buffer) + L"\\";
+	wstring result = wstring( buffer ) + L"\\";
 	return fs::path( result );
 }
 
@@ -184,7 +184,7 @@ fs::path PlatformMsw::getDefaultExecutablePath() const
 void PlatformMsw::launchWebBrowser( const Url &url )
 {
 	std::u16string urlStr = toUtf16( url.str() );
-	::ShellExecute( NULL, L"open", (wchar_t*)urlStr.c_str(), NULL, NULL, SW_SHOWNORMAL );
+	::ShellExecute( NULL, L"open", (wchar_t *)urlStr.c_str(), NULL, NULL, SW_SHOWNORMAL );
 }
 
 void PlatformMsw::sleep( float milliseconds )
@@ -196,40 +196,39 @@ namespace {
 class CinderStackWalker : public StackWalker {
   public:
 	CinderStackWalker()
-		: StackWalker()
-	{ ShowCallstack(); }
-	
+	    : StackWalker()
+	{
+		ShowCallstack();
+	}
+
 	virtual void OnSymInit( LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName ) {}
 	virtual void OnLoadModule( LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion ) {}
 	virtual void OnCallstackEntry( CallstackEntryType eType, CallstackEntry &entry )
 	{
 		CHAR buffer[STACKWALK_MAX_NAMELEN];
-		if ( (eType != lastEntry) && (entry.offset != 0) && ( eType != firstEntry ) ) {
+		if( ( eType != lastEntry ) && ( entry.offset != 0 ) && ( eType != firstEntry ) ) {
 			if( entry.name[0] == 0 )
 				strcpy_s( entry.name, "(function-name not available)" );
 			if( entry.undName[0] != 0 )
 				strcpy_s( entry.name, entry.undName );
-			if(entry.undFullName[0] != 0 )
+			if( entry.undFullName[0] != 0 )
 				strcpy_s( entry.name, entry.undFullName );
 			if( entry.lineFileName[0] == 0 ) {
 				strcpy_s( entry.lineFileName, "(filename not available)" );
-				if (entry.moduleName[0] == 0)
+				if( entry.moduleName[0] == 0 )
 					strcpy_s( entry.moduleName, "(module-name not available)" );
-				_snprintf_s( buffer, STACKWALK_MAX_NAMELEN, "%p (%s): %s: %s", (LPVOID) entry.offset, entry.moduleName, entry.lineFileName, entry.name );
+				_snprintf_s( buffer, STACKWALK_MAX_NAMELEN, "%p (%s): %s: %s", (LPVOID)entry.offset, entry.moduleName, entry.lineFileName, entry.name );
 			}
 			else
 				_snprintf_s( buffer, STACKWALK_MAX_NAMELEN, "%s (%d): %s", entry.lineFileName, entry.lineNumber, entry.name );
 			mEntries.push_back( std::string( buffer ) );
 		}
-
 	}
 	virtual void OnDbgHelpErr( LPCSTR szFuncName, DWORD gle, DWORD64 addr ) {}
-	virtual void OnOutput( LPCSTR szText ) {}
-	
-	const std::vector<std::string>&	getEntries() { return mEntries; }
-	
+	virtual void OnOutput( LPCSTR   szText ) {}
+	const std::vector<std::string> &getEntries() { return mEntries; }
   protected:
-	std::vector<std::string>	mEntries;
+	std::vector<std::string> mEntries;
 };
 } // anonymous namespace
 
@@ -240,12 +239,12 @@ vector<string> PlatformMsw::stackTrace()
 }
 
 ResourceLoadExcMsw::ResourceLoadExcMsw( int mswID, const string &mswType )
-	: ResourceLoadExc( "" )
+    : ResourceLoadExc( "" )
 {
 	setDescription( "Failed to load resource: #" + to_string( mswID ) + " type: " + mswType );
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // DisplayMsw
@@ -254,10 +253,10 @@ namespace cinder {
 DisplayRef app::PlatformMsw::findDisplayFromHmonitor( HMONITOR hMonitor )
 {
 	for( auto &display : mDisplays )
-		if( std::dynamic_pointer_cast<DisplayMsw>(display)->mMonitor == hMonitor )
+		if( std::dynamic_pointer_cast<DisplayMsw>( display )->mMonitor == hMonitor )
 			return display;
 
-	if( ! mDisplays.empty() )
+	if( !mDisplays.empty() )
 		return mDisplays[0];
 	else
 		return DisplayRef(); // failure
@@ -266,11 +265,11 @@ DisplayRef app::PlatformMsw::findDisplayFromHmonitor( HMONITOR hMonitor )
 namespace {
 int getMonitorBitsPerPixel( HMONITOR hMonitor )
 {
-	int result = 0;
+	int           result = 0;
 	MONITORINFOEX mix;
 	memset( &mix, 0, sizeof( MONITORINFOEX ) );
 	mix.cbSize = sizeof( MONITORINFOEX );
-	HDC hMonitorDC = ::CreateDC( TEXT("DISPLAY"), mix.szDevice, NULL, NULL );
+	HDC hMonitorDC = ::CreateDC( TEXT( "DISPLAY" ), mix.szDevice, NULL, NULL );
 	if( hMonitorDC ) {
 		result = ::GetDeviceCaps( hMonitorDC, BITSPIXEL );
 		::DeleteDC( hMonitorDC );
@@ -286,8 +285,9 @@ std::string getMonitorName( HMONITOR hMonitor )
 	::GetMonitorInfo( hMonitor, &mix );
 	DISPLAY_DEVICEW dispDev;
 	dispDev.cb = sizeof( DISPLAY_DEVICEW );
-	::EnumDisplayDevicesW( mix.szDevice, 0, &dispDev, 0);
-	return msw::toUtf8String( std::wstring(  dispDev.DeviceString ) );}
+	::EnumDisplayDevicesW( mix.szDevice, 0, &dispDev, 0 );
+	return msw::toUtf8String( std::wstring( dispDev.DeviceString ) );
+}
 } // anonymous namespace
 
 std::string DisplayMsw::getName() const
@@ -301,8 +301,8 @@ std::string DisplayMsw::getName() const
 
 BOOL CALLBACK DisplayMsw::enumMonitorProc( HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM lParam )
 {
-	vector<DisplayRef> *displaysVector = reinterpret_cast<vector<DisplayRef>*>( lParam );
-	
+	vector<DisplayRef> *displaysVector = reinterpret_cast<vector<DisplayRef> *>( lParam );
+
 	DisplayMsw *newDisplay = new DisplayMsw();
 	newDisplay->mArea = Area( rect->left, rect->top, rect->right, rect->bottom );
 	newDisplay->mMonitor = hMonitor;
@@ -313,15 +313,15 @@ BOOL CALLBACK DisplayMsw::enumMonitorProc( HMONITOR hMonitor, HDC hdc, LPRECT re
 	return TRUE;
 }
 
-const std::vector<DisplayRef>& app::PlatformMsw::getDisplays()
+const std::vector<DisplayRef> &app::PlatformMsw::getDisplays()
 {
-	if( ! mDisplaysInitialized ) {
+	if( !mDisplaysInitialized ) {
 		::EnumDisplayMonitors( NULL, NULL, DisplayMsw::enumMonitorProc, (LPARAM)&mDisplays );
-	
+
 		// ensure that the primary display is sDisplay[0]
 		const POINT ptZero = { 0, 0 };
-		HMONITOR primMon = MonitorFromPoint( ptZero, MONITOR_DEFAULTTOPRIMARY );
-	
+		HMONITOR    primMon = MonitorFromPoint( ptZero, MONITOR_DEFAULTTOPRIMARY );
+
 		size_t m;
 		for( m = 0; m < mDisplays.size(); ++m )
 			if( dynamic_pointer_cast<DisplayMsw>( mDisplays[m] )->mMonitor == primMon )
@@ -348,15 +348,15 @@ void app::PlatformMsw::refreshDisplays()
 	vector<DisplayRef> disconnectedDisplays; // displays we need to issue a disconnected signal to
 
 	for( auto &display : mDisplays )
-		reinterpret_cast<DisplayMsw*>( display.get() )->mVisitedFlag = false;
+		reinterpret_cast<DisplayMsw *>( display.get() )->mVisitedFlag = false;
 
 	// find any changed or new displays
 	for( auto newDisplayIt = newDisplays.begin(); newDisplayIt != newDisplays.end(); ++newDisplayIt ) {
-		DisplayMsw *newDisplay = reinterpret_cast<DisplayMsw*>( newDisplayIt->get() );
+		DisplayMsw *newDisplay = reinterpret_cast<DisplayMsw *>( newDisplayIt->get() );
 		// find the old display with the same mMonitor
 		bool found = false;
-		for( auto displayIt = mDisplays.begin(); displayIt != mDisplays.end(); ++displayIt ) {	
-			DisplayMsw *oldDisplay = reinterpret_cast<DisplayMsw*>( displayIt->get() );
+		for( auto displayIt = mDisplays.begin(); displayIt != mDisplays.end(); ++displayIt ) {
+			DisplayMsw *oldDisplay = reinterpret_cast<DisplayMsw *>( displayIt->get() );
 			if( oldDisplay->mMonitor == newDisplay->mMonitor ) {
 				// found this display; see if anything changed
 				if( ( oldDisplay->mArea != newDisplay->mArea ) || ( oldDisplay->mBitsPerPixel != newDisplay->mBitsPerPixel ) )
@@ -367,7 +367,7 @@ void app::PlatformMsw::refreshDisplays()
 				break;
 			}
 		}
-		if( ! found ) {
+		if( !found ) {
 			newDisplay->mVisitedFlag = true; // don't want to later consider this display disconnected
 			connectedDisplays.push_back( *newDisplayIt );
 			mDisplays.push_back( *newDisplayIt );
@@ -375,8 +375,8 @@ void app::PlatformMsw::refreshDisplays()
 	}
 
 	// deal with any displays which have been disconnected
-	for( auto displayIt = mDisplays.begin(); displayIt != mDisplays.end(); ) {	
-		if( ! reinterpret_cast<DisplayMsw*>( displayIt->get() )->mVisitedFlag ) {
+	for( auto displayIt = mDisplays.begin(); displayIt != mDisplays.end(); ) {
+		if( !reinterpret_cast<DisplayMsw *>( displayIt->get() )->mVisitedFlag ) {
 			disconnectedDisplays.push_back( *displayIt );
 			displayIt = mDisplays.erase( displayIt );
 		}

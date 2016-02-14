@@ -16,11 +16,11 @@ class _TBOX_PREFIX_App : public App {
 	void mouseDown( MouseEvent event ) override;
 	void update() override;
 	void draw() override;
-	
+
 	void addBox( const vec2 &pos );
-	
-	b2World				*mWorld;
-	vector<b2Body*>		mBoxes;
+
+	b2World *        mWorld;
+	vector<b2Body *> mBoxes;
 };
 
 void _TBOX_PREFIX_App::setup()
@@ -30,7 +30,7 @@ void _TBOX_PREFIX_App::setup()
 
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set( 0.0f, getWindowHeight() );
-	b2Body* groundBody = mWorld->CreateBody( &groundBodyDef );
+	b2Body *groundBody = mWorld->CreateBody( &groundBodyDef );
 
 	// Define the ground box shape.
 	b2PolygonShape groundBox;
@@ -40,7 +40,6 @@ void _TBOX_PREFIX_App::setup()
 
 	// Add the ground fixture to the ground body.
 	groundBody->CreateFixture( &groundBox, 0.0f );
-	
 }
 
 void _TBOX_PREFIX_App::addBox( const vec2 &pos )
@@ -78,7 +77,7 @@ void _TBOX_PREFIX_App::update()
 void _TBOX_PREFIX_App::draw()
 {
 	gl::clear();
-	
+
 	gl::color( 1, 0.5f, 0.25f );
 	for( const auto &box : mBoxes ) {
 		gl::pushModelMatrix();

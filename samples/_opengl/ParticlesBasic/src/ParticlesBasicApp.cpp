@@ -1,10 +1,10 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
+#include "cinder/Color.h"
+#include "cinder/Perlin.h"
 #include "cinder/Rand.h"
 #include "cinder/Vector.h"
-#include "cinder/Perlin.h"
-#include "cinder/Color.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 #include <vector>
 
@@ -13,10 +13,9 @@ using namespace ci::app;
 using namespace std;
 
 class Particle {
-public:
+  public:
 	Particle( const vec2 &position )
-		: mPosition( position ), mLastPosition( position ), mVelocity( vec2( 0 ) ), mZ( 0 ) {}
-
+	    : mPosition( position ), mLastPosition( position ), mVelocity( vec2( 0 ) ), mZ( 0 ) {}
 	void reset( const vec2 &position )
 	{
 		mPosition = mLastPosition = position;
@@ -24,29 +23,29 @@ public:
 		mZ = 0;
 	}
 
-	vec2 mPosition, mVelocity, mLastPosition;
+	vec2  mPosition, mVelocity, mLastPosition;
 	float mZ;
 };
 
 class BasicParticleApp : public App {
-public:
-	void	setup();
-	void	update();
-	void	draw();
+  public:
+	void setup();
+	void update();
+	void draw();
 
-	void	keyDown( KeyEvent event );
+	void keyDown( KeyEvent event );
 
-	bool	isOffscreen( const vec2 &v );
+	bool isOffscreen( const vec2 &v );
 
-public:
-	static const int	NUM_PARTICLES = 10000;
+  public:
+	static const int NUM_PARTICLES = 10000;
 
-	float				mConservationOfVelocity;
-	float				mSpeed;
-	float				mAnimationCounter;
+	float mConservationOfVelocity;
+	float mSpeed;
+	float mAnimationCounter;
 
-	Perlin				mPerlin;
-	vector<Particle>	mParticles;
+	Perlin           mPerlin;
+	vector<Particle> mParticles;
 };
 
 void BasicParticleApp::setup()
@@ -115,18 +114,18 @@ void BasicParticleApp::draw()
 void BasicParticleApp::keyDown( KeyEvent event )
 {
 	switch( event.getCode() ) {
-		case KeyEvent::KEY_ESCAPE:
-			if( isFullScreen() )
-				setFullScreen( false );
-			else
-				quit();
-			break;
-		case KeyEvent::KEY_f:
-			setFullScreen( !isFullScreen() );
-			break;
-		case KeyEvent::KEY_v:
-			gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
-			break;
+	case KeyEvent::KEY_ESCAPE:
+		if( isFullScreen() )
+			setFullScreen( false );
+		else
+			quit();
+		break;
+	case KeyEvent::KEY_f:
+		setFullScreen( !isFullScreen() );
+		break;
+	case KeyEvent::KEY_v:
+		gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
+		break;
 	}
 }
 

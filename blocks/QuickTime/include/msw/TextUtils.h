@@ -32,9 +32,6 @@
 #include <DateTimeUtils.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -48,11 +45,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*
@@ -85,32 +82,32 @@ extern "C" {
 
 /* TruncCode, StyledLineBreakCode, and truncation constants moved to QuickDrawText.i */
 struct ScriptRunStatus {
-  SInt8               script;
-  SInt8               runVariant;
+	SInt8 script;
+	SInt8 runVariant;
 };
-typedef struct ScriptRunStatus          ScriptRunStatus;
+typedef struct ScriptRunStatus ScriptRunStatus;
 struct BreakTable {
-  char                charTypes[256];
-  short               tripleLength;
-  short               triples[1];
+	char  charTypes[256];
+	short tripleLength;
+	short triples[1];
 };
-typedef struct BreakTable               BreakTable;
-typedef BreakTable *                    BreakTablePtr;
+typedef struct BreakTable BreakTable;
+typedef BreakTable *      BreakTablePtr;
 struct NBreakTable {
-  SInt8               flags1;
-  SInt8               flags2;
-  short               version;
-  short               classTableOff;
-  short               auxCTableOff;
-  short               backwdTableOff;
-  short               forwdTableOff;
-  short               doBackup;
-  short               length;                 /* length of NBreakTable */
-  char                charTypes[256];
-  short               tables[1];
+	SInt8 flags1;
+	SInt8 flags2;
+	short version;
+	short classTableOff;
+	short auxCTableOff;
+	short backwdTableOff;
+	short forwdTableOff;
+	short doBackup;
+	short length; /* length of NBreakTable */
+	char  charTypes[256];
+	short tables[1];
 };
-typedef struct NBreakTable              NBreakTable;
-typedef NBreakTable *                   NBreakTablePtr;
+typedef struct NBreakTable NBreakTable;
+typedef NBreakTable *      NBreakTablePtr;
 /* The following functions are new names that work on 68k and PowerPC*/
 /*
  *  Munger()
@@ -122,13 +119,12 @@ typedef NBreakTable *                   NBreakTablePtr;
  */
 EXTERN_API( long )
 Munger(
-  Handle        h,
-  long          offset,
-  const void *  ptr1,
-  long          len1,
-  const void *  ptr2,
-  long          len2)                                         ONEWORDINLINE(0xA9E0);
-
+    Handle      h,
+    long        offset,
+    const void *ptr1,
+    long        len1,
+    const void *ptr2,
+    long        len2 ) ONEWORDINLINE( 0xA9E0 );
 
 /*
  *  NewString()
@@ -139,8 +135,7 @@ Munger(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( StringHandle )
-NewString(ConstStr255Param theString)                         ONEWORDINLINE(0xA906);
-
+NewString( ConstStr255Param theString ) ONEWORDINLINE( 0xA906 );
 
 /*
  *  SetString()
@@ -152,9 +147,8 @@ NewString(ConstStr255Param theString)                         ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 SetString(
-  StringHandle       theString,
-  ConstStr255Param   strNew)                                  ONEWORDINLINE(0xA907);
-
+    StringHandle     theString,
+    ConstStr255Param strNew ) ONEWORDINLINE( 0xA907 );
 
 /*
  *  GetString()
@@ -165,8 +159,7 @@ SetString(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( StringHandle )
-GetString(short stringID)                                     ONEWORDINLINE(0xA9BA);
-
+GetString( short stringID ) ONEWORDINLINE( 0xA9BA );
 
 /*
  *  GetIndString()
@@ -178,10 +171,9 @@ GetString(short stringID)                                     ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 GetIndString(
-  Str255   theString,
-  short    strListID,
-  short    index);
-
+    Str255 theString,
+    short  strListID,
+    short  index );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -194,9 +186,8 @@ GetIndString(
  */
 EXTERN_API_C( void )
 setstring(
-  StringHandle   theString,
-  const char *   strNew);
-
+    StringHandle theString,
+    const char * strNew );
 
 /*
  *  newstring()
@@ -207,8 +198,7 @@ setstring(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( StringHandle )
-newstring(const char * theString);
-
+newstring( const char *theString );
 
 /*
  *  getindstring()
@@ -220,12 +210,11 @@ newstring(const char * theString);
  */
 EXTERN_API_C( void )
 getindstring(
-  char *  theString,
-  short   strListID,
-  short   index);
+    char *theString,
+    short strListID,
+    short index );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  FindWordBreaks()
@@ -237,14 +226,13 @@ getindstring(
  */
 EXTERN_API( void )
 FindWordBreaks(
-  Ptr             textPtr,
-  short           textLength,
-  short           offset,
-  Boolean         leadingEdge,
-  BreakTablePtr   breaks,
-  OffsetTable     offsets,
-  ScriptCode      script)                                     FOURWORDINLINE(0x2F3C, 0xC012, 0x001A, 0xA8B5);
-
+    Ptr           textPtr,
+    short         textLength,
+    short         offset,
+    Boolean       leadingEdge,
+    BreakTablePtr breaks,
+    OffsetTable   offsets,
+    ScriptCode    script ) FOURWORDINLINE( 0x2F3C, 0xC012, 0x001A, 0xA8B5 );
 
 /*
  *  LowercaseText()
@@ -256,10 +244,9 @@ FindWordBreaks(
  */
 EXTERN_API( void )
 LowercaseText(
-  Ptr          textPtr,
-  short        len,
-  ScriptCode   script)                                        SIXWORDINLINE(0x3F3C, 0x0000, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5);
-
+    Ptr        textPtr,
+    short      len,
+    ScriptCode script ) SIXWORDINLINE( 0x3F3C, 0x0000, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5 );
 
 /*
  *  UppercaseText()
@@ -271,10 +258,9 @@ LowercaseText(
  */
 EXTERN_API( void )
 UppercaseText(
-  Ptr          textPtr,
-  short        len,
-  ScriptCode   script)                                        SIXWORDINLINE(0x3F3C, 0x0400, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5);
-
+    Ptr        textPtr,
+    short      len,
+    ScriptCode script ) SIXWORDINLINE( 0x3F3C, 0x0400, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5 );
 
 /*
  *  StripDiacritics()
@@ -286,10 +272,9 @@ UppercaseText(
  */
 EXTERN_API( void )
 StripDiacritics(
-  Ptr          textPtr,
-  short        len,
-  ScriptCode   script)                                        SIXWORDINLINE(0x3F3C, 0x0200, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5);
-
+    Ptr        textPtr,
+    short      len,
+    ScriptCode script ) SIXWORDINLINE( 0x3F3C, 0x0200, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5 );
 
 /*
  *  UppercaseStripDiacritics()
@@ -301,10 +286,9 @@ StripDiacritics(
  */
 EXTERN_API( void )
 UppercaseStripDiacritics(
-  Ptr          textPtr,
-  short        len,
-  ScriptCode   script)                                        SIXWORDINLINE(0x3F3C, 0x0600, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5);
-
+    Ptr        textPtr,
+    short      len,
+    ScriptCode script ) SIXWORDINLINE( 0x3F3C, 0x0600, 0x2F3C, 0x800A, 0xFFB6, 0xA8B5 );
 
 /*
  *  FindScriptRun()
@@ -316,10 +300,9 @@ UppercaseStripDiacritics(
  */
 EXTERN_API( ScriptRunStatus )
 FindScriptRun(
-  Ptr     textPtr,
-  long    textLen,
-  long *  lenUsed)                                            FOURWORDINLINE(0x2F3C, 0x820C, 0x0026, 0xA8B5);
-
+    Ptr   textPtr,
+    long  textLen,
+    long *lenUsed ) FOURWORDINLINE( 0x2F3C, 0x820C, 0x0026, 0xA8B5 );
 
 /*
     The following functions are old names, but are required for PowerPC builds
@@ -337,13 +320,12 @@ FindScriptRun(
  */
 EXTERN_API( void )
 FindWord(
-  Ptr             textPtr,
-  short           textLength,
-  short           offset,
-  Boolean         leadingEdge,
-  BreakTablePtr   breaks,
-  OffsetTable     offsets)                                    FOURWORDINLINE(0x2F3C, 0x8012, 0x001A, 0xA8B5);
-
+    Ptr           textPtr,
+    short         textLength,
+    short         offset,
+    Boolean       leadingEdge,
+    BreakTablePtr breaks,
+    OffsetTable   offsets ) FOURWORDINLINE( 0x2F3C, 0x8012, 0x001A, 0xA8B5 );
 
 /*
  *  NFindWord()
@@ -355,13 +337,12 @@ FindWord(
  */
 EXTERN_API( void )
 NFindWord(
-  Ptr              textPtr,
-  short            textLength,
-  short            offset,
-  Boolean          leadingEdge,
-  NBreakTablePtr   nbreaks,
-  OffsetTable      offsets)                                   FOURWORDINLINE(0x2F3C, 0x8012, 0xFFE2, 0xA8B5);
-
+    Ptr            textPtr,
+    short          textLength,
+    short          offset,
+    Boolean        leadingEdge,
+    NBreakTablePtr nbreaks,
+    OffsetTable    offsets ) FOURWORDINLINE( 0x2F3C, 0x8012, 0xFFE2, 0xA8B5 );
 
 /*
    On 68K machines, LwrText, LowerText, StripText, UpperText and StripUpperText
@@ -378,13 +359,12 @@ NFindWord(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter LwrText(__A0, __D0)
+#pragma parameter LwrText( __A0, __D0 )
 #endif
 EXTERN_API( void )
 LwrText(
-  Ptr     textPtr,
-  short   len)                                                ONEWORDINLINE(0xA056);
-
+    Ptr   textPtr,
+    short len ) ONEWORDINLINE( 0xA056 );
 
 /*
  *  LowerText()
@@ -395,13 +375,12 @@ LwrText(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter LowerText(__A0, __D0)
+#pragma parameter LowerText( __A0, __D0 )
 #endif
 EXTERN_API( void )
 LowerText(
-  Ptr     textPtr,
-  short   len)                                                ONEWORDINLINE(0xA056);
-
+    Ptr   textPtr,
+    short len ) ONEWORDINLINE( 0xA056 );
 
 /*
  *  StripText()
@@ -412,13 +391,12 @@ LowerText(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter StripText(__A0, __D0)
+#pragma parameter StripText( __A0, __D0 )
 #endif
 EXTERN_API( void )
 StripText(
-  Ptr     textPtr,
-  short   len)                                                ONEWORDINLINE(0xA256);
-
+    Ptr   textPtr,
+    short len ) ONEWORDINLINE( 0xA256 );
 
 /*
  *  UpperText()
@@ -429,13 +407,12 @@ StripText(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter UpperText(__A0, __D0)
+#pragma parameter UpperText( __A0, __D0 )
 #endif
 EXTERN_API( void )
 UpperText(
-  Ptr     textPtr,
-  short   len)                                                ONEWORDINLINE(0xA456);
-
+    Ptr   textPtr,
+    short len ) ONEWORDINLINE( 0xA456 );
 
 /*
  *  StripUpperText()
@@ -446,18 +423,16 @@ UpperText(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter StripUpperText(__A0, __D0)
+#pragma parameter StripUpperText( __A0, __D0 )
 #endif
 EXTERN_API( void )
 StripUpperText(
-  Ptr     textPtr,
-  short   len)                                                ONEWORDINLINE(0xA656);
-
-
+    Ptr   textPtr,
+    short len ) ONEWORDINLINE( 0xA656 );
 
 /* The following are new names which are exported by InterfaceLib*/
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  UpperString()
@@ -469,9 +444,8 @@ StripUpperText(
  */
 EXTERN_API( void )
 UpperString(
-  Str255    theString,
-  Boolean   diacSensitive);
-
+    Str255  theString,
+    Boolean diacSensitive );
 
 /*
  *  upperstring()
@@ -483,15 +457,14 @@ UpperString(
  */
 EXTERN_API_C( void )
 upperstring(
-  char *    theString,
-  Boolean   diacSensitive);
-
+    char *  theString,
+    Boolean diacSensitive );
 
 /* The following are macros which map old names to the names exported by InterfaceLib*/
 #if OLDROUTINENAMES
-#define UprString(theString, diacSensitive)  \
-         UpperString(theString, diacSensitive)
-#endif  /* OLDROUTINENAMES */
+#define UprString( theString, diacSensitive ) \
+	UpperString( theString, diacSensitive )
+#endif /* OLDROUTINENAMES */
 
 /* Old routine name but no new names are mapped to it:*/
 #if CALL_NOT_IN_CARBON
@@ -504,15 +477,14 @@ upperstring(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter UprText(__A0, __D0)
+#pragma parameter UprText( __A0, __D0 )
 #endif
 EXTERN_API( void )
 UprText(
-  Ptr     textPtr,
-  short   len)                                                ONEWORDINLINE(0xA054);
+    Ptr   textPtr,
+    short len ) ONEWORDINLINE( 0xA054 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
     Functions for converting between C and Pascal Strings
@@ -541,9 +513,8 @@ UprText(
  */
 EXTERN_API_C( void )
 c2pstrcpy(
-  Str255        dst,
-  const char *  src);
-
+    Str255      dst,
+    const char *src );
 
 /*
  *  p2cstrcpy()
@@ -555,9 +526,8 @@ c2pstrcpy(
  */
 EXTERN_API_C( void )
 p2cstrcpy(
-  char *             dst,
-  ConstStr255Param   src);
-
+    char *           dst,
+    ConstStr255Param src );
 
 /*
  *  CopyPascalStringToC()
@@ -569,9 +539,8 @@ p2cstrcpy(
  */
 EXTERN_API_C( void )
 CopyPascalStringToC(
-  ConstStr255Param   src,
-  char *             dst);
-
+    ConstStr255Param src,
+    char *           dst );
 
 /*
  *  CopyCStringToPascal()
@@ -583,9 +552,8 @@ CopyPascalStringToC(
  */
 EXTERN_API_C( void )
 CopyCStringToPascal(
-  const char *  src,
-  Str255        dst);
-
+    const char *src,
+    Str255      dst );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -597,8 +565,7 @@ CopyCStringToPascal(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( StringPtr )
-c2pstr(char * aStr);
-
+c2pstr( char *aStr );
 
 /*
  *  C2PStr()
@@ -609,8 +576,7 @@ c2pstr(char * aStr);
  *    Mac OS X:         not available
  */
 EXTERN_API( StringPtr )
-C2PStr(Ptr cString);
-
+C2PStr( Ptr cString );
 
 /*
  *  p2cstr()
@@ -621,8 +587,7 @@ C2PStr(Ptr cString);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( char * )
-p2cstr(StringPtr aStr);
-
+p2cstr( StringPtr aStr );
 
 /*
  *  P2CStr()
@@ -633,37 +598,34 @@ p2cstr(StringPtr aStr);
  *    Mac OS X:         not available
  */
 EXTERN_API( Ptr )
-P2CStr(StringPtr pString);
+P2CStr( StringPtr pString );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if !TARGET_OS_MAC
-    /* Added for QuickTime 3.0 */
-    #define C2PStr(a)  (StringPtr)c2pstr((Ptr)(a))
-    #define P2CStr(a)  (Ptr)p2cstr(a)
+/* Added for QuickTime 3.0 */
+#define C2PStr( a ) ( StringPtr ) c2pstr( ( Ptr )( a ) )
+#define P2CStr( a ) ( Ptr ) p2cstr( a )
 
-    #define CopyPascalStringToC(src,dst) p2cstrcpy(dst,src)
-    #define CopyCStringToPascal(src,dst) c2pstrcpy(dst,src)
+#define CopyPascalStringToC( src, dst ) p2cstrcpy( dst, src )
+#define CopyCStringToPascal( src, dst ) c2pstrcpy( dst, src )
 #endif
 #if TARGET_OS_MAC && TARGET_API_MAC_CARBON && OLDP2C
-    /* macros to help source code that uses deprecated inplace  */
-    /* conversion routines to compiler for carbon */
-    #define p2cstr(aStr) (p2cstrcpy((char *) aStr, aStr) , (char *) aStr)
-    #define c2pstr(aStr) (c2pstrcpy((StringPtr)aStr, aStr) , (StringPtr) aStr)
+/* macros to help source code that uses deprecated inplace  */
+/* conversion routines to compiler for carbon */
+#define p2cstr( aStr ) ( p2cstrcpy( (char *)aStr, aStr ), (char *)aStr )
+#define c2pstr( aStr ) ( c2pstrcpy( (StringPtr)aStr, aStr ), (StringPtr)aStr )
 
-    #define C2PStr(a)  (StringPtr)c2pstr((Ptr)(a))
-    #define P2CStr(a)  (Ptr)p2cstr(a)
+#define C2PStr( a ) ( StringPtr ) c2pstr( ( Ptr )( a ) )
+#define P2CStr( a ) ( Ptr ) p2cstr( a )
 #endif
 
-
-
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -677,4 +639,3 @@ P2CStr(StringPtr pString);
 #endif
 
 #endif /* __TEXTUTILS__ */
-

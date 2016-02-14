@@ -76,9 +76,6 @@
 #include <HIToolbar.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -92,11 +89,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*                                                                                                      */
@@ -106,8 +103,8 @@ extern "C" {
 /*--------------------------------------------------------------------------------------*/
 /* o Property Types                                                                     */
 /*--------------------------------------------------------------------------------------*/
-typedef OSType                          PropertyCreator;
-typedef OSType                          PropertyTag;
+typedef OSType PropertyCreator;
+typedef OSType PropertyTag;
 /*--------------------------------------------------------------------------------------*/
 /* o Window Classes                                                                     */
 /*--------------------------------------------------------------------------------------*/
@@ -128,7 +125,7 @@ typedef OSType                          PropertyTag;
 typedef UInt32 WindowClass;
 enum {
 
-  /*
+	/*
    * An alert window is used when the application needs the user's
    * attention immediately. On Mac OS 9 and earlier, a visible alert
    * window will prevent the user from switching to any other
@@ -138,9 +135,9 @@ enum {
    * kWindowModalityAppModal, and given an activation scope of
    * kWindowActivationScopeAll. Available in Mac OS 8.5 and later.
    */
-  kAlertWindowClass             = 1,
+	kAlertWindowClass = 1,
 
-  /*
+	/*
    * Similar to kAlertWindowClass, but provides a window that is
    * movable and that allows switching to other applications. Generally
    * you should use this window class rather than kAlertWindowClass.
@@ -150,9 +147,9 @@ enum {
    * kWindowModalityAppModal, and given an activation scope of
    * kWindowActivationScopeAll. Available in Mac OS 8.5 and later.
    */
-  kMovableAlertWindowClass      = 2,
+	kMovableAlertWindowClass = 2,
 
-  /*
+	/*
    * A modal window is used to display a dialog (but not an alert; use
    * kAlertWindowClass for alerts). On Mac OS 9 and earlier, a visible
    * modal window will prevent the user from switching to any other
@@ -162,9 +159,9 @@ enum {
    * kWindowModalityAppModal, and given an activation scope of
    * kWindowActivationScopeAll. Available in Mac OS 8.5 and later.
    */
-  kModalWindowClass             = 3,
+	kModalWindowClass = 3,
 
-  /*
+	/*
    * Similar to kModalWindowClass, but provides a window that is
    * movable and that allows switching to other applications. Generally
    * you should use this window class rather than kModalWindowClass. If
@@ -177,9 +174,9 @@ enum {
    * activation scope of kWindowActivationScopeAll. Available in Mac OS
    * 8.5 and later.
    */
-  kMovableModalWindowClass      = 4,
+	kMovableModalWindowClass = 4,
 
-  /*
+	/*
    * A floating window is layered above all application windows except
    * for alert and modal windows. It is commonly used for palette
    * windows, inspectors, and other accessory (non-document) windows.
@@ -191,9 +188,9 @@ enum {
    * kWindowActivationScopeIndependent. Available in Mac OS 8.6 and
    * later.
    */
-  kFloatingWindowClass          = 5,
+	kFloatingWindowClass = 5,
 
-  /*
+	/*
    * A document window is used for normal application document windows.
    * Use kThemeBrushDocumentWindowBackground or your own custom drawing
    * to draw the background of a document window. Document windows are
@@ -201,9 +198,9 @@ enum {
    * kWindowModalityNone, and given an activation scope of
    * kWindowActivationScopeAll. Available in Mac OS 8.5 and later.
    */
-  kDocumentWindowClass          = 6,
+	kDocumentWindowClass = 6,
 
-  /*
+	/*
    * A utility window is similar to a floating window, but it floats
    * above the windows of all applications rather than just above the
    * windows of the application that creates it. Use
@@ -214,9 +211,9 @@ enum {
    * given an activation scope of kWindowActivationScopeIndependent.
    * Available in CarbonLib 1.1 and later, and in Mac OS X.
    */
-  kUtilityWindowClass           = 8,
+	kUtilityWindowClass = 8,
 
-  /*
+	/*
    * A help window is used to display help tags. It has no window
    * frame. Typically you should use the Help Manager to display help
    * tags, rather than creating a help tag window yourself. Help
@@ -225,9 +222,9 @@ enum {
    * kWindowActivationScopeNone. Available in CarbonLib 1.1 and later,
    * and in Mac OS X.
    */
-  kHelpWindowClass              = 10,
+	kHelpWindowClass = 10,
 
-  /*
+	/*
    * A sheet window is used to display a dialog that is attached
    * directly to its parent window, rather than being a independent
    * window. A sheet dialog only prevents interaction with its parent
@@ -243,9 +240,9 @@ enum {
    * CarbonLib, a sheet window is actually a movable-modal window,
    * which blocks user interaction with all windows of the application.
    */
-  kSheetWindowClass             = 11,
+	kSheetWindowClass = 11,
 
-  /*
+	/*
    * A toolbar window is used to display a palette of controls. It is
    * similar to a floating window, and like a floating window is
    * layered above all application windows except for alert and modal
@@ -258,9 +255,9 @@ enum {
    * kWindowActivationScopeNone. Available in CarbonLib 1.1 and later,
    * and Mac OS X.
    */
-  kToolbarWindowClass           = 12,
+	kToolbarWindowClass = 12,
 
-  /*
+	/*
    * A plain window has a single-pixel window frame.
    * kThemeBrushDocumentWindowBackground,
    * kThemeBrushDialogBackgroundActive, and application-specific custom
@@ -270,9 +267,9 @@ enum {
    * activation scope of kWindowActivationScopeAll. Available in
    * CarbonLib 1.2.5 and later, and Mac OS X.
    */
-  kPlainWindowClass             = 13,
+	kPlainWindowClass = 13,
 
-  /*
+	/*
    * An overlay window is a completely transparent window positioned
    * above all other windows. Overlay windows are intended as a
    * replacement for the pre-Carbon practice of drawing directly into
@@ -288,9 +285,9 @@ enum {
    * kWindowModalityNone, and given an activation scope of
    * kWindowActivationScopeNone. Available in Mac OS X.
    */
-  kOverlayWindowClass           = 14,
+	kOverlayWindowClass = 14,
 
-  /*
+	/*
    * A sheet alert window is similar to a sheet window, but is intended
    * to display an alert rather than a dialog. On Mac OS X, the
    * appearance of a sheet window and a sheet alert window is currently
@@ -307,9 +304,9 @@ enum {
    * is actually a movable alert window, which blocks user interaction
    * with all windows of the application.
    */
-  kSheetAlertWindowClass        = 15,
+	kSheetAlertWindowClass = 15,
 
-  /*
+	/*
    * A alternate plain window is similar to a plain window but has a
    * solid black shadow on its right and bottom sides. It is rarely
    * used in modern Mac OS applications.
@@ -322,9 +319,9 @@ enum {
    * kWindowActivationScopeAll. Available in CarbonLib 1.3 and later,
    * and Mac OS X 10.1 and later.
    */
-  kAltPlainWindowClass          = 16,
+	kAltPlainWindowClass = 16,
 
-  /*
+	/*
    * A drawer window is used when implementing a drawer user interface,
    * in which the drawer windo slides out from underneath a document
    * window. Use kThemeBrushDrawerBackground or
@@ -334,24 +331,23 @@ enum {
    * and given an activation scope of kWindowActivationScopeAll.
    * Available in Mac OS X 10.2 or later.
    */
-  kDrawerWindowClass            = 20,
+	kDrawerWindowClass = 20,
 
-  /*
+	/*
    * Not an actual window class, but a meta-constant that is used with
    * GetFrontWindowOfClass, FindWindowOfClass, and GetNextWindowOfClass
    * to indicate that there should be no restriction on the class of
    * the returned window. Also used with GetWindowGroupOfClass to get
    * the root window group.
    */
-  kAllWindowClasses             = (unsigned long)0xFFFFFFFF
+	kAllWindowClasses = (unsigned long)0xFFFFFFFF
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Attributes                                                                  */
 /*--------------------------------------------------------------------------------------*/
 
-typedef UInt32                          WindowAttributes;
+typedef UInt32 WindowAttributes;
 
 /*
  *  Summary:
@@ -359,332 +355,322 @@ typedef UInt32                          WindowAttributes;
  */
 enum {
 
-  /*
+	/*
    * A constant with value zero; the lack of any attributes.
    */
-  kWindowNoAttributes           = 0L,
+	kWindowNoAttributes = 0L,
 
-  /*
+	/*
    * This window has a close box. Available for windows of
    * kDocumentWindowClass, kFloatingWindowClass, and
    * kUtilityWindowClass.
    */
-  kWindowCloseBoxAttribute      = (1L << 0),
+	kWindowCloseBoxAttribute = ( 1L << 0 ),
 
-  /*
+	/*
    * This window changes width when zooming. Available for windows of
    * kDocumentWindowClass, kFloatingWindowClass, and
    * kUtilityWindowClass.
    */
-  kWindowHorizontalZoomAttribute = (1L << 1),
+	kWindowHorizontalZoomAttribute = ( 1L << 1 ),
 
-  /*
+	/*
    * This window changes height when zooming. Available for windows of
    * kDocumentWindowClass, kFloatingWindowClass, and
    * kUtilityWindowClass.
    */
-  kWindowVerticalZoomAttribute  = (1L << 2),
+	kWindowVerticalZoomAttribute = ( 1L << 2 ),
 
-  /*
+	/*
    * This window changes both width and height when zooming. Available
    * for windows of kDocumentWindowClass, kFloatingWindowClass, and
    * kUtilityWindowClass.
    */
-  kWindowFullZoomAttribute      = (kWindowVerticalZoomAttribute | kWindowHorizontalZoomAttribute),
+	kWindowFullZoomAttribute = ( kWindowVerticalZoomAttribute | kWindowHorizontalZoomAttribute ),
 
-  /*
+	/*
    * This window has a collapse box. Available for windows of
    * kDocumentWindowClass and, on Mac OS 9, kFloatingWindowClass and
    * kUtilityWindowClass; not available for windows of
    * kFloatingWindowClass or kUtilityWindowClass on Mac OS X.
    */
-  kWindowCollapseBoxAttribute   = (1L << 3),
+	kWindowCollapseBoxAttribute = ( 1L << 3 ),
 
-  /*
+	/*
    * This window can be resized. Available for windows of
    * kDocumentWindowClass, kMovableModalWindowClass,
    * kFloatingWindowClass, kUtilityWindowClass, and kSheetWindowClass.
    */
-  kWindowResizableAttribute     = (1L << 4),
+	kWindowResizableAttribute = ( 1L << 4 ),
 
-  /*
+	/*
    * This window has a vertical titlebar on the side of the window.
    * Available for windows of kFloatingWindowClass and
    * kUtilityWindowClass.
    */
-  kWindowSideTitlebarAttribute  = (1L << 5),
+	kWindowSideTitlebarAttribute = ( 1L << 5 ),
 
-  /*
+	/*
    * This window has a toolbar button. Available for windows of
    * kDocumentWindowClass on Mac OS X.
    */
-  kWindowToolbarButtonAttribute = (1L << 6),
+	kWindowToolbarButtonAttribute = ( 1L << 6 ),
 
-  /*
+	/*
    * This window uses the Metal appearance. Available for document and
    * floating window classes on Mac OS X 10.2 and later. Drawers can
    * also be metal, but dynamically adjust their appearance based on
    * their parent window's appearance; it is not necessary to specify
    * this attribute for a metal drawer.
    */
-  kWindowMetalAttribute         = (1L << 8),
+	kWindowMetalAttribute = ( 1L << 8 ),
 
-  /*
+	/*
    * This window receives no update events. Available for all windows.
    */
-  kWindowNoUpdatesAttribute     = (1L << 16),
+	kWindowNoUpdatesAttribute = ( 1L << 16 ),
 
-  /*
+	/*
    * This window receives no activate events. Available for all windows.
    */
-  kWindowNoActivatesAttribute   = (1L << 17),
+	kWindowNoActivatesAttribute = ( 1L << 17 ),
 
-  /*
+	/*
    * This window receives mouse events even for areas of the window
    * that are transparent (have an alpha channel component of zero).
    * Available for windows of kOverlayWindowClass on Mac OS X 10.0 and
    * 10.1, and available for all windows on Mac OS X 10.2 and later.
    */
-  kWindowOpaqueForEventsAttribute = (1L << 18),
+	kWindowOpaqueForEventsAttribute = ( 1L << 18 ),
 
-  /*
+	/*
    * This window uses composited drawing. This means that the entire
    * window is comprised of HIViews, and can be treated thusly. This
    * attribute must be specified at window creation, and cannot be
    * changed later with ChangeWindowAttributes. Available on Mac OS X
    * 10.2 and later.
    */
-  kWindowCompositingAttribute   = (1L << 19),
+	kWindowCompositingAttribute = ( 1L << 19 ),
 
-  /*
+	/*
    * This window has no shadow. Available for all windows on Mac OS X.
    * This attribute is automatically given to windows of
    * kOverlayWindowClass.
    */
-  kWindowNoShadowAttribute      = (1L << 21),
+	kWindowNoShadowAttribute = ( 1L << 21 ),
 
-  /*
+	/*
    * This window is automatically hidden on suspend and shown on
    * resume. Available for all windows. This attribute is automatically
    * given to windows of kFloatingWindowClass, kHelpWindowClass, and
    * kToolbarWindowClass.
    */
-  kWindowHideOnSuspendAttribute = (1L << 24),
+	kWindowHideOnSuspendAttribute = ( 1L << 24 ),
 
-  /*
+	/*
    * This window has the standard Carbon window event handler
    * installed. Available for all windows.
    */
-  kWindowStandardHandlerAttribute = (1L << 25),
+	kWindowStandardHandlerAttribute = ( 1L << 25 ),
 
-  /*
+	/*
    * This window is automatically hidden during fullscreen mode (when
    * the menubar is invisible) and shown afterwards. Available for all
    * windows. This attribute is automatically given to windows of
    * kUtilityWindowClass.
    */
-  kWindowHideOnFullScreenAttribute = (1L << 26),
+	kWindowHideOnFullScreenAttribute = ( 1L << 26 ),
 
-  /*
+	/*
    * This window is added to the standard Window menu. Available for
    * windows of kDocumentWindowClass. This attribute is automatically
    * given to windows of kDocumentWindowClass.
    */
-  kWindowInWindowMenuAttribute  = (1L << 27),
+	kWindowInWindowMenuAttribute = ( 1L << 27 ),
 
-  /*
+	/*
    * This window supports live resizing. Available for all windows on
    * Mac OS X.
    */
-  kWindowLiveResizeAttribute    = (1L << 28),
+	kWindowLiveResizeAttribute = ( 1L << 28 ),
 
-  /*
+	/*
    * This window never receives mouse events, even in areas that are
    * opaque. Instead, clicks on the window will be passed through to
    * windows beneath it. Available for all windows on Mac OS X 10.2 and
    * later.
    */
-  kWindowIgnoreClicksAttribute  = (1L << 29),
+	kWindowIgnoreClicksAttribute = ( 1L << 29 ),
 
-  /*
+	/*
    * This window will not be repositioned by the default
    * kEventWindowConstrain handler in response to changes in monitor
    * size, Dock position, and so on. Available for all windows on Mac
    * OS X 10.1 and later, and CarbonLib 1.6 and later.
    */
-  kWindowNoConstrainAttribute   = (unsigned long)((1L << 31)),
+	kWindowNoConstrainAttribute = (unsigned long)( ( 1L << 31 ) ),
 
-  /*
+	/*
    * The minimum set of window attributes commonly used by document
    * windows.
    */
-  kWindowStandardDocumentAttributes = (kWindowCloseBoxAttribute | kWindowFullZoomAttribute | kWindowCollapseBoxAttribute | kWindowResizableAttribute),
+	kWindowStandardDocumentAttributes = ( kWindowCloseBoxAttribute | kWindowFullZoomAttribute | kWindowCollapseBoxAttribute | kWindowResizableAttribute ),
 
-  /*
+	/*
    * The minimum set of window attributes commonly used by floating
    * windows.
    */
-  kWindowStandardFloatingAttributes = (kWindowCloseBoxAttribute | kWindowCollapseBoxAttribute)
+	kWindowStandardFloatingAttributes = ( kWindowCloseBoxAttribute | kWindowCollapseBoxAttribute )
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Definition Type                                                             */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  kWindowDefProcType            = FOUR_CHAR_CODE('WDEF')
+	kWindowDefProcType = FOUR_CHAR_CODE( 'WDEF' )
 };
 
 /*--------------------------------------------------------------------------------------*/
 /* o Mac OS 7.5 Window Definition Resource IDs                                          */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  kStandardWindowDefinition     = 0,    /* for document windows and dialogs*/
-  kRoundWindowDefinition        = 1,    /* old da-style window*/
-  kFloatingWindowDefinition     = 124   /* for floating windows*/
+	kStandardWindowDefinition = 0, /* for document windows and dialogs*/
+	kRoundWindowDefinition = 1, /* old da-style window*/
+	kFloatingWindowDefinition = 124 /* for floating windows*/
 };
 
 /*--------------------------------------------------------------------------------------*/
 /* o Variant Codes                                                                      */
 /*--------------------------------------------------------------------------------------*/
 enum {
-                                        /* for use with kStandardWindowDefinition */
-  kDocumentWindowVariantCode    = 0,
-  kModalDialogVariantCode       = 1,
-  kPlainDialogVariantCode       = 2,
-  kShadowDialogVariantCode      = 3,
-  kMovableModalDialogVariantCode = 5,
-  kAlertVariantCode             = 7,
-  kMovableAlertVariantCode      = 9,    /* for use with kFloatingWindowDefinition */
-  kSideFloaterVariantCode       = 8
+	/* for use with kStandardWindowDefinition */
+	kDocumentWindowVariantCode = 0,
+	kModalDialogVariantCode = 1,
+	kPlainDialogVariantCode = 2,
+	kShadowDialogVariantCode = 3,
+	kMovableModalDialogVariantCode = 5,
+	kAlertVariantCode = 7,
+	kMovableAlertVariantCode = 9, /* for use with kFloatingWindowDefinition */
+	kSideFloaterVariantCode = 8
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o DefProc IDs                                                                        */
 /*--------------------------------------------------------------------------------------*/
 enum {
-                                        /* classic ids */
-  documentProc                  = 0,
-  dBoxProc                      = 1,
-  plainDBox                     = 2,
-  altDBoxProc                   = 3,
-  noGrowDocProc                 = 4,
-  movableDBoxProc               = 5,
-  zoomDocProc                   = 8,
-  zoomNoGrow                    = 12,   /* floating window defproc ids */
-  floatProc                     = 1985,
-  floatGrowProc                 = 1987,
-  floatZoomProc                 = 1989,
-  floatZoomGrowProc             = 1991,
-  floatSideProc                 = 1993,
-  floatSideGrowProc             = 1995,
-  floatSideZoomProc             = 1997,
-  floatSideZoomGrowProc         = 1999
+	/* classic ids */
+	documentProc = 0,
+	dBoxProc = 1,
+	plainDBox = 2,
+	altDBoxProc = 3,
+	noGrowDocProc = 4,
+	movableDBoxProc = 5,
+	zoomDocProc = 8,
+	zoomNoGrow = 12, /* floating window defproc ids */
+	floatProc = 1985,
+	floatGrowProc = 1987,
+	floatZoomProc = 1989,
+	floatZoomGrowProc = 1991,
+	floatSideProc = 1993,
+	floatSideGrowProc = 1995,
+	floatSideZoomProc = 1997,
+	floatSideZoomGrowProc = 1999
 };
 
 #if CALL_NOT_IN_CARBON
 /* The rDocProc (rounded WDEF, ala calculator) is not supported in Carbon.*/
 enum {
-  rDocProc                      = 16
+	rDocProc = 16
 };
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-                                        /* Resource IDs for theme-savvy window defprocs */
-  kWindowDocumentDefProcResID   = 64,
-  kWindowDialogDefProcResID     = 65,
-  kWindowUtilityDefProcResID    = 66,
-  kWindowUtilitySideTitleDefProcResID = 67,
-  kWindowSheetDefProcResID      = 68,
-  kWindowSimpleDefProcResID     = 69,
-  kWindowSheetAlertDefProcResID = 70
+	/* Resource IDs for theme-savvy window defprocs */
+	kWindowDocumentDefProcResID = 64,
+	kWindowDialogDefProcResID = 65,
+	kWindowUtilityDefProcResID = 66,
+	kWindowUtilitySideTitleDefProcResID = 67,
+	kWindowSheetDefProcResID = 68,
+	kWindowSimpleDefProcResID = 69,
+	kWindowSheetAlertDefProcResID = 70
 };
 
 enum {
-                                        /* Proc IDs for theme-savvy windows */
-  kWindowDocumentProc           = 1024,
-  kWindowGrowDocumentProc       = 1025,
-  kWindowVertZoomDocumentProc   = 1026,
-  kWindowVertZoomGrowDocumentProc = 1027,
-  kWindowHorizZoomDocumentProc  = 1028,
-  kWindowHorizZoomGrowDocumentProc = 1029,
-  kWindowFullZoomDocumentProc   = 1030,
-  kWindowFullZoomGrowDocumentProc = 1031
+	/* Proc IDs for theme-savvy windows */
+	kWindowDocumentProc = 1024,
+	kWindowGrowDocumentProc = 1025,
+	kWindowVertZoomDocumentProc = 1026,
+	kWindowVertZoomGrowDocumentProc = 1027,
+	kWindowHorizZoomDocumentProc = 1028,
+	kWindowHorizZoomGrowDocumentProc = 1029,
+	kWindowFullZoomDocumentProc = 1030,
+	kWindowFullZoomGrowDocumentProc = 1031
 };
-
 
 enum {
-                                        /* Proc IDs for theme-savvy dialogs */
-  kWindowPlainDialogProc        = 1040,
-  kWindowShadowDialogProc       = 1041,
-  kWindowModalDialogProc        = 1042,
-  kWindowMovableModalDialogProc = 1043,
-  kWindowAlertProc              = 1044,
-  kWindowMovableAlertProc       = 1045
+	/* Proc IDs for theme-savvy dialogs */
+	kWindowPlainDialogProc = 1040,
+	kWindowShadowDialogProc = 1041,
+	kWindowModalDialogProc = 1042,
+	kWindowMovableModalDialogProc = 1043,
+	kWindowAlertProc = 1044,
+	kWindowMovableAlertProc = 1045
 };
-
 
 enum {
-                                        /* procIDs available from Mac OS 8.1 (Appearance 1.0.1) forward */
-  kWindowMovableModalGrowProc   = 1046
+	/* procIDs available from Mac OS 8.1 (Appearance 1.0.1) forward */
+	kWindowMovableModalGrowProc = 1046
 };
-
 
 enum {
-                                        /* Proc IDs for top title bar theme-savvy floating windows */
-  kWindowFloatProc              = 1057,
-  kWindowFloatGrowProc          = 1059,
-  kWindowFloatVertZoomProc      = 1061,
-  kWindowFloatVertZoomGrowProc  = 1063,
-  kWindowFloatHorizZoomProc     = 1065,
-  kWindowFloatHorizZoomGrowProc = 1067,
-  kWindowFloatFullZoomProc      = 1069,
-  kWindowFloatFullZoomGrowProc  = 1071
+	/* Proc IDs for top title bar theme-savvy floating windows */
+	kWindowFloatProc = 1057,
+	kWindowFloatGrowProc = 1059,
+	kWindowFloatVertZoomProc = 1061,
+	kWindowFloatVertZoomGrowProc = 1063,
+	kWindowFloatHorizZoomProc = 1065,
+	kWindowFloatHorizZoomGrowProc = 1067,
+	kWindowFloatFullZoomProc = 1069,
+	kWindowFloatFullZoomGrowProc = 1071
 };
-
 
 enum {
-                                        /* Proc IDs for side title bar theme-savvy floating windows */
-  kWindowFloatSideProc          = 1073,
-  kWindowFloatSideGrowProc      = 1075,
-  kWindowFloatSideVertZoomProc  = 1077,
-  kWindowFloatSideVertZoomGrowProc = 1079,
-  kWindowFloatSideHorizZoomProc = 1081,
-  kWindowFloatSideHorizZoomGrowProc = 1083,
-  kWindowFloatSideFullZoomProc  = 1085,
-  kWindowFloatSideFullZoomGrowProc = 1087
+	/* Proc IDs for side title bar theme-savvy floating windows */
+	kWindowFloatSideProc = 1073,
+	kWindowFloatSideGrowProc = 1075,
+	kWindowFloatSideVertZoomProc = 1077,
+	kWindowFloatSideVertZoomGrowProc = 1079,
+	kWindowFloatSideHorizZoomProc = 1081,
+	kWindowFloatSideHorizZoomGrowProc = 1083,
+	kWindowFloatSideFullZoomProc = 1085,
+	kWindowFloatSideFullZoomGrowProc = 1087
 };
-
 
 enum {
-                                        /* Proc IDs for sheet windows */
-  kWindowSheetProc              = 1088, /* available in Mac OS X and CarbonLib 1.3 */
-  kWindowSheetAlertProc         = 1120  /* available in Mac OS X after 1.0, and CarbonLib 1.3 */
+	/* Proc IDs for sheet windows */
+	kWindowSheetProc = 1088, /* available in Mac OS X and CarbonLib 1.3 */
+	kWindowSheetAlertProc = 1120 /* available in Mac OS X after 1.0, and CarbonLib 1.3 */
 };
-
-
 
 /*
  *  Discussion:
  *    Window defproc IDs for simple windows
  */
 enum {
-                                        /* Proc IDs for simple windows */
+	/* Proc IDs for simple windows */
 
-  /*
+	/*
    * A window that has no structure region; the content covers the
    * entire window.
    */
-  kWindowSimpleProc             = 1104,
+	kWindowSimpleProc = 1104,
 
-  /*
+	/*
    * A window that has a 1-pixel black frame as its structure.
    */
-  kWindowSimpleFrameProc        = 1105
+	kWindowSimpleFrameProc = 1105
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o System 7 Window Positioning Constants                                              */
@@ -696,19 +682,18 @@ enum {
 /*--------------------------------------------------------------------------------------*/
 
 enum {
-  kWindowNoPosition             = 0x0000,
-  kWindowDefaultPosition        = 0x0000, /* used by StandardAlert*/
-  kWindowCenterMainScreen       = 0x280A,
-  kWindowAlertPositionMainScreen = 0x300A,
-  kWindowStaggerMainScreen      = 0x380A,
-  kWindowCenterParentWindow     = 0xA80A,
-  kWindowAlertPositionParentWindow = 0xB00A,
-  kWindowStaggerParentWindow    = 0xB80A,
-  kWindowCenterParentWindowScreen = 0x680A,
-  kWindowAlertPositionParentWindowScreen = 0x700A,
-  kWindowStaggerParentWindowScreen = 0x780A
+	kWindowNoPosition = 0x0000,
+	kWindowDefaultPosition = 0x0000, /* used by StandardAlert*/
+	kWindowCenterMainScreen = 0x280A,
+	kWindowAlertPositionMainScreen = 0x300A,
+	kWindowStaggerMainScreen = 0x380A,
+	kWindowCenterParentWindow = 0xA80A,
+	kWindowAlertPositionParentWindow = 0xB00A,
+	kWindowStaggerParentWindow = 0xB80A,
+	kWindowCenterParentWindowScreen = 0x680A,
+	kWindowAlertPositionParentWindowScreen = 0x700A,
+	kWindowStaggerParentWindowScreen = 0x780A
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Positioning Methods                                                         */
@@ -731,93 +716,92 @@ enum {
 typedef UInt32 WindowPositionMethod;
 enum {
 
-  /*
+	/*
    * Centers the window on the main screen.
    */
-  kWindowCenterOnMainScreen     = 1,
+	kWindowCenterOnMainScreen = 1,
 
-  /*
+	/*
    * Centers the window on its parent window.
    */
-  kWindowCenterOnParentWindow   = 2,
+	kWindowCenterOnParentWindow = 2,
 
-  /*
+	/*
    * Centers the window on the screen containing the largest portion of
    * its parent window.
    */
-  kWindowCenterOnParentWindowScreen = 3,
+	kWindowCenterOnParentWindowScreen = 3,
 
-  /*
+	/*
    * Cascades the window on the main screen.
    */
-  kWindowCascadeOnMainScreen    = 4,
+	kWindowCascadeOnMainScreen = 4,
 
-  /*
+	/*
    * Cascades the window on its parent window.
    */
-  kWindowCascadeOnParentWindow  = 5,
+	kWindowCascadeOnParentWindow = 5,
 
-  /*
+	/*
    * Cascades the window on the screen containing the largest portion
    * of its parent window.
    */
-  kWindowCascadeOnParentWindowScreen = 6,
+	kWindowCascadeOnParentWindowScreen = 6,
 
-  /*
+	/*
    * Cascades the window on the screen containing the largest portion
    * of its parent window, starting below and to the right of its
    * parent window. Available in Mac OS X after version 10.1.x and
    * CarbonLib after 1.5.
    */
-  kWindowCascadeStartAtParentWindowScreen = 10,
+	kWindowCascadeStartAtParentWindowScreen = 10,
 
-  /*
+	/*
    * Puts the window into the alert position on the main screen.
    */
-  kWindowAlertPositionOnMainScreen = 7,
+	kWindowAlertPositionOnMainScreen = 7,
 
-  /*
+	/*
    * Puts the window into the alert position on its parent window.
    */
-  kWindowAlertPositionOnParentWindow = 8,
+	kWindowAlertPositionOnParentWindow = 8,
 
-  /*
+	/*
    * Puts the window into the alert position on the screen containing
    * the largest portion of its parent window.
    */
-  kWindowAlertPositionOnParentWindowScreen = 9
+	kWindowAlertPositionOnParentWindowScreen = 9
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o GetWindowRegion Types                                                              */
 /*--------------------------------------------------------------------------------------*/
-typedef UInt16                          WindowRegionCode;
+typedef UInt16 WindowRegionCode;
 enum {
-                                        /* Region values to pass into GetWindowRegion & GetWindowBounds. All regions are reported in global coordinates. */
-  kWindowTitleBarRgn            = 0,
-  kWindowTitleTextRgn           = 1,
-  kWindowCloseBoxRgn            = 2,
-  kWindowZoomBoxRgn             = 3,
-  kWindowDragRgn                = 5,
-  kWindowGrowRgn                = 6,
-  kWindowCollapseBoxRgn         = 7,
-  kWindowTitleProxyIconRgn      = 8,    /* Mac OS 8.5 forward*/
-  kWindowStructureRgn           = 32,
-  kWindowContentRgn             = 33,   /* Content area of the window; empty when the window is collapsed*/
-  kWindowUpdateRgn              = 34,   /* Carbon forward*/
-  kWindowOpaqueRgn              = 35,   /* Mac OS X: Area of window considered to be opaque. Only valid for windows with alpha channels.*/
-  kWindowGlobalPortRgn          = 40    /* Carbon forward - bounds of the window's port in global coordinates; not affected by CollapseWindow*/
+	/* Region values to pass into GetWindowRegion & GetWindowBounds. All regions are reported in global coordinates. */
+	kWindowTitleBarRgn = 0,
+	kWindowTitleTextRgn = 1,
+	kWindowCloseBoxRgn = 2,
+	kWindowZoomBoxRgn = 3,
+	kWindowDragRgn = 5,
+	kWindowGrowRgn = 6,
+	kWindowCollapseBoxRgn = 7,
+	kWindowTitleProxyIconRgn = 8, /* Mac OS 8.5 forward*/
+	kWindowStructureRgn = 32,
+	kWindowContentRgn = 33, /* Content area of the window; empty when the window is collapsed*/
+	kWindowUpdateRgn = 34, /* Carbon forward*/
+	kWindowOpaqueRgn = 35, /* Mac OS X: Area of window considered to be opaque. Only valid for windows with alpha channels.*/
+	kWindowGlobalPortRgn = 40 /* Carbon forward - bounds of the window's port in global coordinates; not affected by CollapseWindow*/
 };
 
 /* GetWindowRegionRec - a pointer to this is passed in WDEF param for kWindowMsgGetRegion*/
 struct GetWindowRegionRec {
-  RgnHandle           winRgn;
-  WindowRegionCode    regionCode;
+	RgnHandle        winRgn;
+	WindowRegionCode regionCode;
 };
-typedef struct GetWindowRegionRec       GetWindowRegionRec;
-typedef GetWindowRegionRec *            GetWindowRegionPtr;
-typedef GetWindowRegionRec *            GetWindowRegionRecPtr;
+typedef struct GetWindowRegionRec GetWindowRegionRec;
+typedef GetWindowRegionRec *      GetWindowRegionPtr;
+typedef GetWindowRegionRec *      GetWindowRegionRecPtr;
 /*--------------------------------------------------------------------------------------*/
 /* o WDEF Message Types                                                                 */
 /*--------------------------------------------------------------------------------------*/
@@ -830,19 +814,19 @@ typedef GetWindowRegionRec *            GetWindowRegionRecPtr;
 */
 
 struct SetupWindowProxyDragImageRec {
-  GWorldPtr           imageGWorld;            /* locked GWorld containing the drag image - output - can be NULL*/
-  RgnHandle           imageRgn;               /* image clip region, contains the portion of the image which gets blitted to screen - preallocated output - if imageGWorld is NULL, this is ignored*/
-  RgnHandle           outlineRgn;             /* the outline region used on shallow monitors - preallocated output - must always be non-empty*/
+	GWorldPtr imageGWorld; /* locked GWorld containing the drag image - output - can be NULL*/
+	RgnHandle imageRgn; /* image clip region, contains the portion of the image which gets blitted to screen - preallocated output - if imageGWorld is NULL, this is ignored*/
+	RgnHandle outlineRgn; /* the outline region used on shallow monitors - preallocated output - must always be non-empty*/
 };
 typedef struct SetupWindowProxyDragImageRec SetupWindowProxyDragImageRec;
 /* MeasureWindowTitleRec - a pointer to this is passed in WDEF param for kWindowMsgMeasureTitle*/
 struct MeasureWindowTitleRec {
-                                              /* output parameters (filled in by the WDEF)*/
-  SInt16              fullTitleWidth;         /* text + proxy icon width*/
-  SInt16              titleTextWidth;         /* text width*/
+	/* output parameters (filled in by the WDEF)*/
+	SInt16 fullTitleWidth; /* text + proxy icon width*/
+	SInt16 titleTextWidth; /* text width*/
 };
-typedef struct MeasureWindowTitleRec    MeasureWindowTitleRec;
-typedef MeasureWindowTitleRec *         MeasureWindowTitleRecPtr;
+typedef struct MeasureWindowTitleRec MeasureWindowTitleRec;
+typedef MeasureWindowTitleRec *      MeasureWindowTitleRecPtr;
 /*
    GetGrowImageRegionRec - generate a region to be xored during GrowWindow and ResizeWindow.
    This is passed along with a kWindowMsgGetGrowImageRegion message. On input, the growRect
@@ -851,40 +835,39 @@ typedef MeasureWindowTitleRec *         MeasureWindowTitleRecPtr;
    region appropriately.
 */
 struct GetGrowImageRegionRec {
-  Rect                growRect;
-  RgnHandle           growImageRegion;
+	Rect      growRect;
+	RgnHandle growImageRegion;
 };
-typedef struct GetGrowImageRegionRec    GetGrowImageRegionRec;
+typedef struct GetGrowImageRegionRec GetGrowImageRegionRec;
 /*--------------------------------------------------------------------------------------*/
 /* o Standard Window Kinds                                                              */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  dialogKind                    = 2,
-  userKind                      = 8,
-  kDialogWindowKind             = 2,
-  kApplicationWindowKind        = 8
+	dialogKind = 2,
+	userKind = 8,
+	kDialogWindowKind = 2,
+	kApplicationWindowKind = 8
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o FindWindow Result Codes                                                            */
 /*--------------------------------------------------------------------------------------*/
 typedef SInt16 WindowPartCode;
 enum {
-  inDesk                        = 0,
-  inNoWindow                    = 0,
-  inMenuBar                     = 1,
-  inSysWindow                   = 2,
-  inContent                     = 3,
-  inDrag                        = 4,
-  inGrow                        = 5,
-  inGoAway                      = 6,
-  inZoomIn                      = 7,
-  inZoomOut                     = 8,
-  inCollapseBox                 = 11,   /* Mac OS 8.0 forward*/
-  inProxyIcon                   = 12,   /* Mac OS 8.5 forward*/
-  inToolbarButton               = 13,   /* Mac OS X forward*/
-  inStructure                   = 15    /* Mac OS X 10.1 forward*/
+	inDesk = 0,
+	inNoWindow = 0,
+	inMenuBar = 1,
+	inSysWindow = 2,
+	inContent = 3,
+	inDrag = 4,
+	inGrow = 5,
+	inGoAway = 6,
+	inZoomIn = 7,
+	inZoomOut = 8,
+	inCollapseBox = 11, /* Mac OS 8.0 forward*/
+	inProxyIcon = 12, /* Mac OS 8.5 forward*/
+	inToolbarButton = 13, /* Mac OS X forward*/
+	inStructure = 15 /* Mac OS X 10.1 forward*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -892,17 +875,17 @@ enum {
 /*--------------------------------------------------------------------------------------*/
 typedef SInt16 WindowDefPartCode;
 enum {
-  wNoHit                        = 0,
-  wInContent                    = 1,
-  wInDrag                       = 2,
-  wInGrow                       = 3,
-  wInGoAway                     = 4,
-  wInZoomIn                     = 5,
-  wInZoomOut                    = 6,
-  wInCollapseBox                = 9,    /* Mac OS 8.0 forward*/
-  wInProxyIcon                  = 10,   /* Mac OS 8.5 forward*/
-  wInToolbarButton              = 11,   /* Mac OS X forward*/
-  wInStructure                  = 13    /* Mac OS X 10.1 forward*/
+	wNoHit = 0,
+	wInContent = 1,
+	wInDrag = 2,
+	wInGrow = 3,
+	wInGoAway = 4,
+	wInZoomIn = 5,
+	wInZoomOut = 6,
+	wInCollapseBox = 9, /* Mac OS 8.0 forward*/
+	wInProxyIcon = 10, /* Mac OS 8.5 forward*/
+	wInToolbarButton = 11, /* Mac OS X forward*/
+	wInStructure = 13 /* Mac OS X 10.1 forward*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -910,83 +893,82 @@ enum {
 /*--------------------------------------------------------------------------------------*/
 
 enum {
-  kWindowMsgDraw                = 0,
-  kWindowMsgHitTest             = 1,
-  kWindowMsgCalculateShape      = 2,
-  kWindowMsgInitialize          = 3,
-  kWindowMsgCleanUp             = 4,
-  kWindowMsgDrawGrowOutline     = 5,
-  kWindowMsgDrawGrowBox         = 6
+	kWindowMsgDraw = 0,
+	kWindowMsgHitTest = 1,
+	kWindowMsgCalculateShape = 2,
+	kWindowMsgInitialize = 3,
+	kWindowMsgCleanUp = 4,
+	kWindowMsgDrawGrowOutline = 5,
+	kWindowMsgDrawGrowBox = 6
 };
 
 /* Messages available from Mac OS 8.0 forward*/
 enum {
-  kWindowMsgGetFeatures         = 7,
-  kWindowMsgGetRegion           = 8
+	kWindowMsgGetFeatures = 7,
+	kWindowMsgGetRegion = 8
 };
 
 /* Messages available from Mac OS 8.5 forward*/
 enum {
-  kWindowMsgDragHilite          = 9,    /* parameter boolean indicating on or off*/
-  kWindowMsgModified            = 10,   /* parameter boolean indicating saved (false) or modified (true)*/
-  kWindowMsgDrawInCurrentPort   = 11,   /* same as kWindowMsgDraw, but must draw in current port*/
-  kWindowMsgSetupProxyDragImage = 12,   /* parameter pointer to SetupWindowProxyDragImageRec*/
-  kWindowMsgStateChanged        = 13,   /* something about the window's state has changed*/
-  kWindowMsgMeasureTitle        = 14    /* measure and return the ideal title width*/
+	kWindowMsgDragHilite = 9, /* parameter boolean indicating on or off*/
+	kWindowMsgModified = 10, /* parameter boolean indicating saved (false) or modified (true)*/
+	kWindowMsgDrawInCurrentPort = 11, /* same as kWindowMsgDraw, but must draw in current port*/
+	kWindowMsgSetupProxyDragImage = 12, /* parameter pointer to SetupWindowProxyDragImageRec*/
+	kWindowMsgStateChanged = 13, /* something about the window's state has changed*/
+	kWindowMsgMeasureTitle = 14 /* measure and return the ideal title width*/
 };
 
 /* Messages only available in Carbon*/
 enum {
-  kWindowMsgGetGrowImageRegion  = 19    /* get region to xor during grow/resize. parameter pointer to GetGrowImageRegionRec.*/
+	kWindowMsgGetGrowImageRegion = 19 /* get region to xor during grow/resize. parameter pointer to GetGrowImageRegionRec.*/
 };
 
 /* old names*/
 enum {
-  wDraw                         = 0,
-  wHit                          = 1,
-  wCalcRgns                     = 2,
-  wNew                          = 3,
-  wDispose                      = 4,
-  wGrow                         = 5,
-  wDrawGIcon                    = 6
+	wDraw = 0,
+	wHit = 1,
+	wCalcRgns = 2,
+	wNew = 3,
+	wDispose = 4,
+	wGrow = 5,
+	wDrawGIcon = 6
 };
 
 /*--------------------------------------------------------------------------------------*/
 /* o State-changed Flags for kWindowMsgStateChanged                                     */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  kWindowStateTitleChanged      = (1 << 0)
+	kWindowStateTitleChanged = ( 1 << 0 )
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Feature Bits                                                                */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  kWindowCanGrow                = (1 << 0),
-  kWindowCanZoom                = (1 << 1),
-  kWindowCanCollapse            = (1 << 2),
-  kWindowIsModal                = (1 << 3),
-  kWindowCanGetWindowRegion     = (1 << 4),
-  kWindowIsAlert                = (1 << 5),
-  kWindowHasTitleBar            = (1 << 6)
+	kWindowCanGrow = ( 1 << 0 ),
+	kWindowCanZoom = ( 1 << 1 ),
+	kWindowCanCollapse = ( 1 << 2 ),
+	kWindowIsModal = ( 1 << 3 ),
+	kWindowCanGetWindowRegion = ( 1 << 4 ),
+	kWindowIsAlert = ( 1 << 5 ),
+	kWindowHasTitleBar = ( 1 << 6 )
 };
 
 /* Feature bits available from Mac OS 8.5 forward*/
 enum {
-  kWindowSupportsDragHilite     = (1 << 7), /* window definition supports kWindowMsgDragHilite*/
-  kWindowSupportsModifiedBit    = (1 << 8), /* window definition supports kWindowMsgModified*/
-  kWindowCanDrawInCurrentPort   = (1 << 9), /* window definition supports kWindowMsgDrawInCurrentPort*/
-  kWindowCanSetupProxyDragImage = (1 << 10), /* window definition supports kWindowMsgSetupProxyDragImage*/
-  kWindowCanMeasureTitle        = (1 << 11), /* window definition supports kWindowMsgMeasureTitle*/
-  kWindowWantsDisposeAtProcessDeath = (1 << 12), /* window definition wants a Dispose message for windows still extant during ExitToShell*/
-  kWindowSupportsGetGrowImageRegion = (1 << 13), /* window definition will calculate the grow image region manually.*/
-  kWindowDefSupportsColorGrafPort = 0x40000002
+	kWindowSupportsDragHilite = ( 1 << 7 ), /* window definition supports kWindowMsgDragHilite*/
+	kWindowSupportsModifiedBit = ( 1 << 8 ), /* window definition supports kWindowMsgModified*/
+	kWindowCanDrawInCurrentPort = ( 1 << 9 ), /* window definition supports kWindowMsgDrawInCurrentPort*/
+	kWindowCanSetupProxyDragImage = ( 1 << 10 ), /* window definition supports kWindowMsgSetupProxyDragImage*/
+	kWindowCanMeasureTitle = ( 1 << 11 ), /* window definition supports kWindowMsgMeasureTitle*/
+	kWindowWantsDisposeAtProcessDeath = ( 1 << 12 ), /* window definition wants a Dispose message for windows still extant during ExitToShell*/
+	kWindowSupportsGetGrowImageRegion = ( 1 << 13 ), /* window definition will calculate the grow image region manually.*/
+	kWindowDefSupportsColorGrafPort = 0x40000002
 };
 
 /* Feature bits for post MacOS 10.0*/
 enum {
-  kWindowIsOpaque               = (1 << 14) /* Window doesn't need an alpha channel. Saves memory.*/
+	kWindowIsOpaque = ( 1 << 14 ) /* Window doesn't need an alpha channel. Saves memory.*/
 };
 
 /*
@@ -994,125 +976,121 @@ enum {
    DO YOU HEAR ME! AM I YELLING LOUD ENOUGH?!
 */
 enum {
-  kWindowSupportsSetGrowImageRegion = (1 << 13)
+	kWindowSupportsSetGrowImageRegion = ( 1 << 13 )
 };
 
 /*--------------------------------------------------------------------------------------*/
 /* o Desktop Pattern Resource ID                                                        */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  deskPatID                     = 16
+	deskPatID = 16
 };
-
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Color Part Codes                                                            */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  wContentColor                 = 0,
-  wFrameColor                   = 1,
-  wTextColor                    = 2,
-  wHiliteColor                  = 3,
-  wTitleBarColor                = 4
+	wContentColor = 0,
+	wFrameColor = 1,
+	wTextColor = 2,
+	wHiliteColor = 3,
+	wTitleBarColor = 4
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Region Dragging Constants                                                         */
 /*--------------------------------------------------------------------------------------*/
 
 enum {
-  kMouseUpOutOfSlop             = (long)0x80008000
+	kMouseUpOutOfSlop = (long)0x80008000
 };
-
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Color Table                                                                 */
 /*--------------------------------------------------------------------------------------*/
 struct WinCTab {
-  long                wCSeed;                 /* reserved */
-  short               wCReserved;             /* reserved */
-  short               ctSize;                 /* usually 4 for windows */
-  ColorSpec           ctTable[5];
+	long      wCSeed; /* reserved */
+	short     wCReserved; /* reserved */
+	short     ctSize; /* usually 4 for windows */
+	ColorSpec ctTable[5];
 };
-typedef struct WinCTab                  WinCTab;
-typedef WinCTab *                       WCTabPtr;
-typedef WCTabPtr *                      WCTabHandle;
+typedef struct WinCTab WinCTab;
+typedef WinCTab *      WCTabPtr;
+typedef WCTabPtr *     WCTabHandle;
 /*--------------------------------------------------------------------------------------*/
 /* o WindowRecord                                                                       */
 /*--------------------------------------------------------------------------------------*/
 #if !OPAQUE_TOOLBOX_STRUCTS
-typedef struct WindowRecord             WindowRecord;
-typedef WindowRecord *                  WindowPeek;
+typedef struct WindowRecord WindowRecord;
+typedef WindowRecord *      WindowPeek;
 struct WindowRecord {
-  GrafPort            port;                   /* in Carbon use GetWindowPort*/
-  short               windowKind;             /* in Carbon use Get/SetWindowKind*/
-  Boolean             visible;                /* in Carbon use Hide/ShowWindow, ShowHide, IsWindowVisible*/
-  Boolean             hilited;                /* in Carbon use HiliteWindow, IsWindowHilited*/
-  Boolean             goAwayFlag;             /* in Carbon use ChangeWindowAttributes*/
-  Boolean             spareFlag;              /* in Carbon use ChangeWindowAttributes*/
-  RgnHandle           strucRgn;               /* in Carbon use GetWindowRegion*/
-  RgnHandle           contRgn;                /* in Carbon use GetWindowRegion*/
-  RgnHandle           updateRgn;              /* in Carbon use GetWindowRegion*/
-  Handle              windowDefProc;          /* not supported in Carbon */
-  Handle              dataHandle;             /* not supported in Carbon */
-  StringHandle        titleHandle;            /* in Carbon use Get/SetWTitle */
-  short               titleWidth;             /* in Carbon use GetWindowRegion */
-  Handle              controlList;            /* in Carbon use GetRootControl */
-  WindowPeek          nextWindow;             /* in Carbon use GetNextWindow */
-  PicHandle           windowPic;              /* in Carbon use Get/SetWindowPic */
-  long                refCon;                 /* in Carbon use Get/SetWRefCon*/
+	GrafPort     port; /* in Carbon use GetWindowPort*/
+	short        windowKind; /* in Carbon use Get/SetWindowKind*/
+	Boolean      visible; /* in Carbon use Hide/ShowWindow, ShowHide, IsWindowVisible*/
+	Boolean      hilited; /* in Carbon use HiliteWindow, IsWindowHilited*/
+	Boolean      goAwayFlag; /* in Carbon use ChangeWindowAttributes*/
+	Boolean      spareFlag; /* in Carbon use ChangeWindowAttributes*/
+	RgnHandle    strucRgn; /* in Carbon use GetWindowRegion*/
+	RgnHandle    contRgn; /* in Carbon use GetWindowRegion*/
+	RgnHandle    updateRgn; /* in Carbon use GetWindowRegion*/
+	Handle       windowDefProc; /* not supported in Carbon */
+	Handle       dataHandle; /* not supported in Carbon */
+	StringHandle titleHandle; /* in Carbon use Get/SetWTitle */
+	short        titleWidth; /* in Carbon use GetWindowRegion */
+	Handle       controlList; /* in Carbon use GetRootControl */
+	WindowPeek   nextWindow; /* in Carbon use GetNextWindow */
+	PicHandle    windowPic; /* in Carbon use Get/SetWindowPic */
+	long         refCon; /* in Carbon use Get/SetWRefCon*/
 };
 
-#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
+#endif /* !OPAQUE_TOOLBOX_STRUCTS */
 
 /*--------------------------------------------------------------------------------------*/
 /* o Color WindowRecord                                                                 */
 /*--------------------------------------------------------------------------------------*/
 #if !OPAQUE_TOOLBOX_STRUCTS
-typedef struct CWindowRecord            CWindowRecord;
-typedef CWindowRecord *                 CWindowPeek;
+typedef struct CWindowRecord CWindowRecord;
+typedef CWindowRecord *      CWindowPeek;
 struct CWindowRecord {
-  CGrafPort           port;                   /* in Carbon use GetWindowPort*/
-  short               windowKind;             /* in Carbon use Get/SetWindowKind    */
-  Boolean             visible;                /* in Carbon use Hide/ShowWindow, ShowHide, IsWindowVisible     */
-  Boolean             hilited;                /* in Carbon use HiliteWindow, IsWindowHilited*/
-  Boolean             goAwayFlag;             /* in Carbon use ChangeWindowAttributes   */
-  Boolean             spareFlag;              /* in Carbon use ChangeWindowAttributes   */
-  RgnHandle           strucRgn;               /* in Carbon use GetWindowRegion  */
-  RgnHandle           contRgn;                /* in Carbon use GetWindowRegion  */
-  RgnHandle           updateRgn;              /* in Carbon use GetWindowRegion  */
-  Handle              windowDefProc;          /* not supported in Carbon */
-  Handle              dataHandle;             /* not supported in Carbon */
-  StringHandle        titleHandle;            /* in Carbon use Get/SetWTitle */
-  short               titleWidth;             /* in Carbon use GetWindowRegion */
-  Handle              controlList;            /* in Carbon use GetRootControl */
-  CWindowPeek         nextWindow;             /* in Carbon use GetNextWindow */
-  PicHandle           windowPic;              /* in Carbon use Get/SetWindowPic     */
-  long                refCon;                 /* in Carbon use Get/SetWRefCon      */
+	CGrafPort    port; /* in Carbon use GetWindowPort*/
+	short        windowKind; /* in Carbon use Get/SetWindowKind    */
+	Boolean      visible; /* in Carbon use Hide/ShowWindow, ShowHide, IsWindowVisible     */
+	Boolean      hilited; /* in Carbon use HiliteWindow, IsWindowHilited*/
+	Boolean      goAwayFlag; /* in Carbon use ChangeWindowAttributes   */
+	Boolean      spareFlag; /* in Carbon use ChangeWindowAttributes   */
+	RgnHandle    strucRgn; /* in Carbon use GetWindowRegion  */
+	RgnHandle    contRgn; /* in Carbon use GetWindowRegion  */
+	RgnHandle    updateRgn; /* in Carbon use GetWindowRegion  */
+	Handle       windowDefProc; /* not supported in Carbon */
+	Handle       dataHandle; /* not supported in Carbon */
+	StringHandle titleHandle; /* in Carbon use Get/SetWTitle */
+	short        titleWidth; /* in Carbon use GetWindowRegion */
+	Handle       controlList; /* in Carbon use GetRootControl */
+	CWindowPeek  nextWindow; /* in Carbon use GetNextWindow */
+	PicHandle    windowPic; /* in Carbon use Get/SetWindowPic     */
+	long         refCon; /* in Carbon use Get/SetWRefCon      */
 };
 
-#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
+#endif /* !OPAQUE_TOOLBOX_STRUCTS */
 
 /*--------------------------------------------------------------------------------------*/
 /* o AuxWinHandle                                                                       */
 /*--------------------------------------------------------------------------------------*/
 #if !OPAQUE_TOOLBOX_STRUCTS
-typedef struct AuxWinRec                AuxWinRec;
-typedef AuxWinRec *                     AuxWinPtr;
-typedef AuxWinPtr *                     AuxWinHandle;
+typedef struct AuxWinRec AuxWinRec;
+typedef AuxWinRec *      AuxWinPtr;
+typedef AuxWinPtr *      AuxWinHandle;
 struct AuxWinRec {
-  AuxWinHandle        awNext;                 /* handle to next AuxWinRec, not supported in Carbon*/
-  WindowRef           awOwner;                /* not supported in Carbon*/
-  CTabHandle          awCTable;               /* color table for this window, use  Get/SetWindowContentColor in Carbon*/
-  Handle              reserved;               /* not supported in Carbon*/
-  long                awFlags;                /* reserved for expansion, not supported in Carbon*/
-  CTabHandle          awReserved;             /* reserved for expansion, not supported in Carbon*/
-  long                awRefCon;               /* user constant, in Carbon use Get/SetWindowProperty if you need more refCons*/
+	AuxWinHandle awNext; /* handle to next AuxWinRec, not supported in Carbon*/
+	WindowRef    awOwner; /* not supported in Carbon*/
+	CTabHandle   awCTable; /* color table for this window, use  Get/SetWindowContentColor in Carbon*/
+	Handle       reserved; /* not supported in Carbon*/
+	long         awFlags; /* reserved for expansion, not supported in Carbon*/
+	CTabHandle   awReserved; /* reserved for expansion, not supported in Carbon*/
+	long         awRefCon; /* user constant, in Carbon use Get/SetWindowProperty if you need more refCons*/
 };
 
-#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
+#endif /* !OPAQUE_TOOLBOX_STRUCTS */
 
 /*--------------------------------------------------------------------------------------*/
 /*  o BasicWindowDescription                                                            */
@@ -1122,44 +1100,44 @@ struct AuxWinRec {
 /*--------------------------------------------------------------------------------------*/
 /* constants for the version field*/
 enum {
-  kWindowDefinitionVersionOne   = 1,
-  kWindowDefinitionVersionTwo   = 2
+	kWindowDefinitionVersionOne = 1,
+	kWindowDefinitionVersionTwo = 2
 };
 
 /* constants for the stateflags bit field */
 enum {
-  kWindowIsCollapsedState       = (1 << 0L)
+	kWindowIsCollapsedState = ( 1 << 0L )
 };
 
 struct BasicWindowDescription {
-  UInt32              descriptionSize;        /* sizeof(BasicWindowDescription)*/
+	UInt32 descriptionSize; /* sizeof(BasicWindowDescription)*/
 
-  Rect                windowContentRect;      /* location on screen*/
-  Rect                windowZoomRect;         /* location on screen when zoomed out*/
-  UInt32              windowRefCon;           /* the refcon - __avoid saving stale pointers here__  */
-  UInt32              windowStateFlags;       /* window state bit flags*/
-  WindowPositionMethod  windowPositionMethod; /* method last used by RepositionWindow to position the window (if any)*/
+	Rect                 windowContentRect; /* location on screen*/
+	Rect                 windowZoomRect; /* location on screen when zoomed out*/
+	UInt32               windowRefCon; /* the refcon - __avoid saving stale pointers here__  */
+	UInt32               windowStateFlags; /* window state bit flags*/
+	WindowPositionMethod windowPositionMethod; /* method last used by RepositionWindow to position the window (if any)*/
 
-  UInt32              windowDefinitionVersion;
-  union {
-    struct {
-      SInt16              windowDefProc;      /* defProc and variant*/
-      Boolean             windowHasCloseBox;
-    }                       versionOne;
+	UInt32 windowDefinitionVersion;
+	union {
+		struct {
+			SInt16  windowDefProc; /* defProc and variant*/
+			Boolean windowHasCloseBox;
+		} versionOne;
 
-    struct {
-      WindowClass         windowClass;        /* the class*/
-      WindowAttributes    windowAttributes;   /* the attributes*/
-    }                       versionTwo;
+		struct {
+			WindowClass      windowClass; /* the class*/
+			WindowAttributes windowAttributes; /* the attributes*/
+		} versionTwo;
 
-  }                       windowDefinition;
+	} windowDefinition;
 };
-typedef struct BasicWindowDescription   BasicWindowDescription;
+typedef struct BasicWindowDescription BasicWindowDescription;
 /*  the window manager stores the default collection items using these IDs*/
 enum {
-  kStoredWindowSystemTag        = FOUR_CHAR_CODE('appl'), /* Only Apple collection items will be of this tag*/
-  kStoredBasicWindowDescriptionID = FOUR_CHAR_CODE('sbas'), /* BasicWindowDescription*/
-  kStoredWindowPascalTitleID    = FOUR_CHAR_CODE('s255') /* pascal title string*/
+	kStoredWindowSystemTag = FOUR_CHAR_CODE( 'appl' ), /* Only Apple collection items will be of this tag*/
+	kStoredBasicWindowDescriptionID = FOUR_CHAR_CODE( 'sbas' ), /* BasicWindowDescription*/
+	kStoredWindowPascalTitleID = FOUR_CHAR_CODE( 's255' ) /* pascal title string*/
 };
 
 /*--------------------------------------------------------------------------------------*/
@@ -1167,28 +1145,28 @@ enum {
 /*                                                                                      */
 /*  Special cases for the "behind" parameter in window creation calls.                  */
 /*--------------------------------------------------------------------------------------*/
-#define kFirstWindowOfClass             ((WindowRef)(-1))
-#define kLastWindowOfClass              ((WindowRef)0)
+#define kFirstWindowOfClass ( ( WindowRef )( -1 ) )
+#define kLastWindowOfClass ( (WindowRef)0 )
 
 /*--------------------------------------------------------------------------------------*/
 /* o Zoom Information Handle                                                            */
 /*--------------------------------------------------------------------------------------*/
 struct WStateData {
-  Rect                userState;              /*user zoom state*/
-  Rect                stdState;               /*standard zoom state*/
+	Rect userState; /*user zoom state*/
+	Rect stdState; /*standard zoom state*/
 };
-typedef struct WStateData               WStateData;
-typedef WStateData *                    WStateDataPtr;
-typedef WStateDataPtr *                 WStateDataHandle;
+typedef struct WStateData WStateData;
+typedef WStateData *      WStateDataPtr;
+typedef WStateDataPtr *   WStateDataHandle;
 /*--------------------------------------------------------------------------------------*/
 /* o MixedMode & ProcPtrs                                                               */
 /*--------------------------------------------------------------------------------------*/
-typedef CALLBACK_API( long , WindowDefProcPtr )(short varCode, WindowRef window, short message, long param);
-typedef CALLBACK_API_REGISTER68K( void , DeskHookProcPtr, (Boolean mouseClick, EventRecord *theEvent) );
-typedef CALLBACK_API( OSStatus , WindowPaintProcPtr )(GDHandle device, GrafPtr qdContext, WindowRef window, RgnHandle inClientPaintRgn, RgnHandle outSystemPaintRgn, void *refCon);
-typedef STACK_UPP_TYPE(WindowDefProcPtr)                        WindowDefUPP;
-typedef REGISTER_UPP_TYPE(DeskHookProcPtr)                      DeskHookUPP;
-typedef STACK_UPP_TYPE(WindowPaintProcPtr)                      WindowPaintUPP;
+typedef CALLBACK_API( long, WindowDefProcPtr )( short varCode, WindowRef window, short message, long param );
+typedef CALLBACK_API_REGISTER68K( void, DeskHookProcPtr, ( Boolean mouseClick, EventRecord *theEvent ) );
+typedef CALLBACK_API( OSStatus, WindowPaintProcPtr )( GDHandle device, GrafPtr qdContext, WindowRef window, RgnHandle inClientPaintRgn, RgnHandle outSystemPaintRgn, void *refCon );
+typedef STACK_UPP_TYPE( WindowDefProcPtr ) WindowDefUPP;
+typedef REGISTER_UPP_TYPE( DeskHookProcPtr ) DeskHookUPP;
+typedef STACK_UPP_TYPE( WindowPaintProcPtr ) WindowPaintUPP;
 /*
  *  NewWindowDefUPP()
  *  
@@ -1198,14 +1176,17 @@ typedef STACK_UPP_TYPE(WindowPaintProcPtr)                      WindowPaintUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( WindowDefUPP )
-NewWindowDefUPP(WindowDefProcPtr userRoutine);
+NewWindowDefUPP( WindowDefProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppWindowDefProcInfo = 0x00003BB0 };  /* pascal 4_bytes Func(2_bytes, 4_bytes, 2_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(WindowDefUPP) NewWindowDefUPP(WindowDefProcPtr userRoutine) { return (WindowDefUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppWindowDefProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewWindowDefUPP(userRoutine) (WindowDefUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppWindowDefProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppWindowDefProcInfo = 0x00003BB0 }; /* pascal 4_bytes Func(2_bytes, 4_bytes, 2_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( WindowDefUPP ) NewWindowDefUPP( WindowDefProcPtr userRoutine )
+{
+	return (WindowDefUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppWindowDefProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewWindowDefUPP( userRoutine ) ( WindowDefUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppWindowDefProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -1218,17 +1199,20 @@ NewWindowDefUPP(WindowDefProcPtr userRoutine);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( DeskHookUPP )
-NewDeskHookUPP(DeskHookProcPtr userRoutine);
+NewDeskHookUPP( DeskHookProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppDeskHookProcInfo = 0x00130802 };  /* register no_return_value Func(1_byte:D0, 4_bytes:A0) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(DeskHookUPP) NewDeskHookUPP(DeskHookProcPtr userRoutine) { return (DeskHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDeskHookProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewDeskHookUPP(userRoutine) (DeskHookUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppDeskHookProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppDeskHookProcInfo = 0x00130802 }; /* register no_return_value Func(1_byte:D0, 4_bytes:A0) */
+#ifdef __cplusplus
+inline DEFINE_API_C( DeskHookUPP ) NewDeskHookUPP( DeskHookProcPtr userRoutine )
+{
+	return (DeskHookUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDeskHookProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewDeskHookUPP( userRoutine ) ( DeskHookUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppDeskHookProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  NewWindowPaintUPP()
@@ -1239,14 +1223,17 @@ NewDeskHookUPP(DeskHookProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( WindowPaintUPP )
-NewWindowPaintUPP(WindowPaintProcPtr userRoutine);
+NewWindowPaintUPP( WindowPaintProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppWindowPaintProcInfo = 0x0003FFF0 };  /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(WindowPaintUPP) NewWindowPaintUPP(WindowPaintProcPtr userRoutine) { return (WindowPaintUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppWindowPaintProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewWindowPaintUPP(userRoutine) (WindowPaintUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppWindowPaintProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppWindowPaintProcInfo = 0x0003FFF0 }; /* pascal 4_bytes Func(4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( WindowPaintUPP ) NewWindowPaintUPP( WindowPaintProcPtr userRoutine )
+{
+	return (WindowPaintUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppWindowPaintProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewWindowPaintUPP( userRoutine ) ( WindowPaintUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppWindowPaintProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -1258,13 +1245,16 @@ NewWindowPaintUPP(WindowPaintProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeWindowDefUPP(WindowDefUPP userUPP);
+DisposeWindowDefUPP( WindowDefUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeWindowDefUPP(WindowDefUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeWindowDefUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeWindowDefUPP( WindowDefUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeWindowDefUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -1277,16 +1267,19 @@ DisposeWindowDefUPP(WindowDefUPP userUPP);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( void )
-DisposeDeskHookUPP(DeskHookUPP userUPP);
+DisposeDeskHookUPP( DeskHookUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeDeskHookUPP(DeskHookUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeDeskHookUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeDeskHookUPP( DeskHookUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeDeskHookUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  DisposeWindowPaintUPP()
@@ -1297,13 +1290,16 @@ DisposeDeskHookUPP(DeskHookUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeWindowPaintUPP(WindowPaintUPP userUPP);
+DisposeWindowPaintUPP( WindowPaintUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeWindowPaintUPP(WindowPaintUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeWindowPaintUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeWindowPaintUPP( WindowPaintUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeWindowPaintUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -1316,17 +1312,20 @@ DisposeWindowPaintUPP(WindowPaintUPP userUPP);
  */
 EXTERN_API_C( long )
 InvokeWindowDefUPP(
-  short         varCode,
-  WindowRef     window,
-  short         message,
-  long          param,
-  WindowDefUPP  userUPP);
+    short        varCode,
+    WindowRef    window,
+    short        message,
+    long         param,
+    WindowDefUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(long) InvokeWindowDefUPP(short varCode, WindowRef window, short message, long param, WindowDefUPP userUPP) { return (long)CALL_FOUR_PARAMETER_UPP(userUPP, uppWindowDefProcInfo, varCode, window, message, param); }
-  #else
-    #define InvokeWindowDefUPP(varCode, window, message, param, userUPP) (long)CALL_FOUR_PARAMETER_UPP((userUPP), uppWindowDefProcInfo, (varCode), (window), (message), (param))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( long ) InvokeWindowDefUPP( short varCode, WindowRef window, short message, long param, WindowDefUPP userUPP )
+{
+	return (long)CALL_FOUR_PARAMETER_UPP( userUPP, uppWindowDefProcInfo, varCode, window, message, param );
+}
+#else
+#define InvokeWindowDefUPP( varCode, window, message, param, userUPP ) ( long ) CALL_FOUR_PARAMETER_UPP( ( userUPP ), uppWindowDefProcInfo, ( varCode ), ( window ), ( message ), ( param ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON
@@ -1339,22 +1338,25 @@ InvokeWindowDefUPP(
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC && TARGET_CPU_68K && !TARGET_RT_MAC_CFM
-#pragma parameter InvokeDeskHookUPP(__D0, __A0, __A1)
+#pragma parameter InvokeDeskHookUPP( __D0, __A0, __A1 )
 #endif
 EXTERN_API_C( void )
 InvokeDeskHookUPP(
-  Boolean        mouseClick,
-  EventRecord *  theEvent,
-  DeskHookUPP    userUPP)                                     ONEWORDINLINE(0x4E91);
-#if !OPAQUE_UPP_TYPES && (!TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM)
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeDeskHookUPP(Boolean mouseClick, EventRecord * theEvent, DeskHookUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppDeskHookProcInfo, mouseClick, theEvent); }
-  #else
-    #define InvokeDeskHookUPP(mouseClick, theEvent, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppDeskHookProcInfo, (mouseClick), (theEvent))
-  #endif
+    Boolean      mouseClick,
+    EventRecord *theEvent,
+    DeskHookUPP  userUPP ) ONEWORDINLINE( 0x4E91 );
+#if !OPAQUE_UPP_TYPES && ( !TARGET_OS_MAC || !TARGET_CPU_68K || TARGET_RT_MAC_CFM )
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeDeskHookUPP( Boolean mouseClick, EventRecord *theEvent, DeskHookUPP userUPP )
+{
+	CALL_TWO_PARAMETER_UPP( userUPP, uppDeskHookProcInfo, mouseClick, theEvent );
+}
+#else
+#define InvokeDeskHookUPP( mouseClick, theEvent, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppDeskHookProcInfo, ( mouseClick ), ( theEvent ) )
+#endif
 #endif
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  InvokeWindowPaintUPP()
@@ -1366,53 +1368,56 @@ InvokeDeskHookUPP(
  */
 EXTERN_API_C( OSStatus )
 InvokeWindowPaintUPP(
-  GDHandle        device,
-  GrafPtr         qdContext,
-  WindowRef       window,
-  RgnHandle       inClientPaintRgn,
-  RgnHandle       outSystemPaintRgn,
-  void *          refCon,
-  WindowPaintUPP  userUPP);
+    GDHandle       device,
+    GrafPtr        qdContext,
+    WindowRef      window,
+    RgnHandle      inClientPaintRgn,
+    RgnHandle      outSystemPaintRgn,
+    void *         refCon,
+    WindowPaintUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSStatus) InvokeWindowPaintUPP(GDHandle device, GrafPtr qdContext, WindowRef window, RgnHandle inClientPaintRgn, RgnHandle outSystemPaintRgn, void * refCon, WindowPaintUPP userUPP) { return (OSStatus)CALL_SIX_PARAMETER_UPP(userUPP, uppWindowPaintProcInfo, device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon); }
-  #else
-    #define InvokeWindowPaintUPP(device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon, userUPP) (OSStatus)CALL_SIX_PARAMETER_UPP((userUPP), uppWindowPaintProcInfo, (device), (qdContext), (window), (inClientPaintRgn), (outSystemPaintRgn), (refCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSStatus ) InvokeWindowPaintUPP( GDHandle device, GrafPtr qdContext, WindowRef window, RgnHandle inClientPaintRgn, RgnHandle outSystemPaintRgn, void *refCon, WindowPaintUPP userUPP )
+{
+	return (OSStatus)CALL_SIX_PARAMETER_UPP( userUPP, uppWindowPaintProcInfo, device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon );
+}
+#else
+#define InvokeWindowPaintUPP( device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon, userUPP ) ( OSStatus ) CALL_SIX_PARAMETER_UPP( ( userUPP ), uppWindowPaintProcInfo, ( device ), ( qdContext ), ( window ), ( inClientPaintRgn ), ( outSystemPaintRgn ), ( refCon ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewWindowDefProc(userRoutine)                       NewWindowDefUPP(userRoutine)
-    #define NewDeskHookProc(userRoutine)                        NewDeskHookUPP(userRoutine)
-    #define NewWindowPaintProc(userRoutine)                     NewWindowPaintUPP(userRoutine)
-    #define CallWindowDefProc(userRoutine, varCode, window, message, param) InvokeWindowDefUPP(varCode, window, message, param, userRoutine)
-    #define CallDeskHookProc(userRoutine, mouseClick, theEvent) InvokeDeskHookUPP(mouseClick, theEvent, userRoutine)
-    #define CallWindowPaintProc(userRoutine, device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon) InvokeWindowPaintUPP(device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewWindowDefProc( userRoutine ) NewWindowDefUPP( userRoutine )
+#define NewDeskHookProc( userRoutine ) NewDeskHookUPP( userRoutine )
+#define NewWindowPaintProc( userRoutine ) NewWindowPaintUPP( userRoutine )
+#define CallWindowDefProc( userRoutine, varCode, window, message, param ) InvokeWindowDefUPP( varCode, window, message, param, userRoutine )
+#define CallDeskHookProc( userRoutine, mouseClick, theEvent ) InvokeDeskHookUPP( mouseClick, theEvent, userRoutine )
+#define CallWindowPaintProc( userRoutine, device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon ) InvokeWindowPaintUPP( device, qdContext, window, inClientPaintRgn, outSystemPaintRgn, refCon, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Definition Spec.  Used in Carbon to specify the code that defines a window. */
 /*--------------------------------------------------------------------------------------*/
 enum {
-  kWindowDefProcPtr             = 0,    /* raw proc-ptr based access*/
-  kWindowDefObjectClass         = 1,    /* event-based definition (Carbon 1.1 or later)*/
-  kWindowDefProcID              = 2,    /* explicit proc ID; overrides the window class default proc ID*/
-  kWindowDefHIView              = 3     /* this window uses a view as its frame, not a WDEF*/
+	kWindowDefProcPtr = 0, /* raw proc-ptr based access*/
+	kWindowDefObjectClass = 1, /* event-based definition (Carbon 1.1 or later)*/
+	kWindowDefProcID = 2, /* explicit proc ID; overrides the window class default proc ID*/
+	kWindowDefHIView = 3 /* this window uses a view as its frame, not a WDEF*/
 };
 
-typedef UInt32                          WindowDefType;
+typedef UInt32 WindowDefType;
 struct WindowDefSpec {
-  WindowDefType       defType;
-  union {
-    WindowDefUPP        defProc;
-    void *              classRef;
-    short               procID;
-    void *              rootView;             /* ControlRef*/
-  }                       u;
+	WindowDefType defType;
+	union {
+		WindowDefUPP defProc;
+		void *       classRef;
+		short        procID;
+		void *       rootView; /* ControlRef*/
+	} u;
 };
-typedef struct WindowDefSpec            WindowDefSpec;
-typedef WindowDefSpec *                 WindowDefSpecPtr;
+typedef struct WindowDefSpec WindowDefSpec;
+typedef WindowDefSpec *      WindowDefSpecPtr;
 /*--------------------------------------------------------------------------------------*/
 /* o Window Creation & Persistence                                                      */
 /*--------------------------------------------------------------------------------------*/
@@ -1426,10 +1431,9 @@ typedef WindowDefSpec *                 WindowDefSpecPtr;
  */
 EXTERN_API( WindowRef )
 GetNewCWindow(
-  short       windowID,
-  void *      wStorage,
-  WindowRef   behind)                                         ONEWORDINLINE(0xAA46);
-
+    short     windowID,
+    void *    wStorage,
+    WindowRef behind ) ONEWORDINLINE( 0xAA46 );
 
 /*
  *  NewWindow()
@@ -1441,15 +1445,14 @@ GetNewCWindow(
  */
 EXTERN_API( WindowRef )
 NewWindow(
-  void *             wStorage,
-  const Rect *       boundsRect,
-  ConstStr255Param   title,
-  Boolean            visible,
-  short              theProc,
-  WindowRef          behind,
-  Boolean            goAwayFlag,
-  long               refCon)                                  ONEWORDINLINE(0xA913);
-
+    void *           wStorage,
+    const Rect *     boundsRect,
+    ConstStr255Param title,
+    Boolean          visible,
+    short            theProc,
+    WindowRef        behind,
+    Boolean          goAwayFlag,
+    long             refCon ) ONEWORDINLINE( 0xA913 );
 
 /*
  *  GetNewWindow()
@@ -1461,10 +1464,9 @@ NewWindow(
  */
 EXTERN_API( WindowRef )
 GetNewWindow(
-  short       windowID,
-  void *      wStorage,
-  WindowRef   behind)                                         ONEWORDINLINE(0xA9BD);
-
+    short     windowID,
+    void *    wStorage,
+    WindowRef behind ) ONEWORDINLINE( 0xA9BD );
 
 /*
  *  NewCWindow()
@@ -1476,15 +1478,14 @@ GetNewWindow(
  */
 EXTERN_API( WindowRef )
 NewCWindow(
-  void *             wStorage,
-  const Rect *       boundsRect,
-  ConstStr255Param   title,
-  Boolean            visible,
-  short              procID,
-  WindowRef          behind,
-  Boolean            goAwayFlag,
-  long               refCon)                                  ONEWORDINLINE(0xAA45);
-
+    void *           wStorage,
+    const Rect *     boundsRect,
+    ConstStr255Param title,
+    Boolean          visible,
+    short            procID,
+    WindowRef        behind,
+    Boolean          goAwayFlag,
+    long             refCon ) ONEWORDINLINE( 0xAA45 );
 
 /*
  *  DisposeWindow()
@@ -1495,8 +1496,7 @@ NewCWindow(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DisposeWindow(WindowRef window)                               ONEWORDINLINE(0xA914);
-
+DisposeWindow( WindowRef window ) ONEWORDINLINE( 0xA914 );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -1508,19 +1508,17 @@ DisposeWindow(WindowRef window)                               ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 #if TARGET_OS_MAC
-    #define MacCloseWindow CloseWindow
+#define MacCloseWindow CloseWindow
 #endif
 EXTERN_API( void )
-MacCloseWindow(WindowRef window)                              ONEWORDINLINE(0xA92D);
-
-
+MacCloseWindow( WindowRef window ) ONEWORDINLINE( 0xA92D );
 
 /*
    Routines available from Mac OS 8.5 forward
    or from Mac OS 8.1 forward when linking to CarbonLib 1.0 forward
 */
 
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  CreateNewWindow()
@@ -1532,11 +1530,10 @@ MacCloseWindow(WindowRef window)                              ONEWORDINLINE(0xA9
  */
 EXTERN_API( OSStatus )
 CreateNewWindow(
-  WindowClass        windowClass,
-  WindowAttributes   attributes,
-  const Rect *       contentBounds,
-  WindowRef *        outWindow);
-
+    WindowClass      windowClass,
+    WindowAttributes attributes,
+    const Rect *     contentBounds,
+    WindowRef *      outWindow );
 
 /* Routines available from Mac OS 8.5 forward*/
 
@@ -1551,9 +1548,8 @@ CreateNewWindow(
  */
 EXTERN_API( OSStatus )
 CreateWindowFromResource(
-  SInt16       resID,
-  WindowRef *  outWindow);
-
+    SInt16     resID,
+    WindowRef *outWindow );
 
 /* window persistence*/
 /*
@@ -1566,9 +1562,8 @@ CreateWindowFromResource(
  */
 EXTERN_API( OSStatus )
 StoreWindowIntoCollection(
-  WindowRef    window,
-  Collection   collection);
-
+    WindowRef  window,
+    Collection collection );
 
 /*
  *  CreateWindowFromCollection()
@@ -1580,9 +1575,8 @@ StoreWindowIntoCollection(
  */
 EXTERN_API( OSStatus )
 CreateWindowFromCollection(
-  Collection   collection,
-  WindowRef *  outWindow);
-
+    Collection collection,
+    WindowRef *outWindow );
 
 /* window refcounting*/
 /*
@@ -1595,9 +1589,8 @@ CreateWindowFromCollection(
  */
 EXTERN_API( OSStatus )
 GetWindowOwnerCount(
-  WindowRef   window,
-  UInt32 *    outCount);
-
+    WindowRef window,
+    UInt32 *  outCount );
 
 /*
  *  CloneWindow()
@@ -1608,8 +1601,7 @@ GetWindowOwnerCount(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-CloneWindow(WindowRef window);
-
+CloneWindow( WindowRef window );
 
 /*
  *  GetWindowRetainCount()
@@ -1633,8 +1625,7 @@ CloneWindow(WindowRef window);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ItemCount )
-GetWindowRetainCount(WindowRef inWindow);
-
+GetWindowRetainCount( WindowRef inWindow );
 
 /*
  *  RetainWindow()
@@ -1658,8 +1649,7 @@ GetWindowRetainCount(WindowRef inWindow);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-RetainWindow(WindowRef inWindow);
-
+RetainWindow( WindowRef inWindow );
 
 /*
  *  ReleaseWindow()
@@ -1684,9 +1674,7 @@ RetainWindow(WindowRef inWindow);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ReleaseWindow(WindowRef inWindow);
-
-
+ReleaseWindow( WindowRef inWindow );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Custom Windows                                                                     */
@@ -1703,12 +1691,11 @@ ReleaseWindow(WindowRef inWindow);
  */
 EXTERN_API( OSStatus )
 CreateCustomWindow(
-  const WindowDefSpec *  def,
-  WindowClass            windowClass,
-  WindowAttributes       attributes,
-  const Rect *           contentBounds,
-  WindowRef *            outWindow);
-
+    const WindowDefSpec *def,
+    WindowClass          windowClass,
+    WindowAttributes     attributes,
+    const Rect *         contentBounds,
+    WindowRef *          outWindow );
 
 /*
  *  ReshapeCustomWindow()
@@ -1719,8 +1706,7 @@ CreateCustomWindow(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ReshapeCustomWindow(WindowRef window);
-
+ReshapeCustomWindow( WindowRef window );
 
 /*
  *  RegisterWindowDefinition()
@@ -1760,10 +1746,8 @@ ReshapeCustomWindow(WindowRef window);
  */
 EXTERN_API( OSStatus )
 RegisterWindowDefinition(
-  SInt16                 inResID,
-  const WindowDefSpec *  inDefSpec);
-
-
+    SInt16               inResID,
+    const WindowDefSpec *inDefSpec );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window part tracking                                                               */
@@ -1772,7 +1756,6 @@ RegisterWindowDefinition(
    Routines available from Mac OS 8.5 forward
         (or from Mac OS 8.6 forward when linking to CarbonLib 1.1 forward)
 */
-
 
 /*
  *  GetWindowWidgetHilite()
@@ -1784,10 +1767,8 @@ RegisterWindowDefinition(
  */
 EXTERN_API( OSStatus )
 GetWindowWidgetHilite(
-  WindowRef            inWindow,
-  WindowDefPartCode *  outHilite);
-
-
+    WindowRef          inWindow,
+    WindowDefPartCode *outHilite );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Metainformation Accessors                                                   */
@@ -1810,8 +1791,7 @@ GetWindowWidgetHilite(
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( Boolean )
-IsValidWindowClass(WindowClass inClass);
-
+IsValidWindowClass( WindowClass inClass );
 
 /*
  *  GetAvailableWindowAttributes()
@@ -1843,8 +1823,7 @@ IsValidWindowClass(WindowClass inClass);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( WindowAttributes )
-GetAvailableWindowAttributes(WindowClass inClass);
-
+GetAvailableWindowAttributes( WindowClass inClass );
 
 /*
    Routines available from Mac OS 8.5 forward
@@ -1860,9 +1839,8 @@ GetAvailableWindowAttributes(WindowClass inClass);
  */
 EXTERN_API( OSStatus )
 GetWindowClass(
-  WindowRef      window,
-  WindowClass *  outClass);
-
+    WindowRef    window,
+    WindowClass *outClass );
 
 /*
  *  GetWindowAttributes()
@@ -1874,9 +1852,8 @@ GetWindowClass(
  */
 EXTERN_API( OSStatus )
 GetWindowAttributes(
-  WindowRef           window,
-  WindowAttributes *  outAttributes);
-
+    WindowRef         window,
+    WindowAttributes *outAttributes );
 
 /*
    Routines available from Mac OS 9.0 forward
@@ -1892,10 +1869,9 @@ GetWindowAttributes(
  */
 EXTERN_API( OSStatus )
 ChangeWindowAttributes(
-  WindowRef          window,
-  WindowAttributes   setTheseAttributes,
-  WindowAttributes   clearTheseAttributes);
-
+    WindowRef        window,
+    WindowAttributes setTheseAttributes,
+    WindowAttributes clearTheseAttributes );
 
 /*
     WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
@@ -1942,10 +1918,8 @@ ChangeWindowAttributes(
  */
 EXTERN_API( OSStatus )
 SetWindowClass(
-  WindowRef     inWindow,
-  WindowClass   inWindowClass);
-
-
+    WindowRef   inWindow,
+    WindowClass inWindowClass );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o Window Modality                                                                   */
@@ -1958,31 +1932,30 @@ SetWindowClass(
 typedef UInt32 WindowModality;
 enum {
 
-  /*
+	/*
    * A window does not prevent interaction with any other window in the
    * system.
    */
-  kWindowModalityNone           = 0,
+	kWindowModalityNone = 0,
 
-  /*
+	/*
    * A window prevents interaction with all other windows in the
    * system. Only available in CarbonLib. Mapped to
    * kWindowModalityAppModal in Mac OS X.
    */
-  kWindowModalitySystemModal    = 1,
+	kWindowModalitySystemModal = 1,
 
-  /*
+	/*
    * A window prevents interaction with other windows in the same
    * process.
    */
-  kWindowModalityAppModal       = 2,
+	kWindowModalityAppModal = 2,
 
-  /*
+	/*
    * A window prevents interaction with a single other window.
    */
-  kWindowModalityWindowModal    = 3
+	kWindowModalityWindowModal = 3
 };
-
 
 /*
  *  SetWindowModality()
@@ -2015,10 +1988,9 @@ enum {
  */
 EXTERN_API( OSStatus )
 SetWindowModality(
-  WindowRef        inWindow,
-  WindowModality   inModalKind,
-  WindowRef        inUnavailableWindow);
-
+    WindowRef      inWindow,
+    WindowModality inModalKind,
+    WindowRef      inUnavailableWindow );
 
 /*
  *  GetWindowModality()
@@ -2045,11 +2017,9 @@ SetWindowModality(
  */
 EXTERN_API( OSStatus )
 GetWindowModality(
-  WindowRef         inWindow,
-  WindowModality *  outModalKind,
-  WindowRef *       outUnavailableWindow);      /* can be NULL */
-
-
+    WindowRef       inWindow,
+    WindowModality *outModalKind,
+    WindowRef *     outUnavailableWindow ); /* can be NULL */
 
 /*--------------------------------------------------------------------------------------*/
 /* o Floating Windows                                                                   */
@@ -2068,8 +2038,7 @@ GetWindowModality(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-ShowFloatingWindows(void);
-
+ShowFloatingWindows( void );
 
 /*
  *  HideFloatingWindows()
@@ -2080,8 +2049,7 @@ ShowFloatingWindows(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-HideFloatingWindows(void);
-
+HideFloatingWindows( void );
 
 /*
  *  AreFloatingWindowsVisible()
@@ -2092,9 +2060,7 @@ HideFloatingWindows(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-AreFloatingWindowsVisible(void);
-
-
+AreFloatingWindowsVisible( void );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Groups                                                                      */
@@ -2108,13 +2074,13 @@ AreFloatingWindowsVisible(void);
 /* for example, above the floating window layer but below the modal layer. It is        */
 /* also possible to create more complex hierarchical arrangements of window groups.     */
 /*--------------------------------------------------------------------------------------*/
-typedef struct OpaqueWindowGroupRef*    WindowGroupRef;
+typedef struct OpaqueWindowGroupRef *WindowGroupRef;
 /* may be passed as the "behindWindow" parameter to NewCWindow and SendBehind*/
-#define kFirstWindowOfGroup             ((WindowRef)(-1))
-#define kLastWindowOfGroup              ((WindowRef)NULL)
+#define kFirstWindowOfGroup ( ( WindowRef )( -1 ) )
+#define kLastWindowOfGroup ( (WindowRef)NULL )
 /* may be passed as the "behindGroup" parameter to SendWindowGroupBehind*/
-#define kFirstWindowGroup               ((WindowGroupRef)(-1))
-#define kLastWindowGroup                ((WindowGroupRef)NULL)
+#define kFirstWindowGroup ( ( WindowGroupRef )( -1 ) )
+#define kLastWindowGroup ( (WindowGroupRef)NULL )
 
 /*
  *  WindowGroupAttributes
@@ -2125,48 +2091,47 @@ typedef struct OpaqueWindowGroupRef*    WindowGroupRef;
 typedef UInt32 WindowGroupAttributes;
 enum {
 
-  /*
+	/*
    * Makes the group behave somewhat as a layer of windows that move
    * together. When any window in the group is brought to the front of
    * the group, the entire group will also be brought to the front of
    * the containing group's child hierarchy.
    */
-  kWindowGroupAttrSelectAsLayer = 1 << 0,
+	kWindowGroupAttrSelectAsLayer = 1 << 0,
 
-  /*
+	/*
    * The positions of the contents of this group with respect to each
    * other cannot be changed. When one item moves, all other items are
    * moved simultaneously.
    */
-  kWindowGroupAttrMoveTogether  = 1 << 1,
+	kWindowGroupAttrMoveTogether = 1 << 1,
 
-  /*
+	/*
    * The z-order of the contents of this group with respect to each
    * other cannot be changed. When one item changes z-order, all other
    * items are moved simulataneously. For purposes of z-ordering, the
    * group and all its subgroups are effectively treated as if they
    * were a single window in the parent group of this group.
    */
-  kWindowGroupAttrLayerTogether = 1 << 2,
+	kWindowGroupAttrLayerTogether = 1 << 2,
 
-  /*
+	/*
    * The active state of the windows in this group is shared. The
    * windows in the group are activated or deactivated according to the
    * activation scope of the group, but when any window in the group
    * changes activation, all other windows change to match.
    */
-  kWindowGroupAttrSharedActivation = 1 << 3,
+	kWindowGroupAttrSharedActivation = 1 << 3,
 
-  /*
+	/*
    * When any window in this group is collapsed, all other windows in
    * this group are hidden. All subgroups of this group are also
    * examined for the HideOnCollapse attribute, and any the windows of
    * any subgroup with this attribute are also hidden. All windows will
    * be shown again when the collapsed window is expanded.
    */
-  kWindowGroupAttrHideOnCollapse = 1 << 4
+	kWindowGroupAttrHideOnCollapse = 1 << 4
 };
-
 
 /*
  *  WindowActivationScope
@@ -2179,7 +2144,7 @@ enum {
 typedef UInt32 WindowActivationScope;
 enum {
 
-  /*
+	/*
    * Windows with this scope are never activated by the Window Manager.
    * This should be used when the window's visual state does not change
    * based on activation (for example, tooltip windows), or when the
@@ -2187,25 +2152,24 @@ enum {
    * is free to explicitly activate windows using the ActivateWindow
    * and DeactivateWindow APIs.
    */
-  kWindowActivationScopeNone    = 0,
+	kWindowActivationScopeNone = 0,
 
-  /*
+	/*
    * Windows with this scope are always active if visible. Windows with
    * this scope are unaffected by the activation state of other
    * windows. This activation scope is automatically used by floating
    * windows.
    */
-  kWindowActivationScopeIndependent = 1,
+	kWindowActivationScopeIndependent = 1,
 
-  /*
+	/*
    * Windows with this scope are activated relative to other windows
    * with the same scope in the current process. Only one window with
    * this scope can be active in the entire process. This activation
    * scope is automatically used by document and dialog windows.
    */
-  kWindowActivationScopeAll     = 2
+	kWindowActivationScopeAll = 2
 };
-
 
 /*
  *  Summary:
@@ -2214,19 +2178,18 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * Indicates that GetSiblingWindowGroup should return the next deeper
    * sibling group in the z-order.
    */
-  kNextWindowGroup              = true,
+	kNextWindowGroup = true,
 
-  /*
+	/*
    * Indicates that GetSiblingWindowGroup should return the next higher
    * sibling group in the z-order.
    */
-  kPreviousWindowGroup          = false
+	kPreviousWindowGroup = false
 };
-
 
 /*
  *  WindowGroupContentOptions
@@ -2239,29 +2202,28 @@ enum {
 typedef UInt32 WindowGroupContentOptions;
 enum {
 
-  /*
+	/*
    * Indicates that Count/GetWindowGroupContents should return the
    * windows in a group. If this option is not set, these APIs return
    * the groups in a group.
    */
-  kWindowGroupContentsReturnWindows = 1 << 0,
+	kWindowGroupContentsReturnWindows = 1 << 0,
 
-  /*
+	/*
    * Indicates that Count/GetWindowGroupContents should include the
    * contents of groups contained by the specified group. If this
    * option is not set, these APIs only return information about the
    * specified group's contents.
    */
-  kWindowGroupContentsRecurse   = 1 << 1,
+	kWindowGroupContentsRecurse = 1 << 1,
 
-  /*
+	/*
    * Indicates that Count/GetWindowGroupContents should only include
    * visible windows. Only valid when kWindowGroupContentsReturnWindows
    * is specified.
    */
-  kWindowGroupContentsVisible   = 1 << 2
+	kWindowGroupContentsVisible = 1 << 2
 };
-
 
 /*----------------------------------------------------------------------------------*/
 /*  o Group creation, destruction, and refcounting                                  */
@@ -2287,9 +2249,8 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 CreateWindowGroup(
-  WindowGroupAttributes   inAttributes,
-  WindowGroupRef *        outGroup);
-
+    WindowGroupAttributes inAttributes,
+    WindowGroupRef *      outGroup );
 
 /*
  *  RetainWindowGroup()
@@ -2308,8 +2269,7 @@ CreateWindowGroup(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-RetainWindowGroup(WindowGroupRef inGroup);
-
+RetainWindowGroup( WindowGroupRef inGroup );
 
 /*
  *  ReleaseWindowGroup()
@@ -2330,8 +2290,7 @@ RetainWindowGroup(WindowGroupRef inGroup);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-ReleaseWindowGroup(WindowGroupRef inGroup);
-
+ReleaseWindowGroup( WindowGroupRef inGroup );
 
 /*
  *  GetWindowGroupRetainCount()
@@ -2350,8 +2309,7 @@ ReleaseWindowGroup(WindowGroupRef inGroup);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( ItemCount )
-GetWindowGroupRetainCount(WindowGroupRef inGroup);
-
+GetWindowGroupRetainCount( WindowGroupRef inGroup );
 
 /*
  *  GetWindowGroupOfClass()
@@ -2381,9 +2339,7 @@ GetWindowGroupRetainCount(WindowGroupRef inGroup);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( WindowGroupRef )
-GetWindowGroupOfClass(WindowClass windowClass);
-
-
+GetWindowGroupOfClass( WindowClass windowClass );
 
 /*----------------------------------------------------------------------------------*/
 /*  o.Group name, attributes, and level                                             */
@@ -2415,9 +2371,8 @@ GetWindowGroupOfClass(WindowClass windowClass);
  */
 EXTERN_API_C( OSStatus )
 SetWindowGroupName(
-  WindowGroupRef   inGroup,
-  CFStringRef      inName);
-
+    WindowGroupRef inGroup,
+    CFStringRef    inName );
 
 /*
  *  CopyWindowGroupName()
@@ -2441,9 +2396,8 @@ SetWindowGroupName(
  */
 EXTERN_API_C( OSStatus )
 CopyWindowGroupName(
-  WindowGroupRef   inGroup,
-  CFStringRef *    outName);
-
+    WindowGroupRef inGroup,
+    CFStringRef *  outName );
 
 /*
  *  GetWindowGroupAttributes()
@@ -2466,9 +2420,8 @@ CopyWindowGroupName(
  */
 EXTERN_API_C( OSStatus )
 GetWindowGroupAttributes(
-  WindowGroupRef           inGroup,
-  WindowGroupAttributes *  outAttributes);
-
+    WindowGroupRef         inGroup,
+    WindowGroupAttributes *outAttributes );
 
 /*
  *  ChangeWindowGroupAttributes()
@@ -2494,10 +2447,9 @@ GetWindowGroupAttributes(
  */
 EXTERN_API_C( OSStatus )
 ChangeWindowGroupAttributes(
-  WindowGroupRef          inGroup,
-  WindowGroupAttributes   setTheseAttributes,
-  WindowGroupAttributes   clearTheseAttributes);
-
+    WindowGroupRef        inGroup,
+    WindowGroupAttributes setTheseAttributes,
+    WindowGroupAttributes clearTheseAttributes );
 
 /*
  *  SetWindowGroupLevel()
@@ -2539,9 +2491,8 @@ ChangeWindowGroupAttributes(
  */
 EXTERN_API_C( OSStatus )
 SetWindowGroupLevel(
-  WindowGroupRef   inGroup,
-  SInt32           inLevel);
-
+    WindowGroupRef inGroup,
+    SInt32         inLevel );
 
 /*
  *  GetWindowGroupLevel()
@@ -2564,10 +2515,8 @@ SetWindowGroupLevel(
  */
 EXTERN_API_C( OSStatus )
 GetWindowGroupLevel(
-  WindowGroupRef   inGroup,
-  SInt32 *         outLevel);
-
-
+    WindowGroupRef inGroup,
+    SInt32 *       outLevel );
 
 /*----------------------------------------------------------------------------------*/
 /*  o.Group z-ordering                                                              */
@@ -2598,9 +2547,8 @@ GetWindowGroupLevel(
  */
 EXTERN_API_C( OSStatus )
 SendWindowGroupBehind(
-  WindowGroupRef   inGroup,
-  WindowGroupRef   behindGroup);
-
+    WindowGroupRef inGroup,
+    WindowGroupRef behindGroup );
 
 /*----------------------------------------------------------------------------------*/
 /*  o.Group containment hierarchy manipulation                                      */
@@ -2627,8 +2575,7 @@ SendWindowGroupBehind(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( WindowGroupRef )
-GetWindowGroup(WindowRef inWindow);
-
+GetWindowGroup( WindowRef inWindow );
 
 /*
  *  SetWindowGroup()
@@ -2660,9 +2607,8 @@ GetWindowGroup(WindowRef inWindow);
  */
 EXTERN_API_C( OSStatus )
 SetWindowGroup(
-  WindowRef        inWindow,
-  WindowGroupRef   inNewGroup);
-
+    WindowRef      inWindow,
+    WindowGroupRef inNewGroup );
 
 /*
  *  IsWindowContainedInGroup()
@@ -2686,9 +2632,8 @@ SetWindowGroup(
  */
 EXTERN_API_C( Boolean )
 IsWindowContainedInGroup(
-  WindowRef        inWindow,
-  WindowGroupRef   inGroup);
-
+    WindowRef      inWindow,
+    WindowGroupRef inGroup );
 
 /*
  *  GetWindowGroupParent()
@@ -2712,8 +2657,7 @@ IsWindowContainedInGroup(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( WindowGroupRef )
-GetWindowGroupParent(WindowGroupRef inGroup);
-
+GetWindowGroupParent( WindowGroupRef inGroup );
 
 /*
  *  SetWindowGroupParent()
@@ -2740,9 +2684,8 @@ GetWindowGroupParent(WindowGroupRef inGroup);
  */
 EXTERN_API_C( OSStatus )
 SetWindowGroupParent(
-  WindowGroupRef   inGroup,
-  WindowGroupRef   inNewGroup);
-
+    WindowGroupRef inGroup,
+    WindowGroupRef inNewGroup );
 
 /*
  *  GetWindowGroupSibling()
@@ -2766,9 +2709,8 @@ SetWindowGroupParent(
  */
 EXTERN_API_C( WindowGroupRef )
 GetWindowGroupSibling(
-  WindowGroupRef   inGroup,
-  Boolean          inNextGroup);
-
+    WindowGroupRef inGroup,
+    Boolean        inNextGroup );
 
 /*
  *  GetWindowGroupOwner()
@@ -2793,8 +2735,7 @@ GetWindowGroupSibling(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( WindowRef )
-GetWindowGroupOwner(WindowGroupRef inGroup);
-
+GetWindowGroupOwner( WindowGroupRef inGroup );
 
 /*
  *  SetWindowGroupOwner()
@@ -2822,10 +2763,8 @@ GetWindowGroupOwner(WindowGroupRef inGroup);
  */
 EXTERN_API_C( OSStatus )
 SetWindowGroupOwner(
-  WindowGroupRef   inGroup,
-  WindowRef        inWindow);
-
-
+    WindowGroupRef inGroup,
+    WindowRef      inWindow );
 
 /*----------------------------------------------------------------------------------*/
 /*  o Inspection of group contents                                                  */
@@ -2852,9 +2791,8 @@ SetWindowGroupOwner(
  */
 EXTERN_API_C( ItemCount )
 CountWindowGroupContents(
-  WindowGroupRef              inGroup,
-  WindowGroupContentOptions   inOptions);
-
+    WindowGroupRef            inGroup,
+    WindowGroupContentOptions inOptions );
 
 /*
  *  GetWindowGroupContents()
@@ -2892,12 +2830,11 @@ CountWindowGroupContents(
  */
 EXTERN_API_C( OSStatus )
 GetWindowGroupContents(
-  WindowGroupRef              inGroup,
-  WindowGroupContentOptions   inOptions,
-  ItemCount                   inAllowedItems,
-  ItemCount *                 outNumItems,          /* can be NULL */
-  void **                     outItems);
-
+    WindowGroupRef            inGroup,
+    WindowGroupContentOptions inOptions,
+    ItemCount                 inAllowedItems,
+    ItemCount *               outNumItems, /* can be NULL */
+    void **                   outItems );
 
 /*
  *  GetIndexedWindow()
@@ -2938,11 +2875,10 @@ GetWindowGroupContents(
  */
 EXTERN_API_C( OSStatus )
 GetIndexedWindow(
-  WindowGroupRef              inGroup,
-  UInt32                      inIndex,
-  WindowGroupContentOptions   inOptions,
-  WindowRef *                 outWindow);
-
+    WindowGroupRef            inGroup,
+    UInt32                    inIndex,
+    WindowGroupContentOptions inOptions,
+    WindowRef *               outWindow );
 
 /*
  *  GetWindowIndex()
@@ -2981,12 +2917,10 @@ GetIndexedWindow(
  */
 EXTERN_API_C( OSStatus )
 GetWindowIndex(
-  WindowRef                   inWindow,
-  WindowGroupRef              inStartGroup,
-  WindowGroupContentOptions   inOptions,
-  UInt32 *                    outIndex);
-
-
+    WindowRef                 inWindow,
+    WindowGroupRef            inStartGroup,
+    WindowGroupContentOptions inOptions,
+    UInt32 *                  outIndex );
 
 /*----------------------------------------------------------------------------------*/
 /*  o.Window activation                                                             */
@@ -3017,8 +2951,7 @@ GetWindowIndex(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( WindowRef )
-ActiveNonFloatingWindow(void);
-
+ActiveNonFloatingWindow( void );
 
 /*
  *  IsWindowActive()
@@ -3043,8 +2976,7 @@ ActiveNonFloatingWindow(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( Boolean )
-IsWindowActive(WindowRef inWindow);
-
+IsWindowActive( WindowRef inWindow );
 
 /*
  *  ActivateWindow()
@@ -3076,9 +3008,8 @@ IsWindowActive(WindowRef inWindow);
  */
 EXTERN_API_C( OSStatus )
 ActivateWindow(
-  WindowRef   inWindow,
-  Boolean     inActivate);
-
+    WindowRef inWindow,
+    Boolean   inActivate );
 
 /*
  *  GetWindowActivationScope()
@@ -3101,9 +3032,8 @@ ActivateWindow(
  */
 EXTERN_API_C( OSStatus )
 GetWindowActivationScope(
-  WindowRef                inWindow,
-  WindowActivationScope *  outScope);
-
+    WindowRef              inWindow,
+    WindowActivationScope *outScope );
 
 /*
  *  SetWindowActivationScope()
@@ -3126,10 +3056,8 @@ GetWindowActivationScope(
  */
 EXTERN_API_C( OSStatus )
 SetWindowActivationScope(
-  WindowRef               inWindow,
-  WindowActivationScope   inScope);
-
-
+    WindowRef             inWindow,
+    WindowActivationScope inScope );
 
 /*----------------------------------------------------------------------------------*/
 /*  o.Debugging Utilities                                                           */
@@ -3151,8 +3079,7 @@ SetWindowActivationScope(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DebugPrintWindowGroup(WindowGroupRef inGroup);
-
+DebugPrintWindowGroup( WindowGroupRef inGroup );
 
 /*
  *  DebugPrintAllWindowGroups()
@@ -3167,10 +3094,7 @@ DebugPrintWindowGroup(WindowGroupRef inGroup);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DebugPrintAllWindowGroups(void);
-
-
-
+DebugPrintAllWindowGroups( void );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Background Image                                                                   */
@@ -3187,9 +3111,8 @@ DebugPrintAllWindowGroups(void);
  */
 EXTERN_API( void )
 SetWinColor(
-  WindowRef     window,
-  WCTabHandle   newColorTable)                                ONEWORDINLINE(0xAA41);
-
+    WindowRef   window,
+    WCTabHandle newColorTable ) ONEWORDINLINE( 0xAA41 );
 
 /* SetDeskCPat is not available in Carbon.*/
 /*
@@ -3201,14 +3124,13 @@ SetWinColor(
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-SetDeskCPat(PixPatHandle deskPixPat)                          ONEWORDINLINE(0xAA47);
-
+SetDeskCPat( PixPatHandle deskPixPat ) ONEWORDINLINE( 0xAA47 );
 
 /*
    Routines available from Mac OS 8.5 forward
    or from Mac OS 8.1 forward when linking to CarbonLib 1.0 forward
 */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  SetWindowContentColor()
@@ -3220,9 +3142,8 @@ SetDeskCPat(PixPatHandle deskPixPat)                          ONEWORDINLINE(0xAA
  */
 EXTERN_API( OSStatus )
 SetWindowContentColor(
-  WindowRef         window,
-  const RGBColor *  color);
-
+    WindowRef       window,
+    const RGBColor *color );
 
 /*
  *  GetWindowContentColor()
@@ -3234,9 +3155,8 @@ SetWindowContentColor(
  */
 EXTERN_API( OSStatus )
 GetWindowContentColor(
-  WindowRef   window,
-  RGBColor *  color);
-
+    WindowRef window,
+    RGBColor *color );
 
 /* Routines available from Mac OS 8.5 forward*/
 /*
@@ -3249,9 +3169,8 @@ GetWindowContentColor(
  */
 EXTERN_API( OSStatus )
 GetWindowContentPattern(
-  WindowRef      window,
-  PixPatHandle   outPixPat);
-
+    WindowRef    window,
+    PixPatHandle outPixPat );
 
 /*
  *  SetWindowContentPattern()
@@ -3263,14 +3182,13 @@ GetWindowContentPattern(
  */
 EXTERN_API( OSStatus )
 SetWindowContentPattern(
-  WindowRef      window,
-  PixPatHandle   pixPat);
-
+    WindowRef    window,
+    PixPatHandle pixPat );
 
 /* Routines available from Mac OS 9.0 forward*/
-typedef OptionBits                      WindowPaintProcOptions;
+typedef OptionBits WindowPaintProcOptions;
 enum {
-  kWindowPaintProcOptionsNone   = 0
+	kWindowPaintProcOptionsNone = 0
 };
 
 /*
@@ -3283,22 +3201,20 @@ enum {
  */
 EXTERN_API( OSStatus )
 InstallWindowContentPaintProc(
-  WindowRef                window,
-  WindowPaintUPP           paintProc,
-  WindowPaintProcOptions   options,
-  void *                   refCon);         /* can be NULL */
-
+    WindowRef              window,
+    WindowPaintUPP         paintProc,
+    WindowPaintProcOptions options,
+    void *                 refCon ); /* can be NULL */
 
 /*--------------------------------------------------------------------------------------*/
 /* o Scrolling Routines                                                                 */
 /*--------------------------------------------------------------------------------------*/
 typedef UInt32 ScrollWindowOptions;
 enum {
-  kScrollWindowNoOptions        = 0,
-  kScrollWindowInvalidate       = (1L << 0), /* add the exposed area to the window's update region*/
-  kScrollWindowEraseToPortBackground = (1L << 1) /* erase the exposed area using the background color/pattern of the window's grafport*/
+	kScrollWindowNoOptions = 0,
+	kScrollWindowInvalidate = ( 1L << 0 ), /* add the exposed area to the window's update region*/
+	kScrollWindowEraseToPortBackground = ( 1L << 1 ) /* erase the exposed area using the background color/pattern of the window's grafport*/
 };
-
 
 /* Routines available from Mac OS 8.1 forward when linking to CarbonLib 1.0 forward*/
 
@@ -3312,13 +3228,12 @@ enum {
  */
 EXTERN_API( OSStatus )
 ScrollWindowRect(
-  WindowRef             inWindow,
-  const Rect *          inScrollRect,
-  SInt16                inHPixels,
-  SInt16                inVPixels,
-  ScrollWindowOptions   inOptions,
-  RgnHandle             outExposedRgn);      /* can be NULL */
-
+    WindowRef           inWindow,
+    const Rect *        inScrollRect,
+    SInt16              inHPixels,
+    SInt16              inVPixels,
+    ScrollWindowOptions inOptions,
+    RgnHandle           outExposedRgn ); /* can be NULL */
 
 /*
  *  ScrollWindowRegion()
@@ -3330,15 +3245,12 @@ ScrollWindowRect(
  */
 EXTERN_API( OSStatus )
 ScrollWindowRegion(
-  WindowRef             inWindow,
-  RgnHandle             inScrollRgn,
-  SInt16                inHPixels,
-  SInt16                inVPixels,
-  ScrollWindowOptions   inOptions,
-  RgnHandle             outExposedRgn);      /* can be NULL */
-
-
-
+    WindowRef           inWindow,
+    RgnHandle           inScrollRgn,
+    SInt16              inHPixels,
+    SInt16              inVPixels,
+    ScrollWindowOptions inOptions,
+    RgnHandle           outExposedRgn ); /* can be NULL */
 
 /*--------------------------------------------------------------------------------------*/
 /* o Low-Level Region & Painting Routines                                               */
@@ -3352,8 +3264,7 @@ ScrollWindowRegion(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-ClipAbove(WindowRef window)                                   ONEWORDINLINE(0xA90B);
-
+ClipAbove( WindowRef window ) ONEWORDINLINE( 0xA90B );
 
 /* SaveOld/DrawNew are not available in Carbon.  Use ReshapeCustomWindow instead.*/
 #if CALL_NOT_IN_CARBON
@@ -3366,8 +3277,7 @@ ClipAbove(WindowRef window)                                   ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-SaveOld(WindowRef window)                                     ONEWORDINLINE(0xA90E);
-
+SaveOld( WindowRef window ) ONEWORDINLINE( 0xA90E );
 
 /*
  *  DrawNew()
@@ -3379,11 +3289,10 @@ SaveOld(WindowRef window)                                     ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 DrawNew(
-  WindowRef   window,
-  Boolean     update)                                         ONEWORDINLINE(0xA90F);
+    WindowRef window,
+    Boolean   update ) ONEWORDINLINE( 0xA90F );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  PaintOne()
@@ -3395,9 +3304,8 @@ DrawNew(
  */
 EXTERN_API( void )
 PaintOne(
-  WindowRef   window,             /* can be NULL */
-  RgnHandle   clobberedRgn)                                   ONEWORDINLINE(0xA90C);
-
+    WindowRef window, /* can be NULL */
+    RgnHandle clobberedRgn ) ONEWORDINLINE( 0xA90C );
 
 /*
  *  PaintBehind()
@@ -3409,9 +3317,8 @@ PaintOne(
  */
 EXTERN_API( void )
 PaintBehind(
-  WindowRef   startWindow,        /* can be NULL */
-  RgnHandle   clobberedRgn)                                   ONEWORDINLINE(0xA90D);
-
+    WindowRef startWindow, /* can be NULL */
+    RgnHandle clobberedRgn ) ONEWORDINLINE( 0xA90D );
 
 /*
  *  CalcVis()
@@ -3422,8 +3329,7 @@ PaintBehind(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-CalcVis(WindowRef window)                                     ONEWORDINLINE(0xA909);
-
+CalcVis( WindowRef window ) ONEWORDINLINE( 0xA909 );
 
 /*
  *  CalcVisBehind()
@@ -3435,9 +3341,8 @@ CalcVis(WindowRef window)                                     ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 CalcVisBehind(
-  WindowRef   startWindow,        /* can be NULL */
-  RgnHandle   clobberedRgn)                                   ONEWORDINLINE(0xA90A);
-
+    WindowRef startWindow, /* can be NULL */
+    RgnHandle clobberedRgn ) ONEWORDINLINE( 0xA90A );
 
 /*
  *  CheckUpdate()
@@ -3448,9 +3353,7 @@ CalcVisBehind(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-CheckUpdate(EventRecord * theEvent)                           ONEWORDINLINE(0xA911);
-
-
+CheckUpdate( EventRecord *theEvent ) ONEWORDINLINE( 0xA911 );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window List                                                                        */
@@ -3464,13 +3367,12 @@ CheckUpdate(EventRecord * theEvent)                           ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacFindWindow FindWindow
+#define MacFindWindow FindWindow
 #endif
 EXTERN_API( WindowPartCode )
 MacFindWindow(
-  Point        thePoint,
-  WindowRef *  window)                                        ONEWORDINLINE(0xA92C);
-
+    Point      thePoint,
+    WindowRef *window ) ONEWORDINLINE( 0xA92C );
 
 /*
  *  FrontWindow()
@@ -3481,8 +3383,7 @@ MacFindWindow(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( WindowRef )
-FrontWindow(void)                                             ONEWORDINLINE(0xA924);
-
+FrontWindow( void ) ONEWORDINLINE( 0xA924 );
 
 /*
  *  BringToFront()
@@ -3493,8 +3394,7 @@ FrontWindow(void)                                             ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-BringToFront(WindowRef window)                                ONEWORDINLINE(0xA920);
-
+BringToFront( WindowRef window ) ONEWORDINLINE( 0xA920 );
 
 /*
  *  SendBehind()
@@ -3506,9 +3406,8 @@ BringToFront(WindowRef window)                                ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 SendBehind(
-  WindowRef   window,
-  WindowRef   behindWindow)                                   ONEWORDINLINE(0xA921);
-
+    WindowRef window,
+    WindowRef behindWindow ) ONEWORDINLINE( 0xA921 );
 
 /*
  *  SelectWindow()
@@ -3519,8 +3418,7 @@ SendBehind(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SelectWindow(WindowRef window)                                ONEWORDINLINE(0xA91F);
-
+SelectWindow( WindowRef window ) ONEWORDINLINE( 0xA91F );
 
 /*
    Routines available from Mac OS 8.6 forward
@@ -3536,8 +3434,7 @@ SelectWindow(WindowRef window)                                ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( WindowRef )
-FrontNonFloatingWindow(void);
-
+FrontNonFloatingWindow( void );
 
 /* Routines available from Mac OS 8.1 forward when linking to CarbonLib 1.0 forward*/
 
@@ -3551,10 +3448,9 @@ FrontNonFloatingWindow(void);
  */
 EXTERN_API( WindowRef )
 GetNextWindowOfClass(
-  WindowRef     inWindow,
-  WindowClass   inWindowClass,
-  Boolean       mustBeVisible);
-
+    WindowRef   inWindow,
+    WindowClass inWindowClass,
+    Boolean     mustBeVisible );
 
 /*
  *  GetFrontWindowOfClass()
@@ -3566,9 +3462,8 @@ GetNextWindowOfClass(
  */
 EXTERN_API( WindowRef )
 GetFrontWindowOfClass(
-  WindowClass   inWindowClass,
-  Boolean       mustBeVisible);
-
+    WindowClass inWindowClass,
+    Boolean     mustBeVisible );
 
 /*
  *  FindWindowOfClass()
@@ -3580,12 +3475,10 @@ GetFrontWindowOfClass(
  */
 EXTERN_API( OSStatus )
 FindWindowOfClass(
-  const Point *     where,
-  WindowClass       inWindowClass,
-  WindowRef *       outWindow,
-  WindowPartCode *  outWindowPart);      /* can be NULL */
-
-
+    const Point *   where,
+    WindowClass     inWindowClass,
+    WindowRef *     outWindow,
+    WindowPartCode *outWindowPart ); /* can be NULL */
 
 /*
  *  Summary:
@@ -3593,11 +3486,11 @@ FindWindowOfClass(
  */
 enum {
 
-  /*
+	/*
    * Requests the standard window menu include a Rotate Windows menu
    * item. Available in Mac OS X after version 10.1.
    */
-  kWindowMenuIncludeRotate      = 1 << 0
+	kWindowMenuIncludeRotate = 1 << 0
 };
 
 /*
@@ -3652,9 +3545,8 @@ enum {
  */
 EXTERN_API( OSStatus )
 CreateStandardWindowMenu(
-  OptionBits   inOptions,
-  MenuRef *    outMenu);
-
+    OptionBits inOptions,
+    MenuRef *  outMenu );
 
 /*
  *  SetWindowAlternateTitle()
@@ -3686,9 +3578,8 @@ CreateStandardWindowMenu(
  */
 EXTERN_API( OSStatus )
 SetWindowAlternateTitle(
-  WindowRef     inWindow,
-  CFStringRef   inTitle);
-
+    WindowRef   inWindow,
+    CFStringRef inTitle );
 
 /*
  *  CopyWindowAlternateTitle()
@@ -3716,9 +3607,8 @@ SetWindowAlternateTitle(
  */
 EXTERN_API( OSStatus )
 CopyWindowAlternateTitle(
-  WindowRef      inWindow,
-  CFStringRef *  outTitle);
-
+    WindowRef    inWindow,
+    CFStringRef *outTitle );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Misc Low-Level stuff                                                               */
@@ -3733,8 +3623,7 @@ CopyWindowAlternateTitle(
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InitWindows(void)                                             ONEWORDINLINE(0xA912);
-
+InitWindows( void ) ONEWORDINLINE( 0xA912 );
 
 /*  The window manager port does not exist in Carbon.   */
 /*  We are investigating replacement technologies.      */
@@ -3747,8 +3636,7 @@ InitWindows(void)                                             ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-GetWMgrPort(GrafPtr * wPort)                                  ONEWORDINLINE(0xA910);
-
+GetWMgrPort( GrafPtr *wPort ) ONEWORDINLINE( 0xA910 );
 
 /*
  *  GetCWMgrPort()
@@ -3759,14 +3647,13 @@ GetWMgrPort(GrafPtr * wPort)                                  ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-GetCWMgrPort(CGrafPtr * wMgrCPort)                            ONEWORDINLINE(0xAA48);
-
+GetCWMgrPort( CGrafPtr *wMgrCPort ) ONEWORDINLINE( 0xAA48 );
 
 /*
    Routines available from Mac OS 8.5 forward
    or from Mac OS 8.1 forward when linking to CarbonLib 1.0 forward
 */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  IsValidWindowPtr()
@@ -3777,8 +3664,7 @@ GetCWMgrPort(CGrafPtr * wMgrCPort)                            ONEWORDINLINE(0xAA
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsValidWindowPtr(WindowRef possibleWindow);
-
+IsValidWindowPtr( WindowRef possibleWindow );
 
 #define IsValidWindowRef IsValidWindowPtr
 /*
@@ -3796,14 +3682,12 @@ IsValidWindowPtr(WindowRef possibleWindow);
  *    Mac OS X:         not available
  */
 EXTERN_API( OSStatus )
-InitFloatingWindows(void);
-
-
+InitFloatingWindows( void );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Various & Sundry Window Accessors                                                  */
 /*--------------------------------------------------------------------------------------*/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  HiliteWindow()
@@ -3815,9 +3699,8 @@ InitFloatingWindows(void);
  */
 EXTERN_API( void )
 HiliteWindow(
-  WindowRef   window,
-  Boolean     fHilite)                                        ONEWORDINLINE(0xA91C);
-
+    WindowRef window,
+    Boolean   fHilite ) ONEWORDINLINE( 0xA91C );
 
 /*
  *  SetWRefCon()
@@ -3829,9 +3712,8 @@ HiliteWindow(
  */
 EXTERN_API( void )
 SetWRefCon(
-  WindowRef   window,
-  long        data)                                           ONEWORDINLINE(0xA918);
-
+    WindowRef window,
+    long      data ) ONEWORDINLINE( 0xA918 );
 
 /*
  *  GetWRefCon()
@@ -3842,8 +3724,7 @@ SetWRefCon(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( long )
-GetWRefCon(WindowRef window)                                  ONEWORDINLINE(0xA917);
-
+GetWRefCon( WindowRef window ) ONEWORDINLINE( 0xA917 );
 
 /*
  *  SetWindowPic()
@@ -3855,9 +3736,8 @@ GetWRefCon(WindowRef window)                                  ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 SetWindowPic(
-  WindowRef   window,
-  PicHandle   pic)                                            ONEWORDINLINE(0xA92E);
-
+    WindowRef window,
+    PicHandle pic ) ONEWORDINLINE( 0xA92E );
 
 /*
  *  GetWindowPic()
@@ -3868,8 +3748,7 @@ SetWindowPic(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( PicHandle )
-GetWindowPic(WindowRef window)                                ONEWORDINLINE(0xA92F);
-
+GetWindowPic( WindowRef window ) ONEWORDINLINE( 0xA92F );
 
 /*
  *  GetWVariant()
@@ -3880,8 +3759,7 @@ GetWindowPic(WindowRef window)                                ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-GetWVariant(WindowRef window)                                 ONEWORDINLINE(0xA80A);
-
+GetWVariant( WindowRef window ) ONEWORDINLINE( 0xA80A );
 
 /* Routines available from Mac OS 8.0 (Appearance 1.0) forward*/
 /*
@@ -3894,9 +3772,8 @@ GetWVariant(WindowRef window)                                 ONEWORDINLINE(0xA8
  */
 EXTERN_API( OSStatus )
 GetWindowFeatures(
-  WindowRef   window,
-  UInt32 *    outFeatures)                                    THREEWORDINLINE(0x303C, 0x0013, 0xAA74);
-
+    WindowRef window,
+    UInt32 *  outFeatures ) THREEWORDINLINE( 0x303C, 0x0013, 0xAA74 );
 
 /*
  *  GetWindowRegion()
@@ -3908,10 +3785,9 @@ GetWindowFeatures(
  */
 EXTERN_API( OSStatus )
 GetWindowRegion(
-  WindowRef          window,
-  WindowRegionCode   inRegionCode,
-  RgnHandle          ioWinRgn)                                THREEWORDINLINE(0x303C, 0x0014, 0xAA74);
-
+    WindowRef        window,
+    WindowRegionCode inRegionCode,
+    RgnHandle        ioWinRgn ) THREEWORDINLINE( 0x303C, 0x0014, 0xAA74 );
 
 /*
  *  GetWindowStructureWidths()
@@ -3923,10 +3799,8 @@ GetWindowRegion(
  */
 EXTERN_API( OSStatus )
 GetWindowStructureWidths(
-  WindowRef   inWindow,
-  Rect *      outRect);
-
-
+    WindowRef inWindow,
+    Rect *    outRect );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Update Events                                                                      */
@@ -3945,8 +3819,7 @@ GetWindowStructureWidths(
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InvalRect(const Rect * badRect)                               ONEWORDINLINE(0xA928);
-
+InvalRect( const Rect *badRect ) ONEWORDINLINE( 0xA928 );
 
 /*
  *  InvalRgn()
@@ -3957,8 +3830,7 @@ InvalRect(const Rect * badRect)                               ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InvalRgn(RgnHandle badRgn)                                    ONEWORDINLINE(0xA927);
-
+InvalRgn( RgnHandle badRgn ) ONEWORDINLINE( 0xA927 );
 
 /*
  *  ValidRect()
@@ -3969,8 +3841,7 @@ InvalRgn(RgnHandle badRgn)                                    ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-ValidRect(const Rect * goodRect)                              ONEWORDINLINE(0xA92A);
-
+ValidRect( const Rect *goodRect ) ONEWORDINLINE( 0xA92A );
 
 /*
  *  ValidRgn()
@@ -3981,10 +3852,9 @@ ValidRect(const Rect * goodRect)                              ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-ValidRgn(RgnHandle goodRgn)                                   ONEWORDINLINE(0xA929);
+ValidRgn( RgnHandle goodRgn ) ONEWORDINLINE( 0xA929 );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  BeginUpdate()
@@ -3995,8 +3865,7 @@ ValidRgn(RgnHandle goodRgn)                                   ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-BeginUpdate(WindowRef window)                                 ONEWORDINLINE(0xA922);
-
+BeginUpdate( WindowRef window ) ONEWORDINLINE( 0xA922 );
 
 /*
  *  EndUpdate()
@@ -4007,8 +3876,7 @@ BeginUpdate(WindowRef window)                                 ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-EndUpdate(WindowRef window)                                   ONEWORDINLINE(0xA923);
-
+EndUpdate( WindowRef window ) ONEWORDINLINE( 0xA923 );
 
 /*
    Routines available from Mac OS 8.5 forward
@@ -4025,9 +3893,8 @@ EndUpdate(WindowRef window)                                   ONEWORDINLINE(0xA9
  */
 EXTERN_API( OSStatus )
 InvalWindowRgn(
-  WindowRef   window,
-  RgnHandle   region);
-
+    WindowRef window,
+    RgnHandle region );
 
 /*
  *  InvalWindowRect()
@@ -4039,9 +3906,8 @@ InvalWindowRgn(
  */
 EXTERN_API( OSStatus )
 InvalWindowRect(
-  WindowRef     window,
-  const Rect *  bounds);
-
+    WindowRef   window,
+    const Rect *bounds );
 
 /*
  *  ValidWindowRgn()
@@ -4053,9 +3919,8 @@ InvalWindowRect(
  */
 EXTERN_API( OSStatus )
 ValidWindowRgn(
-  WindowRef   window,
-  RgnHandle   region);
-
+    WindowRef window,
+    RgnHandle region );
 
 /*
  *  ValidWindowRect()
@@ -4067,10 +3932,8 @@ ValidWindowRgn(
  */
 EXTERN_API( OSStatus )
 ValidWindowRect(
-  WindowRef     window,
-  const Rect *  bounds);
-
-
+    WindowRef   window,
+    const Rect *bounds );
 
 /*--------------------------------------------------------------------------------------*/
 /* o DrawGrowIcon                                                                       */
@@ -4087,8 +3950,7 @@ ValidWindowRect(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-DrawGrowIcon(WindowRef window)                                ONEWORDINLINE(0xA904);
-
+DrawGrowIcon( WindowRef window ) ONEWORDINLINE( 0xA904 );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Titles                                                                      */
@@ -4103,9 +3965,8 @@ DrawGrowIcon(WindowRef window)                                ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 SetWTitle(
-  WindowRef          window,
-  ConstStr255Param   title)                                   ONEWORDINLINE(0xA91A);
-
+    WindowRef        window,
+    ConstStr255Param title ) ONEWORDINLINE( 0xA91A );
 
 /*
  *  GetWTitle()
@@ -4117,9 +3978,8 @@ SetWTitle(
  */
 EXTERN_API( void )
 GetWTitle(
-  WindowRef   window,
-  Str255      title)                                          ONEWORDINLINE(0xA919);
-
+    WindowRef window,
+    Str255    title ) ONEWORDINLINE( 0xA919 );
 
 /*
  *  SetWindowTitleWithCFString()
@@ -4131,9 +3991,8 @@ GetWTitle(
  */
 EXTERN_API( OSStatus )
 SetWindowTitleWithCFString(
-  WindowRef     inWindow,
-  CFStringRef   inString);
-
+    WindowRef   inWindow,
+    CFStringRef inString );
 
 /*
  *  CopyWindowTitleAsCFString()
@@ -4145,10 +4004,8 @@ SetWindowTitleWithCFString(
  */
 EXTERN_API( OSStatus )
 CopyWindowTitleAsCFString(
-  WindowRef      inWindow,
-  CFStringRef *  outString);
-
-
+    WindowRef    inWindow,
+    CFStringRef *outString );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Proxies                                                                     */
@@ -4165,9 +4022,8 @@ CopyWindowTitleAsCFString(
  */
 EXTERN_API( OSStatus )
 SetWindowProxyFSSpec(
-  WindowRef       window,
-  const FSSpec *  inFile);
-
+    WindowRef     window,
+    const FSSpec *inFile );
 
 /*
  *  GetWindowProxyFSSpec()
@@ -4179,9 +4035,8 @@ SetWindowProxyFSSpec(
  */
 EXTERN_API( OSStatus )
 GetWindowProxyFSSpec(
-  WindowRef   window,
-  FSSpec *    outFile);
-
+    WindowRef window,
+    FSSpec *  outFile );
 
 /*
  *  SetWindowProxyAlias()
@@ -4206,9 +4061,8 @@ GetWindowProxyFSSpec(
  */
 EXTERN_API( OSStatus )
 SetWindowProxyAlias(
-  WindowRef     inWindow,
-  AliasHandle   inAlias);
-
+    WindowRef   inWindow,
+    AliasHandle inAlias );
 
 /*
  *  GetWindowProxyAlias()
@@ -4220,9 +4074,8 @@ SetWindowProxyAlias(
  */
 EXTERN_API( OSStatus )
 GetWindowProxyAlias(
-  WindowRef      window,
-  AliasHandle *  alias);
-
+    WindowRef    window,
+    AliasHandle *alias );
 
 /*
  *  SetWindowProxyCreatorAndType()
@@ -4234,11 +4087,10 @@ GetWindowProxyAlias(
  */
 EXTERN_API( OSStatus )
 SetWindowProxyCreatorAndType(
-  WindowRef   window,
-  OSType      fileCreator,
-  OSType      fileType,
-  SInt16      vRefNum);
-
+    WindowRef window,
+    OSType    fileCreator,
+    OSType    fileType,
+    SInt16    vRefNum );
 
 /*
  *  GetWindowProxyIcon()
@@ -4250,9 +4102,8 @@ SetWindowProxyCreatorAndType(
  */
 EXTERN_API( OSStatus )
 GetWindowProxyIcon(
-  WindowRef   window,
-  IconRef *   outIcon);
-
+    WindowRef window,
+    IconRef * outIcon );
 
 /*
  *  SetWindowProxyIcon()
@@ -4264,9 +4115,8 @@ GetWindowProxyIcon(
  */
 EXTERN_API( OSStatus )
 SetWindowProxyIcon(
-  WindowRef   window,
-  IconRef     icon);
-
+    WindowRef window,
+    IconRef   icon );
 
 /*
  *  RemoveWindowProxy()
@@ -4277,8 +4127,7 @@ SetWindowProxyIcon(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-RemoveWindowProxy(WindowRef window);
-
+RemoveWindowProxy( WindowRef window );
 
 /*
  *  BeginWindowProxyDrag()
@@ -4290,10 +4139,9 @@ RemoveWindowProxy(WindowRef window);
  */
 EXTERN_API( OSStatus )
 BeginWindowProxyDrag(
-  WindowRef        window,
-  DragReference *  outNewDrag,
-  RgnHandle        outDragOutlineRgn);
-
+    WindowRef      window,
+    DragReference *outNewDrag,
+    RgnHandle      outDragOutlineRgn );
 
 /*
  *  EndWindowProxyDrag()
@@ -4305,9 +4153,8 @@ BeginWindowProxyDrag(
  */
 EXTERN_API( OSStatus )
 EndWindowProxyDrag(
-  WindowRef       window,
-  DragReference   theDrag);
-
+    WindowRef     window,
+    DragReference theDrag );
 
 /*
  *  TrackWindowProxyFromExistingDrag()
@@ -4319,11 +4166,10 @@ EndWindowProxyDrag(
  */
 EXTERN_API( OSStatus )
 TrackWindowProxyFromExistingDrag(
-  WindowRef       window,
-  Point           startPt,
-  DragReference   drag,
-  RgnHandle       inDragOutlineRgn);
-
+    WindowRef     window,
+    Point         startPt,
+    DragReference drag,
+    RgnHandle     inDragOutlineRgn );
 
 /*
  *  TrackWindowProxyDrag()
@@ -4335,9 +4181,8 @@ TrackWindowProxyFromExistingDrag(
  */
 EXTERN_API( OSStatus )
 TrackWindowProxyDrag(
-  WindowRef   window,
-  Point       startPt);
-
+    WindowRef window,
+    Point     startPt );
 
 /*
  *  IsWindowModified()
@@ -4348,8 +4193,7 @@ TrackWindowProxyDrag(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsWindowModified(WindowRef window);
-
+IsWindowModified( WindowRef window );
 
 /*
  *  SetWindowModified()
@@ -4361,9 +4205,8 @@ IsWindowModified(WindowRef window);
  */
 EXTERN_API( OSStatus )
 SetWindowModified(
-  WindowRef   window,
-  Boolean     modified);
-
+    WindowRef window,
+    Boolean   modified );
 
 /*
  *  IsWindowPathSelectClick()
@@ -4375,9 +4218,8 @@ SetWindowModified(
  */
 EXTERN_API( Boolean )
 IsWindowPathSelectClick(
-  WindowRef            window,
-  const EventRecord *  event);
-
+    WindowRef          window,
+    const EventRecord *event );
 
 /*
  *  WindowPathSelect()
@@ -4389,10 +4231,9 @@ IsWindowPathSelectClick(
  */
 EXTERN_API( OSStatus )
 WindowPathSelect(
-  WindowRef   window,
-  MenuRef     menu,                /* can be NULL */
-  SInt32 *    outMenuResult);
-
+    WindowRef window,
+    MenuRef   menu, /* can be NULL */
+    SInt32 *  outMenuResult );
 
 /*
  *  IsWindowPathSelectEvent()
@@ -4404,10 +4245,8 @@ WindowPathSelect(
  */
 EXTERN_API( Boolean )
 IsWindowPathSelectEvent(
-  WindowRef   window,
-  EventRef    inEvent);
-
-
+    WindowRef window,
+    EventRef  inEvent );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o HiliteWindowFrameForDrag                                                          */
@@ -4428,10 +4267,8 @@ IsWindowPathSelectEvent(
  */
 EXTERN_API( OSStatus )
 HiliteWindowFrameForDrag(
-  WindowRef   window,
-  Boolean     hilited)                                        TWOWORDINLINE(0x7019, 0xA829);
-
-
+    WindowRef window,
+    Boolean   hilited ) TWOWORDINLINE( 0x7019, 0xA829 );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Transitions                                                                 */
@@ -4448,27 +4285,26 @@ HiliteWindowFrameForDrag(
 typedef UInt32 WindowTransitionEffect;
 enum {
 
-  /*
+	/*
    * Finder-like zoom rectangles. Use with TransitionWindow and Show or
    * Hide transition actions
    */
-  kWindowZoomTransitionEffect   = 1,
+	kWindowZoomTransitionEffect = 1,
 
-  /*
+	/*
    * Zoom in/out from parent. Use with TransitionWindowAndParent and
    * Show or Hide transition actions. Available in Mac OS X, and in
    * CarbonLib 1.5 and later.
    */
-  kWindowSheetTransitionEffect  = 2,
+	kWindowSheetTransitionEffect = 2,
 
-  /*
+	/*
    * Slide the window into its new position. Use with TransitionWindow
    * and Move or Resize transition actions. Available in Mac OS X, and
    * in CarbonLib 1.5 and later.
    */
-  kWindowSlideTransitionEffect  = 3
+	kWindowSlideTransitionEffect = 3
 };
-
 
 /*
  *  WindowTransitionAction
@@ -4480,37 +4316,37 @@ enum {
 typedef UInt32 WindowTransitionAction;
 enum {
 
-  /*
+	/*
    * Shows the window. Use with the Zoom or Sheet transition effects.
    * The inRect parameter is the global coordinates from which to start
    * the animation; if inRect is NULL, the animation begins at the
    * center of the window.
    */
-  kWindowShowTransitionAction   = 1,
+	kWindowShowTransitionAction = 1,
 
-  /*
+	/*
    * Hides the window. Use with the Zoom or Sheet transition effects.
    * The inRect parameter is the global coordinates at which to end the
    * animation; if inRect is NULL, the animation ends at the center of
    * the window.
    */
-  kWindowHideTransitionAction   = 2,
+	kWindowHideTransitionAction = 2,
 
-  /*
+	/*
    * Moves the window. Use with the Slide transition effect. The inRect
    * parameter is the global coordinates of the window's new structure
    * bounds; inRect must be non-NULL. Available in Mac OS X, and in
    * CarbonLib 1.5 and later.
    */
-  kWindowMoveTransitionAction   = 3,
+	kWindowMoveTransitionAction = 3,
 
-  /*
+	/*
    * Resizes the window. Use with the Slide transition effect. The
    * inRect parameter is the global coordinates of the window's new
    * structure bounds; inRect must be non-NULL. Available in Mac OS X,
    * and in CarbonLib 1.5 and later.
    */
-  kWindowResizeTransitionAction = 4
+	kWindowResizeTransitionAction = 4
 };
 
 /*
@@ -4549,11 +4385,10 @@ enum {
  */
 EXTERN_API( OSStatus )
 TransitionWindow(
-  WindowRef                inWindow,
-  WindowTransitionEffect   inEffect,
-  WindowTransitionAction   inAction,
-  const Rect *             inRect);        /* can be NULL */
-
+    WindowRef              inWindow,
+    WindowTransitionEffect inEffect,
+    WindowTransitionAction inAction,
+    const Rect *           inRect ); /* can be NULL */
 
 /*
  *  TransitionWindowAndParent()
@@ -4591,13 +4426,11 @@ TransitionWindow(
  */
 EXTERN_API( OSStatus )
 TransitionWindowAndParent(
-  WindowRef                inWindow,
-  WindowRef                inParentWindow,
-  WindowTransitionEffect   inEffect,
-  WindowTransitionAction   inAction,
-  const Rect *             inRect);              /* can be NULL */
-
-
+    WindowRef              inWindow,
+    WindowRef              inParentWindow,
+    WindowTransitionEffect inEffect,
+    WindowTransitionAction inAction,
+    const Rect *           inRect ); /* can be NULL */
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Positioning                                                                 */
@@ -4612,15 +4445,14 @@ TransitionWindowAndParent(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacMoveWindow MoveWindow
+#define MacMoveWindow MoveWindow
 #endif
 EXTERN_API( void )
 MacMoveWindow(
-  WindowRef   window,
-  short       hGlobal,
-  short       vGlobal,
-  Boolean     front)                                          ONEWORDINLINE(0xA91B);
-
+    WindowRef window,
+    short     hGlobal,
+    short     vGlobal,
+    Boolean   front ) ONEWORDINLINE( 0xA91B );
 
 /*
  *  SizeWindow()
@@ -4632,12 +4464,10 @@ MacMoveWindow(
  */
 EXTERN_API( void )
 SizeWindow(
-  WindowRef   window,
-  short       w,
-  short       h,
-  Boolean     fUpdate)                                        ONEWORDINLINE(0xA91D);
-
-
+    WindowRef window,
+    short     w,
+    short     h,
+    Boolean   fUpdate ) ONEWORDINLINE( 0xA91D );
 
 /* Note: bBox can only be NULL when linking to CarbonLib 1.0 forward */
 /*
@@ -4650,10 +4480,9 @@ SizeWindow(
  */
 EXTERN_API( long )
 GrowWindow(
-  WindowRef     window,
-  Point         startPt,
-  const Rect *  bBox)          /* can be NULL */              ONEWORDINLINE(0xA92B);
-
+    WindowRef   window,
+    Point       startPt,
+    const Rect *bBox ) /* can be NULL */ ONEWORDINLINE( 0xA92B );
 
 /* Note: boundsRect can only be NULL when linking to CarbonLib 1.0 forward */
 /*
@@ -4666,10 +4495,9 @@ GrowWindow(
  */
 EXTERN_API( void )
 DragWindow(
-  WindowRef     window,
-  Point         startPt,
-  const Rect *  boundsRect)       /* can be NULL */           ONEWORDINLINE(0xA925);
-
+    WindowRef   window,
+    Point       startPt,
+    const Rect *boundsRect ) /* can be NULL */ ONEWORDINLINE( 0xA925 );
 
 /*
  *  ZoomWindow()
@@ -4681,10 +4509,9 @@ DragWindow(
  */
 EXTERN_API( void )
 ZoomWindow(
-  WindowRef        window,
-  WindowPartCode   partCode,
-  Boolean          front)                                     ONEWORDINLINE(0xA83A);
-
+    WindowRef      window,
+    WindowPartCode partCode,
+    Boolean        front ) ONEWORDINLINE( 0xA83A );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Collapsing/Expanding                                                        */
@@ -4699,8 +4526,7 @@ ZoomWindow(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsWindowCollapsable(WindowRef window)                         THREEWORDINLINE(0x303C, 0x000F, 0xAA74);
-
+IsWindowCollapsable( WindowRef window ) THREEWORDINLINE( 0x303C, 0x000F, 0xAA74 );
 
 /*
  *  IsWindowCollapsed()
@@ -4711,8 +4537,7 @@ IsWindowCollapsable(WindowRef window)                         THREEWORDINLINE(0x
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsWindowCollapsed(WindowRef window)                           THREEWORDINLINE(0x303C, 0x0010, 0xAA74);
-
+IsWindowCollapsed( WindowRef window ) THREEWORDINLINE( 0x303C, 0x0010, 0xAA74 );
 
 /*
  *  CollapseWindow()
@@ -4724,9 +4549,8 @@ IsWindowCollapsed(WindowRef window)                           THREEWORDINLINE(0x
  */
 EXTERN_API( OSStatus )
 CollapseWindow(
-  WindowRef   window,
-  Boolean     collapse)                                       THREEWORDINLINE(0x303C, 0x0011, 0xAA74);
-
+    WindowRef window,
+    Boolean   collapse ) THREEWORDINLINE( 0x303C, 0x0011, 0xAA74 );
 
 /*
  *  CollapseAllWindows()
@@ -4737,8 +4561,7 @@ CollapseWindow(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-CollapseAllWindows(Boolean collapse)                          THREEWORDINLINE(0x303C, 0x0012, 0xAA74);
-
+CollapseAllWindows( Boolean collapse ) THREEWORDINLINE( 0x303C, 0x0012, 0xAA74 );
 
 /* Routines available on Mac OS X*/
 
@@ -4774,9 +4597,8 @@ CollapseAllWindows(Boolean collapse)                          THREEWORDINLINE(0x
  */
 EXTERN_API_C( OSStatus )
 CreateQDContextForCollapsedWindowDockTile(
-  WindowRef   inWindow,
-  CGrafPtr *  outContext);
-
+    WindowRef inWindow,
+    CGrafPtr *outContext );
 
 /*
  *  ReleaseQDContextForCollapsedWindowDockTile()
@@ -4805,9 +4627,8 @@ CreateQDContextForCollapsedWindowDockTile(
  */
 EXTERN_API_C( OSStatus )
 ReleaseQDContextForCollapsedWindowDockTile(
-  WindowRef   inWindow,
-  CGrafPtr    inContext);
-
+    WindowRef inWindow,
+    CGrafPtr  inContext );
 
 /*
  *  UpdateCollapsedWindowDockTile()
@@ -4833,8 +4654,7 @@ ReleaseQDContextForCollapsedWindowDockTile(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSStatus )
-UpdateCollapsedWindowDockTile(WindowRef inWindow);
-
+UpdateCollapsedWindowDockTile( WindowRef inWindow );
 
 /*
  *  SetWindowDockTileMenu()
@@ -4886,9 +4706,8 @@ UpdateCollapsedWindowDockTile(WindowRef inWindow);
  */
 EXTERN_API_C( OSStatus )
 SetWindowDockTileMenu(
-  WindowRef   inWindow,
-  MenuRef     inMenu);        /* can be NULL */
-
+    WindowRef inWindow,
+    MenuRef   inMenu ); /* can be NULL */
 
 /*
  *  GetWindowDockTileMenu()
@@ -4905,8 +4724,7 @@ SetWindowDockTileMenu(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( MenuRef )
-GetWindowDockTileMenu(WindowRef inWindow);
-
+GetWindowDockTileMenu( WindowRef inWindow );
 
 /*
    Routines available from Mac OS 8.5 forward
@@ -4923,10 +4741,9 @@ GetWindowDockTileMenu(WindowRef inWindow);
  */
 EXTERN_API( OSStatus )
 GetWindowBounds(
-  WindowRef          window,
-  WindowRegionCode   regionCode,
-  Rect *             globalBounds);
-
+    WindowRef        window,
+    WindowRegionCode regionCode,
+    Rect *           globalBounds );
 
 /*
  *  SetWindowResizeLimits()
@@ -4966,10 +4783,9 @@ GetWindowBounds(
  */
 EXTERN_API_C( OSStatus )
 SetWindowResizeLimits(
-  WindowRef       inWindow,
-  const HISize *  inMinLimits,       /* can be NULL */
-  const HISize *  inMaxLimits);      /* can be NULL */
-
+    WindowRef     inWindow,
+    const HISize *inMinLimits, /* can be NULL */
+    const HISize *inMaxLimits ); /* can be NULL */
 
 /*
  *  GetWindowResizeLimits()
@@ -5013,10 +4829,9 @@ SetWindowResizeLimits(
  */
 EXTERN_API_C( OSStatus )
 GetWindowResizeLimits(
-  WindowRef   inWindow,
-  HISize *    outMinLimits,       /* can be NULL */
-  HISize *    outMaxLimits);      /* can be NULL */
-
+    WindowRef inWindow,
+    HISize *  outMinLimits, /* can be NULL */
+    HISize *  outMaxLimits ); /* can be NULL */
 
 /*
  *  ResizeWindow()
@@ -5083,12 +4898,10 @@ GetWindowResizeLimits(
  */
 EXTERN_API( Boolean )
 ResizeWindow(
-  WindowRef     inWindow,
-  Point         inStartPoint,
-  const Rect *  inSizeConstraints,       /* can be NULL */
-  Rect *        outNewContentRect);      /* can be NULL */
-
-
+    WindowRef   inWindow,
+    Point       inStartPoint,
+    const Rect *inSizeConstraints, /* can be NULL */
+    Rect *      outNewContentRect ); /* can be NULL */
 
 /*
    Routines available from Mac OS 8.5 forward,
@@ -5105,10 +4918,9 @@ ResizeWindow(
  */
 EXTERN_API( OSStatus )
 SetWindowBounds(
-  WindowRef          window,
-  WindowRegionCode   regionCode,
-  const Rect *       globalBounds);
-
+    WindowRef        window,
+    WindowRegionCode regionCode,
+    const Rect *     globalBounds );
 
 /* Routines available from Mac OS 8.5 forward*/
 
@@ -5122,10 +4934,9 @@ SetWindowBounds(
  */
 EXTERN_API( OSStatus )
 RepositionWindow(
-  WindowRef              window,
-  WindowRef              parentWindow,
-  WindowPositionMethod   method);
-
+    WindowRef            window,
+    WindowRef            parentWindow,
+    WindowPositionMethod method );
 
 /*
  *  MoveWindowStructure()
@@ -5137,10 +4948,9 @@ RepositionWindow(
  */
 EXTERN_API( OSStatus )
 MoveWindowStructure(
-  WindowRef   window,
-  short       hGlobal,
-  short       vGlobal);
-
+    WindowRef window,
+    short     hGlobal,
+    short     vGlobal );
 
 /*
    Routines available from Mac OS 8.5 forward,
@@ -5198,10 +5008,9 @@ MoveWindowStructure(
  */
 EXTERN_API( Boolean )
 IsWindowInStandardState(
-  WindowRef      inWindow,
-  const Point *  inIdealSize,                 /* can be NULL */
-  Rect *         outIdealStandardState);      /* can be NULL */
-
+    WindowRef    inWindow,
+    const Point *inIdealSize, /* can be NULL */
+    Rect *       outIdealStandardState ); /* can be NULL */
 
 /*
  *  ZoomWindowIdeal()
@@ -5264,10 +5073,9 @@ IsWindowInStandardState(
  */
 EXTERN_API( OSStatus )
 ZoomWindowIdeal(
-  WindowRef        inWindow,
-  WindowPartCode   inPartCode,
-  Point *          ioIdealSize);
-
+    WindowRef      inWindow,
+    WindowPartCode inPartCode,
+    Point *        ioIdealSize );
 
 /*
  *  GetWindowIdealUserState()
@@ -5324,9 +5132,8 @@ ZoomWindowIdeal(
  */
 EXTERN_API( OSStatus )
 GetWindowIdealUserState(
-  WindowRef   inWindow,
-  Rect *      outUserState);
-
+    WindowRef inWindow,
+    Rect *    outUserState );
 
 /*
  *  SetWindowIdealUserState()
@@ -5359,9 +5166,8 @@ GetWindowIdealUserState(
  */
 EXTERN_API( OSStatus )
 SetWindowIdealUserState(
-  WindowRef     inWindow,
-  const Rect *  inUserState);
-
+    WindowRef   inWindow,
+    const Rect *inUserState );
 
 /* Routines available in CarbonLib 1.1 and later*/
 
@@ -5397,12 +5203,10 @@ SetWindowIdealUserState(
  */
 EXTERN_API( OSStatus )
 GetWindowGreatestAreaDevice(
-  WindowRef          inWindow,
-  WindowRegionCode   inRegion,
-  GDHandle *         outGreatestDevice,           /* can be NULL */
-  Rect *             outGreatestDeviceRect);      /* can be NULL */
-
-
+    WindowRef        inWindow,
+    WindowRegionCode inRegion,
+    GDHandle *       outGreatestDevice, /* can be NULL */
+    Rect *           outGreatestDeviceRect ); /* can be NULL */
 
 /*
  *  WindowConstrainOptions
@@ -5411,41 +5215,41 @@ GetWindowGreatestAreaDevice(
 typedef UInt32 WindowConstrainOptions;
 enum {
 
-  /*
+	/*
    * The window may be resized if necessary to make it fit onscreen.
    */
-  kWindowConstrainMayResize     = (1L << 0),
+	kWindowConstrainMayResize = ( 1L << 0 ),
 
-  /*
+	/*
    * The window will be moved even if it doesn't fit entirely onscreen.
    */
-  kWindowConstrainMoveRegardlessOfFit = (1L << 1),
+	kWindowConstrainMoveRegardlessOfFit = ( 1L << 1 ),
 
-  /*
+	/*
    * Allow partial intersection of the specified window region with the
    * screen, instead of requiring total intersection.
    */
-  kWindowConstrainAllowPartial  = (1L << 2),
+	kWindowConstrainAllowPartial = ( 1L << 2 ),
 
-  /*
+	/*
    * Only calculate the new window bounds; don't actually move the
    * window.
    */
-  kWindowConstrainCalcOnly      = (1L << 3),
+	kWindowConstrainCalcOnly = ( 1L << 3 ),
 
-  /*
+	/*
    * Use TransitionWindow with kWindowSlideTransitionEffect to move
    * windows onscreen. Available in Mac OS X 10.2.
    */
-  kWindowConstrainUseTransitionWindow = (1L << 4),
+	kWindowConstrainUseTransitionWindow = ( 1L << 4 ),
 
-  /*
+	/*
    * The most common options: don't resize the window, move the window
    * regardless of fit to the screen, require total intersection of the
    * specified window region with the screen, and do actually move the
    * window.
    */
-  kWindowConstrainStandardOptions = kWindowConstrainMoveRegardlessOfFit
+	kWindowConstrainStandardOptions = kWindowConstrainMoveRegardlessOfFit
 };
 
 /*
@@ -5483,12 +5287,11 @@ enum {
  */
 EXTERN_API( OSStatus )
 ConstrainWindowToScreen(
-  WindowRef                inWindowRef,
-  WindowRegionCode         inRegionCode,
-  WindowConstrainOptions   inOptions,
-  const Rect *             inScreenRect,       /* can be NULL */
-  Rect *                   outStructure);      /* can be NULL */
-
+    WindowRef              inWindowRef,
+    WindowRegionCode       inRegionCode,
+    WindowConstrainOptions inOptions,
+    const Rect *           inScreenRect, /* can be NULL */
+    Rect *                 outStructure ); /* can be NULL */
 
 /*
  *  GetAvailableWindowPositioningBounds()
@@ -5513,10 +5316,8 @@ ConstrainWindowToScreen(
  */
 EXTERN_API( OSStatus )
 GetAvailableWindowPositioningBounds(
-  GDHandle   inDevice,
-  Rect *     outAvailableRect);
-
-
+    GDHandle inDevice,
+    Rect *   outAvailableRect );
 
 /*
  *  GetAvailableWindowPositioningRegion()
@@ -5552,10 +5353,8 @@ GetAvailableWindowPositioningBounds(
  */
 EXTERN_API_C( OSStatus )
 GetAvailableWindowPositioningRegion(
-  GDHandle    inDevice,
-  RgnHandle   ioRgn);
-
-
+    GDHandle  inDevice,
+    RgnHandle ioRgn );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Visibility                                                                  */
@@ -5569,8 +5368,7 @@ GetAvailableWindowPositioningRegion(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-HideWindow(WindowRef window)                                  ONEWORDINLINE(0xA916);
-
+HideWindow( WindowRef window ) ONEWORDINLINE( 0xA916 );
 
 /*
  *  [Mac]ShowWindow()
@@ -5581,11 +5379,10 @@ HideWindow(WindowRef window)                                  ONEWORDINLINE(0xA9
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacShowWindow ShowWindow
+#define MacShowWindow ShowWindow
 #endif
 EXTERN_API( void )
-MacShowWindow(WindowRef window)                               ONEWORDINLINE(0xA915);
-
+MacShowWindow( WindowRef window ) ONEWORDINLINE( 0xA915 );
 
 /*
  *  ShowHide()
@@ -5597,10 +5394,8 @@ MacShowWindow(WindowRef window)                               ONEWORDINLINE(0xA9
  */
 EXTERN_API( void )
 ShowHide(
-  WindowRef   window,
-  Boolean     showFlag)                                       ONEWORDINLINE(0xA908);
-
-
+    WindowRef window,
+    Boolean   showFlag ) ONEWORDINLINE( 0xA908 );
 
 /*
  *  [Mac]IsWindowVisible()
@@ -5611,29 +5406,30 @@ ShowHide(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacIsWindowVisible IsWindowVisible
+#define MacIsWindowVisible IsWindowVisible
 #endif
 EXTERN_API( Boolean )
-MacIsWindowVisible(WindowRef window);
+MacIsWindowVisible( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Boolean ) MacIsWindowVisible(WindowRef window) { return ((WindowPeek)window)->visible != 0; }
-  #else
-    #if TARGET_OS_MAC
-      #define IsWindowVisible(window) (((WindowPeek)window)->visible != 0)
-    #else
-      #define MacIsWindowVisible(window) (((WindowPeek)window)->visible != 0)
-    #endif
+#ifdef __cplusplus
+inline DEFINE_API( Boolean ) MacIsWindowVisible( WindowRef window )
+{
+	return ( (WindowPeek)window )->visible != 0;
+}
+#else
+#if TARGET_OS_MAC
+#define IsWindowVisible( window ) ( ( (WindowPeek)window )->visible != 0 )
+#else
+#define MacIsWindowVisible( window ) ( ( (WindowPeek)window )->visible != 0 )
 #endif
 #endif
-
+#endif
 
 /*
   --------------------------------------------------------------------------------------
     o.Latent window visibility
   --------------------------------------------------------------------------------------
 */
-
 
 /*
  *  WindowLatentVisibility
@@ -5645,36 +5441,36 @@ MacIsWindowVisible(WindowRef window);
 typedef UInt32 WindowLatentVisibility;
 enum {
 
-  /*
+	/*
    * Window is a floater and floating windows are hidden
    */
-  kWindowLatentVisibleFloater   = 1 << 0,
+	kWindowLatentVisibleFloater = 1 << 0,
 
-  /*
+	/*
    * Window has HideOnSuspend and we are suspended
    */
-  kWindowLatentVisibleSuspend   = 1 << 1,
+	kWindowLatentVisibleSuspend = 1 << 1,
 
-  /*
+	/*
    * Window has HideOnFullScreen and we are full-screen
    */
-  kWindowLatentVisibleFullScreen = 1 << 2,
+	kWindowLatentVisibleFullScreen = 1 << 2,
 
-  /*
+	/*
    * Window's process is hidden
    */
-  kWindowLatentVisibleAppHidden = 1 << 3,
+	kWindowLatentVisibleAppHidden = 1 << 3,
 
-  /*
+	/*
    * Window is in an owned group and the owner was collapsed
    */
-  kWindowLatentVisibleCollapsedOwner = 1 << 4,
+	kWindowLatentVisibleCollapsedOwner = 1 << 4,
 
-  /*
+	/*
    * Window is in a HideOnCollapse group and another window in the
    * group was collapsed
    */
-  kWindowLatentVisibleCollapsedGroup = 1 << 5
+	kWindowLatentVisibleCollapsedGroup = 1 << 5
 };
 
 /*
@@ -5717,10 +5513,8 @@ enum {
  */
 EXTERN_API_C( Boolean )
 IsWindowLatentVisible(
-  WindowRef                 inWindow,
-  WindowLatentVisibility *  outLatentVisible);      /* can be NULL */
-
-
+    WindowRef               inWindow,
+    WindowLatentVisibility *outLatentVisible ); /* can be NULL */
 
 /*--------------------------------------------------------------------------------------*/
 /*
@@ -5870,9 +5664,8 @@ IsWindowLatentVisible(
  */
 EXTERN_API( OSStatus )
 ShowSheetWindow(
-  WindowRef   inSheet,
-  WindowRef   inParentWindow);
-
+    WindowRef inSheet,
+    WindowRef inParentWindow );
 
 /*
  *  HideSheetWindow()
@@ -5891,8 +5684,7 @@ ShowSheetWindow(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-HideSheetWindow(WindowRef inSheet);
-
+HideSheetWindow( WindowRef inSheet );
 
 /*
  *  GetSheetWindowParent()
@@ -5915,10 +5707,8 @@ HideSheetWindow(WindowRef inSheet);
  */
 EXTERN_API( OSStatus )
 GetSheetWindowParent(
-  WindowRef    inSheet,
-  WindowRef *  outParentWindow);
-
-
+    WindowRef  inSheet,
+    WindowRef *outParentWindow );
 
 /*--------------------------------------------------------------------------------------*/
 /*
@@ -5974,35 +5764,34 @@ GetSheetWindowParent(
  */
 enum {
 
-  /*
+	/*
    * This constant is typically used with the OpenDrawer API; it
    * indicates that the drawer should be opened on whatever edge of the
    * parent window has previously been set as the drawer's preferred
    * edge.
    */
-  kWindowEdgeDefault            = 0,
+	kWindowEdgeDefault = 0,
 
-  /*
+	/*
    * The drawer should open on the top edge of the parent window.
    */
-  kWindowEdgeTop                = 1 << 0,
+	kWindowEdgeTop = 1 << 0,
 
-  /*
+	/*
    * The drawer should open on the left edge of the parent window.
    */
-  kWindowEdgeLeft               = 1 << 1,
+	kWindowEdgeLeft = 1 << 1,
 
-  /*
+	/*
    * The drawer should open on the bottom edge of the parent window.
    */
-  kWindowEdgeBottom             = 1 << 2,
+	kWindowEdgeBottom = 1 << 2,
 
-  /*
+	/*
    * The drawer should open on the right edge of the parent window.
    */
-  kWindowEdgeRight              = 1 << 3
+	kWindowEdgeRight = 1 << 3
 };
-
 
 /*
  *  Summary:
@@ -6010,28 +5799,28 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * The drawer is opening, but is not yet fully open.
    */
-  kWindowDrawerOpening          = 1,
+	kWindowDrawerOpening = 1,
 
-  /*
+	/*
    * The drawer is fully open.
    */
-  kWindowDrawerOpen             = 2,
+	kWindowDrawerOpen = 2,
 
-  /*
+	/*
    * The drawer is closing, but is not yet fully closed.
    */
-  kWindowDrawerClosing          = 3,
+	kWindowDrawerClosing = 3,
 
-  /*
+	/*
    * The drawer is fully closed.
    */
-  kWindowDrawerClosed           = 4
+	kWindowDrawerClosed = 4
 };
 
-typedef UInt32                          WindowDrawerState;
+typedef UInt32 WindowDrawerState;
 
 /*
  *  GetDrawerPreferredEdge()
@@ -6062,8 +5851,7 @@ typedef UInt32                          WindowDrawerState;
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OptionBits )
-GetDrawerPreferredEdge(WindowRef inDrawerWindow);
-
+GetDrawerPreferredEdge( WindowRef inDrawerWindow );
 
 /*
  *  SetDrawerPreferredEdge()
@@ -6090,9 +5878,8 @@ GetDrawerPreferredEdge(WindowRef inDrawerWindow);
  */
 EXTERN_API_C( OSStatus )
 SetDrawerPreferredEdge(
-  WindowRef    inDrawerWindow,
-  OptionBits   inEdge);
-
+    WindowRef  inDrawerWindow,
+    OptionBits inEdge );
 
 /*
  *  GetDrawerCurrentEdge()
@@ -6123,8 +5910,7 @@ SetDrawerPreferredEdge(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OptionBits )
-GetDrawerCurrentEdge(WindowRef inDrawerWindow);
-
+GetDrawerCurrentEdge( WindowRef inDrawerWindow );
 
 /*
  *  GetDrawerState()
@@ -6147,8 +5933,7 @@ GetDrawerCurrentEdge(WindowRef inDrawerWindow);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( WindowDrawerState )
-GetDrawerState(WindowRef inDrawerWindow);
-
+GetDrawerState( WindowRef inDrawerWindow );
 
 /*
  *  GetDrawerParent()
@@ -6171,8 +5956,7 @@ GetDrawerState(WindowRef inDrawerWindow);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( WindowRef )
-GetDrawerParent(WindowRef inDrawerWindow);
-
+GetDrawerParent( WindowRef inDrawerWindow );
 
 /*
  *  SetDrawerParent()
@@ -6199,10 +5983,8 @@ GetDrawerParent(WindowRef inDrawerWindow);
  */
 EXTERN_API_C( OSStatus )
 SetDrawerParent(
-  WindowRef   inDrawerWindow,
-  WindowRef   inParent);
-
-
+    WindowRef inDrawerWindow,
+    WindowRef inParent );
 
 /*
  *  kWindowOffsetUnchanged
@@ -6211,7 +5993,7 @@ SetDrawerParent(
  *    Pass this value to SetDrawerOffsets to indicate that an existing
  *    offset should not be changed.
  */
-#define kWindowOffsetUnchanged          ((float)(-1.0))
+#define kWindowOffsetUnchanged ( (float)( -1.0 ) )
 /*
  *  SetDrawerOffsets()
  *  
@@ -6263,10 +6045,9 @@ SetDrawerParent(
  */
 EXTERN_API_C( OSStatus )
 SetDrawerOffsets(
-  WindowRef   inDrawerWindow,
-  float       inLeadingOffset,
-  float       inTrailingOffset);
-
+    WindowRef inDrawerWindow,
+    float     inLeadingOffset,
+    float     inTrailingOffset );
 
 /*
  *  GetDrawerOffsets()
@@ -6298,10 +6079,9 @@ SetDrawerOffsets(
  */
 EXTERN_API_C( OSStatus )
 GetDrawerOffsets(
-  WindowRef   inDrawerWindow,
-  float *     outLeadingOffset,        /* can be NULL */
-  float *     outTrailingOffset);      /* can be NULL */
-
+    WindowRef inDrawerWindow,
+    float *   outLeadingOffset, /* can be NULL */
+    float *   outTrailingOffset ); /* can be NULL */
 
 /*
  *  ToggleDrawer()
@@ -6344,8 +6124,7 @@ GetDrawerOffsets(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-ToggleDrawer(WindowRef inDrawerWindow);
-
+ToggleDrawer( WindowRef inDrawerWindow );
 
 /*
  *  OpenDrawer()
@@ -6400,10 +6179,9 @@ ToggleDrawer(WindowRef inDrawerWindow);
  */
 EXTERN_API_C( OSStatus )
 OpenDrawer(
-  WindowRef    inDrawerWindow,
-  OptionBits   inEdge,
-  Boolean      inAsync);
-
+    WindowRef  inDrawerWindow,
+    OptionBits inEdge,
+    Boolean    inAsync );
 
 /*
  *  CloseDrawer()
@@ -6450,10 +6228,8 @@ OpenDrawer(
  */
 EXTERN_API_C( OSStatus )
 CloseDrawer(
-  WindowRef   inDrawerWindow,
-  Boolean     inAsync);
-
-
+    WindowRef inDrawerWindow,
+    Boolean   inAsync );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Disabling Screen Redraw                                                            */
@@ -6472,8 +6248,7 @@ CloseDrawer(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-DisableScreenUpdates(void);
-
+DisableScreenUpdates( void );
 
 /*
  *  EnableScreenUpdates()
@@ -6484,9 +6259,7 @@ DisableScreenUpdates(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-EnableScreenUpdates(void);
-
-
+EnableScreenUpdates( void );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Toolbars                                                                    */
@@ -6519,9 +6292,8 @@ EnableScreenUpdates(void);
  */
 EXTERN_API_C( OSStatus )
 SetWindowToolbar(
-  WindowRef      inWindow,
-  HIToolbarRef   inToolbar);
-
+    WindowRef    inWindow,
+    HIToolbarRef inToolbar );
 
 #define _GetWindowToolbar GetWindowToolbar
 /*
@@ -6552,9 +6324,8 @@ SetWindowToolbar(
  */
 EXTERN_API_C( OSStatus )
 GetWindowToolbar(
-  WindowRef       inWindow,
-  HIToolbarRef *  outToolbar);
-
+    WindowRef     inWindow,
+    HIToolbarRef *outToolbar );
 
 #define _ShowHideWindowToolbar ShowHideWindowToolbar
 /*
@@ -6587,10 +6358,9 @@ GetWindowToolbar(
  */
 EXTERN_API_C( OSStatus )
 ShowHideWindowToolbar(
-  WindowRef   inWindow,
-  Boolean     inShow,
-  Boolean     inAnimate);
-
+    WindowRef inWindow,
+    Boolean   inShow,
+    Boolean   inAnimate );
 
 #define _IsWindowToolbarVisible IsWindowToolbarVisible
 /*
@@ -6615,8 +6385,7 @@ ShowHideWindowToolbar(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-IsWindowToolbarVisible(WindowRef inWindow);
-
+IsWindowToolbarVisible( WindowRef inWindow );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Transparency                                                                */
@@ -6648,10 +6417,8 @@ IsWindowToolbarVisible(WindowRef inWindow);
  */
 EXTERN_API_C( OSStatus )
 SetWindowAlpha(
-  WindowRef   inWindow,
-  float       inAlpha);
-
-
+    WindowRef inWindow,
+    float     inAlpha );
 
 /*
  *  GetWindowAlpha()
@@ -6679,9 +6446,8 @@ SetWindowAlpha(
  */
 EXTERN_API_C( OSStatus )
 GetWindowAlpha(
-  WindowRef   inWindow,
-  float *     outAlpha);
-
+    WindowRef inWindow,
+    float *   outAlpha );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Properties                                                                  */
@@ -6701,13 +6467,12 @@ GetWindowAlpha(
  */
 EXTERN_API( OSStatus )
 GetWindowProperty(
-  WindowRef         window,
-  PropertyCreator   propertyCreator,
-  PropertyTag       propertyTag,
-  UInt32            bufferSize,
-  UInt32 *          actualSize,            /* can be NULL */
-  void *            propertyBuffer);
-
+    WindowRef       window,
+    PropertyCreator propertyCreator,
+    PropertyTag     propertyTag,
+    UInt32          bufferSize,
+    UInt32 *        actualSize, /* can be NULL */
+    void *          propertyBuffer );
 
 /*
  *  GetWindowPropertySize()
@@ -6719,11 +6484,10 @@ GetWindowProperty(
  */
 EXTERN_API( OSStatus )
 GetWindowPropertySize(
-  WindowRef         window,
-  PropertyCreator   creator,
-  PropertyTag       tag,
-  UInt32 *          size);
-
+    WindowRef       window,
+    PropertyCreator creator,
+    PropertyTag     tag,
+    UInt32 *        size );
 
 /*
  *  SetWindowProperty()
@@ -6735,12 +6499,11 @@ GetWindowPropertySize(
  */
 EXTERN_API( OSStatus )
 SetWindowProperty(
-  WindowRef         window,
-  PropertyCreator   propertyCreator,
-  PropertyTag       propertyTag,
-  UInt32            propertySize,
-  const void *      propertyBuffer);
-
+    WindowRef       window,
+    PropertyCreator propertyCreator,
+    PropertyTag     propertyTag,
+    UInt32          propertySize,
+    const void *    propertyBuffer );
 
 /*
  *  RemoveWindowProperty()
@@ -6752,16 +6515,14 @@ SetWindowProperty(
  */
 EXTERN_API( OSStatus )
 RemoveWindowProperty(
-  WindowRef         window,
-  PropertyCreator   propertyCreator,
-  PropertyTag       propertyTag);
-
-
+    WindowRef       window,
+    PropertyCreator propertyCreator,
+    PropertyTag     propertyTag );
 
 /* Routines available from Mac OS 8.1 forward when linking to CarbonLib 1.0 forward*/
 
 enum {
-  kWindowPropertyPersistent     = 0x00000001 /* whether this property gets saved when flattening the window */
+	kWindowPropertyPersistent = 0x00000001 /* whether this property gets saved when flattening the window */
 };
 
 /*
@@ -6774,11 +6535,10 @@ enum {
  */
 EXTERN_API( OSStatus )
 GetWindowPropertyAttributes(
-  WindowRef   window,
-  OSType      propertyCreator,
-  OSType      propertyTag,
-  UInt32 *    attributes);
-
+    WindowRef window,
+    OSType    propertyCreator,
+    OSType    propertyTag,
+    UInt32 *  attributes );
 
 /*
  *  ChangeWindowPropertyAttributes()
@@ -6790,12 +6550,11 @@ GetWindowPropertyAttributes(
  */
 EXTERN_API( OSStatus )
 ChangeWindowPropertyAttributes(
-  WindowRef   window,
-  OSType      propertyCreator,
-  OSType      propertyTag,
-  UInt32      attributesToSet,
-  UInt32      attributesToClear);
-
+    WindowRef window,
+    OSType    propertyCreator,
+    OSType    propertyTag,
+    UInt32    attributesToSet,
+    UInt32    attributesToClear );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Utilities                                                                          */
@@ -6810,10 +6569,8 @@ ChangeWindowPropertyAttributes(
  */
 EXTERN_API( long )
 PinRect(
-  const Rect *  theRect,
-  Point         thePt)                                        ONEWORDINLINE(0xA94E);
-
-
+    const Rect *theRect,
+    Point       thePt ) ONEWORDINLINE( 0xA94E );
 
 /*
  *  GetGrayRgn()
@@ -6824,9 +6581,7 @@ PinRect(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( RgnHandle )
-GetGrayRgn(void)                                              TWOWORDINLINE(0x2EB8, 0x09EE);
-
-
+GetGrayRgn( void ) TWOWORDINLINE( 0x2EB8, 0x09EE );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Part Tracking                                                               */
@@ -6841,10 +6596,9 @@ GetGrayRgn(void)                                              TWOWORDINLINE(0x2E
  */
 EXTERN_API( Boolean )
 TrackBox(
-  WindowRef        window,
-  Point            thePt,
-  WindowPartCode   partCode)                                  ONEWORDINLINE(0xA83B);
-
+    WindowRef      window,
+    Point          thePt,
+    WindowPartCode partCode ) ONEWORDINLINE( 0xA83B );
 
 /*
  *  TrackGoAway()
@@ -6856,10 +6610,8 @@ TrackBox(
  */
 EXTERN_API( Boolean )
 TrackGoAway(
-  WindowRef   window,
-  Point       thePt)                                          ONEWORDINLINE(0xA91E);
-
-
+    WindowRef window,
+    Point     thePt ) ONEWORDINLINE( 0xA91E );
 
 /*--------------------------------------------------------------------------------------*/
 /* o Region Dragging                                                                    */
@@ -6874,13 +6626,12 @@ TrackGoAway(
  */
 EXTERN_API( long )
 DragGrayRgn(
-  RgnHandle        theRgn,
-  Point            startPt,
-  const Rect *     limitRect,
-  const Rect *     slopRect,
-  short            axis,
-  DragGrayRgnUPP   actionProc)                                ONEWORDINLINE(0xA905);
-
+    RgnHandle      theRgn,
+    Point          startPt,
+    const Rect *   limitRect,
+    const Rect *   slopRect,
+    short          axis,
+    DragGrayRgnUPP actionProc ) ONEWORDINLINE( 0xA905 );
 
 /*
  *  DragTheRgn()
@@ -6892,14 +6643,12 @@ DragGrayRgn(
  */
 EXTERN_API( long )
 DragTheRgn(
-  RgnHandle        theRgn,
-  Point            startPt,
-  const Rect *     limitRect,
-  const Rect *     slopRect,
-  short            axis,
-  DragGrayRgnUPP   actionProc)                                ONEWORDINLINE(0xA926);
-
-
+    RgnHandle      theRgn,
+    Point          startPt,
+    const Rect *   limitRect,
+    const Rect *   slopRect,
+    short          axis,
+    DragGrayRgnUPP actionProc ) ONEWORDINLINE( 0xA926 );
 
 /*--------------------------------------------------------------------------------------*/
 /*  o GetAuxWin                                                                         */
@@ -6918,13 +6667,12 @@ DragTheRgn(
  */
 EXTERN_API( Boolean )
 GetAuxWin(
-  WindowRef       window,
-  AuxWinHandle *  awHndl)                                     ONEWORDINLINE(0xAA42);
+    WindowRef     window,
+    AuxWinHandle *awHndl ) ONEWORDINLINE( 0xAA42 );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* !OPAQUE_TOOLBOX_STRUCTS */
+#endif /* !OPAQUE_TOOLBOX_STRUCTS */
 
 /*--------------------------------------------------------------------------------------*/
 /* o C Glue                                                                             */
@@ -6940,9 +6688,8 @@ GetAuxWin(
  */
 EXTERN_API_C( void )
 setwtitle(
-  WindowRef     window,
-  const char *  title);
-
+    WindowRef   window,
+    const char *title );
 
 /*
  *  trackgoaway()
@@ -6954,9 +6701,8 @@ setwtitle(
  */
 EXTERN_API_C( Boolean )
 trackgoaway(
-  WindowRef   window,
-  Point *     thePt);
-
+    WindowRef window,
+    Point *   thePt );
 
 /*
  *  findwindow()
@@ -6968,9 +6714,8 @@ trackgoaway(
  */
 EXTERN_API_C( short )
 findwindow(
-  Point *      thePoint,
-  WindowRef *  window);
-
+    Point *    thePoint,
+    WindowRef *window );
 
 /*
  *  getwtitle()
@@ -6982,9 +6727,8 @@ findwindow(
  */
 EXTERN_API_C( void )
 getwtitle(
-  WindowRef   window,
-  char *      title);
-
+    WindowRef window,
+    char *    title );
 
 /*
  *  growwindow()
@@ -6996,10 +6740,9 @@ getwtitle(
  */
 EXTERN_API_C( long )
 growwindow(
-  WindowRef     window,
-  Point *       startPt,
-  const Rect *  bBox);
-
+    WindowRef   window,
+    Point *     startPt,
+    const Rect *bBox );
 
 /*
  *  newwindow()
@@ -7011,15 +6754,14 @@ growwindow(
  */
 EXTERN_API_C( WindowRef )
 newwindow(
-  void *        wStorage,
-  const Rect *  boundsRect,
-  const char *  title,
-  Boolean       visible,
-  short         theProc,
-  WindowRef     behind,
-  Boolean       goAwayFlag,
-  long          refCon);
-
+    void *      wStorage,
+    const Rect *boundsRect,
+    const char *title,
+    Boolean     visible,
+    short       theProc,
+    WindowRef   behind,
+    Boolean     goAwayFlag,
+    long        refCon );
 
 /*
  *  newcwindow()
@@ -7031,15 +6773,14 @@ newwindow(
  */
 EXTERN_API_C( WindowRef )
 newcwindow(
-  void *        wStorage,
-  const Rect *  boundsRect,
-  const char *  title,
-  Boolean       visible,
-  short         procID,
-  WindowRef     behind,
-  Boolean       goAwayFlag,
-  long          refCon);
-
+    void *      wStorage,
+    const Rect *boundsRect,
+    const char *title,
+    Boolean     visible,
+    short       procID,
+    WindowRef   behind,
+    Boolean     goAwayFlag,
+    long        refCon );
 
 /*
  *  pinrect()
@@ -7051,9 +6792,8 @@ newcwindow(
  */
 EXTERN_API_C( long )
 pinrect(
-  const Rect *  theRect,
-  Point *       thePt);
-
+    const Rect *theRect,
+    Point *     thePt );
 
 /*
  *  trackbox()
@@ -7065,10 +6805,9 @@ pinrect(
  */
 EXTERN_API_C( Boolean )
 trackbox(
-  WindowRef   window,
-  Point *     thePt,
-  short       partCode);
-
+    WindowRef window,
+    Point *   thePt,
+    short     partCode );
 
 /*
  *  draggrayrgn()
@@ -7080,13 +6819,12 @@ trackbox(
  */
 EXTERN_API_C( long )
 draggrayrgn(
-  RgnHandle        theRgn,
-  Point *          startPt,
-  const Rect *     boundsRect,
-  const Rect *     slopRect,
-  short            axis,
-  DragGrayRgnUPP   actionProc);
-
+    RgnHandle      theRgn,
+    Point *        startPt,
+    const Rect *   boundsRect,
+    const Rect *   slopRect,
+    short          axis,
+    DragGrayRgnUPP actionProc );
 
 /*
  *  dragwindow()
@@ -7098,12 +6836,11 @@ draggrayrgn(
  */
 EXTERN_API_C( void )
 dragwindow(
-  WindowRef     window,
-  Point *       startPt,
-  const Rect *  boundsRect);
+    WindowRef   window,
+    Point *     startPt,
+    const Rect *boundsRect );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*--------------------------------------------------------------------------------------*/
 /* o Window Accessors                                                                   */
@@ -7122,15 +6859,17 @@ dragwindow(
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-GetWindowGoAwayFlag(WindowRef window);
+GetWindowGoAwayFlag( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Boolean ) GetWindowGoAwayFlag(WindowRef window) { return ((WindowPeek)window)->goAwayFlag; }
-  #else
-    #define GetWindowGoAwayFlag(window) (((WindowPeek)window)->goAwayFlag)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( Boolean ) GetWindowGoAwayFlag( WindowRef window )
+{
+	return ( (WindowPeek)window )->goAwayFlag;
+}
+#else
+#define GetWindowGoAwayFlag( window ) ( ( (WindowPeek)window )->goAwayFlag )
 #endif
-
+#endif
 
 /*
  *  GetWindowSpareFlag()
@@ -7144,17 +6883,19 @@ GetWindowGoAwayFlag(WindowRef window);
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-GetWindowSpareFlag(WindowRef window);
+GetWindowSpareFlag( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Boolean ) GetWindowSpareFlag(WindowRef window) { return ((WindowPeek)window)->spareFlag; }
-  #else
-    #define GetWindowSpareFlag(window) (((WindowPeek)window)->spareFlag)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( Boolean ) GetWindowSpareFlag( WindowRef window )
+{
+	return ( (WindowPeek)window )->spareFlag;
+}
+#else
+#define GetWindowSpareFlag( window ) ( ( (WindowPeek)window )->spareFlag )
+#endif
 #endif
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  GetWindowList()
@@ -7165,9 +6906,7 @@ GetWindowSpareFlag(WindowRef window);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( WindowRef )
-GetWindowList(void);
-
-
+GetWindowList( void );
 
 /*
  *  GetWindowPort()
@@ -7178,15 +6917,17 @@ GetWindowList(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( CGrafPtr )
-GetWindowPort(WindowRef window);
+GetWindowPort( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(CGrafPtr ) GetWindowPort(WindowRef window) { return (CGrafPtr)window; }
-  #else
-    #define GetWindowPort(window) ((CGrafPtr)window)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( CGrafPtr ) GetWindowPort( WindowRef window )
+{
+	return (CGrafPtr)window;
+}
+#else
+#define GetWindowPort( window ) ( (CGrafPtr)window )
 #endif
-
+#endif
 
 /*
  *  GetWindowStructurePort()
@@ -7197,9 +6938,7 @@ GetWindowPort(WindowRef window);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API( CGrafPtr )
-GetWindowStructurePort(WindowRef inWindow);
-
-
+GetWindowStructurePort( WindowRef inWindow );
 
 /*
  *  GetWindowKind()
@@ -7210,16 +6949,17 @@ GetWindowStructurePort(WindowRef inWindow);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( short )
-GetWindowKind(WindowRef window);
+GetWindowKind( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(short ) GetWindowKind(WindowRef window) { return ((WindowPeek)window)->windowKind; }
-  #else
-    #define GetWindowKind(window) (((WindowPeek)window)->windowKind)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( short ) GetWindowKind( WindowRef window )
+{
+	return ( (WindowPeek)window )->windowKind;
+}
+#else
+#define GetWindowKind( window ) ( ( (WindowPeek)window )->windowKind )
 #endif
-
-
+#endif
 
 /*
  *  IsWindowHilited()
@@ -7230,16 +6970,17 @@ GetWindowKind(WindowRef window);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsWindowHilited(WindowRef window);
+IsWindowHilited( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Boolean ) IsWindowHilited(WindowRef window) { return ((WindowPeek)window)->hilited != 0; }
-  #else
-    #define IsWindowHilited(window) (((WindowPeek)window)->hilited != 0)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( Boolean ) IsWindowHilited( WindowRef window )
+{
+	return ( (WindowPeek)window )->hilited != 0;
+}
+#else
+#define IsWindowHilited( window ) ( ( (WindowPeek)window )->hilited != 0 )
 #endif
-
-
+#endif
 
 /*
  *  IsWindowUpdatePending()
@@ -7250,16 +6991,17 @@ IsWindowHilited(WindowRef window);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( Boolean )
-IsWindowUpdatePending(WindowRef window);
+IsWindowUpdatePending( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Boolean ) IsWindowUpdatePending(WindowRef window) { return (((WindowPeek) window)->updateRgn != NULL) && !EmptyRgn(((WindowPeek) window)->updateRgn); }
-  #else
-    #define IsWindowUpdatePending(window) ((((WindowPeek) window)->updateRgn != NULL) && !EmptyRgn(((WindowPeek) window)->updateRgn))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( Boolean ) IsWindowUpdatePending( WindowRef window )
+{
+	return ( ( (WindowPeek)window )->updateRgn != NULL ) && !EmptyRgn( ( (WindowPeek)window )->updateRgn );
+}
+#else
+#define IsWindowUpdatePending( window ) ( ( ( (WindowPeek)window )->updateRgn != NULL ) && !EmptyRgn( ( (WindowPeek)window )->updateRgn ) )
 #endif
-
-
+#endif
 
 /*
  *  [Mac]GetNextWindow()
@@ -7270,22 +7012,24 @@ IsWindowUpdatePending(WindowRef window);
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacGetNextWindow GetNextWindow
+#define MacGetNextWindow GetNextWindow
 #endif
 EXTERN_API( WindowRef )
-MacGetNextWindow(WindowRef window);
+MacGetNextWindow( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(WindowRef ) MacGetNextWindow(WindowRef window) { return (WindowRef)(((WindowPeek)window)->nextWindow); }
-  #else
-    #if TARGET_OS_MAC
-      #define GetNextWindow(window) ((WindowRef)(((WindowPeek)window)->nextWindow))
-    #else
-      #define MacGetNextWindow(window) ((WindowRef)(((WindowPeek)window)->nextWindow))
-    #endif
+#ifdef __cplusplus
+inline DEFINE_API( WindowRef ) MacGetNextWindow( WindowRef window )
+{
+	return ( WindowRef )( ( (WindowPeek)window )->nextWindow );
+}
+#else
+#if TARGET_OS_MAC
+#define GetNextWindow( window ) ( ( WindowRef )( ( (WindowPeek)window )->nextWindow ) )
+#else
+#define MacGetNextWindow( window ) ( ( WindowRef )( ( (WindowPeek)window )->nextWindow ) )
 #endif
 #endif
-
+#endif
 
 /*
  *  GetPreviousWindow()
@@ -7304,9 +7048,7 @@ MacGetNextWindow(WindowRef window);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( WindowRef )
-GetPreviousWindow(WindowRef inWindow);
-
-
+GetPreviousWindow( WindowRef inWindow );
 
 /*
  *  GetWindowStandardState()
@@ -7318,17 +7060,18 @@ GetPreviousWindow(WindowRef inWindow);
  */
 EXTERN_API( Rect * )
 GetWindowStandardState(
-  WindowRef   window,
-  Rect *      rect);
+    WindowRef window,
+    Rect *    rect );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Rect *) GetWindowStandardState(WindowRef window, Rect *rect) { return (*(rect) = ((*(((WindowPeek)window)->dataHandle) == NULL) ? *(rect) : ((Rect*)(*(((WindowPeek)window)->dataHandle)))[1])), (rect); }
-  #else
-    #define GetWindowStandardState(window, rect) ((*(rect) = ((*(((WindowPeek)window)->dataHandle) == NULL) ? *(rect) : ((Rect*)(*(((WindowPeek)window)->dataHandle)))[1])), (rect))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( Rect * ) GetWindowStandardState( WindowRef window, Rect *rect )
+{
+	return ( *( rect ) = ( ( *( ( (WindowPeek)window )->dataHandle ) == NULL ) ? *( rect ) : ( (Rect *)( *( ( (WindowPeek)window )->dataHandle ) ) )[1] ) ), ( rect );
+}
+#else
+#define GetWindowStandardState( window, rect ) ( ( *( rect ) = ( ( *( ( (WindowPeek)window )->dataHandle ) == NULL ) ? *( rect ) : ( (Rect *)( *( ( (WindowPeek)window )->dataHandle ) ) )[1] ) ), ( rect ) )
 #endif
-
-
+#endif
 
 /*
  *  GetWindowUserState()
@@ -7340,17 +7083,18 @@ GetWindowStandardState(
  */
 EXTERN_API( Rect * )
 GetWindowUserState(
-  WindowRef   window,
-  Rect *      rect);
+    WindowRef window,
+    Rect *    rect );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Rect *) GetWindowUserState(WindowRef window, Rect *rect) { return (*(rect) = ((*(((WindowPeek)window)->dataHandle) == NULL) ? *(rect) : ((Rect*)(*(((WindowPeek)window)->dataHandle)))[0])), (rect); }
-  #else
-    #define GetWindowUserState(window, rect) ((*(rect) = ((*(((WindowPeek)window)->dataHandle) == NULL) ? *(rect) : ((Rect*)(*(((WindowPeek)window)->dataHandle)))[0])), (rect))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( Rect * ) GetWindowUserState( WindowRef window, Rect *rect )
+{
+	return ( *( rect ) = ( ( *( ( (WindowPeek)window )->dataHandle ) == NULL ) ? *( rect ) : ( (Rect *)( *( ( (WindowPeek)window )->dataHandle ) ) )[0] ) ), ( rect );
+}
+#else
+#define GetWindowUserState( window, rect ) ( ( *( rect ) = ( ( *( ( (WindowPeek)window )->dataHandle ) == NULL ) ? *( rect ) : ( (Rect *)( *( ( (WindowPeek)window )->dataHandle ) ) )[0] ) ), ( rect ) )
 #endif
-
-
+#endif
 
 /*
  *  SetWindowKind()
@@ -7362,17 +7106,18 @@ GetWindowUserState(
  */
 EXTERN_API( void )
 SetWindowKind(
-  WindowRef   window,
-  short       kind);
+    WindowRef window,
+    short     kind );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(void) SetWindowKind(WindowRef window, short kind) { ((WindowPeek)window)->windowKind = kind; }
-  #else
-    #define SetWindowKind(window, kind) (((WindowPeek)window)->windowKind = kind)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( void ) SetWindowKind( WindowRef window, short kind )
+{
+	( (WindowPeek)window )->windowKind = kind;
+}
+#else
+#define SetWindowKind( window, kind ) ( ( (WindowPeek)window )->windowKind = kind )
 #endif
-
-
+#endif
 
 /*
  *  SetWindowStandardState()
@@ -7384,18 +7129,23 @@ SetWindowKind(
  */
 EXTERN_API( void )
 SetWindowStandardState(
-  WindowRef     window,
-  const Rect *  rect);
+    WindowRef   window,
+    const Rect *rect );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(void) SetWindowStandardState(WindowRef window, const Rect *rect) { Rect* stateRects = (Rect*)(*(((WindowPeek)window)->dataHandle)); if (stateRects != NULL) stateRects[1] = *rect; }
-  #else
-    #define SetWindowStandardState(window, rect) do { Rect* stateRects = (Rect*)(*(((WindowPeek)window)->dataHandle)); if (stateRects != NULL) stateRects[1] = *rect; } while (false)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( void ) SetWindowStandardState( WindowRef window, const Rect *rect )
+{
+	Rect *stateRects = (Rect *)( *( ( (WindowPeek)window )->dataHandle ) );
+	if( stateRects != NULL ) stateRects[1] = *rect;
+}
+#else
+#define SetWindowStandardState( window, rect )                                  \
+	do {                                                                        \
+		Rect *stateRects = (Rect *)( *( ( (WindowPeek)window )->dataHandle ) ); \
+		if( stateRects != NULL ) stateRects[1] = *rect;                         \
+	} while( false )
 #endif
-
-
-
+#endif
 
 /*
  *  SetWindowUserState()
@@ -7407,17 +7157,23 @@ SetWindowStandardState(
  */
 EXTERN_API( void )
 SetWindowUserState(
-  WindowRef     window,
-  const Rect *  rect);
+    WindowRef   window,
+    const Rect *rect );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(void) SetWindowUserState(WindowRef window, const Rect *rect) { Rect* stateRects = (Rect*)(*(((WindowPeek)window)->dataHandle)); if (stateRects != NULL) stateRects[0] = *rect; }
-  #else
-    #define SetWindowUserState(window, rect) do { Rect* stateRects = (Rect*)(*(((WindowPeek)window)->dataHandle)); if (stateRects != NULL) stateRects[0] = *rect; } while (false)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( void ) SetWindowUserState( WindowRef window, const Rect *rect )
+{
+	Rect *stateRects = (Rect *)( *( ( (WindowPeek)window )->dataHandle ) );
+	if( stateRects != NULL ) stateRects[0] = *rect;
+}
+#else
+#define SetWindowUserState( window, rect )                                      \
+	do {                                                                        \
+		Rect *stateRects = (Rect *)( *( ( (WindowPeek)window )->dataHandle ) ); \
+		if( stateRects != NULL ) stateRects[0] = *rect;                         \
+	} while( false )
 #endif
-
-
+#endif
 
 /*
  *  SetPortWindowPort()
@@ -7432,17 +7188,17 @@ SetWindowUserState(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( void )
-SetPortWindowPort(WindowRef window);
+SetPortWindowPort( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(void) SetPortWindowPort(WindowRef window) { MacSetPort((GrafPtr)window); }
-  #else
-    #define SetPortWindowPort(window) (MacSetPort((GrafPtr)window))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( void ) SetPortWindowPort( WindowRef window )
+{
+	MacSetPort( (GrafPtr)window );
+}
+#else
+#define SetPortWindowPort( window ) ( MacSetPort( (GrafPtr)window ) )
 #endif
-
-
-
+#endif
 
 /*
  *  GetWindowPortBounds()
@@ -7454,17 +7210,18 @@ SetPortWindowPort(WindowRef window);
  */
 EXTERN_API( Rect * )
 GetWindowPortBounds(
-  WindowRef   window,
-  Rect *      bounds);
+    WindowRef window,
+    Rect *    bounds );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(Rect *) GetWindowPortBounds(WindowRef window, Rect *bounds) { return ((*(bounds) = (window)->portRect)), (bounds); }
-  #else
-    #define GetWindowPortBounds(window, bounds) (((*(bounds) = (window)->portRect)), (bounds))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( Rect * ) GetWindowPortBounds( WindowRef window, Rect *bounds )
+{
+	return ( ( *( bounds ) = ( window )->portRect ) ), ( bounds );
+}
+#else
+#define GetWindowPortBounds( window, bounds ) ( ( ( *( bounds ) = ( window )->portRect ) ), ( bounds ) )
 #endif
-
-
+#endif
 
 /*
  *  GetWindowFromPort()
@@ -7478,19 +7235,17 @@ GetWindowPortBounds(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( WindowRef )
-GetWindowFromPort(CGrafPtr port);
+GetWindowFromPort( CGrafPtr port );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API(WindowRef ) GetWindowFromPort(CGrafPtr port) { return (WindowRef)port; }
-  #else
-    #define GetWindowFromPort(port) ((WindowRef)port)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API( WindowRef ) GetWindowFromPort( CGrafPtr port )
+{
+	return (WindowRef)port;
+}
+#else
+#define GetWindowFromPort( port ) ( (WindowRef)port )
 #endif
-
-
-
-
-
+#endif
 
 /* old accessors*/
 
@@ -7504,16 +7259,17 @@ GetWindowFromPort(CGrafPtr port);
  *    Mac OS X:         not available
  */
 EXTERN_API_C( Handle )
-GetWindowDataHandle(WindowRef window);
+GetWindowDataHandle( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Handle ) GetWindowDataHandle(WindowRef window) { return ((WindowPeek)window)->dataHandle; }
-  #else
-    #define GetWindowDataHandle(window) (((WindowPeek)window)->dataHandle)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Handle ) GetWindowDataHandle( WindowRef window )
+{
+	return ( (WindowPeek)window )->dataHandle;
+}
+#else
+#define GetWindowDataHandle( window ) ( ( (WindowPeek)window )->dataHandle )
 #endif
-
-
+#endif
 
 /*
  *  SetWindowDataHandle()
@@ -7525,17 +7281,18 @@ GetWindowDataHandle(WindowRef window);
  */
 EXTERN_API_C( void )
 SetWindowDataHandle(
-  WindowRef   window,
-  Handle      data);
+    WindowRef window,
+    Handle    data );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API_C(void) SetWindowDataHandle(WindowRef window, Handle data) { ((WindowPeek)window)->dataHandle = data; }
-  #else
-    #define SetWindowDataHandle(window, data) (((WindowPeek)window)->dataHandle = data)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) SetWindowDataHandle( WindowRef window, Handle data )
+{
+	( (WindowPeek)window )->dataHandle = data;
+}
+#else
+#define SetWindowDataHandle( window, data ) ( ( (WindowPeek)window )->dataHandle = data )
 #endif
-
-
+#endif
 
 /*
  *  GetWindowZoomFlag()
@@ -7546,16 +7303,17 @@ SetWindowDataHandle(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( Boolean )
-GetWindowZoomFlag(WindowRef window);
+GetWindowZoomFlag( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API_C(Boolean ) GetWindowZoomFlag(WindowRef window) { return ((WindowPeek)window)->spareFlag; }
-  #else
-    #define GetWindowZoomFlag(window) (((WindowPeek)window)->spareFlag)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) GetWindowZoomFlag( WindowRef window )
+{
+	return ( (WindowPeek)window )->spareFlag;
+}
+#else
+#define GetWindowZoomFlag( window ) ( ( (WindowPeek)window )->spareFlag )
 #endif
-
-
+#endif
 
 /*
  *  GetWindowStructureRgn()
@@ -7567,17 +7325,18 @@ GetWindowZoomFlag(WindowRef window);
  */
 EXTERN_API_C( void )
 GetWindowStructureRgn(
-  WindowRef   window,
-  RgnHandle   r);
+    WindowRef window,
+    RgnHandle r );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API_C(void) GetWindowStructureRgn(WindowRef window, RgnHandle r) { MacCopyRgn(((WindowPeek)window)->strucRgn, r); }
-  #else
-    #define GetWindowStructureRgn(window, r) (MacCopyRgn(((WindowPeek)window)->strucRgn, r))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) GetWindowStructureRgn( WindowRef window, RgnHandle r )
+{
+	MacCopyRgn( ( (WindowPeek)window )->strucRgn, r );
+}
+#else
+#define GetWindowStructureRgn( window, r ) ( MacCopyRgn( ( (WindowPeek)window )->strucRgn, r ) )
 #endif
-
-
+#endif
 
 /*
  *  GetWindowContentRgn()
@@ -7589,17 +7348,18 @@ GetWindowStructureRgn(
  */
 EXTERN_API_C( void )
 GetWindowContentRgn(
-  WindowRef   window,
-  RgnHandle   r);
+    WindowRef window,
+    RgnHandle r );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API_C(void) GetWindowContentRgn(WindowRef window, RgnHandle r) { MacCopyRgn(((WindowPeek)window)->contRgn, r); }
-  #else
-    #define GetWindowContentRgn(window, r) (MacCopyRgn(((WindowPeek)window)->contRgn, r))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) GetWindowContentRgn( WindowRef window, RgnHandle r )
+{
+	MacCopyRgn( ( (WindowPeek)window )->contRgn, r );
+}
+#else
+#define GetWindowContentRgn( window, r ) ( MacCopyRgn( ( (WindowPeek)window )->contRgn, r ) )
 #endif
-
-
+#endif
 
 /*
  *  GetWindowUpdateRgn()
@@ -7611,17 +7371,18 @@ GetWindowContentRgn(
  */
 EXTERN_API_C( void )
 GetWindowUpdateRgn(
-  WindowRef   window,
-  RgnHandle   r);
+    WindowRef window,
+    RgnHandle r );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API_C(void) GetWindowUpdateRgn(WindowRef window, RgnHandle r) { MacCopyRgn(((WindowPeek)window)->updateRgn, r); }
-  #else
-    #define GetWindowUpdateRgn(window, r) (MacCopyRgn(((WindowPeek)window)->updateRgn, r))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) GetWindowUpdateRgn( WindowRef window, RgnHandle r )
+{
+	MacCopyRgn( ( (WindowPeek)window )->updateRgn, r );
+}
+#else
+#define GetWindowUpdateRgn( window, r ) ( MacCopyRgn( ( (WindowPeek)window )->updateRgn, r ) )
 #endif
-
-
+#endif
 
 /*
  *  GetWindowTitleWidth()
@@ -7632,43 +7393,35 @@ GetWindowUpdateRgn(
  *    Mac OS X:         not available
  */
 EXTERN_API_C( SInt16 )
-GetWindowTitleWidth(WindowRef window);
+GetWindowTitleWidth( WindowRef window );
 #if !OPAQUE_TOOLBOX_STRUCTS && !ACCESSOR_CALLS_ARE_FUNCTIONS
-  #ifdef __cplusplus
-    inline DEFINE_API_C(SInt16 ) GetWindowTitleWidth(WindowRef window) { return ((WindowPeek)window)->titleWidth; }
-  #else
-    #define GetWindowTitleWidth(window) (((WindowPeek)window)->titleWidth)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( SInt16 ) GetWindowTitleWidth( WindowRef window )
+{
+	return ( (WindowPeek)window )->titleWidth;
+}
+#else
+#define GetWindowTitleWidth( window ) ( ( (WindowPeek)window )->titleWidth )
 #endif
-
-
+#endif
 
 /*--------------------------------------------------------------------------------------------------*/
 /* Obsolete symbolic names                                                                          */
 /*--------------------------------------------------------------------------------------------------*/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kWindowGroupAttrSelectable    = kWindowGroupAttrSelectAsLayer,
-  kWindowGroupAttrPositionFixed = kWindowGroupAttrMoveTogether,
-  kWindowGroupAttrZOrderFixed   = kWindowGroupAttrLayerTogether
+	kWindowGroupAttrSelectable = kWindowGroupAttrSelectAsLayer,
+	kWindowGroupAttrPositionFixed = kWindowGroupAttrMoveTogether,
+	kWindowGroupAttrZOrderFixed = kWindowGroupAttrLayerTogether
 };
 
-
-
-
-
-
-
-
-
-
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -7682,4 +7435,3 @@ enum {
 #endif
 
 #endif /* __MACWINDOWS__ */
-

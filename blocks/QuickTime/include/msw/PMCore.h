@@ -44,9 +44,6 @@
 #include <PMDefinitions.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -61,11 +58,11 @@ extern "C" {
 
 #ifndef PM_USE_SESSION_APIS
 #define PM_USE_SESSION_APIS 1
-#endif  /* !defined(PM_USE_SESSION_APIS) */
+#endif /* !defined(PM_USE_SESSION_APIS) */
 
 /* Callbacks */
-typedef CALLBACK_API( void , PMIdleProcPtr )(void);
-typedef STACK_UPP_TYPE(PMIdleProcPtr)                           PMIdleUPP;
+typedef CALLBACK_API( void, PMIdleProcPtr )( void );
+typedef STACK_UPP_TYPE( PMIdleProcPtr ) PMIdleUPP;
 /*
  *  NewPMIdleUPP()
  *  
@@ -75,7 +72,7 @@ typedef STACK_UPP_TYPE(PMIdleProcPtr)                           PMIdleUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( PMIdleUPP )
-NewPMIdleUPP(PMIdleProcPtr userRoutine);
+NewPMIdleUPP( PMIdleProcPtr userRoutine );
 
 /*
  *  DisposePMIdleUPP()
@@ -86,7 +83,7 @@ NewPMIdleUPP(PMIdleProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposePMIdleUPP(PMIdleUPP userUPP);
+DisposePMIdleUPP( PMIdleUPP userUPP );
 
 /*
  *  InvokePMIdleUPP()
@@ -97,7 +94,7 @@ DisposePMIdleUPP(PMIdleUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-InvokePMIdleUPP(PMIdleUPP userUPP);
+InvokePMIdleUPP( PMIdleUPP userUPP );
 
 #if PM_USE_SESSION_APIS
 /*
@@ -110,11 +107,10 @@ InvokePMIdleUPP(PMIdleUPP userUPP);
  */
 EXTERN_API( OSStatus )
 PMSessionCreatePrinterList(
-  PMPrintSession   printSession,
-  CFArrayRef *     printerList,
-  CFIndex *        currentIndex,
-  PMPrinter *      currentPrinter);
-
+    PMPrintSession printSession,
+    CFArrayRef *   printerList,
+    CFIndex *      currentIndex,
+    PMPrinter *    currentPrinter );
 
 /*
  *  PMSessionSetCurrentPrinter()
@@ -126,9 +122,8 @@ PMSessionCreatePrinterList(
  */
 EXTERN_API( OSStatus )
 PMSessionSetCurrentPrinter(
-  PMPrintSession   session,
-  CFStringRef      printerName);
-
+    PMPrintSession session,
+    CFStringRef    printerName );
 
 /*
  *  PMSessionSetDestination()
@@ -191,12 +186,11 @@ PMSessionSetCurrentPrinter(
  */
 EXTERN_API( OSStatus )
 PMSessionSetDestination(
-  PMPrintSession      printSession,
-  PMPrintSettings     printSettings,
-  PMDestinationType   destType,
-  CFStringRef         destFormat,
-  CFURLRef            destLocation);
-
+    PMPrintSession    printSession,
+    PMPrintSettings   printSettings,
+    PMDestinationType destType,
+    CFStringRef       destFormat,
+    CFURLRef          destLocation );
 
 /*
  *  PMSessionGetDestinationType()
@@ -248,10 +242,9 @@ PMSessionSetDestination(
  */
 EXTERN_API( OSStatus )
 PMSessionGetDestinationType(
-  PMPrintSession       printSession,
-  PMPrintSettings      printSettings,
-  PMDestinationType *  destTypeP);
-
+    PMPrintSession     printSession,
+    PMPrintSettings    printSettings,
+    PMDestinationType *destTypeP );
 
 /*
  *  PMSessionCopyDestinationFormat()
@@ -289,10 +282,9 @@ PMSessionGetDestinationType(
  */
 EXTERN_API( OSStatus )
 PMSessionCopyDestinationFormat(
-  PMPrintSession    printSession,
-  PMPrintSettings   printSettings,
-  CFStringRef *     destFormatP);
-
+    PMPrintSession  printSession,
+    PMPrintSettings printSettings,
+    CFStringRef *   destFormatP );
 
 /*
  *  PMSessionCopyDestinationLocation()
@@ -336,10 +328,9 @@ PMSessionCopyDestinationFormat(
  */
 EXTERN_API( OSStatus )
 PMSessionCopyDestinationLocation(
-  PMPrintSession    printSession,
-  PMPrintSettings   printSettings,
-  CFURLRef *        destLocationP);
-
+    PMPrintSession  printSession,
+    PMPrintSettings printSettings,
+    CFURLRef *      destLocationP );
 
 /*
  *  PMSessionCopyOutputFormatList()
@@ -383,11 +374,9 @@ PMSessionCopyDestinationLocation(
  */
 EXTERN_API( OSStatus )
 PMSessionCopyOutputFormatList(
-  PMPrintSession      printSession,
-  PMDestinationType   destType,
-  CFArrayRef *        documentFormatP);
-
-
+    PMPrintSession    printSession,
+    PMDestinationType destType,
+    CFArrayRef *      documentFormatP );
 
 /*
  *  PMSessionCreatePageFormatList()
@@ -428,10 +417,9 @@ PMSessionCopyOutputFormatList(
  */
 EXTERN_API( OSStatus )
 PMSessionCreatePageFormatList(
-  PMPrintSession   printSession,
-  PMPrinter        printer,
-  CFArrayRef *     pageFormatList);
-
+    PMPrintSession printSession,
+    PMPrinter      printer,
+    CFArrayRef *   pageFormatList );
 
 /*
  * SPECIAL AVAILABILITY note: This routine is available in ApplicationsServices.framework in
@@ -450,10 +438,9 @@ PMSessionCreatePageFormatList(
  */
 EXTERN_API( OSStatus )
 PMSessionBeginDocumentNoDialog(
-  PMPrintSession    printSession,
-  PMPrintSettings   printSettings,
-  PMPageFormat      pageFormat);
-
+    PMPrintSession  printSession,
+    PMPrintSettings printSettings,
+    PMPageFormat    pageFormat );
 
 /*
  * SPECIAL AVAILABILITY note: This routine is available in ApplicationsServices.framework in
@@ -471,8 +458,7 @@ PMSessionBeginDocumentNoDialog(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMSessionEndDocumentNoDialog(PMPrintSession printSession);
-
+PMSessionEndDocumentNoDialog( PMPrintSession printSession );
 
 /*
  * SPECIAL AVAILABILITY note: This routine is available in ApplicationsServices.framework in
@@ -491,10 +477,9 @@ PMSessionEndDocumentNoDialog(PMPrintSession printSession);
  */
 EXTERN_API( OSStatus )
 PMSessionBeginPageNoDialog(
-  PMPrintSession   printSession,
-  PMPageFormat     pageFormat,
-  const PMRect *   pageFrame);
-
+    PMPrintSession printSession,
+    PMPageFormat   pageFormat,
+    const PMRect * pageFrame );
 
 /*
  * SPECIAL AVAILABILITY note: This routine is available in ApplicationsServices.framework in
@@ -512,8 +497,7 @@ PMSessionBeginPageNoDialog(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMSessionEndPageNoDialog(PMPrintSession printSession);
-
+PMSessionEndPageNoDialog( PMPrintSession printSession );
 
 #else
 /*
@@ -525,8 +509,7 @@ PMSessionEndPageNoDialog(PMPrintSession printSession);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMSetIdleProc(PMIdleUPP idleProc);
-
+PMSetIdleProc( PMIdleUPP idleProc );
 
 /* Print loop */
 /*
@@ -538,8 +521,7 @@ PMSetIdleProc(PMIdleUPP idleProc);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMBegin(void);
-
+PMBegin( void );
 
 /*
  *  PMEnd()
@@ -550,8 +532,7 @@ PMBegin(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMEnd(void);
-
+PMEnd( void );
 
 /************************/
 /*  Valid only within a PMBeginPage/PMEndPage block. You should retrieve the printing */
@@ -567,9 +548,8 @@ PMEnd(void);
  */
 EXTERN_API( OSStatus )
 PMGetGrafPtr(
-  PMPrintContext   printContext,
-  GrafPtr *        grafPort);
-
+    PMPrintContext printContext,
+    GrafPtr *      grafPort );
 
 /* PMPageFormat */
 /*
@@ -581,8 +561,7 @@ PMGetGrafPtr(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMNewPageFormat(PMPageFormat * pageFormat);
-
+PMNewPageFormat( PMPageFormat *pageFormat );
 
 /*
  *  PMDisposePageFormat()
@@ -593,8 +572,7 @@ PMNewPageFormat(PMPageFormat * pageFormat);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMDisposePageFormat(PMPageFormat pageFormat);
-
+PMDisposePageFormat( PMPageFormat pageFormat );
 
 /*
  *  PMDefaultPageFormat()
@@ -605,8 +583,7 @@ PMDisposePageFormat(PMPageFormat pageFormat);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMDefaultPageFormat(PMPageFormat pageFormat);
-
+PMDefaultPageFormat( PMPageFormat pageFormat );
 
 /*
  *  PMValidatePageFormat()
@@ -618,9 +595,8 @@ PMDefaultPageFormat(PMPageFormat pageFormat);
  */
 EXTERN_API( OSStatus )
 PMValidatePageFormat(
-  PMPageFormat   pageFormat,
-  Boolean *      result);
-
+    PMPageFormat pageFormat,
+    Boolean *    result );
 
 /* PMPrintSettings */
 /*
@@ -632,8 +608,7 @@ PMValidatePageFormat(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMNewPrintSettings(PMPrintSettings * printSettings);
-
+PMNewPrintSettings( PMPrintSettings *printSettings );
 
 /*
  *  PMDisposePrintSettings()
@@ -644,8 +619,7 @@ PMNewPrintSettings(PMPrintSettings * printSettings);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMDisposePrintSettings(PMPrintSettings printSettings);
-
+PMDisposePrintSettings( PMPrintSettings printSettings );
 
 /*
  *  PMDefaultPrintSettings()
@@ -656,8 +630,7 @@ PMDisposePrintSettings(PMPrintSettings printSettings);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMDefaultPrintSettings(PMPrintSettings printSettings);
-
+PMDefaultPrintSettings( PMPrintSettings printSettings );
 
 /*
  *  PMValidatePrintSettings()
@@ -669,9 +642,8 @@ PMDefaultPrintSettings(PMPrintSettings printSettings);
  */
 EXTERN_API( OSStatus )
 PMValidatePrintSettings(
-  PMPrintSettings   printSettings,
-  Boolean *         result);
-
+    PMPrintSettings printSettings,
+    Boolean *       result );
 
 /* Classic Support */
 /*
@@ -683,8 +655,7 @@ PMValidatePrintSettings(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMGeneral(Ptr pData);
-
+PMGeneral( Ptr pData );
 
 /*
  *  PMConvertOldPrintRecord()
@@ -696,10 +667,9 @@ PMGeneral(Ptr pData);
  */
 EXTERN_API( OSStatus )
 PMConvertOldPrintRecord(
-  Handle             printRecordHandle,
-  PMPrintSettings *  printSettings,
-  PMPageFormat *     pageFormat);
-
+    Handle           printRecordHandle,
+    PMPrintSettings *printSettings,
+    PMPageFormat *   pageFormat );
 
 /*
  *  PMMakeOldPrintRecord()
@@ -711,10 +681,9 @@ PMConvertOldPrintRecord(
  */
 EXTERN_API( OSStatus )
 PMMakeOldPrintRecord(
-  PMPrintSettings   printSettings,
-  PMPageFormat      pageFormat,
-  Handle *          printRecordHandle);
-
+    PMPrintSettings printSettings,
+    PMPageFormat    pageFormat,
+    Handle *        printRecordHandle );
 
 /* Driver Information */
 /*
@@ -726,8 +695,7 @@ PMMakeOldPrintRecord(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMIsPostScriptDriver(Boolean * isPostScript);
-
+PMIsPostScriptDriver( Boolean *isPostScript );
 
 /*
  *  PMGetLanguageInfo()
@@ -738,8 +706,7 @@ PMIsPostScriptDriver(Boolean * isPostScript);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMGetLanguageInfo(PMLanguageInfo * info);
-
+PMGetLanguageInfo( PMLanguageInfo *info );
 
 /*
  *  PMGetDriverCreator()
@@ -750,8 +717,7 @@ PMGetLanguageInfo(PMLanguageInfo * info);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMGetDriverCreator(OSType * creator);
-
+PMGetDriverCreator( OSType *creator );
 
 /*
  *  PMGetDriverReleaseInfo()
@@ -762,8 +728,7 @@ PMGetDriverCreator(OSType * creator);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMGetDriverReleaseInfo(VersRec * release);
-
+PMGetDriverReleaseInfo( VersRec *release );
 
 /*
  *  PMGetPrinterResolutionCount()
@@ -774,8 +739,7 @@ PMGetDriverReleaseInfo(VersRec * release);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMGetPrinterResolutionCount(UInt32 * count);
-
+PMGetPrinterResolutionCount( UInt32 *count );
 
 /*
  *  PMGetPrinterResolution()
@@ -787,9 +751,8 @@ PMGetPrinterResolutionCount(UInt32 * count);
  */
 EXTERN_API( OSStatus )
 PMGetPrinterResolution(
-  PMTag           tag,
-  PMResolution *  res);
-
+    PMTag         tag,
+    PMResolution *res );
 
 /*
  *  PMGetIndexedPrinterResolution()
@@ -801,9 +764,8 @@ PMGetPrinterResolution(
  */
 EXTERN_API( OSStatus )
 PMGetIndexedPrinterResolution(
-  UInt32          index,
-  PMResolution *  res);
-
+    UInt32        index,
+    PMResolution *res );
 
 /************************/
 /*  PMEnableColorSync and PMDisableColorSync are valid within */
@@ -819,8 +781,7 @@ PMGetIndexedPrinterResolution(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMEnableColorSync(void);
-
+PMEnableColorSync( void );
 
 /*
  *  PMDisableColorSync()
@@ -831,8 +792,7 @@ PMEnableColorSync(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMDisableColorSync(void);
-
+PMDisableColorSync( void );
 
 /************************/
 /*  The PMPostScriptxxx calls are valid within a */
@@ -847,8 +807,7 @@ PMDisableColorSync(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMPostScriptBegin(void);
-
+PMPostScriptBegin( void );
 
 /*
  *  PMPostScriptEnd()
@@ -859,8 +818,7 @@ PMPostScriptBegin(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMPostScriptEnd(void);
-
+PMPostScriptEnd( void );
 
 /************************/
 /*  These PMPostScriptxxx calls are valid within a */
@@ -875,8 +833,7 @@ PMPostScriptEnd(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMPostScriptHandle(Handle psHandle);
-
+PMPostScriptHandle( Handle psHandle );
 
 /*
  *  PMPostScriptData()
@@ -888,9 +845,8 @@ PMPostScriptHandle(Handle psHandle);
  */
 EXTERN_API( OSStatus )
 PMPostScriptData(
-  Ptr    psPtr,
-  Size   len);
-
+    Ptr  psPtr,
+    Size len );
 
 /*
  *  PMPostScriptFile()
@@ -901,8 +857,7 @@ PMPostScriptData(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMPostScriptFile(FSSpec * psFile);
-
+PMPostScriptFile( FSSpec *psFile );
 
 /* Error */
 /*
@@ -914,8 +869,7 @@ PMPostScriptFile(FSSpec * psFile);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMError(void);
-
+PMError( void );
 
 /*
  *  PMSetError()
@@ -926,10 +880,9 @@ PMError(void);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-PMSetError(OSStatus printError);
+PMSetError( OSStatus printError );
 
-
-#endif  /* PM_USE_SESSION_APIS */
+#endif /* PM_USE_SESSION_APIS */
 
 /* PMPageFormat */
 /*
@@ -942,9 +895,8 @@ PMSetError(OSStatus printError);
  */
 EXTERN_API( OSStatus )
 PMCopyPageFormat(
-  PMPageFormat   formatSrc,
-  PMPageFormat   formatDest);
-
+    PMPageFormat formatSrc,
+    PMPageFormat formatDest );
 
 /************************/
 /*  Flattening a page format should only be necessary if you intend to preserve */
@@ -965,9 +917,8 @@ PMCopyPageFormat(
  */
 EXTERN_API( OSStatus )
 PMFlattenPageFormat(
-  PMPageFormat   pageFormat,
-  Handle *       flatFormat);
-
+    PMPageFormat pageFormat,
+    Handle *     flatFormat );
 
 /*
  *  PMUnflattenPageFormat()
@@ -979,9 +930,8 @@ PMFlattenPageFormat(
  */
 EXTERN_API( OSStatus )
 PMUnflattenPageFormat(
-  Handle          flatFormat,
-  PMPageFormat *  pageFormat);
-
+    Handle        flatFormat,
+    PMPageFormat *pageFormat );
 
 /* PMPageFormat Accessors */
 /************************/
@@ -1008,11 +958,10 @@ PMUnflattenPageFormat(
  */
 EXTERN_API( OSStatus )
 PMGetPageFormatExtendedData(
-  PMPageFormat   pageFormat,
-  OSType         dataID,
-  UInt32 *       size,
-  void *         extendedData);
-
+    PMPageFormat pageFormat,
+    OSType       dataID,
+    UInt32 *     size,
+    void *       extendedData );
 
 /*
  *  PMSetPageFormatExtendedData()
@@ -1024,11 +973,10 @@ PMGetPageFormatExtendedData(
  */
 EXTERN_API( OSStatus )
 PMSetPageFormatExtendedData(
-  PMPageFormat   pageFormat,
-  OSType         dataID,
-  UInt32         size,
-  void *         extendedData);
-
+    PMPageFormat pageFormat,
+    OSType       dataID,
+    UInt32       size,
+    void *       extendedData );
 
 /************************/
 /*  A value of 100.0 means 100% (no scaling). 50.0 means 50% scaling */
@@ -1043,9 +991,8 @@ PMSetPageFormatExtendedData(
  */
 EXTERN_API( OSStatus )
 PMGetScale(
-  PMPageFormat   pageFormat,
-  double *       scale);
-
+    PMPageFormat pageFormat,
+    double *     scale );
 
 /*
  *  PMSetScale()
@@ -1057,9 +1004,8 @@ PMGetScale(
  */
 EXTERN_API( OSStatus )
 PMSetScale(
-  PMPageFormat   pageFormat,
-  double         scale);
-
+    PMPageFormat pageFormat,
+    double       scale );
 
 /************************/
 /*  This is the drawing resolution of an app. This should not be confused with */
@@ -1076,9 +1022,8 @@ PMSetScale(
  */
 EXTERN_API( OSStatus )
 PMGetResolution(
-  PMPageFormat    pageFormat,
-  PMResolution *  res);
-
+    PMPageFormat  pageFormat,
+    PMResolution *res );
 
 /*
  *  PMSetResolution()
@@ -1090,9 +1035,8 @@ PMGetResolution(
  */
 EXTERN_API( OSStatus )
 PMSetResolution(
-  PMPageFormat          pageFormat,
-  const PMResolution *  res);
-
+    PMPageFormat        pageFormat,
+    const PMResolution *res );
 
 /************************/
 /*  This is the physical size of the paper without regard to resolution, orientation */
@@ -1108,9 +1052,8 @@ PMSetResolution(
  */
 EXTERN_API( OSStatus )
 PMGetPhysicalPaperSize(
-  PMPageFormat   pageFormat,
-  PMRect *       paperSize);
-
+    PMPageFormat pageFormat,
+    PMRect *     paperSize );
 
 /*
  *  PMSetPhysicalPaperSize()
@@ -1122,9 +1065,8 @@ PMGetPhysicalPaperSize(
  */
 EXTERN_API( OSStatus )
 PMSetPhysicalPaperSize(
-  PMPageFormat    pageFormat,
-  const PMRect *  paperSize);
-
+    PMPageFormat  pageFormat,
+    const PMRect *paperSize );
 
 /************************/
 /*  This is the physical size of the page without regard to resolution, orientation */
@@ -1140,9 +1082,8 @@ PMSetPhysicalPaperSize(
  */
 EXTERN_API( OSStatus )
 PMGetPhysicalPageSize(
-  PMPageFormat   pageFormat,
-  PMRect *       pageSize);
-
+    PMPageFormat pageFormat,
+    PMRect *     pageSize );
 
 /*
  *  PMGetAdjustedPaperRect()
@@ -1154,9 +1095,8 @@ PMGetPhysicalPageSize(
  */
 EXTERN_API( OSStatus )
 PMGetAdjustedPaperRect(
-  PMPageFormat   pageFormat,
-  PMRect *       paperRect);
-
+    PMPageFormat pageFormat,
+    PMRect *     paperRect );
 
 /*
  *  PMGetAdjustedPageRect()
@@ -1168,9 +1108,8 @@ PMGetAdjustedPaperRect(
  */
 EXTERN_API( OSStatus )
 PMGetAdjustedPageRect(
-  PMPageFormat   pageFormat,
-  PMRect *       pageRect);
-
+    PMPageFormat pageFormat,
+    PMRect *     pageRect );
 
 /*
  *  PMGetUnadjustedPaperRect()
@@ -1182,9 +1121,8 @@ PMGetAdjustedPageRect(
  */
 EXTERN_API( OSStatus )
 PMGetUnadjustedPaperRect(
-  PMPageFormat   pageFormat,
-  PMRect *       paperRect);
-
+    PMPageFormat pageFormat,
+    PMRect *     paperRect );
 
 /*
  *  PMSetUnadjustedPaperRect()
@@ -1196,9 +1134,8 @@ PMGetUnadjustedPaperRect(
  */
 EXTERN_API( OSStatus )
 PMSetUnadjustedPaperRect(
-  PMPageFormat    pageFormat,
-  const PMRect *  paperRect);
-
+    PMPageFormat  pageFormat,
+    const PMRect *paperRect );
 
 /*
  *  PMGetUnadjustedPageRect()
@@ -1210,9 +1147,8 @@ PMSetUnadjustedPaperRect(
  */
 EXTERN_API( OSStatus )
 PMGetUnadjustedPageRect(
-  PMPageFormat   pageFormat,
-  PMRect *       pageRect);
-
+    PMPageFormat pageFormat,
+    PMRect *     pageRect );
 
 /*
  *  PMSetAdjustedPageRect()
@@ -1224,9 +1160,8 @@ PMGetUnadjustedPageRect(
  */
 EXTERN_API( OSStatus )
 PMSetAdjustedPageRect(
-  PMPageFormat    pageFormat,
-  const PMRect *  pageRect);
-
+    PMPageFormat  pageFormat,
+    const PMRect *pageRect );
 
 /*
  *  PMGetOrientation()
@@ -1238,9 +1173,8 @@ PMSetAdjustedPageRect(
  */
 EXTERN_API( OSStatus )
 PMGetOrientation(
-  PMPageFormat     pageFormat,
-  PMOrientation *  orientation);
-
+    PMPageFormat   pageFormat,
+    PMOrientation *orientation );
 
 /*
  *  PMSetOrientation()
@@ -1252,10 +1186,9 @@ PMGetOrientation(
  */
 EXTERN_API( OSStatus )
 PMSetOrientation(
-  PMPageFormat    pageFormat,
-  PMOrientation   orientation,
-  Boolean         lock);
-
+    PMPageFormat  pageFormat,
+    PMOrientation orientation,
+    Boolean       lock );
 
 /* PMPrintSettings */
 /*
@@ -1268,9 +1201,8 @@ PMSetOrientation(
  */
 EXTERN_API( OSStatus )
 PMCopyPrintSettings(
-  PMPrintSettings   settingSrc,
-  PMPrintSettings   settingDest);
-
+    PMPrintSettings settingSrc,
+    PMPrintSettings settingDest );
 
 /************************/
 /*  Flattening a print settings should only be necessary if you intend to preserve */
@@ -1291,9 +1223,8 @@ PMCopyPrintSettings(
  */
 EXTERN_API( OSStatus )
 PMFlattenPrintSettings(
-  PMPrintSettings   printSettings,
-  Handle *          flatSettings);
-
+    PMPrintSettings printSettings,
+    Handle *        flatSettings );
 
 /*
  *  PMUnflattenPrintSettings()
@@ -1305,9 +1236,8 @@ PMFlattenPrintSettings(
  */
 EXTERN_API( OSStatus )
 PMUnflattenPrintSettings(
-  Handle             flatSettings,
-  PMPrintSettings *  printSettings);
-
+    Handle           flatSettings,
+    PMPrintSettings *printSettings );
 
 /* PMPrintSettings Accessors */
 /*
@@ -1320,11 +1250,10 @@ PMUnflattenPrintSettings(
  */
 EXTERN_API( OSStatus )
 PMGetPrintSettingsExtendedData(
-  PMPrintSettings   printSettings,
-  OSType            dataID,
-  UInt32 *          size,
-  void *            extendedData);
-
+    PMPrintSettings printSettings,
+    OSType          dataID,
+    UInt32 *        size,
+    void *          extendedData );
 
 /*
  *  PMSetPrintSettingsExtendedData()
@@ -1336,11 +1265,10 @@ PMGetPrintSettingsExtendedData(
  */
 EXTERN_API( OSStatus )
 PMSetPrintSettingsExtendedData(
-  PMPrintSettings   printSettings,
-  OSType            dataID,
-  UInt32            size,
-  void *            extendedData);
-
+    PMPrintSettings printSettings,
+    OSType          dataID,
+    UInt32          size,
+    void *          extendedData );
 
 /*
  *  PMGetDestination()
@@ -1352,10 +1280,9 @@ PMSetPrintSettingsExtendedData(
  */
 EXTERN_API( OSStatus )
 PMGetDestination(
-  PMPrintSettings      printSettings,
-  PMDestinationType *  destType,
-  CFURLRef *           fileURL);
-
+    PMPrintSettings    printSettings,
+    PMDestinationType *destType,
+    CFURLRef *         fileURL );
 
 /*
  *  PMGetJobName()
@@ -1367,9 +1294,8 @@ PMGetDestination(
  */
 EXTERN_API( OSStatus )
 PMGetJobName(
-  PMPrintSettings   printSettings,
-  StringPtr         name);
-
+    PMPrintSettings printSettings,
+    StringPtr       name );
 
 /*
  *  PMSetJobName()
@@ -1381,9 +1307,8 @@ PMGetJobName(
  */
 EXTERN_API( OSStatus )
 PMSetJobName(
-  PMPrintSettings   printSettings,
-  StringPtr         name);
-
+    PMPrintSettings printSettings,
+    StringPtr       name );
 
 /*
  *  PMGetCopies()
@@ -1395,9 +1320,8 @@ PMSetJobName(
  */
 EXTERN_API( OSStatus )
 PMGetCopies(
-  PMPrintSettings   printSettings,
-  UInt32 *          copies);
-
+    PMPrintSettings printSettings,
+    UInt32 *        copies );
 
 /*
  *  PMSetCopies()
@@ -1409,10 +1333,9 @@ PMGetCopies(
  */
 EXTERN_API( OSStatus )
 PMSetCopies(
-  PMPrintSettings   printSettings,
-  UInt32            copies,
-  Boolean           lock);
-
+    PMPrintSettings printSettings,
+    UInt32          copies,
+    Boolean         lock );
 
 /*
  *  PMGetFirstPage()
@@ -1424,9 +1347,8 @@ PMSetCopies(
  */
 EXTERN_API( OSStatus )
 PMGetFirstPage(
-  PMPrintSettings   printSettings,
-  UInt32 *          first);
-
+    PMPrintSettings printSettings,
+    UInt32 *        first );
 
 /*
  *  PMSetFirstPage()
@@ -1438,10 +1360,9 @@ PMGetFirstPage(
  */
 EXTERN_API( OSStatus )
 PMSetFirstPage(
-  PMPrintSettings   printSettings,
-  UInt32            first,
-  Boolean           lock);
-
+    PMPrintSettings printSettings,
+    UInt32          first,
+    Boolean         lock );
 
 /*
  *  PMGetLastPage()
@@ -1453,9 +1374,8 @@ PMSetFirstPage(
  */
 EXTERN_API( OSStatus )
 PMGetLastPage(
-  PMPrintSettings   printSettings,
-  UInt32 *          last);
-
+    PMPrintSettings printSettings,
+    UInt32 *        last );
 
 /*
  *  PMSetLastPage()
@@ -1467,10 +1387,9 @@ PMGetLastPage(
  */
 EXTERN_API( OSStatus )
 PMSetLastPage(
-  PMPrintSettings   printSettings,
-  UInt32            last,
-  Boolean           lock);
-
+    PMPrintSettings printSettings,
+    UInt32          last,
+    Boolean         lock );
 
 /************************/
 /*  The default page range is from 1-32000. The page range is something that is */
@@ -1488,10 +1407,9 @@ PMSetLastPage(
  */
 EXTERN_API( OSStatus )
 PMGetPageRange(
-  PMPrintSettings   printSettings,
-  UInt32 *          minPage,
-  UInt32 *          maxPage);
-
+    PMPrintSettings printSettings,
+    UInt32 *        minPage,
+    UInt32 *        maxPage );
 
 /************************/
 /* The first and last page are immediately clipped to the new range */
@@ -1506,10 +1424,9 @@ PMGetPageRange(
  */
 EXTERN_API( OSStatus )
 PMSetPageRange(
-  PMPrintSettings   printSettings,
-  UInt32            minPage,
-  UInt32            maxPage);
-
+    PMPrintSettings printSettings,
+    UInt32          minPage,
+    UInt32          maxPage );
 
 /*
  *  PMSetProfile()
@@ -1521,10 +1438,9 @@ PMSetPageRange(
  */
 EXTERN_API( OSStatus )
 PMSetProfile(
-  PMPrintSettings            printSettings,
-  PMTag                      tag,
-  const CMProfileLocation *  profile);
-
+    PMPrintSettings          printSettings,
+    PMTag                    tag,
+    const CMProfileLocation *profile );
 
 /*
  *  PMSetCollate()
@@ -1536,9 +1452,8 @@ PMSetProfile(
  */
 EXTERN_API( OSStatus )
 PMSetCollate(
-  PMPrintSettings   printSettings,
-  Boolean           collate);
-
+    PMPrintSettings printSettings,
+    Boolean         collate );
 
 /*
  *  PMGetCollate()
@@ -1550,9 +1465,8 @@ PMSetCollate(
  */
 EXTERN_API( OSStatus )
 PMGetCollate(
-  PMPrintSettings   printSettings,
-  Boolean *         collate);
-
+    PMPrintSettings printSettings,
+    Boolean *       collate );
 
 /*
  *  PMServerCreatePrinterList()
@@ -1564,9 +1478,8 @@ PMGetCollate(
  */
 EXTERN_API( OSStatus )
 PMServerCreatePrinterList(
-  PMServer      server,
-  CFArrayRef *  printerList);
-
+    PMServer    server,
+    CFArrayRef *printerList );
 
 /*
  *  PMPrinterGetName()
@@ -1577,8 +1490,7 @@ PMServerCreatePrinterList(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( CFStringRef )
-PMPrinterGetName(PMPrinter printer);
-
+PMPrinterGetName( PMPrinter printer );
 
 /*
  *  PMPrinterGetID()
@@ -1589,8 +1501,7 @@ PMPrinterGetName(PMPrinter printer);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( CFStringRef )
-PMPrinterGetID(PMPrinter printer);
-
+PMPrinterGetID( PMPrinter printer );
 
 /*
  *  PMPrinterIsDefault()
@@ -1601,8 +1512,7 @@ PMPrinterGetID(PMPrinter printer);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( Boolean )
-PMPrinterIsDefault(PMPrinter printer);
-
+PMPrinterIsDefault( PMPrinter printer );
 
 /*
  *  PMPrinterGetLocation()
@@ -1613,8 +1523,7 @@ PMPrinterIsDefault(PMPrinter printer);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( CFStringRef )
-PMPrinterGetLocation(PMPrinter printer);
-
+PMPrinterGetLocation( PMPrinter printer );
 
 /*
  *  PMPrinterGetState()
@@ -1626,9 +1535,8 @@ PMPrinterGetLocation(PMPrinter printer);
  */
 EXTERN_API( OSStatus )
 PMPrinterGetState(
-  PMPrinter         printer,
-  PMPrinterState *  state);
-
+    PMPrinter       printer,
+    PMPrinterState *state );
 
 /*
  *  PMPrinterGetDeviceURI()
@@ -1657,10 +1565,8 @@ PMPrinterGetState(
  */
 EXTERN_API( OSStatus )
 PMPrinterGetDeviceURI(
-  PMPrinter   printer,
-  CFURLRef *  deviceURI);
-
-
+    PMPrinter printer,
+    CFURLRef *deviceURI );
 
 /*
  *  PMPrinterIsFavorite()
@@ -1674,8 +1580,7 @@ PMPrinterGetDeviceURI(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( Boolean )
-PMPrinterIsFavorite(PMPrinter printer);
-
+PMPrinterIsFavorite( PMPrinter printer );
 
 /*
  *  PMCGImageCreateWithEPSDataProvider()
@@ -1736,10 +1641,8 @@ PMPrinterIsFavorite(PMPrinter printer);
  */
 EXTERN_API( CGImageRef )
 PMCGImageCreateWithEPSDataProvider(
-  CGDataProviderRef   epsDataProvider,
-  CGImageRef          epsPreview);
-
-
+    CGDataProviderRef epsDataProvider,
+    CGImageRef        epsPreview );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -1752,4 +1655,3 @@ PMCGImageCreateWithEPSDataProvider(
 #endif
 
 #endif /* __PMCORE__ */
-

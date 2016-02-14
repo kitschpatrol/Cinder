@@ -24,11 +24,12 @@
 
 #if defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )
 
-#include "cinder/gl/Vbo.h"
 #include "cinder/gl/Context.h"
 #include "cinder/gl/Environment.h"
+#include "cinder/gl/Vbo.h"
 
-namespace cinder { namespace gl {
+namespace cinder {
+namespace gl {
 
 namespace {
 
@@ -42,7 +43,7 @@ class TransformFeedbackObjImplHardware : public TransformFeedbackObj {
 	{
 		glDeleteTransformFeedbacks( 1, &mId );
 	}
-	
+
 	void bindImpl( Context *context )
 	{
 		glBindTransformFeedback( GL_TRANSFORM_FEEDBACK, mId );
@@ -71,14 +72,14 @@ class TransformFeedbackObjImplSoftware : public TransformFeedbackObj {
 	~TransformFeedbackObjImplSoftware()
 	{
 	}
-	
+
 	void bindImpl( class Context *context )
 	{
 		for( auto bufferIt = mBufferBases.begin(); bufferIt != mBufferBases.end(); bufferIt++ ) {
 			glBindBufferBase( GL_TRANSFORM_FEEDBACK_BUFFER, bufferIt->first, bufferIt->second->getId() );
 		}
 	}
-	
+
 	void unbindImpl( class Context *context )
 	{
 	}
@@ -86,7 +87,7 @@ class TransformFeedbackObjImplSoftware : public TransformFeedbackObj {
 	void setIndex( int index, BufferObjRef buffer )
 	{
 		bool changed = false;
-		
+
 		auto exists = mBufferBases.find( index );
 		if( exists == mBufferBases.end() ) {
 			mBufferBases.insert( std::pair<int, BufferObjRef>( index, buffer ) );
@@ -98,7 +99,7 @@ class TransformFeedbackObjImplSoftware : public TransformFeedbackObj {
 				changed = true;
 			}
 		}
-		
+
 		if( changed ) {
 			glBindBufferBase( GL_TRANSFORM_FEEDBACK_BUFFER, index, buffer->getId() );
 		}
@@ -109,7 +110,7 @@ class TransformFeedbackObjImplSoftware : public TransformFeedbackObj {
 
 TransformFeedbackObjRef TransformFeedbackObj::create()
 {
-	if( ! glGenTransformFeedbacks ) {
+	if( !glGenTransformFeedbacks ) {
 		return TransformFeedbackObjRef( new TransformFeedbackObjImplSoftware() );
 	}
 	else {
@@ -152,7 +153,7 @@ void TransformFeedbackObj::setLabel( const std::string &label )
 	mLabel = label;
 	env()->objectLabel( GL_TRANSFORM_FEEDBACK, mId, (GLsizei)label.size(), label.c_str() );
 }
-
-} } // cinder::gl
+}
+} // cinder::gl
 
 #endif // defined( CINDER_GL_HAS_TRANSFORM_FEEDBACK )

@@ -36,9 +36,6 @@
 #include <CFMachPort.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -52,25 +49,24 @@ extern "C" {
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __CGREMOTEOPERATION__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __CGREMOTEOPERATION__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __CGREMOTEOPERATION__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __CGREMOTEOPERATION__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
-typedef CGError                         CGEventErr;
+typedef CGError CGEventErr;
 enum {
-  CGEventNoErr                  = kCGErrorSuccess
+	CGEventNoErr = kCGErrorSuccess
 };
-
 
 /* Screen refresh or drawing notification */
 /*
@@ -95,8 +91,8 @@ enum {
  * when mirroring is active.  Use the CGGetDisplaysWithRect() to determine
  * the displays a rectangle occupies.
  */
-typedef u_int32_t                       CGRectCount;
-typedef CALLBACK_API_C( void , CGScreenRefreshCallback )(CGRectCount count, const CGRect *rectArray, void *userParameter);
+typedef u_int32_t CGRectCount;
+typedef CALLBACK_API_C( void, CGScreenRefreshCallback )( CGRectCount count, const CGRect *rectArray, void *userParameter );
 /*
  * Register a callback function to be invoked when an area of the display
  * is refreshed, or modified.  The function is invoked on the same thread
@@ -113,9 +109,8 @@ typedef CALLBACK_API_C( void , CGScreenRefreshCallback )(CGRectCount count, cons
  */
 EXTERN_API_C( void )
 CGRegisterScreenRefreshCallback(
-  CGScreenRefreshCallback   callback,
-  void *                    userParameter);
-
+    CGScreenRefreshCallback callback,
+    void *                  userParameter );
 
 /*
  * Remove a previously registered calback function.
@@ -131,10 +126,8 @@ CGRegisterScreenRefreshCallback(
  */
 EXTERN_API_C( void )
 CGUnregisterScreenRefreshCallback(
-  CGScreenRefreshCallback   callback,
-  void *                    userParameter);
-
-
+    CGScreenRefreshCallback callback,
+    void *                  userParameter );
 
 /*
  * In some applications it may be preferable to have a seperate thread wait for screen refresh data.
@@ -157,9 +150,8 @@ CGUnregisterScreenRefreshCallback(
  */
 EXTERN_API_C( CGEventErr )
 CGWaitForScreenRefreshRects(
-  CGRect **      pRectArray,
-  CGRectCount *  pCount);
-
+    CGRect **    pRectArray,
+    CGRectCount *pCount );
 
 /*
  * Deallocate the list of rects recieved from CGWaitForScreenRefreshRects()
@@ -173,8 +165,7 @@ CGWaitForScreenRefreshRects(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGReleaseScreenRefreshRects(CGRect * rectArray);
-
+CGReleaseScreenRefreshRects( CGRect *rectArray );
 
 /*
  * Posting events: These functions post events into the system.  Use for remote
@@ -202,7 +193,7 @@ CGReleaseScreenRefreshRects(CGRect * rectArray);
  * mouse button (right), if any. A third value woule be the center button, and the remaining
  * buttons would be in USB device order.
  */
-typedef u_int32_t                       CGButtonCount;
+typedef u_int32_t CGButtonCount;
 /*
  *  CGPostMouseEvent()
  *  
@@ -213,12 +204,11 @@ typedef u_int32_t                       CGButtonCount;
  */
 EXTERN_API_C( CGEventErr )
 CGPostMouseEvent(
-  CGPoint         mouseCursorPosition,
-  boolean_t       updateMouseCursorPosition,
-  CGButtonCount   buttonCount,
-  boolean_t       mouseButtonDown,
-  ...);
-
+    CGPoint       mouseCursorPosition,
+    boolean_t     updateMouseCursorPosition,
+    CGButtonCount buttonCount,
+    boolean_t     mouseButtonDown,
+    ... );
 
 /*
  * Synthesize scroll wheel events.
@@ -234,7 +224,7 @@ CGPostMouseEvent(
  * typically in a range from -10 to +10.  Large values may have unexpected results,
  * depending on the  application that processes the event.
  */
-typedef u_int32_t                       CGWheelCount;
+typedef u_int32_t CGWheelCount;
 /*
  *  CGPostScrollWheelEvent()
  *  
@@ -245,10 +235,9 @@ typedef u_int32_t                       CGWheelCount;
  */
 EXTERN_API_C( CGEventErr )
 CGPostScrollWheelEvent(
-  CGWheelCount   wheelCount,
-  int32_t        wheel1,
-  ...);
-
+    CGWheelCount wheelCount,
+    int32_t      wheel1,
+    ... );
 
 /*
  * Synthesize keyboard events.  Based on the values entered,
@@ -265,8 +254,8 @@ CGPostScrollWheelEvent(
  *  CGPostKeyboardEvent( (CGCharCode)'Z', (CGKeyCode)6, false ); // 'z' up
  *  CGPostKeyboardEvent( (CGCharCode)0, (CGKeyCode)56, false ); // 'shift up
  */
-typedef u_int16_t                       CGCharCode;
-typedef u_int16_t                       CGKeyCode;
+typedef u_int16_t CGCharCode;
+typedef u_int16_t CGKeyCode;
 /*
  *  CGPostKeyboardEvent()
  *  
@@ -277,10 +266,9 @@ typedef u_int16_t                       CGKeyCode;
  */
 EXTERN_API_C( CGEventErr )
 CGPostKeyboardEvent(
-  CGCharCode   keyChar,
-  CGKeyCode    virtualKey,
-  boolean_t    keyDown);
-
+    CGCharCode keyChar,
+    CGKeyCode  virtualKey,
+    boolean_t  keyDown );
 
 /*
  * Warp the mouse cursor to the desired position in global
@@ -295,8 +283,7 @@ CGPostKeyboardEvent(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGEventErr )
-CGWarpMouseCursorPosition(CGPoint newCursorPosition);
-
+CGWarpMouseCursorPosition( CGPoint newCursorPosition );
 
 /*
  * Remote operation may want to inhibit local events (events from
@@ -319,8 +306,7 @@ CGWarpMouseCursorPosition(CGPoint newCursorPosition);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGEventErr )
-CGInhibitLocalEvents(boolean_t doInhibit);
-
+CGInhibitLocalEvents( boolean_t doInhibit );
 
 /*
  * Set the period of time in seconds that local hardware events (keyboard and mouse)
@@ -335,8 +321,7 @@ CGInhibitLocalEvents(boolean_t doInhibit);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGEventErr )
-CGSetLocalEventsSuppressionInterval(CFTimeInterval seconds);
-
+CGSetLocalEventsSuppressionInterval( CFTimeInterval seconds );
 
 /*
  * By default, the flags that indicate modifier key state (Command, Alt, Shift, etc.)
@@ -363,8 +348,7 @@ CGSetLocalEventsSuppressionInterval(CFTimeInterval seconds);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( CGEventErr )
-CGEnableEventStateCombining(boolean_t doCombineState);
-
+CGEnableEventStateCombining( boolean_t doCombineState );
 
 /*
  * By default the system supresses local hardware events from the keyboard and mouse during
@@ -378,17 +362,17 @@ CGEnableEventStateCombining(boolean_t doCombineState);
  * a mask of event categories to be passed through.
  */
 enum CGEventFilterMask {
-  kCGEventFilterMaskPermitLocalMouseEvents = 0x00000001, /* Mouse, scroll wheel */
-  kCGEventFilterMaskPermitLocalKeyboardEvents = 0x00000002, /* Alphanumeric keys and Command, Option, Control, Shift, AlphaLock */
-  kCGEventFilterMaskPermitSystemDefinedEvents = 0x00000004, /* Power key, bezel buttons, sticky keys */
-  kCGEventFilterMaskPermitAllEvents = kCGEventFilterMaskPermitLocalMouseEvents | kCGEventFilterMaskPermitLocalKeyboardEvents | kCGEventFilterMaskPermitSystemDefinedEvents
+	kCGEventFilterMaskPermitLocalMouseEvents = 0x00000001, /* Mouse, scroll wheel */
+	kCGEventFilterMaskPermitLocalKeyboardEvents = 0x00000002, /* Alphanumeric keys and Command, Option, Control, Shift, AlphaLock */
+	kCGEventFilterMaskPermitSystemDefinedEvents = 0x00000004, /* Power key, bezel buttons, sticky keys */
+	kCGEventFilterMaskPermitAllEvents = kCGEventFilterMaskPermitLocalMouseEvents | kCGEventFilterMaskPermitLocalKeyboardEvents | kCGEventFilterMaskPermitSystemDefinedEvents
 };
 typedef enum CGEventFilterMask CGEventFilterMask;
 
 enum CGEventSupressionState {
-  kCGEventSupressionStateSupressionInterval = 0,
-  kCGEventSupressionStateRemoteMouseDrag = 1,
-  kCGNumberOfEventSupressionStates = 2
+	kCGEventSupressionStateSupressionInterval = 0,
+	kCGEventSupressionStateRemoteMouseDrag = 1,
+	kCGNumberOfEventSupressionStates = 2
 };
 typedef enum CGEventSupressionState CGEventSupressionState;
 
@@ -402,9 +386,8 @@ typedef enum CGEventSupressionState CGEventSupressionState;
  */
 EXTERN_API_C( CGEventErr )
 CGSetLocalEventsFilterDuringSupressionState(
-  CGEventFilterMask        filter,
-  CGEventSupressionState   state);
-
+    CGEventFilterMask      filter,
+    CGEventSupressionState state );
 
 /*
  * Helper function to connect or disconnect the mouse and mouse cursor.
@@ -435,8 +418,7 @@ CGSetLocalEventsFilterDuringSupressionState(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGEventErr )
-CGAssociateMouseAndMouseCursorPosition(boolean_t connected);
-
+CGAssociateMouseAndMouseCursorPosition( boolean_t connected );
 
 /*
  * Some classes of applications need to detect when the window server process dies, or
@@ -485,19 +467,17 @@ CGAssociateMouseAndMouseCursorPosition(boolean_t connected);
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( CFMachPortRef )
-CGWindowServerCFMachPort(void);
-
-
+CGWindowServerCFMachPort( void );
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __CGREMOTEOPERATION__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __CGREMOTEOPERATION__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__CGREMOTEOPERATION__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __CGREMOTEOPERATION__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -511,4 +491,3 @@ CGWindowServerCFMachPort(void);
 #endif
 
 #endif /* CGREMOTEOPERATION_H_ */
-

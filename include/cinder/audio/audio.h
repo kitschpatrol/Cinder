@@ -36,20 +36,20 @@
 #include "cinder/audio/WaveTable.h"
 
 // audio::Nodes
+#include "cinder/audio/ChannelRouterNode.h"
+#include "cinder/audio/GenNode.h"
+#include "cinder/audio/InputNode.h"
+#include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/Node.h"
 #include "cinder/audio/NodeEffects.h"
 #include "cinder/audio/NodeMath.h"
-#include "cinder/audio/ChannelRouterNode.h"
-#include "cinder/audio/GenNode.h"
-#include "cinder/audio/MonitorNode.h"
-#include "cinder/audio/InputNode.h"
 #include "cinder/audio/OutputNode.h"
 #include "cinder/audio/SamplePlayerNode.h"
 #include "cinder/audio/SampleRecorderNode.h"
 
 // audio::dsp
-#include "cinder/audio/dsp/Dsp.h"
 #include "cinder/audio/dsp/Biquad.h"
 #include "cinder/audio/dsp/Converter.h"
+#include "cinder/audio/dsp/Dsp.h"
 #include "cinder/audio/dsp/Fft.h"
 #include "cinder/audio/dsp/RingBuffer.h"

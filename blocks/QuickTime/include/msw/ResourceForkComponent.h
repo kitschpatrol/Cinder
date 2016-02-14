@@ -20,9 +20,6 @@
 #include <Components.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -36,28 +33,28 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /*.#endif forMergedInterfaces*/
 enum {
-  resourceForkComponentType     = FOUR_CHAR_CODE('rfrk')
+	resourceForkComponentType = FOUR_CHAR_CODE( 'rfrk' )
 };
 
 enum {
-  rfmCanExpand                  = FOUR_CHAR_CODE('expn'),
-  rfmCanExpandEasily            = FOUR_CHAR_CODE('expe'),
-  rfmIsMultiStream              = FOUR_CHAR_CODE('muls')
+	rfmCanExpand = FOUR_CHAR_CODE( 'expn' ),
+	rfmCanExpandEasily = FOUR_CHAR_CODE( 'expe' ),
+	rfmIsMultiStream = FOUR_CHAR_CODE( 'muls' )
 };
 
 enum {
-  rfmQueryForkMask              = 1 << 0, /* bit on == resource fork, off == data fork*/
-  rfmQueryResourceFork          = 1 << 0,
-  rfmQueryDataFork              = 0
+	rfmQueryForkMask = 1 << 0, /* bit on == resource fork, off == data fork*/
+	rfmQueryResourceFork = 1 << 0,
+	rfmQueryDataFork = 0
 };
 
 #if CALL_NOT_IN_CARBON
@@ -71,11 +68,10 @@ enum {
  */
 EXTERN_API( ComponentResult )
 ResourceForkPathNameMap(
-  ComponentInstance   rfi,
-  char *              inDataPath,
-  char *              outRsrcPath,
-  unsigned long       maxLen)                                 FIVEWORDINLINE(0x2F3C, 0x000C, 0x0001, 0x7000, 0xA82A);
-
+    ComponentInstance rfi,
+    char *            inDataPath,
+    char *            outRsrcPath,
+    unsigned long     maxLen ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0001, 0x7000, 0xA82A );
 
 /*
  *  ResourceForkOffsetAndLength()
@@ -87,12 +83,11 @@ ResourceForkPathNameMap(
  */
 EXTERN_API( ComponentResult )
 ResourceForkOffsetAndLength(
-  ComponentInstance   rfi,
-  char *              accessPath,
-  long                queryFlags,
-  long *              dataOffset,
-  long *              dataLength)                             FIVEWORDINLINE(0x2F3C, 0x0010, 0x0002, 0x7000, 0xA82A);
-
+    ComponentInstance rfi,
+    char *            accessPath,
+    long              queryFlags,
+    long *            dataOffset,
+    long *            dataLength ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0002, 0x7000, 0xA82A );
 
 /*
  *  ResourceForkGetMethodInfo()
@@ -104,11 +99,10 @@ ResourceForkOffsetAndLength(
  */
 EXTERN_API( ComponentResult )
 ResourceForkGetMethodInfo(
-  ComponentInstance   rfi,
-  long                queryFlags,
-  long                queryType,
-  long *              answer)                                 FIVEWORDINLINE(0x2F3C, 0x000C, 0x0003, 0x7000, 0xA82A);
-
+    ComponentInstance rfi,
+    long              queryFlags,
+    long              queryType,
+    long *            answer ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0003, 0x7000, 0xA82A );
 
 /*
  *  ResourceForkFileLength()
@@ -120,11 +114,10 @@ ResourceForkGetMethodInfo(
  */
 EXTERN_API( ComponentResult )
 ResourceForkFileLength(
-  ComponentInstance   rfi,
-  char *              accessPath,
-  long                queryFlags,
-  long *              fileLength)                             FIVEWORDINLINE(0x2F3C, 0x000C, 0x0004, 0x7000, 0xA82A);
-
+    ComponentInstance rfi,
+    char *            accessPath,
+    long              queryFlags,
+    long *            fileLength ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0004, 0x7000, 0xA82A );
 
 /*
  *  ResourceForkOffsetAndLength64()
@@ -136,12 +129,11 @@ ResourceForkFileLength(
  */
 EXTERN_API( ComponentResult )
 ResourceForkOffsetAndLength64(
-  ComponentInstance   rfi,
-  char *              accessPath,
-  long                queryFlags,
-  wide *              dataOffset,
-  wide *              dataLength)                             FIVEWORDINLINE(0x2F3C, 0x0010, 0x0005, 0x7000, 0xA82A);
-
+    ComponentInstance rfi,
+    char *            accessPath,
+    long              queryFlags,
+    wide *            dataOffset,
+    wide *            dataLength ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0005, 0x7000, 0xA82A );
 
 /*
  *  ResourceForkFileLength64()
@@ -153,35 +145,32 @@ ResourceForkOffsetAndLength64(
  */
 EXTERN_API( ComponentResult )
 ResourceForkFileLength64(
-  ComponentInstance   rfi,
-  char *              accessPath,
-  long                queryFlags,
-  wide *              fileLength)                             FIVEWORDINLINE(0x2F3C, 0x000C, 0x0006, 0x7000, 0xA82A);
-
+    ComponentInstance rfi,
+    char *            accessPath,
+    long              queryFlags,
+    wide *            fileLength ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0006, 0x7000, 0xA82A );
 
 /*.#ifndef forMergedInterfaces*/
 
-
 /* selectors for component calls */
 enum {
-    kResourceForkPathNameMapSelect             = 0x0001,
-    kResourceForkOffsetAndLengthSelect         = 0x0002,
-    kResourceForkGetMethodInfoSelect           = 0x0003,
-    kResourceForkFileLengthSelect              = 0x0004,
-    kResourceForkOffsetAndLength64Select       = 0x0005,
-    kResourceForkFileLength64Select            = 0x0006
+	kResourceForkPathNameMapSelect = 0x0001,
+	kResourceForkOffsetAndLengthSelect = 0x0002,
+	kResourceForkGetMethodInfoSelect = 0x0003,
+	kResourceForkFileLengthSelect = 0x0004,
+	kResourceForkOffsetAndLength64Select = 0x0005,
+	kResourceForkFileLength64Select = 0x0006
 };
 /*.#endif forMergedInterfaces*/
 
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -195,4 +184,3 @@ enum {
 #endif
 
 #endif /* __RESOURCEFORKCOMPONENT__ */
-

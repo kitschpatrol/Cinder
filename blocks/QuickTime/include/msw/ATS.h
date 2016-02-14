@@ -20,7 +20,6 @@
 #include <CoreServices.h>
 #endif
 
-
 #ifndef __ATSLAYOUTTYPES__
 #include <ATSLayoutTypes.h>
 #endif
@@ -45,6 +44,4 @@
 #include <SFNTTypes.h>
 #endif
 
-
 #endif /* __ATS__ */
-

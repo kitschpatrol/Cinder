@@ -30,57 +30,53 @@
 #undef min
 #undef max
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class WindowImplMswScreenSaver;
 
 class AppImplMswScreenSaver : public AppImplMsw {
- public:
+  public:
 	AppImplMswScreenSaver( AppScreenSaver *app, HWND wnd, const AppScreenSaver::Settings &settings );
 	virtual ~AppImplMswScreenSaver() {}
-	
-	void		init( HWND aWnd );
-	void		run();
+	void init( HWND aWnd );
+	void run();
 	//! do nothing, we can't really force a quit
-	void		quit() override {}
+	void quit() override {}
 	//! do nothing, can't control frame rate
-	void        setFrameRate( float frameRate ) override {}
-		
+	void setFrameRate( float frameRate ) override {}
 	LRESULT eventHandler( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
-	
-	WindowRef	getWindow() const override;
+
+	WindowRef getWindow() const override;
 	//! Returns the number of Windows the app has open
-	size_t		getNumWindows() const;
+	size_t getNumWindows() const;
 	//! Gets a Window by index, in the range [0, getNumWindows()).
-	WindowRef	getWindowIndex( size_t index ) const;
+	WindowRef getWindowIndex( size_t index ) const;
 
-	bool				isPreview() const;
+	bool isPreview() const;
 
 	// ignore
-	void		closeWindow( class WindowImplMsw *windowImpl ) override {}
+	void closeWindow( class WindowImplMsw *windowImpl ) override {}
 	// ignore
-	void		setForegroundWindow( WindowRef window ) override {}
-
- protected:
-	AppScreenSaver								*mApp;
-	bool										mPreview;
-	float										mFrameRate;
-	bool										mDebugMode;
-	std::list<WindowImplMswScreenSaver*>		mWindows;
-	std::list<BlankingWindowRef>				mBlankingWindows;
+	void setForegroundWindow( WindowRef window ) override {}
+  protected:
+	AppScreenSaver *                      mApp;
+	bool                                  mPreview;
+	float                                 mFrameRate;
+	bool                                  mDebugMode;
+	std::list<WindowImplMswScreenSaver *> mWindows;
+	std::list<BlankingWindowRef>          mBlankingWindows;
 };
 
 class WindowImplMswScreenSaver : public WindowImplMsw {
   public:
 	WindowImplMswScreenSaver( HWND hwnd, RendererRef renderer, RendererRef sharedRenderer, AppImplMswScreenSaver *appImpl )
-		: WindowImplMsw( hwnd, renderer, sharedRenderer, appImpl ) {}
-
+	    : WindowImplMsw( hwnd, renderer, sharedRenderer, appImpl ) {}
 	// no-op
-	virtual void		setFullScreen( bool fullScreen, const app::FullScreenOptions &options );
+	virtual void setFullScreen( bool fullScreen, const app::FullScreenOptions &options );
 
   protected:
 	friend AppImplMswScreenSaver;
 };
-
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

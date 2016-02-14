@@ -22,10 +22,11 @@
 
 #include "cinder/ip/Checkerboard.h"
 
-namespace cinder { namespace ip { 
+namespace cinder {
+namespace ip {
 
 namespace {
-template<typename T>
+template <typename T>
 void checkerboard_impl( SurfaceT<T> *surface, const Area &area, int32_t tileSize, const ColorT<T> &evenColor, const ColorT<T> &oddColor )
 {
 	const Area clippedArea = area.getClipBy( surface->getBounds() );
@@ -34,10 +35,10 @@ void checkerboard_impl( SurfaceT<T> *surface, const Area &area, int32_t tileSize
 	uint8_t pixelInc = surface->getPixelInc();
 	uint8_t redOffset = surface->getRedOffset(), greenOffset = surface->getGreenOffset(), blueOffset = surface->getBlueOffset();
 	for( int32_t y = clippedArea.getY1(); y < clippedArea.getY2(); ++y ) {
-		T *dstPtr = reinterpret_cast<T*>( reinterpret_cast<uint8_t*>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
+		T *           dstPtr = reinterpret_cast<T *>( reinterpret_cast<uint8_t *>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
 		const int32_t yBit = ( ( y - clippedArea.getY1() ) / tileSize ) & 1;
 		for( int32_t x = 0; x < clippedArea.getWidth(); ++x ) {
-			const ColorT<T> &color = ((( x / tileSize ) & 1) ^ yBit ) ? evenColor : oddColor;
+			const ColorT<T> &color = ( ( ( x / tileSize ) & 1 ) ^ yBit ) ? evenColor : oddColor;
 			dstPtr[redOffset] = color.r;
 			dstPtr[greenOffset] = color.g;
 			dstPtr[blueOffset] = color.b;
@@ -46,25 +47,25 @@ void checkerboard_impl( SurfaceT<T> *surface, const Area &area, int32_t tileSize
 	}
 }
 
-template<typename T>
+template <typename T>
 void checkerboard_impl( SurfaceT<T> *surface, const Area &area, int32_t tileSize, const ColorAT<T> &evenColor, const ColorAT<T> &oddColor )
 {
 	// if no alpha we'll fail over the to alpha-less fill
-	if( ! surface->hasAlpha() ) {
+	if( !surface->hasAlpha() ) {
 		checkerboard_impl( surface, area, tileSize, ColorT<T>( evenColor ), ColorT<T>( oddColor ) );
 		return;
 	}
-	
+
 	const Area clippedArea = area.getClipBy( surface->getBounds() );
 
 	int32_t rowBytes = surface->getRowBytes();
 	uint8_t pixelInc = surface->getPixelInc();
 	uint8_t redOffset = surface->getRedOffset(), greenOffset = surface->getGreenOffset(), blueOffset = surface->getBlueOffset(), alphaOffset = surface->getAlphaOffset();
 	for( int32_t y = clippedArea.getY1(); y < clippedArea.getY2(); ++y ) {
-		T *dstPtr = reinterpret_cast<T*>( reinterpret_cast<uint8_t*>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
+		T *           dstPtr = reinterpret_cast<T *>( reinterpret_cast<uint8_t *>( surface->getData() + clippedArea.getX1() * pixelInc ) + y * rowBytes );
 		const int32_t yBit = ( ( y - clippedArea.getY1() ) / tileSize ) & 1;
 		for( int32_t x = 0; x < clippedArea.getWidth(); ++x ) {
-			const ColorAT<T> &color = ((( x / tileSize ) & 1) ^ yBit ) ? evenColor : oddColor;
+			const ColorAT<T> &color = ( ( ( x / tileSize ) & 1 ) ^ yBit ) ? evenColor : oddColor;
 			dstPtr[redOffset] = color.r;
 			dstPtr[greenOffset] = color.g;
 			dstPtr[blueOffset] = color.b;
@@ -110,5 +111,5 @@ void checkerboard( Surface32f *surface, const Area &area, int32_t tileSize, cons
 {
 	checkerboard_impl( surface, area, tileSize, evenColor, oddColor );
 }
-
-} } // namespace cinder::ip
+}
+} // namespace cinder::ip

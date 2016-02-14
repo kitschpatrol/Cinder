@@ -23,10 +23,11 @@
 #include "cinder/gl/Ubo.h"
 #include "cinder/gl/Context.h"
 
-#if ! defined( CINDER_GL_ES_2 )
+#if !defined( CINDER_GL_ES_2 )
 
-namespace cinder { namespace gl {
-	
+namespace cinder {
+namespace gl {
+
 UboRef Ubo::create()
 {
 	return UboRef( new Ubo() );
@@ -36,15 +37,15 @@ UboRef Ubo::create( GLsizeiptr allocationSize, const void *data, GLenum usage )
 {
 	return UboRef( new Ubo( allocationSize, data, usage ) );
 }
-	
+
 Ubo::Ubo()
-	: BufferObj( GL_UNIFORM_BUFFER )
+    : BufferObj( GL_UNIFORM_BUFFER )
 {
 	mUsage = GL_DYNAMIC_DRAW;
 }
 
 Ubo::Ubo( GLsizeiptr allocationSize, const void *data, GLenum usage )
-	: BufferObj( GL_UNIFORM_BUFFER )
+    : BufferObj( GL_UNIFORM_BUFFER )
 {
 	bufferData( allocationSize, data, usage );
 }
@@ -53,7 +54,7 @@ void Ubo::bindBufferBase( GLuint index )
 {
 	context()->bindBufferBase( mTarget, index, mId );
 }
-
-} } // namespace cinder::gl
+}
+} // namespace cinder::gl
 
 #endif // ! defined( CINDER_GL_ES_2 )

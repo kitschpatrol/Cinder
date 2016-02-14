@@ -24,9 +24,6 @@
 #include <Events.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,36 +37,35 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 typedef UInt32 NSLDialogOptionFlags;
 enum {
-  kNSLDefaultNSLDlogOptions     = 0x00000000, /* use defaults for all the options */
-  kNSLNoURLTEField              = 0x00000001, /* don't show url text field for manual entry */
-  kNSLAddServiceTypes           = 0x00000002, /* add the service type if a user enters an incomplete URL */
-  kNSLClientHandlesRecents      = 0x00000004 /* Stops NSLStandardGetURL from adding the selection to the recent items folder */
+	kNSLDefaultNSLDlogOptions = 0x00000000, /* use defaults for all the options */
+	kNSLNoURLTEField = 0x00000001, /* don't show url text field for manual entry */
+	kNSLAddServiceTypes = 0x00000002, /* add the service type if a user enters an incomplete URL */
+	kNSLClientHandlesRecents = 0x00000004 /* Stops NSLStandardGetURL from adding the selection to the recent items folder */
 };
-
 
 struct NSLDialogOptions {
-  UInt16              version;
-  NSLDialogOptionFlags  dialogOptionFlags;    /* option flags for affecting the dialog's behavior */
-  Str255              windowTitle;
-  Str255              actionButtonLabel;      /* label of the default button (or null string for default) */
-  Str255              cancelButtonLabel;      /* label of the cancel button (or null string for default) */
-  Str255              message;                /* custom message prompt (or null string for default) */
+	UInt16               version;
+	NSLDialogOptionFlags dialogOptionFlags; /* option flags for affecting the dialog's behavior */
+	Str255               windowTitle;
+	Str255               actionButtonLabel; /* label of the default button (or null string for default) */
+	Str255               cancelButtonLabel; /* label of the cancel button (or null string for default) */
+	Str255               message; /* custom message prompt (or null string for default) */
 };
-typedef struct NSLDialogOptions         NSLDialogOptions;
-typedef CALLBACK_API( Boolean , NSLURLFilterProcPtr )(char *url, Str255 displayString);
+typedef struct NSLDialogOptions NSLDialogOptions;
+typedef CALLBACK_API( Boolean, NSLURLFilterProcPtr )( char *url, Str255 displayString );
 /* you can provide for calls to NSLStandardGetURL*/
-typedef CALLBACK_API( void , NSLEventProcPtr )(EventRecord *newEvent, void *userContext);
-typedef STACK_UPP_TYPE(NSLURLFilterProcPtr)                     NSLURLFilterUPP;
-typedef STACK_UPP_TYPE(NSLEventProcPtr)                         NSLEventUPP;
+typedef CALLBACK_API( void, NSLEventProcPtr )( EventRecord *newEvent, void *userContext );
+typedef STACK_UPP_TYPE( NSLURLFilterProcPtr ) NSLURLFilterUPP;
+typedef STACK_UPP_TYPE( NSLEventProcPtr ) NSLEventUPP;
 /*
  *  NewNSLURLFilterUPP()
  *  
@@ -79,14 +75,17 @@ typedef STACK_UPP_TYPE(NSLEventProcPtr)                         NSLEventUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( NSLURLFilterUPP )
-NewNSLURLFilterUPP(NSLURLFilterProcPtr userRoutine);
+NewNSLURLFilterUPP( NSLURLFilterProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppNSLURLFilterProcInfo = 0x000003D0 };  /* pascal 1_byte Func(4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(NSLURLFilterUPP) NewNSLURLFilterUPP(NSLURLFilterProcPtr userRoutine) { return (NSLURLFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLURLFilterProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewNSLURLFilterUPP(userRoutine) (NSLURLFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLURLFilterProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppNSLURLFilterProcInfo = 0x000003D0 }; /* pascal 1_byte Func(4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( NSLURLFilterUPP ) NewNSLURLFilterUPP( NSLURLFilterProcPtr userRoutine )
+{
+	return (NSLURLFilterUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLURLFilterProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewNSLURLFilterUPP( userRoutine ) ( NSLURLFilterUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLURLFilterProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -98,14 +97,17 @@ NewNSLURLFilterUPP(NSLURLFilterProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( NSLEventUPP )
-NewNSLEventUPP(NSLEventProcPtr userRoutine);
+NewNSLEventUPP( NSLEventProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppNSLEventProcInfo = 0x000003C0 };  /* pascal no_return_value Func(4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(NSLEventUPP) NewNSLEventUPP(NSLEventProcPtr userRoutine) { return (NSLEventUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLEventProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewNSLEventUPP(userRoutine) (NSLEventUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppNSLEventProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppNSLEventProcInfo = 0x000003C0 }; /* pascal no_return_value Func(4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( NSLEventUPP ) NewNSLEventUPP( NSLEventProcPtr userRoutine )
+{
+	return (NSLEventUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLEventProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewNSLEventUPP( userRoutine ) ( NSLEventUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppNSLEventProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -117,13 +119,16 @@ NewNSLEventUPP(NSLEventProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeNSLURLFilterUPP(NSLURLFilterUPP userUPP);
+DisposeNSLURLFilterUPP( NSLURLFilterUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeNSLURLFilterUPP(NSLURLFilterUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeNSLURLFilterUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeNSLURLFilterUPP( NSLURLFilterUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeNSLURLFilterUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -135,13 +140,16 @@ DisposeNSLURLFilterUPP(NSLURLFilterUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeNSLEventUPP(NSLEventUPP userUPP);
+DisposeNSLEventUPP( NSLEventUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeNSLEventUPP(NSLEventUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeNSLEventUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeNSLEventUPP( NSLEventUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeNSLEventUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -154,15 +162,18 @@ DisposeNSLEventUPP(NSLEventUPP userUPP);
  */
 EXTERN_API_C( Boolean )
 InvokeNSLURLFilterUPP(
-  char *           url,
-  Str255           displayString,
-  NSLURLFilterUPP  userUPP);
+    char *          url,
+    Str255          displayString,
+    NSLURLFilterUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(Boolean) InvokeNSLURLFilterUPP(char * url, Str255 displayString, NSLURLFilterUPP userUPP) { return (Boolean)CALL_TWO_PARAMETER_UPP(userUPP, uppNSLURLFilterProcInfo, url, displayString); }
-  #else
-    #define InvokeNSLURLFilterUPP(url, displayString, userUPP) (Boolean)CALL_TWO_PARAMETER_UPP((userUPP), uppNSLURLFilterProcInfo, (url), (displayString))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) InvokeNSLURLFilterUPP( char *url, Str255 displayString, NSLURLFilterUPP userUPP )
+{
+	return (Boolean)CALL_TWO_PARAMETER_UPP( userUPP, uppNSLURLFilterProcInfo, url, displayString );
+}
+#else
+#define InvokeNSLURLFilterUPP( url, displayString, userUPP ) ( Boolean ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppNSLURLFilterProcInfo, ( url ), ( displayString ) )
+#endif
 #endif
 
 /*
@@ -175,25 +186,27 @@ InvokeNSLURLFilterUPP(
  */
 EXTERN_API_C( void )
 InvokeNSLEventUPP(
-  EventRecord *  newEvent,
-  void *         userContext,
-  NSLEventUPP    userUPP);
+    EventRecord *newEvent,
+    void *       userContext,
+    NSLEventUPP  userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) InvokeNSLEventUPP(EventRecord * newEvent, void * userContext, NSLEventUPP userUPP) { CALL_TWO_PARAMETER_UPP(userUPP, uppNSLEventProcInfo, newEvent, userContext); }
-  #else
-    #define InvokeNSLEventUPP(newEvent, userContext, userUPP) CALL_TWO_PARAMETER_UPP((userUPP), uppNSLEventProcInfo, (newEvent), (userContext))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) InvokeNSLEventUPP( EventRecord *newEvent, void *userContext, NSLEventUPP userUPP )
+{
+	CALL_TWO_PARAMETER_UPP( userUPP, uppNSLEventProcInfo, newEvent, userContext );
+}
+#else
+#define InvokeNSLEventUPP( newEvent, userContext, userUPP ) CALL_TWO_PARAMETER_UPP( ( userUPP ), uppNSLEventProcInfo, ( newEvent ), ( userContext ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewNSLURLFilterProc(userRoutine)                    NewNSLURLFilterUPP(userRoutine)
-    #define NewNSLEventProc(userRoutine)                        NewNSLEventUPP(userRoutine)
-    #define CallNSLURLFilterProc(userRoutine, url, displayString) InvokeNSLURLFilterUPP(url, displayString, userRoutine)
-    #define CallNSLEventProc(userRoutine, newEvent, userContext) InvokeNSLEventUPP(newEvent, userContext, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewNSLURLFilterProc( userRoutine ) NewNSLURLFilterUPP( userRoutine )
+#define NewNSLEventProc( userRoutine ) NewNSLEventUPP( userRoutine )
+#define CallNSLURLFilterProc( userRoutine, url, displayString ) InvokeNSLURLFilterUPP( url, displayString, userRoutine )
+#define CallNSLEventProc( userRoutine, newEvent, userContext ) InvokeNSLEventUPP( newEvent, userContext, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
-
 
 /* <--- function returns OSStatus of the operation.  noErr will be returned if valid, kNSLUserCanceled will be returned if the user cancels */
 /* ---> dialogOptions */
@@ -284,13 +297,12 @@ InvokeNSLEventUPP(
  */
 EXTERN_API( OSStatus )
 NSLStandardGetURL(
-  NSLDialogOptions *  dialogOptions,             /* can be NULL */
-  NSLEventUPP         eventProc,                 /* can be NULL */
-  void *              eventProcContextPtr,       /* can be NULL */
-  NSLURLFilterUPP     filterProc,                /* can be NULL */
-  char *              serviceTypeList,
-  char **             userSelectedURL);
-
+    NSLDialogOptions *dialogOptions, /* can be NULL */
+    NSLEventUPP       eventProc, /* can be NULL */
+    void *            eventProcContextPtr, /* can be NULL */
+    NSLURLFilterUPP   filterProc, /* can be NULL */
+    char *            serviceTypeList,
+    char **           userSelectedURL );
 
 /*
  *  NSLGetDefaultDialogOptions()
@@ -301,8 +313,7 @@ NSLStandardGetURL(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-NSLGetDefaultDialogOptions(NSLDialogOptions * dialogOptions);
-
+NSLGetDefaultDialogOptions( NSLDialogOptions *dialogOptions );
 
 /* <--- function returns null (useful for setting variable at same time as freeing it */
 /* ---> url is memory created by a call to NSLStandardGetURL */
@@ -315,8 +326,7 @@ NSLGetDefaultDialogOptions(NSLDialogOptions * dialogOptions);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( char * )
-NSLFreeURL(char * url);
-
+NSLFreeURL( char *url );
 
 /* <--- function returns kNSLErrNullPtrError, file mgr errors, or resource mgr errors */
 /* ---> folderSelectorType is one of the well-known folders defined in Folders.h */
@@ -332,20 +342,16 @@ NSLFreeURL(char * url);
  */
 EXTERN_API( OSErr )
 NSLSaveURLAliasToFolder(
-  OSType        folderSelectorType,
-  const char *  url,
-  const char *  userFriendlyName);
-
-
-
-
+    OSType      folderSelectorType,
+    const char *url,
+    const char *userFriendlyName );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -359,4 +365,3 @@ NSLSaveURLAliasToFolder(
 #endif
 
 #endif /* __NSL__ */
-

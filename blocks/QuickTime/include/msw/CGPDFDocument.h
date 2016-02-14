@@ -32,9 +32,6 @@
 #include <CFURL.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -47,7 +44,7 @@ extern "C" {
 #pragma import on
 #endif
 
-typedef struct CGPDFDocument*           CGPDFDocumentRef;
+typedef struct CGPDFDocument *CGPDFDocumentRef;
 /* Create a PDF document, using `provider' to obtain the document's
  * data. */
 /*
@@ -59,8 +56,7 @@ typedef struct CGPDFDocument*           CGPDFDocumentRef;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGPDFDocumentRef )
-CGPDFDocumentCreateWithProvider(CGDataProviderRef provider);
-
+CGPDFDocumentCreateWithProvider( CGDataProviderRef provider );
 
 /* Create a PDF document from `url'. */
 /*
@@ -72,8 +68,7 @@ CGPDFDocumentCreateWithProvider(CGDataProviderRef provider);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGPDFDocumentRef )
-CGPDFDocumentCreateWithURL(CFURLRef url);
-
+CGPDFDocumentCreateWithURL( CFURLRef url );
 
 /* Increment the retain count of `document' and return it.  All PDF
  * documents are created with an initial retain count of 1. */
@@ -86,8 +81,7 @@ CGPDFDocumentCreateWithURL(CFURLRef url);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGPDFDocumentRef )
-CGPDFDocumentRetain(CGPDFDocumentRef document);
-
+CGPDFDocumentRetain( CGPDFDocumentRef document );
 
 /* Decrement the retain count of `document'.  If the retain count reaches 0,
  * then free it and any associated resources. */
@@ -100,8 +94,7 @@ CGPDFDocumentRetain(CGPDFDocumentRef document);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGPDFDocumentRelease(CGPDFDocumentRef document);
-
+CGPDFDocumentRelease( CGPDFDocumentRef document );
 
 /* Return the number of pages in `document'. */
 /*
@@ -113,8 +106,7 @@ CGPDFDocumentRelease(CGPDFDocumentRef document);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( int )
-CGPDFDocumentGetNumberOfPages(CGPDFDocumentRef document);
-
+CGPDFDocumentGetNumberOfPages( CGPDFDocumentRef document );
 
 /* Return the media box of page number `page' in `document'. */
 /*
@@ -127,9 +119,8 @@ CGPDFDocumentGetNumberOfPages(CGPDFDocumentRef document);
  */
 EXTERN_API_C( CGRect )
 CGPDFDocumentGetMediaBox(
-  CGPDFDocumentRef   document,
-  int                page);
-
+    CGPDFDocumentRef document,
+    int              page );
 
 /* Return the crop box of page number `page' in `document'. */
 /*
@@ -142,9 +133,8 @@ CGPDFDocumentGetMediaBox(
  */
 EXTERN_API_C( CGRect )
 CGPDFDocumentGetCropBox(
-  CGPDFDocumentRef   document,
-  int                page);
-
+    CGPDFDocumentRef document,
+    int              page );
 
 /* Return the bleed box of page number `page' in `document'. */
 /*
@@ -157,9 +147,8 @@ CGPDFDocumentGetCropBox(
  */
 EXTERN_API_C( CGRect )
 CGPDFDocumentGetBleedBox(
-  CGPDFDocumentRef   document,
-  int                page);
-
+    CGPDFDocumentRef document,
+    int              page );
 
 /* Return the trim box of page number `page' in `document'. */
 /*
@@ -172,9 +161,8 @@ CGPDFDocumentGetBleedBox(
  */
 EXTERN_API_C( CGRect )
 CGPDFDocumentGetTrimBox(
-  CGPDFDocumentRef   document,
-  int                page);
-
+    CGPDFDocumentRef document,
+    int              page );
 
 /* Return the art box of page number `page' in `document'. */
 /*
@@ -187,9 +175,8 @@ CGPDFDocumentGetTrimBox(
  */
 EXTERN_API_C( CGRect )
 CGPDFDocumentGetArtBox(
-  CGPDFDocumentRef   document,
-  int                page);
-
+    CGPDFDocumentRef document,
+    int              page );
 
 /* Return the rotation angle (in degrees) of page number `page' in
  * `document'. */
@@ -203,10 +190,8 @@ CGPDFDocumentGetArtBox(
  */
 EXTERN_API_C( int )
 CGPDFDocumentGetRotationAngle(
-  CGPDFDocumentRef   document,
-  int                page);
-
-
+    CGPDFDocumentRef document,
+    int              page );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -219,4 +204,3 @@ CGPDFDocumentGetRotationAngle(
 #endif
 
 #endif /* CGPDFDOCUMENT_H_ */
-

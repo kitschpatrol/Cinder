@@ -47,14 +47,14 @@ Check out these functions:
 They each illustrate an example of how to use the frame for different scenarios. */
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/Camera.h"
 #include "cinder/CameraUi.h"
 #include "cinder/Text.h"
 #include "cinder/TriMesh.h"
 #include "cinder/Utilities.h"
-#include "cinder/params/Params.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/params/Params.h"
 
 #include "Tube.h"
 
@@ -68,30 +68,30 @@ class TubularApp : public App {
 	void keyDown( KeyEvent event ) override;
 	void update() override;
 	void draw() override;
-	
+
   private:
-	Tube					mTube;
-	
-	std::vector<vec3>		mBasePoints;
-	std::vector<vec3>		mCurPoints;	
-	BSpline3f				mBSpline;
-	TriMeshRef				mTubeMesh;
-	
-	CameraPersp				mCam;
-	
-	bool					mParallelTransport;
-	bool					mDrawCurve;
-	bool					mDrawFrames;
-	bool					mDrawMesh;
-	bool					mDrawSlices;
-	
-	bool					mWireframe;
-	bool					mPause;
-	
-	int32_t					mNumSegs;
-	int						mShape;
-	CameraUi				mCamUi;
-	params::InterfaceGlRef	mParams;
+	Tube mTube;
+
+	std::vector<vec3> mBasePoints;
+	std::vector<vec3> mCurPoints;
+	BSpline3f         mBSpline;
+	TriMeshRef        mTubeMesh;
+
+	CameraPersp mCam;
+
+	bool mParallelTransport;
+	bool mDrawCurve;
+	bool mDrawFrames;
+	bool mDrawMesh;
+	bool mDrawSlices;
+
+	bool mWireframe;
+	bool mPause;
+
+	int32_t                mNumSegs;
+	int                    mShape;
+	CameraUi               mCamUi;
+	params::InterfaceGlRef mParams;
 };
 
 void TubularApp::setup()
@@ -102,33 +102,33 @@ void TubularApp::setup()
 	mCam.lookAt( vec3( 0, 0, 8 ), vec3( 0 ) );
 
 	// BSpline
-	mBasePoints.push_back( vec3( -3,  4, 0 ) );
-	mBasePoints.push_back( vec3(  5,  1, 0 ) );
+	mBasePoints.push_back( vec3( -3, 4, 0 ) );
+	mBasePoints.push_back( vec3( 5, 1, 0 ) );
 	mBasePoints.push_back( vec3( -5, -1, 0 ) );
-	mBasePoints.push_back( vec3(  3, -4, 0 ) );	
+	mBasePoints.push_back( vec3( 3, -4, 0 ) );
 	mCurPoints = mBasePoints;
-	
+
 	int  degree = 3;
 	bool loop = false;
 	bool open = true;
 	mBSpline = BSpline3f( mCurPoints, degree, loop, open );
-	
+
 	// Tube
 	mNumSegs = 32;
 	mTube.setBSpline( mBSpline );
 	mTube.setNumSegments( mNumSegs );
 	mTube.sampleCurve();
-	
+
 	//
-	mParallelTransport	= true;
-	mDrawCurve			= false;
-	mDrawFrames			= true;
-	mDrawMesh			= true;
-	mDrawSlices			= false;
-	mShape				= 0;
-	mWireframe			= true;
-	mPause				= false;
-	
+	mParallelTransport = true;
+	mDrawCurve = false;
+	mDrawFrames = true;
+	mDrawMesh = true;
+	mDrawSlices = false;
+	mShape = 0;
+	mWireframe = true;
+	mPause = false;
+
 	mTubeMesh = TriMesh::create( TriMesh::Format().positions() );
 
 	mParams = params::InterfaceGl::create( getWindow(), "Parameters", ivec2( 200, 200 ) );
@@ -148,8 +148,8 @@ void TubularApp::setup()
 void TubularApp::keyDown( KeyEvent event )
 {
 	switch( event.getChar() ) {
-		case ' ':
-			mPause = ! mPause;
+	case ' ':
+		mPause = !mPause;
 		break;
 	}
 }
@@ -159,43 +159,43 @@ void TubularApp::update()
 	// Profile
 	std::vector<vec3> prof;
 	switch( mShape ) {
-		case 0:
-			makeCircleProfile( prof, 0.25f, 16 );
+	case 0:
+		makeCircleProfile( prof, 0.25f, 16 );
 		break;
-		case 1:
-			makeStarProfile( prof, 0.25f );
+	case 1:
+		makeStarProfile( prof, 0.25f );
 		break;
-		case 2:
-			makeHypotrochoid( prof, 0.25f );
+	case 2:
+		makeHypotrochoid( prof, 0.25f );
 		break;
-		case 3:
-			makeEpicycloid( prof, 0.25f );
+	case 3:
+		makeEpicycloid( prof, 0.25f );
 		break;
 	}
 	mTube.setProfile( prof );
-	
+
 	// BSpline
-	if( ! mPause ) {
+	if( !mPause ) {
 		float t = getElapsedSeconds();
 		for( size_t i = 0; i < mBasePoints.size(); ++i ) {
 			float dx = 0;
 			float dy = 0;
 			float dz = 0;
 			if( i > 0 && ( i < mBasePoints.size() - 1 ) ) {
-				dx = sin( t*i )*2.0f;
-				dy = sin( t*i/3.0f );
-				dz = cos( t*i )*4.0f;
+				dx = sin( t * i ) * 2.0f;
+				dy = sin( t * i / 3.0f );
+				dz = cos( t * i ) * 4.0f;
 			}
 			mCurPoints[i] = mBasePoints[i] + vec3( dx, dy, dz );
 		}
 	}
-	
+
 	// Make the b-spline
-	int degree = 3;
+	int  degree = 3;
 	bool loop = false;
 	bool open = true;
-	mBSpline = BSpline3f( mCurPoints, degree, loop, open );	
-	
+	mBSpline = BSpline3f( mCurPoints, degree, loop, open );
+
 	// Tube
 	mTube.setBSpline( mBSpline );
 	mTube.setNumSegments( mNumSegs );
@@ -211,7 +211,7 @@ void TubularApp::update()
 
 void TubularApp::draw()
 {
-	gl::clear( Color( 0, 0, 0 ) ); 
+	gl::clear( Color( 0, 0, 0 ) );
 
 	gl::setMatrices( mCam );
 
@@ -222,28 +222,27 @@ void TubularApp::draw()
 		gl::draw( *mTubeMesh );
 		gl::disableWireframe();
 	}
-	
+
 	gl::enableAdditiveBlending();
 	if( mDrawMesh && mTubeMesh->getNumTriangles() ) {
 		gl::color( ColorA( 1, 1, 1, 0.25f ) );
 		gl::draw( *mTubeMesh );
 	}
-	
+
 	if( mDrawSlices ) {
 		mTube.drawFrameSlices( 0.25f );
 	}
-	
+
 	if( mDrawCurve ) {
 		gl::color( Color( 1, 1, 1 ) );
 		mTube.drawPs();
 	}
-		
+
 	if( mDrawFrames ) {
 		mTube.drawFrames( 0.5f );
 	}
-	
-	mParams->draw();	
-}
 
+	mParams->draw();
+}
 
 CINDER_APP( TubularApp, RendererGl )

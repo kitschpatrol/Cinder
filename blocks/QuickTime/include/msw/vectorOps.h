@@ -20,8 +20,6 @@
 #include <ConditionalMacros.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -71,11 +69,8 @@ extern "C" {
  */
 EXTERN_API_C( long )
 vIsamax(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /**************************************************
   vIsamin finds the position of the first vector
@@ -94,11 +89,8 @@ vIsamax(
  */
 EXTERN_API_C( long )
 vIsamin(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /**************************************************
   vIsmax finds the position of the first vector 
@@ -117,11 +109,8 @@ vIsamin(
  */
 EXTERN_API_C( long )
 vIsmax(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /**************************************************
   vIsmin finds the position of the first vector 
@@ -140,11 +129,8 @@ vIsmax(
  */
 EXTERN_API_C( long )
 vIsmin(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /**************************************************
   vSasum finds the sum of the magnitudes of the 
@@ -163,11 +149,8 @@ vIsmin(
  */
 EXTERN_API_C( float )
 vSasum(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /**************************************************
   vSsum is the vector version of sasum but without  
@@ -186,11 +169,8 @@ vSasum(
  */
 EXTERN_API_C( float )
 vSsum(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /**************************************************
   vSaxpy multiplies a vector x, by a scalar and 
@@ -213,13 +193,10 @@ vSsum(
  */
 EXTERN_API_C( void )
 vSaxpy(
-  long                 n,
-  float                alpha,
-  const vector float   x[],
-  vector float         y[]);
-
-
-
+    long               n,
+    float              alpha,
+    const vector float x[],
+    vector float       y[] );
 
 /*************************************************************
   vScopy copies a vector x, into another vector y.  
@@ -238,11 +215,9 @@ vSaxpy(
  */
 EXTERN_API_C( void )
 vScopy(
-  long                 n,
-  const vector float   x[],
-  vector float         y[]);
-
-
+    long               n,
+    const vector float x[],
+    vector float       y[] );
 
 /*************************************************************
  vSdot finds the dot product of two vectors.      
@@ -261,11 +236,9 @@ vScopy(
  */
 EXTERN_API_C( float )
 vSdot(
-  long                 n,
-  const vector float   x[],
-  const vector float   y[]);
-
-
+    long               n,
+    const vector float x[],
+    const vector float y[] );
 
 /*************************************************************
  vSnaxpy computes saxpy "n" times.               
@@ -290,14 +263,11 @@ vSdot(
  */
 EXTERN_API_C( void )
 vSnaxpy(
-  long                 n,
-  long                 m,
-  const vector float   a[],
-  const vector float   x[],
-  vector float         y[]);
-
-
-
+    long               n,
+    long               m,
+    const vector float a[],
+    const vector float x[],
+    vector float       y[] );
 
 /*************************************************************
  vSndot computes the dot products "n" times.     
@@ -330,15 +300,12 @@ vSnaxpy(
  */
 EXTERN_API_C( void )
 vSndot(
-  long                 n,
-  long                 m,
-  float                s[],
-  long                 isw,
-  const vector float   x[],
-  const vector float   y[]);
-
-
-
+    long               n,
+    long               m,
+    float              s[],
+    long               isw,
+    const vector float x[],
+    const vector float y[] );
 
 /*************************************************************
  vSnrm2 finds the Euclidean length of a vector   
@@ -357,11 +324,8 @@ vSndot(
  */
 EXTERN_API_C( float )
 vSnrm2(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /*************************************************************
  vSnorm2 finds the Euclidean length of a vector  
@@ -379,11 +343,8 @@ vSnrm2(
  */
 EXTERN_API_C( float )
 vSnorm2(
-  long                 count,
-  const vector float   x[]);
-
-
-
+    long               count,
+    const vector float x[] );
 
 /*************************************************************
  vSrot applies a plane rotation.                 
@@ -409,14 +370,11 @@ vSnorm2(
  */
 EXTERN_API_C( void )
 vSrot(
-  long           n,
-  vector float   x[],
-  vector float   y[],
-  float          c,
-  float          s);
-
-
-
+    long         n,
+    vector float x[],
+    vector float y[],
+    float        c,
+    float        s );
 
 /*************************************************************
  vSscal multiplies a vector x, by a scalar and   
@@ -437,12 +395,9 @@ vSrot(
  */
 EXTERN_API_C( void )
 vSscal(
-  long           n,
-  float          alpha,
-  vector float   x[]);
-
-
-
+    long         n,
+    float        alpha,
+    vector float x[] );
 
 /*************************************************************
  vSswap interchanges the elements of vectors x   
@@ -462,12 +417,9 @@ vSscal(
  */
 EXTERN_API_C( void )
 vSswap(
-  long           n,
-  vector float   x[],
-  vector float   y[]);
-
-
-
+    long         n,
+    vector float x[],
+    vector float y[] );
 
 /*************************************************************
  vSyax multiplies a vector x, by a scalar and    
@@ -489,13 +441,10 @@ vSswap(
  */
 EXTERN_API_C( void )
 vSyax(
-  long                 n,
-  float                alpha,
-  const vector float   x[],
-  vector float         y[]);
-
-
-
+    long               n,
+    float              alpha,
+    const vector float x[],
+    vector float       y[] );
 
 /*************************************************************
  vSzaxpy multiplies a vector x, by a scalar and  
@@ -520,15 +469,11 @@ vSyax(
  */
 EXTERN_API_C( void )
 vSzaxpy(
-  long                 n,
-  float                alpha,
-  const vector float   x[],
-  const vector float   yY[],
-  vector float         z[]);
-
-
-
-
+    long               n,
+    float              alpha,
+    const vector float x[],
+    const vector float yY[],
+    vector float       z[] );
 
 /*
 -------------------------------------------------------------------------------------
@@ -579,18 +524,14 @@ vSzaxpy(
  */
 EXTERN_API_C( void )
 vSgemv(
-  char                 forma,
-  long                 m,
-  long                 n,
-  float                alpha,
-  const vector float   a[],
-  const vector float   x[],
-  float                beta,
-  vector float         y[]);
-
-
-
-
+    char               forma,
+    long               m,
+    long               n,
+    float              alpha,
+    const vector float a[],
+    const vector float x[],
+    float              beta,
+    vector float       y[] );
 
 /*************************************************************
  vSgemx adds an array of vector floats y to the  
@@ -619,15 +560,12 @@ vSgemv(
  */
 EXTERN_API_C( void )
 vSgemx(
-  long                 m,
-  long                 n,
-  float                alpha,
-  const vector float   a[],
-  const vector float   x[],
-  vector float         y[]);
-
-
-
+    long               m,
+    long               n,
+    float              alpha,
+    const vector float a[],
+    const vector float x[],
+    vector float       y[] );
 
 /*************************************************************
  vSgemtx takes the transpose of a mtrix A and    
@@ -657,22 +595,18 @@ vSgemx(
  */
 EXTERN_API_C( void )
 vSgemtx(
-  long                 m,
-  long                 n,
-  float                alpha,
-  const vector float   a[],
-  const vector float   x[],
-  vector float         y[]);
-
-
-
+    long               m,
+    long               n,
+    float              alpha,
+    const vector float a[],
+    const vector float x[],
+    vector float       y[] );
 
 /*
 -------------------------------------------------------------------------------------
      Level 3
 -------------------------------------------------------------------------------------
 */
-
 
 /*************************************************************
  vSgeadd performs matrix addition for general    
@@ -720,16 +654,13 @@ vSgemtx(
  */
 EXTERN_API_C( void )
 vSgeadd(
-  long                 height,
-  long                 width,
-  const vector float   a[],
-  char                 forma,
-  const vector float   b[],
-  char                 formb,
-  vector float         c[]);
-
-
-
+    long               height,
+    long               width,
+    const vector float a[],
+    char               forma,
+    const vector float b[],
+    char               formb,
+    vector float       c[] );
 
 /*************************************************************
  vSgesub performs matrix subtraction for general 
@@ -777,16 +708,13 @@ vSgeadd(
  */
 EXTERN_API_C( void )
 vSgesub(
-  long                 height,
-  long                 width,
-  const vector float   a[],
-  char                 forma,
-  const vector float   b[],
-  char                 formb,
-  vector float         c[]);
-
-
-
+    long               height,
+    long               width,
+    const vector float a[],
+    char               forma,
+    const vector float b[],
+    char               formb,
+    vector float       c[] );
 
 /*************************************************************
  vSgemul performs matrix multiplication for      
@@ -836,17 +764,14 @@ vSgesub(
  */
 EXTERN_API_C( void )
 vSgemul(
-  long                 l,
-  long                 m,
-  long                 n,
-  const vector float   a[],
-  char                 forma,
-  const vector float   b[],
-  char                 formb,
-  vector float         matrix[]);
-
-
-
+    long               l,
+    long               m,
+    long               n,
+    const vector float a[],
+    char               forma,
+    const vector float b[],
+    char               formb,
+    vector float       matrix[] );
 
 /*************************************************************
  vSgemm performs combined matrix multiplication  
@@ -903,21 +828,17 @@ vSgemul(
  */
 EXTERN_API_C( void )
 vSgemm(
-  long                 l,
-  long                 m,
-  long                 n,
-  const vector float   a[],
-  char                 forma,
-  const vector float   b[],
-  char                 formb,
-  vector float         c[],
-  float                alpha,
-  float                beta,
-  vector float         matrix[]);
-
-
-
-
+    long               l,
+    long               m,
+    long               n,
+    const vector float a[],
+    char               forma,
+    const vector float b[],
+    char               formb,
+    vector float       c[],
+    float              alpha,
+    float              beta,
+    vector float       matrix[] );
 
 /*************************************************************
  vSgetmi performs general matrix transpose (in place).                                         
@@ -934,12 +855,8 @@ vSgemm(
  */
 EXTERN_API_C( void )
 vSgetmi(
-  long           size,
-  vector float   x[]);
-
-
-
-
+    long         size,
+    vector float x[] );
 
 /*************************************************************
  vSgetmo performs general matrix transpose (out-of-place).                                      
@@ -958,14 +875,10 @@ vSgetmi(
  */
 EXTERN_API_C( void )
 vSgetmo(
-  long                 height,
-  long                 width,
-  const vector float   x[],
-  vector float         y[]);
-
-
-
-
+    long               height,
+    long               width,
+    const vector float x[],
+    vector float       y[] );
 
 /*************************************************************
  vSgevv is a new function. It takes matrix A and 
@@ -991,15 +904,13 @@ vSgetmo(
  */
 EXTERN_API_C( void )
 vSgevv(
-  long                 l,
-  long                 n,
-  const vector float   a[],
-  const vector float   b[],
-  vector float         m[]);
+    long               l,
+    long               n,
+    const vector float a[],
+    const vector float b[],
+    vector float       m[] );
 
-
-#endif  /* defined(__VEC__) */
-
+#endif /* defined(__VEC__) */
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -1012,4 +923,3 @@ vSgevv(
 #endif
 
 #endif /* __VECTOROPS__ */
-

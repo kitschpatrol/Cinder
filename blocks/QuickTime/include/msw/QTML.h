@@ -36,8 +36,6 @@
 #include <Files.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -51,11 +49,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /* QuickTime is not available to 64-bit clients */
@@ -72,12 +70,11 @@ extern "C" {
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLYieldCPU(void);
-
+QTMLYieldCPU( void );
 
 /* QTMLYieldCPUTime flags*/
 enum {
-  kQTMLHandlePortEvents         = (1L << 0) /* ask for event handling during the yield*/
+	kQTMLHandlePortEvents = ( 1L << 0 ) /* ask for event handling during the yield*/
 };
 
 /*
@@ -91,21 +88,20 @@ enum {
  */
 EXTERN_API( void )
 QTMLYieldCPUTime(
-  long            milliSeconds,
-  unsigned long   flags);
+    long          milliSeconds,
+    unsigned long flags );
 
-
-typedef struct OpaqueQTMLMutex*         QTMLMutex;
-typedef struct OpaqueQTMLSyncVar*       QTMLSyncVar;
-typedef QTMLSyncVar *                   QTMLSyncVarPtr;
+typedef struct OpaqueQTMLMutex *  QTMLMutex;
+typedef struct OpaqueQTMLSyncVar *QTMLSyncVar;
+typedef QTMLSyncVar *             QTMLSyncVarPtr;
 /* InitializeQTML flags*/
 enum {
-  kInitializeQTMLNoSoundFlag    = (1L << 0), /* flag for requesting no sound when calling InitializeQTML*/
-  kInitializeQTMLUseGDIFlag     = (1L << 1), /* flag for requesting GDI when calling InitializeQTML*/
-  kInitializeQTMLDisableDirectSound = (1L << 2), /* disables QTML's use of DirectSound*/
-  kInitializeQTMLUseExclusiveFullScreenModeFlag = (1L << 3), /* later than QTML 3.0: qtml starts up in exclusive full screen mode*/
-  kInitializeQTMLDisableDDClippers = (1L << 4), /* flag for requesting QTML not to use DirectDraw clipper objects; QTML 5.0 and later*/
-  kInitializeQTMLEnableDoubleBufferedSurface = (1L << 6) /* flag for requesting QuickTime use a double-buffered destination surface; QT6.4 and later*/
+	kInitializeQTMLNoSoundFlag = ( 1L << 0 ), /* flag for requesting no sound when calling InitializeQTML*/
+	kInitializeQTMLUseGDIFlag = ( 1L << 1 ), /* flag for requesting GDI when calling InitializeQTML*/
+	kInitializeQTMLDisableDirectSound = ( 1L << 2 ), /* disables QTML's use of DirectSound*/
+	kInitializeQTMLUseExclusiveFullScreenModeFlag = ( 1L << 3 ), /* later than QTML 3.0: qtml starts up in exclusive full screen mode*/
+	kInitializeQTMLDisableDDClippers = ( 1L << 4 ), /* flag for requesting QTML not to use DirectDraw clipper objects; QTML 5.0 and later*/
+	kInitializeQTMLEnableDoubleBufferedSurface = ( 1L << 6 ) /* flag for requesting QuickTime use a double-buffered destination surface; QT6.4 and later*/
 };
 
 #if CALL_NOT_IN_CARBON
@@ -119,8 +115,7 @@ enum {
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( OSErr )
-InitializeQTML(long flag);
-
+InitializeQTML( long flag );
 
 /*
  *  TerminateQTML()
@@ -132,16 +127,14 @@ InitializeQTML(long flag);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-TerminateQTML(void);
-
-
+TerminateQTML( void );
 
 /* CreatePortAssociation flags*/
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kQTMLNoIdleEvents             = (1L << 1), /* ask for a non-auto-idled port to be created*/
-  kQTMLNoDoubleBufferPort       = (1L << 2) /* ask for QTML not to double-buffer this port*/
+	kQTMLNoIdleEvents = ( 1L << 1 ), /* ask for a non-auto-idled port to be created*/
+	kQTMLNoDoubleBufferPort = ( 1L << 2 ) /* ask for QTML not to double-buffer this port*/
 };
 
 #define kQTMLIsDoubleBuffered "UsesDoubleBuffer"
@@ -157,10 +150,9 @@ enum {
  */
 EXTERN_API( GrafPtr )
 CreatePortAssociation(
-  void *  theWnd,
-  Ptr     storage,
-  long    flags);
-
+    void *theWnd,
+    Ptr   storage,
+    long  flags );
 
 /*
  *  DestroyPortAssociation()
@@ -172,11 +164,9 @@ CreatePortAssociation(
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-DestroyPortAssociation(CGrafPtr cgp);
+DestroyPortAssociation( CGrafPtr cgp );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  QTMLGrabMutex()
@@ -188,8 +178,7 @@ DestroyPortAssociation(CGrafPtr cgp);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLGrabMutex(QTMLMutex mu);
-
+QTMLGrabMutex( QTMLMutex mu );
 
 /*
  *  QTMLTryGrabMutex()
@@ -201,8 +190,7 @@ QTMLGrabMutex(QTMLMutex mu);
  *    Windows:          in qtmlClient.lib 4.1 and later
  */
 EXTERN_API( Boolean )
-QTMLTryGrabMutex(QTMLMutex mu);
-
+QTMLTryGrabMutex( QTMLMutex mu );
 
 /*
  *  QTMLReturnMutex()
@@ -214,8 +202,7 @@ QTMLTryGrabMutex(QTMLMutex mu);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLReturnMutex(QTMLMutex mu);
-
+QTMLReturnMutex( QTMLMutex mu );
 
 /*
  *  QTMLCreateMutex()
@@ -227,8 +214,7 @@ QTMLReturnMutex(QTMLMutex mu);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( QTMLMutex )
-QTMLCreateMutex(void);
-
+QTMLCreateMutex( void );
 
 /*
  *  QTMLDestroyMutex()
@@ -240,9 +226,7 @@ QTMLCreateMutex(void);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLDestroyMutex(QTMLMutex mu);
-
-
+QTMLDestroyMutex( QTMLMutex mu );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -255,8 +239,7 @@ QTMLDestroyMutex(QTMLMutex mu);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( QTMLSyncVarPtr )
-QTMLCreateSyncVar(void);
-
+QTMLCreateSyncVar( void );
 
 /*
  *  QTMLDestroySyncVar()
@@ -268,8 +251,7 @@ QTMLCreateSyncVar(void);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLDestroySyncVar(QTMLSyncVarPtr p);
-
+QTMLDestroySyncVar( QTMLSyncVarPtr p );
 
 /*
  *  QTMLTestAndSetSyncVar()
@@ -281,8 +263,7 @@ QTMLDestroySyncVar(QTMLSyncVarPtr p);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( long )
-QTMLTestAndSetSyncVar(QTMLSyncVarPtr sync);
-
+QTMLTestAndSetSyncVar( QTMLSyncVarPtr sync );
 
 /*
  *  QTMLWaitAndSetSyncVar()
@@ -294,8 +275,7 @@ QTMLTestAndSetSyncVar(QTMLSyncVarPtr sync);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLWaitAndSetSyncVar(QTMLSyncVarPtr sync);
-
+QTMLWaitAndSetSyncVar( QTMLSyncVarPtr sync );
 
 /*
  *  QTMLResetSyncVar()
@@ -307,9 +287,7 @@ QTMLWaitAndSetSyncVar(QTMLSyncVarPtr sync);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLResetSyncVar(QTMLSyncVarPtr sync);
-
-
+QTMLResetSyncVar( QTMLSyncVarPtr sync );
 
 /*
  *  InitializeQHdr()
@@ -321,8 +299,7 @@ QTMLResetSyncVar(QTMLSyncVarPtr sync);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-InitializeQHdr(QHdr * qhdr);
-
+InitializeQHdr( QHdr *qhdr );
 
 /*
  *  TerminateQHdr()
@@ -334,9 +311,7 @@ InitializeQHdr(QHdr * qhdr);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-TerminateQHdr(QHdr * qhdr);
-
-
+TerminateQHdr( QHdr *qhdr );
 
 /*
  *  QTMLAcquireWindowList()
@@ -348,8 +323,7 @@ TerminateQHdr(QHdr * qhdr);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLAcquireWindowList(void);
-
+QTMLAcquireWindowList( void );
 
 /*
  *  QTMLReleaseWindowList()
@@ -361,8 +335,7 @@ QTMLAcquireWindowList(void);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-QTMLReleaseWindowList(void);
-
+QTMLReleaseWindowList( void );
 
 /*
    These routines are here to support "interrupt level" code
@@ -380,9 +353,8 @@ QTMLReleaseWindowList(void);
  */
 EXTERN_API( long )
 QTMLRegisterInterruptSafeThread(
-  unsigned long   threadID,
-  void *          threadInfo);
-
+    unsigned long threadID,
+    void *        threadInfo );
 
 /*
  *  QTMLUnregisterInterruptSafeThread()
@@ -394,9 +366,7 @@ QTMLRegisterInterruptSafeThread(
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( long )
-QTMLUnregisterInterruptSafeThread(unsigned long threadID);
-
-
+QTMLUnregisterInterruptSafeThread( unsigned long threadID );
 
 /*
  *  NativeEventToMacEvent()
@@ -409,11 +379,10 @@ QTMLUnregisterInterruptSafeThread(unsigned long threadID);
  */
 EXTERN_API( long )
 NativeEventToMacEvent(
-  void *         nativeEvent,
-  EventRecord *  macEvent);
+    void *       nativeEvent,
+    EventRecord *macEvent );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if TARGET_OS_WIN32
 #if CALL_NOT_IN_CARBON
@@ -428,11 +397,10 @@ NativeEventToMacEvent(
  */
 EXTERN_API( long )
 WinEventToMacEvent(
-  void *         winMsg,
-  EventRecord *  macEvent);
+    void *       winMsg,
+    EventRecord *macEvent );
 
-
-#define WinEventToMacEvent  NativeEventToMacEvent
+#define WinEventToMacEvent NativeEventToMacEvent
 /*
  *  IsTaskBarVisible()
  *  
@@ -443,8 +411,7 @@ WinEventToMacEvent(
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( Boolean )
-IsTaskBarVisible(void);
-
+IsTaskBarVisible( void );
 
 /*
  *  ShowHideTaskBar()
@@ -456,14 +423,13 @@ IsTaskBarVisible(void);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void )
-ShowHideTaskBar(Boolean showIt);
+ShowHideTaskBar( Boolean showIt );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kDDSurfaceLocked              = (1L << 0),
-  kDDSurfaceStatic              = (1L << 1)
+	kDDSurfaceLocked = ( 1L << 0 ),
+	kDDSurfaceStatic = ( 1L << 1 )
 };
 
 #if CALL_NOT_IN_CARBON
@@ -477,8 +443,7 @@ enum {
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( OSErr )
-QTGetDDObject(void ** lpDDObject);
-
+QTGetDDObject( void **lpDDObject );
 
 /*
  *  QTSetDDObject()
@@ -490,8 +455,7 @@ QTGetDDObject(void ** lpDDObject);
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( OSErr )
-QTSetDDObject(void * lpNewDDObject);
-
+QTSetDDObject( void *lpNewDDObject );
 
 /*
  *  QTSetDDPrimarySurface()
@@ -504,10 +468,8 @@ QTSetDDObject(void * lpNewDDObject);
  */
 EXTERN_API( OSErr )
 QTSetDDPrimarySurface(
-  void *          lpNewDDSurface,
-  unsigned long   flags);
-
-
+    void *        lpNewDDSurface,
+    unsigned long flags );
 
 /*
  *  QTMLGetVolumeRootPath()
@@ -520,11 +482,9 @@ QTSetDDPrimarySurface(
  */
 EXTERN_API( OSErr )
 QTMLGetVolumeRootPath(
-  char *          fullPath,
-  char *          volumeRootPath,
-  unsigned long   volumeRootLen);
-
-
+    char *        fullPath,
+    char *        volumeRootPath,
+    unsigned long volumeRootLen );
 
 /*
  *  QTMLSetWindowWndProc()
@@ -537,9 +497,8 @@ QTMLGetVolumeRootPath(
  */
 EXTERN_API( void )
 QTMLSetWindowWndProc(
-  WindowRef   theWindow,
-  void *      windowProc);
-
+    WindowRef theWindow,
+    void *    windowProc );
 
 /*
  *  QTMLGetWindowWndProc()
@@ -551,12 +510,11 @@ QTMLSetWindowWndProc(
  *    Windows:          in qtmlClient.lib 3.0 and later
  */
 EXTERN_API( void * )
-QTMLGetWindowWndProc(WindowRef theWindow);
+QTMLGetWindowWndProc( WindowRef theWindow );
 
+#endif /* CALL_NOT_IN_CARBON */
 
-#endif  /* CALL_NOT_IN_CARBON */
-
-#endif  /* TARGET_OS_WIN32 */
+#endif /* TARGET_OS_WIN32 */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -570,20 +528,19 @@ QTMLGetWindowWndProc(WindowRef theWindow);
  */
 EXTERN_API( OSErr )
 QTMLGetCanonicalPathName(
-  char *          inName,
-  char *          outName,
-  unsigned long   outLen);
+    char *        inName,
+    char *        outName,
+    unsigned long outLen );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kFullNativePath               = 0,
-  kFileNameOnly                 = (1 << 0),
-  kDirectoryPathOnly            = (1 << 1),
-  kUFSFullPathName              = (1 << 2),
-  kTryVDIMask                   = (1 << 3), /*    Used in NativePathNameToFSSpec to specify to search VDI mountpoints*/
-  kFullPathSpecifiedMask        = (1 << 4) /*    the passed in name is a fully qualified full path*/
+	kFullNativePath = 0,
+	kFileNameOnly = ( 1 << 0 ),
+	kDirectoryPathOnly = ( 1 << 1 ),
+	kUFSFullPathName = ( 1 << 2 ),
+	kTryVDIMask = ( 1 << 3 ), /*    Used in NativePathNameToFSSpec to specify to search VDI mountpoints*/
+	kFullPathSpecifiedMask = ( 1 << 4 ) /*    the passed in name is a fully qualified full path*/
 };
 
 #if CALL_NOT_IN_CARBON
@@ -598,16 +555,15 @@ enum {
  */
 EXTERN_API( OSErr )
 FSSpecToNativePathName(
-  const FSSpec *  inFile,
-  char *          outName,
-  unsigned long   outLen,
-  long            flags);
+    const FSSpec *inFile,
+    char *        outName,
+    unsigned long outLen,
+    long          flags );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 enum {
-  kErrorIfFileNotFound          = 1L << 31
+	kErrorIfFileNotFound = 1L << 31
 };
 
 #if CALL_NOT_IN_CARBON
@@ -622,10 +578,9 @@ enum {
  */
 EXTERN_API( OSErr )
 NativePathNameToFSSpec(
-  char *    inName,
-  FSSpec *  outFile,
-  long      flags);
-
+    char *  inName,
+    FSSpec *outFile,
+    long    flags );
 
 /*
  *  QTGetAliasInfo()
@@ -638,26 +593,23 @@ NativePathNameToFSSpec(
  */
 EXTERN_API( OSErr )
 QTGetAliasInfo(
-  AliasHandle     alias,
-  AliasInfoType   index,
-  char *          outBuf,
-  long            bufLen,
-  long *          outLen,
-  unsigned long   flags);
-
-
+    AliasHandle   alias,
+    AliasInfoType index,
+    char *        outBuf,
+    long          bufLen,
+    long *        outLen,
+    unsigned long flags );
 
 #endif // !__LP64__
 
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -671,4 +623,3 @@ QTGetAliasInfo(
 #endif
 
 #endif /* __QTML__ */
-

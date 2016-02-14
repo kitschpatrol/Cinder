@@ -9,8 +9,8 @@
 //
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/Rand.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
 using namespace ci;
@@ -20,13 +20,12 @@ using namespace std;
 /**
 	Particle type holds information for rendering and simulation.
  */
-struct Particle
-{
-	vec3 		home;
-	vec3 		ppos;
-	vec3		pos;
-	ColorA		color;
-	float		damping;
+struct Particle {
+	vec3   home;
+	vec3   ppos;
+	vec3   pos;
+	ColorA color;
+	float  damping;
 };
 
 // Home many particles to create. (200k)
@@ -47,13 +46,14 @@ class ParticleSphereCPUApp : public App {
 
 	// Push particles away from a point.
 	void disturbParticles( const vec3 &center, float force );
+
   private:
 	// Particle data on CPU.
-	vector<Particle>	mParticles;
+	vector<Particle> mParticles;
 	// Buffer holding raw particle data on GPU, written to every update().
-	gl::VboRef			mParticleVbo;
+	gl::VboRef mParticleVbo;
 	// Batch for rendering particles with default shader.
-	gl::BatchRef		mParticleBatch;
+	gl::BatchRef mParticleBatch;
 };
 
 void ParticleSphereCPUApp::setup()
@@ -63,9 +63,8 @@ void ParticleSphereCPUApp::setup()
 	const float azimuth = 128.0f * M_PI / mParticles.size();
 	const float inclination = M_PI / mParticles.size();
 	const float radius = 160.0f;
-	vec3 center = vec3( getWindowCenter(), 0.0f );
-	for( int i = 0; i < mParticles.size(); ++i )
-	{	// assign starting values to particles.
+	vec3        center = vec3( getWindowCenter(), 0.0f );
+	for( int i = 0; i < mParticles.size(); ++i ) { // assign starting values to particles.
 		float x = radius * sin( inclination * i ) * cos( azimuth * i );
 		float y = radius * cos( inclination * i );
 		float z = radius * sin( inclination * i ) * sin( azimuth * i );
@@ -90,12 +89,11 @@ void ParticleSphereCPUApp::setup()
 	// Create mesh by pairing our particle layout with our particle Vbo.
 	// A VboMesh is an array of layout + vbo pairs
 	auto mesh = gl::VboMesh::create( mParticles.size(), GL_POINTS, { { particleLayout, mParticleVbo } } );
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 	mParticleBatch = gl::Batch::create( mesh, gl::getStockShader( gl::ShaderDef().color() ) );
 	gl::pointSize( 1.0f );
 #else
-	mParticleBatch = gl::Batch::create( mesh, gl::GlslProg::create( loadAsset( "draw_es3.vert" ), 
-																		loadAsset( "draw_es3.frag" ) ) );
+	mParticleBatch = gl::Batch::create( mesh, gl::GlslProg::create( loadAsset( "draw_es3.vert" ), loadAsset( "draw_es3.frag" ) ) );
 #endif
 
 	// Disturb particles a lot on mouse down.
@@ -114,7 +112,7 @@ void ParticleSphereCPUApp::setup()
 void ParticleSphereCPUApp::disturbParticles( const vec3 &center, float force )
 {
 	for( auto &p : mParticles ) {
-		vec3 dir = p.pos - center;
+		vec3  dir = p.pos - center;
 		float d2 = length2( dir );
 		p.pos += force * dir / d2;
 	}
@@ -123,18 +121,18 @@ void ParticleSphereCPUApp::disturbParticles( const vec3 &center, float force )
 void ParticleSphereCPUApp::update()
 {
 	// Run Verlet integration on all particles on the CPU.
-	float dt2 = 1.0f / (60.0f * 60.0f);
+	float dt2 = 1.0f / ( 60.0f * 60.0f );
 	for( auto &p : mParticles ) {
-		vec3 vel = (p.pos - p.ppos) * p.damping;
+		vec3 vel = ( p.pos - p.ppos ) * p.damping;
 		p.ppos = p.pos;
-		vec3 acc = (p.home - p.pos) * 32.0f;
+		vec3 acc = ( p.home - p.pos ) * 32.0f;
 		p.pos += vel + acc * dt2;
 	}
 
 	// Copy particle data onto the GPU.
 	// Map the GPU memory and write over it.
 	void *gpuMem = mParticleVbo->mapReplace();
-	memcpy( gpuMem, mParticles.data(), mParticles.size() * sizeof(Particle) );
+	memcpy( gpuMem, mParticles.data(), mParticles.size() * sizeof( Particle ) );
 	mParticleVbo->unmap();
 }
 
@@ -148,7 +146,7 @@ void ParticleSphereCPUApp::draw()
 	mParticleBatch->draw();
 }
 
-CINDER_APP( ParticleSphereCPUApp, RendererGl, [] ( App::Settings *settings ) {
+CINDER_APP( ParticleSphereCPUApp, RendererGl, []( App::Settings *settings ) {
 	settings->setWindowSize( 1280, 720 );
 	settings->setMultiTouchEnabled( false );
 } )

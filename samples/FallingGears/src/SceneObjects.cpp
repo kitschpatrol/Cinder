@@ -3,9 +3,9 @@
 #include "SceneController.h"
 
 #include "cinder/Timeline.h"
+#include "cinder/Triangulate.h"
 #include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
-#include "cinder/Triangulate.h"
 
 const size_t BASS_MAX = 48;
 
@@ -32,14 +32,14 @@ vec2 SceneObject::getPos() const
 
 void Gear::draw()
 {
-	if( ! mImageTex )
+	if( !mImageTex )
 		return;
 
 	float pointsPerMeter = SceneController::getPointsPerMeter();
 
-	Rectf imageDest( - mRadius, - mRadius, mRadius, mRadius );
+	Rectf imageDest( -mRadius, -mRadius, mRadius, mRadius );
 
-	vec2 pos = vec2( mBody->GetPosition().x, mBody->GetPosition().y ) * pointsPerMeter;
+	vec2  pos = vec2( mBody->GetPosition().x, mBody->GetPosition().y ) * pointsPerMeter;
 	float t = mBody->GetAngle();
 
 	gl::ScopedModelMatrix modelScope;
@@ -84,7 +84,7 @@ void Wall::handleCollision( const Gear *gear, const vec2 &contactPoint )
 void Wall::draw()
 {
 	float pointsPerMeter = SceneController::getPointsPerMeter();
-	auto pos = pointsPerMeter * mBody->GetPosition();
+	auto  pos = pointsPerMeter * mBody->GetPosition();
 
 	Rectf wallRect( pos.x - mWidth, 0, pos.x + mWidth, app::getWindowHeight() );
 
@@ -135,7 +135,7 @@ void Island::handleCollision( const Gear *gear, const vec2 &contactPoint )
 	float pointsPerMeter = SceneController::getPointsPerMeter();
 
 	for( auto &bumper : mBumpers ) {
-		vec2 centerPos = box2d::toCinder( mBody->GetPosition() ) * pointsPerMeter;
+		vec2  centerPos = box2d::toCinder( mBody->GetPosition() ) * pointsPerMeter;
 		Rectf bbox = bumper.mBoundingBox + centerPos;
 		if( bbox.contains( contactPoint ) ) {
 			auto &bumperAnim = bumper.mVibrationLevel;
@@ -224,7 +224,7 @@ void Island::setupGeometry()
 	}
 }
 
-void Island::addBumper( const ci::Path2d& path )
+void Island::addBumper( const ci::Path2d &path )
 {
 	const float boundingBoxExpansion = 1.1f;
 
@@ -236,7 +236,7 @@ void Island::addBumper( const ci::Path2d& path )
 
 	// calculate an expanded bounding box for each bumper to do hit detection, ensuring that the entire edge is covered.
 	Rectf bbox = bumper.mPath.calcBoundingBox();
-	vec2 center = bbox.getCenter();
+	vec2  center = bbox.getCenter();
 	bbox -= center;
 	bbox *= boundingBoxExpansion;
 	bbox += center;
@@ -248,7 +248,7 @@ void Island::draw()
 {
 	float pointsPerMeter = SceneController::getPointsPerMeter();
 
-	auto centerPos = box2d::toCinder( mBody->GetPosition() ) * pointsPerMeter;
+	auto                  centerPos = box2d::toCinder( mBody->GetPosition() ) * pointsPerMeter;
 	gl::ScopedModelMatrix modelScope;
 	gl::translate( centerPos );
 

@@ -23,9 +23,9 @@
 
 #pragma once
 
+#include "cinder/audio/SampleType.h"
 #include "cinder/audio/Source.h"
 #include "cinder/audio/Target.h"
-#include "cinder/audio/SampleType.h"
 #include "cinder/audio/msw/MswUtil.h"
 #include "cinder/msw/CinderMsw.h"
 
@@ -35,7 +35,9 @@ struct IMFSourceReader;
 struct IMFSinkWriter;
 struct IMFByteStream;
 
-namespace cinder { namespace audio { namespace msw {
+namespace cinder {
+namespace audio {
+namespace msw {
 
 class SourceFileMediaFoundation : public SourceFile {
   public:
@@ -43,36 +45,35 @@ class SourceFileMediaFoundation : public SourceFile {
 	SourceFileMediaFoundation( const DataSourceRef &dataSource, size_t sampleRate );
 	virtual ~SourceFileMediaFoundation();
 
-	SourceFileRef	cloneWithSampleRate( size_t sampleRate ) const	override;
+	SourceFileRef cloneWithSampleRate( size_t sampleRate ) const override;
 
-	size_t		getNumChannels() const override			{ return mNumChannels; }
-	size_t		getSampleRateNative() const override	{ return mSampleRate; }
+	size_t getNumChannels() const override { return mNumChannels; }
+	size_t getSampleRateNative() const override { return mSampleRate; }
+	size_t performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded ) override;
+	void performSeek( size_t readPositionFrames ) override;
 
-	size_t		performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded ) override;
-	void		performSeek( size_t readPositionFrames ) override;
-
-	static std::vector<std::string>	getSupportedExtensions();
+	static std::vector<std::string> getSupportedExtensions();
 
   private:
-	void		initReader();
-	size_t		processNextReadSample();
+	void   initReader();
+	size_t processNextReadSample();
 
-	ci::msw::ManagedComPtr<::IMFSourceReader>		mSourceReader;
-	ci::msw::ManagedComPtr<ci::msw::ComIStream>		mComIStream;
-	ci::msw::ManagedComPtr<::IMFByteStream>			mByteStream;
-	DataSourceRef									mDataSource; // stored so that clone() can tell if original data source is a file or windows resource
-	
-	size_t				mSampleRate;
-	size_t				mNumChannels;
-	size_t				mBytesPerSample;
-	SampleType			mSampleType;
-	double				mSeconds;
-	bool				mCanSeek;
-	size_t				mReadBufferPos;
-	size_t				mFramesRemainingInReadBuffer;
+	ci::msw::ManagedComPtr<::IMFSourceReader>   mSourceReader;
+	ci::msw::ManagedComPtr<ci::msw::ComIStream> mComIStream;
+	ci::msw::ManagedComPtr<::IMFByteStream>     mByteStream;
+	DataSourceRef                               mDataSource; // stored so that clone() can tell if original data source is a file or windows resource
 
-	BufferDynamic				mReadBuffer;			// used to marshal the number of samples read to the number requested, conversions
-	BufferDynamicInterleaved	mBitConverterBuffer;	// only used when bit conversion and de-interleaving are done in separate steps (ex. 24-bit stereo).
+	size_t     mSampleRate;
+	size_t     mNumChannels;
+	size_t     mBytesPerSample;
+	SampleType mSampleType;
+	double     mSeconds;
+	bool       mCanSeek;
+	size_t     mReadBufferPos;
+	size_t     mFramesRemainingInReadBuffer;
+
+	BufferDynamic            mReadBuffer; // used to marshal the number of samples read to the number requested, conversions
+	BufferDynamicInterleaved mBitConverterBuffer; // only used when bit conversion and de-interleaving are done in separate steps (ex. 24-bit stereo).
 };
 
 //! \brief TargetFile implementation using Microsoft's Media Foundation Framework.
@@ -86,22 +87,23 @@ class TargetFileMediaFoundation : public TargetFile {
 	void performWrite( const Buffer *buffer, size_t numFrames, size_t frameOffset ) override;
 
   private:
-	  std::unique_ptr<::IMFSinkWriter, ci::msw::ComDeleter>		mSinkWriter;
+	std::unique_ptr<::IMFSinkWriter, ci::msw::ComDeleter> mSinkWriter;
 
-	  DWORD						mStreamIndex;
-	  size_t					mSampleSize;
-	  BufferDynamicInterleaved	mBitConverterBuffer;	// only used when bit conversion and interleaving are done in separate steps (ex. 24-bit stereo).
+	DWORD                    mStreamIndex;
+	size_t                   mSampleSize;
+	BufferDynamicInterleaved mBitConverterBuffer; // only used when bit conversion and interleaving are done in separate steps (ex. 24-bit stereo).
 };
 
 class MediaFoundationInitializer {
   public:
 	//! Called automatically whenever a SourceFileMediaFoundation is constructed.
-	static void		initMediaFoundation();
+	static void initMediaFoundation();
 	//! This function is not called automatically, but users may if they wish to free up memory used by Media Foundation.
-	static void		shutdownMediaFoundation();
+	static void shutdownMediaFoundation();
 
   private:
 	static bool sIsMfInitialized;
 };
-
-} } } // namespace cinder::audio::msw
+}
+}
+} // namespace cinder::audio::msw

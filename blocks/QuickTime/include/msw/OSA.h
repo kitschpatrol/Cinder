@@ -36,9 +36,6 @@
 #include <AEInteraction.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -52,11 +49,11 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 /**************************************************************************
@@ -67,18 +64,18 @@ extern "C" {
         support the OSA interface defined here. */
 /* 0x6f736120 */
 enum {
-  kOSAComponentType             = FOUR_CHAR_CODE('osa ')
+	kOSAComponentType = FOUR_CHAR_CODE( 'osa ' )
 };
 
 /* 0x73637074 */
 enum {
-  kOSAGenericScriptingComponentSubtype = FOUR_CHAR_CODE('scpt')
+	kOSAGenericScriptingComponentSubtype = FOUR_CHAR_CODE( 'scpt' )
 };
 
 /*  Type of script document files.  */
 /* 0x6f736173 */
 enum {
-  kOSAFileType                  = FOUR_CHAR_CODE('osas')
+	kOSAFileType = FOUR_CHAR_CODE( 'osas' )
 };
 
 /*
@@ -87,42 +84,42 @@ enum {
     */
 /* 0x61736372 */
 enum {
-  kOSASuite                     = FOUR_CHAR_CODE('ascr')
+	kOSASuite = FOUR_CHAR_CODE( 'ascr' )
 };
 
 /* 0x72656364 */
 enum {
-  kOSARecordedText              = FOUR_CHAR_CODE('recd')
+	kOSARecordedText = FOUR_CHAR_CODE( 'recd' )
 };
 
 /* Selector returns boolean */
 /* 0x6d6f6469 */
 enum {
-  kOSAScriptIsModified          = FOUR_CHAR_CODE('modi')
+	kOSAScriptIsModified = FOUR_CHAR_CODE( 'modi' )
 };
 
 /* Selector returns boolean */
 /* 0x63736372 */
 enum {
-  kOSAScriptIsTypeCompiledScript = FOUR_CHAR_CODE('cscr')
+	kOSAScriptIsTypeCompiledScript = FOUR_CHAR_CODE( 'cscr' )
 };
 
 /* Selector returns boolean */
 /* 0x76616c75 */
 enum {
-  kOSAScriptIsTypeScriptValue   = FOUR_CHAR_CODE('valu')
+	kOSAScriptIsTypeScriptValue = FOUR_CHAR_CODE( 'valu' )
 };
 
 /* Selector returns boolean */
 /* 0x636e7478 */
 enum {
-  kOSAScriptIsTypeScriptContext = FOUR_CHAR_CODE('cntx')
+	kOSAScriptIsTypeScriptContext = FOUR_CHAR_CODE( 'cntx' )
 };
 
 /* Selector returns a DescType which may be passed to OSACoerceToDesc */
 /* 0x62657374 */
 enum {
-  kOSAScriptBestType            = FOUR_CHAR_CODE('best')
+	kOSAScriptBestType = FOUR_CHAR_CODE( 'best' )
 };
 
 /*
@@ -132,43 +129,42 @@ enum {
     */
 /* 0x67737263 */
 enum {
-  kOSACanGetSource              = FOUR_CHAR_CODE('gsrc')
+	kOSACanGetSource = FOUR_CHAR_CODE( 'gsrc' )
 };
-
 
 enum {
-  typeOSADialectInfo            = FOUR_CHAR_CODE('difo'), /*  0x6469666f   */
-  keyOSADialectName             = FOUR_CHAR_CODE('dnam'), /*  0x646e616d   */
-  keyOSADialectCode             = FOUR_CHAR_CODE('dcod'), /*  0x64636f64   */
-  keyOSADialectLangCode         = FOUR_CHAR_CODE('dlcd'), /*  0x646c6364   */
-  keyOSADialectScriptCode       = FOUR_CHAR_CODE('dscd') /*  0x64736364   */
+	typeOSADialectInfo = FOUR_CHAR_CODE( 'difo' ), /*  0x6469666f   */
+	keyOSADialectName = FOUR_CHAR_CODE( 'dnam' ), /*  0x646e616d   */
+	keyOSADialectCode = FOUR_CHAR_CODE( 'dcod' ), /*  0x64636f64   */
+	keyOSADialectLangCode = FOUR_CHAR_CODE( 'dlcd' ), /*  0x646c6364   */
+	keyOSADialectScriptCode = FOUR_CHAR_CODE( 'dscd' ) /*  0x64736364   */
 };
 
-typedef ComponentResult                 OSAError;
+typedef ComponentResult OSAError;
 /* Under the Open Scripting Architecture all error results are longs */
-typedef unsigned long                   OSAID;
+typedef unsigned long OSAID;
 /*
         OSAIDs allow transparent manipulation of scripts associated with
         various scripting systems.
     */
 enum {
-  kOSANullScript                = 0L
+	kOSANullScript = 0L
 };
 
 /* No -script constant. */
 enum {
-  kOSANullMode                  = 0,    /* sounds better */
-  kOSAModeNull                  = 0     /* tastes consistent */
+	kOSANullMode = 0, /* sounds better */
+	kOSAModeNull = 0 /* tastes consistent */
 };
 
 /*
         Some routines take flags that control their execution.  This constant
         declares default mode settings are used.
     */
-typedef CALLBACK_API( OSErr , OSACreateAppleEventProcPtr )(AEEventClass theAEEventClass, AEEventID theAEEventID, const AEAddressDesc *target, short returnID, long transactionID, AppleEvent *result, long refCon);
-typedef CALLBACK_API( OSErr , OSASendProcPtr )(const AppleEvent *theAppleEvent, AppleEvent *reply, AESendMode sendMode, AESendPriority sendPriority, long timeOutInTicks, AEIdleUPP idleProc, AEFilterUPP filterProc, long refCon);
-typedef STACK_UPP_TYPE(OSACreateAppleEventProcPtr)              OSACreateAppleEventUPP;
-typedef STACK_UPP_TYPE(OSASendProcPtr)                          OSASendUPP;
+typedef CALLBACK_API( OSErr, OSACreateAppleEventProcPtr )( AEEventClass theAEEventClass, AEEventID theAEEventID, const AEAddressDesc *target, short returnID, long transactionID, AppleEvent *result, long refCon );
+typedef CALLBACK_API( OSErr, OSASendProcPtr )( const AppleEvent *theAppleEvent, AppleEvent *reply, AESendMode sendMode, AESendPriority sendPriority, long timeOutInTicks, AEIdleUPP idleProc, AEFilterUPP filterProc, long refCon );
+typedef STACK_UPP_TYPE( OSACreateAppleEventProcPtr ) OSACreateAppleEventUPP;
+typedef STACK_UPP_TYPE( OSASendProcPtr ) OSASendUPP;
 /*
  *  NewOSACreateAppleEventUPP()
  *  
@@ -178,14 +174,17 @@ typedef STACK_UPP_TYPE(OSASendProcPtr)                          OSASendUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSACreateAppleEventUPP )
-NewOSACreateAppleEventUPP(OSACreateAppleEventProcPtr userRoutine);
+NewOSACreateAppleEventUPP( OSACreateAppleEventProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppOSACreateAppleEventProcInfo = 0x000FEFE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(OSACreateAppleEventUPP) NewOSACreateAppleEventUPP(OSACreateAppleEventProcPtr userRoutine) { return (OSACreateAppleEventUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOSACreateAppleEventProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewOSACreateAppleEventUPP(userRoutine) (OSACreateAppleEventUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOSACreateAppleEventProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppOSACreateAppleEventProcInfo = 0x000FEFE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( OSACreateAppleEventUPP ) NewOSACreateAppleEventUPP( OSACreateAppleEventProcPtr userRoutine )
+{
+	return (OSACreateAppleEventUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOSACreateAppleEventProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewOSACreateAppleEventUPP( userRoutine ) ( OSACreateAppleEventUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOSACreateAppleEventProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -197,14 +196,17 @@ NewOSACreateAppleEventUPP(OSACreateAppleEventProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSASendUPP )
-NewOSASendUPP(OSASendProcPtr userRoutine);
+NewOSASendUPP( OSASendProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppOSASendProcInfo = 0x003FEFE0 };  /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(OSASendUPP) NewOSASendUPP(OSASendProcPtr userRoutine) { return (OSASendUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOSASendProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewOSASendUPP(userRoutine) (OSASendUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOSASendProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppOSASendProcInfo = 0x003FEFE0 }; /* pascal 2_bytes Func(4_bytes, 4_bytes, 4_bytes, 2_bytes, 4_bytes, 4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( OSASendUPP ) NewOSASendUPP( OSASendProcPtr userRoutine )
+{
+	return (OSASendUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOSASendProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewOSASendUPP( userRoutine ) ( OSASendUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOSASendProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -216,13 +218,16 @@ NewOSASendUPP(OSASendProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeOSACreateAppleEventUPP(OSACreateAppleEventUPP userUPP);
+DisposeOSACreateAppleEventUPP( OSACreateAppleEventUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeOSACreateAppleEventUPP(OSACreateAppleEventUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeOSACreateAppleEventUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeOSACreateAppleEventUPP( OSACreateAppleEventUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeOSACreateAppleEventUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -234,13 +239,16 @@ DisposeOSACreateAppleEventUPP(OSACreateAppleEventUPP userUPP);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeOSASendUPP(OSASendUPP userUPP);
+DisposeOSASendUPP( OSASendUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeOSASendUPP(OSASendUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeOSASendUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeOSASendUPP( OSASendUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeOSASendUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -253,20 +261,23 @@ DisposeOSASendUPP(OSASendUPP userUPP);
  */
 EXTERN_API_C( OSErr )
 InvokeOSACreateAppleEventUPP(
-  AEEventClass            theAEEventClass,
-  AEEventID               theAEEventID,
-  const AEAddressDesc *   target,
-  short                   returnID,
-  long                    transactionID,
-  AppleEvent *            result,
-  long                    refCon,
-  OSACreateAppleEventUPP  userUPP);
+    AEEventClass           theAEEventClass,
+    AEEventID              theAEEventID,
+    const AEAddressDesc *  target,
+    short                  returnID,
+    long                   transactionID,
+    AppleEvent *           result,
+    long                   refCon,
+    OSACreateAppleEventUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSErr) InvokeOSACreateAppleEventUPP(AEEventClass theAEEventClass, AEEventID theAEEventID, const AEAddressDesc * target, short returnID, long transactionID, AppleEvent * result, long refCon, OSACreateAppleEventUPP userUPP) { return (OSErr)CALL_SEVEN_PARAMETER_UPP(userUPP, uppOSACreateAppleEventProcInfo, theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon); }
-  #else
-    #define InvokeOSACreateAppleEventUPP(theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon, userUPP) (OSErr)CALL_SEVEN_PARAMETER_UPP((userUPP), uppOSACreateAppleEventProcInfo, (theAEEventClass), (theAEEventID), (target), (returnID), (transactionID), (result), (refCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSErr ) InvokeOSACreateAppleEventUPP( AEEventClass theAEEventClass, AEEventID theAEEventID, const AEAddressDesc *target, short returnID, long transactionID, AppleEvent *result, long refCon, OSACreateAppleEventUPP userUPP )
+{
+	return (OSErr)CALL_SEVEN_PARAMETER_UPP( userUPP, uppOSACreateAppleEventProcInfo, theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon );
+}
+#else
+#define InvokeOSACreateAppleEventUPP( theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon, userUPP ) ( OSErr ) CALL_SEVEN_PARAMETER_UPP( ( userUPP ), uppOSACreateAppleEventProcInfo, ( theAEEventClass ), ( theAEEventID ), ( target ), ( returnID ), ( transactionID ), ( result ), ( refCon ) )
+#endif
 #endif
 
 /*
@@ -279,29 +290,32 @@ InvokeOSACreateAppleEventUPP(
  */
 EXTERN_API_C( OSErr )
 InvokeOSASendUPP(
-  const AppleEvent *  theAppleEvent,
-  AppleEvent *        reply,
-  AESendMode          sendMode,
-  AESendPriority      sendPriority,
-  long                timeOutInTicks,
-  AEIdleUPP           idleProc,
-  AEFilterUPP         filterProc,
-  long                refCon,
-  OSASendUPP          userUPP);
+    const AppleEvent *theAppleEvent,
+    AppleEvent *      reply,
+    AESendMode        sendMode,
+    AESendPriority    sendPriority,
+    long              timeOutInTicks,
+    AEIdleUPP         idleProc,
+    AEFilterUPP       filterProc,
+    long              refCon,
+    OSASendUPP        userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSErr) InvokeOSASendUPP(const AppleEvent * theAppleEvent, AppleEvent * reply, AESendMode sendMode, AESendPriority sendPriority, long timeOutInTicks, AEIdleUPP idleProc, AEFilterUPP filterProc, long refCon, OSASendUPP userUPP) { return (OSErr)CALL_EIGHT_PARAMETER_UPP(userUPP, uppOSASendProcInfo, theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon); }
-  #else
-    #define InvokeOSASendUPP(theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon, userUPP) (OSErr)CALL_EIGHT_PARAMETER_UPP((userUPP), uppOSASendProcInfo, (theAppleEvent), (reply), (sendMode), (sendPriority), (timeOutInTicks), (idleProc), (filterProc), (refCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSErr ) InvokeOSASendUPP( const AppleEvent *theAppleEvent, AppleEvent *reply, AESendMode sendMode, AESendPriority sendPriority, long timeOutInTicks, AEIdleUPP idleProc, AEFilterUPP filterProc, long refCon, OSASendUPP userUPP )
+{
+	return (OSErr)CALL_EIGHT_PARAMETER_UPP( userUPP, uppOSASendProcInfo, theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon );
+}
+#else
+#define InvokeOSASendUPP( theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon, userUPP ) ( OSErr ) CALL_EIGHT_PARAMETER_UPP( ( userUPP ), uppOSASendProcInfo, ( theAppleEvent ), ( reply ), ( sendMode ), ( sendPriority ), ( timeOutInTicks ), ( idleProc ), ( filterProc ), ( refCon ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewOSACreateAppleEventProc(userRoutine)             NewOSACreateAppleEventUPP(userRoutine)
-    #define NewOSASendProc(userRoutine)                         NewOSASendUPP(userRoutine)
-    #define CallOSACreateAppleEventProc(userRoutine, theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon) InvokeOSACreateAppleEventUPP(theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon, userRoutine)
-    #define CallOSASendProc(userRoutine, theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon) InvokeOSASendUPP(theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewOSACreateAppleEventProc( userRoutine ) NewOSACreateAppleEventUPP( userRoutine )
+#define NewOSASendProc( userRoutine ) NewOSASendUPP( userRoutine )
+#define CallOSACreateAppleEventProc( userRoutine, theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon ) InvokeOSACreateAppleEventUPP( theAEEventClass, theAEEventID, target, returnID, transactionID, result, refCon, userRoutine )
+#define CallOSASendProc( userRoutine, theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon ) InvokeOSASendUPP( theAppleEvent, reply, sendMode, sendPriority, timeOutInTicks, idleProc, filterProc, refCon, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /**************************************************************************
@@ -317,93 +331,92 @@ InvokeOSASendUPP(
 **************************************************************************/
 /* OSA Component Flags: */
 enum {
-  kOSASupportsCompiling         = 0x0002,
-  kOSASupportsGetSource         = 0x0004,
-  kOSASupportsAECoercion        = 0x0008,
-  kOSASupportsAESending         = 0x0010,
-  kOSASupportsRecording         = 0x0020,
-  kOSASupportsConvenience       = 0x0040,
-  kOSASupportsDialects          = 0x0080,
-  kOSASupportsEventHandling     = 0x0100
+	kOSASupportsCompiling = 0x0002,
+	kOSASupportsGetSource = 0x0004,
+	kOSASupportsAECoercion = 0x0008,
+	kOSASupportsAESending = 0x0010,
+	kOSASupportsRecording = 0x0020,
+	kOSASupportsConvenience = 0x0040,
+	kOSASupportsDialects = 0x0080,
+	kOSASupportsEventHandling = 0x0100
 };
 
 /* Component Selectors: */
 enum {
-  kOSASelectLoad                = 0x0001,
-  kOSASelectStore               = 0x0002,
-  kOSASelectExecute             = 0x0003,
-  kOSASelectDisplay             = 0x0004,
-  kOSASelectScriptError         = 0x0005,
-  kOSASelectDispose             = 0x0006,
-  kOSASelectSetScriptInfo       = 0x0007,
-  kOSASelectGetScriptInfo       = 0x0008,
-  kOSASelectSetActiveProc       = 0x0009,
-  kOSASelectGetActiveProc       = 0x000A
+	kOSASelectLoad = 0x0001,
+	kOSASelectStore = 0x0002,
+	kOSASelectExecute = 0x0003,
+	kOSASelectDisplay = 0x0004,
+	kOSASelectScriptError = 0x0005,
+	kOSASelectDispose = 0x0006,
+	kOSASelectSetScriptInfo = 0x0007,
+	kOSASelectGetScriptInfo = 0x0008,
+	kOSASelectSetActiveProc = 0x0009,
+	kOSASelectGetActiveProc = 0x000A
 };
 
 /* Compiling: */
 enum {
-  kOSASelectScriptingComponentName = 0x0102,
-  kOSASelectCompile             = 0x0103,
-  kOSASelectCopyID              = 0x0104
+	kOSASelectScriptingComponentName = 0x0102,
+	kOSASelectCompile = 0x0103,
+	kOSASelectCopyID = 0x0104
 };
 
 /* GetSource: */
 enum {
-  kOSASelectGetSource           = 0x0201
+	kOSASelectGetSource = 0x0201
 };
 
 /* AECoercion: */
 enum {
-  kOSASelectCoerceFromDesc      = 0x0301,
-  kOSASelectCoerceToDesc        = 0x0302
+	kOSASelectCoerceFromDesc = 0x0301,
+	kOSASelectCoerceToDesc = 0x0302
 };
 
 /* AESending: */
 enum {
-  kOSASelectSetSendProc         = 0x0401,
-  kOSASelectGetSendProc         = 0x0402,
-  kOSASelectSetCreateProc       = 0x0403,
-  kOSASelectGetCreateProc       = 0x0404,
-  kOSASelectSetDefaultTarget    = 0x0405
+	kOSASelectSetSendProc = 0x0401,
+	kOSASelectGetSendProc = 0x0402,
+	kOSASelectSetCreateProc = 0x0403,
+	kOSASelectGetCreateProc = 0x0404,
+	kOSASelectSetDefaultTarget = 0x0405
 };
 
 /* Recording: */
 enum {
-  kOSASelectStartRecording      = 0x0501,
-  kOSASelectStopRecording       = 0x0502
+	kOSASelectStartRecording = 0x0501,
+	kOSASelectStopRecording = 0x0502
 };
 
 /* Convenience: */
 enum {
-  kOSASelectLoadExecute         = 0x0601,
-  kOSASelectCompileExecute      = 0x0602,
-  kOSASelectDoScript            = 0x0603
+	kOSASelectLoadExecute = 0x0601,
+	kOSASelectCompileExecute = 0x0602,
+	kOSASelectDoScript = 0x0603
 };
 
 /* Dialects: */
 enum {
-  kOSASelectSetCurrentDialect   = 0x0701,
-  kOSASelectGetCurrentDialect   = 0x0702,
-  kOSASelectAvailableDialects   = 0x0703,
-  kOSASelectGetDialectInfo      = 0x0704,
-  kOSASelectAvailableDialectCodeList = 0x0705
+	kOSASelectSetCurrentDialect = 0x0701,
+	kOSASelectGetCurrentDialect = 0x0702,
+	kOSASelectAvailableDialects = 0x0703,
+	kOSASelectGetDialectInfo = 0x0704,
+	kOSASelectAvailableDialectCodeList = 0x0705
 };
 
 /* Event Handling: */
 enum {
-  kOSASelectSetResumeDispatchProc = 0x0801,
-  kOSASelectGetResumeDispatchProc = 0x0802,
-  kOSASelectExecuteEvent        = 0x0803,
-  kOSASelectDoEvent             = 0x0804,
-  kOSASelectMakeContext         = 0x0805
+	kOSASelectSetResumeDispatchProc = 0x0801,
+	kOSASelectGetResumeDispatchProc = 0x0802,
+	kOSASelectExecuteEvent = 0x0803,
+	kOSASelectDoEvent = 0x0804,
+	kOSASelectMakeContext = 0x0805
 };
 
 /* scripting component specific selectors are added beginning with this value  */
 enum {
-  kOSASelectComponentSpecificStart = 0x1001
+	kOSASelectComponentSpecificStart = 0x1001
 };
-
 
 /*        Mode Flags:
 
@@ -421,7 +434,7 @@ enum {
         implementation may not be viewed.
     */
 enum {
-  kOSAModePreventGetSource      = 0x00000001
+	kOSAModePreventGetSource = 0x00000001
 };
 
 /*
@@ -432,10 +445,10 @@ enum {
         corresponding AESend mode supplied.
     */
 enum {
-  kOSAModeNeverInteract         = kAENeverInteract,
-  kOSAModeCanInteract           = kAECanInteract,
-  kOSAModeAlwaysInteract        = kAEAlwaysInteract,
-  kOSAModeDontReconnect         = kAEDontReconnect
+	kOSAModeNeverInteract = kAENeverInteract,
+	kOSAModeCanInteract = kAECanInteract,
+	kOSAModeAlwaysInteract = kAEAlwaysInteract,
+	kOSAModeDontReconnect = kAEDontReconnect
 };
 
 /*
@@ -450,7 +463,7 @@ enum {
         without kAECanSwitchLayer.
     */
 enum {
-  kOSAModeCantSwitchLayer       = 0x00000040
+	kOSAModeCantSwitchLayer = 0x00000040
 };
 
 /*
@@ -464,7 +477,7 @@ enum {
         cause AESend to be called without kAEDontRecord.
     */
 enum {
-  kOSAModeDoRecord              = 0x00001000
+	kOSAModeDoRecord = 0x00001000
 };
 
 /*
@@ -475,7 +488,7 @@ enum {
         constant expressions).
     */
 enum {
-  kOSAModeCompileIntoContext    = 0x00000002
+	kOSAModeCompileIntoContext = 0x00000002
 };
 
 /*
@@ -488,7 +501,7 @@ enum {
         in a null context.
     */
 enum {
-  kOSAModeAugmentContext        = 0x00000004
+	kOSAModeAugmentContext = 0x00000004
 };
 
 /*
@@ -498,7 +511,7 @@ enum {
         off of string values, long lists may have elipses, etc.
     */
 enum {
-  kOSAModeDisplayForHumans      = 0x00000008
+	kOSAModeDisplayForHumans = 0x00000008
 };
 
 /*
@@ -508,7 +521,7 @@ enum {
         will be kOSANullScript.
     */
 enum {
-  kOSAModeDontStoreParent       = 0x00010000
+	kOSAModeDontStoreParent = 0x00010000
 };
 
 /*
@@ -520,7 +533,7 @@ enum {
         root of the lookup/resolution process.
     */
 enum {
-  kOSAModeDispatchToDirectObject = 0x00020000
+	kOSAModeDispatchToDirectObject = 0x00020000
 };
 
 /*
@@ -528,7 +541,7 @@ enum {
         components do not have to get the data of object specifier arguments.
     */
 enum {
-  kOSAModeDontGetDataForArguments = 0x00040000
+	kOSAModeDontGetDataForArguments = 0x00040000
 };
 
 /**************************************************************************
@@ -544,7 +557,7 @@ enum {
 
 /* Resource type for scripts */
 enum {
-  kOSAScriptResourceType        = kOSAGenericScriptingComponentSubtype
+	kOSAScriptResourceType = kOSAGenericScriptingComponentSubtype
 };
 
 /*
@@ -552,7 +565,7 @@ enum {
         data descriptors.
     */
 enum {
-  typeOSAGenericStorage         = kOSAScriptResourceType
+	typeOSAGenericStorage = kOSAScriptResourceType
 };
 
 /*
@@ -565,11 +578,10 @@ enum {
  */
 EXTERN_API( OSAError )
 OSALoad(
-  ComponentInstance   scriptingComponent,
-  const AEDesc *      scriptData,
-  long                modeFlags,
-  OSAID *             resultingScriptID)                      FIVEWORDINLINE(0x2F3C, 0x000C, 0x0001, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AEDesc *    scriptData,
+    long              modeFlags,
+    OSAID *           resultingScriptID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0001, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectLoad, 12);
@@ -595,12 +607,11 @@ OSALoad(
  */
 EXTERN_API( OSAError )
 OSAStore(
-  ComponentInstance   scriptingComponent,
-  OSAID               scriptID,
-  DescType            desiredType,
-  long                modeFlags,
-  AEDesc *            resultingScriptData)                    FIVEWORDINLINE(0x2F3C, 0x0010, 0x0002, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             scriptID,
+    DescType          desiredType,
+    long              modeFlags,
+    AEDesc *          resultingScriptData ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0002, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectStore, 16);
@@ -626,12 +637,11 @@ OSAStore(
  */
 EXTERN_API( OSAError )
 OSAExecute(
-  ComponentInstance   scriptingComponent,
-  OSAID               compiledScriptID,
-  OSAID               contextID,
-  long                modeFlags,
-  OSAID *             resultingScriptValueID)                 FIVEWORDINLINE(0x2F3C, 0x0010, 0x0003, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             compiledScriptID,
+    OSAID             contextID,
+    long              modeFlags,
+    OSAID *           resultingScriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0003, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectExecute, 16);
@@ -669,12 +679,11 @@ OSAExecute(
  */
 EXTERN_API( OSAError )
 OSADisplay(
-  ComponentInstance   scriptingComponent,
-  OSAID               scriptValueID,
-  DescType            desiredType,
-  long                modeFlags,
-  AEDesc *            resultingText)                          FIVEWORDINLINE(0x2F3C, 0x0010, 0x0004, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             scriptValueID,
+    DescType          desiredType,
+    long              modeFlags,
+    AEDesc *          resultingText ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0004, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectDisplay, 16);
@@ -707,11 +716,10 @@ OSADisplay(
  */
 EXTERN_API( OSAError )
 OSAScriptError(
-  ComponentInstance   scriptingComponent,
-  OSType              selector,
-  DescType            desiredType,
-  AEDesc *            resultingErrorDescription)              FIVEWORDINLINE(0x2F3C, 0x000C, 0x0005, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSType            selector,
+    DescType          desiredType,
+    AEDesc *          resultingErrorDescription ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0005, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectScriptError, 12);
@@ -736,7 +744,7 @@ OSAScriptError(
             typeShortInteger
     */
 enum {
-  kOSAErrorNumber               = keyErrorNumber
+	kOSAErrorNumber = keyErrorNumber
 };
 
 /*
@@ -749,7 +757,7 @@ enum {
             typeChar                    error message string
     */
 enum {
-  kOSAErrorMessage              = keyErrorString
+	kOSAErrorMessage = keyErrorString
 };
 
 /*
@@ -763,7 +771,7 @@ enum {
     */
 /*  0x65727262  */
 enum {
-  kOSAErrorBriefMessage         = FOUR_CHAR_CODE('errb')
+	kOSAErrorBriefMessage = FOUR_CHAR_CODE( 'errb' )
 };
 
 /*
@@ -776,7 +784,7 @@ enum {
     */
 /*  0x65726170  */
 enum {
-  kOSAErrorApp                  = FOUR_CHAR_CODE('erap')
+	kOSAErrorApp = FOUR_CHAR_CODE( 'erap' )
 };
 
 /*
@@ -788,7 +796,7 @@ enum {
     */
 /*  0x70746c72   */
 enum {
-  kOSAErrorPartialResult        = FOUR_CHAR_CODE('ptlr')
+	kOSAErrorPartialResult = FOUR_CHAR_CODE( 'ptlr' )
 };
 
 /*
@@ -800,7 +808,7 @@ enum {
     */
 /*  0x65726f62   */
 enum {
-  kOSAErrorOffendingObject      = FOUR_CHAR_CODE('erob')
+	kOSAErrorOffendingObject = FOUR_CHAR_CODE( 'erob' )
 };
 
 /*
@@ -809,7 +817,7 @@ enum {
     */
 /*  0x65727274   */
 enum {
-  kOSAErrorExpectedType         = FOUR_CHAR_CODE('errt')
+	kOSAErrorExpectedType = FOUR_CHAR_CODE( 'errt' )
 };
 
 /*
@@ -820,7 +828,7 @@ enum {
     */
 /*  0x65726e67  */
 enum {
-  kOSAErrorRange                = FOUR_CHAR_CODE('erng')
+	kOSAErrorRange = FOUR_CHAR_CODE( 'erng' )
 };
 
 /*
@@ -829,19 +837,19 @@ enum {
     */
 /*  0x65726e67   */
 enum {
-  typeOSAErrorRange             = FOUR_CHAR_CODE('erng')
+	typeOSAErrorRange = FOUR_CHAR_CODE( 'erng' )
 };
 
 /* Field of a typeOSAErrorRange record of typeShortInteger */
 /*  0x73726373    */
 enum {
-  keyOSASourceStart             = FOUR_CHAR_CODE('srcs')
+	keyOSASourceStart = FOUR_CHAR_CODE( 'srcs' )
 };
 
 /* Field of a typeOSAErrorRange record of typeShortInteger */
 /*  0x73726365   */
 enum {
-  keyOSASourceEnd               = FOUR_CHAR_CODE('srce')
+	keyOSASourceEnd = FOUR_CHAR_CODE( 'srce' )
 };
 
 /* Disposing Script IDs: */
@@ -855,9 +863,8 @@ enum {
  */
 EXTERN_API( OSAError )
 OSADispose(
-  ComponentInstance   scriptingComponent,
-  OSAID               scriptID)                               FIVEWORDINLINE(0x2F3C, 0x0004, 0x0006, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             scriptID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0006, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectDispose, 4);
@@ -879,11 +886,10 @@ OSADispose(
  */
 EXTERN_API( OSAError )
 OSASetScriptInfo(
-  ComponentInstance   scriptingComponent,
-  OSAID               scriptID,
-  OSType              selector,
-  long                value)                                  FIVEWORDINLINE(0x2F3C, 0x000C, 0x0007, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             scriptID,
+    OSType            selector,
+    long              value ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0007, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectSetScriptInfo, 12);
@@ -905,11 +911,10 @@ OSASetScriptInfo(
  */
 EXTERN_API( OSAError )
 OSAGetScriptInfo(
-  ComponentInstance   scriptingComponent,
-  OSAID               scriptID,
-  OSType              selector,
-  long *              result)                                 FIVEWORDINLINE(0x2F3C, 0x000C, 0x0008, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             scriptID,
+    OSType            selector,
+    long *            result ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0008, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetScriptInfo, 12);
@@ -926,8 +931,8 @@ OSAGetScriptInfo(
     Scripting systems will supply default values for these procedures if they
     are not set by the client:
 */
-typedef CALLBACK_API( OSErr , OSAActiveProcPtr )(long refCon);
-typedef STACK_UPP_TYPE(OSAActiveProcPtr)                        OSAActiveUPP;
+typedef CALLBACK_API( OSErr, OSAActiveProcPtr )( long refCon );
+typedef STACK_UPP_TYPE( OSAActiveProcPtr ) OSAActiveUPP;
 /*
  *  NewOSAActiveUPP()
  *  
@@ -937,14 +942,17 @@ typedef STACK_UPP_TYPE(OSAActiveProcPtr)                        OSAActiveUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( OSAActiveUPP )
-NewOSAActiveUPP(OSAActiveProcPtr userRoutine);
+NewOSAActiveUPP( OSAActiveProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppOSAActiveProcInfo = 0x000000E0 };  /* pascal 2_bytes Func(4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(OSAActiveUPP) NewOSAActiveUPP(OSAActiveProcPtr userRoutine) { return (OSAActiveUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOSAActiveProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewOSAActiveUPP(userRoutine) (OSAActiveUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppOSAActiveProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppOSAActiveProcInfo = 0x000000E0 }; /* pascal 2_bytes Func(4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( OSAActiveUPP ) NewOSAActiveUPP( OSAActiveProcPtr userRoutine )
+{
+	return (OSAActiveUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOSAActiveProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewOSAActiveUPP( userRoutine ) ( OSAActiveUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppOSAActiveProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -956,13 +964,16 @@ NewOSAActiveUPP(OSAActiveProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeOSAActiveUPP(OSAActiveUPP userUPP);
+DisposeOSAActiveUPP( OSAActiveUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeOSAActiveUPP(OSAActiveUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeOSAActiveUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeOSAActiveUPP( OSAActiveUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeOSAActiveUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -975,20 +986,23 @@ DisposeOSAActiveUPP(OSAActiveUPP userUPP);
  */
 EXTERN_API_C( OSErr )
 InvokeOSAActiveUPP(
-  long          refCon,
-  OSAActiveUPP  userUPP);
+    long         refCon,
+    OSAActiveUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(OSErr) InvokeOSAActiveUPP(long refCon, OSAActiveUPP userUPP) { return (OSErr)CALL_ONE_PARAMETER_UPP(userUPP, uppOSAActiveProcInfo, refCon); }
-  #else
-    #define InvokeOSAActiveUPP(refCon, userUPP) (OSErr)CALL_ONE_PARAMETER_UPP((userUPP), uppOSAActiveProcInfo, (refCon))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( OSErr ) InvokeOSAActiveUPP( long refCon, OSAActiveUPP userUPP )
+{
+	return (OSErr)CALL_ONE_PARAMETER_UPP( userUPP, uppOSAActiveProcInfo, refCon );
+}
+#else
+#define InvokeOSAActiveUPP( refCon, userUPP ) ( OSErr ) CALL_ONE_PARAMETER_UPP( ( userUPP ), uppOSAActiveProcInfo, ( refCon ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewOSAActiveProc(userRoutine)                       NewOSAActiveUPP(userRoutine)
-    #define CallOSAActiveProc(userRoutine, refCon)              InvokeOSAActiveUPP(refCon, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewOSAActiveProc( userRoutine ) NewOSAActiveUPP( userRoutine )
+#define CallOSAActiveProc( userRoutine, refCon ) InvokeOSAActiveUPP( refCon, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -1001,10 +1015,9 @@ InvokeOSAActiveUPP(
  */
 EXTERN_API( OSAError )
 OSASetActiveProc(
-  ComponentInstance   scriptingComponent,
-  OSAActiveUPP        activeProc,
-  long                refCon)                                 FIVEWORDINLINE(0x2F3C, 0x0008, 0x0009, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAActiveUPP      activeProc,
+    long              refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0009, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectSetActiveProc, 8);
@@ -1024,10 +1037,9 @@ OSASetActiveProc(
  */
 EXTERN_API( OSAError )
 OSAGetActiveProc(
-  ComponentInstance   scriptingComponent,
-  OSAActiveUPP *      activeProc,
-  long *              refCon)                                 FIVEWORDINLINE(0x2F3C, 0x0008, 0x000A, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAActiveUPP *    activeProc,
+    long *            refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x000A, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetActiveProc, 8);
@@ -1052,9 +1064,8 @@ OSAGetActiveProc(
  */
 EXTERN_API( OSAError )
 OSAScriptingComponentName(
-  ComponentInstance   scriptingComponent,
-  AEDesc *            resultingScriptingComponentName)        FIVEWORDINLINE(0x2F3C, 0x0004, 0x0102, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    AEDesc *          resultingScriptingComponentName ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0102, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectScriptingComponentName, 4);
@@ -1078,11 +1089,10 @@ OSAScriptingComponentName(
  */
 EXTERN_API( OSAError )
 OSACompile(
-  ComponentInstance   scriptingComponent,
-  const AEDesc *      sourceData,
-  long                modeFlags,
-  OSAID *             previousAndResultingScriptID)           FIVEWORDINLINE(0x2F3C, 0x000C, 0x0103, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AEDesc *    sourceData,
+    long              modeFlags,
+    OSAID *           previousAndResultingScriptID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0103, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectCompile, 12);
@@ -1122,10 +1132,9 @@ OSACompile(
  */
 EXTERN_API( OSAError )
 OSACopyID(
-  ComponentInstance   scriptingComponent,
-  OSAID               fromID,
-  OSAID *             toID)                                   FIVEWORDINLINE(0x2F3C, 0x0008, 0x0104, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             fromID,
+    OSAID *           toID ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0104, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectCopyID, 8);
@@ -1154,11 +1163,10 @@ OSACopyID(
  */
 EXTERN_API( OSAError )
 OSAGetSource(
-  ComponentInstance   scriptingComponent,
-  OSAID               scriptID,
-  DescType            desiredType,
-  AEDesc *            resultingSourceData)                    FIVEWORDINLINE(0x2F3C, 0x000C, 0x0201, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             scriptID,
+    DescType          desiredType,
+    AEDesc *          resultingSourceData ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0201, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetSource, 12);
@@ -1187,11 +1195,10 @@ OSAGetSource(
  */
 EXTERN_API( OSAError )
 OSACoerceFromDesc(
-  ComponentInstance   scriptingComponent,
-  const AEDesc *      scriptData,
-  long                modeFlags,
-  OSAID *             resultingScriptID)                      FIVEWORDINLINE(0x2F3C, 0x000C, 0x0301, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AEDesc *    scriptData,
+    long              modeFlags,
+    OSAID *           resultingScriptID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0301, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectCoerceFromDesc, 12);
@@ -1224,12 +1231,11 @@ OSACoerceFromDesc(
  */
 EXTERN_API( OSAError )
 OSACoerceToDesc(
-  ComponentInstance   scriptingComponent,
-  OSAID               scriptID,
-  DescType            desiredType,
-  long                modeFlags,
-  AEDesc *            result)                                 FIVEWORDINLINE(0x2F3C, 0x0010, 0x0302, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             scriptID,
+    DescType          desiredType,
+    long              modeFlags,
+    AEDesc *          result ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0302, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectCoerceToDesc, 16);
@@ -1262,10 +1268,9 @@ OSACoerceToDesc(
  */
 EXTERN_API( OSAError )
 OSASetSendProc(
-  ComponentInstance   scriptingComponent,
-  OSASendUPP          sendProc,
-  long                refCon)                                 FIVEWORDINLINE(0x2F3C, 0x0008, 0x0401, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSASendUPP        sendProc,
+    long              refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0401, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectSetSendProc, 8);
@@ -1285,10 +1290,9 @@ OSASetSendProc(
  */
 EXTERN_API( OSAError )
 OSAGetSendProc(
-  ComponentInstance   scriptingComponent,
-  OSASendUPP *        sendProc,
-  long *              refCon)                                 FIVEWORDINLINE(0x2F3C, 0x0008, 0x0402, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSASendUPP *      sendProc,
+    long *            refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0402, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetSendProc, 8);
@@ -1307,10 +1311,9 @@ OSAGetSendProc(
  */
 EXTERN_API( OSAError )
 OSASetCreateProc(
-  ComponentInstance        scriptingComponent,
-  OSACreateAppleEventUPP   createProc,
-  long                     refCon)                            FIVEWORDINLINE(0x2F3C, 0x0008, 0x0403, 0x7000, 0xA82A);
-
+    ComponentInstance      scriptingComponent,
+    OSACreateAppleEventUPP createProc,
+    long                   refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0403, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectSetCreateProc, 8);
@@ -1330,10 +1333,9 @@ OSASetCreateProc(
  */
 EXTERN_API( OSAError )
 OSAGetCreateProc(
-  ComponentInstance         scriptingComponent,
-  OSACreateAppleEventUPP *  createProc,
-  long *                    refCon)                           FIVEWORDINLINE(0x2F3C, 0x0008, 0x0404, 0x7000, 0xA82A);
-
+    ComponentInstance       scriptingComponent,
+    OSACreateAppleEventUPP *createProc,
+    long *                  refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0404, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetCreateProc, 8);
@@ -1352,9 +1354,8 @@ OSAGetCreateProc(
  */
 EXTERN_API( OSAError )
 OSASetDefaultTarget(
-  ComponentInstance      scriptingComponent,
-  const AEAddressDesc *  target)                              FIVEWORDINLINE(0x2F3C, 0x0004, 0x0405, 0x7000, 0xA82A);
-
+    ComponentInstance    scriptingComponent,
+    const AEAddressDesc *target ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0405, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectSetDefaultTarget, 4);
@@ -1384,9 +1385,8 @@ OSASetDefaultTarget(
  */
 EXTERN_API( OSAError )
 OSAStartRecording(
-  ComponentInstance   scriptingComponent,
-  OSAID *             compiledScriptToModifyID)               FIVEWORDINLINE(0x2F3C, 0x0004, 0x0501, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID *           compiledScriptToModifyID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0501, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectStartRecording, 4);
@@ -1412,9 +1412,8 @@ OSAStartRecording(
  */
 EXTERN_API( OSAError )
 OSAStopRecording(
-  ComponentInstance   scriptingComponent,
-  OSAID               compiledScriptID)                       FIVEWORDINLINE(0x2F3C, 0x0004, 0x0502, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    OSAID             compiledScriptID ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0502, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectStopRecording, 4);
@@ -1442,12 +1441,11 @@ OSAStopRecording(
  */
 EXTERN_API( OSAError )
 OSALoadExecute(
-  ComponentInstance   scriptingComponent,
-  const AEDesc *      scriptData,
-  OSAID               contextID,
-  long                modeFlags,
-  OSAID *             resultingScriptValueID)                 FIVEWORDINLINE(0x2F3C, 0x0010, 0x0601, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AEDesc *    scriptData,
+    OSAID             contextID,
+    long              modeFlags,
+    OSAID *           resultingScriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0601, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectLoadExecute, 16);
@@ -1483,12 +1481,11 @@ OSALoadExecute(
  */
 EXTERN_API( OSAError )
 OSACompileExecute(
-  ComponentInstance   scriptingComponent,
-  const AEDesc *      sourceData,
-  OSAID               contextID,
-  long                modeFlags,
-  OSAID *             resultingScriptValueID)                 FIVEWORDINLINE(0x2F3C, 0x0010, 0x0602, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AEDesc *    sourceData,
+    OSAID             contextID,
+    long              modeFlags,
+    OSAID *           resultingScriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0602, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectCompileExecute, 16);
@@ -1523,13 +1520,12 @@ OSACompileExecute(
  */
 EXTERN_API( OSAError )
 OSADoScript(
-  ComponentInstance   scriptingComponent,
-  const AEDesc *      sourceData,
-  OSAID               contextID,
-  DescType            desiredType,
-  long                modeFlags,
-  AEDesc *            resultingText)                          FIVEWORDINLINE(0x2F3C, 0x0014, 0x0603, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AEDesc *    sourceData,
+    OSAID             contextID,
+    DescType          desiredType,
+    long              modeFlags,
+    AEDesc *          resultingText ) FIVEWORDINLINE( 0x2F3C, 0x0014, 0x0603, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectDoScript, 20);
@@ -1581,9 +1577,8 @@ OSADoScript(
  */
 EXTERN_API( OSAError )
 OSASetCurrentDialect(
-  ComponentInstance   scriptingComponent,
-  short               dialectCode)                            FIVEWORDINLINE(0x2F3C, 0x0002, 0x0701, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    short             dialectCode ) FIVEWORDINLINE( 0x2F3C, 0x0002, 0x0701, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectSetCurrentDialect, 2);
@@ -1603,9 +1598,8 @@ OSASetCurrentDialect(
  */
 EXTERN_API( OSAError )
 OSAGetCurrentDialect(
-  ComponentInstance   scriptingComponent,
-  short *             resultingDialectCode)                   FIVEWORDINLINE(0x2F3C, 0x0004, 0x0702, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    short *           resultingDialectCode ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0702, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetCurrentDialect, 4);
@@ -1624,9 +1618,8 @@ OSAGetCurrentDialect(
  */
 EXTERN_API( OSAError )
 OSAAvailableDialects(
-  ComponentInstance   scriptingComponent,
-  AEDesc *            resultingDialectInfoList)               FIVEWORDINLINE(0x2F3C, 0x0004, 0x0703, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    AEDesc *          resultingDialectInfoList ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0703, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectAvailableDialects, 4);
@@ -1650,11 +1643,10 @@ OSAAvailableDialects(
  */
 EXTERN_API( OSAError )
 OSAGetDialectInfo(
-  ComponentInstance   scriptingComponent,
-  short               dialectCode,
-  OSType              selector,
-  AEDesc *            resultingDialectInfo)                   FIVEWORDINLINE(0x2F3C, 0x000A, 0x0704, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    short             dialectCode,
+    OSType            selector,
+    AEDesc *          resultingDialectInfo ) FIVEWORDINLINE( 0x2F3C, 0x000A, 0x0704, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetDialectInfo, 10);
@@ -1680,9 +1672,8 @@ OSAGetDialectInfo(
  */
 EXTERN_API( OSAError )
 OSAAvailableDialectCodeList(
-  ComponentInstance   scriptingComponent,
-  AEDesc *            resultingDialectCodeList)               FIVEWORDINLINE(0x2F3C, 0x0004, 0x0705, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    AEDesc *          resultingDialectCodeList ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0705, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectAvailableDialectCodeList, 4);
@@ -1722,10 +1713,9 @@ OSAAvailableDialectCodeList(
  */
 EXTERN_API( OSAError )
 OSASetResumeDispatchProc(
-  ComponentInstance   scriptingComponent,
-  AEEventHandlerUPP   resumeDispatchProc,
-  long                refCon)                                 FIVEWORDINLINE(0x2F3C, 0x0008, 0x0801, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    AEEventHandlerUPP resumeDispatchProc,
+    long              refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0801, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectSetResumeDispatchProc, 8);
@@ -1742,7 +1732,7 @@ OSASetResumeDispatchProc(
             errOSASystemError
     */
 enum {
-  kOSAUseStandardDispatch       = kAEUseStandardDispatch
+	kOSAUseStandardDispatch = kAEUseStandardDispatch
 };
 
 /*
@@ -1756,7 +1746,7 @@ enum {
                 Pascal.
     */
 enum {
-  kOSANoDispatch                = kAENoDispatch
+	kOSANoDispatch = kAENoDispatch
 };
 
 /*
@@ -1769,7 +1759,7 @@ enum {
                 Pascal.
     */
 enum {
-  kOSADontUsePhac               = 0x0001
+	kOSADontUsePhac = 0x0001
 };
 
 /*
@@ -1791,10 +1781,9 @@ enum {
  */
 EXTERN_API( OSAError )
 OSAGetResumeDispatchProc(
-  ComponentInstance    scriptingComponent,
-  AEEventHandlerUPP *  resumeDispatchProc,
-  long *               refCon)                                FIVEWORDINLINE(0x2F3C, 0x0008, 0x0802, 0x7000, 0xA82A);
-
+    ComponentInstance  scriptingComponent,
+    AEEventHandlerUPP *resumeDispatchProc,
+    long *             refCon ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x0802, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectGetResumeDispatchProc, 8);
@@ -1815,12 +1804,11 @@ OSAGetResumeDispatchProc(
  */
 EXTERN_API( OSAError )
 OSAExecuteEvent(
-  ComponentInstance   scriptingComponent,
-  const AppleEvent *  theAppleEvent,
-  OSAID               contextID,
-  long                modeFlags,
-  OSAID *             resultingScriptValueID)                 FIVEWORDINLINE(0x2F3C, 0x0010, 0x0803, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AppleEvent *theAppleEvent,
+    OSAID             contextID,
+    long              modeFlags,
+    OSAID *           resultingScriptValueID ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0803, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectExecuteEvent, 16);
@@ -1858,12 +1846,11 @@ OSAExecuteEvent(
  */
 EXTERN_API( OSAError )
 OSADoEvent(
-  ComponentInstance   scriptingComponent,
-  const AppleEvent *  theAppleEvent,
-  OSAID               contextID,
-  long                modeFlags,
-  AppleEvent *        reply)                                  FIVEWORDINLINE(0x2F3C, 0x0010, 0x0804, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AppleEvent *theAppleEvent,
+    OSAID             contextID,
+    long              modeFlags,
+    AppleEvent *      reply ) FIVEWORDINLINE( 0x2F3C, 0x0010, 0x0804, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectDoEvent, 16);
@@ -1905,11 +1892,10 @@ OSADoEvent(
  */
 EXTERN_API( OSAError )
 OSAMakeContext(
-  ComponentInstance   scriptingComponent,
-  const AEDesc *      contextName,
-  OSAID               parentContext,
-  OSAID *             resultingContextID)                     FIVEWORDINLINE(0x2F3C, 0x000C, 0x0805, 0x7000, 0xA82A);
-
+    ComponentInstance scriptingComponent,
+    const AEDesc *    contextName,
+    OSAID             parentContext,
+    OSAID *           resultingContextID ) FIVEWORDINLINE( 0x2F3C, 0x000C, 0x0805, 0x7000, 0xA82A );
 
 /*
         OSAComponentFunctionInline(kOSASelectMakeContext, 12);
@@ -1926,11 +1912,11 @@ OSAMakeContext(
     */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1944,4 +1930,3 @@ OSAMakeContext(
 #endif
 
 #endif /* __OSA__ */
-

@@ -22,15 +22,16 @@
  */
 
 #include "cinder/audio/ChannelRouterNode.h"
+#include "cinder/CinderMath.h"
 #include "cinder/audio/Context.h"
 #include "cinder/audio/dsp/Dsp.h"
-#include "cinder/CinderMath.h"
 
 #include <limits>
 
 using namespace std;
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 ChannelRouterNode::RouteConnector ChannelRouterNode::route( size_t inputChannelIndex, size_t outputChannelIndex )
 {
@@ -43,16 +44,16 @@ ChannelRouterNode::RouteConnector ChannelRouterNode::route( size_t inputChannelI
 }
 
 ChannelRouterNode::RouteConnector::RouteConnector( const ChannelRouterNodeRef &outputRouter, size_t inputChannelIndex, size_t outputChannelIndex )
-: mOutputRouter( outputRouter ), mInputChannelIndex( inputChannelIndex ), mOutputChannelIndex( outputChannelIndex ), mNumChannels( numeric_limits<size_t>::max() )
+    : mOutputRouter( outputRouter ), mInputChannelIndex( inputChannelIndex ), mOutputChannelIndex( outputChannelIndex ), mNumChannels( numeric_limits<size_t>::max() )
 {
 }
 
 ChannelRouterNode::RouteConnector::RouteConnector( const ChannelRouterNodeRef &outputRouter, size_t inputChannelIndex, size_t outputChannelIndex, size_t numChannels )
-: mOutputRouter( outputRouter ), mInputChannelIndex( inputChannelIndex ), mOutputChannelIndex( outputChannelIndex ), mNumChannels( numChannels )
+    : mOutputRouter( outputRouter ), mInputChannelIndex( inputChannelIndex ), mOutputChannelIndex( outputChannelIndex ), mNumChannels( numChannels )
 {
 }
 
-const ChannelRouterNodeRef& operator>>( const NodeRef &input, const ChannelRouterNode::RouteConnector &route )
+const ChannelRouterNodeRef &operator>>( const NodeRef &input, const ChannelRouterNode::RouteConnector &route )
 {
 	size_t numChannels = route.getNumChannels();
 	if( numChannels == numeric_limits<size_t>::max() )
@@ -115,7 +116,7 @@ void ChannelRouterNode::disconnectAllInputs()
 void ChannelRouterNode::sumInputs()
 {
 	BufferDynamic *summingBuffer = getSummingBuffer();
-	Buffer *internalBuffer = getInternalBuffer();
+	Buffer *       internalBuffer = getInternalBuffer();
 
 	const size_t numFrames = internalBuffer->getNumFrames();
 	internalBuffer->zero(); // TODO: this will wipe out any feedback data. Avoid if possible.
@@ -134,5 +135,5 @@ void ChannelRouterNode::sumInputs()
 		}
 	}
 }
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

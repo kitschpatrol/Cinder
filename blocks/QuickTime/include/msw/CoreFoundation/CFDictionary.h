@@ -61,12 +61,12 @@
 	than a array with the same number of values.
 */
 
-#if !defined(__COREFOUNDATION_CFDICTIONARY__)
+#if !defined( __COREFOUNDATION_CFDICTIONARY__ )
 #define __COREFOUNDATION_CFDICTIONARY__ 1
 
 #include <CoreFoundation/CFBase.h>
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 extern "C" {
 #endif
 
@@ -95,18 +95,18 @@ extern "C" {
 	@field hash The callback used to compute a hash code for keys as they
 		are used to access, add, or remove values in the dictionary.
 */
-typedef const void *	(*CFDictionaryRetainCallBack)(CFAllocatorRef allocator, const void *value);
-typedef void		(*CFDictionaryReleaseCallBack)(CFAllocatorRef allocator, const void *value);
-typedef CFStringRef	(*CFDictionaryCopyDescriptionCallBack)(const void *value);
-typedef Boolean		(*CFDictionaryEqualCallBack)(const void *value1, const void *value2);
-typedef CFHashCode	(*CFDictionaryHashCallBack)(const void *value);
+typedef const void *( *CFDictionaryRetainCallBack )( CFAllocatorRef allocator, const void *value );
+typedef void ( *CFDictionaryReleaseCallBack )( CFAllocatorRef allocator, const void *value );
+typedef CFStringRef ( *CFDictionaryCopyDescriptionCallBack )( const void *value );
+typedef Boolean ( *CFDictionaryEqualCallBack )( const void *value1, const void *value2 );
+typedef CFHashCode ( *CFDictionaryHashCallBack )( const void *value );
 typedef struct {
-    CFIndex				version;
-    CFDictionaryRetainCallBack		retain;
-    CFDictionaryReleaseCallBack		release;
-    CFDictionaryCopyDescriptionCallBack	copyDescription;
-    CFDictionaryEqualCallBack		equal;
-    CFDictionaryHashCallBack		hash;
+	CFIndex                             version;
+	CFDictionaryRetainCallBack          retain;
+	CFDictionaryReleaseCallBack         release;
+	CFDictionaryCopyDescriptionCallBack copyDescription;
+	CFDictionaryEqualCallBack           equal;
+	CFDictionaryHashCallBack            hash;
 } CFDictionaryKeyCallBacks;
 
 /*!
@@ -116,7 +116,7 @@ typedef struct {
 	CFDictionary are all CFTypes.
 */
 #if TARGET_OS_WIN32
-#define kCFTypeDictionaryKeyCallBacks (*((const CFDictionaryKeyCallBacks *)QTGetCFConstant("kCFTypeDictionaryKeyCallBacks")))
+#define kCFTypeDictionaryKeyCallBacks ( *( (const CFDictionaryKeyCallBacks *)QTGetCFConstant( "kCFTypeDictionaryKeyCallBacks" ) ) )
 #else
 CF_EXPORT
 const CFDictionaryKeyCallBacks kCFTypeDictionaryKeyCallBacks;
@@ -131,7 +131,7 @@ const CFDictionaryKeyCallBacks kCFTypeDictionaryKeyCallBacks;
 	the values in the dictionary.
 */
 #if TARGET_OS_WIN32
-#define kCFCopyStringDictionaryKeyCallBacks (*((const CFDictionaryKeyCallBacks *)QTGetCFConstant("kCFCopyStringDictionaryKeyCallBacks")))
+#define kCFCopyStringDictionaryKeyCallBacks ( *( (const CFDictionaryKeyCallBacks *)QTGetCFConstant( "kCFCopyStringDictionaryKeyCallBacks" ) ) )
 #else
 CF_EXPORT
 const CFDictionaryKeyCallBacks kCFCopyStringDictionaryKeyCallBacks;
@@ -161,11 +161,11 @@ const CFDictionaryKeyCallBacks kCFCopyStringDictionaryKeyCallBacks;
 		equality in some operations.
 */
 typedef struct {
-    CFIndex				version;
-    CFDictionaryRetainCallBack		retain;
-    CFDictionaryReleaseCallBack		release;
-    CFDictionaryCopyDescriptionCallBack	copyDescription;
-    CFDictionaryEqualCallBack		equal;
+	CFIndex                             version;
+	CFDictionaryRetainCallBack          retain;
+	CFDictionaryReleaseCallBack         release;
+	CFDictionaryCopyDescriptionCallBack copyDescription;
+	CFDictionaryEqualCallBack           equal;
 } CFDictionaryValueCallBacks;
 
 /*!
@@ -175,7 +175,7 @@ typedef struct {
 	are all CFTypes.
 */
 #if TARGET_OS_WIN32
-#define kCFTypeDictionaryValueCallBacks (*((const CFDictionaryValueCallBacks *)QTGetCFConstant("kCFTypeDictionaryValueCallBacks")))
+#define kCFTypeDictionaryValueCallBacks ( *( (const CFDictionaryValueCallBacks *)QTGetCFConstant( "kCFTypeDictionaryValueCallBacks" ) ) )
 #else
 CF_EXPORT
 const CFDictionaryValueCallBacks kCFTypeDictionaryValueCallBacks;
@@ -190,26 +190,26 @@ const CFDictionaryValueCallBacks kCFTypeDictionaryValueCallBacks;
 	@param context The user-defined context parameter given to the apply
 		function.
 */
-typedef void (*CFDictionaryApplierFunction)(const void *key, const void *value, void *context);
+typedef void ( *CFDictionaryApplierFunction )( const void *key, const void *value, void *context );
 
 /*!
 	@typedef CFDictionaryRef
 	This is the type of a reference to immutable CFDictionarys.
 */
-typedef const struct __CFDictionary * CFDictionaryRef;
+typedef const struct __CFDictionary *CFDictionaryRef;
 
 /*!
 	@typedef CFMutableDictionaryRef
 	This is the type of a reference to mutable CFDictionarys.
 */
-typedef struct __CFDictionary * CFMutableDictionaryRef;
+typedef struct __CFDictionary *CFMutableDictionaryRef;
 
 /*!
 	@function CFDictionaryGetTypeID
 	Returns the type identifier of all CFDictionary instances.
 */
 CF_EXPORT
-CFTypeID CFDictionaryGetTypeID(void);
+CFTypeID CFDictionaryGetTypeID( void );
 
 /*!
 	@function CFDictionaryCreate
@@ -294,7 +294,7 @@ CFTypeID CFDictionaryGetTypeID(void);
 	@result A reference to the new immutable CFDictionary.
 */
 CF_EXPORT
-CFDictionaryRef CFDictionaryCreate(CFAllocatorRef allocator, const void **keys, const void **values, CFIndex numValues, const CFDictionaryKeyCallBacks *keyCallBacks, const CFDictionaryValueCallBacks *valueCallBacks);
+CFDictionaryRef CFDictionaryCreate( CFAllocatorRef allocator, const void **keys, const void **values, CFIndex numValues, const CFDictionaryKeyCallBacks *keyCallBacks, const CFDictionaryValueCallBacks *valueCallBacks );
 
 /*!
 	@function CFDictionaryCreateCopy
@@ -318,7 +318,7 @@ CFDictionaryRef CFDictionaryCreate(CFAllocatorRef allocator, const void **keys, 
 	@result A reference to the new immutable CFDictionary.
 */
 CF_EXPORT
-CFDictionaryRef CFDictionaryCreateCopy(CFAllocatorRef allocator, CFDictionaryRef theDict);
+CFDictionaryRef CFDictionaryCreateCopy( CFAllocatorRef allocator, CFDictionaryRef theDict );
 
 /*!
 	@function CFDictionaryCreateMutable
@@ -391,7 +391,7 @@ CFDictionaryRef CFDictionaryCreateCopy(CFAllocatorRef allocator, CFDictionaryRef
 	@result A reference to the new mutable CFDictionary.
 */
 CF_EXPORT
-CFMutableDictionaryRef CFDictionaryCreateMutable(CFAllocatorRef allocator, CFIndex capacity, const CFDictionaryKeyCallBacks *keyCallBacks, const CFDictionaryValueCallBacks *valueCallBacks);
+CFMutableDictionaryRef CFDictionaryCreateMutable( CFAllocatorRef allocator, CFIndex capacity, const CFDictionaryKeyCallBacks *keyCallBacks, const CFDictionaryValueCallBacks *valueCallBacks );
 
 /*!
 	@function CFDictionaryCreateMutableCopy
@@ -424,7 +424,7 @@ CFMutableDictionaryRef CFDictionaryCreateMutable(CFAllocatorRef allocator, CFInd
 	@result A reference to the new mutable CFDictionary.
 */
 CF_EXPORT
-CFMutableDictionaryRef CFDictionaryCreateMutableCopy(CFAllocatorRef allocator, CFIndex capacity, CFDictionaryRef theDict);
+CFMutableDictionaryRef CFDictionaryCreateMutableCopy( CFAllocatorRef allocator, CFIndex capacity, CFDictionaryRef theDict );
 
 /*!
 	@function CFDictionaryGetCount
@@ -434,7 +434,7 @@ CFMutableDictionaryRef CFDictionaryCreateMutableCopy(CFAllocatorRef allocator, C
 	@result The number of values in the dictionary.
 */
 CF_EXPORT
-CFIndex CFDictionaryGetCount(CFDictionaryRef theDict);
+CFIndex CFDictionaryGetCount( CFDictionaryRef theDict );
 
 /*!
 	@function CFDictionaryGetCountOfKey
@@ -453,7 +453,7 @@ CFIndex CFDictionaryGetCount(CFDictionaryRef theDict);
 		0 otherwise.
 */
 CF_EXPORT
-CFIndex CFDictionaryGetCountOfKey(CFDictionaryRef theDict, const void *key);
+CFIndex CFDictionaryGetCountOfKey( CFDictionaryRef theDict, const void *key );
 
 /*!
 	@function CFDictionaryGetCountOfValue
@@ -469,7 +469,7 @@ CFIndex CFDictionaryGetCountOfKey(CFDictionaryRef theDict, const void *key);
 	@result The number of times the given value occurs in the dictionary.
 */
 CF_EXPORT
-CFIndex CFDictionaryGetCountOfValue(CFDictionaryRef theDict, const void *value);
+CFIndex CFDictionaryGetCountOfValue( CFDictionaryRef theDict, const void *value );
 
 /*!
 	@function CFDictionaryContainsKey
@@ -487,7 +487,7 @@ CFIndex CFDictionaryGetCountOfValue(CFDictionaryRef theDict, const void *value);
 	@result true, if the key is in the dictionary, otherwise false.
 */
 CF_EXPORT
-Boolean CFDictionaryContainsKey(CFDictionaryRef theDict, const void *key);
+Boolean CFDictionaryContainsKey( CFDictionaryRef theDict, const void *key );
 
 /*!
 	@function CFDictionaryContainsValue
@@ -503,7 +503,7 @@ Boolean CFDictionaryContainsKey(CFDictionaryRef theDict, const void *key);
 	@result true, if the value is in the dictionary, otherwise false.
 */
 CF_EXPORT
-Boolean CFDictionaryContainsValue(CFDictionaryRef theDict, const void *value);
+Boolean CFDictionaryContainsValue( CFDictionaryRef theDict, const void *value );
 
 /*!
 	@function CFDictionaryGetValue
@@ -525,7 +525,7 @@ Boolean CFDictionaryContainsValue(CFDictionaryRef theDict, const void *value);
 		NULL-no-found from NULL-is-the-value.
 */
 CF_EXPORT
-const void *CFDictionaryGetValue(CFDictionaryRef theDict, const void *key);
+const void *CFDictionaryGetValue( CFDictionaryRef theDict, const void *key );
 
 /*!
 	@function CFDictionaryGetValueIfPresent
@@ -550,7 +550,7 @@ const void *CFDictionaryGetValue(CFDictionaryRef theDict, const void *key);
 	@result true, if a matching key was found, false otherwise.
 */
 CF_EXPORT
-Boolean CFDictionaryGetValueIfPresent(CFDictionaryRef theDict, const void *key, const void **value);
+Boolean CFDictionaryGetValueIfPresent( CFDictionaryRef theDict, const void *key, const void **value );
 
 /*!
 	@function CFDictionaryGetKeysAndValues
@@ -573,7 +573,7 @@ Boolean CFDictionaryGetValueIfPresent(CFDictionaryRef theDict, const void *key, 
 		or NULL, the behavior is undefined.
 */
 CF_EXPORT
-void CFDictionaryGetKeysAndValues(CFDictionaryRef theDict, const void **keys, const void **values);
+void CFDictionaryGetKeysAndValues( CFDictionaryRef theDict, const void **keys, const void **values );
 
 /*!
 	@function CFDictionaryApplyFunction
@@ -593,7 +593,7 @@ void CFDictionaryGetKeysAndValues(CFDictionaryRef theDict, const void **keys, co
 		undefined.
 */
 CF_EXPORT
-void CFDictionaryApplyFunction(CFDictionaryRef theDict, CFDictionaryApplierFunction applier, void *context);
+void CFDictionaryApplyFunction( CFDictionaryRef theDict, CFDictionaryApplierFunction applier, void *context );
 
 /*!
 	@function CFDictionaryAddValue
@@ -614,7 +614,7 @@ void CFDictionaryApplyFunction(CFDictionaryRef theDict, CFDictionaryApplierFunct
 		by the retain callback, the behavior is undefined.
 */
 CF_EXPORT
-void CFDictionaryAddValue(CFMutableDictionaryRef theDict, const void *key, const void *value);
+void CFDictionaryAddValue( CFMutableDictionaryRef theDict, const void *key, const void *value );
 
 /*!
 	@function CFDictionarySetValue
@@ -639,7 +639,7 @@ void CFDictionaryAddValue(CFMutableDictionaryRef theDict, const void *key, const
 		retain or release callbacks, the behavior is undefined.
 */
 CF_EXPORT
-void CFDictionarySetValue(CFMutableDictionaryRef theDict, const void *key, const void *value);
+void CFDictionarySetValue( CFMutableDictionaryRef theDict, const void *key, const void *value );
 
 /*!
 	@function CFDictionaryReplaceValue
@@ -658,7 +658,7 @@ void CFDictionarySetValue(CFMutableDictionaryRef theDict, const void *key, const
 		retain or release callbacks, the behavior is undefined.
 */
 CF_EXPORT
-void CFDictionaryReplaceValue(CFMutableDictionaryRef theDict, const void *key, const void *value);
+void CFDictionaryReplaceValue( CFMutableDictionaryRef theDict, const void *key, const void *value );
 
 /*!
 	@function CFDictionaryRemoveValue
@@ -672,7 +672,7 @@ void CFDictionaryReplaceValue(CFMutableDictionaryRef theDict, const void *key, c
 		nothing ("remove if present").
 */
 CF_EXPORT
-void CFDictionaryRemoveValue(CFMutableDictionaryRef theDict, const void *key);
+void CFDictionaryRemoveValue( CFMutableDictionaryRef theDict, const void *key );
 
 /*!
 	@function CFDictionaryRemoveAllValues
@@ -682,11 +682,10 @@ void CFDictionaryRemoveValue(CFMutableDictionaryRef theDict, const void *key);
 		CFDictionary, the behavior is undefined.
 */
 CF_EXPORT
-void CFDictionaryRemoveAllValues(CFMutableDictionaryRef theDict);
+void CFDictionaryRemoveAllValues( CFMutableDictionaryRef theDict );
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 }
 #endif
 
 #endif /* ! __COREFOUNDATION_CFDICTIONARY__ */
-

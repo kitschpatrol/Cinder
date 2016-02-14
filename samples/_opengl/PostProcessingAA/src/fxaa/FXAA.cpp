@@ -42,8 +42,8 @@ FXAA::FXAA()
 void FXAA::apply( const gl::FboRef &destination, const gl::FboRef &source )
 {
 	gl::ScopedFramebuffer fbo( destination );
-	gl::ScopedViewport viewport( 0, 0, destination->getWidth(), destination->getHeight() );
-	gl::ScopedMatrices matrices;
+	gl::ScopedViewport    viewport( 0, 0, destination->getWidth(), destination->getHeight() );
+	gl::ScopedMatrices    matrices;
 	gl::setMatricesWindow( destination->getSize(), false );
 
 	// Make sure our source is linearly interpolated.
@@ -63,14 +63,14 @@ void FXAA::apply( const gl::FboRef &destination, const gl::FboRef &source )
 
 void FXAA::draw( const gl::TextureRef &source, const Area &bounds )
 {
-	if( ! mGlslProg )
+	if( !mGlslProg )
 		return;
 
 	const int w = bounds.getWidth();
 	const int h = bounds.getHeight();
 
 	gl::ScopedGlslProg glslScope( mGlslProg );
-	mGlslProg->uniform( "uExtends", vec4( 1.0f / w, 1.0f / h, (float) w, (float) h ) );
+	mGlslProg->uniform( "uExtends", vec4( 1.0f / w, 1.0f / h, (float)w, (float)h ) );
 
 	gl::ScopedTextureBind tex0( source );
 

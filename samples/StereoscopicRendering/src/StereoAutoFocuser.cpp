@@ -36,7 +36,7 @@ void StereoAutoFocuser::autoFocus( CameraStereo *cam, const Area &area, GLuint b
 	// create or resize buffers
 	createBuffers( area );
 
-	// blit (multi-sampled) depth buffer to (non-multi-sampled) auto focus fbo	
+	// blit (multi-sampled) depth buffer to (non-multi-sampled) auto focus fbo
 	// (they need to be the same size for this to work!)
 	{
 		Area dstArea = mFboLarge->getBounds();
@@ -44,8 +44,7 @@ void StereoAutoFocuser::autoFocus( CameraStereo *cam, const Area &area, GLuint b
 		gl::ScopedFramebuffer readBuffer( GL_READ_FRAMEBUFFER, buffer );
 		gl::ScopedFramebuffer drawBuffer( GL_DRAW_FRAMEBUFFER, mFboLarge->getId() );
 
-		glBlitFramebuffer( area.getX1(), area.getY1(), area.getX2(), area.getY2(),
-						   dstArea.getX1(), dstArea.getY1(), dstArea.getX2(), dstArea.getY2(), GL_DEPTH_BUFFER_BIT, GL_NEAREST );
+		glBlitFramebuffer( area.getX1(), area.getY1(), area.getX2(), area.getY2(), dstArea.getX1(), dstArea.getY1(), dstArea.getX2(), dstArea.getY2(), GL_DEPTH_BUFFER_BIT, GL_NEAREST );
 	}
 
 	// create a downsampled copy for the auto focus test
@@ -56,8 +55,7 @@ void StereoAutoFocuser::autoFocus( CameraStereo *cam, const Area &area, GLuint b
 		gl::ScopedFramebuffer readBuffer( GL_READ_FRAMEBUFFER, mFboLarge->getId() );
 		gl::ScopedFramebuffer drawBuffer( GL_DRAW_FRAMEBUFFER, mFboSmall->getId() );
 
-		glBlitFramebuffer( srcArea.getX1(), srcArea.getY1(), srcArea.getX2(), srcArea.getY2(),
-						   dstArea.getX1(), dstArea.getY1(), dstArea.getX2(), dstArea.getY2(), GL_DEPTH_BUFFER_BIT, GL_NEAREST );
+		glBlitFramebuffer( srcArea.getX1(), srcArea.getY1(), srcArea.getX2(), srcArea.getY2(), dstArea.getX1(), dstArea.getY1(), dstArea.getX2(), dstArea.getY2(), GL_DEPTH_BUFFER_BIT, GL_NEAREST );
 	}
 
 	// load depth samples into buffer
@@ -65,12 +63,12 @@ void StereoAutoFocuser::autoFocus( CameraStereo *cam, const Area &area, GLuint b
 	glReadPixels( 0, 0, AF_WIDTH, AF_HEIGHT, GL_DEPTH_COMPONENT, GL_FLOAT, &mBuffer.front() );
 	mFboSmall->unbindFramebuffer();
 
-	// find minimum value 
+	// find minimum value
 	std::vector<GLfloat>::const_iterator itr = std::min_element( mBuffer.begin(), mBuffer.end() );
 
 	size_t p = itr - mBuffer.begin();
-	mNearest.x = 0.5f + (int) ( ( p % AF_WIDTH ) / (float) AF_WIDTH * mArea.getWidth() );
-	mNearest.y = 0.5f + (int) ( ( p / AF_WIDTH ) / (float) AF_HEIGHT * mArea.getHeight() );
+	mNearest.x = 0.5f + (int)( ( p % AF_WIDTH ) / (float)AF_WIDTH * mArea.getWidth() );
+	mNearest.y = 0.5f + (int)( ( p / AF_WIDTH ) / (float)AF_HEIGHT * mArea.getHeight() );
 
 	// convert to actual distance from camera
 	float nearClip = cam->getNearClip();
@@ -85,16 +83,16 @@ void StereoAutoFocuser::autoFocus( CameraStereo *cam, const Area &area, GLuint b
 
 void StereoAutoFocuser::draw()
 {
-	// visual debugging 
+	// visual debugging
 	gl::ScopedBlendAlpha blend;
-	gl::ScopedColor color( ColorA( 0, 1, 1, 0.1f ) );
+	gl::ScopedColor      color( ColorA( 0, 1, 1, 0.1f ) );
 	gl::drawSolidRect( mArea );
 	gl::color( ColorA( 0, 1, 1, 0.8f ) );
 	gl::lineWidth( 2.0f );
-	gl::drawLine( vec2( (float) mArea.getX1() + 0.5f, (float) mArea.getY2() - mNearest.y ),
-				  vec2( (float) mArea.getX2() + 0.5f, (float) mArea.getY2() - mNearest.y ) );
-	gl::drawLine( vec2( (float) mArea.getX1() + mNearest.x, (float) mArea.getY1() + 0.5f ),
-				  vec2( (float) mArea.getX1() + mNearest.x, (float) mArea.getY2() + 0.5f ) );
+	gl::drawLine( vec2( (float)mArea.getX1() + 0.5f, (float)mArea.getY2() - mNearest.y ),
+	    vec2( (float)mArea.getX2() + 0.5f, (float)mArea.getY2() - mNearest.y ) );
+	gl::drawLine( vec2( (float)mArea.getX1() + mNearest.x, (float)mArea.getY1() + 0.5f ),
+	    vec2( (float)mArea.getX1() + mNearest.x, (float)mArea.getY2() + 0.5f ) );
 }
 
 void StereoAutoFocuser::createBuffers( const Area &area )

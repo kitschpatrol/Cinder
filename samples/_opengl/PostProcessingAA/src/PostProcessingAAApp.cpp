@@ -33,16 +33,16 @@ POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/Camera.h"
+#include "cinder/Log.h"
 #include "cinder/Timer.h"
 #include "cinder/Utilities.h"
-#include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
+#include "Pistons.h"
 #include "fxaa/FXAA.h"
 #include "smaa/SMAA.h"
-#include "Pistons.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -50,11 +50,19 @@ using namespace std;
 
 class PostProcessingAAApp : public App {
   public:
-	enum SMAAMode { SMAA_EDGE_DETECTION, SMAA_BLEND_WEIGHTS, SMAA_BLEND_NEIGHBORS };
-	enum DividerMode { MODE_COMPARISON, MODE_ORIGINAL1, MODE_FXAA, MODE_SMAA, MODE_ORIGINAL2, MODE_COUNT };
+	enum SMAAMode { SMAA_EDGE_DETECTION,
+		SMAA_BLEND_WEIGHTS,
+		SMAA_BLEND_NEIGHBORS };
+	enum DividerMode { MODE_COMPARISON,
+		MODE_ORIGINAL1,
+		MODE_FXAA,
+		MODE_SMAA,
+		MODE_ORIGINAL2,
+		MODE_COUNT };
+
   public:
 	static void prepare( Settings *settings );
-	
+
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -66,34 +74,34 @@ class PostProcessingAAApp : public App {
 	void mouseDrag( MouseEvent event ) override;
 	void keyDown( KeyEvent event ) override;
 
-private:
-	CameraPersp         mCamera;         // 3D camera to render our scene.
-	Pistons             mPistons;        // Moving, colored pistons.
+  private:
+	CameraPersp mCamera; // 3D camera to render our scene.
+	Pistons     mPistons; // Moving, colored pistons.
 
-	Timer               mTimer;          // We can pause and resume our timer.
-	double              mTime;
-	double              mTimeOffset;
+	Timer  mTimer; // We can pause and resume our timer.
+	double mTime;
+	double mTimeOffset;
 
-	double              mFrameTime;      // Used to calculate frame rate.
-	double              mFrameRate;
+	double mFrameTime; // Used to calculate frame rate.
+	double mFrameRate;
 
-	gl::FboRef          mFboScene;       // Non-anti-aliased frame buffer to render our scene to.
-	gl::FboRef          mFboFinal;       // Frame buffer that will contain the anti-aliased result.
+	gl::FboRef mFboScene; // Non-anti-aliased frame buffer to render our scene to.
+	gl::FboRef mFboFinal; // Frame buffer that will contain the anti-aliased result.
 
-	FXAA                mFXAA;           // Takes care of applying FXAA anti-aliasing to our scene.
-	SMAA                mSMAA;           // Takes care of applying SMAA anti-aliasing to our scene.
-	SMAAMode            mSMAAMode;       // Allows us to see the 3 separate passes of the SMAA algorithm.
+	FXAA     mFXAA; // Takes care of applying FXAA anti-aliasing to our scene.
+	SMAA     mSMAA; // Takes care of applying SMAA anti-aliasing to our scene.
+	SMAAMode mSMAAMode; // Allows us to see the 3 separate passes of the SMAA algorithm.
 
-	gl::TextureRef      mInfoFXAA;       // Info texture.
-	gl::TextureRef      mInfoSMAA;       // Info texture.
-	gl::TextureRef      mInfoOriginal;   // Info texture.
+	gl::TextureRef mInfoFXAA; // Info texture.
+	gl::TextureRef mInfoSMAA; // Info texture.
+	gl::TextureRef mInfoOriginal; // Info texture.
 
-	vec2                mDivider;        // Determines which part of our scene is anti-aliased.
-	DividerMode         mDividerMode;    // Allows us to see each of the modes (Original, FXAA, SMAA) full screen.
-	int                 mDividerWidth;
-	int                 mPixelSize;      // Allows us to zoom in on the scene.
+	vec2        mDivider; // Determines which part of our scene is anti-aliased.
+	DividerMode mDividerMode; // Allows us to see each of the modes (Original, FXAA, SMAA) full screen.
+	int         mDividerWidth;
+	int         mPixelSize; // Allows us to zoom in on the scene.
 
-	vec2                mMouse;          // Keep track of the mouse cursor.
+	vec2 mMouse; // Keep track of the mouse cursor.
 };
 
 void PostProcessingAAApp::prepare( App::Settings *settings )
@@ -109,7 +117,7 @@ void PostProcessingAAApp::setup()
 		mInfoSMAA = gl::Texture::create( loadImage( loadAsset( "smaa.png" ) ) );
 		mInfoOriginal = gl::Texture::create( loadImage( loadAsset( "original.png" ) ) );
 	}
-	catch( const std::exception& e ) {
+	catch( const std::exception &e ) {
 		CI_LOG_EXCEPTION( "Failed to load textures.", e );
 		quit();
 	}
@@ -149,7 +157,7 @@ void PostProcessingAAApp::update()
 	// Animate our camera.
 	double t = mTime / 10.0;
 
-	float phi = (float) t;
+	float phi = (float)t;
 	float theta = 3.14159265f * ( 0.25f + 0.2f * math<float>::sin( phi * 0.9f ) );
 	float x = 150.0f * math<float>::cos( phi ) * math<float>::cos( theta );
 	float y = 150.0f * math<float>::sin( theta );
@@ -185,7 +193,7 @@ void PostProcessingAAApp::draw()
 		if( mDividerMode == MODE_COMPARISON ) {
 			gl::pushMatrices();
 			gl::setMatricesWindow( mDividerWidth, getWindowHeight() );
-			gl::pushViewport( (int) mDivider.x - mDividerWidth, 0, mDividerWidth, getWindowHeight() );
+			gl::pushViewport( (int)mDivider.x - mDividerWidth, 0, mDividerWidth, getWindowHeight() );
 			gl::draw( mFboFinal->getColorTexture(), getWindowBounds().getMoveULTo( vec2( -( mDivider.x - mDividerWidth ), 0 ) ) );
 			gl::popViewport();
 			gl::popMatrices();
@@ -201,15 +209,21 @@ void PostProcessingAAApp::draw()
 
 		gl::TextureRef tex;
 		switch( mSMAAMode ) {
-		case SMAA_EDGE_DETECTION: tex = mSMAA.getEdgePass(); break;
-		case SMAA_BLEND_WEIGHTS: tex = mSMAA.getBlendPass(); break;
-		case SMAA_BLEND_NEIGHBORS: tex = mFboFinal->getColorTexture(); break;
+		case SMAA_EDGE_DETECTION:
+			tex = mSMAA.getEdgePass();
+			break;
+		case SMAA_BLEND_WEIGHTS:
+			tex = mSMAA.getBlendPass();
+			break;
+		case SMAA_BLEND_NEIGHBORS:
+			tex = mFboFinal->getColorTexture();
+			break;
 		}
 
 		if( mDividerMode == MODE_COMPARISON ) {
 			gl::pushMatrices();
 			gl::setMatricesWindow( mDividerWidth, getWindowHeight() );
-			gl::pushViewport( (int) mDivider.x, 0, mDividerWidth, getWindowHeight() );
+			gl::pushViewport( (int)mDivider.x, 0, mDividerWidth, getWindowHeight() );
 			gl::draw( tex, getWindowBounds().getMoveULTo( vec2( -mDivider.x, 0 ) ) );
 			gl::popViewport();
 			gl::popMatrices();
@@ -224,9 +238,9 @@ void PostProcessingAAApp::draw()
 
 	// Draw divider.
 	if( mDividerMode == MODE_COMPARISON ) {
-		gl::drawLine( vec2( (float) mDivider.x, 0 ), vec2( (float) mDivider.x, (float) getWindowHeight() ) );
-		gl::drawLine( vec2( (float) ( mDivider.x - mDividerWidth ), 0 ), vec2( (float) ( mDivider.x - mDividerWidth ), (float) getWindowHeight() ) );
-		gl::drawLine( vec2( (float) ( mDivider.x + mDividerWidth ), 0 ), vec2( (float) ( mDivider.x + mDividerWidth ), (float) getWindowHeight() ) );
+		gl::drawLine( vec2( (float)mDivider.x, 0 ), vec2( (float)mDivider.x, (float)getWindowHeight() ) );
+		gl::drawLine( vec2( (float)( mDivider.x - mDividerWidth ), 0 ), vec2( (float)( mDivider.x - mDividerWidth ), (float)getWindowHeight() ) );
+		gl::drawLine( vec2( (float)( mDivider.x + mDividerWidth ), 0 ), vec2( (float)( mDivider.x + mDividerWidth ), (float)getWindowHeight() ) );
 	}
 
 	// Draw info.
@@ -296,7 +310,7 @@ void PostProcessingAAApp::mouseMove( MouseEvent event )
 	if( mMouse.x < 100 )
 		mMouse.x = 0;
 	else if( mMouse.x > getWindowWidth() - 100 )
-		mMouse.x = (float) getWindowWidth();
+		mMouse.x = (float)getWindowWidth();
 }
 
 void PostProcessingAAApp::mouseDrag( MouseEvent event )
@@ -306,7 +320,7 @@ void PostProcessingAAApp::mouseDrag( MouseEvent event )
 	if( mMouse.x < 50 )
 		mMouse.x = 0;
 	else if( mMouse.x > getWindowWidth() - 50 )
-		mMouse.x = (float) getWindowWidth();
+		mMouse.x = (float)getWindowWidth();
 }
 
 void PostProcessingAAApp::keyDown( KeyEvent event )
@@ -348,22 +362,23 @@ void PostProcessingAAApp::keyDown( KeyEvent event )
 	case KeyEvent::KEY_LEFT:
 	case KeyEvent::KEY_DOWN:
 		// Switch to the next mode (comparison > original > FXAA > SMAA > original).
-		if( (int) mDividerMode > 0 )
-			mDividerMode = (DividerMode) ( (int) mDividerMode - 1 );
+		if( (int)mDividerMode > 0 )
+			mDividerMode = ( DividerMode )( (int)mDividerMode - 1 );
 		else
-			mDividerMode = (DividerMode) ( (int) DividerMode::MODE_COUNT - 1 );
+			mDividerMode = ( DividerMode )( (int)DividerMode::MODE_COUNT - 1 );
 		break;
 	case KeyEvent::KEY_RIGHT:
 	case KeyEvent::KEY_UP:
 		// Switch to the previous mode (comparison < original < FXAA < SMAA < original).
-		mDividerMode = (DividerMode) ( ( (int) mDividerMode + 1 ) % DividerMode::MODE_COUNT );
+		mDividerMode = ( DividerMode )( ( (int)mDividerMode + 1 ) % DividerMode::MODE_COUNT );
 		break;
 	case KeyEvent::KEY_PLUS:
 	case KeyEvent::KEY_EQUALS:
 	case KeyEvent::KEY_KP_PLUS:
 		// Zoom in on the scene, so you can better see the anti-aliasing.
 		if( mPixelSize < 8 ) {
-			mPixelSize <<= 1; resize();
+			mPixelSize <<= 1;
+			resize();
 		}
 		break;
 	case KeyEvent::KEY_MINUS:
@@ -371,10 +386,10 @@ void PostProcessingAAApp::keyDown( KeyEvent event )
 	case KeyEvent::KEY_KP_MINUS:
 		// Zoom out from the scene.
 		if( mPixelSize > 1 ) {
-			mPixelSize >>= 1; resize();
+			mPixelSize >>= 1;
+			resize();
 		}
 		break;
-
 	}
 }
 

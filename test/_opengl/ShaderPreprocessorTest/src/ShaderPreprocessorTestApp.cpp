@@ -1,10 +1,10 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
-#include "cinder/gl/GlslProg.h"
-#include "cinder/gl/ShaderPreprocessor.h"
 #include "cinder/Log.h"
 #include "cinder/System.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/GlslProg.h"
+#include "cinder/gl/ShaderPreprocessor.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,14 +19,14 @@ class ShaderPreprocessorTestApp : public App {
 	void testGlslProgInclude();
 	void testSeparateShaderPreprocessor();
 
-	gl::GlslProgRef			mGlslProg;
-	gl::ShaderPreprocessor  mPreprocessor;
+	gl::GlslProgRef        mGlslProg;
+	gl::ShaderPreprocessor mPreprocessor;
 };
 
 void ShaderPreprocessorTestApp::setup()
 {
 	testGlslProgInclude();
-//	testSeparateShaderPreprocessor();
+	//	testSeparateShaderPreprocessor();
 }
 
 void ShaderPreprocessorTestApp::keyDown( KeyEvent event )
@@ -41,37 +41,34 @@ void ShaderPreprocessorTestApp::testGlslProgInclude()
 {
 	try {
 		auto format = gl::GlslProg::Format()
-							.vertex(  loadAsset( "passthrough.vert" ) )
-							.fragment( loadAsset( "shaderWithInclude.frag" ) )
-        //                    .define( "COLOR_RED", "vec4( 0, 0, 1, 1 )" )
-                            .define( "WRONG_HASH" )
-        ;
+		                  .vertex( loadAsset( "passthrough.vert" ) )
+		                  .fragment( loadAsset( "shaderWithInclude.frag" ) )
+		                  //                    .define( "COLOR_RED", "vec4( 0, 0, 1, 1 )" )
+		                  .define( "WRONG_HASH" );
 
 		mGlslProg = gl::GlslProg::create( format );
 	}
 	catch( std::exception &exc ) {
 		CI_LOG_E( "exception caught, type: " << System::demangleTypeName( typeid( exc ).name() ) << ", what: " << exc.what() );
 	}
-
 }
 
 void ShaderPreprocessorTestApp::testSeparateShaderPreprocessor()
 {
 	try {
-		auto vert = loadAsset( "passthrough.vert" );
-        string fragSource = mPreprocessor.parse( getAssetPath( "shaderWithInclude.frag" ) );
+		auto   vert = loadAsset( "passthrough.vert" );
+		string fragSource = mPreprocessor.parse( getAssetPath( "shaderWithInclude.frag" ) );
 
 		auto format = gl::GlslProg::Format()
-							.preprocess( false )
-							.vertex( vert )
-							.fragment( fragSource );
+		                  .preprocess( false )
+		                  .vertex( vert )
+		                  .fragment( fragSource );
 
 		mGlslProg = gl::GlslProg::create( format );
 	}
 	catch( std::exception &exc ) {
 		CI_LOG_E( "exception caught, type: " << System::demangleTypeName( typeid( exc ).name() ) << ", what: " << exc.what() );
 	}
-
 }
 
 void ShaderPreprocessorTestApp::update()

@@ -31,27 +31,27 @@ class IStreamUrlImplWinInet : public IStreamUrlImpl {
 	IStreamUrlImplWinInet( const std::string &url, const std::string &user, const std::string &password, const UrlOptions &options );
 	~IStreamUrlImplWinInet();
 
-	virtual size_t		readDataAvailable( void *dest, size_t maxSize );
-	virtual void		seekAbsolute( off_t absoluteOffset );
-	virtual void		seekRelative( off_t relativeOffset );
-	virtual off_t		tell() const;
-	virtual off_t		size() const;
-	
-	virtual bool		isEof() const;
-	virtual void		IORead( void *t, size_t size );
+	virtual size_t readDataAvailable( void *dest, size_t maxSize );
+	virtual void seekAbsolute( off_t absoluteOffset );
+	virtual void seekRelative( off_t relativeOffset );
+	virtual off_t tell() const;
+	virtual off_t size() const;
+
+	virtual bool isEof() const;
+	virtual void IORead( void *t, size_t size );
 
   private:
-	int					bufferDataRemaining() const { return mBufferedBytes - mBufferOffset; }
-	void				fillBuffer( int wantBytes ) const; 
-  
-	std::shared_ptr<void>		mSession, mConnection, mRequest;
-	
-	mutable bool			mIsFinished;
-	mutable uint8_t			*mBuffer; // todo - consider an exception-safe version of this
-	mutable int				mBufferSize;
-	mutable int				mBufferOffset, mBufferedBytes;
-	mutable off_t			mBufferFileOffset;	// where in the file the buffer starts
-	static const int		DEFAULT_BUFFER_SIZE = 4096;
+	int  bufferDataRemaining() const { return mBufferedBytes - mBufferOffset; }
+	void fillBuffer( int wantBytes ) const;
+
+	std::shared_ptr<void> mSession, mConnection, mRequest;
+
+	mutable bool     mIsFinished;
+	mutable uint8_t *mBuffer; // todo - consider an exception-safe version of this
+	mutable int      mBufferSize;
+	mutable int      mBufferOffset, mBufferedBytes;
+	mutable off_t    mBufferFileOffset; // where in the file the buffer starts
+	static const int DEFAULT_BUFFER_SIZE = 4096;
 };
 
 } // namespace cinder

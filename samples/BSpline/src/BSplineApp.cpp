@@ -1,9 +1,9 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/BSpline.h"
-#include "cinder/cairo/Cairo.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Utilities.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/cairo/Cairo.h"
 
 #include <vector>
 
@@ -12,24 +12,24 @@ using namespace ci::app;
 using std::vector;
 
 class BSplineApp : public App {
- public:
-	BSplineApp() : mTrackedPoint( -1 ), mDegree( 3 ), mOpen( true ), mLoop( false ) {}
-	
-	int		findNearestPt( const vec2 &aPt );
-	void	calcLength();
-	
-	void	mouseDown( MouseEvent event ) override;
-	void	mouseUp( MouseEvent event ) override;
-	void	mouseDrag( MouseEvent event ) override;
-	void	keyDown( KeyEvent event ) override;
+  public:
+	BSplineApp()
+	    : mTrackedPoint( -1 ), mDegree( 3 ), mOpen( true ), mLoop( false ) {}
+	int findNearestPt( const vec2 &aPt );
+	void calcLength();
 
-	void	drawBSpline( cairo::Context &ctx );
-	void	draw() override;
+	void mouseDown( MouseEvent event ) override;
+	void mouseUp( MouseEvent event ) override;
+	void mouseDrag( MouseEvent event ) override;
+	void keyDown( KeyEvent event ) override;
 
-	vector<vec2>		mPoints;
-	int					mTrackedPoint;
-	int					mDegree;
-	bool				mOpen, mLoop;
+	void drawBSpline( cairo::Context &ctx );
+	void draw() override;
+
+	vector<vec2> mPoints;
+	int          mTrackedPoint;
+	int          mDegree;
+	bool         mOpen, mLoop;
 };
 
 void BSplineApp::mouseDown( MouseEvent event )
@@ -37,7 +37,7 @@ void BSplineApp::mouseDown( MouseEvent event )
 	const float MIN_CLICK_DISTANCE = 6.0f;
 	if( event.isLeft() ) { // line
 		vec2 clickPt = vec2( event.getPos() );
-		int nearestIdx = findNearestPt( clickPt );
+		int  nearestIdx = findNearestPt( clickPt );
 		if( ( nearestIdx < 0 ) || ( distance( mPoints[nearestIdx], clickPt ) > MIN_CLICK_DISTANCE ) ) {
 			mPoints.push_back( vec2( event.getPos() ) );
 			mTrackedPoint = -1;
@@ -61,7 +61,8 @@ void BSplineApp::mouseUp( MouseEvent event )
 	mTrackedPoint = -1;
 }
 
-void BSplineApp::keyDown( KeyEvent event ) {
+void BSplineApp::keyDown( KeyEvent event )
+{
 	if( event.getCode() == KeyEvent::KEY_ESCAPE ) {
 		setFullScreen( false );
 	}
@@ -77,11 +78,11 @@ void BSplineApp::keyDown( KeyEvent event ) {
 		calcLength();
 	}
 	else if( event.getChar() == 'o' ) { // toggle between open/periodic
-		mOpen = ! mOpen;
+		mOpen = !mOpen;
 		calcLength();
 	}
 	else if( event.getChar() == 'l' ) { // toggle between looping
-		mLoop = ! mLoop;
+		mLoop = !mLoop;
 		calcLength();
 	}
 	else if( event.getChar() == 'i' ) { // export to png image
@@ -97,8 +98,8 @@ int BSplineApp::findNearestPt( const vec2 &aPt )
 {
 	if( mPoints.empty() )
 		return -1;
-	
-	int result = 0;
+
+	int   result = 0;
 	float nearestDist = distance( mPoints[0], aPt );
 	for( size_t i = 1; i < mPoints.size(); ++i ) {
 		if( distance( mPoints[i], aPt ) < nearestDist ) {
@@ -106,7 +107,7 @@ int BSplineApp::findNearestPt( const vec2 &aPt )
 			nearestDist = distance( mPoints[i], aPt );
 		}
 	}
-	
+
 	return result;
 }
 
@@ -125,7 +126,7 @@ void BSplineApp::drawBSpline( cairo::Context &ctx )
 		ctx.setSourceRgb( 1.0f, 0.5f, 0.25f );
 		ctx.appendPath( Path2d( BSpline2f( mPoints, mDegree, mLoop, mOpen ) ) );
 		ctx.stroke();
-//		ctx.fill();
+		//		ctx.fill();
 	}
 }
 
@@ -135,7 +136,7 @@ void BSplineApp::draw()
 	cairo::Context ctx( cairo::createWindowSurface() );
 	ctx.setSourceRgb( 0.0f, 0.1f, 0.2f );
 	ctx.paint();
-	
+
 	// draw the control points
 	ctx.setSourceRgb( 1.0f, 1.0f, 0.0f );
 	for( size_t p = 0; p < mPoints.size(); ++p ) {
@@ -152,22 +153,22 @@ void BSplineApp::draw()
 		ctx.moveTo( spline.getPosition( 0 ) );
 		for( float t = 0; t < 1.0f; t += 0.001f )
 			ctx.lineTo( spline.getPosition( t ) );
-		
+
 		ctx.stroke();
-		
+
 		// draw points 1/4, 1/2 and 3/4 along the length
 		ctx.setSourceRgb( 0.0f, 0.7f, 1.0f );
 		float totalLength = spline.getLength( 0, 1 );
 		for( float p = 0.25f; p < 0.99f; p += 0.25f ) {
 			ctx.newSubPath();
 			ctx.arc( spline.getPosition( spline.getTime( p * totalLength ) ), 2.5f, 0, 2 * 3.14159f );
-		}		
-		
+		}
+
 		ctx.stroke();
 	}
 
 	// draw the curve by bezier path
-	drawBSpline( ctx );	
+	drawBSpline( ctx );
 }
 
 CINDER_APP( BSplineApp, Renderer2d )

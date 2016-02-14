@@ -24,9 +24,6 @@
 #include <Files.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,83 +37,83 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-typedef UInt32                          FSAliasInfoBitmap;
+typedef UInt32 FSAliasInfoBitmap;
 enum {
-  kFSAliasInfoNone              = 0x00000000, /* no valid info*/
-  kFSAliasInfoVolumeCreateDate  = 0x00000001, /* volume creation date is valid*/
-  kFSAliasInfoTargetCreateDate  = 0x00000002, /* target creation date is valid*/
-  kFSAliasInfoFinderInfo        = 0x00000004, /* file type and creator are valid*/
-  kFSAliasInfoIsDirectory       = 0x00000008, /* isDirectory boolean is valid*/
-  kFSAliasInfoIDs               = 0x00000010, /* parentDirID and nodeID are valid*/
-  kFSAliasInfoFSInfo            = 0x00000020, /* filesystemID and signature are valid*/
-  kFSAliasInfoVolumeFlags       = 0x00000040 /* volumeIsBootVolume, volumeIsAutomounted, volumeIsEjectable and volumeHasPersistentFileIDs are valid*/
+	kFSAliasInfoNone = 0x00000000, /* no valid info*/
+	kFSAliasInfoVolumeCreateDate = 0x00000001, /* volume creation date is valid*/
+	kFSAliasInfoTargetCreateDate = 0x00000002, /* target creation date is valid*/
+	kFSAliasInfoFinderInfo = 0x00000004, /* file type and creator are valid*/
+	kFSAliasInfoIsDirectory = 0x00000008, /* isDirectory boolean is valid*/
+	kFSAliasInfoIDs = 0x00000010, /* parentDirID and nodeID are valid*/
+	kFSAliasInfoFSInfo = 0x00000020, /* filesystemID and signature are valid*/
+	kFSAliasInfoVolumeFlags = 0x00000040 /* volumeIsBootVolume, volumeIsAutomounted, volumeIsEjectable and volumeHasPersistentFileIDs are valid*/
 };
 
 enum {
-  rAliasType                    = FOUR_CHAR_CODE('alis') /* Aliases are stored as resources of this type */
+	rAliasType = FOUR_CHAR_CODE( 'alis' ) /* Aliases are stored as resources of this type */
 };
 
 enum {
-                                        /* define alias resolution action rules mask */
-  kARMMountVol                  = 0x00000001, /* mount the volume automatically */
-  kARMNoUI                      = 0x00000002, /* no user interface allowed during resolution */
-  kARMMultVols                  = 0x00000008, /* search on multiple volumes */
-  kARMSearch                    = 0x00000100, /* search quickly */
-  kARMSearchMore                = 0x00000200, /* search further */
-  kARMSearchRelFirst            = 0x00000400, /* search target on a relative path first */
-  kARMTryFileIDFirst            = 0x00000800 /* search by file id before path */
+	/* define alias resolution action rules mask */
+	kARMMountVol = 0x00000001, /* mount the volume automatically */
+	kARMNoUI = 0x00000002, /* no user interface allowed during resolution */
+	kARMMultVols = 0x00000008, /* search on multiple volumes */
+	kARMSearch = 0x00000100, /* search quickly */
+	kARMSearchMore = 0x00000200, /* search further */
+	kARMSearchRelFirst = 0x00000400, /* search target on a relative path first */
+	kARMTryFileIDFirst = 0x00000800 /* search by file id before path */
 };
 
 enum {
-                                        /* define alias record information types */
-  asiZoneName                   = -3,   /* get zone name */
-  asiServerName                 = -2,   /* get server name */
-  asiVolumeName                 = -1,   /* get volume name */
-  asiAliasName                  = 0,    /* get aliased file/folder/volume name */
-  asiParentName                 = 1     /* get parent folder name */
+	/* define alias record information types */
+	asiZoneName = -3, /* get zone name */
+	asiServerName = -2, /* get server name */
+	asiVolumeName = -1, /* get volume name */
+	asiAliasName = 0, /* get aliased file/folder/volume name */
+	asiParentName = 1 /* get parent folder name */
 };
 
 /* ResolveAliasFileWithMountFlags options */
 enum {
-  kResolveAliasFileNoUI         = 0x00000001, /* no user interaction during resolution */
-  kResolveAliasTryFileIDFirst   = 0x00000002 /* search by file id before path */
+	kResolveAliasFileNoUI = 0x00000001, /* no user interaction during resolution */
+	kResolveAliasTryFileIDFirst = 0x00000002 /* search by file id before path */
 };
 
 /* define the alias record that will be the blackbox for the caller */
 struct AliasRecord {
-  OSType              userType;               /* appl stored type like creator type */
-  unsigned short      aliasSize;              /* alias record size in bytes, for appl usage */
+	OSType         userType; /* appl stored type like creator type */
+	unsigned short aliasSize; /* alias record size in bytes, for appl usage */
 };
-typedef struct AliasRecord              AliasRecord;
-typedef AliasRecord *                   AliasPtr;
-typedef AliasPtr *                      AliasHandle;
+typedef struct AliasRecord AliasRecord;
+typedef AliasRecord *      AliasPtr;
+typedef AliasPtr *         AliasHandle;
 /* info block to pass to FSCopyAliasInfo */
 struct FSAliasInfo {
-  UTCDateTime         volumeCreateDate;
-  UTCDateTime         targetCreateDate;
-  OSType              fileType;
-  OSType              fileCreator;
-  UInt32              parentDirID;
-  UInt32              nodeID;
-  UInt16              filesystemID;
-  UInt16              signature;
-  Boolean             volumeIsBootVolume;
-  Boolean             volumeIsAutomounted;
-  Boolean             volumeIsEjectable;
-  Boolean             volumeHasPersistentFileIDs;
-  Boolean             isDirectory;
+	UTCDateTime volumeCreateDate;
+	UTCDateTime targetCreateDate;
+	OSType      fileType;
+	OSType      fileCreator;
+	UInt32      parentDirID;
+	UInt32      nodeID;
+	UInt16      filesystemID;
+	UInt16      signature;
+	Boolean     volumeIsBootVolume;
+	Boolean     volumeIsAutomounted;
+	Boolean     volumeIsEjectable;
+	Boolean     volumeHasPersistentFileIDs;
+	Boolean     isDirectory;
 };
-typedef struct FSAliasInfo              FSAliasInfo;
-typedef FSAliasInfo *                   FSAliasInfoPtr;
+typedef struct FSAliasInfo FSAliasInfo;
+typedef FSAliasInfo *      FSAliasInfoPtr;
 /* alias record information type */
-typedef short                           AliasInfoType;
+typedef short AliasInfoType;
 /*
  *  NewAlias()
  *  
@@ -131,10 +128,9 @@ typedef short                           AliasInfoType;
  */
 EXTERN_API( OSErr )
 NewAlias(
-  const FSSpec *  fromFile,       /* can be NULL */
-  const FSSpec *  target,
-  AliasHandle *   alias)                                      TWOWORDINLINE(0x7002, 0xA823);
-
+    const FSSpec *fromFile, /* can be NULL */
+    const FSSpec *target,
+    AliasHandle * alias ) TWOWORDINLINE( 0x7002, 0xA823 );
 
 /*
  *  NewAliasMinimal()
@@ -150,9 +146,8 @@ NewAlias(
  */
 EXTERN_API( OSErr )
 NewAliasMinimal(
-  const FSSpec *  target,
-  AliasHandle *   alias)                                      TWOWORDINLINE(0x7008, 0xA823);
-
+    const FSSpec *target,
+    AliasHandle * alias ) TWOWORDINLINE( 0x7008, 0xA823 );
 
 /*
  *  NewAliasMinimalFromFullPath()
@@ -168,12 +163,11 @@ NewAliasMinimal(
  */
 EXTERN_API( OSErr )
 NewAliasMinimalFromFullPath(
-  short             fullPathLength,
-  const void *      fullPath,
-  ConstStr32Param   zoneName,
-  ConstStr31Param   serverName,
-  AliasHandle *     alias)                                    TWOWORDINLINE(0x7009, 0xA823);
-
+    short           fullPathLength,
+    const void *    fullPath,
+    ConstStr32Param zoneName,
+    ConstStr31Param serverName,
+    AliasHandle *   alias ) TWOWORDINLINE( 0x7009, 0xA823 );
 
 /*
  *  ResolveAlias()
@@ -189,11 +183,10 @@ NewAliasMinimalFromFullPath(
  */
 EXTERN_API( OSErr )
 ResolveAlias(
-  const FSSpec *  fromFile,         /* can be NULL */
-  AliasHandle     alias,
-  FSSpec *        target,
-  Boolean *       wasChanged)                                 TWOWORDINLINE(0x7003, 0xA823);
-
+    const FSSpec *fromFile, /* can be NULL */
+    AliasHandle   alias,
+    FSSpec *      target,
+    Boolean *     wasChanged ) TWOWORDINLINE( 0x7003, 0xA823 );
 
 /*
  *  GetAliasInfo()
@@ -210,11 +203,9 @@ ResolveAlias(
  */
 EXTERN_API( OSErr )
 GetAliasInfo(
-  AliasHandle     alias,
-  AliasInfoType   index,
-  Str63           theString)                                  TWOWORDINLINE(0x7007, 0xA823);
-
-
+    AliasHandle   alias,
+    AliasInfoType index,
+    Str63         theString ) TWOWORDINLINE( 0x7007, 0xA823 );
 
 /*
  *  IsAliasFile()
@@ -226,10 +217,9 @@ GetAliasInfo(
  */
 EXTERN_API( OSErr )
 IsAliasFile(
-  const FSSpec *  fileFSSpec,
-  Boolean *       aliasFileFlag,
-  Boolean *       folderFlag)                                 TWOWORDINLINE(0x702A, 0xA823);
-
+    const FSSpec *fileFSSpec,
+    Boolean *     aliasFileFlag,
+    Boolean *     folderFlag ) TWOWORDINLINE( 0x702A, 0xA823 );
 
 /*
  *  ResolveAliasWithMountFlags()
@@ -241,12 +231,11 @@ IsAliasFile(
  */
 EXTERN_API( OSErr )
 ResolveAliasWithMountFlags(
-  const FSSpec *  fromFile,         /* can be NULL */
-  AliasHandle     alias,
-  FSSpec *        target,
-  Boolean *       wasChanged,
-  unsigned long   mountFlags)                                 TWOWORDINLINE(0x702B, 0xA823);
-
+    const FSSpec *fromFile, /* can be NULL */
+    AliasHandle   alias,
+    FSSpec *      target,
+    Boolean *     wasChanged,
+    unsigned long mountFlags ) TWOWORDINLINE( 0x702B, 0xA823 );
 
 /*
  *  ResolveAliasFile()
@@ -264,12 +253,10 @@ ResolveAliasWithMountFlags(
  */
 EXTERN_API( OSErr )
 ResolveAliasFile(
-  FSSpec *   theSpec,
-  Boolean    resolveAliasChains,
-  Boolean *  targetIsFolder,
-  Boolean *  wasAliased)                                      TWOWORDINLINE(0x700C, 0xA823);
-
-
+    FSSpec * theSpec,
+    Boolean  resolveAliasChains,
+    Boolean *targetIsFolder,
+    Boolean *wasAliased ) TWOWORDINLINE( 0x700C, 0xA823 );
 
 /*
  *  ResolveAliasFileWithMountFlags()
@@ -281,12 +268,11 @@ ResolveAliasFile(
  */
 EXTERN_API( OSErr )
 ResolveAliasFileWithMountFlags(
-  FSSpec *        theSpec,
-  Boolean         resolveAliasChains,
-  Boolean *       targetIsFolder,
-  Boolean *       wasAliased,
-  unsigned long   mountFlags)                                 TWOWORDINLINE(0x7029, 0xA823);
-
+    FSSpec *      theSpec,
+    Boolean       resolveAliasChains,
+    Boolean *     targetIsFolder,
+    Boolean *     wasAliased,
+    unsigned long mountFlags ) TWOWORDINLINE( 0x7029, 0xA823 );
 
 /*
  *  FollowFinderAlias()
@@ -298,12 +284,11 @@ ResolveAliasFileWithMountFlags(
  */
 EXTERN_API( OSErr )
 FollowFinderAlias(
-  const FSSpec *  fromFile,         /* can be NULL */
-  AliasHandle     alias,
-  Boolean         logon,
-  FSSpec *        target,
-  Boolean *       wasChanged)                                 TWOWORDINLINE(0x700F, 0xA823);
-
+    const FSSpec *fromFile, /* can be NULL */
+    AliasHandle   alias,
+    Boolean       logon,
+    FSSpec *      target,
+    Boolean *     wasChanged ) TWOWORDINLINE( 0x700F, 0xA823 );
 
 /* 
    Low Level Routines 
@@ -323,15 +308,13 @@ FollowFinderAlias(
  */
 EXTERN_API( OSErr )
 UpdateAlias(
-  const FSSpec *  fromFile,         /* can be NULL */
-  const FSSpec *  target,
-  AliasHandle     alias,
-  Boolean *       wasChanged)                                 TWOWORDINLINE(0x7006, 0xA823);
+    const FSSpec *fromFile, /* can be NULL */
+    const FSSpec *target,
+    AliasHandle   alias,
+    Boolean *     wasChanged ) TWOWORDINLINE( 0x7006, 0xA823 );
 
-
-
-typedef CALLBACK_API( Boolean , AliasFilterProcPtr )(CInfoPBPtr cpbPtr, Boolean *quitFlag, Ptr myDataPtr);
-typedef STACK_UPP_TYPE(AliasFilterProcPtr)                      AliasFilterUPP;
+typedef CALLBACK_API( Boolean, AliasFilterProcPtr )( CInfoPBPtr cpbPtr, Boolean *quitFlag, Ptr myDataPtr );
+typedef STACK_UPP_TYPE( AliasFilterProcPtr ) AliasFilterUPP;
 /*
  *  NewAliasFilterUPP()
  *  
@@ -341,14 +324,17 @@ typedef STACK_UPP_TYPE(AliasFilterProcPtr)                      AliasFilterUPP;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( AliasFilterUPP )
-NewAliasFilterUPP(AliasFilterProcPtr userRoutine);
+NewAliasFilterUPP( AliasFilterProcPtr userRoutine );
 #if !OPAQUE_UPP_TYPES
-  enum { uppAliasFilterProcInfo = 0x00000FD0 };  /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes) */
-  #ifdef __cplusplus
-    inline DEFINE_API_C(AliasFilterUPP) NewAliasFilterUPP(AliasFilterProcPtr userRoutine) { return (AliasFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppAliasFilterProcInfo, GetCurrentArchitecture()); }
-  #else
-    #define NewAliasFilterUPP(userRoutine) (AliasFilterUPP)NewRoutineDescriptor((ProcPtr)(userRoutine), uppAliasFilterProcInfo, GetCurrentArchitecture())
-  #endif
+enum { uppAliasFilterProcInfo = 0x00000FD0 }; /* pascal 1_byte Func(4_bytes, 4_bytes, 4_bytes) */
+#ifdef __cplusplus
+inline DEFINE_API_C( AliasFilterUPP ) NewAliasFilterUPP( AliasFilterProcPtr userRoutine )
+{
+	return (AliasFilterUPP)NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppAliasFilterProcInfo, GetCurrentArchitecture() );
+}
+#else
+#define NewAliasFilterUPP( userRoutine ) ( AliasFilterUPP ) NewRoutineDescriptor( ( ProcPtr )( userRoutine ), uppAliasFilterProcInfo, GetCurrentArchitecture() )
+#endif
 #endif
 
 /*
@@ -360,13 +346,16 @@ NewAliasFilterUPP(AliasFilterProcPtr userRoutine);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-DisposeAliasFilterUPP(AliasFilterUPP userUPP);
+DisposeAliasFilterUPP( AliasFilterUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(void) DisposeAliasFilterUPP(AliasFilterUPP userUPP) { DisposeRoutineDescriptor((UniversalProcPtr)userUPP); }
-  #else
-      #define DisposeAliasFilterUPP(userUPP) DisposeRoutineDescriptor(userUPP)
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( void ) DisposeAliasFilterUPP( AliasFilterUPP userUPP )
+{
+	DisposeRoutineDescriptor( (UniversalProcPtr)userUPP );
+}
+#else
+#define DisposeAliasFilterUPP( userUPP ) DisposeRoutineDescriptor( userUPP )
+#endif
 #endif
 
 /*
@@ -379,22 +368,25 @@ DisposeAliasFilterUPP(AliasFilterUPP userUPP);
  */
 EXTERN_API_C( Boolean )
 InvokeAliasFilterUPP(
-  CInfoPBPtr      cpbPtr,
-  Boolean *       quitFlag,
-  Ptr             myDataPtr,
-  AliasFilterUPP  userUPP);
+    CInfoPBPtr     cpbPtr,
+    Boolean *      quitFlag,
+    Ptr            myDataPtr,
+    AliasFilterUPP userUPP );
 #if !OPAQUE_UPP_TYPES
-  #ifdef __cplusplus
-      inline DEFINE_API_C(Boolean) InvokeAliasFilterUPP(CInfoPBPtr cpbPtr, Boolean * quitFlag, Ptr myDataPtr, AliasFilterUPP userUPP) { return (Boolean)CALL_THREE_PARAMETER_UPP(userUPP, uppAliasFilterProcInfo, cpbPtr, quitFlag, myDataPtr); }
-  #else
-    #define InvokeAliasFilterUPP(cpbPtr, quitFlag, myDataPtr, userUPP) (Boolean)CALL_THREE_PARAMETER_UPP((userUPP), uppAliasFilterProcInfo, (cpbPtr), (quitFlag), (myDataPtr))
-  #endif
+#ifdef __cplusplus
+inline DEFINE_API_C( Boolean ) InvokeAliasFilterUPP( CInfoPBPtr cpbPtr, Boolean *quitFlag, Ptr myDataPtr, AliasFilterUPP userUPP )
+{
+	return (Boolean)CALL_THREE_PARAMETER_UPP( userUPP, uppAliasFilterProcInfo, cpbPtr, quitFlag, myDataPtr );
+}
+#else
+#define InvokeAliasFilterUPP( cpbPtr, quitFlag, myDataPtr, userUPP ) ( Boolean ) CALL_THREE_PARAMETER_UPP( ( userUPP ), uppAliasFilterProcInfo, ( cpbPtr ), ( quitFlag ), ( myDataPtr ) )
+#endif
 #endif
 
 #if CALL_NOT_IN_CARBON || OLDROUTINENAMES
-    /* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
-    #define NewAliasFilterProc(userRoutine)                     NewAliasFilterUPP(userRoutine)
-    #define CallAliasFilterProc(userRoutine, cpbPtr, quitFlag, myDataPtr) InvokeAliasFilterUPP(cpbPtr, quitFlag, myDataPtr, userRoutine)
+/* support for pre-Carbon UPP routines: New...Proc and Call...Proc */
+#define NewAliasFilterProc( userRoutine ) NewAliasFilterUPP( userRoutine )
+#define CallAliasFilterProc( userRoutine, cpbPtr, quitFlag, myDataPtr ) InvokeAliasFilterUPP( cpbPtr, quitFlag, myDataPtr, userRoutine )
 #endif /* CALL_NOT_IN_CARBON */
 
 /*
@@ -411,17 +403,14 @@ InvokeAliasFilterUPP(
  */
 EXTERN_API( OSErr )
 MatchAlias(
-  const FSSpec *   fromFile,          /* can be NULL */
-  unsigned long    rulesMask,
-  AliasHandle      alias,
-  short *          aliasCount,
-  FSSpecArrayPtr   aliasList,
-  Boolean *        needsUpdate,
-  AliasFilterUPP   aliasFilter,
-  void *           yourDataPtr)                               TWOWORDINLINE(0x7005, 0xA823);
-
-
-
+    const FSSpec * fromFile, /* can be NULL */
+    unsigned long  rulesMask,
+    AliasHandle    alias,
+    short *        aliasCount,
+    FSSpecArrayPtr aliasList,
+    Boolean *      needsUpdate,
+    AliasFilterUPP aliasFilter,
+    void *         yourDataPtr ) TWOWORDINLINE( 0x7005, 0xA823 );
 
 /*
  *  ResolveAliasFileWithMountFlagsNoUI()
@@ -437,12 +426,11 @@ MatchAlias(
  */
 EXTERN_API( OSErr )
 ResolveAliasFileWithMountFlagsNoUI(
-  FSSpec *        theSpec,
-  Boolean         resolveAliasChains,
-  Boolean *       targetIsFolder,
-  Boolean *       wasAliased,
-  unsigned long   mountFlags);
-
+    FSSpec *      theSpec,
+    Boolean       resolveAliasChains,
+    Boolean *     targetIsFolder,
+    Boolean *     wasAliased,
+    unsigned long mountFlags );
 
 /*
  *  MatchAliasNoUI()
@@ -457,15 +445,14 @@ ResolveAliasFileWithMountFlagsNoUI(
  */
 EXTERN_API( OSErr )
 MatchAliasNoUI(
-  const FSSpec *   fromFile,          /* can be NULL */
-  unsigned long    rulesMask,
-  AliasHandle      alias,
-  short *          aliasCount,
-  FSSpecArrayPtr   aliasList,
-  Boolean *        needsUpdate,
-  AliasFilterUPP   aliasFilter,
-  void *           yourDataPtr);
-
+    const FSSpec * fromFile, /* can be NULL */
+    unsigned long  rulesMask,
+    AliasHandle    alias,
+    short *        aliasCount,
+    FSSpecArrayPtr aliasList,
+    Boolean *      needsUpdate,
+    AliasFilterUPP aliasFilter,
+    void *         yourDataPtr );
 
 /*
  *  FSNewAliasUnicode()
@@ -506,13 +493,12 @@ MatchAliasNoUI(
  */
 EXTERN_API_C( OSErr )
 FSNewAliasUnicode(
-  const FSRef *    fromFile,               /* can be NULL */
-  const FSRef *    targetParentRef,
-  UniCharCount     targetNameLength,
-  const UniChar *  targetName,
-  AliasHandle *    inAlias,
-  Boolean *        isDirectory);           /* can be NULL */
-
+    const FSRef *  fromFile, /* can be NULL */
+    const FSRef *  targetParentRef,
+    UniCharCount   targetNameLength,
+    const UniChar *targetName,
+    AliasHandle *  inAlias,
+    Boolean *      isDirectory ); /* can be NULL */
 
 /*
  *  FSNewAliasMinimalUnicode()
@@ -547,12 +533,11 @@ FSNewAliasUnicode(
  */
 EXTERN_API_C( OSErr )
 FSNewAliasMinimalUnicode(
-  const FSRef *    targetParentRef,
-  UniCharCount     targetNameLength,
-  const UniChar *  targetName,
-  AliasHandle *    inAlias,
-  Boolean *        isDirectory);           /* can be NULL */
-
+    const FSRef *  targetParentRef,
+    UniCharCount   targetNameLength,
+    const UniChar *targetName,
+    AliasHandle *  inAlias,
+    Boolean *      isDirectory ); /* can be NULL */
 
 /*
  *  FSMatchAlias()
@@ -568,15 +553,14 @@ FSNewAliasMinimalUnicode(
  */
 EXTERN_API_C( OSErr )
 FSMatchAlias(
-  const FSRef *    fromFile,          /* can be NULL */
-  unsigned long    rulesMask,
-  AliasHandle      inAlias,
-  short *          aliasCount,
-  FSRef *          aliasList,
-  Boolean *        needsUpdate,
-  AliasFilterUPP   aliasFilter,
-  void *           yourDataPtr);
-
+    const FSRef *  fromFile, /* can be NULL */
+    unsigned long  rulesMask,
+    AliasHandle    inAlias,
+    short *        aliasCount,
+    FSRef *        aliasList,
+    Boolean *      needsUpdate,
+    AliasFilterUPP aliasFilter,
+    void *         yourDataPtr );
 
 /*
  *  FSMatchAliasNoUI()
@@ -591,15 +575,14 @@ FSMatchAlias(
  */
 EXTERN_API_C( OSErr )
 FSMatchAliasNoUI(
-  const FSRef *    fromFile,          /* can be NULL */
-  unsigned long    rulesMask,
-  AliasHandle      inAlias,
-  short *          aliasCount,
-  FSRef *          aliasList,
-  Boolean *        needsUpdate,
-  AliasFilterUPP   aliasFilter,
-  void *           yourDataPtr);
-
+    const FSRef *  fromFile, /* can be NULL */
+    unsigned long  rulesMask,
+    AliasHandle    inAlias,
+    short *        aliasCount,
+    FSRef *        aliasList,
+    Boolean *      needsUpdate,
+    AliasFilterUPP aliasFilter,
+    void *         yourDataPtr );
 
 /*
  *  FSCopyAliasInfo()
@@ -639,22 +622,19 @@ FSMatchAliasNoUI(
  */
 EXTERN_API_C( OSStatus )
 FSCopyAliasInfo(
-  AliasHandle          inAlias,
-  HFSUniStr255 *       targetName,       /* can be NULL */
-  HFSUniStr255 *       volumeName,       /* can be NULL */
-  CFStringRef *        pathString,       /* can be NULL */
-  FSAliasInfoBitmap *  whichInfo,        /* can be NULL */
-  FSAliasInfo *        info);            /* can be NULL */
-
-
-
+    AliasHandle        inAlias,
+    HFSUniStr255 *     targetName, /* can be NULL */
+    HFSUniStr255 *     volumeName, /* can be NULL */
+    CFStringRef *      pathString, /* can be NULL */
+    FSAliasInfoBitmap *whichInfo, /* can be NULL */
+    FSAliasInfo *      info ); /* can be NULL */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -668,4 +648,3 @@ FSCopyAliasInfo(
 #endif
 
 #endif /* __ALIASES__ */
-

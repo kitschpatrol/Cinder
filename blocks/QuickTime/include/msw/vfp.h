@@ -20,8 +20,6 @@
 #include <ConditionalMacros.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -60,8 +58,8 @@ extern "C" {
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vdivf(vector float A, vector float B);
-
+EXTERN_API_C( vector float )
+vdivf( vector float A, vector float B );
 
 /*
  *  vsqrtf()
@@ -71,8 +69,8 @@ EXTERN_API_C( vector float ) vdivf(vector float A, vector float B);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vsqrtf(vector float X);
-
+EXTERN_API_C( vector float )
+vsqrtf( vector float X );
 
 /*
  *  vrsqrtf()
@@ -82,10 +80,8 @@ EXTERN_API_C( vector float ) vsqrtf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vrsqrtf(vector float X);
-
-
-
+EXTERN_API_C( vector float )
+vrsqrtf( vector float X );
 
 /*
 --------------------------[ Exponential Functions]-----------------------------
@@ -113,8 +109,8 @@ EXTERN_API_C( vector float ) vrsqrtf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vexpf(vector float X);
-
+EXTERN_API_C( vector float )
+vexpf( vector float X );
 
 /*
  *  vexpm1f()
@@ -124,8 +120,8 @@ EXTERN_API_C( vector float ) vexpf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vexpm1f(vector float X);
-
+EXTERN_API_C( vector float )
+vexpm1f( vector float X );
 
 /*
  *  vlogf()
@@ -135,8 +131,8 @@ EXTERN_API_C( vector float ) vexpm1f(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vlogf(vector float X);
-
+EXTERN_API_C( vector float )
+vlogf( vector float X );
 
 /*
  *  vlog1pf()
@@ -146,8 +142,8 @@ EXTERN_API_C( vector float ) vlogf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vlog1pf(vector float X);
-
+EXTERN_API_C( vector float )
+vlog1pf( vector float X );
 
 /*
  *  vlogbf()
@@ -157,8 +153,8 @@ EXTERN_API_C( vector float ) vlog1pf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vlogbf(vector float X);
-
+EXTERN_API_C( vector float )
+vlogbf( vector float X );
 
 /*
  *  vscalbf()
@@ -168,10 +164,8 @@ EXTERN_API_C( vector float ) vlogbf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vscalbf(vector float X, vector signed int n);
-
-
-
+EXTERN_API_C( vector float )
+vscalbf( vector float X, vector signed int n );
 
 /*
 ---------------------------[ Auxiliary Functions]------------------------------
@@ -196,8 +190,8 @@ EXTERN_API_C( vector float ) vscalbf(vector float X, vector signed int n);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vfabf(vector float v);
-
+EXTERN_API_C( vector float )
+vfabf( vector float v );
 
 /*
  *  vcopysignf()
@@ -207,8 +201,8 @@ EXTERN_API_C( vector float ) vfabf(vector float v);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vcopysignf(vector float arg2, vector float arg1);
-
+EXTERN_API_C( vector float )
+vcopysignf( vector float arg2, vector float arg1 );
 
 /*
  *  vnextafterf()
@@ -218,10 +212,8 @@ EXTERN_API_C( vector float ) vcopysignf(vector float arg2, vector float arg1);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vnextafterf(vector float x, vector float y);
-
-
-
+EXTERN_API_C( vector float )
+vnextafterf( vector float x, vector float y );
 
 /*
 -----------------------------[ Inquiry Functions]------------------------------
@@ -240,8 +232,8 @@ EXTERN_API_C( vector float ) vnextafterf(vector float x, vector float y);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector unsigned int ) vclassifyf(vector float arg);
-
+EXTERN_API_C( vector unsigned int )
+vclassifyf( vector float arg );
 
 /*
  *  vsignbitf()
@@ -251,10 +243,8 @@ EXTERN_API_C( vector unsigned int ) vclassifyf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector unsigned int ) vsignbitf(vector float arg);
-
-
-
+EXTERN_API_C( vector unsigned int )
+vsignbitf( vector float arg );
 
 /*
 -------------------------[ Transcendental Functions]----------------------------
@@ -273,8 +263,8 @@ EXTERN_API_C( vector unsigned int ) vsignbitf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vsinf(vector float arg);
-
+EXTERN_API_C( vector float )
+vsinf( vector float arg );
 
 /*
  *  vcosf()
@@ -284,8 +274,8 @@ EXTERN_API_C( vector float ) vsinf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vcosf(vector float arg);
-
+EXTERN_API_C( vector float )
+vcosf( vector float arg );
 
 /*
  *  vtanf()
@@ -295,10 +285,8 @@ EXTERN_API_C( vector float ) vcosf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vtanf(vector float arg);
-
-
-
+EXTERN_API_C( vector float )
+vtanf( vector float arg );
 
 /*
 -------------------------[ Trigonometric Functions]----------------------------
@@ -319,8 +307,8 @@ EXTERN_API_C( vector float ) vtanf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vasinf(vector float arg);
-
+EXTERN_API_C( vector float )
+vasinf( vector float arg );
 
 /*
  *  vacosf()
@@ -330,8 +318,8 @@ EXTERN_API_C( vector float ) vasinf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vacosf(vector float arg);
-
+EXTERN_API_C( vector float )
+vacosf( vector float arg );
 
 /*
  *  vatanf()
@@ -341,8 +329,8 @@ EXTERN_API_C( vector float ) vacosf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vatanf(vector float arg);
-
+EXTERN_API_C( vector float )
+vatanf( vector float arg );
 
 /*
  *  vatan2f()
@@ -352,10 +340,8 @@ EXTERN_API_C( vector float ) vatanf(vector float arg);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vatan2f(vector float arg1, vector float arg2);
-
-
-
+EXTERN_API_C( vector float )
+vatan2f( vector float arg1, vector float arg2 );
 
 /*
 --------------------------[ Hyperbolic Functions]------------------------------
@@ -377,8 +363,8 @@ EXTERN_API_C( vector float ) vatan2f(vector float arg1, vector float arg2);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vsinhf(vector float X);
-
+EXTERN_API_C( vector float )
+vsinhf( vector float X );
 
 /*
  *  vcoshf()
@@ -388,8 +374,8 @@ EXTERN_API_C( vector float ) vsinhf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vcoshf(vector float X);
-
+EXTERN_API_C( vector float )
+vcoshf( vector float X );
 
 /*
  *  vtanhf()
@@ -399,8 +385,8 @@ EXTERN_API_C( vector float ) vcoshf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vtanhf(vector float X);
-
+EXTERN_API_C( vector float )
+vtanhf( vector float X );
 
 /*
  *  vasinhf()
@@ -410,8 +396,8 @@ EXTERN_API_C( vector float ) vtanhf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vasinhf(vector float X);
-
+EXTERN_API_C( vector float )
+vasinhf( vector float X );
 
 /*
  *  vacoshf()
@@ -421,8 +407,8 @@ EXTERN_API_C( vector float ) vasinhf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vacoshf(vector float X);
-
+EXTERN_API_C( vector float )
+vacoshf( vector float X );
 
 /*
  *  vatanhf()
@@ -432,10 +418,8 @@ EXTERN_API_C( vector float ) vacoshf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vatanhf(vector float X);
-
-
-
+EXTERN_API_C( vector float )
+vatanhf( vector float X );
 
 /*
 ---------------------------[ Remainder Functions]------------------------------
@@ -456,8 +440,8 @@ EXTERN_API_C( vector float ) vatanhf(vector float X);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vfmodf(vector float X, vector float Y);
-
+EXTERN_API_C( vector float )
+vfmodf( vector float X, vector float Y );
 
 /*
  *  vremainderf()
@@ -467,8 +451,8 @@ EXTERN_API_C( vector float ) vfmodf(vector float X, vector float Y);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vremainderf(vector float X, vector float Y);
-
+EXTERN_API_C( vector float )
+vremainderf( vector float X, vector float Y );
 
 /*
  *  vremquof()
@@ -478,10 +462,8 @@ EXTERN_API_C( vector float ) vremainderf(vector float X, vector float Y);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vremquof(vector float X, vector float Y, vector unsigned int *QUO);
-
-
-
+EXTERN_API_C( vector float )
+vremquof( vector float X, vector float Y, vector unsigned int *QUO );
 
 /*
 ------------------------------[ Power Functions]------------------------------
@@ -500,8 +482,8 @@ EXTERN_API_C( vector float ) vremquof(vector float X, vector float Y, vector uns
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vipowf(vector float X, vector signed int Y);
-
+EXTERN_API_C( vector float )
+vipowf( vector float X, vector signed int Y );
 
 /*
  *  vpowf()
@@ -511,10 +493,8 @@ EXTERN_API_C( vector float ) vipowf(vector float X, vector signed int Y);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector float ) vpowf(vector float X, vector float Y);
-
-
-
+EXTERN_API_C( vector float )
+vpowf( vector float X, vector float Y );
 
 /*
 -------------------------------------------------------------------------------
@@ -529,11 +509,10 @@ EXTERN_API_C( vector float ) vpowf(vector float X, vector float Y);
  *    CarbonLib:        not in Carbon, but vecLib is compatible with CarbonLib
  *    Mac OS X:         in version 10.0 and later
  */
-EXTERN_API_C( vector unsigned int ) vtablelookup(vector signed int Index_Vect, unsigned long *Table);
+EXTERN_API_C( vector unsigned int )
+vtablelookup( vector signed int Index_Vect, unsigned long *Table );
 
-
-#endif  /* defined(__VEC__) */
-
+#endif /* defined(__VEC__) */
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -546,4 +525,3 @@ EXTERN_API_C( vector unsigned int ) vtablelookup(vector signed int Index_Vect, u
 #endif
 
 #endif /* __VFP__ */
-

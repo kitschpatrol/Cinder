@@ -27,10 +27,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "cinder/Display.h"
+#import "cinder/Stream.h"
 #import "cinder/app/cocoa/AppMac.h"
 #import "cinder/app/cocoa/CinderViewMac.h"
-#import "cinder/Stream.h"
-#import "cinder/Display.h"
 
 #include "cinder/app/TouchEvent.h"
 
@@ -41,24 +41,24 @@
 @class CinderWindow; // inherits from NSWindow
 @class WindowImplBasicCocoa;
 
-@interface AppImplMac : NSObject<NSApplicationDelegate, NSWindowDelegate> {
+@interface AppImplMac : NSObject <NSApplicationDelegate, NSWindowDelegate> {
   @public
-	NSTimer*						mAnimationTimer;
-	class cinder::app::AppMac*		mApp;
-	
-	BOOL							mNeedsUpdate;
-	BOOL							mQuitOnLastWindowClosed;
-	BOOL							mFrameRateEnabled;
-	float							mFrameRate;
-	
-	NSMutableArray*					mWindows;
-	WindowImplBasicCocoa*			mActiveWindow;
+	NSTimer *                  mAnimationTimer;
+	class cinder::app::AppMac *mApp;
 
-	::IOPMAssertionID				mIdleSleepAssertionID;
-	::IOPMAssertionID				mDisplaySleepAssertionID;
+	BOOL  mNeedsUpdate;
+	BOOL  mQuitOnLastWindowClosed;
+	BOOL  mFrameRateEnabled;
+	float mFrameRate;
+
+	NSMutableArray *      mWindows;
+	WindowImplBasicCocoa *mActiveWindow;
+
+	::IOPMAssertionID mIdleSleepAssertionID;
+	::IOPMAssertionID mDisplaySleepAssertionID;
 }
 
-@property(retain, nonatomic) NSMutableArray *windows;
+@property ( retain, nonatomic ) NSMutableArray *windows;
 
 - (AppImplMac *)init:(cinder::app::AppMac *)app settings:(const cinder::app::AppMac::Settings &)settings;
 - (void)setApplicationMenu:(NSString *)applicationName;
@@ -84,24 +84,23 @@
 - (size_t)getNumWindows;
 - (cinder::app::WindowRef)getWindowIndex:(size_t)index;
 - (void)setActiveWindow:(WindowImplBasicCocoa *)win;
-- (WindowImplBasicCocoa*)findWindowImpl:(NSWindow*)window;
+- (WindowImplBasicCocoa *)findWindowImpl:(NSWindow *)window;
 
 @end
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@interface WindowImplBasicCocoa : NSObject<NSWindowDelegate, CinderViewDelegate, WindowImplCocoa> {
+@interface WindowImplBasicCocoa : NSObject <NSWindowDelegate, CinderViewDelegate, WindowImplCocoa> {
   @public
-	AppImplMac*					mAppImpl;
-	NSWindow*					mWin;
-	NSString*					mTitle; // title is cached because sometimes we need to restore it after changing window border styles
-	CinderViewMac*				mCinderView;
-	cinder::app::WindowRef		mWindowRef;
-	cinder::DisplayRef			mDisplay;
-	cinder::ivec2				mSize, mPos;
-	BOOL						mResizable, mBorderless, mAlwaysOnTop, mHidden;
+	AppImplMac *           mAppImpl;
+	NSWindow *             mWin;
+	NSString *             mTitle; // title is cached because sometimes we need to restore it after changing window border styles
+	CinderViewMac *        mCinderView;
+	cinder::app::WindowRef mWindowRef;
+	cinder::DisplayRef     mDisplay;
+	cinder::ivec2          mSize, mPos;
+	BOOL                   mResizable, mBorderless, mAlwaysOnTop, mHidden;
 }
-
 
 // WindowImplCocoa methods
 - (void)dealloc;
@@ -124,7 +123,7 @@
 - (BOOL)isHidden;
 - (cinder::DisplayRef)getDisplay;
 - (cinder::app::RendererRef)getRenderer;
-- (void*)getNative;
+- (void *)getNative;
 
 - (void)windowMovedNotification:(NSNotification *)notification;
 - (void)windowWillCloseNotification:(NSNotification *)notification;

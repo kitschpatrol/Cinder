@@ -27,7 +27,7 @@ using namespace ci;
 using namespace ci::gl;
 
 CullableObject::CullableObject( const BatchRef &batch )
-	: mBatch( batch ), mIsCulled( false )
+    : mBatch( batch ), mIsCulled( false )
 {
 	setTransform( vec3( 0 ), vec3( 0 ), 1.0f );
 }
@@ -39,7 +39,7 @@ CullableObject::~CullableObject()
 void CullableObject::update( double elapsed )
 {
 	// rotate slowly around the y-axis (independent of frame rate)
-	mRotation.y += (float) elapsed;
+	mRotation.y += (float)elapsed;
 	setTransform( mPosition, mRotation, mScale );
 }
 

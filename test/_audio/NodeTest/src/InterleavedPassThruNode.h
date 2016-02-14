@@ -3,7 +3,8 @@
 #include "cinder/audio/Node.h"
 
 struct InterleavedPassThruNode : public ci::audio::Node {
-	InterleavedPassThruNode() : Node( Format() )
+	InterleavedPassThruNode()
+	    : Node( Format() )
 	{
 		setAutoEnabled();
 		setChannelMode( ChannelMode::SPECIFIED );
@@ -23,6 +24,6 @@ struct InterleavedPassThruNode : public ci::audio::Node {
 		ci::audio::dsp::deinterleaveBuffer( &mBufferInterleaved, buffer );
 	}
 
-private:
+  private:
 	ci::audio::BufferInterleaved mBufferInterleaved;
 };

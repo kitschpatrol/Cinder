@@ -1,11 +1,11 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/Surface.h"
-#include "cinder/gl/gl.h"
-#include "cinder/gl/Texture.h"
-#include "cinder/Rand.h"
-#include "cinder/qtime/QuickTime.h"
 #include "cinder/ImageIo.h"
+#include "cinder/Rand.h"
+#include "cinder/Surface.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
+#include "cinder/qtime/QuickTime.h"
 
 #include <iostream>
 
@@ -14,7 +14,7 @@ using namespace ci::app;
 using std::string;
 
 class QTimeIterApp : public App {
- public:
+  public:
 	void prepareSettings( Settings *settings );
 	void setup();
 
@@ -26,10 +26,9 @@ class QTimeIterApp : public App {
 
 	void loadMovieFile( const fs::path &path );
 
-	qtime::MovieSurfaceRef	mMovie;
-	SurfaceRef				mSurface;
+	qtime::MovieSurfaceRef mMovie;
+	SurfaceRef             mSurface;
 };
-
 
 void QTimeIterApp::prepareSettings( Settings *settings )
 {
@@ -41,21 +40,21 @@ void QTimeIterApp::prepareSettings( Settings *settings )
 void QTimeIterApp::setup()
 {
 	fs::path moviePath = getOpenFilePath();
-	if( ! moviePath.empty() )
+	if( !moviePath.empty() )
 		loadMovieFile( moviePath );
 }
 
 void QTimeIterApp::keyDown( KeyEvent event )
 {
 	if( event.getChar() == 'f' ) {
-		setFullScreen( ! isFullScreen() );
+		setFullScreen( !isFullScreen() );
 	}
 	else if( event.getChar() == 'o' ) {
 		fs::path moviePath = getOpenFilePath();
-		if( ! moviePath.empty() )
+		if( !moviePath.empty() )
 			loadMovieFile( moviePath );
 	}
-	
+
 	// these keys only make sense if there is an active movie
 	if( mMovie ) {
 		if( event.getCode() == KeyEvent::KEY_LEFT ) {
@@ -67,7 +66,7 @@ void QTimeIterApp::keyDown( KeyEvent event )
 		else if( event.getChar() == 's' ) {
 			if( mSurface ) {
 				fs::path savePath = getSaveFilePath();
-				if( ! savePath.empty() ) {
+				if( !savePath.empty() ) {
 					writeImage( savePath, *mSurface );
 				}
 			}
@@ -101,7 +100,7 @@ void QTimeIterApp::loadMovieFile( const fs::path &moviePath )
 	}
 	catch( ci::Exception &exc ) {
 		console() << "Exception caught trying to load the movie from path: " << moviePath << ", what: " << exc.what() << std::endl;
-	}	
+	}
 }
 
 void QTimeIterApp::fileDrop( FileDropEvent event )
@@ -120,9 +119,9 @@ void QTimeIterApp::draw()
 	gl::clear( Color( 0, 0, 0 ) );
 	gl::enableAlphaBlending( true );
 
-	if( ( ! mMovie ) || ( ! mSurface ) )
+	if( ( !mMovie ) || ( !mSurface ) )
 		return;
-		
+
 	// We are using OpenGL to draw the frames here, so we'll make a texture out of the surface
 	gl::draw( gl::Texture::create( *mSurface ) );
 }

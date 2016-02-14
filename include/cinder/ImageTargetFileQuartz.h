@@ -25,10 +25,10 @@
 #include "cinder/ImageIo.h"
 #include "cinder/cocoa/CinderCocoa.h"
 
-typedef struct CGImage *CGImageRef;
+typedef struct CGImage *           CGImageRef;
 typedef struct CGImageDestination *CGImageDestinationRef;
-typedef struct __CFDictionary * CFMutableDictionaryRef;
-typedef uint32_t CGBitmapInfo;
+typedef struct __CFDictionary *    CFMutableDictionaryRef;
+typedef uint32_t                   CGBitmapInfo;
 
 namespace cinder {
 
@@ -36,21 +36,21 @@ typedef std::shared_ptr<class ImageTargetFileQuartz> ImageTargetFileQuartzRef;
 
 class ImageTargetFileQuartz : public cocoa::ImageTargetCgImage {
   public:
-	static ImageTargetRef		createRef( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
+	static ImageTargetRef createRef( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
 
-	virtual void	finalize();
-	
-	static void		registerSelf();
-	
+	virtual void finalize();
+
+	static void registerSelf();
+
   protected:
 	ImageTargetFileQuartz( DataTargetRef dataTarget, ImageSourceRef imageSource, ImageTarget::Options options, const std::string &extensionData );
 
-	void			setupImageDestOptions( ImageTarget::Options options );
-	
-	::CGImageDestinationRef			mImageDest;
-	std::shared_ptr<__CFDictionary>	mImageDestOptions;
-	
-	std::shared_ptr<uint8_t>		mData;
+	void setupImageDestOptions( ImageTarget::Options options );
+
+	::CGImageDestinationRef         mImageDest;
+	std::shared_ptr<__CFDictionary> mImageDestOptions;
+
+	std::shared_ptr<uint8_t> mData;
 };
 
 } // namespace cinder

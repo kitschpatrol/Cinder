@@ -23,16 +23,17 @@
 
 #pragma once
 
-#include "cinder/audio/WaveformType.h"
 #include "cinder/audio/Buffer.h"
+#include "cinder/audio/WaveformType.h"
 
-#include <vector>
 #include <tuple>
+#include <vector>
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
-typedef std::shared_ptr<class WaveTable>		WaveTableRef;
-typedef std::shared_ptr<class WaveTable2d>		WaveTable2dRef;
+typedef std::shared_ptr<class WaveTable>   WaveTableRef;
+typedef std::shared_ptr<class WaveTable2d> WaveTable2dRef;
 
 //! Manages a table that is used for wavetable synthesis. Supports table lookup with linear interpolation.
 class WaveTable {
@@ -44,11 +45,9 @@ class WaveTable {
 	void fillSine();
 
 	//! \a Does not update data, lookup will be inaccurate until next fill.
-	void	setSampleRate( size_t sampleRate );
-	size_t	getSampleRate() const { return mSampleRate; }
-
-	size_t getTableSize() const	{ return mTableSize; }
-
+	void setSampleRate( size_t sampleRate );
+	size_t getSampleRate() const { return mSampleRate; }
+	size_t getTableSize() const { return mTableSize; }
 	float lookup( float phase ) const;
 	float lookup( float *outputArray, size_t outputLength, float currentPhase, float freq ) const;
 	float lookup( float *outputArray, size_t outputLength, float currentPhase, const float *freqArray ) const;
@@ -57,11 +56,11 @@ class WaveTable {
 	void copyFrom( const float *array );
 
   protected:
-	void		fillSinesum( float *array, size_t length, const std::vector<float> &partialCoeffs );
+	void fillSinesum( float *array, size_t length, const std::vector<float> &partialCoeffs );
 
-	size_t			mSampleRate, mTableSize;
-	float			mSamplePeriod;
-	BufferDynamic	mBuffer;
+	size_t        mSampleRate, mTableSize;
+	float         mSamplePeriod;
+	BufferDynamic mBuffer;
 };
 
 //! Manages an array of tables that is used for bandlimited wavetable synthesis. Supports table lookup with linear interpolation.
@@ -84,18 +83,17 @@ class WaveTable2d : public WaveTable {
 
 	float calcBandlimitedTableIndex( float f0 ) const;
 
-	size_t getNumTables() const	{ return mNumTables; }
-
+	size_t getNumTables() const { return mNumTables; }
   protected:
-	void		calcLimits();
-	void		fillBandLimitedTable( WaveformType type, float *table, size_t numPartials );
-	size_t		getMaxHarmonicsForTable( size_t tableIndex ) const;
+	void calcLimits();
+	void fillBandLimitedTable( WaveformType type, float *table, size_t numPartials );
+	size_t getMaxHarmonicsForTable( size_t tableIndex ) const;
 
-	const float*	getBandLimitedTable( float f0 ) const;
-	std::tuple<const float*, const float*, float> getBandLimitedTablesLerp( float f0 ) const;
+	const float *getBandLimitedTable( float f0 ) const;
+	std::tuple<const float *, const float *, float> getBandLimitedTablesLerp( float f0 ) const;
 
-	size_t			mNumTables;
-	float			mMinMidiRange, mMaxMidiRange;
+	size_t mNumTables;
+	float  mMinMidiRange, mMaxMidiRange;
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

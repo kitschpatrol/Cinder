@@ -26,39 +26,39 @@
 #include "cinder/Stream.h"
 #include "cinder/Utilities.h"
 
-#include <stdio.h>
-#include <limits>
+#include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/scoped_array.hpp>
 #include <iostream>
-#include <boost/preprocessor/seq/for_each.hpp>
+#include <limits>
+#include <stdio.h>
 using std::string;
 
 namespace cinder {
 
-#if defined ( CINDER_WINRT )
-	#pragma warning(push) 
-	#pragma warning(disable:4996) 
+#if defined( CINDER_WINRT )
+#pragma warning( push )
+#pragma warning( disable : 4996 )
 #endif
 //////////////////////////////////////////////////////////////////////////
-template<typename T>
+template <typename T>
 void OStream::writeBig( T t )
 {
 #ifdef BOOST_BIG_ENDIAN
 	write( t );
 #else
 	t = swapEndian( t );
-	IOWrite( &t, sizeof(T) );
+	IOWrite( &t, sizeof( T ) );
 #endif
 }
 
-template<typename T>
+template <typename T>
 void OStream::writeLittle( T t )
 {
 #ifdef CINDER_LITTLE_ENDIAN
 	write( t );
 #else
 	t = swapEndian( t );
-	IOWrite( &t, sizeof(T) );
+	IOWrite( &t, sizeof( T ) );
 #endif
 }
 
@@ -66,7 +66,7 @@ void OStream::writeLittle( T t )
 void IStreamCinder::read( std::string *s )
 {
 	std::vector<char> chars;
-	char c;
+	char              c;
 	do {
 		read( &c );
 		chars.push_back( c );
@@ -81,24 +81,24 @@ void IStreamCinder::read( fs::path *p )
 	*p = fs::path( tempS );
 }
 
-template<typename T>
+template <typename T>
 void IStreamCinder::readBig( T *t )
 {
 #ifdef BOOST_BIG_ENDIAN
 	read( t );
 #else
-	IORead( t, sizeof(T) );
+	IORead( t, sizeof( T ) );
 	*t = swapEndian( *t );
 #endif
 }
 
-template<typename T>
+template <typename T>
 void IStreamCinder::readLittle( T *t )
 {
 #ifdef CINDER_LITTLE_ENDIAN
 	read( t );
 #else
-	IORead( t, sizeof(T) );
+	IORead( t, sizeof( T ) );
 	*t = swapEndian( *t );
 #endif
 }
@@ -108,13 +108,13 @@ void IStreamCinder::readLittle( T *t )
 void IStreamCinder::readFixedString( char *t, size_t size, bool nullTerminate )
 {
 	IORead( t, size );
-	if ( nullTerminate )
-		t[size-1] = 0;
+	if( nullTerminate )
+		t[size - 1] = 0;
 }
 
 void IStreamCinder::readFixedString( std::string *t, size_t size )
 {
-	boost::scoped_array<char> buffer( new char[size+1] );
+	boost::scoped_array<char> buffer( new char[size + 1] );
 
 	IORead( buffer.get(), size );
 	buffer[size] = 0;
@@ -125,7 +125,7 @@ std::string IStreamCinder::readLine()
 {
 	string result;
 	int8_t ch;
-	while( ! isEof() ) {
+	while( !isEof() ) {
 		read( &ch );
 		if( ch == 0x0A )
 			break;
@@ -165,7 +165,7 @@ IStreamFileRef IStreamFile::create( FILE *file, bool ownsFile, int32_t defaultBu
 }
 
 IStreamFile::IStreamFile( FILE *aFile, bool aOwnsFile, int32_t aDefaultBufferSize )
-	: IStreamCinder(), mFile( aFile ), mOwnsFile( aOwnsFile ), mDefaultBufferSize( aDefaultBufferSize ), mSizeCached( false )
+    : IStreamCinder(), mFile( aFile ), mOwnsFile( aOwnsFile ), mDefaultBufferSize( aDefaultBufferSize ), mSizeCached( false )
 {
 	mBuffer = std::shared_ptr<uint8_t>( new uint8_t[mDefaultBufferSize], std::default_delete<uint8_t[]>() );
 	mBufferFileOffset = std::numeric_limits<off_t>::min();
@@ -177,7 +177,7 @@ IStreamFile::~IStreamFile()
 {
 	if( mOwnsFile )
 		fclose( mFile );
-	if( mDeleteOnDestroy && ( ! mFileName.empty() ) )
+	if( mDeleteOnDestroy && ( !mFileName.empty() ) )
 		fs::remove( mFileName );
 }
 
@@ -193,11 +193,11 @@ size_t IStreamFile::readDataImpl( void *t, size_t size )
 		mBufferOffset += size;
 		return size;
 	}
-	else if ( ( mBufferFileOffset < mBufferOffset ) && ( mBufferOffset < mBufferFileOffset + (off_t)mBufferSize ) ) { // partially inside
+	else if( ( mBufferFileOffset < mBufferOffset ) && ( mBufferOffset < mBufferFileOffset + (off_t)mBufferSize ) ) { // partially inside
 		size_t amountInBuffer = ( mBufferFileOffset + mBufferSize ) - mBufferOffset;
 		memcpy( t, mBuffer.get() + ( mBufferOffset - mBufferFileOffset ), amountInBuffer );
 		mBufferOffset += amountInBuffer;
-		return amountInBuffer + readDataImpl( reinterpret_cast<uint8_t*>( t ) + amountInBuffer, size - amountInBuffer );
+		return amountInBuffer + readDataImpl( reinterpret_cast<uint8_t *>( t ) + amountInBuffer, size - amountInBuffer );
 	}
 	else if( size > mDefaultBufferSize ) { // entirely outside of buffer, and too big to buffer anyway
 		fseek( mFile, static_cast<long>( mBufferOffset ), SEEK_SET );
@@ -238,14 +238,14 @@ off_t IStreamFile::tell() const
 
 off_t IStreamFile::size() const
 {
-	if ( ! mSizeCached ) {
+	if( !mSizeCached ) {
 		off_t curOff = ftell( mFile );
 		fseek( mFile, 0, SEEK_END );
 		mSize = ftell( mFile );
 		mSizeCached = true;
 		fseek( mFile, static_cast<long>( curOff ), SEEK_SET );
 	}
-	
+
 	return mSize;
 }
 
@@ -269,15 +269,15 @@ OStreamFileRef OStreamFile::create( FILE *file, bool ownsFile )
 }
 
 OStreamFile::OStreamFile( FILE *aFile, bool aOwnsFile )
-	: OStream(), mFile( aFile ), mOwnsFile( aOwnsFile )
+    : OStream(), mFile( aFile ), mOwnsFile( aOwnsFile )
 {
 }
 
 OStreamFile::~OStreamFile()
 {
-	if ( mOwnsFile )
+	if( mOwnsFile )
 		fclose( mFile );
-	if( mDeleteOnDestroy && ( ! mFileName.empty() ) )
+	if( mDeleteOnDestroy && ( !mFileName.empty() ) )
 		fs::remove( mFileName );
 }
 
@@ -314,7 +314,7 @@ IoStreamFileRef IoStreamFile::create( FILE *file, bool ownsFile, int32_t default
 }
 
 IoStreamFile::IoStreamFile( FILE *aFile, bool aOwnsFile, int32_t aDefaultBufferSize )
-	: IoStream(), mFile( aFile ), mOwnsFile( aOwnsFile ), mDefaultBufferSize( aDefaultBufferSize ), mSizeCached( false )
+    : IoStream(), mFile( aFile ), mOwnsFile( aOwnsFile ), mDefaultBufferSize( aDefaultBufferSize ), mSizeCached( false )
 {
 	mBuffer = std::shared_ptr<uint8_t>( new uint8_t[mDefaultBufferSize], std::default_delete<uint8_t[]>() );
 	mBufferFileOffset = std::numeric_limits<off_t>::min();
@@ -326,7 +326,7 @@ IoStreamFile::~IoStreamFile()
 {
 	if( mOwnsFile )
 		fclose( mFile );
-	if( mDeleteOnDestroy && ( ! mFileName.empty() ) )
+	if( mDeleteOnDestroy && ( !mFileName.empty() ) )
 		fs::remove( mFileName );
 }
 
@@ -358,14 +358,14 @@ off_t IoStreamFile::tell() const
 
 off_t IoStreamFile::size() const
 {
-	if ( ! mSizeCached ) {
+	if( !mSizeCached ) {
 		off_t curOff = ftell( mFile );
 		fseek( mFile, 0, SEEK_END );
 		mSize = ftell( mFile );
 		mSizeCached = true;
 		fseek( mFile, static_cast<long>( curOff ), SEEK_SET );
 	}
-	
+
 	return mSize;
 }
 
@@ -388,11 +388,11 @@ size_t IoStreamFile::readDataImpl( void *t, size_t size )
 		mBufferOffset += size;
 		return size;
 	}
-	else if ( ( mBufferFileOffset < mBufferOffset ) && ( mBufferOffset < mBufferFileOffset + (off_t)mBufferSize ) ) { // partially inside
+	else if( ( mBufferFileOffset < mBufferOffset ) && ( mBufferOffset < mBufferFileOffset + (off_t)mBufferSize ) ) { // partially inside
 		size_t amountInBuffer = ( mBufferFileOffset + mBufferSize ) - mBufferOffset;
 		memcpy( t, mBuffer.get() + ( mBufferOffset - mBufferFileOffset ), amountInBuffer );
 		mBufferOffset += amountInBuffer;
-		return amountInBuffer + readDataImpl( reinterpret_cast<uint8_t*>( t ) + amountInBuffer, size - amountInBuffer );
+		return amountInBuffer + readDataImpl( reinterpret_cast<uint8_t *>( t ) + amountInBuffer, size - amountInBuffer );
 	}
 	else if( size > mDefaultBufferSize ) { // entirely outside of buffer, and too big to buffer anyway
 		fseek( mFile, static_cast<long>( mBufferOffset ), SEEK_SET );
@@ -425,7 +425,7 @@ IStreamMemRef IStreamMem::create( const void *data, size_t size )
 }
 
 IStreamMem::IStreamMem( const void *aData, size_t aDataSize )
-	: IStreamCinder(), mData( reinterpret_cast<const uint8_t*>( aData ) ), mDataSize( aDataSize )
+    : IStreamCinder(), mData( reinterpret_cast<const uint8_t *>( aData ) ), mDataSize( aDataSize )
 {
 	mOffset = 0;
 }
@@ -436,7 +436,7 @@ IStreamMem::~IStreamMem()
 
 size_t IStreamMem::readDataAvailable( void *dest, size_t maxSize )
 {
-	if ( mOffset + maxSize > mDataSize ) {
+	if( mOffset + maxSize > mDataSize ) {
 		maxSize = mDataSize - mOffset;
 		memcpy( dest, mData + mOffset, maxSize );
 		mOffset = mDataSize;
@@ -445,8 +445,8 @@ size_t IStreamMem::readDataAvailable( void *dest, size_t maxSize )
 		memcpy( dest, mData + mOffset, maxSize );
 		mOffset += maxSize;
 	}
-	
-	return maxSize;	
+
+	return maxSize;
 }
 
 void IStreamMem::seekAbsolute( off_t absoluteOffset )
@@ -477,7 +477,7 @@ bool IStreamMem::isEof() const
 
 void IStreamMem::IORead( void *t, size_t size )
 {
-	if ( mOffset + size > mDataSize )
+	if( mOffset + size > mDataSize )
 		throw StreamExc();
 	memcpy( t, mData + mOffset, size );
 	mOffset += size;
@@ -519,7 +519,7 @@ void OStreamMem::IOWrite( const void *t, size_t size )
 			mDataSize *= 2;
 		mBuffer = realloc( mBuffer, mDataSize );
 	}
-	memcpy( ((uint8_t*)mBuffer) + mOffset, t, size );
+	memcpy( ( (uint8_t *)mBuffer ) + mOffset, t, size );
 	mOffset += size;
 }
 
@@ -579,15 +579,15 @@ IoStreamFileRef readWriteFileStream( const fs::path &path )
 void loadStreamMemory( IStreamRef is, std::shared_ptr<uint8_t> *resultData, size_t *resultDataSize )
 {
 	// prevent crash if stream is not valid
-	if( ! is )
+	if( !is )
 		throw StreamExc();
 
 	off_t fileSize = is->size();
 	if( fileSize > std::numeric_limits<off_t>::max() )
 		throw StreamExcOutOfMemory();
-	
-	*resultData = std::shared_ptr<uint8_t>( (uint8_t*)malloc( fileSize ), free );
-	if( ! (*resultData ) )
+
+	*resultData = std::shared_ptr<uint8_t>( (uint8_t *)malloc( fileSize ), free );
+	if( !( *resultData ) )
 		throw StreamExcOutOfMemory();
 
 	*resultDataSize = static_cast<size_t>( fileSize );
@@ -597,13 +597,13 @@ void loadStreamMemory( IStreamRef is, std::shared_ptr<uint8_t> *resultData, size
 BufferRef loadStreamBuffer( IStreamRef is )
 {
 	// prevent crash if stream is not valid
-	if( ! is )
+	if( !is )
 		throw StreamExc();
 
 	off_t fileSize = is->size();
 	if( fileSize > std::numeric_limits<off_t>::max() )
 		throw StreamExcOutOfMemory();
-	
+
 	if( fileSize ) { // sometimes fileSize will be zero for a stream that doesn't know how big it is
 		auto result = std::make_shared<Buffer>( fileSize );
 		is->readDataAvailable( result->getData(), fileSize );
@@ -612,14 +612,14 @@ BufferRef loadStreamBuffer( IStreamRef is )
 	}
 	else {
 		const size_t bufferSize = 4096;
-		size_t offset = 0;
-		auto result = std::make_shared<Buffer>( bufferSize );
+		size_t       offset = 0;
+		auto         result = std::make_shared<Buffer>( bufferSize );
 
-		while( ! is->isEof() ) {
+		while( !is->isEof() ) {
 			if( offset + bufferSize > result->getAllocatedSize() )
-				result->resize( std::max( (size_t)( result->getAllocatedSize() * 1.5f ), offset + bufferSize ) );
+				result->resize( std::max( ( size_t )( result->getAllocatedSize() * 1.5f ), offset + bufferSize ) );
 
-			size_t bytesRead = is->readDataAvailable( reinterpret_cast<uint8_t*>( result->getData() ) + offset, bufferSize );
+			size_t bytesRead = is->readDataAvailable( reinterpret_cast<uint8_t *>( result->getData() ) + offset, bufferSize );
 			offset += bytesRead;
 			result->setSize( offset );
 		}
@@ -630,20 +630,20 @@ BufferRef loadStreamBuffer( IStreamRef is )
 
 /////////////////////////////////////////////////////////////////////
 
-#define STREAM_PROTOTYPES(r,data,T)\
-	template void OStream::write<T>( T t ); \
-	template void OStream::writeEndian<T>( T t, uint8_t endian ); \
-	template void OStream::writeBig<T>( T t ); \
-	template void OStream::writeLittle<T>( T t ); \
-	template void IStreamCinder::read<T>( T *t ); \
-	template void IStreamCinder::readEndian<T>( T *t, uint8_t endian ); \
-	template void IStreamCinder::readBig<T>( T *t ); \
-	template void IStreamCinder::readLittle<T>( T *t );
+#define STREAM_PROTOTYPES( r, data, T )                                  \
+	template void OStream::write<T>( T t );                              \
+	template void OStream::writeEndian<T>( T t, uint8_t endian );        \
+	template void OStream::writeBig<T>( T t );                           \
+	template void OStream::writeLittle<T>( T t );                        \
+	template void IStreamCinder::read<T>( T * t );                       \
+	template void IStreamCinder::readEndian<T>( T * t, uint8_t endian ); \
+	template void IStreamCinder::readBig<T>( T * t );                    \
+	template void IStreamCinder::readLittle<T>( T * t );
 
-BOOST_PP_SEQ_FOR_EACH( STREAM_PROTOTYPES, ~, (int8_t)(uint8_t)(int16_t)(uint16_t)(int32_t)(uint32_t)(float)(double) )
+BOOST_PP_SEQ_FOR_EACH( STREAM_PROTOTYPES, ~, ( int8_t )( uint8_t )( int16_t )( uint16_t )( int32_t )( uint32_t )( float )( double ) )
 
-#if defined (CINDER_WINRT )
-	#pragma warning(pop) 
+#if defined( CINDER_WINRT )
+#pragma warning( pop )
 #endif
 
 } // namespace dt

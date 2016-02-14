@@ -26,7 +26,8 @@
 #include "cinder/app/AppBase.h"
 #include "cinder/msw/CinderWindowsFwd.h"
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class AppImplMswBasic;
 
@@ -35,61 +36,60 @@ class AppMsw : public AppBase {
 	//! MSW-specific settings
 	class Settings : public AppBase::Settings {
 	  public:
-		Settings() : mMswConsoleEnabled( false )				{}
-
+		Settings()
+		    : mMswConsoleEnabled( false ) {}
 		//! If enabled MSW apps will display a secondary window which captures all cout, cerr, cin and App::console() output. Default is \c false.
-		void	setConsoleWindowEnabled( bool enable = true )	{ mMswConsoleEnabled = enable; }
+		void setConsoleWindowEnabled( bool enable = true ) { mMswConsoleEnabled = enable; }
 		//! Returns whether MSW apps will display a secondary window which captures all cout, cerr, cin and App::console() output. Default is \c false.
-		bool	isConsoleWindowEnabled() const					{ return mMswConsoleEnabled; }
-
+		bool isConsoleWindowEnabled() const { return mMswConsoleEnabled; }
 	  private:
-		void	pushBackCommandLineArg( const std::string &arg );
+		void pushBackCommandLineArg( const std::string &arg );
 
-		bool	mMswConsoleEnabled;
+		bool mMswConsoleEnabled;
 
 		friend AppMsw;
 	};
 
-	typedef std::function<void( Settings *settings )>	SettingsFn;
+	typedef std::function<void( Settings *settings )> SettingsFn;
 
 	AppMsw();
 	virtual ~AppMsw();
 
-	WindowRef	createWindow( const Window::Format &format = Window::Format() ) override;
-	void		quit() override;
+	WindowRef createWindow( const Window::Format &format = Window::Format() ) override;
+	void quit() override;
 
-	float		getFrameRate() const override;
-	void		setFrameRate( float frameRate ) override;
-	void		disableFrameRate() override;
-	bool		isFrameRateEnabled() const override;
+	float getFrameRate() const override;
+	void setFrameRate( float frameRate ) override;
+	void disableFrameRate() override;
+	bool isFrameRateEnabled() const override;
 
-	WindowRef	getWindow() const override;
-	WindowRef	getWindowIndex( size_t index ) const override;
-	size_t		getNumWindows() const override;
+	WindowRef getWindow() const override;
+	WindowRef getWindowIndex( size_t index ) const override;
+	size_t getNumWindows() const override;
 
-	WindowRef	getForegroundWindow() const override;
+	WindowRef getForegroundWindow() const override;
 
-	void		hideCursor() override;
-	void		showCursor() override;
-	ivec2		getMousePos() const override;
+	void  hideCursor() override;
+	void  showCursor() override;
+	ivec2 getMousePos() const override;
 
 	//! \cond
 	// Called from WinMain (in CINDER_APP_MSW macro)
-	template<typename AppT>
+	template <typename AppT>
 	static void main( const RendererRef &defaultRenderer, const char *title, const SettingsFn &settingsFn = SettingsFn() );
 	// Called from WinMain, forwards to AppBase::initialize() but also fills command line args using native windows API
-	static void	initialize( Settings *settings, const RendererRef &defaultRenderer, const char *title );
+	static void initialize( Settings *settings, const RendererRef &defaultRenderer, const char *title );
 	//! \endcond
 
   protected:
-	void	launch() override;
+	void launch() override;
 
   private:
-	std::unique_ptr<AppImplMswBasic>	mImpl;
-	bool								mConsoleWindowEnabled;
+	std::unique_ptr<AppImplMswBasic> mImpl;
+	bool                             mConsoleWindowEnabled;
 };
 
-template<typename AppT>
+template <typename AppT>
 void AppMsw::main( const RendererRef &defaultRenderer, const char *title, const SettingsFn &settingsFn )
 {
 	AppBase::prepareLaunch();
@@ -109,12 +109,12 @@ void AppMsw::main( const RendererRef &defaultRenderer, const char *title, const 
 	AppBase::cleanupLaunch();
 }
 
-#define CINDER_APP_MSW( APP, RENDERER, ... )													\
-int __stdcall WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )\
-{																									\
-	cinder::app::RendererRef renderer( new RENDERER );												\
-	cinder::app::AppMsw::main<APP>( renderer, #APP, ##__VA_ARGS__ );							\
-	return 0;																						\
+#define CINDER_APP_MSW( APP, RENDERER, ... )                                                             \
+	int __stdcall WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow ) \
+	{                                                                                                    \
+		cinder::app::RendererRef renderer( new RENDERER );                                               \
+		cinder::app::AppMsw::main<APP>( renderer, #APP, ##__VA_ARGS__ );                                 \
+		return 0;                                                                                        \
+	}
 }
-
-} } // namespace cinder::app
+} // namespace cinder::app

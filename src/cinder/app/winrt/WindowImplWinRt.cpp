@@ -40,7 +40,8 @@ using namespace Windows::Graphics::Display;
 using namespace cinder::winrt;
 using namespace std;
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 /*WindowImplWinRt::WindowImplWinRt( const Window::Format &format, AppWinRt *app )
 	: mWindowOffset( 0, 0 ), mApp( app ), mIsDragging( false ), mHidden( false ), mTouchId( 0 ), mIsMultiTouchEnabled( false )
@@ -70,17 +71,17 @@ namespace cinder { namespace app {
 	completeCreation();
 }*/
 
-WindowImplWinRt::WindowImplWinRt( Windows::UI::Core::CoreWindow^ wnd, RendererRef renderer, AppWinRt *app )
-	: mWnd( wnd ), mRenderer( renderer ), mApp( app ), mIsDragging( false ), mTouchId( 0 ), mIsMultiTouchEnabled( false ),
-		mControlKeyPressed( false ), mAltKeyPressed( false ), mShiftKeyPressed( false )
+WindowImplWinRt::WindowImplWinRt( Windows::UI::Core::CoreWindow ^ wnd, RendererRef renderer, AppWinRt *app )
+    : mWnd( wnd ), mRenderer( renderer ), mApp( app ), mIsDragging( false ), mTouchId( 0 ), mIsMultiTouchEnabled( false ),
+      mControlKeyPressed( false ), mAltKeyPressed( false ), mShiftKeyPressed( false )
 {
 	mTitle = "";
 
 	float width, height;
-	GetPlatformWindowDimensions( mWnd.Get(), &width, &height);
-	mWindowOffset = ivec2( 0, 0);
-	mWindowWidth = static_cast<int>(width);
-	mWindowHeight = static_cast<int>(height);
+	GetPlatformWindowDimensions( mWnd.Get(), &width, &height );
+	mWindowOffset = ivec2( 0, 0 );
+	mWindowWidth = static_cast<int>( width );
+	mWindowHeight = static_cast<int>( height );
 
 	mDisplay = Display::getMainDisplay();
 
@@ -109,7 +110,7 @@ void WindowImplWinRt::setFullScreen( bool fullScreen, const FullScreenOptions &o
 
 void WindowImplWinRt::toggleFullScreen()
 {
-	mFullScreen = ! mFullScreen;
+	mFullScreen = !mFullScreen;
 }
 
 void WindowImplWinRt::getScreenSize( int clientWidth, int clientHeight, int *resultWidth, int *resultHeight )
@@ -159,7 +160,7 @@ bool WindowImplWinRt::isHidden() const
 	return mHidden;
 }
 
-std::string	WindowImplWinRt::getTitle() const
+std::string WindowImplWinRt::getTitle() const
 {
 	return std::string( "Not Implemented" );
 }
@@ -177,7 +178,7 @@ void WindowImplWinRt::setSize( const ivec2 &windowSize )
 
 void WindowImplWinRt::close()
 {
-//	mApp->closeWindow( this );
+	//	mApp->closeWindow( this );
 	// at this point 'this' is invalid so do nothing after this line
 }
 
@@ -204,88 +205,88 @@ void WindowImplWinRt::sizeChanged()
 	getWindow()->emitResize();
 }
 
-unsigned int prepPointerEventModifiers(PointerEventArgs^ args)
+unsigned int prepPointerEventModifiers( PointerEventArgs ^ args )
 {
 	VirtualKeyModifiers modifiers = args->KeyModifiers;
-	PointerPoint^ p = args->CurrentPoint;
-	PointerPointProperties^ properties = p->Properties;
+	PointerPoint ^ p = args->CurrentPoint;
+	PointerPointProperties ^ properties = p->Properties;
 
 	unsigned int result = 0;
-	if(( modifiers & VirtualKeyModifiers::Control ) == VirtualKeyModifiers::Control)
+	if( ( modifiers & VirtualKeyModifiers::Control ) == VirtualKeyModifiers::Control )
 		result |= MouseEvent::CTRL_DOWN;
-	if(( modifiers & VirtualKeyModifiers::Shift ) == VirtualKeyModifiers::Shift)
+	if( ( modifiers & VirtualKeyModifiers::Shift ) == VirtualKeyModifiers::Shift )
 		result |= MouseEvent::SHIFT_DOWN;
-	if(( modifiers & VirtualKeyModifiers::Menu ) == VirtualKeyModifiers::Menu)
+	if( ( modifiers & VirtualKeyModifiers::Menu ) == VirtualKeyModifiers::Menu )
 		result |= MouseEvent::ALT_DOWN;
-	if(( modifiers & VirtualKeyModifiers::Windows ) == VirtualKeyModifiers::Windows)
+	if( ( modifiers & VirtualKeyModifiers::Windows ) == VirtualKeyModifiers::Windows )
 		result |= MouseEvent::META_DOWN;
 
-	if(properties->IsLeftButtonPressed)
+	if( properties->IsLeftButtonPressed )
 		result |= MouseEvent::LEFT_DOWN;
-	if(properties->IsMiddleButtonPressed)
+	if( properties->IsMiddleButtonPressed )
 		result |= MouseEvent::MIDDLE_DOWN;
-	if(properties->IsRightButtonPressed)
+	if( properties->IsRightButtonPressed )
 		result |= MouseEvent::RIGHT_DOWN;
 
 	return result;
 }
 
-void WindowImplWinRt::handlePointerDown( PointerEventArgs^ args ) 
+void WindowImplWinRt::handlePointerDown( PointerEventArgs ^ args )
 {
 	mIsMultiTouchEnabled ? handleTouchDown( args ) : handleMouseDown( args );
 }
 
-void WindowImplWinRt::handlePointerMoved( PointerEventArgs^ args ) 
+void WindowImplWinRt::handlePointerMoved( PointerEventArgs ^ args )
 {
 	mIsMultiTouchEnabled ? handleTouchMoved( args ) : handleMouseMoved( args );
 }
 
-void WindowImplWinRt::handlePointerUp( PointerEventArgs^ args ) 
+void WindowImplWinRt::handlePointerUp( PointerEventArgs ^ args )
 {
 	mIsMultiTouchEnabled ? handleTouchUp( args ) : handleMouseUp( args );
 }
 
-void WindowImplWinRt::handleTouchDown( PointerEventArgs^ args ) 
+void WindowImplWinRt::handleTouchDown( PointerEventArgs ^ args )
 {
-	PointerPoint^ p = args->CurrentPoint;
+	PointerPoint ^ p = args->CurrentPoint;
 	vector<TouchEvent::Touch> touches;
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
+	float                     x = getScaledDPIValue( p->Position.X );
+	float                     y = getScaledDPIValue( p->Position.Y );
 
 	auto id = mTouchId++;
 	mTouchIds[p->PointerId] = id;
 
-	mMultiTouchPrev[id] = vec2(x, y);
-	TouchEvent::Touch e( vec2(x, y ), vec2(x, y), id, app::getElapsedSeconds(), nullptr);
-	touches.push_back(e);
-	mActiveTouches.push_back(e);
+	mMultiTouchPrev[id] = vec2( x, y );
+	TouchEvent::Touch e( vec2( x, y ), vec2( x, y ), id, app::getElapsedSeconds(), nullptr );
+	touches.push_back( e );
+	mActiveTouches.push_back( e );
 
 	TouchEvent event( getWindow(), touches );
 	getWindow()->emitTouchesBegan( &event );
 }
 
-void WindowImplWinRt::handleMouseDown( PointerEventArgs^ args ) 
+void WindowImplWinRt::handleMouseDown( PointerEventArgs ^ args )
 {
-	PointerPoint^ p = args->CurrentPoint;
-	mIsDragging = true;		
-	float x = getScaledDPIValue(p->Position.X);
-	float y = getScaledDPIValue(p->Position.Y);
-	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(x), static_cast<int>(y), prepPointerEventModifiers( args ), 0.0f, 0L);
+	PointerPoint ^ p = args->CurrentPoint;
+	mIsDragging = true;
+	float      x = getScaledDPIValue( p->Position.X );
+	float      y = getScaledDPIValue( p->Position.Y );
+	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>( x ), static_cast<int>( y ), prepPointerEventModifiers( args ), 0.0f, 0L );
 	getWindow()->emitMouseDown( &event );
 }
 
-void WindowImplWinRt::handleTouchMoved( PointerEventArgs^ args ) 
+void WindowImplWinRt::handleTouchMoved( PointerEventArgs ^ args )
 {
-	PointerPoint^ p = args->CurrentPoint;
+	PointerPoint ^ p = args->CurrentPoint;
 	vector<TouchEvent::Touch> touches;
-	float x = getScaledDPIValue( p->Position.X );
-	float y = getScaledDPIValue( p->Position.Y );
-	auto id = mTouchIds[p->PointerId];
-	
-	if( mMultiTouchPrev.find(id) != mMultiTouchPrev.end() ) {
-		mMultiTouchPrev[id] = vec2(x, y);
-		TouchEvent::Touch e( vec2(x, y ), mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr );
-		mActiveTouches.erase( find_if( mActiveTouches.begin(), mActiveTouches.end(), [id](const TouchEvent::Touch & m) -> bool { return m.getId() == id; }) );
+	float                     x = getScaledDPIValue( p->Position.X );
+	float                     y = getScaledDPIValue( p->Position.Y );
+	auto                      id = mTouchIds[p->PointerId];
+
+	if( mMultiTouchPrev.find( id ) != mMultiTouchPrev.end() ) {
+		mMultiTouchPrev[id] = vec2( x, y );
+		TouchEvent::Touch e( vec2( x, y ), mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr );
+		mActiveTouches.erase( find_if( mActiveTouches.begin(), mActiveTouches.end(), [id]( const TouchEvent::Touch &m ) -> bool { return m.getId() == id; } ) );
 		mActiveTouches.push_back( e );
 		touches.push_back( e );
 		TouchEvent event( getWindow(), touches );
@@ -293,40 +294,40 @@ void WindowImplWinRt::handleTouchMoved( PointerEventArgs^ args )
 	}
 }
 
-void WindowImplWinRt::handleMouseMoved( PointerEventArgs^ args )
+void WindowImplWinRt::handleMouseMoved( PointerEventArgs ^ args )
 {
-	PointerPoint^ p = args->CurrentPoint;
-	float x = getScaledDPIValue( p->Position.X );
-	float y = getScaledDPIValue( p->Position.Y );
-	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(x), static_cast<int>(y), prepPointerEventModifiers( args ), 0.0f, 0L );
+	PointerPoint ^ p = args->CurrentPoint;
+	float      x = getScaledDPIValue( p->Position.X );
+	float      y = getScaledDPIValue( p->Position.Y );
+	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>( x ), static_cast<int>( y ), prepPointerEventModifiers( args ), 0.0f, 0L );
 	if( mIsDragging )
 		getWindow()->emitMouseDrag( &event );
 	else
 		getWindow()->emitMouseMove( &event );
 }
 
-void WindowImplWinRt::handleTouchUp( PointerEventArgs^ args )
+void WindowImplWinRt::handleTouchUp( PointerEventArgs ^ args )
 {
-	PointerPoint^ p = args->CurrentPoint;
+	PointerPoint ^ p = args->CurrentPoint;
 	vector<TouchEvent::Touch> touches;
-	float x = getScaledDPIValue( p->Position.X );
-	float y = getScaledDPIValue( p->Position.Y );
-	auto id = mTouchIds[p->PointerId];
-	touches.push_back( TouchEvent::Touch( vec2(x, y ), mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr ) );
+	float                     x = getScaledDPIValue( p->Position.X );
+	float                     y = getScaledDPIValue( p->Position.Y );
+	auto                      id = mTouchIds[p->PointerId];
+	touches.push_back( TouchEvent::Touch( vec2( x, y ), mMultiTouchPrev[id], id, app::getElapsedSeconds(), nullptr ) );
 	TouchEvent event( getWindow(), touches );
 	getWindow()->emitTouchesEnded( &event );
-	mActiveTouches.erase( find_if( mActiveTouches.begin(), mActiveTouches.end(),[id](const TouchEvent::Touch & m) -> bool { return m.getId() == id; }) );
+	mActiveTouches.erase( find_if( mActiveTouches.begin(), mActiveTouches.end(), [id]( const TouchEvent::Touch &m ) -> bool { return m.getId() == id; } ) );
 	mMultiTouchPrev.erase( id );
 	mTouchIds.erase( p->PointerId );
 }
 
-void WindowImplWinRt::handleMouseUp( PointerEventArgs^ args )
+void WindowImplWinRt::handleMouseUp( PointerEventArgs ^ args )
 {
-	PointerPoint^ p = args->CurrentPoint;
+	PointerPoint ^ p = args->CurrentPoint;
 	float x = getScaledDPIValue( p->Position.X );
 	float y = getScaledDPIValue( p->Position.Y );
-	mIsDragging = false;		
-	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>(x), static_cast<int>(y), prepPointerEventModifiers( args ), 0.0f, 0L );
+	mIsDragging = false;
+	MouseEvent event( getWindow(), prepPointerEventModifiers( args ), static_cast<int>( x ), static_cast<int>( y ), prepPointerEventModifiers( args ), 0.0f, 0L );
 	getWindow()->emitMouseUp( &event );
 }
 
@@ -336,41 +337,41 @@ unsigned int WindowImplWinRt::prepKeyEventModifiers() const
 	if( mControlKeyPressed ) result |= KeyEvent::CTRL_DOWN;
 	if( mShiftKeyPressed ) result |= KeyEvent::SHIFT_DOWN;
 	if( mAltKeyPressed ) result |= KeyEvent::ALT_DOWN;
-	//if( ( ::GetKeyState( VK_LMENU ) & 0x8000 ) || ( ::GetKeyState( VK_RMENU ) & 0x8000 ) ) result |= KeyEvent::ALT_DOWN;	
+	//if( ( ::GetKeyState( VK_LMENU ) & 0x8000 ) || ( ::GetKeyState( VK_RMENU ) & 0x8000 ) ) result |= KeyEvent::ALT_DOWN;
 	//if( ( ::GetKeyState( VK_LWIN ) < 0 ) || ( ::GetKeyState( VK_RWIN ) < 0 ) ) result |= KeyEvent::META_DOWN;
 	return result;
 }
 
-void WindowImplWinRt::handleKeyDown( KeyEventArgs^ args )
+void WindowImplWinRt::handleKeyDown( KeyEventArgs ^ args )
 {
 	switch( args->VirtualKey ) {
-		case VirtualKey::Control:
-			mControlKeyPressed = true;
+	case VirtualKey::Control:
+		mControlKeyPressed = true;
 		break;
-		case VirtualKey::Shift:
-			mShiftKeyPressed = true;
+	case VirtualKey::Shift:
+		mShiftKeyPressed = true;
 		break;
-		default:
-			KeyEvent event( getWindow(), KeyEvent::translateNativeKeyCode((int)args->VirtualKey), (int)args->VirtualKey, (int)args->VirtualKey, prepKeyEventModifiers(), (int)args->VirtualKey );
-			mApp->setWindow( mWindowRef );
-			getWindow()->emitKeyDown( &event );
+	default:
+		KeyEvent event( getWindow(), KeyEvent::translateNativeKeyCode( (int)args->VirtualKey ), (int)args->VirtualKey, (int)args->VirtualKey, prepKeyEventModifiers(), (int)args->VirtualKey );
+		mApp->setWindow( mWindowRef );
+		getWindow()->emitKeyDown( &event );
 		break;
 	}
 }
 
-void WindowImplWinRt::handleKeyUp( KeyEventArgs^ args )
+void WindowImplWinRt::handleKeyUp( KeyEventArgs ^ args )
 {
 	switch( args->VirtualKey ) {
-		case VirtualKey::Control:
-			mControlKeyPressed = false;
+	case VirtualKey::Control:
+		mControlKeyPressed = false;
 		break;
-		case VirtualKey::Shift:
-			mShiftKeyPressed = false;
+	case VirtualKey::Shift:
+		mShiftKeyPressed = false;
 		break;
-		default:
-			KeyEvent event( getWindow(), KeyEvent::translateNativeKeyCode((int)args->VirtualKey), (int)args->VirtualKey, (int)args->VirtualKey, prepKeyEventModifiers(), (int)args->VirtualKey );
-			mApp->setWindow( mWindowRef );
-			getWindow()->emitKeyUp( &event );
+	default:
+		KeyEvent event( getWindow(), KeyEvent::translateNativeKeyCode( (int)args->VirtualKey ), (int)args->VirtualKey, (int)args->VirtualKey, prepKeyEventModifiers(), (int)args->VirtualKey );
+		mApp->setWindow( mWindowRef );
+		getWindow()->emitKeyUp( &event );
 		break;
 	}
 }
@@ -403,8 +404,8 @@ void WindowImplWinRt::redraw()
 
 void WindowImplWinRt::privateClose()
 {
-//	mRenderer->kill();
+	//	mRenderer->kill();
 	//mWnd = 0;
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

@@ -27,9 +27,9 @@
 
 #include "cinder/CinderMath.h"
 #include "cinder/Triangulate.h"
-#include "cinder/gl/gl.h"
 #include "cinder/gl/Batch.h"
 #include "cinder/gl/Shader.h"
+#include "cinder/gl/gl.h"
 
 using namespace std;
 using namespace ci;
@@ -45,16 +45,16 @@ void drawAudioBuffer( const audio::Buffer &buffer, const Rectf &bounds, bool dra
 
 	float yOffset = bounds.y1;
 	for( size_t ch = 0; ch < buffer.getNumChannels(); ch++ ) {
-		PolyLine2f waveform;
+		PolyLine2f   waveform;
 		const float *channel = buffer.getChannel( ch );
-		float x = bounds.x1;
+		float        x = bounds.x1;
 		for( size_t i = 0; i < buffer.getNumFrames(); i++ ) {
 			x += xScale;
 			float y = ( 1 - ( channel[i] * 0.5f + 0.5f ) ) * waveHeight + yOffset;
 			waveform.push_back( vec2( x, y ) );
 		}
 
-		if( ! waveform.getPoints().empty() )
+		if( !waveform.getPoints().empty() )
 			gl::draw( waveform );
 
 		yOffset += waveHeight;
@@ -72,7 +72,8 @@ void drawAudioBuffer( const audio::Buffer &buffer, const Rectf &bounds, bool dra
 
 namespace {
 
-inline void calcMinMaxForSection( const float *buffer, size_t samplesPerSection, float &max, float &min ) {
+inline void calcMinMaxForSection( const float *buffer, size_t samplesPerSection, float &max, float &min )
+{
 	max = 0;
 	min = 0;
 	for( size_t k = 0; k < samplesPerSection; k++ ) {
@@ -82,14 +83,16 @@ inline void calcMinMaxForSection( const float *buffer, size_t samplesPerSection,
 	}
 }
 
-inline void calcAverageForSection( const float *buffer, size_t samplesPerSection, float &upper, float &lower ) {
+inline void calcAverageForSection( const float *buffer, size_t samplesPerSection, float &upper, float &lower )
+{
 	upper = 0;
 	lower = 0;
 	for( size_t k = 0; k < samplesPerSection; k++ ) {
 		float s = buffer[k];
 		if( s > 0 ) {
 			upper += s;
-		} else {
+		}
+		else {
 			lower += s;
 		}
 	}
@@ -101,29 +104,29 @@ inline void calcAverageForSection( const float *buffer, size_t samplesPerSection
 
 void Waveform::load( const float *samples, size_t numSamples, const ci::ivec2 &waveSize, size_t pixelsPerVertex, CalcMode mode )
 {
-    float height = waveSize.y / 2.0f;
-    size_t numSections = waveSize.x / pixelsPerVertex + 1;
-    size_t samplesPerSection = numSamples / numSections;
+	float  height = waveSize.y / 2.0f;
+	size_t numSections = waveSize.x / pixelsPerVertex + 1;
+	size_t samplesPerSection = numSamples / numSections;
 
 	vector<vec2> &points = mOutline.getPoints();
 	points.resize( numSections * 2 );
 
-    for( size_t i = 0; i < numSections; i++ ) {
+	for( size_t i = 0; i < numSections; i++ ) {
 		float x = (float)i * pixelsPerVertex;
 		float yUpper, yLower;
 		if( mode == CalcMode::MIN_MAX ) {
 			calcMinMaxForSection( &samples[i * samplesPerSection], samplesPerSection, yUpper, yLower );
-		} else {
+		}
+		else {
 			calcAverageForSection( &samples[i * samplesPerSection], samplesPerSection, yUpper, yLower );
 		}
 		points[i] = vec2( x, height - height * yUpper );
 		points[numSections * 2 - i - 1] = vec2( x, height - height * yLower );
-    }
+	}
 	mOutline.setClosed();
 
 	mMesh = gl::VboMesh::create( Triangulator( mOutline ).calcMesh() );
 }
-
 
 void WaveformPlot::load( const std::vector<float> &samples, const ci::Rectf &bounds, size_t pixelsPerVertex )
 {
@@ -141,7 +144,7 @@ void WaveformPlot::load( const audio::BufferRef &buffer, const ci::Rectf &bounds
 	mWaveforms.clear();
 
 	size_t numChannels = buffer->getNumChannels();
-	ivec2 waveSize = bounds.getSize();
+	ivec2  waveSize = bounds.getSize();
 	waveSize.y /= numChannels;
 	for( size_t ch = 0; ch < numChannels; ch++ ) {
 		mWaveforms.push_back( Waveform( buffer->getChannel( ch ), buffer->getNumFrames(), waveSize, pixelsPerVertex, Waveform::CalcMode::MIN_MAX ) );
@@ -173,7 +176,7 @@ void WaveformPlot::draw()
 
 		gl::color( mColorAverage );
 		gl::draw( waveforms[3].getMesh() );
-		
+
 		gl::popMatrices();
 	}
 }
@@ -183,7 +186,7 @@ void WaveformPlot::draw()
 // ----------------------------------------------------------------------------------------------------
 
 SpectrumPlot::SpectrumPlot()
-	: mScaleDecibels( true ), mBorderEnabled( true ), mBorderColor( 0.5f, 0.5f, 0.5f, 1 )
+    : mScaleDecibels( true ), mBorderEnabled( true ), mBorderColor( 0.5f, 0.5f, 0.5f, 1 )
 {
 }
 
@@ -196,17 +199,17 @@ void SpectrumPlot::draw( const vector<float> &magSpectrum )
 
 	ColorA bottomColor( 0, 0, 0.7f, 1 );
 
-	float width = mBounds.getWidth();
-	float height = mBounds.getHeight();
+	float  width = mBounds.getWidth();
+	float  height = mBounds.getHeight();
 	size_t numBins = magSpectrum.size();
-	float padding = 0;
-	float binWidth = ( width - padding * ( numBins - 1 ) ) / (float)numBins;
+	float  padding = 0;
+	float  binWidth = ( width - padding * ( numBins - 1 ) ) / (float)numBins;
 
 	gl::VertBatch batch( GL_TRIANGLE_STRIP );
 
 	size_t currVertex = 0;
-	float m;
-	Rectf bin( mBounds.x1, mBounds.y1, mBounds.x1 + binWidth, mBounds.y2 );
+	float  m;
+	Rectf  bin( mBounds.x1, mBounds.y1, mBounds.x1 + binWidth, mBounds.y2 );
 	for( size_t i = 0; i < numBins; i++ ) {
 		m = magSpectrum[i];
 		if( mScaleDecibels )

@@ -23,29 +23,30 @@
 
 #include "cinder/app/Renderer.h"
 
-#if !defined( CINDER_WINRT)
-	#include "cinder/gl/platform.h"
+#if !defined( CINDER_WINRT )
+#include "cinder/gl/platform.h"
 #endif
 
 #include "cinder/app/AppBase.h"
 
 #if defined( CINDER_COCOA )
-	#include "cinder/cocoa/CinderCocoa.h"
-	#if defined( CINDER_MAC )
-		#include <ApplicationServices/ApplicationServices.h>
-		#import <Cocoa/Cocoa.h>
-		#import "cinder/app/cocoa/RendererImpl2dMacQuartz.h"
-	#elif defined( CINDER_COCOA_TOUCH )
-		#include "cinder/cocoa/CinderCocoaTouch.h"
-		#import "cinder/app/cocoa/RendererImpl2dCocoaTouchQuartz.h"		
-	#endif
-
-#elif defined( CINDER_MSW )
-	#include "cinder/app/msw/AppImplMsw.h"
-	#include "cinder/app/msw/RendererImpl2dGdi.h"
+#include "cinder/cocoa/CinderCocoa.h"
+#if defined( CINDER_MAC )
+#include <ApplicationServices/ApplicationServices.h>
+#import <Cocoa/Cocoa.h>
+#import "cinder/app/cocoa/RendererImpl2dMacQuartz.h"
+#elif defined( CINDER_COCOA_TOUCH )
+#include "cinder/cocoa/CinderCocoaTouch.h"
+#import "cinder/app/cocoa/RendererImpl2dCocoaTouchQuartz.h"
 #endif
 
-namespace cinder { namespace app {
+#elif defined( CINDER_MSW )
+#include "cinder/app/msw/AppImplMsw.h"
+#include "cinder/app/msw/RendererImpl2dGdi.h"
+#endif
+
+namespace cinder {
+namespace app {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Renderer
@@ -58,12 +59,12 @@ Renderer::Renderer( const Renderer &renderer )
 #if defined( CINDER_COCOA )
 
 Renderer2d::Renderer2d( const Renderer2d &renderer )
-	: Renderer( renderer ), mImpl( nullptr )
+    : Renderer( renderer ), mImpl( nullptr )
 {
 }
 
 Renderer2d::Renderer2d()
-	: Renderer(), mImpl( nullptr )
+    : Renderer(), mImpl( nullptr )
 {
 }
 
@@ -76,7 +77,7 @@ Renderer2d::~Renderer2d()
 
 void Renderer2d::setup( CGRect frame, NSView *cinderView, RendererRef /*sharedRenderer*/, bool retinaEnabled )
 {
-	mImpl = [[RendererImpl2dMacQuartz alloc] initWithFrame:NSRectFromCGRect(frame) cinderView:cinderView];
+	mImpl = [[RendererImpl2dMacQuartz alloc] initWithFrame:NSRectFromCGRect( frame ) cinderView:cinderView];
 	// This is necessary for Objective-C garbage collection to do the right thing
 	::CFRetain( mImpl );
 }
@@ -85,7 +86,7 @@ void Renderer2d::setup( CGRect frame, NSView *cinderView, RendererRef /*sharedRe
 
 void Renderer2d::setup( const Area &frame, UIView *cinderView, RendererRef /*sharedRenderer*/ )
 {
-	mImpl = [[RendererImpl2dCocoaTouchQuartz alloc] initWithFrame:cinder::cocoa::createCgRect(frame) cinderView:cinderView];
+	mImpl = [[RendererImpl2dCocoaTouchQuartz alloc] initWithFrame:cinder::cocoa::createCgRect( frame ) cinderView:cinderView];
 }
 
 #endif
@@ -108,7 +109,7 @@ void Renderer2d::finishDraw()
 void Renderer2d::setFrameSize( int width, int height )
 {
 #if defined( CINDER_MAC )
-	[mImpl setFrameSize:NSSizeToCGSize(NSMakeSize( width, height ))];
+	[mImpl setFrameSize:NSSizeToCGSize( NSMakeSize( width, height ) )];
 #endif
 }
 
@@ -142,14 +143,14 @@ Surface Renderer2d::copyWindowSurface( const Area &area, int32_t windowHeightPix
 #if defined( CINDER_MSW )
 
 Renderer2d::Renderer2d( const Renderer2d &renderer )
-	: Renderer( renderer )
+    : Renderer( renderer )
 {
 	mImpl = 0;
 	mDoubleBuffer = renderer.mDoubleBuffer;
 }
 
 Renderer2d::Renderer2d( bool doubleBuffer, bool paintEvents )
-	: Renderer(), mDoubleBuffer(doubleBuffer), mPaintEvents( paintEvents )
+    : Renderer(), mDoubleBuffer( doubleBuffer ), mPaintEvents( paintEvents )
 {
 }
 
@@ -195,11 +196,11 @@ void Renderer2d::defaultResize()
 	mImpl->defaultResize();
 }
 
-Surface	Renderer2d::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
+Surface Renderer2d::copyWindowSurface( const Area &area, int32_t windowHeightPixels )
 {
 	return mImpl->copyWindowContents( area );
 }
 
 #endif // defined( CINDER_MSW )
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

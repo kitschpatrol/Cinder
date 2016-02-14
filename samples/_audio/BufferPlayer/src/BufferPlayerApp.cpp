@@ -1,18 +1,18 @@
 #include "cinder/app/App.h"
-#include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 #include "cinder/audio/audio.h"
 
-#include "Resources.h"
 #include "../../common/AudioDrawUtils.h"
+#include "Resources.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 class BufferPlayerNodeApp : public App {
-public:
+  public:
 	void setup() override;
 	void resize() override;
 	void fileDrop( FileDropEvent event ) override;
@@ -21,10 +21,10 @@ public:
 	void mouseDrag( MouseEvent event ) override;
 	void draw() override;
 
-	audio::GainNodeRef				mGain;
-	audio::BufferPlayerNodeRef		mBufferPlayerNode;
+	audio::GainNodeRef         mGain;
+	audio::BufferPlayerNodeRef mBufferPlayerNode;
 
-	WaveformPlot				mWaveformPlot;
+	WaveformPlot mWaveformPlot;
 };
 
 void BufferPlayerNodeApp::setup()

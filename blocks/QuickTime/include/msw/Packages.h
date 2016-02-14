@@ -21,9 +21,6 @@
 #include <MacTypes.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -37,22 +34,22 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 enum {
-  listMgr                       = 0,    /* list manager */
-  dskInit                       = 2,    /* Disk Initializaton */
-  stdFile                       = 3,    /* Standard File */
-  flPoint                       = 4,    /* Floating-Point Arithmetic */
-  trFunc                        = 5,    /* Transcendental Functions */
-  intUtil                       = 6,    /* International Utilities */
-  bdConv                        = 7,    /* Binary/Decimal Conversion */
-  editionMgr                    = 11    /* Edition Manager */
+	listMgr = 0, /* list manager */
+	dskInit = 2, /* Disk Initializaton */
+	stdFile = 3, /* Standard File */
+	flPoint = 4, /* Floating-Point Arithmetic */
+	trFunc = 5, /* Transcendental Functions */
+	intUtil = 6, /* International Utilities */
+	bdConv = 7, /* Binary/Decimal Conversion */
+	editionMgr = 11 /* Edition Manager */
 };
 
 #if CALL_NOT_IN_CARBON
@@ -65,8 +62,7 @@ enum {
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InitPack(short packID)                                        ONEWORDINLINE(0xA9E5);
-
+InitPack( short packID ) ONEWORDINLINE( 0xA9E5 );
 
 /*
  *  InitAllPacks()
@@ -77,19 +73,16 @@ InitPack(short packID)                                        ONEWORDINLINE(0xA9
  *    Mac OS X:         not available
  */
 EXTERN_API( void )
-InitAllPacks(void)                                            ONEWORDINLINE(0xA9E6);
+InitAllPacks( void ) ONEWORDINLINE( 0xA9E6 );
 
-
-
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -103,4 +96,3 @@ InitAllPacks(void)                                            ONEWORDINLINE(0xA9
 #endif
 
 #endif /* __PACKAGES__ */
-

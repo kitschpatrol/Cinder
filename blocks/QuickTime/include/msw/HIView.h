@@ -24,9 +24,6 @@
 #include <CarbonEvents.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,16 +37,16 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
-typedef ControlRef                      HIViewRef;
-typedef ControlID                       HIViewID;
-typedef ControlPartCode                 HIViewPartCode;
+typedef ControlRef      HIViewRef;
+typedef ControlID       HIViewID;
+typedef ControlPartCode HIViewPartCode;
 /*
  *  kHIViewWindowContentID
  *  
@@ -77,29 +74,27 @@ extern const HIViewID kHIViewWindowContentID;
  */
 extern const HIViewID kHIViewWindowGrowBoxID;
 
-
 /*
  *  Discussion:
  *    HIViewZOrderOp
  */
 enum {
 
-  /*
+	/*
    * Indicates we wish to order a view above another view.
    */
-  kHIViewZOrderAbove            = 1,
+	kHIViewZOrderAbove = 1,
 
-  /*
+	/*
    * Indicates we wish to order a view below another view.
    */
-  kHIViewZOrderBelow            = 2
+	kHIViewZOrderBelow = 2
 };
 
-typedef UInt32                          HIViewZOrderOp;
+typedef UInt32 HIViewZOrderOp;
 /*==============================================================================*/
 /*  CONTROL ATTRIBUTES                                                          */
 /*==============================================================================*/
-
 
 /*
  *  Discussion:
@@ -107,20 +102,20 @@ typedef UInt32                          HIViewZOrderOp;
  */
 enum {
 
-  /*
+	/*
    * When set, the control will send the command it generates to the
    * user focus and propagate as it would naturally from there. The
    * default is to send the command to itself and then to its parent
    * and so forth.
    */
-  kHIViewSendCommandToUserFocus = (1 << 0)
+	kHIViewSendCommandToUserFocus = ( 1 << 0 )
 };
 
 /*==============================================================================*/
 /*  HIOBJECT SUPPORT                                                            */
 /*==============================================================================*/
 /* The HIObject class ID for the HIView class. */
-#define kHIViewClassID                  CFSTR("com.apple.hiview")
+#define kHIViewClassID CFSTR( "com.apple.hiview" )
 /*==============================================================================*/
 /*  EMBEDDING                                                                   */
 /*==============================================================================*/
@@ -145,8 +140,7 @@ enum {
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIViewRef )
-HIViewGetRoot(WindowRef inWindow);
-
+HIViewGetRoot( WindowRef inWindow );
 
 /*
  *  HIViewAddSubview()
@@ -173,9 +167,8 @@ HIViewGetRoot(WindowRef inWindow);
  */
 EXTERN_API_C( OSStatus )
 HIViewAddSubview(
-  HIViewRef   inParent,
-  HIViewRef   inNewChild);
-
+    HIViewRef inParent,
+    HIViewRef inNewChild );
 
 /*
  *  HIViewRemoveFromSuperview()
@@ -197,8 +190,7 @@ HIViewAddSubview(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-HIViewRemoveFromSuperview(HIViewRef inView);
-
+HIViewRemoveFromSuperview( HIViewRef inView );
 
 /*
  *  HIViewGetSuperview()
@@ -221,8 +213,7 @@ HIViewRemoveFromSuperview(HIViewRef inView);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIViewRef )
-HIViewGetSuperview(HIViewRef inView);
-
+HIViewGetSuperview( HIViewRef inView );
 
 /*
  *  HIViewGetFirstSubview()
@@ -246,8 +237,7 @@ HIViewGetSuperview(HIViewRef inView);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIViewRef )
-HIViewGetFirstSubview(HIViewRef inView);
-
+HIViewGetFirstSubview( HIViewRef inView );
 
 /*
  *  HIViewGetLastSubview()
@@ -271,8 +261,7 @@ HIViewGetFirstSubview(HIViewRef inView);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIViewRef )
-HIViewGetLastSubview(HIViewRef inView);
-
+HIViewGetLastSubview( HIViewRef inView );
 
 /*
  *  HIViewGetNextView()
@@ -295,8 +284,7 @@ HIViewGetLastSubview(HIViewRef inView);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIViewRef )
-HIViewGetNextView(HIViewRef inView);
-
+HIViewGetNextView( HIViewRef inView );
 
 /*
  *  HIViewGetPreviousView()
@@ -319,8 +307,7 @@ HIViewGetNextView(HIViewRef inView);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( HIViewRef )
-HIViewGetPreviousView(HIViewRef inView);
-
+HIViewGetPreviousView( HIViewRef inView );
 
 /*
  *  HIViewSetZOrder()
@@ -353,10 +340,9 @@ HIViewGetPreviousView(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIViewSetZOrder(
-  HIViewRef        inView,
-  HIViewZOrderOp   inOp,
-  HIViewRef        inOther);      /* can be NULL */
-
+    HIViewRef      inView,
+    HIViewZOrderOp inOp,
+    HIViewRef      inOther ); /* can be NULL */
 
 /*==============================================================================*/
 /*  VISIBILITY                                                                  */
@@ -387,9 +373,8 @@ HIViewSetZOrder(
  */
 EXTERN_API_C( OSStatus )
 HIViewSetVisible(
-  HIViewRef   inView,
-  Boolean     inVisible);
-
+    HIViewRef inView,
+    Boolean   inVisible );
 
 /*
  *  HIViewIsVisible()
@@ -412,9 +397,7 @@ HIViewSetVisible(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIViewIsVisible(HIViewRef inView);
-
-
+HIViewIsVisible( HIViewRef inView );
 
 /*==============================================================================*/
 /*  POSITIONING                                                                 */
@@ -448,9 +431,8 @@ HIViewIsVisible(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIViewGetBounds(
-  HIViewRef   inView,
-  HIRect *    outRect);
-
+    HIViewRef inView,
+    HIRect *  outRect );
 
 /*
  *  HIViewGetFrame()
@@ -477,9 +459,8 @@ HIViewGetBounds(
  */
 EXTERN_API_C( OSStatus )
 HIViewGetFrame(
-  HIViewRef   inView,
-  HIRect *    outRect);
-
+    HIViewRef inView,
+    HIRect *  outRect );
 
 /*
  *  HIViewSetFrame()
@@ -507,10 +488,8 @@ HIViewGetFrame(
  */
 EXTERN_API_C( OSStatus )
 HIViewSetFrame(
-  HIViewRef       inView,
-  const HIRect *  inRect);
-
-
+    HIViewRef     inView,
+    const HIRect *inRect );
 
 /*
  *  HIViewMoveBy()
@@ -542,10 +521,9 @@ HIViewSetFrame(
  */
 EXTERN_API_C( OSStatus )
 HIViewMoveBy(
-  HIViewRef   inView,
-  float       inDX,
-  float       inDY);
-
+    HIViewRef inView,
+    float     inDX,
+    float     inDY );
 
 /*
  *  HIViewPlaceInSuperviewAt()
@@ -576,11 +554,9 @@ HIViewMoveBy(
  */
 EXTERN_API_C( OSStatus )
 HIViewPlaceInSuperviewAt(
-  HIViewRef   inView,
-  float       inX,
-  float       inY);
-
-
+    HIViewRef inView,
+    float     inX,
+    float     inY );
 
 /*
  *  HIViewReshapeStructure()
@@ -605,8 +581,7 @@ HIViewPlaceInSuperviewAt(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-HIViewReshapeStructure(HIViewRef inView);
-
+HIViewReshapeStructure( HIViewRef inView );
 
 /*==============================================================================*/
 /*  HIT TESTING/EVENT HANDLING                                                  */
@@ -645,10 +620,9 @@ HIViewReshapeStructure(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIViewGetViewForMouseEvent(
-  HIViewRef    inView,
-  EventRef     inEvent,
-  HIViewRef *  outView);
-
+    HIViewRef  inView,
+    EventRef   inEvent,
+    HIViewRef *outView );
 
 /*
  *  HIViewClick()
@@ -676,9 +650,8 @@ HIViewGetViewForMouseEvent(
  */
 EXTERN_API_C( OSStatus )
 HIViewClick(
-  HIViewRef   inView,
-  EventRef    inEvent);
-
+    HIViewRef inView,
+    EventRef  inEvent );
 
 /*
  *  HIViewSimulateClick()
@@ -711,11 +684,10 @@ HIViewClick(
  */
 EXTERN_API_C( OSStatus )
 HIViewSimulateClick(
-  HIViewRef          inView,
-  HIViewPartCode     inPartToClick,
-  UInt32             inModifiers,
-  ControlPartCode *  outPartClicked);
-
+    HIViewRef        inView,
+    HIViewPartCode   inPartToClick,
+    UInt32           inModifiers,
+    ControlPartCode *outPartClicked );
 
 /*
  *  HIViewGetPartHit()
@@ -745,10 +717,9 @@ HIViewSimulateClick(
  */
 EXTERN_API_C( OSStatus )
 HIViewGetPartHit(
-  HIViewRef         inView,
-  const HIPoint *   inPoint,
-  HIViewPartCode *  outPart);
-
+    HIViewRef       inView,
+    const HIPoint * inPoint,
+    HIViewPartCode *outPart );
 
 /*
  *  HIViewGetSubviewHit()
@@ -784,11 +755,10 @@ HIViewGetPartHit(
  */
 EXTERN_API_C( OSStatus )
 HIViewGetSubviewHit(
-  HIViewRef        inView,
-  const HIPoint *  inPoint,
-  Boolean          inDeep,
-  HIViewRef *      outView);
-
+    HIViewRef      inView,
+    const HIPoint *inPoint,
+    Boolean        inDeep,
+    HIViewRef *    outView );
 
 /*==============================================================================*/
 /*  DISPLAY                                                                     */
@@ -814,8 +784,7 @@ HIViewGetSubviewHit(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIViewGetNeedsDisplay(HIViewRef inView);
-
+HIViewGetNeedsDisplay( HIViewRef inView );
 
 /*
  *  HIViewSetNeedsDisplay()
@@ -843,10 +812,8 @@ HIViewGetNeedsDisplay(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIViewSetNeedsDisplay(
-  HIViewRef   inView,
-  Boolean     inNeedsDisplay);
-
-
+    HIViewRef inView,
+    Boolean   inNeedsDisplay );
 
 /*
  *  HIViewSetNeedsDisplayInRegion()
@@ -876,10 +843,9 @@ HIViewSetNeedsDisplay(
  */
 EXTERN_API_C( OSStatus )
 HIViewSetNeedsDisplayInRegion(
-  HIViewRef   inView,
-  RgnHandle   inRgn,
-  Boolean     inNeedsDisplay);
-
+    HIViewRef inView,
+    RgnHandle inRgn,
+    Boolean   inNeedsDisplay );
 
 /*
  *  HIViewFlashDirtyArea()
@@ -902,8 +868,7 @@ HIViewSetNeedsDisplayInRegion(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( OSStatus )
-HIViewFlashDirtyArea(WindowRef inWindow);
-
+HIViewFlashDirtyArea( WindowRef inWindow );
 
 /*
  *  HIViewGetSizeConstraints()
@@ -934,12 +899,9 @@ HIViewFlashDirtyArea(WindowRef inWindow);
  */
 EXTERN_API_C( OSStatus )
 HIViewGetSizeConstraints(
-  HIViewRef   inView,
-  HISize *    outMinSize,
-  HISize *    outMaxSize);
-
-
-
+    HIViewRef inView,
+    HISize *  outMinSize,
+    HISize *  outMaxSize );
 
 /*==============================================================================*/
 /*  COORDINATE SYSTEM CONVERSION                                                */
@@ -976,10 +938,9 @@ HIViewGetSizeConstraints(
  */
 EXTERN_API_C( OSStatus )
 HIViewConvertPoint(
-  HIPoint *   ioPoint,
-  HIViewRef   inSourceView,
-  HIViewRef   inDestView);
-
+    HIPoint * ioPoint,
+    HIViewRef inSourceView,
+    HIViewRef inDestView );
 
 /*
  *  HIViewConvertRect()
@@ -1013,10 +974,9 @@ HIViewConvertPoint(
  */
 EXTERN_API_C( OSStatus )
 HIViewConvertRect(
-  HIRect *    ioRect,
-  HIViewRef   inSourceView,
-  HIViewRef   inDestView);
-
+    HIRect *  ioRect,
+    HIViewRef inSourceView,
+    HIViewRef inDestView );
 
 /*
  *  HIViewConvertRegion()
@@ -1050,11 +1010,9 @@ HIViewConvertRect(
  */
 EXTERN_API_C( OSStatus )
 HIViewConvertRegion(
-  RgnHandle   ioRgn,
-  HIViewRef   inSourceView,
-  HIViewRef   inDestView);
-
-
+    RgnHandle ioRgn,
+    HIViewRef inSourceView,
+    HIViewRef inDestView );
 
 /*
  *  HIViewSetDrawingEnabled()
@@ -1084,9 +1042,8 @@ HIViewConvertRegion(
  */
 EXTERN_API_C( OSStatus )
 HIViewSetDrawingEnabled(
-  HIViewRef   inView,
-  Boolean     inEnabled);
-
+    HIViewRef inView,
+    Boolean   inEnabled );
 
 /*
  *  HIViewIsDrawingEnabled()
@@ -1109,9 +1066,7 @@ HIViewSetDrawingEnabled(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIViewIsDrawingEnabled(HIViewRef inView);
-
-
+HIViewIsDrawingEnabled( HIViewRef inView );
 
 /*
  *  HIViewScrollRect()
@@ -1151,11 +1106,10 @@ HIViewIsDrawingEnabled(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIViewScrollRect(
-  HIViewRef       inView,
-  const HIRect *  inRect,       /* can be NULL */
-  float           inDX,
-  float           inDY);
-
+    HIViewRef     inView,
+    const HIRect *inRect, /* can be NULL */
+    float         inDX,
+    float         inDY );
 
 /*
  *  HIViewSetBoundsOrigin()
@@ -1186,11 +1140,9 @@ HIViewScrollRect(
  */
 EXTERN_API_C( OSStatus )
 HIViewSetBoundsOrigin(
-  HIViewRef   inView,
-  float       inX,
-  float       inY);
-
-
+    HIViewRef inView,
+    float     inX,
+    float     inY );
 
 /*==============================================================================*/
 /*  KEYBOARD FOCUS                                                              */
@@ -1232,9 +1184,8 @@ HIViewSetBoundsOrigin(
  */
 EXTERN_API_C( OSStatus )
 HIViewAdvanceFocus(
-  HIViewRef        inRootForFocus,
-  EventModifiers   inModifiers);
-
+    HIViewRef      inRootForFocus,
+    EventModifiers inModifiers );
 
 /*
  *  HIViewGetFocusPart()
@@ -1260,9 +1211,8 @@ HIViewAdvanceFocus(
  */
 EXTERN_API_C( OSStatus )
 HIViewGetFocusPart(
-  HIViewRef         inView,
-  HIViewPartCode *  outFocusPart);
-
+    HIViewRef       inView,
+    HIViewPartCode *outFocusPart );
 
 /*
  *  HIViewSubtreeContainsFocus()
@@ -1286,8 +1236,7 @@ HIViewGetFocusPart(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIViewSubtreeContainsFocus(HIViewRef inSubtreeStart);
-
+HIViewSubtreeContainsFocus( HIViewRef inSubtreeStart );
 
 /*
  *  HIViewSetNextFocus()
@@ -1315,9 +1264,8 @@ HIViewSubtreeContainsFocus(HIViewRef inSubtreeStart);
  */
 EXTERN_API_C( OSStatus )
 HIViewSetNextFocus(
-  HIViewRef   inView,
-  HIViewRef   inNextFocus);      /* can be NULL */
-
+    HIViewRef inView,
+    HIViewRef inNextFocus ); /* can be NULL */
 
 /*
  *  HIViewSetFirstSubViewFocus()
@@ -1346,10 +1294,8 @@ HIViewSetNextFocus(
  */
 EXTERN_API_C( OSStatus )
 HIViewSetFirstSubViewFocus(
-  HIViewRef   inParent,
-  HIViewRef   inSubView);      /* can be NULL */
-
-
+    HIViewRef inParent,
+    HIViewRef inSubView ); /* can be NULL */
 
 /*==============================================================================*/
 /*  MISCELLANEOUS                                                               */
@@ -1382,11 +1328,9 @@ HIViewSetFirstSubViewFocus(
  */
 EXTERN_API_C( OSStatus )
 HIViewFindByID(
-  HIViewRef    inStartView,
-  HIViewID     inID,
-  HIViewRef *  outControl);
-
-
+    HIViewRef  inStartView,
+    HIViewID   inID,
+    HIViewRef *outControl );
 
 /*
  *  HIViewGetAttributes()
@@ -1412,10 +1356,8 @@ HIViewFindByID(
  */
 EXTERN_API_C( OSStatus )
 HIViewGetAttributes(
-  HIViewRef     inView,
-  OptionBits *  outAttrs);
-
-
+    HIViewRef   inView,
+    OptionBits *outAttrs );
 
 /*
  *  HIViewChangeAttributes()
@@ -1445,11 +1387,9 @@ HIViewGetAttributes(
  */
 EXTERN_API_C( OSStatus )
 HIViewChangeAttributes(
-  HIViewRef    inView,
-  OptionBits   inAttrsToSet,
-  OptionBits   inAttrsToClear);
-
-
+    HIViewRef  inView,
+    OptionBits inAttrsToSet,
+    OptionBits inAttrsToClear );
 
 /*
  *  HIViewCreateOffscreenImage()
@@ -1487,12 +1427,10 @@ HIViewChangeAttributes(
  */
 EXTERN_API_C( OSStatus )
 HIViewCreateOffscreenImage(
-  HIViewRef     inView,
-  OptionBits    inOptions,
-  HIRect *      outFrame,        /* can be NULL */
-  CGImageRef *  outImage);
-
-
+    HIViewRef   inView,
+    OptionBits  inOptions,
+    HIRect *    outFrame, /* can be NULL */
+    CGImageRef *outImage );
 
 /*
  *  HIViewDrawCGImage()
@@ -1527,25 +1465,20 @@ HIViewCreateOffscreenImage(
  */
 EXTERN_API_C( OSStatus )
 HIViewDrawCGImage(
-  CGContextRef    inContext,
-  const HIRect *  inBounds,
-  CGImageRef      inImage);
-
-
+    CGContextRef  inContext,
+    const HIRect *inBounds,
+    CGImageRef    inImage );
 
 /*==============================================================================*/
 /*  HIGrowBoxView                                                               */
 /*==============================================================================*/
 
-
 /* The HIObject class ID for the HIGrowBoxView class. */
-#define kHIGrowBoxViewClassID           CFSTR("com.apple.higrowboxview")
-
+#define kHIGrowBoxViewClassID CFSTR( "com.apple.higrowboxview" )
 
 /* Currently there is no direct creation API for the grow box, so you must use  */
 /* HIObjectCreate if you wish to create one directly. Normally, a window will   */
 /* create one for you, so you should generally never need to do this.           */
-
 
 /*
  *  HIGrowBoxViewSetTransparent()
@@ -1574,9 +1507,8 @@ HIViewDrawCGImage(
  */
 EXTERN_API_C( OSStatus )
 HIGrowBoxViewSetTransparent(
-  HIViewRef   inGrowBoxView,
-  Boolean     inTransparent);
-
+    HIViewRef inGrowBoxView,
+    Boolean   inTransparent );
 
 /*
  *  HIGrowBoxViewIsTransparent()
@@ -1598,30 +1530,27 @@ HIGrowBoxViewSetTransparent(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIGrowBoxViewIsTransparent(HIViewRef inGrowBoxView);
-
-
+HIGrowBoxViewIsTransparent( HIViewRef inGrowBoxView );
 
 /*==============================================================================*/
 /*  HIScrollView                                                                */
 /*==============================================================================*/
 enum {
-  kEventClassScrollable         = FOUR_CHAR_CODE('scrl')
+	kEventClassScrollable = FOUR_CHAR_CODE( 'scrl' )
 };
 
 enum {
-  kEventScrollableGetInfo       = 1,
-  kEventScrollableInfoChanged   = 2,
-  kEventScrollableScrollTo      = 10
+	kEventScrollableGetInfo = 1,
+	kEventScrollableInfoChanged = 2,
+	kEventScrollableScrollTo = 10
 };
 
 enum {
-  kEventParamImageSize          = FOUR_CHAR_CODE('imsz'), /* type HISize*/
-  kEventParamViewSize           = FOUR_CHAR_CODE('vwsz'), /* type HISize*/
-  kEventParamLineSize           = FOUR_CHAR_CODE('lnsz'), /* type HISize*/
-  kEventParamOrigin             = FOUR_CHAR_CODE('orgn') /* type HIPoint*/
+	kEventParamImageSize = FOUR_CHAR_CODE( 'imsz' ), /* type HISize*/
+	kEventParamViewSize = FOUR_CHAR_CODE( 'vwsz' ), /* type HISize*/
+	kEventParamLineSize = FOUR_CHAR_CODE( 'lnsz' ), /* type HISize*/
+	kEventParamOrigin = FOUR_CHAR_CODE( 'orgn' ) /* type HIPoint*/
 };
-
 
 /*
  *  Discussion:
@@ -1629,23 +1558,23 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * This indicates that a vertical scroll bar is desired.
    */
-  kHIScrollViewOptionsVertScroll = (1 << 0),
+	kHIScrollViewOptionsVertScroll = ( 1 << 0 ),
 
-  /*
+	/*
    * This indicates that a horizontal scroll bar is desired.
    */
-  kHIScrollViewOptionsHorizScroll = (1 << 1),
+	kHIScrollViewOptionsHorizScroll = ( 1 << 1 ),
 
-  /*
+	/*
    * This indicates that space for a grow box should be taken into
    * account when layout out scroll bars. If both the horizontal and
    * vertical scroll bars are requested, this attribute is assumed.
    */
-  kHIScrollViewOptionsAllowGrow = (1 << 2),
-  kHIScrollViewValidOptions     = (kHIScrollViewOptionsVertScroll | kHIScrollViewOptionsHorizScroll | kHIScrollViewOptionsAllowGrow)
+	kHIScrollViewOptionsAllowGrow = ( 1 << 2 ),
+	kHIScrollViewValidOptions = ( kHIScrollViewOptionsVertScroll | kHIScrollViewOptionsHorizScroll | kHIScrollViewOptionsAllowGrow )
 };
 
 /*
@@ -1678,10 +1607,8 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 HIScrollViewCreate(
-  OptionBits   inOptions,
-  HIViewRef *  outView);
-
-
+    OptionBits inOptions,
+    HIViewRef *outView );
 
 /*
  *  HIScrollViewSetScrollBarAutoHide()
@@ -1710,9 +1637,8 @@ HIScrollViewCreate(
  */
 EXTERN_API_C( OSStatus )
 HIScrollViewSetScrollBarAutoHide(
-  HIViewRef   inView,
-  Boolean     inAutoHide);
-
+    HIViewRef inView,
+    Boolean   inAutoHide );
 
 /*
  *  HIScrollViewGetScrollBarAutoHide()
@@ -1734,8 +1660,7 @@ HIScrollViewSetScrollBarAutoHide(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIScrollViewGetScrollBarAutoHide(HIViewRef inView);
-
+HIScrollViewGetScrollBarAutoHide( HIViewRef inView );
 
 /*==============================================================================*/
 /*  HIImageView                                                                 */
@@ -1768,12 +1693,11 @@ HIScrollViewGetScrollBarAutoHide(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIImageViewCreate(
-  CGImageRef    inImage,          /* can be NULL */
-  ControlRef *  outControl);
-
+    CGImageRef  inImage, /* can be NULL */
+    ControlRef *outControl );
 
 enum {
-  kHIImageViewImageTag          = FOUR_CHAR_CODE('imag') /* CGImageRef (THIS TAG IS GOING AWAY!!! USE THE APIS BELOW!)*/
+	kHIImageViewImageTag = FOUR_CHAR_CODE( 'imag' ) /* CGImageRef (THIS TAG IS GOING AWAY!!! USE THE APIS BELOW!)*/
 };
 
 /*
@@ -1807,9 +1731,8 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 HIImageViewSetOpaque(
-  HIViewRef   inView,
-  Boolean     inOpaque);
-
+    HIViewRef inView,
+    Boolean   inOpaque );
 
 /*
  *  HIImageViewIsOpaque()
@@ -1831,8 +1754,7 @@ HIImageViewSetOpaque(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIImageViewIsOpaque(HIViewRef inView);
-
+HIImageViewIsOpaque( HIViewRef inView );
 
 /*
  *  HIImageViewSetAlpha()
@@ -1860,9 +1782,8 @@ HIImageViewIsOpaque(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIImageViewSetAlpha(
-  HIViewRef   inView,
-  float       inAlpha);
-
+    HIViewRef inView,
+    float     inAlpha );
 
 /*
  *  HIImageViewGetAlpha()
@@ -1886,8 +1807,7 @@ HIImageViewSetAlpha(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( float )
-HIImageViewGetAlpha(HIViewRef inView);
-
+HIImageViewGetAlpha( HIViewRef inView );
 
 /*
  *  HIImageViewSetScaleToFit()
@@ -1917,9 +1837,8 @@ HIImageViewGetAlpha(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIImageViewSetScaleToFit(
-  HIViewRef   inView,
-  Boolean     inScaleToFit);
-
+    HIViewRef inView,
+    Boolean   inScaleToFit );
 
 /*
  *  HIImageViewGetScaleToFit()
@@ -1943,8 +1862,7 @@ HIImageViewSetScaleToFit(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( Boolean )
-HIImageViewGetScaleToFit(HIViewRef inView);
-
+HIImageViewGetScaleToFit( HIViewRef inView );
 
 /*
  *  HIImageViewSetImage()
@@ -1972,9 +1890,8 @@ HIImageViewGetScaleToFit(HIViewRef inView);
  */
 EXTERN_API_C( OSStatus )
 HIImageViewSetImage(
-  HIViewRef    inView,
-  CGImageRef   inImage);      /* can be NULL */
-
+    HIViewRef  inView,
+    CGImageRef inImage ); /* can be NULL */
 
 /*
  *  HIImageViewCopyImage()
@@ -1999,8 +1916,7 @@ HIImageViewSetImage(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( CGImageRef )
-HIImageViewCopyImage(HIViewRef inView);
-
+HIImageViewCopyImage( HIViewRef inView );
 
 /*==============================================================================*/
 /* HIComboBox                                                                   */
@@ -2012,53 +1928,52 @@ HIImageViewCopyImage(HIViewRef inView);
  */
 enum {
 
-  /*
+	/*
    * A constant with value zero; the lack of any attributes.
    */
-  kHIComboBoxNoAttributes       = 0L,
+	kHIComboBoxNoAttributes = 0L,
 
-  /*
+	/*
    * The control will attempt to auto complete the text the user is
    * typing with an item in the ComboBox list that is the closest
    * appropriate match.
    */
-  kHIComboBoxAutoCompletionAttribute = (1L << 0),
+	kHIComboBoxAutoCompletionAttribute = ( 1L << 0 ),
 
-  /*
+	/*
    * The control will disclose the ComboBox list after the user enters
    * text.
    */
-  kHIComboBoxAutoDisclosureAttribute = (1L << 1),
+	kHIComboBoxAutoDisclosureAttribute = ( 1L << 1 ),
 
-  /*
+	/*
    * The items in the ComboBox list will be automatically sorted in
    * alphabetical order.
    */
-  kHIComboBoxAutoSortAttribute  = (1L << 2),
+	kHIComboBoxAutoSortAttribute = ( 1L << 2 ),
 
-  /*
+	/*
    * The ComboBox list will be automatically sized to fit the Human
    * Interface Guidelines.
    */
-  kHIComboBoxAutoSizeListAttribute = (1L << 3),
+	kHIComboBoxAutoSizeListAttribute = ( 1L << 3 ),
 
-  /*
+	/*
    * The minimum set of ComboBox attributes commonly used.
    */
-  kHIComboBoxStandardAttributes = (kHIComboBoxAutoCompletionAttribute | kHIComboBoxAutoDisclosureAttribute | kHIComboBoxAutoSizeListAttribute)
+	kHIComboBoxStandardAttributes = ( kHIComboBoxAutoCompletionAttribute | kHIComboBoxAutoDisclosureAttribute | kHIComboBoxAutoSizeListAttribute )
 };
 
 /* ControlKind*/
 enum {
-  kControlKindHIComboBox        = FOUR_CHAR_CODE('cbbx')
+	kControlKindHIComboBox = FOUR_CHAR_CODE( 'cbbx' )
 };
 
 /* ComboBox Part codes*/
 enum {
-  kHIComboBoxEditTextPart       = 5,
-  kHIComboBoxDisclosurePart     = 28
+	kHIComboBoxEditTextPart = 5,
+	kHIComboBoxDisclosurePart = 28
 };
-
 
 /*
  *  Discussion:
@@ -2066,31 +1981,31 @@ enum {
  */
 enum {
 
-  /*
+	/*
    * Extract the contents of the ComboBox list as a CFArray. The
    * CFArray will be retained: if you get the array, you own it and
    * will be required to release it; if you set it the toolbox makes a
    * copy of it and you are free to release your reference.
    */
-  kHIComboBoxListTag            = FOUR_CHAR_CODE('cbls'), /* CFArrayRef; bumps the refCount on get/retains on set*/
+	kHIComboBoxListTag = FOUR_CHAR_CODE( 'cbls' ), /* CFArrayRef; bumps the refCount on get/retains on set*/
 
-  /*
+	/*
    * The width of the ComboBox list. This can be customized. This
    * disables the autosize attribute.
    */
-  kHIComboBoxListPixelWidthTag  = FOUR_CHAR_CODE('cblw'), /* UInt32 */
+	kHIComboBoxListPixelWidthTag = FOUR_CHAR_CODE( 'cblw' ), /* UInt32 */
 
-  /*
+	/*
    * The height of the ComboBox list. This can be customized. This
    * disables the autosize attribute.
    */
-  kHIComboBoxListPixelHeightTag = FOUR_CHAR_CODE('cblh'), /* UInt32*/
+	kHIComboBoxListPixelHeightTag = FOUR_CHAR_CODE( 'cblh' ), /* UInt32*/
 
-  /*
+	/*
    * The number of visible items in the list. This can be customized.
    * This disables the autosize attribute.
    */
-  kHIComboBoxNumVisibleItemsTag = FOUR_CHAR_CODE('cbni') /* UInt32*/
+	kHIComboBoxNumVisibleItemsTag = FOUR_CHAR_CODE( 'cbni' ) /* UInt32*/
 };
 
 /*
@@ -2129,13 +2044,12 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 HIComboBoxCreate(
-  const HIRect *               boundsRect,
-  CFStringRef                  text,               /* can be NULL */
-  const ControlFontStyleRec *  style,              /* can be NULL */
-  CFArrayRef                   list,               /* can be NULL */
-  OptionBits                   inAttributes,
-  HIViewRef *                  outComboBox);
-
+    const HIRect *             boundsRect,
+    CFStringRef                text, /* can be NULL */
+    const ControlFontStyleRec *style, /* can be NULL */
+    CFArrayRef                 list, /* can be NULL */
+    OptionBits                 inAttributes,
+    HIViewRef *                outComboBox );
 
 /*
  *  HIComboBoxGetItemCount()
@@ -2157,8 +2071,7 @@ HIComboBoxCreate(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API_C( ItemCount )
-HIComboBoxGetItemCount(HIViewRef inComboBox);
-
+HIComboBoxGetItemCount( HIViewRef inComboBox );
 
 /*
  *  HIComboBoxInsertTextItemAtIndex()
@@ -2190,10 +2103,9 @@ HIComboBoxGetItemCount(HIViewRef inComboBox);
  */
 EXTERN_API_C( OSStatus )
 HIComboBoxInsertTextItemAtIndex(
-  HIViewRef     inComboBox,
-  CFIndex       inIndex,
-  CFStringRef   inText);
-
+    HIViewRef   inComboBox,
+    CFIndex     inIndex,
+    CFStringRef inText );
 
 /*
  *  HIComboBoxAppendTextItem()
@@ -2224,10 +2136,9 @@ HIComboBoxInsertTextItemAtIndex(
  */
 EXTERN_API_C( OSStatus )
 HIComboBoxAppendTextItem(
-  HIViewRef     inComboBox,
-  CFStringRef   inText,
-  CFIndex *     outIndex);        /* can be NULL */
-
+    HIViewRef   inComboBox,
+    CFStringRef inText,
+    CFIndex *   outIndex ); /* can be NULL */
 
 /*
  *  HIComboBoxCopyTextItemAtIndex()
@@ -2259,10 +2170,9 @@ HIComboBoxAppendTextItem(
  */
 EXTERN_API_C( OSStatus )
 HIComboBoxCopyTextItemAtIndex(
-  HIViewRef      inComboBox,
-  CFIndex        inIndex,
-  CFStringRef *  outString);
-
+    HIViewRef    inComboBox,
+    CFIndex      inIndex,
+    CFStringRef *outString );
 
 /*
  *  HIComboBoxRemoveItemAtIndex()
@@ -2289,9 +2199,8 @@ HIComboBoxCopyTextItemAtIndex(
  */
 EXTERN_API_C( OSStatus )
 HIComboBoxRemoveItemAtIndex(
-  HIViewRef   inComboBox,
-  CFIndex     inIndex);
-
+    HIViewRef inComboBox,
+    CFIndex   inIndex );
 
 /*
  *  HIComboBoxChangeAttributes()
@@ -2320,10 +2229,9 @@ HIComboBoxRemoveItemAtIndex(
  */
 EXTERN_API_C( OSStatus )
 HIComboBoxChangeAttributes(
-  HIViewRef    inComboBox,
-  OptionBits   inAttributesToSet,
-  OptionBits   inAttributesToClear);
-
+    HIViewRef  inComboBox,
+    OptionBits inAttributesToSet,
+    OptionBits inAttributesToClear );
 
 /*
  *  HIComboBoxGetAttributes()
@@ -2349,17 +2257,15 @@ HIComboBoxChangeAttributes(
  */
 EXTERN_API_C( OSStatus )
 HIComboBoxGetAttributes(
-  HIViewRef     inComboBox,
-  OptionBits *  outAttributes);
-
-
+    HIViewRef   inComboBox,
+    OptionBits *outAttributes );
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -2373,4 +2279,3 @@ HIComboBoxGetAttributes(
 #endif
 
 #endif /* __HIVIEW__ */
-

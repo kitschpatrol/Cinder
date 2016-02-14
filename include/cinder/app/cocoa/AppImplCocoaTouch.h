@@ -22,13 +22,13 @@
 
 #pragma once
 
+#include "cinder/Log.h"
 #include "cinder/app/cocoa/AppCocoaTouch.h"
 #include "cinder/app/cocoa/CinderViewCocoaTouch.h"
 #include "cinder/cocoa/CinderCocoaTouch.h"
-#include "cinder/Log.h"
 
-#import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import <UIKit/UIKit.h>
 
 #include <list>
 
@@ -39,30 +39,29 @@
 //! completely initialized before UIApplicationMain is called.
 @interface AppDelegateImpl : NSObject <UIApplicationDelegate> {
   @public
-	cinder::app::AppCocoaTouch*		mApp;
-	AppImplCocoaTouch*				mAppImpl;
+	cinder::app::AppCocoaTouch *mApp;
+	AppImplCocoaTouch *         mAppImpl;
 }
 
 @end // AppDelegateImpl
 
-
 @interface AppImplCocoaTouch : NSObject {
   @public
-	cinder::app::AppCocoaTouch*			mApp;
-	std::list<WindowImplCocoaTouch*>	mWindows;
-	WindowImplCocoaTouch*				mActiveWindow;
-	CADisplayLink*						mDisplayLink;
+	cinder::app::AppCocoaTouch *      mApp;
+	std::list<WindowImplCocoaTouch *> mWindows;
+	WindowImplCocoaTouch *            mActiveWindow;
+	CADisplayLink *                   mDisplayLink;
 
-	bool								mSetupHasFired;
-	bool								mUpdateHasFired;
-	bool								mAnimating;
-	NSInteger 							mAnimationFrameInterval;
-	bool								mProximityStateIsClose;
-	bool								mIsUnplugged;
-	bool								mStatusBarShouldHide;
-	float								mBatteryLevel;
+	bool      mSetupHasFired;
+	bool      mUpdateHasFired;
+	bool      mAnimating;
+	NSInteger mAnimationFrameInterval;
+	bool      mProximityStateIsClose;
+	bool      mIsUnplugged;
+	bool      mStatusBarShouldHide;
+	float     mBatteryLevel;
 
-	std::string							mKeyboardString;		// copy is kept so changes are visible from textShouldChange callback
+	std::string mKeyboardString; // copy is kept so changes are visible from textShouldChange callback
 }
 
 - (AppImplCocoaTouch *)init:(cinder::app::AppCocoaTouch *)app settings:(const cinder::app::AppCocoaTouch::Settings &)settings;
@@ -90,23 +89,22 @@
 
 @end // AppImplCocoaTouch
 
-
-@interface WindowImplCocoaTouch : UIViewController<WindowImplCocoa, CinderViewCocoaTouchDelegate, UIKeyInput, UITextViewDelegate> {
+@interface WindowImplCocoaTouch : UIViewController <WindowImplCocoa, CinderViewCocoaTouchDelegate, UIKeyInput, UITextViewDelegate> {
   @public
-	AppImplCocoaTouch*			mAppImpl;
-	UIWindow*					mUiWindow;
-	UIViewController*			mRootViewController;
-	CinderViewCocoaTouch*		mCinderView;
-	UITextView*					mKeyboardTextView;
+	AppImplCocoaTouch *   mAppImpl;
+	UIWindow *            mUiWindow;
+	UIViewController *    mRootViewController;
+	CinderViewCocoaTouch *mCinderView;
+	UITextView *          mKeyboardTextView;
 
-	cinder::app::WindowRef		mWindowRef;
-	cinder::DisplayRef			mDisplay;
+	cinder::app::WindowRef mWindowRef;
+	cinder::DisplayRef     mDisplay;
 
-	cinder::ivec2				mSize, mPos;
-	bool						mResizeHasFired;
-	bool						mHidden;
-	bool						mKeyboardVisible;
-	bool						mKeyboardClosesOnReturn;
+	cinder::ivec2 mSize, mPos;
+	bool          mResizeHasFired;
+	bool          mHidden;
+	bool          mKeyboardVisible;
+	bool          mKeyboardClosesOnReturn;
 }
 
 - (void)loadView;
@@ -152,6 +150,6 @@
 - (void)mouseUp:(cinder::app::MouseEvent *)event;
 - (void)keyDown:(cinder::app::KeyEvent *)event;
 
-@property (nonatomic, readonly) UITextView *keyboardTextView; // lazy-loaded in getter
+@property ( nonatomic, readonly ) UITextView *keyboardTextView; // lazy-loaded in getter
 
 @end // WindowImplCocoaTouch

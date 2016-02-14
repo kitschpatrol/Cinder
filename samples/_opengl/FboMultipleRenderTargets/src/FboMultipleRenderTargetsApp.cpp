@@ -3,35 +3,35 @@
 // See multipleOut.frag for how to output frag colors in the shader.
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/Camera.h"
 #include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
 
 class FboMultipleRenderTargetsApp : public App {
   public:
-	void	setup() override;
-	void	update() override;
-	void	draw() override;
+	void setup() override;
+	void update() override;
+	void draw() override;
 
   private:
-	void			renderSceneToFbo();
-	
-	gl::FboRef			mFbo;
-	gl::GlslProgRef		mGlslMultipleOuts;
-	mat4				mRotation;
-	static const int	FBO_WIDTH = 256, FBO_HEIGHT = 256;
+	void renderSceneToFbo();
+
+	gl::FboRef       mFbo;
+	gl::GlslProgRef  mGlslMultipleOuts;
+	mat4             mRotation;
+	static const int FBO_WIDTH = 256, FBO_HEIGHT = 256;
 };
 
 void FboMultipleRenderTargetsApp::setup()
 {
 	auto format = gl::Fbo::Format()
-//			.samples( 4 ) // uncomment this to enable 4x antialiasing
-			.attachment( GL_COLOR_ATTACHMENT0, gl::Texture2d::create( FBO_WIDTH, FBO_HEIGHT ) )
-			.attachment( GL_COLOR_ATTACHMENT1, gl::Texture2d::create( FBO_WIDTH, FBO_HEIGHT ) );
+	                  //			.samples( 4 ) // uncomment this to enable 4x antialiasing
+	                  .attachment( GL_COLOR_ATTACHMENT0, gl::Texture2d::create( FBO_WIDTH, FBO_HEIGHT ) )
+	                  .attachment( GL_COLOR_ATTACHMENT1, gl::Texture2d::create( FBO_WIDTH, FBO_HEIGHT ) );
 	mFbo = gl::Fbo::create( FBO_WIDTH, FBO_HEIGHT, format );
 
 #if defined( CINDER_GL_ES_3 )
@@ -41,7 +41,7 @@ void FboMultipleRenderTargetsApp::setup()
 #endif
 
 	gl::enableDepthRead();
-	gl::enableDepthWrite();	
+	gl::enableDepthWrite();
 
 	mRotation = mat4( 1 );
 }

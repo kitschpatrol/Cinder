@@ -27,7 +27,6 @@
 
 #include <JavaVM/jni.h>
 
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -40,7 +39,6 @@ extern "C" {
 #pragma import on
 #endif
 
-
 /*
  *  Summary:
  *    JavaControl Embedding errors
@@ -50,19 +48,17 @@ extern "C" {
  *    routines contained in this file. Most are self explanatory.
  */
 enum {
-  errJavaEmbeddingNotYetImplemented = -9950,
-  errJavaEmbeddingIntializationFailed = -9962, /* previously errClassConstructorNotFound, errClassNotFound, and errMethodNotFound*/
-  errJavaEmbeddingMissingURL    = -9955, /* previously errMissingURL*/
-  errJavaEmbeddingCouldNotCreateApplet = -9956, /* previously errCouldNotCreateApplet*/
-  errJavaEmbeddingCouldNotEmbedFrame = -9957, /* previously errCouldNotEmbedFrame   */
-  errJavaEmbeddingCouldNotConvertURL = -9958, /* previously errCouldNotConvertURL*/
-  errJavaEmbeddingNotAFrame     = -9959, /* previously errNotAFrame*/
-  errJavaEmbeddingControlNotEmbedded = -9960, /* previously errControlNotEmbedded*/
-  errJavaEmbeddingExceptionThrown = -9961, /* previously errExceptionThrown*/
-  errJavaEmbeddingJavaDisabled  = -9963
+	errJavaEmbeddingNotYetImplemented = -9950,
+	errJavaEmbeddingIntializationFailed = -9962, /* previously errClassConstructorNotFound, errClassNotFound, and errMethodNotFound*/
+	errJavaEmbeddingMissingURL = -9955, /* previously errMissingURL*/
+	errJavaEmbeddingCouldNotCreateApplet = -9956, /* previously errCouldNotCreateApplet*/
+	errJavaEmbeddingCouldNotEmbedFrame = -9957, /* previously errCouldNotEmbedFrame   */
+	errJavaEmbeddingCouldNotConvertURL = -9958, /* previously errCouldNotConvertURL*/
+	errJavaEmbeddingNotAFrame = -9959, /* previously errNotAFrame*/
+	errJavaEmbeddingControlNotEmbedded = -9960, /* previously errControlNotEmbedded*/
+	errJavaEmbeddingExceptionThrown = -9961, /* previously errExceptionThrown*/
+	errJavaEmbeddingJavaDisabled = -9963
 };
-
-
 
 /*
  *  MoveAndClipJavaControl()
@@ -113,15 +109,14 @@ enum {
  */
 EXTERN_API_C( OSStatus )
 MoveAndClipJavaControl(
-  JNIEnv *     env,
-  ControlRef   theControl,
-  int          posX,
-  int          posY,
-  int          clipX,
-  int          clipY,
-  int          clipWidth,
-  int          clipHeight);
-
+    JNIEnv *   env,
+    ControlRef theControl,
+    int        posX,
+    int        posY,
+    int        clipX,
+    int        clipY,
+    int        clipWidth,
+    int        clipHeight );
 
 /*
  *  SizeJavaControl()
@@ -136,11 +131,10 @@ MoveAndClipJavaControl(
  */
 EXTERN_API_C( OSStatus )
 SizeJavaControl(
-  JNIEnv *     env,
-  ControlRef   theControl,
-  int          width,
-  int          height);
-
+    JNIEnv *   env,
+    ControlRef theControl,
+    int        width,
+    int        height );
 
 /*
  *  ShowHideJavaControl()
@@ -166,10 +160,9 @@ SizeJavaControl(
  */
 EXTERN_API_C( OSStatus )
 ShowHideJavaControl(
-  JNIEnv *     env,
-  ControlRef   theControl,
-  Boolean      visible);
-
+    JNIEnv *   env,
+    ControlRef theControl,
+    Boolean    visible );
 
 /*
  *  StopJavaControlAsyncDrawing()
@@ -204,9 +197,8 @@ ShowHideJavaControl(
  */
 EXTERN_API_C( OSStatus )
 StopJavaControlAsyncDrawing(
-  JNIEnv *     env,
-  ControlRef   theControl);
-
+    JNIEnv *   env,
+    ControlRef theControl );
 
 /*
  *  RestartJavaControlAsyncDrawing()
@@ -233,9 +225,8 @@ StopJavaControlAsyncDrawing(
  */
 EXTERN_API_C( OSStatus )
 RestartJavaControlAsyncDrawing(
-  JNIEnv *     env,
-  ControlRef   theControl);
-
+    JNIEnv *   env,
+    ControlRef theControl );
 
 /*
  *  DrawJavaControl()
@@ -267,10 +258,8 @@ RestartJavaControlAsyncDrawing(
  */
 EXTERN_API_C( OSStatus )
 DrawJavaControl(
-  JNIEnv *     env,
-  ControlRef   theControl);
-
-
+    JNIEnv *   env,
+    ControlRef theControl );
 
 /*
    ========================================================================================
@@ -304,10 +293,9 @@ DrawJavaControl(
  */
 EXTERN_API_C( OSStatus )
 GetJavaWindowFromWindow(
-  JNIEnv *    env,
-  WindowRef   inMacWindow,
-  jobject *   outJavaWindow);
-
+    JNIEnv *  env,
+    WindowRef inMacWindow,
+    jobject * outJavaWindow );
 
 /*
  *  GetWindowFromJavaWindow()
@@ -334,10 +322,9 @@ GetJavaWindowFromWindow(
  */
 EXTERN_API_C( OSStatus )
 GetWindowFromJavaWindow(
-  JNIEnv *     env,
-  jobject      inJavaWindow,
-  WindowRef *  outMacWindow);
-
+    JNIEnv *   env,
+    jobject    inJavaWindow,
+    WindowRef *outMacWindow );
 
 /*
  *  GetJavaFrameFromControl()
@@ -365,10 +352,9 @@ GetWindowFromJavaWindow(
  */
 EXTERN_API_C( OSStatus )
 GetJavaFrameFromControl(
-  JNIEnv *     env,
-  ControlRef   inMacControl,
-  jobject *    outJavaFrame);
-
+    JNIEnv *   env,
+    ControlRef inMacControl,
+    jobject *  outJavaFrame );
 
 /*
  *  GetControlFromJavaFrame()
@@ -395,11 +381,9 @@ GetJavaFrameFromControl(
  */
 EXTERN_API_C( OSStatus )
 GetControlFromJavaFrame(
-  JNIEnv *      env,
-  jobject       inJavaFrame,
-  ControlRef *  outMacControl);
-
-
+    JNIEnv *    env,
+    jobject     inJavaFrame,
+    ControlRef *outMacControl );
 
 /*
  *  CreateJavaControl()
@@ -437,14 +421,12 @@ GetControlFromJavaFrame(
  */
 EXTERN_API_C( OSStatus )
 CreateJavaControl(
-  JNIEnv *      env,
-  WindowRef     inNativeWindow,
-  const Rect *  inBounds,
-  jobject       inAppletFrame,
-  Boolean       inVisible,
-  ControlRef *  outControl);
-
-
+    JNIEnv *    env,
+    WindowRef   inNativeWindow,
+    const Rect *inBounds,
+    jobject     inAppletFrame,
+    Boolean     inVisible,
+    ControlRef *outControl );
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off

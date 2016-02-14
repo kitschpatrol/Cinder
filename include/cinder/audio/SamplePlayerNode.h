@@ -27,15 +27,16 @@
 #include "cinder/audio/Source.h"
 #include "cinder/audio/dsp/RingBuffer.h"
 
-#include <thread>
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
+#include <thread>
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
-typedef std::shared_ptr<class SamplePlayerNode>				SamplePlayerNodeRef;
-typedef std::shared_ptr<class BufferPlayerNode>				BufferPlayerNodeRef;
-typedef std::shared_ptr<class FilePlayerNode>				FilePlayerNodeRef;
+typedef std::shared_ptr<class SamplePlayerNode> SamplePlayerNodeRef;
+typedef std::shared_ptr<class BufferPlayerNode> BufferPlayerNodeRef;
+typedef std::shared_ptr<class FilePlayerNode>   FilePlayerNodeRef;
 
 //! \brief Base Node class for sampled audio playback. Can do operations like seek and loop.
 //!
@@ -45,7 +46,6 @@ typedef std::shared_ptr<class FilePlayerNode>				FilePlayerNodeRef;
 class SamplePlayerNode : public InputNode {
   public:
 	virtual ~SamplePlayerNode() {}
-
 	//! Starts playing the sample from the beginning.
 	virtual void start();
 	//! Starts playing the sample at \a when seconds, measured against Context::getNumProcessedSeconds().
@@ -60,20 +60,19 @@ class SamplePlayerNode : public InputNode {
 	//! Seek to read position \a readPositionSeconds,
 	void seekToTime( double positionSeconds );
 	//! Returns the current read position in frames.
-	size_t getReadPosition() const	{ return mReadPos; }
+	size_t getReadPosition() const { return mReadPos; }
 	//! Returns the current read position in seconds.
 	double getReadPositionTime() const;
 	//! Returns the total number of seconds this SamplePlayerNode will play from beginning to end.
 	double getNumSeconds() const;
 	//! Returns the total number of frames this SamplePlayerNode will play from beginning to end.
-	size_t getNumFrames() const	{ return mNumFrames; }
+	size_t getNumFrames() const { return mNumFrames; }
 	//! Returns whether the SamplePlayerNode has reached EOF (end of file). If true, isEnabled() will also return false.
-	bool isEof() const				{ return mIsEof; }
-
+	bool isEof() const { return mIsEof; }
 	//! Sets whether playing continues from beginning after the end is reached (default = false)
-	void setLoopEnabled( bool b = true )	{ mLoop = b; }
+	void setLoopEnabled( bool b = true ) { mLoop = b; }
 	//! Gets whether playing continues from beginning after the end is reached (default = false)
-	bool isLoopEnabled() const			{ return mLoop; }
+	bool isLoopEnabled() const { return mLoop; }
 	//! Sets the begin loop marker in frames (default = 0, max = getNumFrames()).
 	void setLoopBegin( size_t positionFrames );
 	//! Sets the begin loop marker in seconds (default = 0, max = getNumSeconds()).
@@ -83,20 +82,20 @@ class SamplePlayerNode : public InputNode {
 	//! Sets the end loop marker in seconds (default = getNumSeconds(), max = getNumSeconds()).
 	void setLoopEndTime( double positionSeconds );
 	//! Returns the begin loop marker in frames.
-	size_t getLoopBegin() const	{ return mLoopBegin; }
+	size_t getLoopBegin() const { return mLoopBegin; }
 	//! Returns the begin loop marker in seconds.
 	double getLoopBeginTime() const;
 	//! Returns the end loop marker in frames.
-	size_t getLoopEnd() const	{ return mLoopEnd;	}
+	size_t getLoopEnd() const { return mLoopEnd; }
 	//! Returns the end loop marker in seconds.
 	double getLoopEndTime() const;
 
   protected:
 	SamplePlayerNode( const Format &format = Format() );
 
-	size_t				mNumFrames;
+	size_t              mNumFrames;
 	std::atomic<size_t> mReadPos, mLoopBegin, mLoopEnd;
-	std::atomic<bool>	mLoop, mIsEof;
+	std::atomic<bool>   mLoop, mIsEof;
 };
 
 //! Buffer-based SamplePlayerNode, where all samples are loaded into memory before playback.
@@ -108,7 +107,6 @@ class BufferPlayerNode : public SamplePlayerNode {
 	BufferPlayerNode( const BufferRef &buffer, const Format &format = Format() );
 
 	virtual ~BufferPlayerNode() {}
-
 	void seek( size_t readPositionFrames ) override;
 
 	//! Loads and stores a reference to a Buffer created from the entire contents of \a sourceFile. Resets the loop points to 0:getNumFrames()).
@@ -116,11 +114,10 @@ class BufferPlayerNode : public SamplePlayerNode {
 	//! Sets the current Buffer. Safe to do while enabled. Resets the loop points to 0:getNumFrames()).
 	void setBuffer( const BufferRef &buffer );
 	//! returns a shared_ptr to the current Buffer.
-	const BufferRef& getBuffer() const	{ return mBuffer; }
-
+	const BufferRef &getBuffer() const { return mBuffer; }
   protected:
-	void enableProcessing()			override;
-	void process( Buffer *buffer )	override;
+	void enableProcessing() override;
+	void process( Buffer *buffer ) override;
 
 	BufferRef mBuffer;
 };
@@ -138,23 +135,21 @@ class FilePlayerNode : public SamplePlayerNode {
 	void seek( size_t readPositionFrames ) override;
 
 	//! Returns whether reading occurs asynchronously (default is false). If true, file reading is done from an internal thread, if false it is done directly on the audio thread.
-	bool isReadAsync() const	{ return mIsReadAsync; }
-
+	bool isReadAsync() const { return mIsReadAsync; }
 	//! \note \a sourceFile's samplerate is forced to match this Node's Context. Resets the loop points to 0:getNumFrames()).
 	void setSourceFile( const SourceFileRef &sourceFile );
-	const SourceFileRef& getSourceFile() const	{ return mSourceFile; }
-
+	const SourceFileRef &getSourceFile() const { return mSourceFile; }
 	//! Returns the frame of the last buffer underrun or 0 if none since the last time this method was called.
 	uint64_t getLastUnderrun();
 	//! Returns the frame of the last buffer overrun or 0 if none since the last time this method was called.
 	uint64_t getLastOverrun();
 
   protected:
-	void initialize()				override;
-	void uninitialize()				override;
-	void enableProcessing()			override;
-	void disableProcessing()		override;
-	void process( Buffer *buffer )	override;
+	void initialize() override;
+	void uninitialize() override;
+	void enableProcessing() override;
+	void disableProcessing() override;
+	void process( Buffer *buffer ) override;
 
 	void readAsyncImpl();
 	void readImpl();
@@ -162,17 +157,17 @@ class FilePlayerNode : public SamplePlayerNode {
 	void stopImpl();
 	void destroyReadThreadImpl();
 
-	std::vector<dsp::RingBuffer>				mRingBuffers;	// used to transfer samples from io to audio thread, one ring buffer per channel
-	BufferDynamic								mIoBuffer;		// used to read samples from the file on read thread, resizeable so the ringbuffer can be filled
+	std::vector<dsp::RingBuffer> mRingBuffers; // used to transfer samples from io to audio thread, one ring buffer per channel
+	BufferDynamic                mIoBuffer; // used to read samples from the file on read thread, resizeable so the ringbuffer can be filled
 
-	SourceFileRef								mSourceFile;
-	size_t										mBufferFramesThreshold, mRingBufferPaddingFactor;
-	std::atomic<uint64_t>						mLastUnderrun, mLastOverrun;
+	SourceFileRef         mSourceFile;
+	size_t                mBufferFramesThreshold, mRingBufferPaddingFactor;
+	std::atomic<uint64_t> mLastUnderrun, mLastOverrun;
 
-	std::unique_ptr<std::thread>				mReadThread;
-	std::mutex									mAsyncReadMutex;
-	std::condition_variable						mIssueAsyncReadCond;
-	bool										mIsReadAsync, mAsyncReadShouldQuit;
+	std::unique_ptr<std::thread> mReadThread;
+	std::mutex                   mAsyncReadMutex;
+	std::condition_variable      mIssueAsyncReadCond;
+	bool                         mIsReadAsync, mAsyncReadShouldQuit;
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

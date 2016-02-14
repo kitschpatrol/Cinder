@@ -22,21 +22,23 @@
 */
 
 #include "cinder/app/msw/RendererImpl2dGdi.h"
+#include "cinder/Log.h"
 #include "cinder/app/AppBase.h"
 #include "cinder/msw/CinderMsw.h"
 #include "cinder/msw/CinderMswGdiPlus.h"
-#include "cinder/Log.h"
 #include <windowsx.h>
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 RendererImpl2dGdi::RendererImpl2dGdi( bool doubleBuffer, bool paintEvents )
-	: mDoubleBuffer( doubleBuffer ), mPaintEvents( paintEvents ), mDoubleBufferBitmap( 0 )
+    : mDoubleBuffer( doubleBuffer ), mPaintEvents( paintEvents ), mDoubleBufferBitmap( 0 )
 {
 }
 
 void RendererImpl2dGdi::defaultResize() const
-{}
+{
+}
 
 void RendererImpl2dGdi::swapBuffers() const
 {
@@ -45,7 +47,7 @@ void RendererImpl2dGdi::swapBuffers() const
 
 		// Always select the old bitmap back into the device context
 		::SelectObject( mDoubleBufferDc, mDoubleBufferOldBitmap );
-		::DeleteDC( mDoubleBufferDc );		
+		::DeleteDC( mDoubleBufferDc );
 	}
 
 	if( mPaintEvents )
@@ -60,22 +62,22 @@ void RendererImpl2dGdi::makeCurrentContext( bool force )
 		mPaintDc = ::BeginPaint( mWnd, &mPaintStruct );
 	else
 		mPaintDc = ::GetDC( mWnd );
-	
+
 	if( mDoubleBuffer ) {
 		::RECT clientRect;
 		::GetClientRect( mWnd, &clientRect );
 		ivec2 windowSize( clientRect.right - clientRect.left, clientRect.bottom - clientRect.top );
 
 		mDoubleBufferDc = ::CreateCompatibleDC( mPaintDc );
-		if(( mDoubleBufferBitmap == 0 ) || ( mDoubleBufferBitmapSize != windowSize )) {
+		if( ( mDoubleBufferBitmap == 0 ) || ( mDoubleBufferBitmapSize != windowSize ) ) {
 			if( mDoubleBufferBitmap ) {
 				::DeleteObject( mDoubleBufferBitmap );
 			}
-			
+
 			mDoubleBufferBitmap = ::CreateCompatibleBitmap( mPaintDc, windowSize.x, windowSize.y );
 			mDoubleBufferBitmapSize = windowSize;
 		}
-		mDoubleBufferOldBitmap = (::HBITMAP)::SelectObject( mDoubleBufferDc, mDoubleBufferBitmap );
+		mDoubleBufferOldBitmap = (::HBITMAP )::SelectObject( mDoubleBufferDc, mDoubleBufferBitmap );
 	}
 }
 
@@ -91,12 +93,12 @@ Surface8u RendererImpl2dGdi::copyWindowContents( const Area &area )
 	// will be of the foreground window (presumably your IDE) instead
 	::RECT clientRect;
 	::GetClientRect( mWnd, &clientRect );
-	Area clippedArea = area.getClipBy( Area( clientRect.left, clientRect.top, clientRect.right, clientRect.bottom ) );
+	Area  clippedArea = area.getClipBy( Area( clientRect.left, clientRect.top, clientRect.right, clientRect.bottom ) );
 	::HDC hdc = ::GetDC( mWnd );
 	::HDC memDC = ::CreateCompatibleDC( hdc );
 
 	::HBITMAP copyBitmap = ::CreateCompatibleBitmap( hdc, clippedArea.getWidth(), clippedArea.getHeight() );
-	if( ! copyBitmap ) {
+	if( !copyBitmap ) {
 		CI_LOG_E( "::CreateCompatibleBitmap() failed on copyWindowContents()" );
 		return Surface8u();
 	}
@@ -105,13 +107,13 @@ Surface8u RendererImpl2dGdi::copyWindowContents( const Area &area )
 
 	// Copy the bits to our bitmap
 	::HGDIOBJ oldBitmap = ::SelectObject( memDC, copyBitmap );
-	if( ! ::BitBlt( memDC, 0, 0, clippedArea.getWidth(), clippedArea.getHeight(), hdc, clippedArea.x1, clippedArea.y1, SRCCOPY ) ){
+	if( !::BitBlt( memDC, 0, 0, clippedArea.getWidth(), clippedArea.getHeight(), hdc, clippedArea.x1, clippedArea.y1, SRCCOPY ) ) {
 		CI_LOG_E( "BitBlt() failed on copyWindowContents()" );
 		return Surface8u();
 	}
 	::SelectObject( memDC, oldBitmap );
-	
-	auto tempSurface = msw::convertHBitmap( copyBitmap );
+
+	auto      tempSurface = msw::convertHBitmap( copyBitmap );
 	Surface8u result( *tempSurface );
 
 	::DeleteObject( copyBitmap );
@@ -121,5 +123,5 @@ Surface8u RendererImpl2dGdi::copyWindowContents( const Area &area )
 
 	return result;
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

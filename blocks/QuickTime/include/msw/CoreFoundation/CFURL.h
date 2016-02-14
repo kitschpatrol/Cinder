@@ -2,24 +2,24 @@
 	Copyright (c) 1998-2003, Apple, Inc. All rights reserved.
 */
 
-#if !defined(__COREFOUNDATION_CFURL__)
+#if !defined( __COREFOUNDATION_CFURL__ )
 #define __COREFOUNDATION_CFURL__ 1
 
 #include <CoreFoundation/CFBase.h>
 #include <CoreFoundation/CFData.h>
 #include <CoreFoundation/CFString.h>
 
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 extern "C" {
 #endif
 
 typedef enum {
-    kCFURLPOSIXPathStyle = 0,
-    kCFURLHFSPathStyle,
-    kCFURLWindowsPathStyle
+	kCFURLPOSIXPathStyle = 0,
+	kCFURLHFSPathStyle,
+	kCFURLWindowsPathStyle
 } CFURLPathStyle;
-    
-typedef const struct __CFURL * CFURLRef;
+
+typedef const struct __CFURL *CFURLRef;
 
 /* CFURLs are composed of two fundamental pieces - their string, and a */
 /* (possibly NULL) base URL.  A relative URL is one in which the string */
@@ -36,23 +36,23 @@ typedef const struct __CFURL * CFURLRef;
 /* absolute form via CFURLCopyAbsoluteURL(), then compare the absolute forms. */
 
 CF_EXPORT
-CFTypeID CFURLGetTypeID(void);
+CFTypeID CFURLGetTypeID( void );
 
 /* encoding will be used both to interpret the bytes of URLBytes, and to */
 /* interpret any percent-escapes within the bytes. */
 CF_EXPORT
-CFURLRef CFURLCreateWithBytes(CFAllocatorRef allocator, const UInt8 *URLBytes, CFIndex length, CFStringEncoding encoding, CFURLRef baseURL);
+CFURLRef CFURLCreateWithBytes( CFAllocatorRef allocator, const UInt8 *URLBytes, CFIndex length, CFStringEncoding encoding, CFURLRef baseURL );
 
 /* Escapes any character that is not 7-bit ASCII with the byte-code */
 /* for the given encoding.  If escapeWhitespace is true, whitespace */
 /* characters (' ', '\t', '\r', '\n') will be escaped also (desirable */
 /* if embedding the URL into a larger text stream like HTML) */
 CF_EXPORT
-CFDataRef CFURLCreateData(CFAllocatorRef allocator, CFURLRef url, CFStringEncoding encoding, Boolean escapeWhitespace);
+CFDataRef CFURLCreateData( CFAllocatorRef allocator, CFURLRef url, CFStringEncoding encoding, Boolean escapeWhitespace );
 
 /* Any escape sequences in URLString will be interpreted via UTF-8. */
 CF_EXPORT
-CFURLRef CFURLCreateWithString(CFAllocatorRef allocator, CFStringRef URLString, CFURLRef baseURL);
+CFURLRef CFURLCreateWithString( CFAllocatorRef allocator, CFStringRef URLString, CFURLRef baseURL );
 
 #if MAC_OS_X_VERSION_10_3 <= MAC_OS_X_VERSION_MAX_ALLOWED
 
@@ -67,7 +67,7 @@ CFURLRef CFURLCreateWithString(CFAllocatorRef allocator, CFStringRef URLString, 
 /* final URL's path, and if the relative portion contains only */
 /* resource specifier pieces (query, parameters, and fragment), then */
 /* the last path component of the base URL will not be deleted  */
-CFURLRef CFURLCreateAbsoluteURLWithBytes(CFAllocatorRef alloc, const UInt8 *relativeURLBytes, CFIndex length, CFStringEncoding encoding, CFURLRef baseURL, Boolean useCompatibilityMode) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
+CFURLRef CFURLCreateAbsoluteURLWithBytes( CFAllocatorRef alloc, const UInt8 *relativeURLBytes, CFIndex length, CFStringEncoding encoding, CFURLRef baseURL, Boolean useCompatibilityMode ) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
 #endif
 
 /* filePath should be the URL's path expressed as a path of the type */
@@ -77,17 +77,17 @@ CFURLRef CFURLCreateAbsoluteURLWithBytes(CFAllocatorRef alloc, const UInt8 *rela
 /* treated as a directory path when resolving against relative path */
 /* components */
 CF_EXPORT
-CFURLRef CFURLCreateWithFileSystemPath(CFAllocatorRef allocator, CFStringRef filePath, CFURLPathStyle pathStyle, Boolean isDirectory);
+CFURLRef CFURLCreateWithFileSystemPath( CFAllocatorRef allocator, CFStringRef filePath, CFURLPathStyle pathStyle, Boolean isDirectory );
 
 CF_EXPORT
-CFURLRef CFURLCreateFromFileSystemRepresentation(CFAllocatorRef allocator, const UInt8 *buffer, CFIndex bufLen, Boolean isDirectory);
+CFURLRef CFURLCreateFromFileSystemRepresentation( CFAllocatorRef allocator, const UInt8 *buffer, CFIndex bufLen, Boolean isDirectory );
 
 CF_EXPORT
-CFURLRef CFURLCreateWithFileSystemPathRelativeToBase(CFAllocatorRef allocator, CFStringRef filePath, CFURLPathStyle pathStyle, Boolean isDirectory, CFURLRef baseURL); 
+CFURLRef CFURLCreateWithFileSystemPathRelativeToBase( CFAllocatorRef allocator, CFStringRef filePath, CFURLPathStyle pathStyle, Boolean isDirectory, CFURLRef baseURL );
 
 CF_EXPORT
-CFURLRef CFURLCreateFromFileSystemRepresentationRelativeToBase(CFAllocatorRef allocator, const UInt8 *buffer, CFIndex bufLen, Boolean isDirectory, CFURLRef baseURL);
-                                                                         
+CFURLRef CFURLCreateFromFileSystemRepresentationRelativeToBase( CFAllocatorRef allocator, const UInt8 *buffer, CFIndex bufLen, Boolean isDirectory, CFURLRef baseURL );
+
 /* Fills buffer with the file system's native representation of */
 /* url's path. No more than maxBufLen bytes are written to buffer. */
 /* The buffer should be at least the maximum path length for */
@@ -96,19 +96,19 @@ CFURLRef CFURLCreateFromFileSystemRepresentationRelativeToBase(CFAllocatorRef al
 /* portion is resolved against its base before the path is computed. */
 /* Returns success or failure. */
 CF_EXPORT
-Boolean CFURLGetFileSystemRepresentation(CFURLRef url, Boolean resolveAgainstBase, UInt8 *buffer, CFIndex maxBufLen);
+Boolean CFURLGetFileSystemRepresentation( CFURLRef url, Boolean resolveAgainstBase, UInt8 *buffer, CFIndex maxBufLen );
 
 /* Creates a new URL by resolving the relative portion of relativeURL against its base. */
 CF_EXPORT
-CFURLRef CFURLCopyAbsoluteURL(CFURLRef relativeURL);
+CFURLRef CFURLCopyAbsoluteURL( CFURLRef relativeURL );
 
 /* Returns the URL's string. */
 CF_EXPORT
-CFStringRef CFURLGetString(CFURLRef anURL);
+CFStringRef CFURLGetString( CFURLRef anURL );
 
 /* Returns the base URL if it exists */
 CF_EXPORT
-CFURLRef CFURLGetBaseURL(CFURLRef anURL);
+CFURLRef CFURLGetBaseURL( CFURLRef anURL );
 
 /*
 All URLs can be broken into two pieces - the scheme (preceding the
@@ -171,16 +171,16 @@ to request that none be.
 
 /* Returns true if anURL conforms to RFC 1808 */
 CF_EXPORT
-Boolean CFURLCanBeDecomposed(CFURLRef anURL); 
+Boolean CFURLCanBeDecomposed( CFURLRef anURL );
 
 /* The next several methods leave any percent escape sequences intact */
 
 CF_EXPORT
-CFStringRef CFURLCopyScheme(CFURLRef anURL);
+CFStringRef CFURLCopyScheme( CFURLRef anURL );
 
 /* NULL if CFURLCanBeDecomposed(anURL) is false */
 CF_EXPORT
-CFStringRef CFURLCopyNetLocation(CFURLRef anURL); 
+CFStringRef CFURLCopyNetLocation( CFURLRef anURL );
 
 /* NULL if CFURLCanBeDecomposed(anURL) is false; also does not resolve the URL */
 /* against its base.  See also CFURLCopyAbsoluteURL().  Note that, strictly */
@@ -194,35 +194,35 @@ CFStringRef CFURLCopyNetLocation(CFURLRef anURL);
 /* given path style.  All percent escape sequences are replaced.  The URL is not */
 /* resolved against its base before computing the path. */
 CF_EXPORT
-CFStringRef CFURLCopyPath(CFURLRef anURL);
+CFStringRef CFURLCopyPath( CFURLRef anURL );
 
 CF_EXPORT
-CFStringRef CFURLCopyStrictPath(CFURLRef anURL, Boolean *isAbsolute);
+CFStringRef CFURLCopyStrictPath( CFURLRef anURL, Boolean *isAbsolute );
 
 CF_EXPORT
-CFStringRef CFURLCopyFileSystemPath(CFURLRef anURL, CFURLPathStyle pathStyle);
+CFStringRef CFURLCopyFileSystemPath( CFURLRef anURL, CFURLPathStyle pathStyle );
 
 /* Returns whether anURL's path represents a directory */
 /* (true returned) or a simple file (false returned) */
 CF_EXPORT
-Boolean CFURLHasDirectoryPath(CFURLRef anURL);
+Boolean CFURLHasDirectoryPath( CFURLRef anURL );
 
 /* Any additional resource specifiers after the path.  For URLs */
 /* that cannot be decomposed, this is everything except the scheme itself. */
 CF_EXPORT
-CFStringRef CFURLCopyResourceSpecifier(CFURLRef anURL); 
+CFStringRef CFURLCopyResourceSpecifier( CFURLRef anURL );
 
 CF_EXPORT
-CFStringRef CFURLCopyHostName(CFURLRef anURL);
+CFStringRef CFURLCopyHostName( CFURLRef anURL );
 
 CF_EXPORT
-SInt32 CFURLGetPortNumber(CFURLRef anURL); /* Returns -1 if no port number is specified */
+SInt32 CFURLGetPortNumber( CFURLRef anURL ); /* Returns -1 if no port number is specified */
 
 CF_EXPORT
-CFStringRef CFURLCopyUserName(CFURLRef anURL);
+CFStringRef CFURLCopyUserName( CFURLRef anURL );
 
 CF_EXPORT
-CFStringRef CFURLCopyPassword(CFURLRef anURL);
+CFStringRef CFURLCopyPassword( CFURLRef anURL );
 
 /* These remove all percent escape sequences except those for */
 /* characters in charactersToLeaveEscaped.  If charactersToLeaveEscaped */
@@ -230,45 +230,45 @@ CFStringRef CFURLCopyPassword(CFURLRef anURL);
 /* corresponding characters.  If charactersToLeaveEscaped is NULL, */
 /* then no escape sequences are removed at all */
 CF_EXPORT
-CFStringRef CFURLCopyParameterString(CFURLRef anURL, CFStringRef charactersToLeaveEscaped);
+CFStringRef CFURLCopyParameterString( CFURLRef anURL, CFStringRef charactersToLeaveEscaped );
 
 CF_EXPORT
-CFStringRef CFURLCopyQueryString(CFURLRef anURL, CFStringRef charactersToLeaveEscaped);
+CFStringRef CFURLCopyQueryString( CFURLRef anURL, CFStringRef charactersToLeaveEscaped );
 
 CF_EXPORT
-CFStringRef CFURLCopyFragment(CFURLRef anURL, CFStringRef charactersToLeaveEscaped);
+CFStringRef CFURLCopyFragment( CFURLRef anURL, CFStringRef charactersToLeaveEscaped );
 
 CF_EXPORT
-CFStringRef CFURLCopyLastPathComponent(CFURLRef url);
+CFStringRef CFURLCopyLastPathComponent( CFURLRef url );
 
 CF_EXPORT
-CFStringRef CFURLCopyPathExtension(CFURLRef url);
+CFStringRef CFURLCopyPathExtension( CFURLRef url );
 
 /* These functions all treat the base URL of the supplied url as */
 /* invariant.  In other words, the URL returned will always have */
 /* the same base as the URL supplied as an argument. */
 
 CF_EXPORT
-CFURLRef CFURLCreateCopyAppendingPathComponent(CFAllocatorRef allocator, CFURLRef url, CFStringRef pathComponent, Boolean isDirectory);
+CFURLRef CFURLCreateCopyAppendingPathComponent( CFAllocatorRef allocator, CFURLRef url, CFStringRef pathComponent, Boolean isDirectory );
 
 CF_EXPORT
-CFURLRef CFURLCreateCopyDeletingLastPathComponent(CFAllocatorRef allocator, CFURLRef url);
+CFURLRef CFURLCreateCopyDeletingLastPathComponent( CFAllocatorRef allocator, CFURLRef url );
 
 CF_EXPORT
-CFURLRef CFURLCreateCopyAppendingPathExtension(CFAllocatorRef allocator, CFURLRef url, CFStringRef extension);
+CFURLRef CFURLCreateCopyAppendingPathExtension( CFAllocatorRef allocator, CFURLRef url, CFStringRef extension );
 
 CF_EXPORT
-CFURLRef CFURLCreateCopyDeletingPathExtension(CFAllocatorRef allocator, CFURLRef url);
+CFURLRef CFURLCreateCopyDeletingPathExtension( CFAllocatorRef allocator, CFURLRef url );
 
 #if MAC_OS_X_VERSION_10_3 <= MAC_OS_X_VERSION_MAX_ALLOWED
 /* Fills buffer with the bytes for url, returning the number of bytes */
 /* filled.  If buffer is of insufficient size, returns -1 and no bytes */
 /* are placed in buffer.  If buffer is NULL, the needed length is */
-/* computed and returned.  The returned bytes are the original bytes */ 
+/* computed and returned.  The returned bytes are the original bytes */
 /* from which the URL was created; if the URL was created from a */
 /* string, the bytes will be the bytes of the string encoded via UTF-8  */
 CF_EXPORT
-CFIndex CFURLGetBytes(CFURLRef url, UInt8 *buffer, CFIndex bufferLength) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
+CFIndex CFURLGetBytes( CFURLRef url, UInt8 *buffer, CFIndex bufferLength ) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
 
 typedef enum {
 	kCFURLComponentScheme = 1,
@@ -285,7 +285,7 @@ typedef enum {
 	kCFURLComponentQuery = 11,
 	kCFURLComponentFragment = 12
 } CFURLComponentType;
- 
+
 /* 
 Gets the  range of the requested component in the bytes of url, as
 returned by CFURLGetBytes().  This range is only good for use in the
@@ -350,7 +350,7 @@ query               (54, 5)             (53, 7)
 fragment            (60, 8)             (59, 9)
 */
 CF_EXPORT
-CFRange CFURLGetByteRangeForComponent(CFURLRef url, CFURLComponentType component, CFRange *rangeIncludingSeparators) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
+CFRange CFURLGetByteRangeForComponent( CFURLRef url, CFURLComponentType component, CFRange *rangeIncludingSeparators ) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
 #endif
 
 /* Returns a string with any percent escape sequences that do NOT */
@@ -361,12 +361,12 @@ CFRange CFURLGetByteRangeForComponent(CFURLRef url, CFURLComponentType component
 /* replaced, or the empty string (CFSTR("")) to request that all percent */
 /* escapes be replaced.  Uses UTF8 to interpret percent escapes. */
 CF_EXPORT
-CFStringRef CFURLCreateStringByReplacingPercentEscapes(CFAllocatorRef allocator, CFStringRef originalString, CFStringRef charactersToLeaveEscaped);
+CFStringRef CFURLCreateStringByReplacingPercentEscapes( CFAllocatorRef allocator, CFStringRef originalString, CFStringRef charactersToLeaveEscaped );
 
 #if MAC_OS_X_VERSION_10_3 <= MAC_OS_X_VERSION_MAX_ALLOWED
 /* As above, but allows you to specify the encoding to use when interpreting percent escapes */
 CF_EXPORT
-CFStringRef CFURLCreateStringByReplacingPercentEscapesUsingEncoding(CFAllocatorRef allocator, CFStringRef origString, CFStringRef charsToLeaveEscaped, CFStringEncoding encoding) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
+CFStringRef CFURLCreateStringByReplacingPercentEscapesUsingEncoding( CFAllocatorRef allocator, CFStringRef origString, CFStringRef charsToLeaveEscaped, CFStringEncoding encoding ) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
 #endif
 
 /* Creates a copy or originalString, replacing certain characters with */
@@ -383,21 +383,18 @@ CFStringRef CFURLCreateStringByReplacingPercentEscapesUsingEncoding(CFAllocatorR
 
 /* newString = CFURLCreateStringByAddingPercentEscapes(NULL, origString, NULL, NULL, kCFStringEncodingUTF8); */
 CF_EXPORT
-CFStringRef CFURLCreateStringByAddingPercentEscapes(CFAllocatorRef allocator, CFStringRef originalString, CFStringRef charactersToLeaveUnescaped, CFStringRef legalURLCharactersToBeEscaped, CFStringEncoding encoding);
-
+CFStringRef CFURLCreateStringByAddingPercentEscapes( CFAllocatorRef allocator, CFStringRef originalString, CFStringRef charactersToLeaveUnescaped, CFStringRef legalURLCharactersToBeEscaped, CFStringEncoding encoding );
 
 struct FSRef;
 
 CF_EXPORT
-CFURLRef CFURLCreateFromFSRef(CFAllocatorRef allocator, const struct FSRef *fsRef);
+CFURLRef CFURLCreateFromFSRef( CFAllocatorRef allocator, const struct FSRef *fsRef );
 
 CF_EXPORT
-Boolean CFURLGetFSRef(CFURLRef url, struct FSRef *fsRef);
+Boolean CFURLGetFSRef( CFURLRef url, struct FSRef *fsRef );
 
-
-#if defined(__cplusplus)
+#if defined( __cplusplus )
 }
 #endif
 
 #endif /* !__COREFOUNDATION_CFURL__ */
-

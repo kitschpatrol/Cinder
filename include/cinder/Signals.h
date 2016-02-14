@@ -30,11 +30,12 @@
 #include "cinder/Noncopyable.h"
 
 #include <functional>
-#include <memory>
 #include <map>
+#include <memory>
 #include <vector>
 
-namespace cinder { namespace signals {
+namespace cinder {
+namespace signals {
 
 namespace detail {
 
@@ -42,8 +43,9 @@ namespace detail {
 struct SignalLinkBase {
   public:
 	SignalLinkBase()
-		: mRefCount( 1 ), mEnabled( true )
-	{}
+	    : mRefCount( 1 ), mEnabled( true )
+	{
+	}
 	virtual ~SignalLinkBase()
 	{
 		CI_ASSERT( mRefCount == 0 );
@@ -60,7 +62,7 @@ struct SignalLinkBase {
 	void decrRef()
 	{
 		mRefCount--;
-		if( ! mRefCount )
+		if( !mRefCount )
 			delete this;
 		else
 			CI_ASSERT( mRefCount > 0 );
@@ -87,8 +89,8 @@ struct SignalLinkBase {
 	}
 
   private:
-	int		mRefCount;
-	bool	mEnabled;
+	int  mRefCount;
+	bool mEnabled;
 };
 
 //! Base Signal class, which provides a concrete type that can be stored by the Disconnector
@@ -107,7 +109,7 @@ struct Disconnector : private Noncopyable {
 	bool disconnect( SignalLinkBase *link, int priority );
 
   private:
-	SignalBase*	mSignal;
+	SignalBase *mSignal;
 };
 
 } // namespace detail
@@ -135,9 +137,9 @@ class Connection {
 	bool isEnabled() const;
 
   private:
-	std::weak_ptr<detail::Disconnector>		mDisconnector;
-	detail::SignalLinkBase*					mLink;
-	int										mPriority;
+	std::weak_ptr<detail::Disconnector> mDisconnector;
+	detail::SignalLinkBase *            mLink;
+	int                                 mPriority;
 };
 
 //! ScopedConnection can be captured from Signal::connect() to limit the connection lifetime to the current scope, after which Connection::disconnect() will be called.
@@ -148,60 +150,64 @@ class ScopedConnection : public Connection, private Noncopyable {
 	ScopedConnection( const Connection &other );
 	ScopedConnection( ScopedConnection &&other );
 	ScopedConnection( Connection &&other );
-	ScopedConnection& operator=( const Connection &rhs );
-	ScopedConnection& operator=( ScopedConnection &&rhs );
+	ScopedConnection &operator=( const Connection &rhs );
+	ScopedConnection &operator=( ScopedConnection &&rhs );
 };
 
 namespace detail {
 
 //! The template implementation for callback list.
-template<typename, typename> class	SignalProto;   // undefined
+template <typename, typename>
+class SignalProto; // undefined
 
 //! Invokes signal handlers differently depending on return type.
-template<typename, typename> struct	CollectorInvocation;
+template <typename, typename>
+struct CollectorInvocation;
 
 //! Returns the result of the last signal handler from a signal emission.
-template<typename ResultT>
+template <typename ResultT>
 struct CollectorLast {
 	typedef ResultT CollectorResult;
 
-	explicit CollectorLast() : mLast()	{}
+	explicit CollectorLast()
+	    : mLast() {}
+	inline bool operator()( ResultT r )
+	{
+		mLast = r;
+		return true;
+	}
 
-	inline bool operator()( ResultT r )    { mLast = r; return true; }
-
-	CollectorResult getResult() const        { return mLast; }
-private:
+	CollectorResult getResult() const { return mLast; }
+  private:
 	ResultT mLast;
 };
 
 //! Implements the default signal handler collection behaviour.
-template<typename ResultT>
+template <typename ResultT>
 struct CollectorDefault : CollectorLast<ResultT> {
 };
 
 //! CollectorDefault specialisation for signals with void return type.
-template<>
+template <>
 struct CollectorDefault<void> {
 	typedef void CollectorResult;
 
-	void getResult() const		{}
-	inline bool operator()()	{ return true; }
+	void        getResult() const {}
+	inline bool operator()() { return true; }
 };
 
 //! CollectorInvocation specialisation for regular signals.
-template<class Collector, class R, class... Args>
-struct CollectorInvocation<Collector, R ( Args... )> : public SignalBase {
-
-	bool invoke( Collector &collector, const std::function<R ( Args... )> &callback, Args... args )
+template <class Collector, class R, class... Args>
+struct CollectorInvocation<Collector, R( Args... )> : public SignalBase {
+	bool invoke( Collector &collector, const std::function<R( Args... )> &callback, Args... args )
 	{
 		return collector( callback( args... ) );
 	}
 };
 
 //! CollectorInvocation specialisation for signals with void return type.
-template<class Collector, class... Args>
+template <class Collector, class... Args>
 struct CollectorInvocation<Collector, void( Args... )> : public SignalBase {
-
 	bool invoke( Collector &collector, const std::function<void( Args... )> &callback, Args... args )
 	{
 		callback( args... );
@@ -210,18 +216,19 @@ struct CollectorInvocation<Collector, void( Args... )> : public SignalBase {
 };
 
 //! SignalProto template, the parent class of Signal, specialised for the callback signature and collector.
-template<class Collector, class R, class... Args>
-class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collector, R ( Args... )> {
+template <class Collector, class R, class... Args>
+class SignalProto<R( Args... ), Collector> : private CollectorInvocation<Collector, R( Args... )> {
   protected:
-	typedef std::function<R ( Args... )>		CallbackFn;
-	typedef typename CallbackFn::result_type	Result;
-	typedef typename Collector::CollectorResult	CollectorResult;
+	typedef std::function<R( Args... )>         CallbackFn;
+	typedef typename CallbackFn::result_type    Result;
+	typedef typename Collector::CollectorResult CollectorResult;
 
   public:
 	//! Constructs an empty SignalProto
 	SignalProto()
-		: mDisconnector( new Disconnector( this ) )
-	{}
+	    : mDisconnector( new Disconnector( this ) )
+	{
+	}
 
 	//! Destructor releases all resources associated with this signal.
 	~SignalProto()
@@ -255,7 +262,7 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 	}
 
 	//! Emit a signal, i.e. invoke all its callbacks and collect return types with Collector. \return the CollectorResult from the collector.
-	CollectorResult	emit( Args... args )
+	CollectorResult emit( Args... args )
 	{
 		Collector collector;
 		emit( collector, args... );
@@ -272,7 +279,7 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 			do {
 				if( link->mCallbackFn && link->isEnabled() ) {
 					continueEmission = this->invoke( collector, link->mCallbackFn, args... );
-					if( ! continueEmission ) {
+					if( !continueEmission ) {
 						break;
 					}
 				}
@@ -282,12 +289,11 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 
 				link->incrRef();
 				old->decrRef();
-			}
-			while( link != lp.second );
-			
+			} while( link != lp.second );
+
 			link->decrRef();
 
-			if( ! continueEmission )
+			if( !continueEmission )
 				break;
 		}
 	}
@@ -305,20 +311,19 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 
 				SignalLink *old = link;
 				link = old->mNext;
-			}
-			while( link != lp.second );
+			} while( link != lp.second );
 		}
 
 		return count;
 	}
 
   private:
-
 	//! implements a doubly-linked ring with ref-counted nodes containing the signal handlers.
 	struct SignalLink : public SignalLinkBase {
 		explicit SignalLink( const CallbackFn &callback )
-			: mNext( nullptr ), mPrev( nullptr ), mCallbackFn( callback )
-		{}
+		    : mNext( nullptr ), mPrev( nullptr ), mCallbackFn( callback )
+		{
+		}
 
 		void unlink()
 		{
@@ -332,7 +337,7 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 			// leave intact ->mNext, ->mPrev for stale iterators
 		}
 
-		SignalLink* addBefore( const CallbackFn &callback )
+		SignalLink *addBefore( const CallbackFn &callback )
 		{
 			SignalLink *link = new SignalLink( callback );
 
@@ -347,13 +352,13 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 		bool deactivate( const CallbackFn &callback )
 		{
 			if( callback == mCallbackFn ) {
-				mCallbackFn = nullptr;	// deactivate static head
+				mCallbackFn = nullptr; // deactivate static head
 				return true;
 			}
 
 			for( SignalLink *link = this->mNext ? this->mNext : this; link != this; link = link->mNext ) {
 				if( callback == link->function ) {
-					link->unlink();		// deactivate and unlink sibling
+					link->unlink(); // deactivate and unlink sibling
 					return true;
 				}
 			}
@@ -364,16 +369,16 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 		{
 			for( SignalLink *link = this->mNext ? this->mNext : this; link != this; link = link->mNext ) {
 				if( sibling == link ) {
-					link->unlink();		// deactivate and unlink sibling
+					link->unlink(); // deactivate and unlink sibling
 					return true;
 				}
 			}
 			return false;
 		}
 
-		SignalLink*		mNext;
-		SignalLink*		mPrev;
-		CallbackFn		mCallbackFn;
+		SignalLink *mNext;
+		SignalLink *mPrev;
+		CallbackFn  mCallbackFn;
 	};
 
 	bool disconnect( SignalLinkBase *link, int priority ) override
@@ -386,7 +391,7 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 	}
 
 	//! returns the head link for this priority group
-	SignalLink* ensureLinkGroup( int priority )
+	SignalLink *ensureLinkGroup( int priority )
 	{
 		auto it = mLinks.find( priority );
 		if( it != mLinks.end() )
@@ -402,8 +407,8 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 		}
 	}
 
-	std::map<int, SignalLink*, std::greater<int> >	mLinks;			// groups of callback nodes, which are stored in a reference counted linked list. Each group represents priority, greater int means fires first.
-	std::shared_ptr<Disconnector>					mDisconnector;	// Connection holds a weak_ptr to this to make disconnections.
+	std::map<int, SignalLink *, std::greater<int>> mLinks; // groups of callback nodes, which are stored in a reference counted linked list. Each group represents priority, greater int means fires first.
+	std::shared_ptr<Disconnector> mDisconnector; // Connection holds a weak_ptr to this to make disconnections.
 };
 
 } // cinder::detail
@@ -439,11 +444,10 @@ class SignalProto<R ( Args... ), Collector> : private CollectorInvocation<Collec
 //! during a signal emission. Recursive emit() calls are also safe.
 //!
 //! \note Signals are non-copyable.
-template <typename Signature, class Collector = detail::CollectorDefault<typename std::function<Signature>::result_type> >
+template <typename Signature, class Collector = detail::CollectorDefault<typename std::function<Signature>::result_type>>
 struct Signal : detail::SignalProto<Signature, Collector> {
-
-	typedef detail::SignalProto<Signature, Collector>	SignalProto;
-	typedef typename SignalProto::CallbackFn			CallbackFn;
+	typedef detail::SignalProto<Signature, Collector> SignalProto;
+	typedef typename SignalProto::CallbackFn CallbackFn;
 };
 
 // ----------------------------------------------------------------------------------------------------
@@ -451,17 +455,17 @@ struct Signal : detail::SignalProto<Signature, Collector> {
 // ----------------------------------------------------------------------------------------------------
 
 //! Creates a std::function by binding \a object to the member function pointer \a method.
-template<class Instance, class Class, class R, class... Args>
-std::function<R ( Args... )> slot( Instance &object, R (Class::*method)( Args... ) )
+template <class Instance, class Class, class R, class... Args>
+std::function<R( Args... )> slot( Instance &object, R ( Class::*method )( Args... ) )
 {
-	return [&object, method] ( Args... args )	{ return ( object .* method )( args... ); };
+	return [&object, method]( Args... args ) { return ( object.*method )( args... ); };
 }
 
 //! Creates a std::function by binding \a object to the member function pointer \a method.
-template<class Class, class R, class... Args>
-std::function<R ( Args... )> slot( Class *object, R ( Class::*method )( Args... ) )
+template <class Class, class R, class... Args>
+std::function<R( Args... )> slot( Class *object, R ( Class::*method )( Args... ) )
 {
-	return [object, method] ( Args... args )	{ return ( object ->* method )( args... ); };
+	return [object, method]( Args... args ) { return ( object->*method )( args... ); };
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -469,40 +473,38 @@ std::function<R ( Args... )> slot( Class *object, R ( Class::*method )( Args... 
 // ----------------------------------------------------------------------------------------------------
 
 //! Keep signal emissions going until any handler returns false.
-template<typename ResultT>
+template <typename ResultT>
 struct CollectorUntil0 {
-	typedef ResultT	CollectorResult;
+	typedef ResultT CollectorResult;
 
-	explicit CollectorUntil0() : mResult() {}
-
-	const CollectorResult& getResult() const	{ return mResult; }
-
-	inline bool	operator()( ResultT r )
+	explicit CollectorUntil0()
+	    : mResult() {}
+	const CollectorResult &getResult() const { return mResult; }
+	inline bool operator()( ResultT r )
 	{
 		mResult = r;
 		return mResult ? true : false;
 	}
 
-private:
+  private:
 	CollectorResult mResult;
 };
 
 //! Keep signal emissions going while all handlers return 0 false.
-template<typename ResultT>
+template <typename ResultT>
 struct CollectorWhile0 {
 	typedef ResultT CollectorResult;
 
-	explicit CollectorWhile0() : mResult() {}
-
-	const CollectorResult& getResult() const	{ return mResult; }
-
-	inline bool	operator()( ResultT r )
+	explicit CollectorWhile0()
+	    : mResult() {}
+	const CollectorResult &getResult() const { return mResult; }
+	inline bool operator()( ResultT r )
 	{
 		mResult = r;
 		return ( mResult ? false : true );
 	}
 
-private:
+  private:
 	CollectorResult mResult;
 };
 
@@ -510,30 +512,28 @@ private:
 struct CollectorBooleanAnd {
 	typedef bool CollectorResult;
 
-	explicit CollectorBooleanAnd() : mResult( true ) {}
-
-	const CollectorResult& getResult() const	{ return mResult; }
-
-	inline bool	operator()( bool r )
+	explicit CollectorBooleanAnd()
+	    : mResult( true ) {}
+	const CollectorResult &getResult() const { return mResult; }
+	inline bool operator()( bool r )
 	{
 		mResult = ( mResult && r );
 		return true;
 	}
 
-private:
+  private:
 	CollectorResult mResult;
 };
 
 //! Returns a bitmask where in order for the bit in type T to be be 1, it has to be 1 from all slots. Returns 0 if there are no slots.
-template<typename ResultT>
+template <typename ResultT>
 struct CollectorBitwiseAnd {
-	typedef ResultT	CollectorResult;
+	typedef ResultT CollectorResult;
 
-	explicit CollectorBitwiseAnd() : mResult( 0 ), mFirst( true ) {}
-
-	const CollectorResult& getResult() const	{ return mResult; }
-
-	inline bool	operator()( ResultT r )
+	explicit CollectorBitwiseAnd()
+	    : mResult( 0 ), mFirst( true ) {}
+	const CollectorResult &getResult() const { return mResult; }
+	inline bool operator()( ResultT r )
 	{
 		if( mFirst ) {
 			mFirst = false;
@@ -545,26 +545,25 @@ struct CollectorBitwiseAnd {
 		return true;
 	}
 
-private:
+  private:
 	CollectorResult mResult;
-	bool			mFirst;
+	bool            mFirst;
 };
 
 //! CollectorVector returns the result of all signal handlers from a signal emission in a std::vector.
-template<typename ResultT>
+template <typename ResultT>
 struct CollectorVector {
 	typedef std::vector<ResultT> CollectorResult;
 
-	const CollectorResult& getResult() const	{ return mResult; }
-
-	inline bool	operator()( ResultT r )
+	const CollectorResult &getResult() const { return mResult; }
+	inline bool operator()( ResultT r )
 	{
 		mResult.push_back( r );
 		return true;
 	}
-	
-private:
+
+  private:
 	CollectorResult mResult;
 };
-
-} } // namespace cinder::signals
+}
+} // namespace cinder::signals

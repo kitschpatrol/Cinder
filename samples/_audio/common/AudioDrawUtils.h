@@ -25,8 +25,8 @@
 
 #include "cinder/audio/Buffer.h"
 
-#include "cinder/Vector.h"
 #include "cinder/PolyLine.h"
+#include "cinder/Vector.h"
 #include "cinder/gl/VboMesh.h"
 
 #include <vector>
@@ -35,64 +35,56 @@ void drawAudioBuffer( const ci::audio::Buffer &buffer, const ci::Rectf &bounds, 
 
 class Waveform {
   public:
-	enum CalcMode { MIN_MAX, AVERAGE };
-    Waveform() {}
-    Waveform( const std::vector<float> &samples, const ci::ivec2 &waveSize, size_t pixelsPerVertex = 2, CalcMode mode = MIN_MAX )	{ load( samples.data(), samples.size(), waveSize, pixelsPerVertex, mode ); }
-    Waveform( const float *samples, size_t numSamples, const ci::ivec2 &waveSize, size_t pixelsPerVertex = 2, CalcMode mode = MIN_MAX )	{ load( samples, numSamples, waveSize, pixelsPerVertex, mode ); }
-
+	enum CalcMode { MIN_MAX,
+		AVERAGE };
+	Waveform() {}
+	Waveform( const std::vector<float> &samples, const ci::ivec2 &waveSize, size_t pixelsPerVertex = 2, CalcMode mode = MIN_MAX ) { load( samples.data(), samples.size(), waveSize, pixelsPerVertex, mode ); }
+	Waveform( const float *samples, size_t numSamples, const ci::ivec2 &waveSize, size_t pixelsPerVertex = 2, CalcMode mode = MIN_MAX ) { load( samples, numSamples, waveSize, pixelsPerVertex, mode ); }
 	void load( const float *samples, size_t numSamples, const ci::ivec2 &waveSize, size_t pixelsPerVertex = 2, CalcMode mode = MIN_MAX );
 
-    const ci::PolyLine2f&	getOutline() const	{ return mOutline; }
-	ci::gl::VboMeshRef		getMesh() const		{ return mMesh; };
-
-    bool loaded() { return mOutline.getPoints().size() > 0; }
-    
+	const ci::PolyLine2f &getOutline() const { return mOutline; }
+	ci::gl::VboMeshRef    getMesh() const { return mMesh; };
+	bool                  loaded() { return mOutline.getPoints().size() > 0; }
   private:
-    ci::PolyLine2f		mOutline;
-	ci::gl::VboMeshRef	mMesh;
+	ci::PolyLine2f     mOutline;
+	ci::gl::VboMeshRef mMesh;
 };
 
 class WaveformPlot {
   public:
-	WaveformPlot( const ci::ColorA &colorMinMax = ci::ColorA::gray( 0.5f ), const ci::ColorA &colorAverage = ci::ColorA::gray( 0.75f ) ) : mColorMinMax( colorMinMax ), mColorAverage( colorAverage )	{}
-
+	WaveformPlot( const ci::ColorA &colorMinMax = ci::ColorA::gray( 0.5f ), const ci::ColorA &colorAverage = ci::ColorA::gray( 0.75f ) )
+	    : mColorMinMax( colorMinMax ), mColorAverage( colorAverage ) {}
 	void load( const std::vector<float> &samples, const ci::Rectf &bounds, size_t pixelsPerVertex = 2 );
 
 	void load( const ci::audio::BufferRef &buffer, const ci::Rectf &bounds, size_t pixelsPerVertex = 2 );
 
-	const std::vector<Waveform>& getWaveforms() const	{ return mWaveforms; }
-	const ci::Rectf& getBounds() const					{ return mBounds; }
+	const std::vector<Waveform> &getWaveforms() const { return mWaveforms; }
+	const ci::Rectf &            getBounds() const { return mBounds; }
+	void                         draw();
 
-	void draw();
-
-	void clear()	{ 	mWaveforms.clear(); }
-
+	void clear() { mWaveforms.clear(); }
   private:
 	std::vector<Waveform> mWaveforms;
-	ci::Rectf mBounds;
-	ci::ColorA mColorMinMax, mColorAverage;
+	ci::Rectf             mBounds;
+	ci::ColorA            mColorMinMax, mColorAverage;
 };
 
 class SpectrumPlot {
   public:
 	SpectrumPlot();
-	
-	void setBounds( const ci::Rectf &bounds )	{ mBounds = bounds; }
-	const ci::Rectf& getBounds() const			{ return mBounds; }
 
-	void enableScaleDecibels( bool b = true )	{ mScaleDecibels = b; }
-	bool getScaleDecibels() const				{ return mScaleDecibels; }
-
-	void enableBorder( bool b = true )			{ mBorderEnabled = b; }
-	bool getBorderEnabled() const				{ return mBorderEnabled; }
-
-	void setBorderColor( const ci::ColorA &color )	{ mBorderColor = color; }
-	const ci::ColorA& getBorderColor() const		{ return mBorderColor; }
-
+	void setBounds( const ci::Rectf &bounds ) { mBounds = bounds; }
+	const ci::Rectf &                getBounds() const { return mBounds; }
+	void enableScaleDecibels( bool b = true ) { mScaleDecibels = b; }
+	bool                           getScaleDecibels() const { return mScaleDecibels; }
+	void enableBorder( bool b = true ) { mBorderEnabled = b; }
+	bool                    getBorderEnabled() const { return mBorderEnabled; }
+	void setBorderColor( const ci::ColorA &color ) { mBorderColor = color; }
+	const ci::ColorA &                     getBorderColor() const { return mBorderColor; }
 	void draw( const std::vector<float> &magSpectrum );
 
   private:
-	ci::Rectf				mBounds;
-	bool					mScaleDecibels, mBorderEnabled;
-	ci::ColorA				mBorderColor;
+	ci::Rectf  mBounds;
+	bool       mScaleDecibels, mBorderEnabled;
+	ci::ColorA mBorderColor;
 };

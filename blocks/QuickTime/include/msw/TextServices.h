@@ -52,9 +52,6 @@
 #include <ATSUnicode.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -68,141 +65,137 @@ extern "C" {
 #endif
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=mac68k
+#pragma options align = mac68k
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(push, 2)
+#pragma pack( push, 2 )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack(2)
+#pragma pack( 2 )
 #endif
 
 enum {
-  kTextService                  = FOUR_CHAR_CODE('tsvc'), /* component type for the component description */
-  kTSMVersion                   = 0x0150 /* Version of the Text Services Manager is 1.5 */
+	kTextService = FOUR_CHAR_CODE( 'tsvc' ), /* component type for the component description */
+	kTSMVersion = 0x0150 /* Version of the Text Services Manager is 1.5 */
 };
-
 
 /*
     TextServiceClass constants supported by TSM
     Same as component subtype for the component description
 */
 enum {
-  kKeyboardInputMethodClass     = FOUR_CHAR_CODE('inpm'),
-  kInkInputMethodClass          = FOUR_CHAR_CODE('ink '),
-  kCharacterPaletteInputMethodClass = FOUR_CHAR_CODE('cplt')
+	kKeyboardInputMethodClass = FOUR_CHAR_CODE( 'inpm' ),
+	kInkInputMethodClass = FOUR_CHAR_CODE( 'ink ' ),
+	kCharacterPaletteInputMethodClass = FOUR_CHAR_CODE( 'cplt' )
 };
 
-typedef OSType                          TextServiceClass;
+typedef OSType TextServiceClass;
 enum {
-  kTSClassHonorUserSetting      = 1,
-  kTSClassForceSetting          = 2,
-  kTSClassForceToHonorUserSetting = 3
+	kTSClassHonorUserSetting = 1,
+	kTSClassForceSetting = 2,
+	kTSClassForceToHonorUserSetting = 3
 };
 
-typedef UInt32                          TSClassEnablingForceLevel;
+typedef UInt32 TSClassEnablingForceLevel;
 enum {
-  kUnicodeDocument              = FOUR_CHAR_CODE('udoc'), /* TSM Document type for Unicode-savvy application */
-  kUnicodeTextService           = FOUR_CHAR_CODE('utsv') /* Component type for Unicode Text Service */
+	kUnicodeDocument = FOUR_CHAR_CODE( 'udoc' ), /* TSM Document type for Unicode-savvy application */
+	kUnicodeTextService = FOUR_CHAR_CODE( 'utsv' ) /* Component type for Unicode Text Service */
 };
 
 /* TSMDocumentID property tags*/
 enum {
-  kTSMDocumentPropertySupportGlyphInfo = FOUR_CHAR_CODE('dpgi') /*  property value is arbitrary*/
+	kTSMDocumentPropertySupportGlyphInfo = FOUR_CHAR_CODE( 'dpgi' ) /*  property value is arbitrary*/
 };
-
 
 /* Language and Script constants*/
 enum {
-  kUnknownLanguage              = 0xFFFF,
-  kUnknownScript                = 0xFFFF,
-  kNeutralScript                = 0xFFFF
-};
-
-
-enum {
-                                        /* Component Flags in ComponentDescription */
-  bTakeActiveEvent              = 15,   /* bit set if the component takes active event */
-  bHandleAERecording            = 16,   /* bit set if the component takes care of recording Apple Events <new in vers2.0> */
-  bScriptMask                   = 0x00007F00, /* bit 8 - 14 */
-  bLanguageMask                 = 0x000000FF, /* bit 0 - 7  */
-  bScriptLanguageMask           = bScriptMask + bLanguageMask /* bit 0 - 14  */
+	kUnknownLanguage = 0xFFFF,
+	kUnknownScript = 0xFFFF,
+	kNeutralScript = 0xFFFF
 };
 
 enum {
-                                        /* Typing method property constants for Input Methods */
-  kIMJaTypingMethodProperty     = FOUR_CHAR_CODE('jtyp'), /* Typing method property for Japanese input methods*/
-  kIMJaTypingMethodRoman        = FOUR_CHAR_CODE('roma'), /* Roman typing*/
-  kIMJaTypingMethodKana         = FOUR_CHAR_CODE('kana') /* Kana typing*/
+	/* Component Flags in ComponentDescription */
+	bTakeActiveEvent = 15, /* bit set if the component takes active event */
+	bHandleAERecording = 16, /* bit set if the component takes care of recording Apple Events <new in vers2.0> */
+	bScriptMask = 0x00007F00, /* bit 8 - 14 */
+	bLanguageMask = 0x000000FF, /* bit 0 - 7  */
+	bScriptLanguageMask = bScriptMask + bLanguageMask /* bit 0 - 14  */
 };
 
 enum {
-                                        /* Low level routines which are dispatched directly to the Component Manager */
-  kCMGetScriptLangSupport       = 0x0001, /* Component Manager call selector 1 */
-  kCMInitiateTextService        = 0x0002, /* Component Manager call selector 2 */
-  kCMTerminateTextService       = 0x0003, /* Component Manager call selector 3 */
-  kCMActivateTextService        = 0x0004, /* Component Manager call selector 4 */
-  kCMDeactivateTextService      = 0x0005, /* Component Manager call selector 5 */
-  kCMTextServiceEvent           = 0x0006, /* Component Manager call selector 6 */
-  kCMGetTextServiceMenu         = 0x0007, /* Component Manager call selector 7 */
-  kCMTextServiceMenuSelect      = 0x0008, /* Component Manager call selector 8 */
-  kCMFixTextService             = 0x0009, /* Component Manager call selector 9 */
-  kCMSetTextServiceCursor       = 0x000A, /* Component Manager call selector 10 */
-  kCMHidePaletteWindows         = 0x000B, /* Component Manager call selector 11 */
-  kCMGetTextServiceProperty     = 0x000C, /* Component Manager call selector 12 */
-  kCMSetTextServiceProperty     = 0x000D /* Component Manager call selector 13 */
+	/* Typing method property constants for Input Methods */
+	kIMJaTypingMethodProperty = FOUR_CHAR_CODE( 'jtyp' ), /* Typing method property for Japanese input methods*/
+	kIMJaTypingMethodRoman = FOUR_CHAR_CODE( 'roma' ), /* Roman typing*/
+	kIMJaTypingMethodKana = FOUR_CHAR_CODE( 'kana' ) /* Kana typing*/
 };
 
 enum {
-                                        /* New low level routines which are dispatched directly to the Component Manager */
-  kCMUCTextServiceEvent         = 0x000E /* Component Manager call selector 14 */
+	/* Low level routines which are dispatched directly to the Component Manager */
+	kCMGetScriptLangSupport = 0x0001, /* Component Manager call selector 1 */
+	kCMInitiateTextService = 0x0002, /* Component Manager call selector 2 */
+	kCMTerminateTextService = 0x0003, /* Component Manager call selector 3 */
+	kCMActivateTextService = 0x0004, /* Component Manager call selector 4 */
+	kCMDeactivateTextService = 0x0005, /* Component Manager call selector 5 */
+	kCMTextServiceEvent = 0x0006, /* Component Manager call selector 6 */
+	kCMGetTextServiceMenu = 0x0007, /* Component Manager call selector 7 */
+	kCMTextServiceMenuSelect = 0x0008, /* Component Manager call selector 8 */
+	kCMFixTextService = 0x0009, /* Component Manager call selector 9 */
+	kCMSetTextServiceCursor = 0x000A, /* Component Manager call selector 10 */
+	kCMHidePaletteWindows = 0x000B, /* Component Manager call selector 11 */
+	kCMGetTextServiceProperty = 0x000C, /* Component Manager call selector 12 */
+	kCMSetTextServiceProperty = 0x000D /* Component Manager call selector 13 */
 };
 
+enum {
+	/* New low level routines which are dispatched directly to the Component Manager */
+	kCMUCTextServiceEvent = 0x000E /* Component Manager call selector 14 */
+};
 
 /* extract Script/Language code from Component flag ... */
-#define     mGetScriptCode(cdRec)       ((ScriptCode)   ((cdRec.componentFlags & bScriptMask) >> 8))
-#define     mGetLanguageCode(cdRec)     ((LangCode)     cdRec.componentFlags & bLanguageMask)
+#define mGetScriptCode( cdRec ) ( ( ScriptCode )( ( cdRec.componentFlags & bScriptMask ) >> 8 ) )
+#define mGetLanguageCode( cdRec ) ( (LangCode)cdRec.componentFlags & bLanguageMask )
 
 /* New opaque definitions for types */
-typedef struct OpaqueTSMDocumentID*     TSMDocumentID;
-typedef OSType                          InterfaceTypeList[1];
+typedef struct OpaqueTSMDocumentID *TSMDocumentID;
+typedef OSType                      InterfaceTypeList[1];
 
 /* Text Service Info List */
 struct TextServiceInfo {
-  Component           fComponent;
-  Str255              fItemName;
+	Component fComponent;
+	Str255    fItemName;
 };
-typedef struct TextServiceInfo          TextServiceInfo;
-typedef TextServiceInfo *               TextServiceInfoPtr;
+typedef struct TextServiceInfo TextServiceInfo;
+typedef TextServiceInfo *      TextServiceInfoPtr;
 struct TextServiceList {
-  short               fTextServiceCount;      /* number of entries in the 'fServices' array */
-  TextServiceInfo     fServices[1];           /* Note: array of 'TextServiceInfo' records follows */
+	short           fTextServiceCount; /* number of entries in the 'fServices' array */
+	TextServiceInfo fServices[1]; /* Note: array of 'TextServiceInfo' records follows */
 };
-typedef struct TextServiceList          TextServiceList;
-typedef TextServiceList *               TextServiceListPtr;
-typedef TextServiceListPtr *            TextServiceListHandle;
+typedef struct TextServiceList TextServiceList;
+typedef TextServiceList *      TextServiceListPtr;
+typedef TextServiceListPtr *   TextServiceListHandle;
 struct ScriptLanguageRecord {
-  ScriptCode          fScript;
-  LangCode            fLanguage;
+	ScriptCode fScript;
+	LangCode   fLanguage;
 };
-typedef struct ScriptLanguageRecord     ScriptLanguageRecord;
+typedef struct ScriptLanguageRecord ScriptLanguageRecord;
 struct ScriptLanguageSupport {
-  short               fScriptLanguageCount;   /* number of entries in the 'fScriptLanguageArray' array */
-  ScriptLanguageRecord  fScriptLanguageArray[1]; /* Note: array of 'ScriptLanguageRecord' records follows */
+	short                fScriptLanguageCount; /* number of entries in the 'fScriptLanguageArray' array */
+	ScriptLanguageRecord fScriptLanguageArray[1]; /* Note: array of 'ScriptLanguageRecord' records follows */
 };
-typedef struct ScriptLanguageSupport    ScriptLanguageSupport;
-typedef ScriptLanguageSupport *         ScriptLanguageSupportPtr;
-typedef ScriptLanguageSupportPtr *      ScriptLanguageSupportHandle;
+typedef struct ScriptLanguageSupport ScriptLanguageSupport;
+typedef ScriptLanguageSupport *      ScriptLanguageSupportPtr;
+typedef ScriptLanguageSupportPtr *   ScriptLanguageSupportHandle;
 struct TSMGlyphInfo {
-  CFRange             range;                  /*    two SInt32s*/
-  ATSFontRef          fontRef;
-  UInt16              collection;             /*    kGlyphCollectionXXX enum*/
-  UInt16              glyphID;                /*    GID (when collection==0) or CID*/
+	CFRange    range; /*    two SInt32s*/
+	ATSFontRef fontRef;
+	UInt16     collection; /*    kGlyphCollectionXXX enum*/
+	UInt16     glyphID; /*    GID (when collection==0) or CID*/
 };
-typedef struct TSMGlyphInfo             TSMGlyphInfo;
+typedef struct TSMGlyphInfo TSMGlyphInfo;
 struct TSMGlyphInfoArray {
-  ItemCount           numGlyphInfo;           /*    UInt32*/
-  TSMGlyphInfo        glyphInfo[1];
+	ItemCount    numGlyphInfo; /*    UInt32*/
+	TSMGlyphInfo glyphInfo[1];
 };
-typedef struct TSMGlyphInfoArray        TSMGlyphInfoArray;
+typedef struct TSMGlyphInfoArray TSMGlyphInfoArray;
 
 /* High level TSM Doucment routines */
 /*
@@ -215,11 +208,10 @@ typedef struct TSMGlyphInfoArray        TSMGlyphInfoArray;
  */
 EXTERN_API( OSErr )
 NewTSMDocument(
-  short               numOfInterface,
-  InterfaceTypeList   supportedInterfaceTypes,
-  TSMDocumentID *     idocID,
-  long                refcon)                                 TWOWORDINLINE(0x7000, 0xAA54);
-
+    short             numOfInterface,
+    InterfaceTypeList supportedInterfaceTypes,
+    TSMDocumentID *   idocID,
+    long              refcon ) TWOWORDINLINE( 0x7000, 0xAA54 );
 
 /*
  *  DeleteTSMDocument()
@@ -230,8 +222,7 @@ NewTSMDocument(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-DeleteTSMDocument(TSMDocumentID idocID)                       TWOWORDINLINE(0x7001, 0xAA54);
-
+DeleteTSMDocument( TSMDocumentID idocID ) TWOWORDINLINE( 0x7001, 0xAA54 );
 
 /*
  *  ActivateTSMDocument()
@@ -242,8 +233,7 @@ DeleteTSMDocument(TSMDocumentID idocID)                       TWOWORDINLINE(0x70
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-ActivateTSMDocument(TSMDocumentID idocID)                     TWOWORDINLINE(0x7002, 0xAA54);
-
+ActivateTSMDocument( TSMDocumentID idocID ) TWOWORDINLINE( 0x7002, 0xAA54 );
 
 /*
  *  DeactivateTSMDocument()
@@ -254,8 +244,7 @@ ActivateTSMDocument(TSMDocumentID idocID)                     TWOWORDINLINE(0x70
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-DeactivateTSMDocument(TSMDocumentID idocID)                   TWOWORDINLINE(0x7003, 0xAA54);
-
+DeactivateTSMDocument( TSMDocumentID idocID ) TWOWORDINLINE( 0x7003, 0xAA54 );
 
 /*
  *  FixTSMDocument()
@@ -266,8 +255,7 @@ DeactivateTSMDocument(TSMDocumentID idocID)                   TWOWORDINLINE(0x70
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-FixTSMDocument(TSMDocumentID idocID)                          TWOWORDINLINE(0x7007, 0xAA54);
-
+FixTSMDocument( TSMDocumentID idocID ) TWOWORDINLINE( 0x7007, 0xAA54 );
 
 /*
  *  GetServiceList()
@@ -279,11 +267,10 @@ FixTSMDocument(TSMDocumentID idocID)                          TWOWORDINLINE(0x70
  */
 EXTERN_API( OSErr )
 GetServiceList(
-  short                    numOfInterface,
-  OSType *                 supportedInterfaceTypes,
-  TextServiceListHandle *  serviceInfo,
-  long *                   seedValue)                         TWOWORDINLINE(0x7008, 0xAA54);
-
+    short                  numOfInterface,
+    OSType *               supportedInterfaceTypes,
+    TextServiceListHandle *serviceInfo,
+    long *                 seedValue ) TWOWORDINLINE( 0x7008, 0xAA54 );
 
 /*
  *  OpenTextService()
@@ -295,10 +282,9 @@ GetServiceList(
  */
 EXTERN_API( OSErr )
 OpenTextService(
-  TSMDocumentID        idocID,
-  Component            aComponent,
-  ComponentInstance *  aComponentInstance)                    TWOWORDINLINE(0x7009, 0xAA54);
-
+    TSMDocumentID      idocID,
+    Component          aComponent,
+    ComponentInstance *aComponentInstance ) TWOWORDINLINE( 0x7009, 0xAA54 );
 
 /*
  *  CloseTextService()
@@ -310,9 +296,8 @@ OpenTextService(
  */
 EXTERN_API( OSErr )
 CloseTextService(
-  TSMDocumentID       idocID,
-  ComponentInstance   aComponentInstance)                     TWOWORDINLINE(0x700A, 0xAA54);
-
+    TSMDocumentID     idocID,
+    ComponentInstance aComponentInstance ) TWOWORDINLINE( 0x700A, 0xAA54 );
 
 /*
  *  SendAEFromTSMComponent()
@@ -324,14 +309,13 @@ CloseTextService(
  */
 EXTERN_API( OSErr )
 SendAEFromTSMComponent(
-  const AppleEvent *  theAppleEvent,
-  AppleEvent *        reply,
-  AESendMode          sendMode,
-  AESendPriority      sendPriority,
-  long                timeOutInTicks,
-  AEIdleUPP           idleProc,
-  AEFilterUPP         filterProc)                             TWOWORDINLINE(0x700B, 0xAA54);
-
+    const AppleEvent *theAppleEvent,
+    AppleEvent *      reply,
+    AESendMode        sendMode,
+    AESendPriority    sendPriority,
+    long              timeOutInTicks,
+    AEIdleUPP         idleProc,
+    AEFilterUPP       filterProc ) TWOWORDINLINE( 0x700B, 0xAA54 );
 
 /*
  *  SendTextInputEvent()
@@ -348,8 +332,7 @@ SendAEFromTSMComponent(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSStatus )
-SendTextInputEvent(EventRef inEvent);
-
+SendTextInputEvent( EventRef inEvent );
 
 /*
  *  SetDefaultInputMethod()
@@ -361,9 +344,8 @@ SendTextInputEvent(EventRef inEvent);
  */
 EXTERN_API( OSErr )
 SetDefaultInputMethod(
-  Component               ts,
-  ScriptLanguageRecord *  slRecordPtr)                        TWOWORDINLINE(0x700C, 0xAA54);
-
+    Component             ts,
+    ScriptLanguageRecord *slRecordPtr ) TWOWORDINLINE( 0x700C, 0xAA54 );
 
 /*
  *  GetDefaultInputMethod()
@@ -375,9 +357,8 @@ SetDefaultInputMethod(
  */
 EXTERN_API( OSErr )
 GetDefaultInputMethod(
-  Component *             ts,
-  ScriptLanguageRecord *  slRecordPtr)                        TWOWORDINLINE(0x700D, 0xAA54);
-
+    Component *           ts,
+    ScriptLanguageRecord *slRecordPtr ) TWOWORDINLINE( 0x700D, 0xAA54 );
 
 /*
  *  SetTextServiceLanguage()
@@ -388,8 +369,7 @@ GetDefaultInputMethod(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-SetTextServiceLanguage(ScriptLanguageRecord * slRecordPtr)    TWOWORDINLINE(0x700E, 0xAA54);
-
+SetTextServiceLanguage( ScriptLanguageRecord *slRecordPtr ) TWOWORDINLINE( 0x700E, 0xAA54 );
 
 /*
  *  GetTextServiceLanguage()
@@ -400,8 +380,7 @@ SetTextServiceLanguage(ScriptLanguageRecord * slRecordPtr)    TWOWORDINLINE(0x70
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( OSErr )
-GetTextServiceLanguage(ScriptLanguageRecord * slRecordPtr)    TWOWORDINLINE(0x700F, 0xAA54);
-
+GetTextServiceLanguage( ScriptLanguageRecord *slRecordPtr ) TWOWORDINLINE( 0x700F, 0xAA54 );
 
 /*
  *  UseInputWindow()
@@ -413,9 +392,8 @@ GetTextServiceLanguage(ScriptLanguageRecord * slRecordPtr)    TWOWORDINLINE(0x70
  */
 EXTERN_API( OSErr )
 UseInputWindow(
-  TSMDocumentID   idocID,
-  Boolean         useWindow)                                  TWOWORDINLINE(0x7010, 0xAA54);
-
+    TSMDocumentID idocID,
+    Boolean       useWindow ) TWOWORDINLINE( 0x7010, 0xAA54 );
 
 /*
  *  TSMSetInlineInputRegion()
@@ -457,11 +435,9 @@ UseInputWindow(
  */
 EXTERN_API( OSStatus )
 TSMSetInlineInputRegion(
-  TSMDocumentID   inTSMDocument,
-  WindowRef       inWindow,
-  RgnHandle       inRegion);
-
-
+    TSMDocumentID inTSMDocument,
+    WindowRef     inWindow,
+    RgnHandle     inRegion );
 
 /* Following calls from Classic event loops not needed for Carbon clients. */
 #if CALL_NOT_IN_CARBON
@@ -474,8 +450,7 @@ TSMSetInlineInputRegion(
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-TSMEvent(EventRecord * event)                                 TWOWORDINLINE(0x7004, 0xAA54);
-
+TSMEvent( EventRecord *event ) TWOWORDINLINE( 0x7004, 0xAA54 );
 
 /*
  *  TSMMenuSelect()
@@ -486,8 +461,7 @@ TSMEvent(EventRecord * event)                                 TWOWORDINLINE(0x70
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-TSMMenuSelect(long menuResult)                                TWOWORDINLINE(0x7005, 0xAA54);
-
+TSMMenuSelect( long menuResult ) TWOWORDINLINE( 0x7005, 0xAA54 );
 
 /*
  *  SetTSMCursor()
@@ -498,8 +472,7 @@ TSMMenuSelect(long menuResult)                                TWOWORDINLINE(0x70
  *    Mac OS X:         not available
  */
 EXTERN_API( Boolean )
-SetTSMCursor(Point mousePos)                                  TWOWORDINLINE(0x7006, 0xAA54);
-
+SetTSMCursor( Point mousePos ) TWOWORDINLINE( 0x7006, 0xAA54 );
 
 /* Following ServiceWindow API replaced by Window Manager API in Carbon. */
 /*
@@ -512,16 +485,15 @@ SetTSMCursor(Point mousePos)                                  TWOWORDINLINE(0x70
  */
 EXTERN_API( OSErr )
 NewServiceWindow(
-  void *              wStorage,
-  const Rect *        boundsRect,
-  ConstStr255Param    title,
-  Boolean             visible,
-  short               theProc,
-  WindowRef           behind,
-  Boolean             goAwayFlag,
-  ComponentInstance   ts,
-  WindowRef *         window)                                 TWOWORDINLINE(0x7011, 0xAA54);
-
+    void *            wStorage,
+    const Rect *      boundsRect,
+    ConstStr255Param  title,
+    Boolean           visible,
+    short             theProc,
+    WindowRef         behind,
+    Boolean           goAwayFlag,
+    ComponentInstance ts,
+    WindowRef *       window ) TWOWORDINLINE( 0x7011, 0xAA54 );
 
 /*
  *  CloseServiceWindow()
@@ -532,8 +504,7 @@ NewServiceWindow(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CloseServiceWindow(WindowRef window)                          TWOWORDINLINE(0x7012, 0xAA54);
-
+CloseServiceWindow( WindowRef window ) TWOWORDINLINE( 0x7012, 0xAA54 );
 
 /*
  *  GetFrontServiceWindow()
@@ -544,8 +515,7 @@ CloseServiceWindow(WindowRef window)                          TWOWORDINLINE(0x70
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-GetFrontServiceWindow(WindowRef * window)                     TWOWORDINLINE(0x7013, 0xAA54);
-
+GetFrontServiceWindow( WindowRef *window ) TWOWORDINLINE( 0x7013, 0xAA54 );
 
 /*
  *  FindServiceWindow()
@@ -557,9 +527,8 @@ GetFrontServiceWindow(WindowRef * window)                     TWOWORDINLINE(0x70
  */
 EXTERN_API( short )
 FindServiceWindow(
-  Point        thePoint,
-  WindowRef *  theWindow)                                     TWOWORDINLINE(0x7017, 0xAA54);
-
+    Point      thePoint,
+    WindowRef *theWindow ) TWOWORDINLINE( 0x7017, 0xAA54 );
 
 /*
  *  NewCServiceWindow()
@@ -571,16 +540,15 @@ FindServiceWindow(
  */
 EXTERN_API( OSErr )
 NewCServiceWindow(
-  void *              wStorage,
-  const Rect *        boundsRect,
-  ConstStr255Param    title,
-  Boolean             visible,
-  short               theProc,
-  WindowRef           behind,
-  Boolean             goAwayFlag,
-  ComponentInstance   ts,
-  WindowRef *         window)                                 TWOWORDINLINE(0x701A, 0xAA54);
-
+    void *            wStorage,
+    const Rect *      boundsRect,
+    ConstStr255Param  title,
+    Boolean           visible,
+    short             theProc,
+    WindowRef         behind,
+    Boolean           goAwayFlag,
+    ComponentInstance ts,
+    WindowRef *       window ) TWOWORDINLINE( 0x701A, 0xAA54 );
 
 /* Explicit initialization not needed for Carbon clients, since TSM is */
 /* instanciated per-context. */
@@ -593,8 +561,7 @@ NewCServiceWindow(
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-InitTSMAwareApplication(void)                                 TWOWORDINLINE(0x7014, 0xAA54);
-
+InitTSMAwareApplication( void ) TWOWORDINLINE( 0x7014, 0xAA54 );
 
 /*
  *  CloseTSMAwareApplication()
@@ -605,12 +572,10 @@ InitTSMAwareApplication(void)                                 TWOWORDINLINE(0x70
  *    Mac OS X:         not available
  */
 EXTERN_API( OSErr )
-CloseTSMAwareApplication(void)                                TWOWORDINLINE(0x7015, 0xAA54);
-
-
+CloseTSMAwareApplication( void ) TWOWORDINLINE( 0x7015, 0xAA54 );
 
 /* Component Manager Interfaces to Input Methods */
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  GetScriptLanguageSupport()
@@ -622,9 +587,8 @@ CloseTSMAwareApplication(void)                                TWOWORDINLINE(0x70
  */
 EXTERN_API( ComponentResult )
 GetScriptLanguageSupport(
-  ComponentInstance              ts,
-  ScriptLanguageSupportHandle *  scriptHdl)                   FIVEWORDINLINE(0x2F3C, 0x0004, 0x0001, 0x7000, 0xA82A);
-
+    ComponentInstance            ts,
+    ScriptLanguageSupportHandle *scriptHdl ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0001, 0x7000, 0xA82A );
 
 /*
  *  InitiateTextService()
@@ -635,8 +599,7 @@ GetScriptLanguageSupport(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ComponentResult )
-InitiateTextService(ComponentInstance ts)                     FIVEWORDINLINE(0x2F3C, 0x0000, 0x0002, 0x7000, 0xA82A);
-
+InitiateTextService( ComponentInstance ts ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0002, 0x7000, 0xA82A );
 
 /*
  *  TerminateTextService()
@@ -647,8 +610,7 @@ InitiateTextService(ComponentInstance ts)                     FIVEWORDINLINE(0x2
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ComponentResult )
-TerminateTextService(ComponentInstance ts)                    FIVEWORDINLINE(0x2F3C, 0x0000, 0x0003, 0x7000, 0xA82A);
-
+TerminateTextService( ComponentInstance ts ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0003, 0x7000, 0xA82A );
 
 /*
  *  ActivateTextService()
@@ -659,8 +621,7 @@ TerminateTextService(ComponentInstance ts)                    FIVEWORDINLINE(0x2
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ComponentResult )
-ActivateTextService(ComponentInstance ts)                     FIVEWORDINLINE(0x2F3C, 0x0000, 0x0004, 0x7000, 0xA82A);
-
+ActivateTextService( ComponentInstance ts ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0004, 0x7000, 0xA82A );
 
 /*
  *  DeactivateTextService()
@@ -671,8 +632,7 @@ ActivateTextService(ComponentInstance ts)                     FIVEWORDINLINE(0x2
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ComponentResult )
-DeactivateTextService(ComponentInstance ts)                   FIVEWORDINLINE(0x2F3C, 0x0000, 0x0005, 0x7000, 0xA82A);
-
+DeactivateTextService( ComponentInstance ts ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0005, 0x7000, 0xA82A );
 
 /*
  *  GetTextServiceMenu()
@@ -684,9 +644,8 @@ DeactivateTextService(ComponentInstance ts)                   FIVEWORDINLINE(0x2
  */
 EXTERN_API( ComponentResult )
 GetTextServiceMenu(
-  ComponentInstance   ts,
-  MenuRef *           serviceMenu)                            FIVEWORDINLINE(0x2F3C, 0x0004, 0x0007, 0x7000, 0xA82A);
-
+    ComponentInstance ts,
+    MenuRef *         serviceMenu ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x0007, 0x7000, 0xA82A );
 
 /* New Text Service call in Carbon. */
 /* Note: Only Raw Key and Mouse-flavored events are passed to Text Services on MacOS X. */
@@ -700,9 +659,8 @@ GetTextServiceMenu(
  */
 EXTERN_API( ComponentResult )
 TextServiceEventRef(
-  ComponentInstance   ts,
-  EventRef            event)                                  FIVEWORDINLINE(0x2F3C, 0x0006, 0x0006, 0x7000, 0xA82A);
-
+    ComponentInstance ts,
+    EventRef          event ) FIVEWORDINLINE( 0x2F3C, 0x0006, 0x0006, 0x7000, 0xA82A );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -715,10 +673,9 @@ TextServiceEventRef(
  */
 EXTERN_API( ComponentResult )
 TextServiceEvent(
-  ComponentInstance   ts,
-  short               numOfEvents,
-  EventRecord *       event)                                  FIVEWORDINLINE(0x2F3C, 0x0006, 0x0006, 0x7000, 0xA82A);
-
+    ComponentInstance ts,
+    short             numOfEvents,
+    EventRecord *     event ) FIVEWORDINLINE( 0x2F3C, 0x0006, 0x0006, 0x7000, 0xA82A );
 
 /*
  *  UCTextServiceEvent()
@@ -730,12 +687,11 @@ TextServiceEvent(
  */
 EXTERN_API( ComponentResult )
 UCTextServiceEvent(
-  ComponentInstance   ts,
-  short               numOfEvents,
-  EventRecord *       event,
-  UniChar             unicodeString[],
-  UniCharCount        unicodeStrLength)                       FIVEWORDINLINE(0x2F3C, 0x000E, 0x000E, 0x7000, 0xA82A);
-
+    ComponentInstance ts,
+    short             numOfEvents,
+    EventRecord *     event,
+    UniChar           unicodeString[],
+    UniCharCount      unicodeStrLength ) FIVEWORDINLINE( 0x2F3C, 0x000E, 0x000E, 0x7000, 0xA82A );
 
 /*
  *  TextServiceMenuSelect()
@@ -747,10 +703,9 @@ UCTextServiceEvent(
  */
 EXTERN_API( ComponentResult )
 TextServiceMenuSelect(
-  ComponentInstance   ts,
-  MenuRef             serviceMenu,
-  short               item)                                   FIVEWORDINLINE(0x2F3C, 0x0006, 0x0008, 0x7000, 0xA82A);
-
+    ComponentInstance ts,
+    MenuRef           serviceMenu,
+    short             item ) FIVEWORDINLINE( 0x2F3C, 0x0006, 0x0008, 0x7000, 0xA82A );
 
 /*
  *  SetTextServiceCursor()
@@ -762,11 +717,10 @@ TextServiceMenuSelect(
  */
 EXTERN_API( ComponentResult )
 SetTextServiceCursor(
-  ComponentInstance   ts,
-  Point               mousePos)                               FIVEWORDINLINE(0x2F3C, 0x0004, 0x000A, 0x7000, 0xA82A);
+    ComponentInstance ts,
+    Point             mousePos ) FIVEWORDINLINE( 0x2F3C, 0x0004, 0x000A, 0x7000, 0xA82A );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  FixTextService()
@@ -777,8 +731,7 @@ SetTextServiceCursor(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ComponentResult )
-FixTextService(ComponentInstance ts)                          FIVEWORDINLINE(0x2F3C, 0x0000, 0x0009, 0x7000, 0xA82A);
-
+FixTextService( ComponentInstance ts ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x0009, 0x7000, 0xA82A );
 
 /*
  *  HidePaletteWindows()
@@ -789,8 +742,7 @@ FixTextService(ComponentInstance ts)                          FIVEWORDINLINE(0x2
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( ComponentResult )
-HidePaletteWindows(ComponentInstance ts)                      FIVEWORDINLINE(0x2F3C, 0x0000, 0x000B, 0x7000, 0xA82A);
-
+HidePaletteWindows( ComponentInstance ts ) FIVEWORDINLINE( 0x2F3C, 0x0000, 0x000B, 0x7000, 0xA82A );
 
 /*
  *  GetTextServiceProperty()
@@ -802,10 +754,9 @@ HidePaletteWindows(ComponentInstance ts)                      FIVEWORDINLINE(0x2
  */
 EXTERN_API( ComponentResult )
 GetTextServiceProperty(
-  ComponentInstance   ts,
-  OSType              propertySelector,
-  SInt32 *            result)                                 FIVEWORDINLINE(0x2F3C, 0x0008, 0x000C, 0x7000, 0xA82A);
-
+    ComponentInstance ts,
+    OSType            propertySelector,
+    SInt32 *          result ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x000C, 0x7000, 0xA82A );
 
 /*
  *  SetTextServiceProperty()
@@ -817,10 +768,9 @@ GetTextServiceProperty(
  */
 EXTERN_API( ComponentResult )
 SetTextServiceProperty(
-  ComponentInstance   ts,
-  OSType              propertySelector,
-  SInt32              value)                                  FIVEWORDINLINE(0x2F3C, 0x0008, 0x000D, 0x7000, 0xA82A);
-
+    ComponentInstance ts,
+    OSType            propertySelector,
+    SInt32            value ) FIVEWORDINLINE( 0x2F3C, 0x0008, 0x000D, 0x7000, 0xA82A );
 
 /* Get the active TSMDocument in the current application context.       */
 /* If TSM has enabled bottom line input mode because no TSMDocument     */
@@ -834,8 +784,7 @@ SetTextServiceProperty(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API( TSMDocumentID )
-TSMGetActiveDocument(void);
-
+TSMGetActiveDocument( void );
 
 /*
  *  GetDefaultInputMethodOfClass()
@@ -847,10 +796,9 @@ TSMGetActiveDocument(void);
  */
 EXTERN_API( OSStatus )
 GetDefaultInputMethodOfClass(
-  Component *             aComp,
-  ScriptLanguageRecord *  slRecPtr,
-  TextServiceClass        tsClass);
-
+    Component *           aComp,
+    ScriptLanguageRecord *slRecPtr,
+    TextServiceClass      tsClass );
 
 /*
  *  SetDefaultInputMethodOfClass()
@@ -862,10 +810,9 @@ GetDefaultInputMethodOfClass(
  */
 EXTERN_API( OSStatus )
 SetDefaultInputMethodOfClass(
-  Component               aComp,
-  ScriptLanguageRecord *  slRecPtr,
-  TextServiceClass        tsClass);
-
+    Component             aComp,
+    ScriptLanguageRecord *slRecPtr,
+    TextServiceClass      tsClass );
 
 /*
  *  DeselectTextService()
@@ -888,8 +835,7 @@ SetDefaultInputMethodOfClass(
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( OSStatus )
-DeselectTextService(Component aComp);
-
+DeselectTextService( Component aComp );
 
 /*
  *  SelectTextService()
@@ -911,8 +857,7 @@ DeselectTextService(Component aComp);
  *    Mac OS X:         in version 10.2 and later
  */
 EXTERN_API( OSStatus )
-SelectTextService(Component aComp);
-
+SelectTextService( Component aComp );
 
 /*
  *  TSMSetDocumentProperty()
@@ -934,11 +879,10 @@ SelectTextService(Component aComp);
  */
 EXTERN_API( OSStatus )
 TSMSetDocumentProperty(
-  TSMDocumentID   docID,
-  OSType          propertyTag,
-  UInt32          propertySize,
-  void *          propertyData);
-
+    TSMDocumentID docID,
+    OSType        propertyTag,
+    UInt32        propertySize,
+    void *        propertyData );
 
 /*
  *  TSMGetDocumentProperty()
@@ -950,12 +894,11 @@ TSMSetDocumentProperty(
  */
 EXTERN_API( OSStatus )
 TSMGetDocumentProperty(
-  TSMDocumentID   docID,
-  OSType          propertyTag,
-  UInt32          bufferSize,
-  UInt32 *        actualSize,
-  void *          propertyBuffer);      /* can be NULL */
-
+    TSMDocumentID docID,
+    OSType        propertyTag,
+    UInt32        bufferSize,
+    UInt32 *      actualSize,
+    void *        propertyBuffer ); /* can be NULL */
 
 /*
  *  TSMRemoveDocumentProperty()
@@ -967,24 +910,22 @@ TSMGetDocumentProperty(
  */
 EXTERN_API( OSStatus )
 TSMRemoveDocumentProperty(
-  TSMDocumentID   docID,
-  OSType          propertyTag);
-
+    TSMDocumentID docID,
+    OSType        propertyTag );
 
 #if OLDROUTINENAMES
 enum {
-  kInputMethodService           = kKeyboardInputMethodClass
+	kInputMethodService = kKeyboardInputMethodClass
 };
 
-#endif  /* OLDROUTINENAMES */
-
+#endif /* OLDROUTINENAMES */
 
 #if PRAGMA_STRUCT_ALIGN
-    #pragma options align=reset
+#pragma options align = reset
 #elif PRAGMA_STRUCT_PACKPUSH
-    #pragma pack(pop)
+#pragma pack( pop )
 #elif PRAGMA_STRUCT_PACK
-    #pragma pack()
+#pragma pack()
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -998,4 +939,3 @@ enum {
 #endif
 
 #endif /* __TEXTSERVICES__ */
-

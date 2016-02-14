@@ -2,8 +2,8 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
-#include "cinder/audio/Voice.h"
 #include "cinder/audio/Source.h"
+#include "cinder/audio/Voice.h"
 
 #include "Resources.h"
 
@@ -11,7 +11,7 @@ using namespace ci;
 using namespace ci::app;
 
 class VoiceBasicApp : public App {
-public:
+  public:
 	void setup() override;
 	void mouseDown( MouseEvent event ) override;
 	void keyDown( KeyEvent event ) override;

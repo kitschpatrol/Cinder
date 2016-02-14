@@ -17,28 +17,28 @@
 */
 
 #include <Box2D/Common/b2Settings.h>
-#include <cstdlib>
-#include <cstdio>
 #include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
 
-b2Version b2_version = {2, 2, 1};
+b2Version b2_version = { 2, 2, 1 };
 
 // Memory allocators. Modify these to use your own allocator.
-void* b2Alloc(int32 size)
+void *b2Alloc( int32 size )
 {
-	return malloc(size);
+	return malloc( size );
 }
 
-void b2Free(void* mem)
+void b2Free( void *mem )
 {
-	free(mem);
+	free( mem );
 }
 
 // You can modify this to use your logging facility.
-void b2Log(const char* string, ...)
+void b2Log( const char *string, ... )
 {
 	va_list args;
-	va_start(args, string);
-	vprintf(string, args);
-	va_end(args);
+	va_start( args, string );
+	vprintf( string, args );
+	va_end( args );
 }

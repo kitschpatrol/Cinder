@@ -25,9 +25,9 @@
 
 #include <ImageIO/ImageIO.h>
 #if defined( CINDER_COCOA_TOUCH )
-	#include <MobileCoreServices/MobileCoreServices.h>
+#include <MobileCoreServices/MobileCoreServices.h>
 #else
-	#include <CoreServices/CoreServices.h>
+#include <CoreServices/CoreServices.h>
 #endif
 
 namespace cinder {
@@ -36,112 +36,111 @@ namespace cinder {
 // Registrar
 void ImageSourceFileQuartz::registerSelf()
 {
-	static bool alreadyRegistered = false;
+	static bool          alreadyRegistered = false;
 	static const int32_t SOURCE_PRIORITY = 2;
-	
+
 	if( alreadyRegistered )
 		return;
 	alreadyRegistered = true;
-	
+
 	ImageIoRegistrar::SourceCreationFunc sourceFunc = ImageSourceFileQuartz::createRef;
-	
+
 	CFArrayRef sourceTypes = ::CGImageSourceCopyTypeIdentifiers();
-	CFIndex sourceCount = ::CFArrayGetCount( sourceTypes );
+	CFIndex    sourceCount = ::CFArrayGetCount( sourceTypes );
 	for( CFIndex st = 0; st < sourceCount; ++st ) {
-		::CFStringRef uti = (::CFStringRef)::CFArrayGetValueAtIndex( sourceTypes, st );
-		if( ! uti )
+		::CFStringRef uti = (::CFStringRef )::CFArrayGetValueAtIndex( sourceTypes, st );
+		if( !uti )
 			continue;
 		::CFDictionaryRef dict = (CFDictionaryRef)UTTypeCopyDeclaration( uti );
 		if( dict ) {
-			::CFDictionaryRef tagSpecDict = (CFDictionaryRef)::CFDictionaryGetValue( dict, kUTTypeTagSpecificationKey );
+			::CFDictionaryRef tagSpecDict = ( CFDictionaryRef )::CFDictionaryGetValue( dict, kUTTypeTagSpecificationKey );
 			if( tagSpecDict ) {
-				::CFTypeRef extensions = (CFTypeRef)::CFDictionaryGetValue( tagSpecDict, kUTTagClassFilenameExtension );
+				::CFTypeRef extensions = ( CFTypeRef )::CFDictionaryGetValue( tagSpecDict, kUTTagClassFilenameExtension );
 				if( extensions ) {
 					::CFTypeID type = ::CFGetTypeID( extensions );
-					if( type == ::CFStringGetTypeID() ) {		// single extension
+					if( type == ::CFStringGetTypeID() ) { // single extension
 						ImageIoRegistrar::registerSourceType( cocoa::convertCfString( (CFStringRef)extensions ), sourceFunc, SOURCE_PRIORITY );
 					}
-					else if( type == ::CFArrayGetTypeID() ) {	// array of extensions
+					else if( type == ::CFArrayGetTypeID() ) { // array of extensions
 						::CFArrayRef extensionsArr = ::CFArrayRef( extensions );
-						CFIndex extCount = ::CFArrayGetCount( extensionsArr );
+						CFIndex      extCount = ::CFArrayGetCount( extensionsArr );
 						for( CFIndex ext = 0; ext < extCount; ++ext ) {
-							ImageIoRegistrar::registerSourceType( cocoa::convertCfString( (CFStringRef)::CFArrayGetValueAtIndex( extensionsArr, ext ) ), sourceFunc, SOURCE_PRIORITY );
+							ImageIoRegistrar::registerSourceType( cocoa::convertCfString( ( CFStringRef )::CFArrayGetValueAtIndex( extensionsArr, ext ) ), sourceFunc, SOURCE_PRIORITY );
 						}
-					}			
+					}
 				}
 			}
-			
+
 			::CFRelease( dict );
 		}
 	}
-	
+
 	::CFRelease( sourceTypes );
-	
+
 	ImageIoRegistrar::registerSourceGeneric( ImageSourceFileQuartz::createRef, SOURCE_PRIORITY );
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // ImageSourceFileQuartz
 ImageSourceFileQuartzRef ImageSourceFileQuartz::createFileQuartzRef( DataSourceRef dataSourceRef, ImageSource::Options options )
 {
 	std::shared_ptr<CGImageSource> sourceRef;
-	std::shared_ptr<CGImage> imageRef;
-	
-	::CFStringRef keys[1] = { kCGImageSourceShouldAllowFloat };
-	::CFBooleanRef values[1] = { kCFBooleanTrue };
-	const std::shared_ptr<__CFDictionary> optionsDict( (__CFDictionary*)CFDictionaryCreate( kCFAllocatorDefault, (const void **)&keys, (const void **)&values, 1, NULL, NULL ), cocoa::safeCfRelease );
+	std::shared_ptr<CGImage>       imageRef;
+
+	::CFStringRef                         keys[1] = { kCGImageSourceShouldAllowFloat };
+	::CFBooleanRef                        values[1] = { kCFBooleanTrue };
+	const std::shared_ptr<__CFDictionary> optionsDict( (__CFDictionary *)CFDictionaryCreate( kCFAllocatorDefault, (const void **)&keys, (const void **)&values, 1, NULL, NULL ), cocoa::safeCfRelease );
 
 	if( dataSourceRef->isFilePath() ) {
 		::CFStringRef pathString = cocoa::createCfString( dataSourceRef->getFilePath().string() );
-		::CFURLRef urlRef = ::CFURLCreateWithFileSystemPath( kCFAllocatorDefault, pathString, kCFURLPOSIXPathStyle, false );
-		sourceRef = std::shared_ptr<CGImageSource>( ::CGImageSourceCreateWithURL( urlRef, optionsDict.get() ), cocoa::safeCfRelease );
+		::CFURLRef    urlRef = ::CFURLCreateWithFileSystemPath( kCFAllocatorDefault, pathString, kCFURLPOSIXPathStyle, false );
+		sourceRef = std::shared_ptr<CGImageSource>(::CGImageSourceCreateWithURL( urlRef, optionsDict.get() ), cocoa::safeCfRelease );
 		::CFRelease( pathString );
 		::CFRelease( urlRef );
 	}
 	else if( dataSourceRef->isUrl() ) {
 		::CFURLRef urlRef = cocoa::createCfUrl( dataSourceRef->getUrl() );
-		if( ! urlRef )
+		if( !urlRef )
 			throw ImageIoException( "Could not create CFURLRef from data source." );
-		sourceRef = std::shared_ptr<CGImageSource>( ::CGImageSourceCreateWithURL( urlRef, optionsDict.get() ), cocoa::safeCfRelease );
-		::CFRelease( urlRef );		
+		sourceRef = std::shared_ptr<CGImageSource>(::CGImageSourceCreateWithURL( urlRef, optionsDict.get() ), cocoa::safeCfRelease );
+		::CFRelease( urlRef );
 	}
 	else { // last ditch, we'll use a dataref from the buffer
 		::CFDataRef dataRef = cocoa::createCfDataRef( *dataSourceRef->getBuffer() );
-		if( ! dataRef )
+		if( !dataRef )
 			throw ImageIoExceptionFailedLoad( "Could not create CFDataRef from data source." );
-		
-		sourceRef = std::shared_ptr<CGImageSource>( ::CGImageSourceCreateWithData( dataRef, optionsDict.get() ), cocoa::safeCfRelease );
+
+		sourceRef = std::shared_ptr<CGImageSource>(::CGImageSourceCreateWithData( dataRef, optionsDict.get() ), cocoa::safeCfRelease );
 		::CFRelease( dataRef );
 	}
-	
+
 	if( sourceRef ) {
-		imageRef = std::shared_ptr<CGImage>( ::CGImageSourceCreateImageAtIndex( sourceRef.get(), options.getIndex(), optionsDict.get() ), CGImageRelease );
-		if( ! imageRef )
+		imageRef = std::shared_ptr<CGImage>(::CGImageSourceCreateImageAtIndex( sourceRef.get(), options.getIndex(), optionsDict.get() ), CGImageRelease );
+		if( !imageRef )
 			throw ImageIoExceptionFailedLoad( "Core Graphics coult not create image data." );
 	}
 	else
 		throw ImageIoExceptionFailedLoad( "Failed to load CGImageSource." );
 
-	const std::shared_ptr<__CFDictionary> imageProperties( (__CFDictionary*)::CGImageSourceCopyProperties( sourceRef.get(), NULL ), ::CFRelease );
-	const std::shared_ptr<__CFDictionary> imageIndexProperties( (__CFDictionary*)::CGImageSourceCopyPropertiesAtIndex( sourceRef.get(), options.getIndex(), NULL ), ::CFRelease );
-	const int32_t numFrames = (int32_t)::CGImageSourceGetCount( sourceRef.get() );
+	const std::shared_ptr<__CFDictionary> imageProperties( (__CFDictionary *)::CGImageSourceCopyProperties( sourceRef.get(), NULL ), ::CFRelease );
+	const std::shared_ptr<__CFDictionary> imageIndexProperties( (__CFDictionary *)::CGImageSourceCopyPropertiesAtIndex( sourceRef.get(), options.getIndex(), NULL ), ::CFRelease );
+	const int32_t                         numFrames = ( int32_t )::CGImageSourceGetCount( sourceRef.get() );
 
 	return ImageSourceFileQuartzRef( new ImageSourceFileQuartz( imageRef.get(), options, imageProperties, imageIndexProperties, numFrames ) );
 }
 
 ImageSourceFileQuartz::ImageSourceFileQuartz( CGImageRef imageRef, ImageSource::Options options, std::shared_ptr<const struct __CFDictionary> imageProperties, std::shared_ptr<const struct __CFDictionary> imageIndexProps, int32_t numFrames )
-	: ImageSourceCgImage( imageRef, options ), mImageProperties( imageProperties ), mImageIndexProperties( imageIndexProps )
+    : ImageSourceCgImage( imageRef, options ), mImageProperties( imageProperties ), mImageIndexProperties( imageIndexProps )
 {
 	setFrameCount( numFrames );
 }
 
-CFDictionaryRef	ImageSourceFileQuartz::getQuartzProperties() const
+CFDictionaryRef ImageSourceFileQuartz::getQuartzProperties() const
 {
 	return mImageProperties.get();
 }
 
-CFDictionaryRef	ImageSourceFileQuartz::getQuartzIndexProperties() const
+CFDictionaryRef ImageSourceFileQuartz::getQuartzIndexProperties() const
 {
 	return mImageIndexProperties.get();
 }

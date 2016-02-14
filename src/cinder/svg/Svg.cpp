@@ -25,22 +25,21 @@
 */
 
 #include "cinder/svg/Svg.h"
-#include "cinder/Utilities.h"
-#include "cinder/ImageIo.h"
 #include "cinder/Base64.h"
-#include "cinder/Text.h"
+#include "cinder/ImageIo.h"
 #include "cinder/Log.h"
+#include "cinder/Text.h"
+#include "cinder/Utilities.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/case_conv.hpp>
-	
+
 using namespace std;
 
-namespace cinder { namespace svg {
-
+namespace cinder {
+namespace svg {
 
 namespace {
-
 
 bool isNumeric( char c )
 {
@@ -49,27 +48,27 @@ bool isNumeric( char c )
 
 float parseFloat( const char **sInOut )
 {
-	char temp[256];
-	size_t i = 0;
+	char        temp[256];
+	size_t      i = 0;
 	const char *s = *sInOut;
-	while( *s && (isspace(*s) || *s == ',') )
+	while( *s && ( isspace( *s ) || *s == ',' ) )
 		s++;
-	if( ! s )
+	if( !s )
 		throw PathParseExc();
 	if( isNumeric( *s ) ) {
 		while( *s == '-' || *s == '+' ) {
-			if( i < sizeof(temp) )
+			if( i < sizeof( temp ) )
 				temp[i++] = *s;
 			s++;
 		}
 		bool parsingExponent = false;
 		bool seenDecimal = false;
-		while( *s && ( parsingExponent || (*s != '-' && *s != '+')) && isNumeric(*s) ) {
+		while( *s && ( parsingExponent || ( *s != '-' && *s != '+' ) ) && isNumeric( *s ) ) {
 			if( *s == '.' && seenDecimal )
 				break;
 			else if( *s == '.' )
 				seenDecimal = true;
-			if( i < sizeof(temp) )
+			if( i < sizeof( temp ) )
 				temp[i++] = *s;
 			if( *s == 'e' || *s == 'E' )
 				parsingExponent = true;
@@ -90,47 +89,53 @@ float parseFloat( const char **sInOut )
 vector<float> parseFloatList( const char **c )
 {
 	vector<float> result;
-	while( **c && isspace( **c ) ) (*c)++;
+	while( **c && isspace( **c ) )
+		( *c )++;
 	if( **c != '(' )
 		return result; // failure
-	(*c)++;
+	( *c )++;
 	do {
 		result.push_back( parseFloat( c ) );
-		while( **c && ( **c == ',' || isspace( **c ) ) ) (*c)++;
+		while( **c && ( **c == ',' || isspace( **c ) ) )
+			( *c )++;
 	} while( **c && **c != ')' );
-	
+
 	// get rid of trailing closing paren
-	if( **c ) (*c)++;
-	
+	if( **c ) ( *c )++;
+
 	return result;
 }
 
 vector<Value> parseValueList( const char **c, bool requireParens = true )
 {
 	vector<Value> result;
-	while( **c && isspace( **c ) ) (*c)++;
+	while( **c && isspace( **c ) )
+		( *c )++;
 	if( requireParens ) {
 		if( **c != '(' )
 			return result; // failure
-		(*c)++;
+		( *c )++;
 	}
 	do {
 		result.push_back( Value::parse( c ) );
-		while( **c && ( **c == ',' || isspace( **c ) ) ) (*c)++;
+		while( **c && ( **c == ',' || isspace( **c ) ) )
+			( *c )++;
 	} while( **c && **c != ')' );
-	
+
 	// get rid of trailing closing paren
-	if( requireParens && **c ) (*c)++;
-	
+	if( requireParens && **c ) ( *c )++;
+
 	return result;
 }
 
-vector<Value> readValueList( const std::string &s, bool requireParens = true ) {
+vector<Value> readValueList( const std::string &s, bool requireParens = true )
+{
 	const char *temp = s.c_str();
 	return parseValueList( &temp, requireParens );
 }
 
-vector<Value> readValueList( const char *c, bool requireParens = true ) {
+vector<Value> readValueList( const char *c, bool requireParens = true )
+{
 	const char *temp = c;
 	return parseValueList( &temp, requireParens );
 }
@@ -138,7 +143,7 @@ vector<Value> readValueList( const char *c, bool requireParens = true ) {
 Value readValue( const std::string &s, float minV, float maxV )
 {
 	const char *temp = s.c_str();
-	Value result = Value::parse( &temp );
+	Value       result = Value::parse( &temp );
 	if( result.mValue < minV ) result = minV;
 	if( result.mValue > maxV ) result = maxV;
 	return result;
@@ -147,7 +152,7 @@ Value readValue( const std::string &s, float minV, float maxV )
 Value readValue( const std::string &s )
 {
 	const char *temp = s.c_str();
-	Value result = Value::parse( &temp );
+	Value       result = Value::parse( &temp );
 	return result;
 }
 
@@ -162,7 +167,7 @@ vector<string> readStringList( const std::string &s, bool stripQuotes = false )
 			boost::erase_all( *resultIt, "\'" );
 		}
 	}
-	
+
 	return result;
 }
 
@@ -170,9 +175,9 @@ vector<string> readStringList( const std::string &s, bool stripQuotes = false )
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Renderer
-void Renderer::setVisitor( const function<bool(const Node&, svg::Style *)> &visitor )
+void Renderer::setVisitor( const function<bool( const Node &, svg::Style * )> &visitor )
 {
-	mVisitor = shared_ptr<function<bool(const Node&, svg::Style *)> >( new function<bool(const Node&, svg::Style *)>( visitor ) );
+	mVisitor = shared_ptr<function<bool( const Node &, svg::Style * )>>( new function<bool( const Node &, svg::Style * )>( visitor ) );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -183,34 +188,33 @@ Paint Style::sPaintBlack = svg::Paint( Color::black() );
 ////////////////////////////////////////////////////////////////////////////////////
 // Paint
 Paint::Paint()
-	: mType( NONE ), mSpecifiesTransform( false )
+    : mType( NONE ), mSpecifiesTransform( false )
 {
 	mStops.push_back( std::make_pair( 0.0f, ColorA8u::black() ) );
 }
 
 Paint::Paint( uint8_t type )
-	: mType( type ), mSpecifiesTransform( false )
+    : mType( type ), mSpecifiesTransform( false )
 {
 	mStops.push_back( std::make_pair( 0.0f, ColorA8u::black() ) );
 }
 
 Paint::Paint( const ColorA8u &color )
-	: mType( COLOR ), mSpecifiesTransform( false )
+    : mType( COLOR ), mSpecifiesTransform( false )
 {
 	mStops.push_back( std::make_pair( 0.0f, color ) );
 }
-	
 
 Paint Paint::parse( const char *value, bool *specified, const Node *parentNode )
 {
 	*specified = false;
 	while( *value && isspace( *value ) )
 		value++;
-	
-	if( ! *value )
+
+	if( !*value )
 		return Paint();
-	
-	if( ! strncmp( value, "inherit", 7 ) ) {
+
+	if( !strncmp( value, "inherit", 7 ) ) {
 		*specified = false;
 		return Paint();
 	}
@@ -218,27 +222,27 @@ Paint Paint::parse( const char *value, bool *specified, const Node *parentNode )
 		uint32_t v = 0;
 		if( strlen( value ) > 4 ) {
 			for( int c = 0; c < 6; ++c ) {
-				char ch = toupper( value[1+c] );
+				char     ch = toupper( value[1 + c] );
 				uint32_t col = ch - ( ( ch > '9' ) ? ( 'A' - 10 ) : '0' );
-				v += col << ( (5-c) * 4 );
+				v += col << ( ( 5 - c ) * 4 );
 			}
 		}
 		else { // 3-digit hex shorthand; double each digit
 			for( int c = 0; c < 3; ++c ) {
-				char ch = toupper( value[1+c] );
+				char     ch = toupper( value[1 + c] );
 				uint32_t col = ch - ( ( ch > '9' ) ? ( 'A' - 10 ) : '0' );
-				v += col << ( (5-(c*2+0)) * 4 );
-				v += col << ( (5-(c*2+1)) * 4 );
+				v += col << ( ( 5 - ( c * 2 + 0 ) ) * 4 );
+				v += col << ( ( 5 - ( c * 2 + 1 ) ) * 4 );
 			}
 		}
 		*specified = true;
 		return Paint( ColorA8u( v >> 16, ( v >> 8 ) & 255, v & 255, 255 ) );
 	}
-	else if( ! strncmp( value, "none", 4 ) ) {
+	else if( !strncmp( value, "none", 4 ) ) {
 		*specified = true;
 		return Paint();
 	}
-	else if( ! strncmp( value, "rgb", 3 ) ) {
+	else if( !strncmp( value, "rgb", 3 ) ) {
 		vector<Value> values = readValueList( value + 3 );
 		if( values.size() == 3 ) {
 			*specified = true;
@@ -247,11 +251,11 @@ Paint Paint::parse( const char *value, bool *specified, const Node *parentNode )
 		*specified = false;
 		return Paint();
 	}
-	else if( ! strncmp( value, "url", 3 ) ) {
-		char id[1024];
+	else if( !strncmp( value, "url", 3 ) ) {
+		char        id[1024];
 		const char *hash = strchr( value, '#' );
 		const char *closeParen = strchr( value, ')' );
-		if( ( ! closeParen ) || ( ! hash ) || ( closeParen - hash >= 1024 ) )
+		if( ( !closeParen ) || ( !hash ) || ( closeParen - hash >= 1024 ) )
 			return Paint();
 		strncpy( id, hash + 1, closeParen - hash - 1 );
 		id[closeParen - hash - 1] = 0;
@@ -289,24 +293,24 @@ Style::Style( const XmlTree &xml, const Node *parent )
 Style Style::makeGlobalDefaults()
 {
 	Style result;
-	
+
 	result.setFill( getFillDefault() );
 	result.setStroke( getStrokeDefault() );
 	result.setFillOpacity( getFillOpacityDefault() );
 	result.setStrokeOpacity( getStrokeOpacityDefault() );
-	
+
 	result.setStrokeWidth( getStrokeWidthDefault() );
 	result.setFillRule( getFillRuleDefault() );
 	result.setLineCap( getLineCapDefault() );
 	result.setLineJoin( getLineJoinDefault() );
-	
+
 	result.setFontFamilies( getFontFamiliesDefault() );
 	result.setFontSize( getFontSizeDefault() );
 	result.setFontWeight( getFontWeightDefault() );
-	
+
 	result.setVisible( true );
 	result.setDisplayNone( false );
-	
+
 	return result;
 }
 
@@ -315,7 +319,7 @@ void Style::clear()
 	mSpecifiesFill = mSpecifiesStroke = false;
 	mSpecifiesOpacity = mSpecifiesFillOpacity = mSpecifiesStrokeOpacity = false;
 	mOpacity = 1.0f;
-	mSpecifiesStrokeWidth = false;  	
+	mSpecifiesStrokeWidth = false;
 	mSpecifiesFillRule = false;
 	mSpecifiesLineCap = false;
 	mSpecifiesLineJoin = false;
@@ -324,14 +328,14 @@ void Style::clear()
 	mDisplayNone = false;
 }
 
-const std::vector<std::string>&	Style::getFontFamiliesDefault()
+const std::vector<std::string> &Style::getFontFamiliesDefault()
 {
-	static shared_ptr<vector<string> > sDefault;
-	if( ! sDefault ) {
-		sDefault = shared_ptr<vector<string> >( new vector<string>() );
+	static shared_ptr<vector<string>> sDefault;
+	if( !sDefault ) {
+		sDefault = shared_ptr<vector<string>>( new vector<string>() );
 		sDefault->push_back( "Arial" );
 	}
-	
+
 	return *sDefault;
 }
 
@@ -426,7 +430,7 @@ bool Style::parseProperty( const std::string &key, const std::string &value, con
 		return true;
 	}
 	else if( key == "font-size" ) {
-		if( ! value.empty() && ( isdigit(value[0]) ) ) { // we don't parse something like font-size:medium
+		if( !value.empty() && ( isdigit( value[0] ) ) ) { // we don't parse something like font-size:medium
 			mSpecifiesFontSize = true;
 			setFontSize( readValue( value ) );
 		}
@@ -438,7 +442,7 @@ bool Style::parseProperty( const std::string &key, const std::string &value, con
 			int v = atoi( weightString.c_str() );
 			if( v > 900 ) v = 900;
 			if( v < 100 ) v = 100;
-			mFontWeight = FontWeight( static_cast<int>(WEIGHT_100) + ( ( v / 100 ) - 1 ) );
+			mFontWeight = FontWeight( static_cast<int>( WEIGHT_100 ) + ( ( v / 100 ) - 1 ) );
 			mSpecifiesFontWeight = true;
 		}
 		else if( weightString == "normal" ) {
@@ -447,7 +451,7 @@ bool Style::parseProperty( const std::string &key, const std::string &value, con
 		}
 		else if( weightString == "bold" ) {
 			mFontWeight = WEIGHT_BOLD;
-			mSpecifiesFontWeight = true;			
+			mSpecifiesFontWeight = true;
 		}
 		return true;
 	}
@@ -474,7 +478,7 @@ bool Style::parseProperty( const std::string &key, const std::string &value, con
 void Style::startRender( Renderer &renderer, bool isNodeDrawable ) const
 {
 	if( mSpecifiesFill )
-		renderer.pushFill( mFill ); 
+		renderer.pushFill( mFill );
 	if( mSpecifiesStroke )
 		renderer.pushStroke( mStroke );
 	if( mSpecifiesOpacity ) {
@@ -506,14 +510,14 @@ void Style::finishRender( Renderer &renderer, bool isNodeDrawable ) const
 		renderer.popFill();
 	if( mSpecifiesStroke )
 		renderer.popStroke();
-	if( ( mSpecifiesOpacity && isNodeDrawable ) || ( ( ! mSpecifiesOpacity ) && mSpecifiesFillOpacity ) )
+	if( ( mSpecifiesOpacity && isNodeDrawable ) || ( ( !mSpecifiesOpacity ) && mSpecifiesFillOpacity ) )
 		renderer.popFillOpacity();
-	if( ( mSpecifiesOpacity && isNodeDrawable ) || ( ( ! mSpecifiesOpacity ) && mSpecifiesStrokeOpacity ) )
+	if( ( mSpecifiesOpacity && isNodeDrawable ) || ( ( !mSpecifiesOpacity ) && mSpecifiesStrokeOpacity ) )
 		renderer.popStrokeOpacity();
 	if( mSpecifiesStrokeWidth )
 		renderer.popStrokeWidth();
 	if( mSpecifiesFillRule )
-		renderer.popFillRule();		
+		renderer.popFillRule();
 	if( mSpecifiesLineCap )
 		renderer.popLineCap();
 	if( mSpecifiesLineJoin )
@@ -525,25 +529,25 @@ void Style::finishRender( Renderer &renderer, bool isNodeDrawable ) const
 float Value::asUser( float percentOf, float dpi, float fontSize, float fontXHeight ) const
 {
 	switch( mUnit ) {
-		case USER:
-		case PX:
-			return mValue;
-		case PERCENT:
-			return mValue * percentOf / 100;
-		case PT:
-			return mValue * ( dpi / 72 );
-		case MM:
-			return mValue * dpi / 25.4f; // 25.4mm in an inch
-		case CM:
-			return mValue * dpi / 2.54f; // 2.54cm in an inch
-		case INCH:
-			return mValue * dpi;
-		case EM:
-			return mValue * fontSize;
-		case EX:
-			return mValue * fontXHeight;
-		default:
-			throw ValueExc();
+	case USER:
+	case PX:
+		return mValue;
+	case PERCENT:
+		return mValue * percentOf / 100;
+	case PT:
+		return mValue * ( dpi / 72 );
+	case MM:
+		return mValue * dpi / 25.4f; // 25.4mm in an inch
+	case CM:
+		return mValue * dpi / 2.54f; // 2.54cm in an inch
+	case INCH:
+		return mValue * dpi;
+	case EM:
+		return mValue * fontSize;
+	case EX:
+		return mValue * fontXHeight;
+	default:
+		throw ValueExc();
 	}
 }
 
@@ -562,11 +566,11 @@ Value Value::parse( const char **sInOut )
 	else if( strncmp( *sInOut, "pt", 2 ) == 0 ) {
 		*sInOut += 2;
 		return Value( v, Value::PT );
-	}	
+	}
 	else if( strncmp( *sInOut, "pc", 2 ) == 0 ) { // picas
 		*sInOut += 2;
 		return Value( v, Value::PC );
-	}	
+	}
 	else if( strncmp( *sInOut, "mm", 2 ) == 0 ) {
 		*sInOut += 2;
 		return Value( v, Value::MM );
@@ -600,7 +604,7 @@ Value Value::parse( const std::string &s )
 ////////////////////////////////////////////////////////////////////////////////////
 // Node
 Node::Node( const Node *parent, const XmlTree &xml )
-	: mParent( parent ), mStyle( xml, this ), mBoundingBoxCached( false )
+    : mParent( parent ), mStyle( xml, this ), mBoundingBoxCached( false )
 {
 	mSpecifiesTransform = false;
 	mId = xml["id"];
@@ -612,112 +616,148 @@ Node::Node( const Node *parent, const XmlTree &xml )
 		mTransform = mat3();
 }
 
-Doc* Node::getDoc() const
+Doc *Node::getDoc() const
 {
 	const Node *parent = this;
 	while( parent && parent->mParent )
 		parent = parent->mParent;
 
-	if( typeid(Doc) == typeid(*parent) )
-		return const_cast<Doc*>( reinterpret_cast<const Doc*>( parent ) );
+	if( typeid( Doc ) == typeid( *parent ) )
+		return const_cast<Doc *>( reinterpret_cast<const Doc *>( parent ) );
 	else
 		return 0;
 }
 
 string Node::getDomPath() const
 {
-	string result = mId;
+	string      result = mId;
 	const Node *parent = this;
 	while( parent && parent->mParent ) {
 		parent = parent->mParent;
-		result = parent->getId() + string("/") + result;
+		result = parent->getId() + string( "/" ) + result;
 	}
-	
+
 	return result;
 }
 
-const Paint& Node::getFill() const
+const Paint &Node::getFill() const
 {
-	if( mStyle.specifiesFill() ) return mStyle.getFill();
-	else if( mParent ) return mParent->getFill();
-	else return Style::getFillDefault();
+	if( mStyle.specifiesFill() )
+		return mStyle.getFill();
+	else if( mParent )
+		return mParent->getFill();
+	else
+		return Style::getFillDefault();
 }
 
-const Paint& Node::getStroke() const
+const Paint &Node::getStroke() const
 {
-	if( mStyle.specifiesStroke() ) return mStyle.getStroke();
-	else if( mParent ) return mParent->getStroke();
-	else return Style::getStrokeDefault();
+	if( mStyle.specifiesStroke() )
+		return mStyle.getStroke();
+	else if( mParent )
+		return mParent->getStroke();
+	else
+		return Style::getStrokeDefault();
 }
 
 float Node::getStrokeWidth() const
 {
-	if( mStyle.specifiesStrokeWidth() ) return mStyle.getStrokeWidth();
-	else if( mParent ) return mParent->getStrokeWidth();
-	else return Style::getStrokeWidthDefault();
+	if( mStyle.specifiesStrokeWidth() )
+		return mStyle.getStrokeWidth();
+	else if( mParent )
+		return mParent->getStrokeWidth();
+	else
+		return Style::getStrokeWidthDefault();
 }
 
 float Node::getOpacity() const
 {
-	if( mStyle.specifiesOpacity() ) return mStyle.getOpacity();
-	else if( mParent ) return mParent->getOpacity();
-	else return Style::getOpacityDefault();
+	if( mStyle.specifiesOpacity() )
+		return mStyle.getOpacity();
+	else if( mParent )
+		return mParent->getOpacity();
+	else
+		return Style::getOpacityDefault();
 }
 
 float Node::getFillOpacity() const
 {
-	if( mStyle.specifiesFillOpacity() ) return mStyle.getFillOpacity();
-	else if( mParent ) return mParent->getFillOpacity();
-	else return Style::getFillOpacityDefault();
+	if( mStyle.specifiesFillOpacity() )
+		return mStyle.getFillOpacity();
+	else if( mParent )
+		return mParent->getFillOpacity();
+	else
+		return Style::getFillOpacityDefault();
 }
 
 float Node::getStrokeOpacity() const
 {
-	if( mStyle.specifiesStrokeOpacity() ) return mStyle.getStrokeOpacity();
-	else if( mParent ) return mParent->getStrokeOpacity();
-	else return Style::getStrokeOpacityDefault();
+	if( mStyle.specifiesStrokeOpacity() )
+		return mStyle.getStrokeOpacity();
+	else if( mParent )
+		return mParent->getStrokeOpacity();
+	else
+		return Style::getStrokeOpacityDefault();
 }
 
 FillRule Node::getFillRule() const
 {
-	if( mStyle.specifiesFillRule() ) return mStyle.getFillRule();
-	else if( mParent ) return mParent->getFillRule();
-	else return Style::getFillRuleDefault();
+	if( mStyle.specifiesFillRule() )
+		return mStyle.getFillRule();
+	else if( mParent )
+		return mParent->getFillRule();
+	else
+		return Style::getFillRuleDefault();
 }
 
-LineCap	Node::getLineCap() const
+LineCap Node::getLineCap() const
 {
-	if( mStyle.specifiesLineCap() ) return mStyle.getLineCap();
-	else if( mParent ) return mParent->getLineCap();
-	else return Style::getLineCapDefault();
+	if( mStyle.specifiesLineCap() )
+		return mStyle.getLineCap();
+	else if( mParent )
+		return mParent->getLineCap();
+	else
+		return Style::getLineCapDefault();
 }
 
 LineJoin Node::getLineJoin() const
 {
-	if( mStyle.specifiesLineJoin() ) return mStyle.getLineJoin();
-	else if( mParent ) return mParent->getLineJoin();
-	else return Style::getLineJoinDefault();
+	if( mStyle.specifiesLineJoin() )
+		return mStyle.getLineJoin();
+	else if( mParent )
+		return mParent->getLineJoin();
+	else
+		return Style::getLineJoinDefault();
 }
 
-const vector<string>& Node::getFontFamilies() const
+const vector<string> &Node::getFontFamilies() const
 {
-	if( mStyle.specifiesFontFamilies() ) return mStyle.getFontFamilies();
-	else if( mParent ) return mParent->getFontFamilies();
-	else return Style::getFontFamiliesDefault();
+	if( mStyle.specifiesFontFamilies() )
+		return mStyle.getFontFamilies();
+	else if( mParent )
+		return mParent->getFontFamilies();
+	else
+		return Style::getFontFamiliesDefault();
 }
 
 Value Node::getFontSize() const
 {
-	if( mStyle.specifiesFontSize() ) return mStyle.getFontSize();
-	else if( mParent ) return mParent->getFontSize();
-	else return Style::getFontSizeDefault();
+	if( mStyle.specifiesFontSize() )
+		return mStyle.getFontSize();
+	else if( mParent )
+		return mParent->getFontSize();
+	else
+		return Style::getFontSizeDefault();
 }
 
 bool Node::isVisible() const
 {
-	if( mStyle.specifiesVisible() ) return mStyle.isVisible();
-	else if( mParent ) return mParent->isVisible();
-	else return true;
+	if( mStyle.specifiesVisible() )
+		return mStyle.isVisible();
+	else if( mParent )
+		return mParent->isVisible();
+	else
+		return true;
 }
 
 Paint Node::parsePaint( const char *value, bool *specified, const Node *parentNode )
@@ -725,11 +765,11 @@ Paint Node::parsePaint( const char *value, bool *specified, const Node *parentNo
 	*specified = false;
 	while( *value && isspace( *value ) )
 		value++;
-	
-	if( ! *value )
+
+	if( !*value )
 		return Paint();
-	
-	if( ! strncmp( value, "inherit", 7 ) ) {
+
+	if( !strncmp( value, "inherit", 7 ) ) {
 		*specified = false;
 		return Paint();
 	}
@@ -737,27 +777,27 @@ Paint Node::parsePaint( const char *value, bool *specified, const Node *parentNo
 		uint32_t v = 0;
 		if( strlen( value ) > 4 ) {
 			for( int c = 0; c < 6; ++c ) {
-				char ch = toupper( value[1+c] );
+				char     ch = toupper( value[1 + c] );
 				uint32_t col = ch - ( ( ch > '9' ) ? ( 'A' - 10 ) : '0' );
-				v += col << ( (5-c) * 4 );
+				v += col << ( ( 5 - c ) * 4 );
 			}
 		}
 		else { // 3-digit hex shorthand; double each digit
 			for( int c = 0; c < 3; ++c ) {
-				char ch = toupper( value[1+c] );
+				char     ch = toupper( value[1 + c] );
 				uint32_t col = ch - ( ( ch > '9' ) ? ( 'A' - 10 ) : '0' );
-				v += col << ( (5-(c*2+0)) * 4 );
-				v += col << ( (5-(c*2+1)) * 4 );
+				v += col << ( ( 5 - ( c * 2 + 0 ) ) * 4 );
+				v += col << ( ( 5 - ( c * 2 + 1 ) ) * 4 );
 			}
 		}
 		*specified = true;
 		return Paint( ColorA8u( v >> 16, ( v >> 8 ) & 255, v & 255, 255 ) );
 	}
-	else if( ! strncmp( value, "none", 4 ) ) {
+	else if( !strncmp( value, "none", 4 ) ) {
 		*specified = true;
 		return Paint();
 	}
-	else if( ! strncmp( value, "rgb", 3 ) ) {
+	else if( !strncmp( value, "rgb", 3 ) ) {
 		vector<Value> values = readValueList( value + 3 );
 		if( values.size() == 3 ) {
 			*specified = true;
@@ -766,11 +806,11 @@ Paint Node::parsePaint( const char *value, bool *specified, const Node *parentNo
 		*specified = false;
 		return Paint();
 	}
-	else if( ! strncmp( value, "url", 3 ) ) {
-		char id[1024];
+	else if( !strncmp( value, "url", 3 ) ) {
+		char        id[1024];
 		const char *hash = strchr( value, '#' );
 		const char *closeParen = strchr( value, ')' );
-		if( ( ! closeParen ) || ( ! hash ) || ( closeParen - hash >= 1024 ) )
+		if( ( !closeParen ) || ( !hash ) || ( closeParen - hash >= 1024 ) )
 			return Paint();
 		strncpy( id, hash + 1, closeParen - hash - 1 );
 		id[closeParen - hash - 1] = 0;
@@ -789,8 +829,8 @@ Paint Node::parsePaint( const char *value, bool *specified, const Node *parentNo
 mat3 Node::parseTransform( const std::string &value )
 {
 	const char *c = value.c_str();
-	mat3 curMat;
-	mat3 nextMat;
+	mat3        curMat;
+	mat3        nextMat;
 	while( parseTransformComponent( &c, &nextMat ) ) {
 		curMat = curMat * nextMat;
 	}
@@ -801,10 +841,10 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 {
 	// skip leading whitespace
 	while( **c && ( isspace( **c ) || ( **c == ',' ) ) )
-		(*c)++;
-	
+		( *c )++;
+
 	mat3 m;
-	if( ! strncmp( *c, "scale", 5 ) ) {
+	if( !strncmp( *c, "scale", 5 ) ) {
 		*c += 5; //strlen( "scale" );
 		vector<float> v = parseFloatList( c );
 		if( v.size() == 1 ) {
@@ -816,7 +856,7 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 		else
 			throw TransformParseExc();
 	}
-	else if( ! strncmp( *c, "translate", 9 ) ) {
+	else if( !strncmp( *c, "translate", 9 ) ) {
 		*c += 9; //strlen( "translate" );
 		vector<float> v = parseFloatList( c );
 		if( v.size() == 1 )
@@ -827,7 +867,7 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 		else
 			throw TransformParseExc();
 	}
-	else if( ! strncmp( *c, "rotate", 6 ) ) {
+	else if( !strncmp( *c, "rotate", 6 ) ) {
 		*c += 6; //strlen( "rotate" );
 		vector<float> v = parseFloatList( c );
 		if( v.size() == 1 ) {
@@ -838,7 +878,7 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 		}
 		else if( v.size() == 3 ) { // rotate around point
 			float a = toRadians( v[0] );
-			vec2 origin( v[1], v[2] );
+			vec2  origin( v[1], v[2] );
 			m = glm::translate( mat3(), origin );
 			m = glm::rotate( m, a );
 			m = glm::translate( m, -origin );
@@ -846,7 +886,7 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 		else
 			throw TransformParseExc();
 	}
-	else if( ! strncmp( *c, "matrix", 6 ) ) {
+	else if( !strncmp( *c, "matrix", 6 ) ) {
 		*c += 6; //strlen( "matrix" );
 		vector<float> v = parseFloatList( c );
 		if( v.size() == 6 )
@@ -854,7 +894,7 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 		else
 			throw TransformParseExc();
 	}
-	else if( ! strncmp( *c, "skewX", 5 ) ) {
+	else if( !strncmp( *c, "skewX", 5 ) ) {
 		*c += 5; //strlen( "skewX" );
 		vector<float> v = parseFloatList( c );
 		if( v.size() == 1 ) {
@@ -864,7 +904,7 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 		else
 			throw TransformParseExc();
 	}
-	else if( ! strncmp( *c, "skewY", 5 ) ) {
+	else if( !strncmp( *c, "skewY", 5 ) ) {
 		*c += 5; //strlen( "skewY" );
 		vector<float> v = parseFloatList( c );
 		if( v.size() == 1 ) {
@@ -879,7 +919,7 @@ bool Node::parseTransformComponent( const char **c, mat3 *result )
 		return false;
 
 	*result = m;
-	return true;		
+	return true;
 }
 
 // Parse a 'style' attribute searching for the key 'key', and returning its correspoding value or the empty string if not found
@@ -918,7 +958,7 @@ void Node::render( Renderer &renderer ) const
 	Style style = calcInheritedStyle();
 	if( mParent )
 		renderer.pushMatrix( mParent->getTransformAbsolute() );
-	
+
 	startRender( renderer, style );
 	renderSelf( renderer );
 	finishRender( renderer, style );
@@ -933,7 +973,7 @@ void Node::startRender( Renderer &renderer, const Style &style ) const
 {
 	if( mSpecifiesTransform )
 		renderer.pushMatrix( mTransform );
-	renderer.pushStyle( style );		
+	renderer.pushStyle( style );
 	style.startRender( renderer, this->isDrawable() );
 }
 
@@ -941,11 +981,11 @@ void Node::finishRender( Renderer &renderer, const Style &style ) const
 {
 	if( mSpecifiesTransform )
 		renderer.popMatrix();
-	renderer.popStyle( style );		
+	renderer.popStyle( style );
 	style.finishRender( renderer, this->isDrawable() );
 }
 
-const Node* Node::findInAncestors( const std::string &elementId ) const
+const Node *Node::findInAncestors( const std::string &elementId ) const
 {
 	if( mId == elementId )
 		return this;
@@ -958,15 +998,15 @@ const Node* Node::findInAncestors( const std::string &elementId ) const
 Paint Node::findPaintInAncestors( const std::string &paintName ) const
 {
 	const Node *node = findInAncestors( paintName );
-	if( ! node )
+	if( !node )
 		return Paint();
-	
-	if( typeid(LinearGradient) == typeid(*node) ) {
-		const LinearGradient *linearGradient = static_cast<const LinearGradient*>( node );
+
+	if( typeid( LinearGradient ) == typeid( *node ) ) {
+		const LinearGradient *linearGradient = static_cast<const LinearGradient *>( node );
 		return linearGradient->asPaint();
 	}
-	else if( typeid(RadialGradient) == typeid(*node) ) {
-		const RadialGradient *radialGradient = static_cast<const RadialGradient*>( node );
+	else if( typeid( RadialGradient ) == typeid( *node ) ) {
+		const RadialGradient *radialGradient = static_cast<const RadialGradient *>( node );
 		return radialGradient->asPaint();
 	}
 	else
@@ -980,21 +1020,21 @@ mat3 Node::getTransformAbsolute() const
 		result = mTransform;
 	else
 		result = mat3();
-	
+
 	const Node *parent = mParent;
 	while( parent ) {
 		if( parent->specifiesTransform() )
 			result = parent->getTransform() * result;
 		parent = parent->getParent();
 	}
-	
+
 	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Gradient
 Gradient::Gradient( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml ), mUseObjectBoundingBox( true ), mSpecifiesTransform( false )
+    : Node( parent, xml ), mUseObjectBoundingBox( true ), mSpecifiesTransform( false )
 {
 	parse( parent, xml );
 }
@@ -1005,8 +1045,8 @@ void Gradient::parse( const Node *parent, const XmlTree &xml )
 		string ref = xml.getAttributeValue<string>( "xlink:href" );
 		if( ref.size() > 1 ) {
 			if( ref[0] == '#' ) {
-				string elementId = ref.substr( 1, string::npos );
-				const Gradient *referencedGrad = dynamic_cast<const Gradient*>( findInAncestors( elementId ) );
+				string          elementId = ref.substr( 1, string::npos );
+				const Gradient *referencedGrad = dynamic_cast<const Gradient *>( findInAncestors( elementId ) );
 				if( referencedGrad ) {
 					copyAttributesFrom( *referencedGrad );
 				}
@@ -1017,7 +1057,7 @@ void Gradient::parse( const Node *parent, const XmlTree &xml )
 		mStops.push_back( Stop( parent, *stopsIt ) );
 	}
 	if( xml.hasAttribute( "gradientUnits" ) )
-		mUseObjectBoundingBox = xml.getAttributeValue<string>( "gradientUnits" ) != string("userSpaceOnUse");
+		mUseObjectBoundingBox = xml.getAttributeValue<string>( "gradientUnits" ) != string( "userSpaceOnUse" );
 	if( xml.hasAttribute( "gradientTransform" ) ) {
 		mSpecifiesTransform = true;
 		mTransform = parseTransform( xml.getAttributeValue<string>( "gradientTransform" ) );
@@ -1037,7 +1077,7 @@ void Gradient::copyAttributesFrom( const Gradient &rhs )
 }
 
 Gradient::Stop::Stop( const Node *parent, const XmlTree &xml )
-	: mOffset( 0 ), mSpecifiesColor( false ), mSpecifiesOpacity( false )
+    : mOffset( 0 ), mSpecifiesColor( false ), mSpecifiesOpacity( false )
 {
 	if( xml.hasAttribute( "offset" ) )
 		mOffset = Value::parse( xml.getAttributeValue<string>( "offset" ) ).asUser();
@@ -1045,15 +1085,15 @@ Gradient::Stop::Stop( const Node *parent, const XmlTree &xml )
 		mColor = Node::parsePaint( xml.getAttributeValue<string>( "stop-color" ).c_str(), &mSpecifiesColor, parent ).getColor();
 	if( xml.hasAttribute( "stop-opacity" ) ) {
 		mSpecifiesOpacity = true;
-		mColor.a = (uint8_t)(Value::parse( xml.getAttributeValue<string>( "stop-opacity" ) ).asUser() * 255);
+		mColor.a = ( uint8_t )( Value::parse( xml.getAttributeValue<string>( "stop-opacity" ) ).asUser() * 255 );
 	}
 	if( xml.hasAttribute( "style" ) ) {
 		string stopColorString = Node::findStyleValue( xml.getAttributeValue<string>( "style" ), "stop-color" );
-		if( ! stopColorString.empty() )
-			mColor = Node::parsePaint( stopColorString.c_str(), &mSpecifiesColor, parent ).getColor();	
+		if( !stopColorString.empty() )
+			mColor = Node::parsePaint( stopColorString.c_str(), &mSpecifiesColor, parent ).getColor();
 		string stopOpacityString = Node::findStyleValue( xml.getAttributeValue<string>( "style" ), "stop-opacity" );
-		if( ! stopOpacityString.empty() ) {
-			mColor.a = (uint8_t)(Value::parse( stopOpacityString ).asUser() * 255);
+		if( !stopOpacityString.empty() ) {
+			mColor.a = ( uint8_t )( Value::parse( stopOpacityString ).asUser() * 255 );
 		}
 	}
 }
@@ -1061,7 +1101,7 @@ Gradient::Stop::Stop( const Node *parent, const XmlTree &xml )
 Paint Gradient::asPaint() const
 {
 	Paint result;
-	if( ! mStops.empty() ) {
+	if( !mStops.empty() ) {
 		result.mStops.clear();
 		for( vector<Stop>::const_iterator stopIt = mStops.begin(); stopIt != mStops.end(); ++stopIt )
 			result.mStops.push_back( make_pair( stopIt->mOffset, stopIt->mColor ) );
@@ -1080,7 +1120,7 @@ Paint Gradient::asPaint() const
 ////////////////////////////////////////////////////////////////////////////////////
 // LinearGradient
 LinearGradient::LinearGradient( const Node *parent, const XmlTree &xml )
-	: Gradient( parent, xml )
+    : Gradient( parent, xml )
 {
 	parse( xml );
 }
@@ -1103,7 +1143,7 @@ Paint LinearGradient::asPaint() const
 ////////////////////////////////////////////////////////////////////////////////////
 // RadialGradient
 RadialGradient::RadialGradient( const Node *parent, const XmlTree &xml )
-	: Gradient( parent, xml )
+    : Gradient( parent, xml )
 {
 	parse( xml );
 }
@@ -1128,11 +1168,11 @@ Paint RadialGradient::asPaint() const
 ////////////////////////////////////////////////////////////////////////////////////
 // Circle
 Circle::Circle( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	mCenter.x = xml.getAttributeValue( "cx", 0.0f );
 	mCenter.y = xml.getAttributeValue( "cy", 0.0f );
-	mRadius = xml.getAttributeValue( "r", 0.0f );	
+	mRadius = xml.getAttributeValue( "r", 0.0f );
 }
 
 void Circle::renderSelf( Renderer &renderer ) const
@@ -1150,7 +1190,7 @@ Shape2d Circle::getShape() const
 ////////////////////////////////////////////////////////////////////////////////////
 // Ellipse
 Ellipse::Ellipse( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	mCenter.x = xml.getAttributeValue( "cx", 0.0f );
 	mCenter.y = xml.getAttributeValue( "cy", 0.0f );
@@ -1165,17 +1205,17 @@ void Ellipse::renderSelf( Renderer &renderer ) const
 
 bool Ellipse::containsPoint( const vec2 &pt ) const
 {
-	float x = (pt.x - mCenter.x) * (pt.x - mCenter.x) / ( mRadiusX * mRadiusX );
-	float y = (pt.y - mCenter.y) * (pt.y - mCenter.y) / ( mRadiusY * mRadiusY );
+	float x = ( pt.x - mCenter.x ) * ( pt.x - mCenter.x ) / ( mRadiusX * mRadiusX );
+	float y = ( pt.y - mCenter.y ) * ( pt.y - mCenter.y ) / ( mRadiusY * mRadiusY );
 	return x + y < 1;
 }
 
-Shape2d	Ellipse::getShape() const
+Shape2d Ellipse::getShape() const
 {
 	Shape2d result;
 
-	const float magic =	0.552284749830793398402f; // 4/3*(sqrt(2)-1)
-	const vec2 offset( mRadiusX * magic, mRadiusY * magic );
+	const float magic = 0.552284749830793398402f; // 4/3*(sqrt(2)-1)
+	const vec2  offset( mRadiusX * magic, mRadiusY * magic );
 
 	result.moveTo( vec2( mCenter.x - mRadiusX, mCenter.y ) );
 	result.curveTo( vec2( mCenter.x - mRadiusX, mCenter.y - offset.y ), vec2( mCenter.x - offset.x, mCenter.y - mRadiusY ), vec2( mCenter.x, mCenter.y - mRadiusY ) );
@@ -1193,34 +1233,34 @@ void ellipticalArc( Shape2d &path, float x1, float y1, float x2, float y2, float
 {
 	// This is a translation of the  spec section "Elliptical Arc Implementation Notes"
 	// http://www.w3.org/TR//implnote.html#ArcImplementationNotes
-	float cosXAxisRotation = cosf( xAxisRotation );
-	float sinXAxisRotation = sinf( xAxisRotation );
-	const vec2 cPrime( cosXAxisRotation * (x2 - x1) * 0.5f + sinXAxisRotation * (y2 - y1) * 0.5f, -sinXAxisRotation * (x2 - x1) * 0.5f + cosXAxisRotation * (y2 - y1) * 0.5f );
+	float      cosXAxisRotation = cosf( xAxisRotation );
+	float      sinXAxisRotation = sinf( xAxisRotation );
+	const vec2 cPrime( cosXAxisRotation * ( x2 - x1 ) * 0.5f + sinXAxisRotation * ( y2 - y1 ) * 0.5f, -sinXAxisRotation * ( x2 - x1 ) * 0.5f + cosXAxisRotation * ( y2 - y1 ) * 0.5f );
 
 	// http://www.w3.org/TR//implnote.html#ArcCorrectionOutOfRangeRadii
-	float radiiScale = (cPrime.x * cPrime.x) / ( rx * rx ) + (cPrime.y * cPrime.y) / ( ry * ry );
+	float radiiScale = ( cPrime.x * cPrime.x ) / ( rx * rx ) + ( cPrime.y * cPrime.y ) / ( ry * ry );
 	if( radiiScale > 1 ) {
 		radiiScale = math<float>::sqrt( radiiScale );
 		rx *= radiiScale;
 		ry *= radiiScale;
 	}
 
-	vec2 invRadius( 1.0f / rx, 1.0f / ry );
-	vec2 point1 = vec2( cosXAxisRotation * x1 + sinXAxisRotation * y1, -sinXAxisRotation * x1 + cosXAxisRotation * y1 ) * invRadius;
-	vec2 point2 = vec2( cosXAxisRotation * x2 + sinXAxisRotation * y2, -sinXAxisRotation * x2 + cosXAxisRotation * y2 ) * invRadius;
-	vec2 delta = point2 - point1;
+	vec2  invRadius( 1.0f / rx, 1.0f / ry );
+	vec2  point1 = vec2( cosXAxisRotation * x1 + sinXAxisRotation * y1, -sinXAxisRotation * x1 + cosXAxisRotation * y1 ) * invRadius;
+	vec2  point2 = vec2( cosXAxisRotation * x2 + sinXAxisRotation * y2, -sinXAxisRotation * x2 + cosXAxisRotation * y2 ) * invRadius;
+	vec2  delta = point2 - point1;
 	float d = delta.x * delta.x + delta.y * delta.y;
 	if( d <= 0 )
 		return;
-	
+
 	float theta1, thetaDelta;
-	vec2 center;
-		
+	vec2  center;
+
 	float s = math<float>::sqrt( std::max<float>( 1 / d - 0.25f, 0 ) );
 	if( sweepFlag == largeArcFlag )
 		s = -s;
 
-	center = vec2( 0.5f * (point1.x + point2.x) - delta.y * s, 0.5f * (point1.y + point2.y) + delta.x * s );
+	center = vec2( 0.5f * ( point1.x + point2.x ) - delta.y * s, 0.5f * ( point1.y + point2.y ) + delta.x * s );
 
 	theta1 = math<float>::atan2( point1.y - center.y, point1.x - center.x );
 	float theta2 = math<float>::atan2( point2.y - center.y, point2.x - center.x );
@@ -1228,15 +1268,15 @@ void ellipticalArc( Shape2d &path, float x1, float y1, float x2, float y2, float
 	thetaDelta = theta2 - theta1;
 	if( thetaDelta < 0 && sweepFlag )
 		thetaDelta += 2 * (float)M_PI;
-	else if( thetaDelta > 0 && ( ! sweepFlag ) )
+	else if( thetaDelta > 0 && ( !sweepFlag ) )
 		thetaDelta -= 2 * (float)M_PI;
 
 	// divide the full arc delta into pi/2 arcs and convert those to cubic beziers
-	int segments = (int)(ceilf( fabsf(thetaDelta / ( (float)M_PI / 2 )) ) + 1);
+	int segments = (int)( ceilf( fabsf( thetaDelta / ( (float)M_PI / 2 ) ) ) + 1 );
 	for( int i = 0; i < segments; ++i ) {
 		float thetaStart = theta1 + i * thetaDelta / segments;
-		float thetaEnd = theta1 + (i + 1) * thetaDelta / segments;
-		float t = (4 / 3.0f) * tanf( 0.25f * (thetaEnd - thetaStart) );
+		float thetaEnd = theta1 + ( i + 1 ) * thetaDelta / segments;
+		float t = ( 4 / 3.0f ) * tanf( 0.25f * ( thetaEnd - thetaStart ) );
 		float sinThetaStart = math<float>::sin( thetaStart );
 		float cosThetaStart = math<float>::cos( thetaStart );
 		float sinThetaEnd = math<float>::sin( thetaEnd );
@@ -1249,26 +1289,26 @@ void ellipticalArc( Shape2d &path, float x1, float y1, float x2, float y2, float
 		vec2 midPoint = endPoint + vec2( t * sinThetaEnd, -t * cosThetaEnd );
 		midPoint = vec2( cosXAxisRotation * midPoint.x * rx - sinXAxisRotation * midPoint.y * ry, sinXAxisRotation * midPoint.x * rx + cosXAxisRotation * midPoint.y * ry );
 		path.curveTo( startPoint, midPoint, transformedEndPoint );
-    }
+	}
 }
 
-static const char* getNextPathItem(const char* s, char it[64] )
+static const char *getNextPathItem( const char *s, char it[64] )
 {
 	int i = 0;
 	it[0] = '\0';
 	// Skip white spaces and commas
-	while( *s && (isspace(*s) || *s == ',') )
+	while( *s && ( isspace( *s ) || *s == ',' ) )
 		s++;
-	if( ! *s )
+	if( !*s )
 		return s;
-	if( isNumeric(*s) ) {
+	if( isNumeric( *s ) ) {
 		while( *s == '-' || *s == '+' ) {
 			if( i < 63 )
 				it[i++] = *s;
 			s++;
 		}
 		bool parsingExponent = false;
-		while( *s && ( parsingExponent || (*s != '-' && *s != '+')) && isNumeric(*s) ) {
+		while( *s && ( parsingExponent || ( *s != '-' && *s != '+' ) ) && isNumeric( *s ) ) {
 			if( i < 63 )
 				it[i++] = *s;
 			if( *s == 'e' || *s == 'E' )
@@ -1291,7 +1331,7 @@ static const char* getNextPathItem(const char* s, char it[64] )
 char readNextCommand( const char **sInOut )
 {
 	const char *s = *sInOut;
-	while( *s && (isspace(*s) || *s == ',') )
+	while( *s && ( isspace( *s ) || *s == ',' ) )
 		s++;
 	*sInOut = s + 1;
 	return *s;
@@ -1300,185 +1340,200 @@ char readNextCommand( const char **sInOut )
 bool readFlag( const char **sInOut )
 {
 	const char *s = *sInOut;
-	while( *s && ( isspace(*s) || *s == ',' || *s == '-' || *s == '+' ) )
+	while( *s && ( isspace( *s ) || *s == ',' || *s == '-' || *s == '+' ) )
 		s++;
-	*sInOut = s + 1;		
+	*sInOut = s + 1;
 	return *s != '0';
 }
 
 bool nextItemIsFloat( const char *s )
 {
-	while( *s && (isspace(*s) || *s == ',') )
+	while( *s && ( isspace( *s ) || *s == ',' ) )
 		s++;
 	return isNumeric( *s );
 }
 
 Shape2d parsePath( const std::string &p )
 {
-	const char* s = p.c_str();
-	vec2 v0, v1, v2;
-	vec2 lastPoint, lastPoint2;
+	const char *s = p.c_str();
+	vec2        v0, v1, v2;
+	vec2        lastPoint, lastPoint2;
 
 	Shape2d result;
-	bool done = false;
-	bool firstCmd = true;
-	char prevCmd = '\0';
-	while( ! done ) {
+	bool    done = false;
+	bool    firstCmd = true;
+	char    prevCmd = '\0';
+	while( !done ) {
 		char cmd = readNextCommand( &s );
 		switch( cmd ) {
-			case 'm':
-			case 'M':
-				v0.x = parseFloat( &s ); v0.y = parseFloat( &s );
-				if( ( ! firstCmd ) && ( cmd == 'm' ) )
+		case 'm':
+		case 'M':
+			v0.x = parseFloat( &s );
+			v0.y = parseFloat( &s );
+			if( ( !firstCmd ) && ( cmd == 'm' ) )
+				v0 += lastPoint;
+			result.moveTo( v0 );
+			lastPoint2 = lastPoint;
+			lastPoint = v0;
+			while( nextItemIsFloat( s ) ) {
+				v0.x = parseFloat( &s );
+				v0.y = parseFloat( &s );
+				if( cmd == 'm' )
 					v0 += lastPoint;
-				result.moveTo( v0 );
+				result.lineTo( v0 );
 				lastPoint2 = lastPoint;
 				lastPoint = v0;
-				while( nextItemIsFloat( s ) ) {
-					v0.x = parseFloat( &s ); v0.y = parseFloat( &s );
-					if( cmd == 'm' )
-						v0 += lastPoint;
-					result.lineTo( v0 );
-					lastPoint2 = lastPoint;
-					lastPoint = v0;
-				} 
-			break;
-			case 'l':
-			case 'L':
-				do {
-					v0.x = parseFloat( &s ); v0.y = parseFloat( &s );
-					if( cmd == 'l' )
-						v0 += lastPoint;
-					result.lineTo( v0 );
-					lastPoint2 = lastPoint;
-					lastPoint = v0;
-				} while( nextItemIsFloat( s ) );
-			break;
-			case 'H':
-			case 'h':
-				do {
-					float x = parseFloat( &s );
-					v0 = vec2( ( cmd == 'h' ) ? (lastPoint.x + x) : x, lastPoint.y );
-					result.lineTo( v0 );
-					lastPoint2 = lastPoint;
-					lastPoint = v0;
-				} while( nextItemIsFloat( s ) );
-			break;
-			case 'V':
-			case 'v':
-				do {
-					float y = parseFloat( &s );
-					v0 = vec2( lastPoint.x, ( cmd == 'v' ) ? (lastPoint.y + y) : (y) );
-					result.lineTo( v0 );
-					lastPoint2 = lastPoint;
-					lastPoint = v0;
-				} while( nextItemIsFloat( s ) );
-			break;
-			case 'C':
-			case 'c':
-				do {
-					v0.x = parseFloat( &s ); v0.y = parseFloat( &s );
-					v1.x = parseFloat( &s ); v1.y = parseFloat( &s );
-					v2.x = parseFloat( &s ); v2.y = parseFloat( &s );
-					if( cmd == 'c' ) { // relative
-						v0 += lastPoint; v1 += lastPoint; v2 += lastPoint;
-					}
-					result.curveTo( v0, v1, v2 );
-					lastPoint2 = v1;
-					lastPoint = v2;
-				} while( nextItemIsFloat( s ) );
-			break;
-			case 'S':
-			case 's':
-				do {
-					if( prevCmd == 's' || prevCmd == 'S' || prevCmd == 'c' || prevCmd == 'C' )
-						v0 = lastPoint * 2.0f - lastPoint2;
-					else
-						v0 = lastPoint;
-					prevCmd = cmd; // set this now in case we loop
-					v1.x = parseFloat( &s ); v1.y = parseFloat( &s );
-					v2.x = parseFloat( &s ); v2.y = parseFloat( &s );
-					if( cmd == 's' ) { // relative
-						v1 += lastPoint; v2 += lastPoint;
-					}
-					result.curveTo( v0, v1, v2 );
-					lastPoint2 = v1;
-					lastPoint = v2;
-				} while( nextItemIsFloat( s ) );				
-			break;
-			case 'Q':
-			case 'q':
-				do {
-					v0.x = parseFloat( &s ); v0.y = parseFloat( &s );
-					v1.x = parseFloat( &s ); v1.y = parseFloat( &s );
-					if( cmd == 'q' ) { // relative
-						v0 += lastPoint; v1 += lastPoint;
-					}
-					result.quadTo( v0, v1 );
-					lastPoint2 = v0;
-					lastPoint = v1;
-				} while( nextItemIsFloat( s ) );					
-			break;
-			case 'T':
-			case 't':
-				do {
-					if( prevCmd == 't' || prevCmd == 'T' || prevCmd == 'q' || prevCmd == 'Q' )
-						v0 = lastPoint * 2.0f - lastPoint2;
-					else
-						v0 = lastPoint;
-					prevCmd = cmd; // set this now in case we loop						
-					v1.x = parseFloat( &s ); v1.y = parseFloat( &s );
-					if( cmd == 't' ) { // relative
-						v1 += lastPoint;
-					}
-					result.quadTo( v0, v1 );
-					lastPoint2 = v0;
-					lastPoint = v1;
-				} while( nextItemIsFloat( s ) );				
-			break;
-			case 'a':
-			case 'A': {
-				do {
-					float ra = parseFloat( &s );
-					float rb = parseFloat( &s );
-					float xAxisRotation = parseFloat( &s ) * (float)M_PI / 180.0f;
-					bool largeArc = readFlag( &s );
-					bool sweepFlag = readFlag( &s );
-					v0.x = parseFloat( &s ); v0.y = parseFloat( &s );
-					if( cmd == 'a' ) { // relative
-						v0 += lastPoint;
-					}
-					ellipticalArc( result, lastPoint.x, lastPoint.y, v0.x, v0.y, ra, rb, xAxisRotation, largeArc, sweepFlag );
-					lastPoint2 = lastPoint;
-					lastPoint = v0;
-				} while( nextItemIsFloat( s ) );
 			}
 			break;
-			case 'z':
-			case 'Z':
-				result.close();
+		case 'l':
+		case 'L':
+			do {
+				v0.x = parseFloat( &s );
+				v0.y = parseFloat( &s );
+				if( cmd == 'l' )
+					v0 += lastPoint;
+				result.lineTo( v0 );
 				lastPoint2 = lastPoint;
-				lastPoint = (result.empty() || result.getContours().back().empty() ) ? vec2() : result.getContours().back().getPoint(0);
+				lastPoint = v0;
+			} while( nextItemIsFloat( s ) );
 			break;
-			case '\0':
-			default: // technically noise at the end of the string is acceptable according to the spec; see W3C_SVG_11/paths-data-18.svg
-				done = true;
+		case 'H':
+		case 'h':
+			do {
+				float x = parseFloat( &s );
+				v0 = vec2( ( cmd == 'h' ) ? ( lastPoint.x + x ) : x, lastPoint.y );
+				result.lineTo( v0 );
+				lastPoint2 = lastPoint;
+				lastPoint = v0;
+			} while( nextItemIsFloat( s ) );
+			break;
+		case 'V':
+		case 'v':
+			do {
+				float y = parseFloat( &s );
+				v0 = vec2( lastPoint.x, ( cmd == 'v' ) ? ( lastPoint.y + y ) : ( y ) );
+				result.lineTo( v0 );
+				lastPoint2 = lastPoint;
+				lastPoint = v0;
+			} while( nextItemIsFloat( s ) );
+			break;
+		case 'C':
+		case 'c':
+			do {
+				v0.x = parseFloat( &s );
+				v0.y = parseFloat( &s );
+				v1.x = parseFloat( &s );
+				v1.y = parseFloat( &s );
+				v2.x = parseFloat( &s );
+				v2.y = parseFloat( &s );
+				if( cmd == 'c' ) { // relative
+					v0 += lastPoint;
+					v1 += lastPoint;
+					v2 += lastPoint;
+				}
+				result.curveTo( v0, v1, v2 );
+				lastPoint2 = v1;
+				lastPoint = v2;
+			} while( nextItemIsFloat( s ) );
+			break;
+		case 'S':
+		case 's':
+			do {
+				if( prevCmd == 's' || prevCmd == 'S' || prevCmd == 'c' || prevCmd == 'C' )
+					v0 = lastPoint * 2.0f - lastPoint2;
+				else
+					v0 = lastPoint;
+				prevCmd = cmd; // set this now in case we loop
+				v1.x = parseFloat( &s );
+				v1.y = parseFloat( &s );
+				v2.x = parseFloat( &s );
+				v2.y = parseFloat( &s );
+				if( cmd == 's' ) { // relative
+					v1 += lastPoint;
+					v2 += lastPoint;
+				}
+				result.curveTo( v0, v1, v2 );
+				lastPoint2 = v1;
+				lastPoint = v2;
+			} while( nextItemIsFloat( s ) );
+			break;
+		case 'Q':
+		case 'q':
+			do {
+				v0.x = parseFloat( &s );
+				v0.y = parseFloat( &s );
+				v1.x = parseFloat( &s );
+				v1.y = parseFloat( &s );
+				if( cmd == 'q' ) { // relative
+					v0 += lastPoint;
+					v1 += lastPoint;
+				}
+				result.quadTo( v0, v1 );
+				lastPoint2 = v0;
+				lastPoint = v1;
+			} while( nextItemIsFloat( s ) );
+			break;
+		case 'T':
+		case 't':
+			do {
+				if( prevCmd == 't' || prevCmd == 'T' || prevCmd == 'q' || prevCmd == 'Q' )
+					v0 = lastPoint * 2.0f - lastPoint2;
+				else
+					v0 = lastPoint;
+				prevCmd = cmd; // set this now in case we loop
+				v1.x = parseFloat( &s );
+				v1.y = parseFloat( &s );
+				if( cmd == 't' ) { // relative
+					v1 += lastPoint;
+				}
+				result.quadTo( v0, v1 );
+				lastPoint2 = v0;
+				lastPoint = v1;
+			} while( nextItemIsFloat( s ) );
+			break;
+		case 'a':
+		case 'A': {
+			do {
+				float ra = parseFloat( &s );
+				float rb = parseFloat( &s );
+				float xAxisRotation = parseFloat( &s ) * (float)M_PI / 180.0f;
+				bool  largeArc = readFlag( &s );
+				bool  sweepFlag = readFlag( &s );
+				v0.x = parseFloat( &s );
+				v0.y = parseFloat( &s );
+				if( cmd == 'a' ) { // relative
+					v0 += lastPoint;
+				}
+				ellipticalArc( result, lastPoint.x, lastPoint.y, v0.x, v0.y, ra, rb, xAxisRotation, largeArc, sweepFlag );
+				lastPoint2 = lastPoint;
+				lastPoint = v0;
+			} while( nextItemIsFloat( s ) );
+		} break;
+		case 'z':
+		case 'Z':
+			result.close();
+			lastPoint2 = lastPoint;
+			lastPoint = ( result.empty() || result.getContours().back().empty() ) ? vec2() : result.getContours().back().getPoint( 0 );
+			break;
+		case '\0':
+		default: // technically noise at the end of the string is acceptable according to the spec; see W3C_SVG_11/paths-data-18.svg
+			done = true;
 			break;
 		}
 		firstCmd = false;
 		prevCmd = cmd;
 	}
-				
+
 	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Path
 Path::Path( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	std::string p = xml.getAttributeValue<string>( "d", "" );
-	if( ! p.empty() ) {
+	if( !p.empty() ) {
 		mPath = parsePath( p );
 	}
 }
@@ -1498,12 +1553,12 @@ void Path::renderSelf( Renderer &renderer ) const
 ////////////////////////////////////////////////////////////////////////////////////
 // Line
 Line::Line( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	mPoint1.x = xml.getAttributeValue<float>( "x1", 0 );
-	mPoint1.y = xml.getAttributeValue<float>( "y1", 0 );	
+	mPoint1.y = xml.getAttributeValue<float>( "y1", 0 );
 	mPoint2.x = xml.getAttributeValue<float>( "x2", 0 );
-	mPoint2.y = xml.getAttributeValue<float>( "y2", 0 );	
+	mPoint2.y = xml.getAttributeValue<float>( "y2", 0 );
 }
 
 void Line::renderSelf( Renderer &renderer ) const
@@ -1511,7 +1566,7 @@ void Line::renderSelf( Renderer &renderer ) const
 	renderer.drawLine( *this );
 }
 
-Shape2d	Line::getShape() const
+Shape2d Line::getShape() const
 {
 	Shape2d result;
 	result.moveTo( mPoint1 );
@@ -1522,10 +1577,10 @@ Shape2d	Line::getShape() const
 ////////////////////////////////////////////////////////////////////////////////////
 // Rect
 Rect::Rect( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	float width = 0, height = 0;
-	
+
 	if( xml.hasAttribute( "x" ) )
 		mRect.x1 = Value::parse( xml["x"] ).asUser();
 	else
@@ -1537,7 +1592,7 @@ Rect::Rect( const Node *parent, const XmlTree &xml )
 	if( xml.hasAttribute( "width" ) )
 		width = Value::parse( xml["width"] ).asUser();
 	if( xml.hasAttribute( "height" ) )
-		height = Value::parse( xml["height"] ).asUser();	
+		height = Value::parse( xml["height"] ).asUser();
 	mRect.x2 = mRect.x1 + width;
 	mRect.y2 = mRect.y1 + height;
 	mBoundingBox = mRect;
@@ -1548,7 +1603,7 @@ void Rect::renderSelf( Renderer &renderer ) const
 	renderer.drawRect( *this );
 }
 
-Shape2d	Rect::getShape() const
+Shape2d Rect::getShape() const
 {
 	Shape2d result;
 	result.moveTo( mRect.x1, mRect.y1 );
@@ -1564,19 +1619,19 @@ Shape2d	Rect::getShape() const
 vector<vec2> parsePointList( const std::string &p )
 {
 	vector<vec2> result;
-	
-	if( ! p.empty() ) {
-		char item[64];
+
+	if( !p.empty() ) {
+		char        item[64];
 		const char *s = p.c_str();
-		bool odd = false;
-		float lastVal;
+		bool        odd = false;
+		float       lastVal;
 		while( *s ) {
 			s = getNextPathItem( s, item );
-			if( ! odd )
+			if( !odd )
 				lastVal = (float)atof( item );
 			else
 				result.push_back( vec2( lastVal, (float)atof( item ) ) );
-			odd = ! odd;
+			odd = !odd;
 		}
 	}
 
@@ -1584,7 +1639,7 @@ vector<vec2> parsePointList( const std::string &p )
 }
 
 Polygon::Polygon( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	mPolyLine = PolyLine2f( parsePointList( xml.getAttributeValue<string>( "points", "" ) ) );
 	mPolyLine.setClosed( true );
@@ -1595,26 +1650,26 @@ void Polygon::renderSelf( Renderer &renderer ) const
 	renderer.drawPolygon( *this );
 }
 
-Shape2d	Polygon::getShape() const
+Shape2d Polygon::getShape() const
 {
 	Shape2d result;
 
 	if( mPolyLine.getPoints().size() <= 1 )
 		return result;
-	
+
 	result.moveTo( mPolyLine.getPoints()[0] );
 	for( vector<vec2>::const_iterator ptIt = mPolyLine.getPoints().begin() + 1; ptIt != mPolyLine.getPoints().end(); ++ptIt )
 		result.lineTo( *ptIt );
 
 	result.close();
-	
+
 	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Polyline
 Polyline::Polyline( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	mPolyLine = PolyLine2f( parsePointList( xml.getAttributeValue<string>( "points", "" ) ) );
 	mPolyLine.setClosed( false );
@@ -1625,31 +1680,31 @@ void Polyline::renderSelf( Renderer &renderer ) const
 	renderer.drawPolyline( *this );
 }
 
-Shape2d	Polyline::getShape() const
+Shape2d Polyline::getShape() const
 {
 	Shape2d result;
 
 	if( mPolyLine.getPoints().size() <= 1 )
 		return result;
-	
+
 	result.moveTo( mPolyLine.getPoints()[0] );
 	for( vector<vec2>::const_iterator ptIt = mPolyLine.getPoints().begin() + 1; ptIt != mPolyLine.getPoints().end(); ++ptIt )
 		result.lineTo( *ptIt );
-	
+
 	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Group
 Group::Group( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	parse( xml );
 }
 
 Group::~Group()
 {
-	for( list<Node*>::iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt )
+	for( list<Node *>::iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt )
 		delete *childIt;
 }
 
@@ -1687,10 +1742,10 @@ void Group::parse( const XmlTree &xml )
 	}
 }
 
-const Node* Group::findNodeByIdContains( const std::string &idPartial, bool recurse ) const
+const Node *Group::findNodeByIdContains( const std::string &idPartial, bool recurse ) const
 {
-	for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-		if( (*childIt)->getId().find( idPartial ) != string::npos ) {
+	for( list<Node *>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
+		if( ( *childIt )->getId().find( idPartial ) != string::npos ) {
 			return *childIt;
 		}
 	}
@@ -1702,10 +1757,10 @@ const Node* Group::findNodeByIdContains( const std::string &idPartial, bool recu
 	}
 
 	if( recurse ) {
-		for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-			if( typeid(**childIt) == typeid(Group) ) {
-				Group* group = static_cast<Group*>(*childIt);
-				const Node* result = group->findNodeByIdContains( idPartial );
+		for( list<Node *>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
+			if( typeid( **childIt ) == typeid( Group ) ) {
+				Group *     group = static_cast<Group *>( *childIt );
+				const Node *result = group->findNodeByIdContains( idPartial );
 				if( result )
 					return result;
 			}
@@ -1714,15 +1769,15 @@ const Node* Group::findNodeByIdContains( const std::string &idPartial, bool recu
 	return NULL;
 }
 
-const Node* Group::findNode( const std::string &id, bool recurse ) const
+const Node *Group::findNode( const std::string &id, bool recurse ) const
 {
 	// see if any immediate children are named 'id'
-	for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-		if( (*childIt)->getId() == id ) {
+	for( list<Node *>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
+		if( ( *childIt )->getId() == id ) {
 			return *childIt;
 		}
 	}
-	
+
 	// see if any members of our defs are named 'id'
 	if( mDefs ) {
 		const Node *result = mDefs->findNode( id, true );
@@ -1732,47 +1787,47 @@ const Node* Group::findNode( const std::string &id, bool recurse ) const
 
 	// see if any groups contain children named 'id'
 	if( recurse ) {
-		for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-			if( typeid(**childIt) == typeid(Group) ) {
-				Group* group = static_cast<Group*>(*childIt);
-				const Node* result = group->findNode( id );
+		for( list<Node *>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
+			if( typeid( **childIt ) == typeid( Group ) ) {
+				Group *     group = static_cast<Group *>( *childIt );
+				const Node *result = group->findNode( id );
 				if( result )
 					return result;
 			}
 		}
 	}
-	
+
 	return NULL;
 }
 
-Node* Group::nodeUnderPoint( const vec2 &absolutePoint, const mat3 &parentInverseMatrix ) const
+Node *Group::nodeUnderPoint( const vec2 &absolutePoint, const mat3 &parentInverseMatrix ) const
 {
 	mat3 invTransform = parentInverseMatrix;
 	if( mSpecifiesTransform )
 		invTransform = inverse( mTransform ) * invTransform;
 	vec2 localPt = vec2( invTransform * vec3( absolutePoint, 1 ) );
-	
-	for( list<Node*>::const_reverse_iterator nodeIt = mChildren.rbegin(); nodeIt != mChildren.rend(); ++nodeIt ) {
-		if( typeid(**nodeIt) == typeid(svg::Group) ) {
-			Node *node = static_cast<svg::Group*>( *nodeIt )->nodeUnderPoint( absolutePoint, invTransform );
+
+	for( list<Node *>::const_reverse_iterator nodeIt = mChildren.rbegin(); nodeIt != mChildren.rend(); ++nodeIt ) {
+		if( typeid( **nodeIt ) == typeid( svg::Group ) ) {
+			Node *node = static_cast<svg::Group *>( *nodeIt )->nodeUnderPoint( absolutePoint, invTransform );
 			if( node )
 				return node;
 		}
 		else {
-			if( (*nodeIt)->specifiesTransform() ) {
-				mat3 childInvTransform = (*nodeIt)->getTransformInverse() * invTransform;
-				if( (*nodeIt)->containsPoint( vec2( childInvTransform * vec3( absolutePoint, 1 ) ) ) )
-					return *nodeIt;	
+			if( ( *nodeIt )->specifiesTransform() ) {
+				mat3 childInvTransform = ( *nodeIt )->getTransformInverse() * invTransform;
+				if( ( *nodeIt )->containsPoint( vec2( childInvTransform * vec3( absolutePoint, 1 ) ) ) )
+					return *nodeIt;
 			}
-			else if( (*nodeIt)->containsPoint( localPt ) )
+			else if( ( *nodeIt )->containsPoint( localPt ) )
 				return *nodeIt;
 		}
 	}
-	
+
 	return NULL;
 }
 
-const Node* Group::findInAncestors( const std::string &elementId ) const
+const Node *Group::findInAncestors( const std::string &elementId ) const
 {
 	const Node *result;
 
@@ -1786,15 +1841,16 @@ const Node* Group::findInAncestors( const std::string &elementId ) const
 		return 0;
 }
 
-const Node&	Group::getChild( const std::string &id ) const
+const Node &Group::getChild( const std::string &id ) const
 {
 	const Node *result = findNode( id, false );
-	if( ! result )
+	if( !result )
 		throw ExcChildNotFound( id );
-	else return *result;
+	else
+		return *result;
 }
 
-Shape2d	Group::getMergedShape2d() const
+Shape2d Group::getMergedShape2d() const
 {
 	Shape2d result;
 	appendMergedShape2d( &result );
@@ -1803,38 +1859,38 @@ Shape2d	Group::getMergedShape2d() const
 
 void Group::appendMergedShape2d( Shape2d *appendTo ) const
 {
-	for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-		if( typeid(**childIt) == typeid(Group) )
-			reinterpret_cast<Group*>( *childIt )->appendMergedShape2d( appendTo );
+	for( list<Node *>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
+		if( typeid( **childIt ) == typeid( Group ) )
+			reinterpret_cast<Group *>( *childIt )->appendMergedShape2d( appendTo );
 		else
-			appendTo->append( (*childIt)->getShape() );
+			appendTo->append( ( *childIt )->getShape() );
 	}
 }
 
 void Group::renderSelf( Renderer &renderer ) const
 {
 	renderer.pushGroup( *this, mStyle.getOpacity() );
-	for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-		Style style = (*childIt)->getStyle();
-		if( ! renderer.visit( **childIt, &style ) )
+	for( list<Node *>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
+		Style style = ( *childIt )->getStyle();
+		if( !renderer.visit( **childIt, &style ) )
 			continue;
-		if( (*childIt)->getStyle().isDisplayNone() ) // display: none we don't even descend groups
+		if( ( *childIt )->getStyle().isDisplayNone() ) // display: none we don't even descend groups
 			continue;
-		if( (! (*childIt)->isVisible()) && ( typeid(svg::Group) != typeid(**childIt) ) ) // if this isn't visible and isn't a group, just move along
+		if( ( !( *childIt )->isVisible() ) && ( typeid( svg::Group ) != typeid( **childIt ) ) ) // if this isn't visible and isn't a group, just move along
 			continue;
-		(*childIt)->startRender( renderer, style );
-		(*childIt)->renderSelf( renderer );
-		(*childIt)->finishRender( renderer, style );
+		( *childIt )->startRender( renderer, style );
+		( *childIt )->renderSelf( renderer );
+		( *childIt )->finishRender( renderer, style );
 	}
 	renderer.popGroup();
 }
 
 Rectf Group::calcBoundingBox() const
 {
-	bool empty = true;
+	bool  empty = true;
 	Rectf result( 0, 0, 0, 0 );
-	for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-		Rectf childBounds = (*childIt)->getBoundingBoxAbsolute();
+	for( list<Node *>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
+		Rectf childBounds = ( *childIt )->getBoundingBoxAbsolute();
 		// only use child area if it exists (text nodes return [0,0,0,0])
 		if( ( childBounds.getWidth() > 0 ) || ( childBounds.getHeight() > 0 ) ) {
 			if( empty ) {
@@ -1852,7 +1908,7 @@ Rectf Group::calcBoundingBox() const
 ////////////////////////////////////////////////////////////////////////////////////
 // Use
 Use::Use( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml ), mReferenced( 0 )
+    : Node( parent, xml ), mReferenced( 0 )
 {
 	parse( xml );
 }
@@ -1874,7 +1930,7 @@ void Use::renderSelf( Renderer &renderer ) const
 {
 	if( mReferenced ) {
 		Style style = mReferenced->getStyle();
-		if( ! renderer.visit( *mReferenced, &style ) )
+		if( !renderer.visit( *mReferenced, &style ) )
 			return;
 		mReferenced->startRender( renderer, style );
 		mReferenced->renderSelf( renderer );
@@ -1885,12 +1941,12 @@ void Use::renderSelf( Renderer &renderer ) const
 ////////////////////////////////////////////////////////////////////////////////////
 // Image
 Image::Image( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml )
+    : Node( parent, xml )
 {
 	mRect.x1 = xml.getAttributeValue<float>( "x", 0 );
 	mRect.y1 = xml.getAttributeValue<float>( "y", 0 );
 	float width = xml.getAttributeValue<float>( "width", 0 );
-	float height = xml.getAttributeValue<float>( "height", 0 );	
+	float height = xml.getAttributeValue<float>( "height", 0 );
 	mRect.x2 = mRect.x1 + width;
 	mRect.y2 = mRect.y1 + height;
 
@@ -1902,7 +1958,7 @@ Image::Image( const Node *parent, const XmlTree &xml )
 			mFilePath = s;
 	}
 
-	if( ! mFilePath.empty() )
+	if( !mFilePath.empty() )
 		mImage = getDoc()->loadImage( mFilePath );
 }
 
@@ -1910,14 +1966,16 @@ std::shared_ptr<Surface8u> Image::parseDataImage( const string &data )
 {
 	size_t dataOffset = data.find( "data:" ) + 5;
 	size_t semi = data.find( ";" );
-	size_t comma = data.find( "," ); 
+	size_t comma = data.find( "," );
 	if( semi == string::npos || comma == string::npos )
 		return std::shared_ptr<Surface8u>();
 	string mime = data.substr( dataOffset, semi - dataOffset ), extension;
-	if( mime == "image/png" ) extension = "png";
-	else if( mime == "image/jpeg" ) extension = "jpeg";	
+	if( mime == "image/png" )
+		extension = "png";
+	else if( mime == "image/jpeg" )
+		extension = "jpeg";
 	size_t len = data.size() - comma - 1;
-	auto buf = make_shared<Buffer>( fromBase64( &data[comma + 1], len ) );
+	auto   buf = make_shared<Buffer>( fromBase64( &data[comma + 1], len ) );
 	try {
 		shared_ptr<Surface8u> result( new Surface8u( ci::loadImage( DataSourceBuffer::create( buf ), ImageSource::Options(), extension ) ) );
 		return result;
@@ -1937,7 +1995,7 @@ void Image::renderSelf( Renderer &renderer ) const
 ////////////////////////////////////////////////////////////////////////////////////
 // Text
 Text::Text( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml ), mAttributes( xml )
+    : Node( parent, xml ), mAttributes( xml )
 {
 	for( XmlTree::ConstIter treeIt = xml.begin(); treeIt != xml.end(); ++treeIt ) {
 		if( treeIt->getTag() == "" ) { // data!
@@ -1978,13 +2036,12 @@ float Text::getRotation() const
 		return mAttributes.mRotate[0].asUser();
 }
 
-
 void Text::renderSelf( Renderer &renderer ) const
 {
 	renderer.pushTextPen( vec2() ); // this may be overridden by the attributes, but that's ok
 	mAttributes.startRender( renderer );
 	for( vector<TextSpanRef>::const_iterator spanIt = mSpans.begin(); spanIt != mSpans.end(); ++spanIt ) {
-		(*spanIt)->renderSelf( renderer );
+		( *spanIt )->renderSelf( renderer );
 	}
 	mAttributes.finishRender( renderer );
 	renderer.popTextPen();
@@ -1993,7 +2050,7 @@ void Text::renderSelf( Renderer &renderer ) const
 ////////////////////////////////////////////////////////////////////////////////////
 // TextSpan
 TextSpan::TextSpan( const Node *parent, const XmlTree &xml )
-	: Node( parent, xml ), mAttributes( xml ), mIgnoreAttributes( false )
+    : Node( parent, xml ), mAttributes( xml ), mIgnoreAttributes( false )
 {
 	for( XmlTree::ConstIter treeIt = xml.begin(); treeIt != xml.end(); ++treeIt ) {
 		if( treeIt->getTag() == "" ) { // data!
@@ -2006,44 +2063,46 @@ TextSpan::TextSpan( const Node *parent, const XmlTree &xml )
 }
 
 TextSpan::TextSpan( const Node *parent, const std::string &str )
-	: Node( parent ), mIgnoreAttributes( true )
+    : Node( parent ), mIgnoreAttributes( true )
 {
 	// replace all multi-char whitespace with single space
 	const char *c = str.c_str();
 	while( *c ) {
-		if( isspace(*c) ) mString += ' ';
-		while( *c && isspace(*c) ) c++;
-		while( *c && ( ! isspace(*c) ) ) mString += *c++;
+		if( isspace( *c ) ) mString += ' ';
+		while( *c && isspace( *c ) )
+			c++;
+		while( *c && ( !isspace( *c ) ) )
+			mString += *c++;
 	}
 }
 
 void TextSpan::renderSelf( Renderer &renderer ) const
 {
 	Style style = mStyle;
-	if( ! renderer.visit( *this, &style ) )
+	if( !renderer.visit( *this, &style ) )
 		return;
 	startRender( renderer, style );
-	if( ! mIgnoreAttributes ) // TextSpans that are actually the contents of Text's attributes should be ignored
+	if( !mIgnoreAttributes ) // TextSpans that are actually the contents of Text's attributes should be ignored
 		mAttributes.startRender( renderer );
-	if( ! mString.empty() ) {
+	if( !mString.empty() ) {
 		renderer.drawTextSpan( *this );
 	}
 	for( vector<TextSpanRef>::const_iterator spanIt = mSpans.begin(); spanIt != mSpans.end(); ++spanIt ) {
-		(*spanIt)->renderSelf( renderer );
+		( *spanIt )->renderSelf( renderer );
 	}
-	if( ! mIgnoreAttributes )
+	if( !mIgnoreAttributes )
 		mAttributes.finishRender( renderer );
-	finishRender( renderer, style );		
+	finishRender( renderer, style );
 }
 
-std::vector<std::pair<uint16_t,vec2> > TextSpan::getGlyphMeasures() const
+std::vector<std::pair<uint16_t, vec2>> TextSpan::getGlyphMeasures() const
 {
-	if( ! mGlyphMeasures ) {
+	if( !mGlyphMeasures ) {
 		TextBox tbox = TextBox().font( *getFont() ).text( mString );
-		mGlyphMeasures = shared_ptr<std::vector<std::pair<uint16_t,vec2> > >( 
-			new std::vector<std::pair<uint16_t,vec2> >( tbox.measureGlyphs() ) );
+		mGlyphMeasures = shared_ptr<std::vector<std::pair<uint16_t, vec2>>>(
+		    new std::vector<std::pair<uint16_t, vec2>>( tbox.measureGlyphs() ) );
 	}
-	
+
 	return *mGlyphMeasures;
 }
 
@@ -2091,11 +2150,11 @@ TextSpan::Attributes::Attributes( const XmlTree &xml )
 		mRotate = readValueList( xml["rotate"], false );
 }
 
-const std::shared_ptr<Font>	TextSpan::getFont() const
+const std::shared_ptr<Font> TextSpan::getFont() const
 {
-	if( ! mFont ) {
+	if( !mFont ) {
 		const vector<string> &fontFamilies = getFontFamilies();
-		float fontSize = getFontSize().asUser();		
+		float                 fontSize = getFontSize().asUser();
 		for( vector<string>::const_iterator familyIt = fontFamilies.begin(); familyIt != fontFamilies.end(); ++familyIt ) {
 			try {
 				mFont = shared_ptr<Font>( new Font( *familyIt, fontSize ) );
@@ -2107,17 +2166,21 @@ const std::shared_ptr<Font>	TextSpan::getFont() const
 			}
 		}
 	}
-	
+
 	return mFont;
 }
 
 vec2 TextSpan::getTextPen() const
 {
 	if( mIgnoreAttributes || ( mAttributes.mX.size() != 1 ) || ( mAttributes.mY.size() != 1 ) ) {
-		if( ! mParent ) return vec2();
-		else if( typeid(*mParent) == typeid(TextSpan) ) return reinterpret_cast<const TextSpan*>( mParent )->getTextPen();
-		else if( typeid(*mParent) == typeid(Text) ) return reinterpret_cast<const Text*>( mParent )->getTextPen();
-		else return vec2();
+		if( !mParent )
+			return vec2();
+		else if( typeid( *mParent ) == typeid( TextSpan ) )
+			return reinterpret_cast<const TextSpan *>( mParent )->getTextPen();
+		else if( typeid( *mParent ) == typeid( Text ) )
+			return reinterpret_cast<const Text *>( mParent )->getTextPen();
+		else
+			return vec2();
 	}
 	else
 		return vec2( mAttributes.mX[0].asUser(), mAttributes.mY[0].asUser() );
@@ -2126,10 +2189,14 @@ vec2 TextSpan::getTextPen() const
 float TextSpan::getRotation() const
 {
 	if( mIgnoreAttributes || ( mAttributes.mRotate.size() != 1 ) ) {
-		if( ! mParent ) return 0;
-		else if( typeid(*mParent) == typeid(TextSpan) ) return reinterpret_cast<const TextSpan*>( mParent )->getRotation();
-		else if( typeid(*mParent) == typeid(Text) ) return reinterpret_cast<const Text*>( mParent )->getRotation();
-		else return 0;
+		if( !mParent )
+			return 0;
+		else if( typeid( *mParent ) == typeid( TextSpan ) )
+			return reinterpret_cast<const TextSpan *>( mParent )->getRotation();
+		else if( typeid( *mParent ) == typeid( Text ) )
+			return reinterpret_cast<const Text *>( mParent )->getRotation();
+		else
+			return 0;
 	}
 	else
 		return mAttributes.mRotate[0].asUser();
@@ -2155,13 +2222,13 @@ void TextSpan::Attributes::finishRender( Renderer &renderer ) const
 ////////////////////////////////////////////////////////////////////////////////////
 // Doc
 Doc::Doc( const fs::path &filePath )
-	: Group( 0 )
+    : Group( 0 )
 {
 	loadDoc( loadFile( filePath ), filePath );
 }
 
 Doc::Doc( DataSourceRef dataSource, const fs::path &filePath )
-	: Group( 0 )
+    : Group( 0 )
 {
 	fs::path relativePath = filePath;
 	if( filePath.empty() )
@@ -2185,22 +2252,22 @@ DocRef Doc::createFromSvgz( DataSourceRef dataSource, const fs::path &filePath )
 	if( filePath.empty() )
 		relativePath = dataSource->getFilePathHint();
 
-	Buffer compressed( dataSource );
+	Buffer    compressed( dataSource );
 	BufferRef decompressed = make_shared<Buffer>( decompressBuffer( compressed, false, true ) );
-	
+
 	return DocRef( new svg::Doc( DataSourceBuffer::create( decompressed, relativePath ) ) );
 }
 
 void Doc::loadDoc( DataSourceRef source, fs::path filePath )
 {
-	if( ! filePath.empty() )
+	if( !filePath.empty() )
 		mFilePath = filePath.parent_path();
 	mXmlTree = shared_ptr<XmlTree>( new XmlTree( source, XmlTree::ParseOptions().ignoreDataChildren( false ) ) );
 
 	const XmlTree &xml( mXmlTree->getChild( "svg" ) );
 
 	if( xml.hasAttribute( "viewBox" ) ) {
-		string vbox = xml.getAttributeValue<string>( "viewBox" );
+		string      vbox = xml.getAttributeValue<string>( "viewBox" );
 		const char *vbCPtr = vbox.c_str();
 		mViewBox.x1 = static_cast<int>( parseFloat( &vbCPtr ) );
 		mViewBox.y1 = static_cast<int>( parseFloat( &vbCPtr ) );
@@ -2232,8 +2299,10 @@ void Doc::loadDoc( DataSourceRef source, fs::path filePath )
 	bool needsViewBoxMapping = mViewBox.getWidth() > 0 && mViewBox.getHeight() > 0 && mWidth > 0 && mHeight > 0;
 	if( needsViewBoxMapping ) {
 		mat3 m33;
-		m33[0][0] = mViewBox.getWidth() / (float)mWidth; m33[1][1] = mViewBox.getHeight() / (float)mHeight;
-		m33[2][0] = (float)-mViewBox.x1; m33[2][1] = (float)-mViewBox.y1;
+		m33[0][0] = mViewBox.getWidth() / (float)mWidth;
+		m33[1][1] = mViewBox.getHeight() / (float)mHeight;
+		m33[2][0] = (float)-mViewBox.x1;
+		m33[2][1] = (float)-mViewBox.y1;
 		mTransform = m33;
 		mSpecifiesTransform = true;
 	}
@@ -2241,7 +2310,7 @@ void Doc::loadDoc( DataSourceRef source, fs::path filePath )
 		mTransform = mat3();
 
 	// we can't parse the group w/o having parsed the viewBox, dimensions, etc, so we have to do this manually:
-	if( xml.hasChild( "switch" ) )		// when saved with "preserve Illustrator editing capabilities", svg data is inside a "switch"
+	if( xml.hasChild( "switch" ) ) // when saved with "preserve Illustrator editing capabilities", svg data is inside a "switch"
 		Group::parse( xml.getChild( "switch" ) );
 	else
 		Group::parse( xml );
@@ -2260,7 +2329,7 @@ shared_ptr<Surface8u> Doc::loadImage( fs::path relativePath )
 			if( fs::exists( fullPath ) )
 				mImageCache[relativePath] = shared_ptr<Surface8u>( new Surface8u( ci::loadImage( fullPath ) ) );
 		}
-		catch(...) {
+		catch( ... ) {
 		}
 	}
 
@@ -2270,7 +2339,7 @@ shared_ptr<Surface8u> Doc::loadImage( fs::path relativePath )
 		return shared_ptr<Surface8u>();
 }
 
-Node* Doc::nodeUnderPoint( const vec2 &pt )
+Node *Doc::nodeUnderPoint( const vec2 &pt )
 {
 	return Group::nodeUnderPoint( pt, mat3() );
 }
@@ -2284,5 +2353,5 @@ ExcChildNotFound::ExcChildNotFound( const string &child )
 {
 	setDescription( "Could not find child: " + child );
 }
-
-} } // namespace cinder::svg
+}
+} // namespace cinder::svg

@@ -15,17 +15,17 @@
 */
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
 #include "cinder/CameraUi.h"
 #include "cinder/TriMesh.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 class Picking3DApp : public App {
-public:
+  public:
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -35,20 +35,20 @@ public:
 	bool performPicking( vec3 *pickedPoint, vec3 *pickedNormal );
 	void drawCube( const AxisAlignedBox &bounds, const Color &color );
 
-private:
-	TriMeshRef			mTriMesh;		//! The 3D mesh.
-	AxisAlignedBox		mObjectBounds; 	//! The object space bounding box of the mesh.
-	mat4				mTransform;		//! Transformations (translate, rotate, scale) of the mesh.
-										
+  private:
+	TriMeshRef     mTriMesh; //! The 3D mesh.
+	AxisAlignedBox mObjectBounds; //! The object space bounding box of the mesh.
+	mat4           mTransform; //! Transformations (translate, rotate, scale) of the mesh.
+
 	//! By caching a 3D model and its shader on the GPU, we can draw it faster.
-	gl::BatchRef		mWireCube;		
-	gl::BatchRef		mWirePlane;
-	gl::BatchRef		mMesh;
+	gl::BatchRef mWireCube;
+	gl::BatchRef mWirePlane;
+	gl::BatchRef mMesh;
 
-	CameraPersp			mCamera;
-	CameraUi			mCamUi;
+	CameraPersp mCamera;
+	CameraUi    mCamUi;
 
-	ivec2				mMousePos;		//! Keep track of the mouse.
+	ivec2 mMousePos; //! Keep track of the mouse.
 };
 
 void Picking3DApp::setup()
@@ -77,9 +77,9 @@ void Picking3DApp::update()
 {
 	// Animate our mesh.
 	mTransform = mat4( 1.0f );
-	mTransform *= rotate( sin( (float) getElapsedSeconds() * 3.0f ) * 0.08f, vec3( 1, 0, 0 ) );
-	mTransform *= rotate( (float) getElapsedSeconds() * 0.1f, vec3( 0, 1, 0 ) );
-	mTransform *= rotate( sin( (float) getElapsedSeconds() * 4.3f ) * 0.09f, vec3( 0, 0, 1 ) );
+	mTransform *= rotate( sin( (float)getElapsedSeconds() * 3.0f ) * 0.08f, vec3( 1, 0, 0 ) );
+	mTransform *= rotate( (float)getElapsedSeconds() * 0.1f, vec3( 0, 1, 0 ) );
+	mTransform *= rotate( sin( (float)getElapsedSeconds() * 4.3f ) * 0.09f, vec3( 0, 0, 1 ) );
 }
 
 void Picking3DApp::draw()
@@ -131,9 +131,9 @@ bool Picking3DApp::performPicking( vec3 *pickedPoint, vec3 *pickedNormal )
 {
 	// Generate a ray from the camera into our world. Note that we have to
 	// flip the vertical coordinate.
-	float u = mMousePos.x / (float) getWindowWidth();
-	float v = mMousePos.y / (float) getWindowHeight();
-	Ray ray = mCamera.generateRay( u, 1.0f - v, mCamera.getAspectRatio() );
+	float u = mMousePos.x / (float)getWindowWidth();
+	float v = mMousePos.y / (float)getWindowHeight();
+	Ray   ray = mCamera.generateRay( u, 1.0f - v, mCamera.getAspectRatio() );
 
 	// The coordinates of the bounding box are in object space, not world space,
 	// so if the model was translated, rotated or scaled, the bounding box would not
@@ -155,7 +155,7 @@ bool Picking3DApp::performPicking( vec3 *pickedPoint, vec3 *pickedNormal )
 	drawCube( worldBoundsApprox, Color( 0, 1, 1 ) );
 
 	// Perform fast detection first - test against the bounding box itself.
-	if( ! worldBoundsExact.intersects( ray ) )
+	if( !worldBoundsExact.intersects( ray ) )
 		return false;
 
 	// Set initial distance to something far, far away.
@@ -199,9 +199,9 @@ bool Picking3DApp::performPicking( vec3 *pickedPoint, vec3 *pickedNormal )
 		return false;
 }
 
-void Picking3DApp::drawCube( const AxisAlignedBox &bounds, const Color & color )
+void Picking3DApp::drawCube( const AxisAlignedBox &bounds, const Color &color )
 {
-	gl::ScopedColor clr( color );
+	gl::ScopedColor       clr( color );
 	gl::ScopedModelMatrix model;
 
 	gl::multModelMatrix( glm::translate( bounds.getCenter() ) * glm::scale( bounds.getSize() ) );

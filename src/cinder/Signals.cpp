@@ -23,15 +23,16 @@
 
 #include "cinder/Signals.h"
 
-namespace cinder { namespace signals {
+namespace cinder {
+namespace signals {
 
 Connection::Connection()
-	: mLink( nullptr ), mPriority( 0 )
+    : mLink( nullptr ), mPriority( 0 )
 {
 }
 
 Connection::Connection( const std::shared_ptr<detail::Disconnector> &disconnector, detail::SignalLinkBase *link, int priority )
-	: mDisconnector( disconnector ), mLink( link ), mPriority( priority )
+    : mDisconnector( disconnector ), mLink( link ), mPriority( priority )
 {
 }
 
@@ -49,7 +50,7 @@ bool Connection::disconnect()
 
 bool Connection::isConnected() const
 {
-	return ! mDisconnector.expired() && mLink;
+	return !mDisconnector.expired() && mLink;
 }
 
 void Connection::disable()
@@ -84,28 +85,28 @@ ScopedConnection::~ScopedConnection()
 }
 
 ScopedConnection::ScopedConnection( const Connection &other )
-	: Connection( other )
+    : Connection( other )
 {
 }
 
 ScopedConnection::ScopedConnection( ScopedConnection &&other )
-	: Connection( std::move( other ) )
+    : Connection( std::move( other ) )
 {
 }
 
 ScopedConnection::ScopedConnection( Connection &&other )
-	: Connection( std::move( other ) )
+    : Connection( std::move( other ) )
 {
 }
 
-ScopedConnection& ScopedConnection::operator=( const Connection &rhs )
+ScopedConnection &ScopedConnection::operator=( const Connection &rhs )
 {
 	disconnect();
 	Connection::operator=( rhs );
 	return *this;
 }
 
-ScopedConnection& ScopedConnection::operator=( ScopedConnection &&rhs )
+ScopedConnection &ScopedConnection::operator=( ScopedConnection &&rhs )
 {
 	Connection::operator=( std::move( rhs ) );
 	return *this;
@@ -114,7 +115,7 @@ ScopedConnection& ScopedConnection::operator=( ScopedConnection &&rhs )
 namespace detail {
 
 Disconnector::Disconnector( SignalBase *signal )
-	: mSignal( signal )
+    : mSignal( signal )
 {
 }
 
@@ -122,5 +123,6 @@ bool Disconnector::disconnect( SignalLinkBase *link, int priority )
 {
 	return mSignal->disconnect( link, priority );
 }
-
-} } } // namespace cinder::signals::detail
+}
+}
+} // namespace cinder::signals::detail

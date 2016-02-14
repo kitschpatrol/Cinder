@@ -40,9 +40,6 @@
 #include <CGPDFDocument.h>
 #endif
 
-
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -56,76 +53,75 @@ extern "C" {
 #endif
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #if defined(__fourbyteints__) && !__fourbyteints__ 
-        #define __CGCONTEXT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints on
-    #endif
-    #pragma enumsalwaysint on
+#if defined( __fourbyteints__ ) && !__fourbyteints__
+#define __CGCONTEXT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints on
+#endif
+#pragma enumsalwaysint on
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=int
+#pragma option enum =int
 #elif PRAGMA_ENUM_PACK
-    #if __option(pack_enums)
-        #define __CGCONTEXT__RESTORE_PACKED_ENUMS
-        #pragma options(!pack_enums)
-    #endif
+#if __option( pack_enums )
+#define __CGCONTEXT__RESTORE_PACKED_ENUMS
+#pragma options( !pack_enums )
+#endif
 #endif
 
-typedef struct CGContext*               CGContextRef;
-typedef struct CGPattern*               CGPatternRef;
+typedef struct CGContext *CGContextRef;
+typedef struct CGPattern *CGPatternRef;
 /* Line join styles. */
 enum CGLineJoin {
-  kCGLineJoinMiter              = 0,
-  kCGLineJoinRound              = 1,
-  kCGLineJoinBevel              = 2
+	kCGLineJoinMiter = 0,
+	kCGLineJoinRound = 1,
+	kCGLineJoinBevel = 2
 };
 typedef enum CGLineJoin CGLineJoin;
 
 /* Line cap styles. */
 enum CGLineCap {
-  kCGLineCapButt                = 0,
-  kCGLineCapRound               = 1,
-  kCGLineCapSquare              = 2
+	kCGLineCapButt = 0,
+	kCGLineCapRound = 1,
+	kCGLineCapSquare = 2
 };
 typedef enum CGLineCap CGLineCap;
 
 /* Drawing modes for paths. */
 enum CGPathDrawingMode {
-  kCGPathFill                   = 0,
-  kCGPathEOFill                 = 1,
-  kCGPathStroke                 = 2,
-  kCGPathFillStroke             = 3,
-  kCGPathEOFillStroke           = 4
+	kCGPathFill = 0,
+	kCGPathEOFill = 1,
+	kCGPathStroke = 2,
+	kCGPathFillStroke = 3,
+	kCGPathEOFillStroke = 4
 };
 typedef enum CGPathDrawingMode CGPathDrawingMode;
 
 /* Drawing modes for text. */
 enum CGTextDrawingMode {
-  kCGTextFill                   = 0,
-  kCGTextStroke                 = 1,
-  kCGTextFillStroke             = 2,
-  kCGTextInvisible              = 3,
-  kCGTextFillClip               = 4,
-  kCGTextStrokeClip             = 5,
-  kCGTextFillStrokeClip         = 6,
-  kCGTextClip                   = 7
+	kCGTextFill = 0,
+	kCGTextStroke = 1,
+	kCGTextFillStroke = 2,
+	kCGTextInvisible = 3,
+	kCGTextFillClip = 4,
+	kCGTextStrokeClip = 5,
+	kCGTextFillStrokeClip = 6,
+	kCGTextClip = 7
 };
 typedef enum CGTextDrawingMode CGTextDrawingMode;
 
 /* Text encodings. */
 enum CGTextEncoding {
-  kCGEncodingFontSpecific       = 0,
-  kCGEncodingMacRoman           = 1
+	kCGEncodingFontSpecific = 0,
+	kCGEncodingMacRoman = 1
 };
 typedef enum CGTextEncoding CGTextEncoding;
 
 enum CGInterpolationQuality {
-  kCGInterpolationDefault       = 0,    /* Let the context decide. */
-  kCGInterpolationNone          = 1,    /* Never interpolate. */
-  kCGInterpolationLow           = 2,    /* Fast, low quality. */
-  kCGInterpolationHigh          = 3     /* Slow, high quality. */
+	kCGInterpolationDefault = 0, /* Let the context decide. */
+	kCGInterpolationNone = 1, /* Never interpolate. */
+	kCGInterpolationLow = 2, /* Fast, low quality. */
+	kCGInterpolationHigh = 3 /* Slow, high quality. */
 };
 typedef enum CGInterpolationQuality CGInterpolationQuality;
-
 
 /** Graphics state functions. **/
 /* Push a copy of the current graphics state onto the graphics state
@@ -140,8 +136,7 @@ typedef enum CGInterpolationQuality CGInterpolationQuality;
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextSaveGState(CGContextRef ctx);
-
+CGContextSaveGState( CGContextRef ctx );
 
 /* Restore the current graphics state from the one on the top of the
  * graphics state stack, popping the graphics state stack in the
@@ -155,8 +150,7 @@ CGContextSaveGState(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextRestoreGState(CGContextRef ctx);
-
+CGContextRestoreGState( CGContextRef ctx );
 
 /** Coordinate space transformations. **/
 /* Scale the current graphics state's transformation matrix (the CTM) by
@@ -171,10 +165,9 @@ CGContextRestoreGState(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextScaleCTM(
-  CGContextRef   ctx,
-  float          sx,
-  float          sy);
-
+    CGContextRef ctx,
+    float        sx,
+    float        sy );
 
 /* Translate the current graphics state's transformation matrix (the CTM)
  * by `(tx, ty)'. */
@@ -188,10 +181,9 @@ CGContextScaleCTM(
  */
 EXTERN_API_C( void )
 CGContextTranslateCTM(
-  CGContextRef   ctx,
-  float          tx,
-  float          ty);
-
+    CGContextRef ctx,
+    float        tx,
+    float        ty );
 
 /* Rotate the current graphics state's transformation matrix (the CTM) by
  * `angle' radians. */
@@ -205,9 +197,8 @@ CGContextTranslateCTM(
  */
 EXTERN_API_C( void )
 CGContextRotateCTM(
-  CGContextRef   ctx,
-  float          angle);
-
+    CGContextRef ctx,
+    float        angle );
 
 /* Concatenate the current graphics state's transformation matrix (the CTM)
  * with the affine transform `transform'. */
@@ -221,9 +212,8 @@ CGContextRotateCTM(
  */
 EXTERN_API_C( void )
 CGContextConcatCTM(
-  CGContextRef        ctx,
-  CGAffineTransform   transform);
-
+    CGContextRef      ctx,
+    CGAffineTransform transform );
 
 /* Return the current graphics state's transformation matrix. */
 /*
@@ -235,8 +225,7 @@ CGContextConcatCTM(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGAffineTransform )
-CGContextGetCTM(CGContextRef ctx);
-
+CGContextGetCTM( CGContextRef ctx );
 
 /** Drawing attribute functions. **/
 /* Set the line width in the current graphics state to `width'. */
@@ -250,9 +239,8 @@ CGContextGetCTM(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextSetLineWidth(
-  CGContextRef   ctx,
-  float          width);
-
+    CGContextRef ctx,
+    float        width );
 
 /* Set the line cap in the current graphics state to `cap'. */
 /*
@@ -265,9 +253,8 @@ CGContextSetLineWidth(
  */
 EXTERN_API_C( void )
 CGContextSetLineCap(
-  CGContextRef   ctx,
-  CGLineCap      cap);
-
+    CGContextRef ctx,
+    CGLineCap    cap );
 
 /* Set the line join in the current graphics state to `join'. */
 /*
@@ -280,9 +267,8 @@ CGContextSetLineCap(
  */
 EXTERN_API_C( void )
 CGContextSetLineJoin(
-  CGContextRef   ctx,
-  CGLineJoin     join);
-
+    CGContextRef ctx,
+    CGLineJoin   join );
 
 /* Set the miter limit in the current graphics state to `limit'. */
 /*
@@ -295,9 +281,8 @@ CGContextSetLineJoin(
  */
 EXTERN_API_C( void )
 CGContextSetMiterLimit(
-  CGContextRef   ctx,
-  float          limit);
-
+    CGContextRef ctx,
+    float        limit );
 
 /* Set the line dash patttern in the current graphics state. */
 /*
@@ -310,11 +295,10 @@ CGContextSetMiterLimit(
  */
 EXTERN_API_C( void )
 CGContextSetLineDash(
-  CGContextRef   ctx,
-  float          phase,
-  const float    lengths[],
-  size_t         count);
-
+    CGContextRef ctx,
+    float        phase,
+    const float  lengths[],
+    size_t       count );
 
 /* Set the path flatness parameter in the current graphics state to
  * `flatness'. */
@@ -328,9 +312,8 @@ CGContextSetLineDash(
  */
 EXTERN_API_C( void )
 CGContextSetFlatness(
-  CGContextRef   ctx,
-  float          flatness);
-
+    CGContextRef ctx,
+    float        flatness );
 
 /* Set the alpha value in the current graphics state to `alpha'. */
 /*
@@ -343,9 +326,8 @@ CGContextSetFlatness(
  */
 EXTERN_API_C( void )
 CGContextSetAlpha(
-  CGContextRef   ctx,
-  float          alpha);
-
+    CGContextRef ctx,
+    float        alpha );
 
 /** Path construction functions. **/
 /* Note that a context has a single path in use at any time: a path is not
@@ -360,8 +342,7 @@ CGContextSetAlpha(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextBeginPath(CGContextRef ctx);
-
+CGContextBeginPath( CGContextRef ctx );
 
 /* Start a new subpath at point `(x, y)' in the context's path. */
 /*
@@ -374,10 +355,9 @@ CGContextBeginPath(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextMoveToPoint(
-  CGContextRef   ctx,
-  float          x,
-  float          y);
-
+    CGContextRef ctx,
+    float        x,
+    float        y );
 
 /* Append a straight line segment from the current point to `(x, y)'. */
 /*
@@ -390,10 +370,9 @@ CGContextMoveToPoint(
  */
 EXTERN_API_C( void )
 CGContextAddLineToPoint(
-  CGContextRef   ctx,
-  float          x,
-  float          y);
-
+    CGContextRef ctx,
+    float        x,
+    float        y );
 
 /* Append a cubic Bezier curve from the current point to `(x,y)', with
  * control points `(cp1x, cp1y)' and `(cp2x, cp2y)'. */
@@ -407,14 +386,13 @@ CGContextAddLineToPoint(
  */
 EXTERN_API_C( void )
 CGContextAddCurveToPoint(
-  CGContextRef   ctx,
-  float          cp1x,
-  float          cp1y,
-  float          cp2x,
-  float          cp2y,
-  float          x,
-  float          y);
-
+    CGContextRef ctx,
+    float        cp1x,
+    float        cp1y,
+    float        cp2x,
+    float        cp2y,
+    float        x,
+    float        y );
 
 /* Append a quadratic curve from the current point to `(x, y)', with
  * control point `(cpx, cpy)'. */
@@ -428,12 +406,11 @@ CGContextAddCurveToPoint(
  */
 EXTERN_API_C( void )
 CGContextAddQuadCurveToPoint(
-  CGContextRef   ctx,
-  float          cpx,
-  float          cpy,
-  float          x,
-  float          y);
-
+    CGContextRef ctx,
+    float        cpx,
+    float        cpy,
+    float        x,
+    float        y );
 
 /* Close the current subpath of the context's path. */
 /*
@@ -445,8 +422,7 @@ CGContextAddQuadCurveToPoint(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextClosePath(CGContextRef ctx);
-
+CGContextClosePath( CGContextRef ctx );
 
 /** Path construction convenience functions. **/
 /* Add a single rect to the context's path. */
@@ -460,9 +436,8 @@ CGContextClosePath(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextAddRect(
-  CGContextRef   ctx,
-  CGRect         rect);
-
+    CGContextRef ctx,
+    CGRect       rect );
 
 /* Add a set of rects to the context's path. */
 /*
@@ -475,10 +450,9 @@ CGContextAddRect(
  */
 EXTERN_API_C( void )
 CGContextAddRects(
-  CGContextRef   ctx,
-  const CGRect   rects[],
-  size_t         count);
-
+    CGContextRef ctx,
+    const CGRect rects[],
+    size_t       count );
 
 /* Add a set of lines to the context's path. */
 /*
@@ -491,10 +465,9 @@ CGContextAddRects(
  */
 EXTERN_API_C( void )
 CGContextAddLines(
-  CGContextRef    ctx,
-  const CGPoint   points[],
-  size_t          count);
-
+    CGContextRef  ctx,
+    const CGPoint points[],
+    size_t        count );
 
 /* Add an arc of a circle to the context's path, possibly preceded by a
  * straight line segment.  `(x, y)' is the center of the arc; `radius' is
@@ -512,14 +485,13 @@ CGContextAddLines(
  */
 EXTERN_API_C( void )
 CGContextAddArc(
-  CGContextRef   ctx,
-  float          x,
-  float          y,
-  float          radius,
-  float          startAngle,
-  float          endAngle,
-  int            clockwise);
-
+    CGContextRef ctx,
+    float        x,
+    float        y,
+    float        radius,
+    float        startAngle,
+    float        endAngle,
+    int          clockwise );
 
 /* Add an arc of a circle to the context's path, possibly preceded by a
  * straight line segment.  `radius' is the radius of the arc.  The arc is
@@ -535,13 +507,12 @@ CGContextAddArc(
  */
 EXTERN_API_C( void )
 CGContextAddArcToPoint(
-  CGContextRef   ctx,
-  float          x1,
-  float          y1,
-  float          x2,
-  float          y2,
-  float          radius);
-
+    CGContextRef ctx,
+    float        x1,
+    float        y1,
+    float        x2,
+    float        y2,
+    float        radius );
 
 /** Path information functions. **/
 /* Return 1 if the context's path contains no elements, 0 otherwise. */
@@ -554,8 +525,7 @@ CGContextAddArcToPoint(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( int )
-CGContextIsPathEmpty(CGContextRef ctx);
-
+CGContextIsPathEmpty( CGContextRef ctx );
 
 /* Return the current point of the current subpath of the context's
  * path. */
@@ -568,8 +538,7 @@ CGContextIsPathEmpty(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGPoint )
-CGContextGetPathCurrentPoint(CGContextRef ctx);
-
+CGContextGetPathCurrentPoint( CGContextRef ctx );
 
 /* Return the bounding box of the context's path.  The bounding box is the
  * smallest rectangle completely enclosing all points in the path,
@@ -583,8 +552,7 @@ CGContextGetPathCurrentPoint(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGRect )
-CGContextGetPathBoundingBox(CGContextRef ctx);
-
+CGContextGetPathBoundingBox( CGContextRef ctx );
 
 /** Path drawing functions. **/
 /* Draw the context's path using drawing mode `mode'. */
@@ -598,9 +566,8 @@ CGContextGetPathBoundingBox(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextDrawPath(
-  CGContextRef        ctx,
-  CGPathDrawingMode   mode);
-
+    CGContextRef      ctx,
+    CGPathDrawingMode mode );
 
 /** Path drawing convenience functions. **/
 /* Fill the context's path using the winding-number fill rule.  Any open
@@ -614,8 +581,7 @@ CGContextDrawPath(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextFillPath(CGContextRef ctx);
-
+CGContextFillPath( CGContextRef ctx );
 
 /* Fill the context's path using the even-odd fill rule.  Any open subpath
  * of the path is implicitly closed. */
@@ -628,8 +594,7 @@ CGContextFillPath(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextEOFillPath(CGContextRef ctx);
-
+CGContextEOFillPath( CGContextRef ctx );
 
 /* Stroke the context's path. */
 /*
@@ -641,8 +606,7 @@ CGContextEOFillPath(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextStrokePath(CGContextRef ctx);
-
+CGContextStrokePath( CGContextRef ctx );
 
 /* Fill `rect' with the current fill color. */
 /*
@@ -655,9 +619,8 @@ CGContextStrokePath(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextFillRect(
-  CGContextRef   ctx,
-  CGRect         rect);
-
+    CGContextRef ctx,
+    CGRect       rect );
 
 /* Fill `rects', an array of `count' CGRects, with the current fill
  * color. */
@@ -671,10 +634,9 @@ CGContextFillRect(
  */
 EXTERN_API_C( void )
 CGContextFillRects(
-  CGContextRef   ctx,
-  const CGRect   rects[],
-  size_t         count);
-
+    CGContextRef ctx,
+    const CGRect rects[],
+    size_t       count );
 
 /* Stroke `rect' with the current stroke color and the current linewidth. */
 /*
@@ -687,9 +649,8 @@ CGContextFillRects(
  */
 EXTERN_API_C( void )
 CGContextStrokeRect(
-  CGContextRef   ctx,
-  CGRect         rect);
-
+    CGContextRef ctx,
+    CGRect       rect );
 
 /* Stroke `rect' with the current stroke color, using `width' as the the
  * line width. */
@@ -703,10 +664,9 @@ CGContextStrokeRect(
  */
 EXTERN_API_C( void )
 CGContextStrokeRectWithWidth(
-  CGContextRef   ctx,
-  CGRect         rect,
-  float          width);
-
+    CGContextRef ctx,
+    CGRect       rect,
+    float        width );
 
 /* Clear `rect' (that is, set the region within the rect to
  * transparent). */
@@ -720,9 +680,8 @@ CGContextStrokeRectWithWidth(
  */
 EXTERN_API_C( void )
 CGContextClearRect(
-  CGContextRef   c,
-  CGRect         rect);
-
+    CGContextRef c,
+    CGRect       rect );
 
 /** Clipping functions. **/
 /* Intersect the context's path with the current clip path and use the
@@ -737,8 +696,7 @@ CGContextClearRect(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextClip(CGContextRef ctx);
-
+CGContextClip( CGContextRef ctx );
 
 /* Intersect the context's path with the current clip path and use the
  * resulting path as the clip path for subsequent rendering operations.
@@ -752,8 +710,7 @@ CGContextClip(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextEOClip(CGContextRef ctx);
-
+CGContextEOClip( CGContextRef ctx );
 
 /** Clipping convenience functions. **/
 /* Intersect the current clipping path with `rect'.  Note that this
@@ -768,9 +725,8 @@ CGContextEOClip(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextClipToRect(
-  CGContextRef   ctx,
-  CGRect         rect);
-
+    CGContextRef ctx,
+    CGRect       rect );
 
 /* Intersect the current clipping path with the clipping region formed by
  * creating a path consisting of all rects in `rects'.  Note that this
@@ -785,10 +741,9 @@ CGContextClipToRect(
  */
 EXTERN_API_C( void )
 CGContextClipToRects(
-  CGContextRef   ctx,
-  const CGRect   rects[],
-  size_t         count);
-
+    CGContextRef ctx,
+    const CGRect rects[],
+    size_t       count );
 
 /** Colorspace functions. **/
 /* Set the components of the current fill color in the context `ctx' to the
@@ -806,9 +761,8 @@ CGContextClipToRects(
  */
 EXTERN_API_C( void )
 CGContextSetFillColorSpace(
-  CGContextRef      ctx,
-  CGColorSpaceRef   colorspace);
-
+    CGContextRef    ctx,
+    CGColorSpaceRef colorspace );
 
 /* Set the components of the current fill color in the context `ctx' to the
  * values specifed by `components'.  The number of elements in `components'
@@ -825,9 +779,8 @@ CGContextSetFillColorSpace(
  */
 EXTERN_API_C( void )
 CGContextSetStrokeColorSpace(
-  CGContextRef      ctx,
-  CGColorSpaceRef   colorspace);
-
+    CGContextRef    ctx,
+    CGColorSpaceRef colorspace );
 
 /** Color functions. **/
 /* Set the components of the current fill color in the context `c' to the
@@ -845,9 +798,8 @@ CGContextSetStrokeColorSpace(
  */
 EXTERN_API_C( void )
 CGContextSetFillColor(
-  CGContextRef   c,
-  const float    components[]);
-
+    CGContextRef c,
+    const float  components[] );
 
 /* Set the components of the current stroke color in the context `c' to the
  * values specifed by `components'.  The number of elements in `components'
@@ -864,9 +816,8 @@ CGContextSetFillColor(
  */
 EXTERN_API_C( void )
 CGContextSetStrokeColor(
-  CGContextRef   c,
-  const float    components[]);
-
+    CGContextRef c,
+    const float  components[] );
 
 /** Pattern functions. **/
 /* Set the components of the current fill color in the context `c' to the
@@ -885,10 +836,9 @@ CGContextSetStrokeColor(
  */
 EXTERN_API_C( void )
 CGContextSetFillPattern(
-  CGContextRef   c,
-  CGPatternRef   pattern,
-  const float    components[]);
-
+    CGContextRef c,
+    CGPatternRef pattern,
+    const float  components[] );
 
 /* Set the components of the current stroke color in the context `c' to the
  * values specifed by `components', and set the current stroke pattern to
@@ -906,11 +856,9 @@ CGContextSetFillPattern(
  */
 EXTERN_API_C( void )
 CGContextSetStrokePattern(
-  CGContextRef   c,
-  CGPatternRef   pattern,
-  const float    components[]);
-
-
+    CGContextRef c,
+    CGPatternRef pattern,
+    const float  components[] );
 
 /** Color convenience functions. **/
 /* Set the current fill colorspace in the context `c' to `DeviceGray' and
@@ -925,10 +873,9 @@ CGContextSetStrokePattern(
  */
 EXTERN_API_C( void )
 CGContextSetGrayFillColor(
-  CGContextRef   ctx,
-  float          gray,
-  float          alpha);
-
+    CGContextRef ctx,
+    float        gray,
+    float        alpha );
 
 /* Set the current stroke colorspace in the context `c' to `DeviceGray' and
  * set the components of the current stroke color to `(gray, alpha)'. */
@@ -942,10 +889,9 @@ CGContextSetGrayFillColor(
  */
 EXTERN_API_C( void )
 CGContextSetGrayStrokeColor(
-  CGContextRef   ctx,
-  float          gray,
-  float          alpha);
-
+    CGContextRef ctx,
+    float        gray,
+    float        alpha );
 
 /* Set the current fill colorspace in the context `c' to `DeviceRGB' and
  * set the components of the current fill color to `(red, green, blue,
@@ -960,12 +906,11 @@ CGContextSetGrayStrokeColor(
  */
 EXTERN_API_C( void )
 CGContextSetRGBFillColor(
-  CGContextRef   ctx,
-  float          red,
-  float          green,
-  float          blue,
-  float          alpha);
-
+    CGContextRef ctx,
+    float        red,
+    float        green,
+    float        blue,
+    float        alpha );
 
 /* Set the current stroke colorspace in the context `c' to `DeviceRGB' and
  * set the components of the current stroke color to `(red, green, blue,
@@ -980,12 +925,11 @@ CGContextSetRGBFillColor(
  */
 EXTERN_API_C( void )
 CGContextSetRGBStrokeColor(
-  CGContextRef   ctx,
-  float          red,
-  float          green,
-  float          blue,
-  float          alpha);
-
+    CGContextRef ctx,
+    float        red,
+    float        green,
+    float        blue,
+    float        alpha );
 
 /* Set the current fill colorspace in the context `c' to `DeviceCMYK' and
  * set the components of the current fill color to `(cyan, magenta, yellow,
@@ -1000,13 +944,12 @@ CGContextSetRGBStrokeColor(
  */
 EXTERN_API_C( void )
 CGContextSetCMYKFillColor(
-  CGContextRef   ctx,
-  float          cyan,
-  float          magenta,
-  float          yellow,
-  float          black,
-  float          alpha);
-
+    CGContextRef ctx,
+    float        cyan,
+    float        magenta,
+    float        yellow,
+    float        black,
+    float        alpha );
 
 /* Set the current stroke colorspace in the context `c' to `DeviceCMYK' and
  * set the components of the current stroke color to `(cyan, magenta,
@@ -1021,13 +964,12 @@ CGContextSetCMYKFillColor(
  */
 EXTERN_API_C( void )
 CGContextSetCMYKStrokeColor(
-  CGContextRef   ctx,
-  float          cyan,
-  float          magenta,
-  float          yellow,
-  float          black,
-  float          alpha);
-
+    CGContextRef ctx,
+    float        cyan,
+    float        magenta,
+    float        yellow,
+    float        black,
+    float        alpha );
 
 /** Rendering intent. **/
 /* Set the rendering intent in the graphics state to `intent'. */
@@ -1041,9 +983,8 @@ CGContextSetCMYKStrokeColor(
  */
 EXTERN_API_C( void )
 CGContextSetRenderingIntent(
-  CGContextRef             c,
-  CGColorRenderingIntent   intent);
-
+    CGContextRef           c,
+    CGColorRenderingIntent intent );
 
 /** Image functions. **/
 /* Draw `image' in the rectangular area specified by `rect'.  The image is
@@ -1058,10 +999,9 @@ CGContextSetRenderingIntent(
  */
 EXTERN_API_C( void )
 CGContextDrawImage(
-  CGContextRef   ctx,
-  CGRect         rect,
-  CGImageRef     image);
-
+    CGContextRef ctx,
+    CGRect       rect,
+    CGImageRef   image );
 
 /* Return the interpolation quality for image rendering of the context `c'.
  * The interpolation quality is a gstate-parameter which controls the level
@@ -1077,8 +1017,7 @@ CGContextDrawImage(
  *    Mac OS X:         in version 10.1 and later
  */
 EXTERN_API_C( CGInterpolationQuality )
-CGContextGetInterpolationQuality(CGContextRef c);
-
+CGContextGetInterpolationQuality( CGContextRef c );
 
 /* Set the interpolation quality of the context `c' to `quality'. */
 /*
@@ -1091,10 +1030,8 @@ CGContextGetInterpolationQuality(CGContextRef c);
  */
 EXTERN_API_C( void )
 CGContextSetInterpolationQuality(
-  CGContextRef             c,
-  CGInterpolationQuality   quality);
-
-
+    CGContextRef           c,
+    CGInterpolationQuality quality );
 
 /** Text functions. **/
 /* Set the current character spacing in the context `ctx' to `spacing'.  The
@@ -1110,9 +1047,8 @@ CGContextSetInterpolationQuality(
  */
 EXTERN_API_C( void )
 CGContextSetCharacterSpacing(
-  CGContextRef   ctx,
-  float          spacing);
-
+    CGContextRef ctx,
+    float        spacing );
 
 /* Set the user-space point at which text will be drawn to (x,y). */
 /*
@@ -1125,10 +1061,9 @@ CGContextSetCharacterSpacing(
  */
 EXTERN_API_C( void )
 CGContextSetTextPosition(
-  CGContextRef   ctx,
-  float          x,
-  float          y);
-
+    CGContextRef ctx,
+    float        x,
+    float        y );
 
 /* Return the current user-space point at which text will be drawn to (x,y). */
 /*
@@ -1140,8 +1075,7 @@ CGContextSetTextPosition(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGPoint )
-CGContextGetTextPosition(CGContextRef ctx);
-
+CGContextGetTextPosition( CGContextRef ctx );
 
 /* Set the text matrix to `transform'. */
 /*
@@ -1154,9 +1088,8 @@ CGContextGetTextPosition(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextSetTextMatrix(
-  CGContextRef        ctx,
-  CGAffineTransform   transform);
-
+    CGContextRef      ctx,
+    CGAffineTransform transform );
 
 /* Return the text matrix. */
 /*
@@ -1168,8 +1101,7 @@ CGContextSetTextMatrix(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGAffineTransform )
-CGContextGetTextMatrix(CGContextRef ctx);
-
+CGContextGetTextMatrix( CGContextRef ctx );
 
 /* Set the text drawing mode to `mode'. */
 /*
@@ -1182,9 +1114,8 @@ CGContextGetTextMatrix(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextSetTextDrawingMode(
-  CGContextRef        ctx,
-  CGTextDrawingMode   mode);
-
+    CGContextRef      ctx,
+    CGTextDrawingMode mode );
 
 /* Set the current font to `font'. */
 /*
@@ -1197,9 +1128,8 @@ CGContextSetTextDrawingMode(
  */
 EXTERN_API_C( void )
 CGContextSetFont(
-  CGContextRef   ctx,
-  CGFontRef      font);
-
+    CGContextRef ctx,
+    CGFontRef    font );
 
 /* Set the current font size to `size'. */
 /*
@@ -1212,10 +1142,8 @@ CGContextSetFont(
  */
 EXTERN_API_C( void )
 CGContextSetFontSize(
-  CGContextRef   ctx,
-  float          size);
-
-
+    CGContextRef ctx,
+    float        size );
 
 /* Attempts to find the font named `name'.  If successful, scales it to
  * `size' units in user space.  `textEncoding' specifies how to translate
@@ -1230,11 +1158,10 @@ CGContextSetFontSize(
  */
 EXTERN_API_C( void )
 CGContextSelectFont(
-  CGContextRef     ctx,
-  const char *     name,
-  float            size,
-  CGTextEncoding   textEncoding);
-
+    CGContextRef   ctx,
+    const char *   name,
+    float          size,
+    CGTextEncoding textEncoding );
 
 /* Draw `string', a string of `length' bytes, at the point specified by the
  * current text matrix.  Each byte of the string is mapped through the
@@ -1249,10 +1176,9 @@ CGContextSelectFont(
  */
 EXTERN_API_C( void )
 CGContextShowText(
-  CGContextRef   ctx,
-  const char *   cstring,
-  size_t         length);
-
+    CGContextRef ctx,
+    const char * cstring,
+    size_t       length );
 
 /* Draw the glyphs pointed to by `g', an array of `count' glyphs, at the
  * point specified by the current text matrix. */
@@ -1266,11 +1192,9 @@ CGContextShowText(
  */
 EXTERN_API_C( void )
 CGContextShowGlyphs(
-  CGContextRef    ctx,
-  const CGGlyph   g[],
-  size_t          count);
-
-
+    CGContextRef  ctx,
+    const CGGlyph g[],
+    size_t        count );
 
 /** Text convenience functions. **/
 /* Draw `string', a string of `length' bytes, at the point `(x, y)',
@@ -1286,12 +1210,11 @@ CGContextShowGlyphs(
  */
 EXTERN_API_C( void )
 CGContextShowTextAtPoint(
-  CGContextRef   ctx,
-  float          x,
-  float          y,
-  const char *   cstring,
-  size_t         length);
-
+    CGContextRef ctx,
+    float        x,
+    float        y,
+    const char * cstring,
+    size_t       length );
 
 /* Display the glyphs pointed to by `g', an array of `count' glyph ids, at
  * the point `(x, y)', specified in user space. */
@@ -1305,13 +1228,11 @@ CGContextShowTextAtPoint(
  */
 EXTERN_API_C( void )
 CGContextShowGlyphsAtPoint(
-  CGContextRef    ctx,
-  float           x,
-  float           y,
-  const CGGlyph   g[],
-  size_t          count);
-
-
+    CGContextRef  ctx,
+    float         x,
+    float         y,
+    const CGGlyph g[],
+    size_t        count );
 
 /** PDF document functions. **/
 /* Draw `page' in `document' in the rectangular area specified by `rect'.
@@ -1327,11 +1248,10 @@ CGContextShowGlyphsAtPoint(
  */
 EXTERN_API_C( void )
 CGContextDrawPDFDocument(
-  CGContextRef       ctx,
-  CGRect             rect,
-  CGPDFDocumentRef   document,
-  int                page);
-
+    CGContextRef     ctx,
+    CGRect           rect,
+    CGPDFDocumentRef document,
+    int              page );
 
 /** Page functions. **/
 /* Begin a new page. */
@@ -1345,9 +1265,8 @@ CGContextDrawPDFDocument(
  */
 EXTERN_API_C( void )
 CGContextBeginPage(
-  CGContextRef    ctx,
-  const CGRect *  mediaBox);
-
+    CGContextRef  ctx,
+    const CGRect *mediaBox );
 
 /* End the current page. */
 /*
@@ -1359,8 +1278,7 @@ CGContextBeginPage(
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextEndPage(CGContextRef ctx);
-
+CGContextEndPage( CGContextRef ctx );
 
 /** Context functions. **/
 /* Increment the retain count of `ctx' and return it.  All contexts are
@@ -1374,8 +1292,7 @@ CGContextEndPage(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( CGContextRef )
-CGContextRetain(CGContextRef ctx);
-
+CGContextRetain( CGContextRef ctx );
 
 /* Decrement the retain count of `ctx'.  If the retain count reaches 0,
  * then free `ctx' and any associated resources. */
@@ -1388,8 +1305,7 @@ CGContextRetain(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextRelease(CGContextRef ctx);
-
+CGContextRelease( CGContextRef ctx );
 
 /* Flush all drawing to the destination. */
 /*
@@ -1401,8 +1317,7 @@ CGContextRelease(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextFlush(CGContextRef ctx);
-
+CGContextFlush( CGContextRef ctx );
 
 /* Synchronized drawing. */
 /*
@@ -1414,8 +1329,7 @@ CGContextFlush(CGContextRef ctx);
  *    Mac OS X:         in version 10.0 and later
  */
 EXTERN_API_C( void )
-CGContextSynchronize(CGContextRef ctx);
-
+CGContextSynchronize( CGContextRef ctx );
 
 /** Antialiasing functions. **/
 /* Turn off antialiasing if `shouldAntialias' is zero; turn it on
@@ -1430,20 +1344,18 @@ CGContextSynchronize(CGContextRef ctx);
  */
 EXTERN_API_C( void )
 CGContextSetShouldAntialias(
-  CGContextRef   ctx,
-  int            shouldAntialias);
-
-
+    CGContextRef ctx,
+    int          shouldAntialias );
 
 #if PRAGMA_ENUM_ALWAYSINT
-    #pragma enumsalwaysint reset
-    #ifdef __CGCONTEXT__RESTORE_TWOBYTEINTS
-        #pragma fourbyteints off
-    #endif
+#pragma enumsalwaysint reset
+#ifdef __CGCONTEXT__RESTORE_TWOBYTEINTS
+#pragma fourbyteints off
+#endif
 #elif PRAGMA_ENUM_OPTIONS
-    #pragma option enum=reset
-#elif defined(__CGCONTEXT__RESTORE_PACKED_ENUMS)
-    #pragma options(pack_enums)
+#pragma option enum =reset
+#elif defined( __CGCONTEXT__RESTORE_PACKED_ENUMS )
+#pragma options( pack_enums )
 #endif
 
 #ifdef PRAGMA_IMPORT_OFF
@@ -1457,4 +1369,3 @@ CGContextSetShouldAntialias(
 #endif
 
 #endif /* CGCONTEXT_H_ */
-

@@ -32,8 +32,6 @@
 #include <Script.h>
 #endif
 
-
-
 #if PRAGMA_ONCE
 #pragma once
 #endif
@@ -78,25 +76,24 @@ extern "C" {
 */
 
 enum {
-                                        /* Special language code values for Language Order*/
-  systemCurLang                 = -2,   /* current (itlbLang) lang for system script*/
-  systemDefLang                 = -3,   /* default (table) lang for system script*/
-  currentCurLang                = -4,   /* current (itlbLang) lang for current script*/
-  currentDefLang                = -5,   /* default lang for current script*/
-  scriptCurLang                 = -6,   /* current (itlbLang) lang for specified script*/
-  scriptDefLang                 = -7    /* default language for a specified script*/
+	/* Special language code values for Language Order*/
+	systemCurLang = -2, /* current (itlbLang) lang for system script*/
+	systemDefLang = -3, /* default (table) lang for system script*/
+	currentCurLang = -4, /* current (itlbLang) lang for current script*/
+	currentDefLang = -5, /* default lang for current script*/
+	scriptCurLang = -6, /* current (itlbLang) lang for specified script*/
+	scriptDefLang = -7 /* default language for a specified script*/
 };
 
 /* obsolete names*/
 enum {
-  iuSystemCurLang               = systemCurLang,
-  iuSystemDefLang               = systemDefLang,
-  iuCurrentCurLang              = currentCurLang,
-  iuCurrentDefLang              = currentDefLang,
-  iuScriptCurLang               = scriptCurLang,
-  iuScriptDefLang               = scriptDefLang
+	iuSystemCurLang = systemCurLang,
+	iuSystemDefLang = systemDefLang,
+	iuCurrentCurLang = currentCurLang,
+	iuCurrentDefLang = currentDefLang,
+	iuScriptCurLang = scriptCurLang,
+	iuScriptDefLang = scriptDefLang
 };
-
 
 /*
  *  These routines are available in Carbon with the new names.
@@ -110,14 +107,13 @@ enum {
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacReplaceText ReplaceText
+#define MacReplaceText ReplaceText
 #endif
 EXTERN_API( short )
 MacReplaceText(
-  Handle   baseText,
-  Handle   substitutionText,
-  Str15    key)                                               FOURWORDINLINE(0x2F3C, 0x820C, 0xFFDC, 0xA8B5);
-
+    Handle baseText,
+    Handle substitutionText,
+    Str15  key ) FOURWORDINLINE( 0x2F3C, 0x820C, 0xFFDC, 0xA8B5 );
 
 /*
  *  ScriptOrder()
@@ -129,9 +125,8 @@ MacReplaceText(
  */
 EXTERN_API( short )
 ScriptOrder(
-  ScriptCode   script1,
-  ScriptCode   script2)                                       THREEWORDINLINE(0x3F3C, 0x001E, 0xA9ED);
-
+    ScriptCode script1,
+    ScriptCode script2 ) THREEWORDINLINE( 0x3F3C, 0x001E, 0xA9ED );
 
 /*
  *  [Mac]CompareString()
@@ -142,14 +137,13 @@ ScriptOrder(
  *    Mac OS X:         in version 10.0 and later
  */
 #if TARGET_OS_MAC
-    #define MacCompareString CompareString
+#define MacCompareString CompareString
 #endif
 EXTERN_API( short )
 MacCompareString(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr,
-  Handle             itl2Handle);
-
+    ConstStr255Param aStr,
+    ConstStr255Param bStr,
+    Handle           itl2Handle );
 
 /*
  *  IdenticalString()
@@ -161,10 +155,9 @@ MacCompareString(
  */
 EXTERN_API( short )
 IdenticalString(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr,
-  Handle             itl2Handle);
-
+    ConstStr255Param aStr,
+    ConstStr255Param bStr,
+    Handle           itl2Handle );
 
 /*
  *  StringOrder()
@@ -176,13 +169,12 @@ IdenticalString(
  */
 EXTERN_API( short )
 StringOrder(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr,
-  ScriptCode         aScript,
-  ScriptCode         bScript,
-  LangCode           aLang,
-  LangCode           bLang);
-
+    ConstStr255Param aStr,
+    ConstStr255Param bStr,
+    ScriptCode       aScript,
+    ScriptCode       bScript,
+    LangCode         aLang,
+    LangCode         bLang );
 
 /*
  *  CompareText()
@@ -194,12 +186,11 @@ StringOrder(
  */
 EXTERN_API( short )
 CompareText(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen,
-  Handle        itl2Handle)                                   THREEWORDINLINE(0x3F3C, 0x001A, 0xA9ED);
-
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen,
+    Handle      itl2Handle ) THREEWORDINLINE( 0x3F3C, 0x001A, 0xA9ED );
 
 /*
  *  IdenticalText()
@@ -211,12 +202,11 @@ CompareText(
  */
 EXTERN_API( short )
 IdenticalText(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen,
-  Handle        itl2Handle)                                   THREEWORDINLINE(0x3F3C, 0x001C, 0xA9ED);
-
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen,
+    Handle      itl2Handle ) THREEWORDINLINE( 0x3F3C, 0x001C, 0xA9ED );
 
 /*
  *  TextOrder()
@@ -228,15 +218,14 @@ IdenticalText(
  */
 EXTERN_API( short )
 TextOrder(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen,
-  ScriptCode    aScript,
-  ScriptCode    bScript,
-  LangCode      aLang,
-  LangCode      bLang)                                        THREEWORDINLINE(0x3F3C, 0x0022, 0xA9ED);
-
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen,
+    ScriptCode  aScript,
+    ScriptCode  bScript,
+    LangCode    aLang,
+    LangCode    bLang ) THREEWORDINLINE( 0x3F3C, 0x0022, 0xA9ED );
 
 /*
  *  LanguageOrder()
@@ -248,10 +237,8 @@ TextOrder(
  */
 EXTERN_API( short )
 LanguageOrder(
-  LangCode   language1,
-  LangCode   language2)                                       THREEWORDINLINE(0x3F3C, 0x0020, 0xA9ED);
-
-
+    LangCode language1,
+    LangCode language2 ) THREEWORDINLINE( 0x3F3C, 0x0020, 0xA9ED );
 
 /*
  *  These routines are available in InterfaceLib with old names.
@@ -268,12 +255,11 @@ LanguageOrder(
  */
 EXTERN_API( short )
 IUMagPString(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen,
-  Handle        itl2Handle)                                   THREEWORDINLINE(0x3F3C, 0x001A, 0xA9ED);
-
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen,
+    Handle      itl2Handle ) THREEWORDINLINE( 0x3F3C, 0x001A, 0xA9ED );
 
 /*
  *  IUMagIDPString()
@@ -285,12 +271,11 @@ IUMagPString(
  */
 EXTERN_API( short )
 IUMagIDPString(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen,
-  Handle        itl2Handle)                                   THREEWORDINLINE(0x3F3C, 0x001C, 0xA9ED);
-
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen,
+    Handle      itl2Handle ) THREEWORDINLINE( 0x3F3C, 0x001C, 0xA9ED );
 
 /*
  *  IUTextOrder()
@@ -302,15 +287,14 @@ IUMagIDPString(
  */
 EXTERN_API( short )
 IUTextOrder(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen,
-  ScriptCode    aScript,
-  ScriptCode    bScript,
-  LangCode      aLang,
-  LangCode      bLang)                                        THREEWORDINLINE(0x3F3C, 0x0022, 0xA9ED);
-
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen,
+    ScriptCode  aScript,
+    ScriptCode  bScript,
+    LangCode    aLang,
+    LangCode    bLang ) THREEWORDINLINE( 0x3F3C, 0x0022, 0xA9ED );
 
 /*
  *  IULangOrder()
@@ -322,9 +306,8 @@ IUTextOrder(
  */
 EXTERN_API( short )
 IULangOrder(
-  LangCode   language1,
-  LangCode   language2)                                       THREEWORDINLINE(0x3F3C, 0x0020, 0xA9ED);
-
+    LangCode language1,
+    LangCode language2 ) THREEWORDINLINE( 0x3F3C, 0x0020, 0xA9ED );
 
 /*
  *  IUScriptOrder()
@@ -336,9 +319,8 @@ IULangOrder(
  */
 EXTERN_API( short )
 IUScriptOrder(
-  ScriptCode   script1,
-  ScriptCode   script2)                                       THREEWORDINLINE(0x3F3C, 0x001E, 0xA9ED);
-
+    ScriptCode script1,
+    ScriptCode script2 ) THREEWORDINLINE( 0x3F3C, 0x001E, 0xA9ED );
 
 /*
  *  IUMagString()
@@ -350,11 +332,10 @@ IUScriptOrder(
  */
 EXTERN_API( short )
 IUMagString(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen)                                         THREEWORDINLINE(0x3F3C, 0x000A, 0xA9ED);
-
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen ) THREEWORDINLINE( 0x3F3C, 0x000A, 0xA9ED );
 
 /*
  *  IUMagIDString()
@@ -366,13 +347,12 @@ IUMagString(
  */
 EXTERN_API( short )
 IUMagIDString(
-  const void *  aPtr,
-  const void *  bPtr,
-  short         aLen,
-  short         bLen)                                         THREEWORDINLINE(0x3F3C, 0x000C, 0xA9ED);
+    const void *aPtr,
+    const void *bPtr,
+    short       aLen,
+    short       bLen ) THREEWORDINLINE( 0x3F3C, 0x000C, 0xA9ED );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -385,10 +365,9 @@ IUMagIDString(
  */
 EXTERN_API( short )
 IUCompPString(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr,
-  Handle             itl2Handle);
-
+    ConstStr255Param aStr,
+    ConstStr255Param bStr,
+    Handle           itl2Handle );
 
 /*
  *  IUEqualPString()
@@ -400,10 +379,9 @@ IUCompPString(
  */
 EXTERN_API( short )
 IUEqualPString(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr,
-  Handle             itl2Handle);
-
+    ConstStr255Param aStr,
+    ConstStr255Param bStr,
+    Handle           itl2Handle );
 
 /*
  *  IUStringOrder()
@@ -415,13 +393,12 @@ IUEqualPString(
  */
 EXTERN_API( short )
 IUStringOrder(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr,
-  ScriptCode         aScript,
-  ScriptCode         bScript,
-  LangCode           aLang,
-  LangCode           bLang);
-
+    ConstStr255Param aStr,
+    ConstStr255Param bStr,
+    ScriptCode       aScript,
+    ScriptCode       bScript,
+    LangCode         aLang,
+    LangCode         bLang );
 
 /*
  *  IUCompString()
@@ -433,9 +410,8 @@ IUStringOrder(
  */
 EXTERN_API( short )
 IUCompString(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr);
-
+    ConstStr255Param aStr,
+    ConstStr255Param bStr );
 
 /*
  *  IUEqualString()
@@ -447,29 +423,28 @@ IUCompString(
  */
 EXTERN_API( short )
 IUEqualString(
-  ConstStr255Param   aStr,
-  ConstStr255Param   bStr);
+    ConstStr255Param aStr,
+    ConstStr255Param bStr );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
+#endif /* CALL_NOT_IN_CARBON */
 
 #if CALL_NOT_IN_CARBON
 #if TARGET_OS_MAC
-    #define CompareString(aStr, bStr, itl2Handle) \
-             IUCompPString(aStr, bStr, itl2Handle)
+#define CompareString( aStr, bStr, itl2Handle ) \
+	IUCompPString( aStr, bStr, itl2Handle )
 #endif
-#define CompareText(aPtr, bPtr, aLen, bLen, itl2Handle) \
-         IUMagPString(aPtr, bPtr, aLen, bLen, itl2Handle)
-#define IdenticalString(aStr, bStr, itl2Handle) \
-         IUEqualPString(aStr, bStr, itl2Handle)
-#define IdenticalText(aPtr, bPtr, aLen, bLen, itl2Handle) \
-         IUMagIDPString(aPtr, bPtr, aLen, bLen, itl2Handle)
-#define StringOrder(aStr, bStr, aScript, bScript, aLang, bLang) \
-         IUStringOrder(aStr, bStr, aScript, bScript, aLang, bLang)
-#define TextOrder(aPtr, bPtr, aLen, bLen, aScript, bScript, aLang, bLang) \
-         IUTextOrder(aPtr, bPtr, aLen, bLen, aScript, bScript, aLang, bLang)
-#define LanguageOrder(language1, language2) \
-         IULangOrder(language1, language2)
+#define CompareText( aPtr, bPtr, aLen, bLen, itl2Handle ) \
+	IUMagPString( aPtr, bPtr, aLen, bLen, itl2Handle )
+#define IdenticalString( aStr, bStr, itl2Handle ) \
+	IUEqualPString( aStr, bStr, itl2Handle )
+#define IdenticalText( aPtr, bPtr, aLen, bLen, itl2Handle ) \
+	IUMagIDPString( aPtr, bPtr, aLen, bLen, itl2Handle )
+#define StringOrder( aStr, bStr, aScript, bScript, aLang, bLang ) \
+	IUStringOrder( aStr, bStr, aScript, bScript, aLang, bLang )
+#define TextOrder( aPtr, bPtr, aLen, bLen, aScript, bScript, aLang, bLang ) \
+	IUTextOrder( aPtr, bPtr, aLen, bLen, aScript, bScript, aLang, bLang )
+#define LanguageOrder( language1, language2 ) \
+	IULangOrder( language1, language2 )
 #endif /* CALL_NOT_IN_CARBON */
 #if CALL_NOT_IN_CARBON
 /*
@@ -482,10 +457,9 @@ IUEqualString(
  */
 EXTERN_API_C( short )
 iucomppstring(
-  const char *  aStr,
-  const char *  bStr,
-  Handle        intlHandle);
-
+    const char *aStr,
+    const char *bStr,
+    Handle      intlHandle );
 
 /*
  *  iuequalpstring()
@@ -497,10 +471,9 @@ iucomppstring(
  */
 EXTERN_API_C( short )
 iuequalpstring(
-  const char *  aStr,
-  const char *  bStr,
-  Handle        intlHandle);
-
+    const char *aStr,
+    const char *bStr,
+    Handle      intlHandle );
 
 /*
  *  iustringorder()
@@ -512,13 +485,12 @@ iuequalpstring(
  */
 EXTERN_API_C( short )
 iustringorder(
-  const char *  aStr,
-  const char *  bStr,
-  ScriptCode    aScript,
-  ScriptCode    bScript,
-  LangCode      aLang,
-  LangCode      bLang);
-
+    const char *aStr,
+    const char *bStr,
+    ScriptCode  aScript,
+    ScriptCode  bScript,
+    LangCode    aLang,
+    LangCode    bLang );
 
 /*
  *  iucompstring()
@@ -530,9 +502,8 @@ iustringorder(
  */
 EXTERN_API_C( short )
 iucompstring(
-  const char *  aStr,
-  const char *  bStr);
-
+    const char *aStr,
+    const char *bStr );
 
 /*
  *  iuequalstring()
@@ -544,12 +515,10 @@ iucompstring(
  */
 EXTERN_API_C( short )
 iuequalstring(
-  const char *  aStr,
-  const char *  bStr);
+    const char *aStr,
+    const char *bStr );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
-
+#endif /* CALL_NOT_IN_CARBON */
 
 /*
  *  RelString()
@@ -561,11 +530,10 @@ iuequalstring(
  */
 EXTERN_API( short )
 RelString(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2,
-  Boolean            caseSensitive,
-  Boolean            diacSensitive);
-
+    ConstStr255Param str1,
+    ConstStr255Param str2,
+    Boolean          caseSensitive,
+    Boolean          diacSensitive );
 
 /*
  *  EqualString()
@@ -577,11 +545,10 @@ RelString(
  */
 EXTERN_API( Boolean )
 EqualString(
-  ConstStr255Param   str1,
-  ConstStr255Param   str2,
-  Boolean            caseSensitive,
-  Boolean            diacSensitive);
-
+    ConstStr255Param str1,
+    ConstStr255Param str2,
+    Boolean          caseSensitive,
+    Boolean          diacSensitive );
 
 /*
  *  relstring()
@@ -593,11 +560,10 @@ EqualString(
  */
 EXTERN_API_C( short )
 relstring(
-  const char *  str1,
-  const char *  str2,
-  Boolean       caseSensitive,
-  Boolean       diacSensitive);
-
+    const char *str1,
+    const char *str2,
+    Boolean     caseSensitive,
+    Boolean     diacSensitive );
 
 #if CALL_NOT_IN_CARBON
 /*
@@ -610,16 +576,12 @@ relstring(
  */
 EXTERN_API_C( Boolean )
 equalstring(
-  const char *  str1,
-  const char *  str2,
-  Boolean       caseSensitive,
-  Boolean       diacSensitive);
+    const char *str1,
+    const char *str2,
+    Boolean     caseSensitive,
+    Boolean     diacSensitive );
 
-
-#endif  /* CALL_NOT_IN_CARBON */
-
-
-
+#endif /* CALL_NOT_IN_CARBON */
 
 #ifdef PRAGMA_IMPORT_OFF
 #pragma import off
@@ -632,4 +594,3 @@ equalstring(
 #endif
 
 #endif /* __STRINGCOMPARE__ */
-

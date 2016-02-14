@@ -32,14 +32,16 @@
 
 struct IMMDevice;
 
-namespace cinder { namespace audio { namespace msw {
+namespace cinder {
+namespace audio {
+namespace msw {
 
 class DeviceManagerWasapi : public DeviceManager {
   public:
 	DeviceRef getDefaultOutput() override;
 	DeviceRef getDefaultInput() override;
 
-	const std::vector<DeviceRef>& getDevices() override;
+	const std::vector<DeviceRef> &getDevices() override;
 
 	std::string getName( const DeviceRef &device ) override;
 	size_t getNumInputChannels( const DeviceRef &device ) override;
@@ -50,28 +52,29 @@ class DeviceManagerWasapi : public DeviceManager {
 	void setSampleRate( const DeviceRef &device, size_t sampleRate ) override;
 	void setFramesPerBlock( const DeviceRef &device, size_t framesPerBlock ) override;
 
-	const std::wstring& getDeviceId( const DeviceRef &device );
+	const std::wstring &getDeviceId( const DeviceRef &device );
 
 	std::shared_ptr<::IMMDevice> getIMMDevice( const DeviceRef &device );
 
   private:
+	struct DeviceInfo {
+		std::string mKey; //! mKey used by Device to get more info from manager
+		std::string mName; //! friendly mName
+		enum Usage { INPUT,
+			OUTPUT } mUsage;
+		std::wstring mDeviceId; //! id used when creating XAudio2 master voice
+		std::wstring mEndpointId; //! id used by Wasapi / MMDevice
+		size_t       mNumChannels, mSampleRate, mFramesPerBlock;
+	};
 
-	  struct DeviceInfo {
-		  std::string mKey;						//! mKey used by Device to get more info from manager
-		  std::string mName;						//! friendly mName
-		  enum Usage { INPUT, OUTPUT } mUsage;
-		  std::wstring			mDeviceId;		//! id used when creating XAudio2 master voice
-		  std::wstring			mEndpointId;		//! id used by Wasapi / MMDevice
-		  size_t mNumChannels, mSampleRate, mFramesPerBlock;
-	  };
+	DeviceInfo &getDeviceInfo( const DeviceRef &device );
+	void parseDevices( DeviceInfo::Usage usage );
+	std::vector<std::wstring> parseDeviceIds( DeviceInfo::Usage usage );
 
-	  DeviceInfo& getDeviceInfo( const DeviceRef &device );
-	  void parseDevices( DeviceInfo::Usage usage );
-	  std::vector<std::wstring> parseDeviceIds( DeviceInfo::Usage usage );
-
-	  std::map<DeviceRef, DeviceInfo> mDeviceInfoSet;
+	std::map<DeviceRef, DeviceInfo> mDeviceInfoSet;
 };
-
-} } } // namespace cinder::audio::msw
+}
+}
+} // namespace cinder::audio::msw
 
 #endif // #if defined( CINDER_WINRT ) || ( _WIN32_WINNT >= _WIN32_WINNT_VISTA ) // requires Windows Vista+
