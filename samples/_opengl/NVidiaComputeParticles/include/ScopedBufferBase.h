@@ -7,13 +7,13 @@
 
 struct ScopedBufferBase : public boost::noncopyable {
 	ScopedBufferBase( const ci::gl::BufferObjRef &bufferObj, GLuint index )
-		: mIndex( index ), mTarget( bufferObj->getTarget() )
+	    : mIndex( index ), mTarget( bufferObj->getTarget() )
 	{
 		glBindBufferBase( mTarget, mIndex, bufferObj->getId() );
 	}
 
 	ScopedBufferBase( GLenum target, GLuint index, GLuint id )
-		: mTarget( target ), mIndex( index )
+	    : mTarget( target ), mIndex( index )
 	{
 		glBindBufferBase( mTarget, mIndex, id );
 	}
@@ -23,9 +23,9 @@ struct ScopedBufferBase : public boost::noncopyable {
 		glBindBufferBase( mTarget, mIndex, 0 );
 	}
 
-private:
-	GLenum		mTarget;
-	GLuint		mIndex;
+  private:
+	GLenum mTarget;
+	GLuint mIndex;
 };
 
 #endif

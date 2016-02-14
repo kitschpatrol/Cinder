@@ -23,35 +23,36 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/ImageIo.h"
 #include "cinder/Exception.h"
+#include "cinder/ImageIo.h"
 
 namespace cinder {
 
 class IStreamCinder;
-typedef std::shared_ptr<IStreamCinder>	IStreamRef;
+typedef std::shared_ptr<IStreamCinder> IStreamRef;
 
-typedef std::shared_ptr<class ImageSourceFileRadiance>	ImageSourceFileRadianceRef;
+typedef std::shared_ptr<class ImageSourceFileRadiance> ImageSourceFileRadianceRef;
 
 class ImageSourceFileRadiance : public ImageSource {
   public:
-	static ImageSourceRef	create( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() );
+	static ImageSourceRef create( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() );
 
-	virtual void	load( ImageTargetRef target );
+	virtual void load( ImageTargetRef target );
 
-	static void		registerSelf();
+	static void registerSelf();
 
   protected:
 	ImageSourceFileRadiance( DataSourceRef dataSourceRef, ImageSource::Options options );
-	
-	void	loadStream( IStreamRef stream );
-	
-	std::unique_ptr<float[]>		mRgbData;
+
+	void loadStream( IStreamRef stream );
+
+	std::unique_ptr<float[]> mRgbData;
 };
 
 class ImageSourceFileRadianceException : public ImageIoException {
   public:
-	ImageSourceFileRadianceException( const std::string &description ) : ImageIoException( description ) {}
+	ImageSourceFileRadianceException( const std::string &description )
+	    : ImageIoException( description ) {}
 };
 
 } // namespace cinder

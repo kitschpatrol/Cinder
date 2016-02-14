@@ -24,37 +24,38 @@
 
 #include "cinder/Cinder.h"
 #if defined( CINDER_WINRT )
-	#define ASIO_WINDOWS_RUNTIME 1
+#define ASIO_WINDOWS_RUNTIME 1
 #endif
 #include "asio/asio.hpp"
 
+#include "cinder/Camera.h"
+#include "cinder/Log.h"
+#include "cinder/System.h"
+#include "cinder/Thread.h"
+#include "cinder/Timeline.h"
+#include "cinder/Utilities.h"
 #include "cinder/app/AppBase.h"
 #include "cinder/app/Renderer.h"
-#include "cinder/Camera.h"
-#include "cinder/System.h"
-#include "cinder/Utilities.h"
-#include "cinder/Timeline.h"
-#include "cinder/Thread.h"
-#include "cinder/Log.h"
 
 using namespace std;
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
-AppBase*					AppBase::sInstance = nullptr;			// Static instance of App, effectively a singleton
-AppBase::Settings*			AppBase::sSettingsFromMain = nullptr;
-static std::thread::id		sPrimaryThreadId = std::this_thread::get_id();
+AppBase *              AppBase::sInstance = nullptr; // Static instance of App, effectively a singleton
+AppBase::Settings *    AppBase::sSettingsFromMain = nullptr;
+static std::thread::id sPrimaryThreadId = std::this_thread::get_id();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // AppBase::Settings
 
 AppBase::Settings::Settings()
-	: mShouldQuit( false ), mQuitOnLastWindowClose( true ), mPowerManagementEnabled( false ),
-		mFrameRate( 60 ), mFrameRateEnabled( true ), mHighDensityDisplayEnabled( false ), mMultiTouchEnabled( false )
+    : mShouldQuit( false ), mQuitOnLastWindowClose( true ), mPowerManagementEnabled( false ),
+      mFrameRate( 60 ), mFrameRateEnabled( true ), mHighDensityDisplayEnabled( false ), mMultiTouchEnabled( false )
 {
 }
 
-void AppBase::Settings::init( const RendererRef &defaultRenderer, const char *title, int argc, char * const argv[] )
+void AppBase::Settings::init( const RendererRef &defaultRenderer, const char *title, int argc, char *const argv[] )
 {
 	mDefaultRenderer = defaultRenderer;
 	if( title )
@@ -88,8 +89,8 @@ void AppBase::Settings::setShouldQuit( bool shouldQuit )
 // AppBase
 
 AppBase::AppBase()
-	: mFrameCount( 0 ), mAverageFps( 0 ), mFpsSampleInterval( 1 ), mTimer( true ), mTimeline( Timeline::create() ),
-		mFpsLastSampleFrame( 0 ), mFpsLastSampleTime( 0 )
+    : mFrameCount( 0 ), mAverageFps( 0 ), mFpsSampleInterval( 1 ), mTimer( true ), mTimeline( Timeline::create() ),
+      mFpsLastSampleFrame( 0 ), mFpsLastSampleTime( 0 )
 {
 	sInstance = this;
 
@@ -101,9 +102,9 @@ AppBase::AppBase()
 	mIo = shared_ptr<asio::io_service>( new asio::io_service() );
 	mIoWork = shared_ptr<asio::io_service::work>( new asio::io_service::work( *mIo ) );
 
-	// due to an issue with boost::filesystem's static initialization on Windows, 
-	// it's necessary to create a fs::path here in case of secondary threads doing the same thing simultaneously
-#if (defined( CINDER_MSW ) || defined ( CINDER_WINRT ))
+// due to an issue with boost::filesystem's static initialization on Windows,
+// it's necessary to create a fs::path here in case of secondary threads doing the same thing simultaneously
+#if( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
 	fs::path dummyPath( "dummy" );
 #endif
 }
@@ -121,7 +122,7 @@ void AppBase::prepareLaunch()
 }
 
 // static
-void AppBase::initialize( Settings *settings, const RendererRef &defaultRenderer, const char *title, int argc, char * const argv[] )
+void AppBase::initialize( Settings *settings, const RendererRef &defaultRenderer, const char *title, int argc, char *const argv[] )
 {
 	settings->init( defaultRenderer, title, argc, argv );
 
@@ -175,7 +176,7 @@ void AppBase::privateUpdate__()
 	if( now > mFpsLastSampleTime + mFpsSampleInterval ) {
 		//calculate average Fps over sample interval
 		uint32_t framesPassed = mFrameCount - mFpsLastSampleFrame;
-		mAverageFps = (float)(framesPassed / (now - mFpsLastSampleTime));
+		mAverageFps = (float)( framesPassed / ( now - mFpsLastSampleTime ) );
 
 		mFpsLastSampleTime = now;
 		mFpsLastSampleFrame = mFrameCount;
@@ -228,7 +229,7 @@ fs::path AppBase::getSaveFilePath( const fs::path &initialPath, const vector<str
 	return Platform::get()->getSaveFilePath( initialPath, extensions );
 }
 
-std::ostream& AppBase::console()
+std::ostream &AppBase::console()
 {
 	return Platform::get()->console();
 }
@@ -243,13 +244,13 @@ void AppBase::dispatchAsync( const std::function<void()> &fn )
 	io_service().post( fn );
 }
 
-Surface	AppBase::copyWindowSurface()
+Surface AppBase::copyWindowSurface()
 {
 	return getWindow()->getRenderer()->copyWindowSurface(
-			getWindow()->toPixels( getWindow()->getBounds() ), getWindow()->toPixels( getWindow()->getHeight() ) );
+	    getWindow()->toPixels( getWindow()->getBounds() ), getWindow()->toPixels( getWindow()->getHeight() ) );
 }
 
-Surface	AppBase::copyWindowSurface( const Area &area )
+Surface AppBase::copyWindowSurface( const Area &area )
 {
 	Area clippedArea = area.getClipBy( getWindowBounds() );
 	return getWindow()->getRenderer()->copyWindowSurface( clippedArea, getWindow()->toPixels( getWindow()->getHeight() ) );
@@ -259,5 +260,5 @@ void AppBase::restoreWindowContext()
 {
 	getWindow()->getRenderer()->makeCurrentContext();
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

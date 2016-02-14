@@ -24,18 +24,19 @@
 
 #include "cinder/gl/Sync.h"
 
-namespace cinder { namespace gl { 
+namespace cinder {
+namespace gl {
 
-#if ! defined( CINDER_GL_ES ) || defined( CINDER_GL_ES_3 )
+#if !defined( CINDER_GL_ES ) || defined( CINDER_GL_ES_3 )
 
-SyncRef	Sync::create( GLenum condition, GLbitfield flags )
+SyncRef Sync::create( GLenum condition, GLbitfield flags )
 {
 	return std::shared_ptr<Sync>( new Sync( condition, flags ) );
 }
 
 Sync::Sync( GLenum condition, GLbitfield flags )
 {
-	mSync = glFenceSync( condition, flags );	
+	mSync = glFenceSync( condition, flags );
 }
 
 Sync::~Sync()
@@ -54,5 +55,5 @@ void Sync::waitSync( GLbitfield flags, GLuint64 timeoutNanoseconds )
 }
 
 #endif // ! defined( CINDER_GL_ES )
-
-} } // namespace cinder::gl
+}
+} // namespace cinder::gl

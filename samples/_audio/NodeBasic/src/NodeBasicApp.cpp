@@ -3,8 +3,8 @@
 #include "cinder/gl/gl.h"
 
 #include "cinder/audio/Context.h"
-#include "cinder/audio/GenNode.h"
 #include "cinder/audio/GainNode.h"
+#include "cinder/audio/GenNode.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -16,8 +16,8 @@ class NodeBasic : public App {
 	void mouseDrag( MouseEvent event ) override;
 	void draw() override;
 
-	audio::GenNodeRef	mGen;	// Gen's generate audio signals
-	audio::GainNodeRef	mGain;	// Gain modifies the volume of the signal
+	audio::GenNodeRef  mGen; // Gen's generate audio signals
+	audio::GainNodeRef mGain; // Gain modifies the volume of the signal
 };
 
 void NodeBasic::setup()

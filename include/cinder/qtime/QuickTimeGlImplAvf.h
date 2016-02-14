@@ -25,23 +25,24 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/qtime/QuickTimeImplAvf.h"
 #include "cinder/gl/platform.h"
+#include "cinder/qtime/QuickTimeImplAvf.h"
 
 // Forward declarations of CoreVideo types
 typedef struct __CVBuffer *CVBufferRef;
-typedef CVBufferRef CVImageBufferRef;
+typedef CVBufferRef        CVImageBufferRef;
 #if defined( CINDER_COCOA_TOUCH )
-	typedef struct __CVOpenGLESTextureCache *CVOpenGLESTextureCacheRef;
-	typedef CVImageBufferRef CVOpenGLESTextureRef;
+typedef struct __CVOpenGLESTextureCache *CVOpenGLESTextureCacheRef;
+typedef CVImageBufferRef                 CVOpenGLESTextureRef;
 #elif defined( CINDER_MAC )
-	typedef struct __CVOpenGLTextureCache *CVOpenGLTextureCacheRef;
-	typedef CVImageBufferRef CVOpenGLTextureRef;
+typedef struct __CVOpenGLTextureCache *CVOpenGLTextureCacheRef;
+typedef CVImageBufferRef               CVOpenGLTextureRef;
 #endif
 
-namespace cinder { namespace qtime {
-	
-typedef std::shared_ptr<class MovieGl>	MovieGlRef;
+namespace cinder {
+namespace qtime {
+
+typedef std::shared_ptr<class MovieGl> MovieGlRef;
 /** \brief QuickTime movie playback as OpenGL textures
  *	Textures are always bound to the \c GL_TEXTURE_RECTANGLE_ARB target
  *	\remarks On Mac OS X, the destination CGLContext must be the current context when the MovieGl is constructed. If that doesn't mean anything to you, you should be fine. A call to app::restoreWindowContext() can be used to force this to be the case.
@@ -49,34 +50,33 @@ typedef std::shared_ptr<class MovieGl>	MovieGlRef;
 class MovieGl : public MovieBase {
   public:
 	virtual ~MovieGl();
-	
-	static MovieGlRef create( const Url& url ) { return MovieGlRef( new MovieGl( url ) ); }
-	static MovieGlRef create( const fs::path& path ) { return MovieGlRef( new MovieGl( path ) ); }
+
+	static MovieGlRef create( const Url &url ) { return MovieGlRef( new MovieGl( url ) ); }
+	static MovieGlRef create( const fs::path &path ) { return MovieGlRef( new MovieGl( path ) ); }
 	static MovieGlRef create( const MovieLoaderRef &loader ) { return MovieGlRef( new MovieGl( *loader ) ); }
-	
 	//! Returns the gl::Texture representing the Movie's current frame, bound to the \c GL_TEXTURE_RECTANGLE_ARB target
-	gl::TextureRef	getTexture();
-	
+	gl::TextureRef getTexture();
+
   protected:
-	MovieGl( const Url& url );
-	MovieGl( const fs::path& path );
-	MovieGl( const MovieLoader& loader );
-	
-	NSDictionary*	avPlayerItemOutputDictionary() const override;
-	void			allocateVisualContext() override;
-	void			deallocateVisualContext() override;
-	void			newFrame( CVImageBufferRef cvImage ) override;
-	void			releaseFrame() override;
-	
+	MovieGl( const Url &url );
+	MovieGl( const fs::path &path );
+	MovieGl( const MovieLoader &loader );
+
+	NSDictionary *avPlayerItemOutputDictionary() const override;
+	void          allocateVisualContext() override;
+	void          deallocateVisualContext() override;
+	void newFrame( CVImageBufferRef cvImage ) override;
+	void releaseFrame() override;
+
 #if defined( CINDER_COCOA_TOUCH )
-	CVOpenGLESTextureCacheRef	mVideoTextureCacheRef;
-	CVOpenGLESTextureRef		mVideoTextureRef;
+	CVOpenGLESTextureCacheRef mVideoTextureCacheRef;
+	CVOpenGLESTextureRef      mVideoTextureRef;
 #else
 	class TextureCache;
-	std::shared_ptr<TextureCache>		mTextureCache;
+	std::shared_ptr<TextureCache> mTextureCache;
 #endif
-	
-	gl::TextureRef		mTexture;
-};
 
-} } // namespace cinder::qtime
+	gl::TextureRef mTexture;
+};
+}
+} // namespace cinder::qtime

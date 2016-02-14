@@ -22,22 +22,25 @@
 */
 
 #include "cinder/audio/cocoa/ContextAudioUnit.h"
-#include "cinder/audio/cocoa/CinderCoreAudio.h"
 #include "cinder/CinderAssert.h"
-#include "cinder/Utilities.h"
 #include "cinder/Log.h"
+#include "cinder/Utilities.h"
+#include "cinder/audio/cocoa/CinderCoreAudio.h"
 
 #if defined( CINDER_MAC )
-	#include "cinder/audio/cocoa/DeviceManagerCoreAudio.h"
+#include "cinder/audio/cocoa/DeviceManagerCoreAudio.h"
 #else
-	#include "cinder/audio/cocoa/DeviceManagerAudioSession.h"
+#include "cinder/audio/cocoa/DeviceManagerAudioSession.h"
 #endif
 
 using namespace std;
 
-namespace cinder { namespace audio { namespace cocoa {
+namespace cinder {
+namespace audio {
+namespace cocoa {
 
-enum DeviceBus { OUTPUT = 0, INPUT = 1 };
+enum DeviceBus { OUTPUT = 0,
+	INPUT = 1 };
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - NodeAudioUnit
@@ -68,7 +71,7 @@ void NodeAudioUnit::uninitAu()
 // ----------------------------------------------------------------------------------------------------
 
 OutputDeviceNodeAudioUnit::OutputDeviceNodeAudioUnit( const DeviceRef &device, const Format &format )
-	: OutputDeviceNode( device, format ), mSynchronousIO( false )
+    : OutputDeviceNode( device, format ), mSynchronousIO( false )
 {
 	findAndCreateAudioComponent( getOutputAudioUnitDesc(), &mAudioUnit );
 }
@@ -90,8 +93,7 @@ void OutputDeviceNodeAudioUnit::initialize()
 	if( enableInput )
 		setAudioUnitProperty( mAudioUnit, kAudioUnitProperty_StreamFormat, asbd, kAudioUnitScope_Output, DeviceBus::INPUT );
 
-
-	::AURenderCallbackStruct callbackStruct { OutputDeviceNodeAudioUnit::renderCallback, &mRenderData };
+	::AURenderCallbackStruct callbackStruct{ OutputDeviceNodeAudioUnit::renderCallback, &mRenderData };
 	setAudioUnitProperty( mAudioUnit, kAudioUnitProperty_SetRenderCallback, callbackStruct, kAudioUnitScope_Input, DeviceBus::OUTPUT );
 
 #if defined( CINDER_MAC )
@@ -126,7 +128,7 @@ OSStatus OutputDeviceNodeAudioUnit::renderCallback( void *data, ::AudioUnitRende
 	RenderData *renderData = static_cast<NodeAudioUnit::RenderData *>( data );
 
 	auto ctx = renderData->node->getContext();
-	if( ! ctx ) {
+	if( !ctx ) {
 		zeroBufferList( bufferList );
 		return noErr;
 	}
@@ -135,13 +137,13 @@ OSStatus OutputDeviceNodeAudioUnit::renderCallback( void *data, ::AudioUnitRende
 
 	// verify associated context still exists, which may not be true if we blocked in ~Context() and were then deallocated.
 	ctx = renderData->node->getContext();
-	if( ! ctx ) {
+	if( !ctx ) {
 		zeroBufferList( bufferList );
 		return noErr;
 	}
 
 	OutputDeviceNodeAudioUnit *outputDeviceNode = static_cast<OutputDeviceNodeAudioUnit *>( renderData->node );
-	Buffer *internalBuffer = outputDeviceNode->getInternalBuffer();
+	Buffer *                   internalBuffer = outputDeviceNode->getInternalBuffer();
 	internalBuffer->zero();
 
 	renderData->context->setCurrentTimeStamp( timeStamp );
@@ -164,7 +166,7 @@ OSStatus OutputDeviceNodeAudioUnit::renderCallback( void *data, ::AudioUnitRende
 // ----------------------------------------------------------------------------------------------------
 
 InputDeviceNodeAudioUnit::InputDeviceNodeAudioUnit( const DeviceRef &device, const Format &format )
-	: InputDeviceNode( device, format ), mSynchronousIO( false ), mRingBufferPaddingFactor( 2 )
+    : InputDeviceNode( device, format ), mSynchronousIO( false ), mRingBufferPaddingFactor( 2 )
 {
 }
 
@@ -195,8 +197,8 @@ void InputDeviceNodeAudioUnit::initialize()
 		mOwnsAudioUnit = true;
 	}
 
-	size_t framesPerBlock = outputDeviceNodeAu->getOutputFramesPerBlock();
-	size_t sampleRate = outputDeviceNodeAu->getOutputSampleRate();
+	size_t                        framesPerBlock = outputDeviceNodeAu->getOutputFramesPerBlock();
+	size_t                        sampleRate = outputDeviceNodeAu->getOutputSampleRate();
 	::AudioStreamBasicDescription asbd = createFloatAsbd( sampleRate, getNumChannels() );
 
 	if( mSynchronousIO ) {
@@ -223,8 +225,8 @@ void InputDeviceNodeAudioUnit::initialize()
 		bool deviceFormatNeedsUpdate = false;
 
 		if( device->getSampleRate() != sampleRate ) {
-				deviceFormatNeedsUpdate = true;
-				deviceFormat.sampleRate( sampleRate );
+			deviceFormatNeedsUpdate = true;
+			deviceFormat.sampleRate( sampleRate );
 		}
 		if( device->getFramesPerBlock() != framesPerBlock ) {
 			deviceFormatNeedsUpdate = true;
@@ -281,14 +283,14 @@ void InputDeviceNodeAudioUnit::initialize()
 // - line out should notify line in we're going out
 void InputDeviceNodeAudioUnit::uninitialize()
 {
-	if( ! mSynchronousIO ) {
+	if( !mSynchronousIO ) {
 		uninitAu();
 	}
 }
 
 void InputDeviceNodeAudioUnit::enableProcessing()
 {
-	if( ! mSynchronousIO ) {
+	if( !mSynchronousIO ) {
 		OSStatus status = ::AudioOutputUnitStart( mAudioUnit );
 		CI_VERIFY( status == noErr );
 	}
@@ -296,7 +298,7 @@ void InputDeviceNodeAudioUnit::enableProcessing()
 
 void InputDeviceNodeAudioUnit::disableProcessing()
 {
-	if( ! mSynchronousIO ) {
+	if( !mSynchronousIO ) {
 		OSStatus status = ::AudioOutputUnitStop( mAudioUnit );
 		CI_VERIFY( status == noErr );
 	}
@@ -307,15 +309,15 @@ void InputDeviceNodeAudioUnit::process( Buffer *buffer )
 	if( mSynchronousIO ) {
 		mProcessBuffer = buffer;
 		::AudioUnitRenderActionFlags flags = 0;
-		const ::AudioTimeStamp *timeStamp = mRenderData.context->getCurrentTimeStamp();
-		OSStatus status = ::AudioUnitRender( mAudioUnit, &flags, timeStamp, DeviceBus::INPUT, (UInt32)buffer->getNumFrames(), mBufferList.get() );
+		const ::AudioTimeStamp *     timeStamp = mRenderData.context->getCurrentTimeStamp();
+		OSStatus                     status = ::AudioUnitRender( mAudioUnit, &flags, timeStamp, DeviceBus::INPUT, (UInt32)buffer->getNumFrames(), mBufferList.get() );
 		CI_VERIFY( status == noErr );
 
 		copyFromBufferList( buffer, mBufferList.get() );
 	}
 	else {
 		// copy from ringbuffer. If not possible, store the timestamp of the underrun
-		if( ! mRingBuffer.read( buffer->getData(), buffer->getSize() ) )
+		if( !mRingBuffer.read( buffer->getData(), buffer->getSize() ) )
 			markUnderrun();
 	}
 }
@@ -323,15 +325,15 @@ void InputDeviceNodeAudioUnit::process( Buffer *buffer )
 // note: Not all AudioUnitRender status errors are fatal here. For instance, if samplerate just changed we may not be able to pull input just yet, but we will next frame.
 OSStatus InputDeviceNodeAudioUnit::inputCallback( void *data, ::AudioUnitRenderActionFlags *flags, const ::AudioTimeStamp *timeStamp, UInt32 bus, UInt32 numFrames, ::AudioBufferList *bufferList )
 {
-	RenderData *renderData = static_cast<NodeAudioUnit::RenderData *>( data );
+	RenderData *              renderData = static_cast<NodeAudioUnit::RenderData *>( data );
 	InputDeviceNodeAudioUnit *inputDeviceNode = static_cast<InputDeviceNodeAudioUnit *>( renderData->node );
 
 	// this method is called async by Core Audio, so first check that our Context hasn't already been destroyed.
-	if( ! inputDeviceNode->getContext() )
+	if( !inputDeviceNode->getContext() )
 		return noErr;
 
 	::AudioBufferList *nodeBufferList = inputDeviceNode->mBufferList.get();
-	OSStatus status = ::AudioUnitRender( inputDeviceNode->getAudioUnit(), flags, timeStamp, DeviceBus::INPUT, numFrames, nodeBufferList );
+	OSStatus           status = ::AudioUnitRender( inputDeviceNode->getAudioUnit(), flags, timeStamp, DeviceBus::INPUT, numFrames, nodeBufferList );
 	if( status != noErr )
 		return status;
 
@@ -341,7 +343,7 @@ OSStatus InputDeviceNodeAudioUnit::inputCallback( void *data, ::AudioUnitRenderA
 		// nodeBufferList's buffers point to the channels of mReadBuffer
 		pair<size_t, size_t> count = inputDeviceNode->mConverter->convert( &inputDeviceNode->mReadBuffer, &inputDeviceNode->mConvertedReadBuffer );
 		for( size_t ch = 0; ch < numChannels; ch++ ) {
-			if( ! inputDeviceNode->mRingBuffer.write( inputDeviceNode->mConvertedReadBuffer.getChannel( ch ), count.second ) )
+			if( !inputDeviceNode->mRingBuffer.write( inputDeviceNode->mConvertedReadBuffer.getChannel( ch ), count.second ) )
 				inputDeviceNode->markOverrun();
 		}
 	}
@@ -364,7 +366,7 @@ OSStatus InputDeviceNodeAudioUnit::inputCallback( void *data, ::AudioUnitRenderA
 // ----------------------------------------------------------------------------------------------------
 
 EffectAudioUnitNode::EffectAudioUnitNode( UInt32 effectSubType, const Format &format )
-	: Node( format ), mEffectSubType( effectSubType )
+    : Node( format ), mEffectSubType( effectSubType )
 {
 }
 
@@ -406,8 +408,8 @@ void EffectAudioUnitNode::process( Buffer *buffer )
 	mProcessBuffer = buffer;
 
 	::AudioUnitRenderActionFlags flags = 0;
-	const ::AudioTimeStamp *timeStamp = mRenderData.context->getCurrentTimeStamp();
-	OSStatus status = ::AudioUnitRender( mAudioUnit, &flags, timeStamp, 0, (UInt32)buffer->getNumFrames(), mBufferList.get() );
+	const ::AudioTimeStamp *     timeStamp = mRenderData.context->getCurrentTimeStamp();
+	OSStatus                     status = ::AudioUnitRender( mAudioUnit, &flags, timeStamp, 0, (UInt32)buffer->getNumFrames(), mBufferList.get() );
 	CI_VERIFY( status == noErr );
 
 	copyFromBufferList( buffer, mBufferList.get() );
@@ -415,14 +417,14 @@ void EffectAudioUnitNode::process( Buffer *buffer )
 
 OSStatus EffectAudioUnitNode::renderCallback( void *data, ::AudioUnitRenderActionFlags *flags, const ::AudioTimeStamp *timeStamp, UInt32 busNumber, UInt32 numFrames, ::AudioBufferList *bufferList )
 {
-	RenderData *renderData = static_cast<NodeAudioUnit::RenderData *>( data );
+	RenderData *         renderData = static_cast<NodeAudioUnit::RenderData *>( data );
 	EffectAudioUnitNode *effectNode = static_cast<EffectAudioUnitNode *>( renderData->node );
 
 	copyToBufferList( bufferList, effectNode->mProcessBuffer );
 	return noErr;
 }
 
-void EffectAudioUnitNode::setParameter( ::AudioUnitParameterID paramId, float val )
+void EffectAudioUnitNode::setParameter(::AudioUnitParameterID paramId, float val )
 {
 	setAudioUnitParam( mAudioUnit, paramId, val, kAudioUnitScope_Global, 0 );
 }
@@ -444,5 +446,6 @@ InputDeviceNodeRef ContextAudioUnit::createInputDeviceNode( const DeviceRef &dev
 ContextAudioUnit::~ContextAudioUnit()
 {
 }
-
-} } } // namespace cinder::audio::cocoa
+}
+}
+} // namespace cinder::audio::cocoa

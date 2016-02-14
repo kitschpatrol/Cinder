@@ -1,18 +1,18 @@
 #include "cinder/app/AppScreenSaver.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/Utilities.h"
 #include "cinder/Color.h"
-#include "cinder/gl/gl.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Log.h"
 #include "cinder/System.h"
+#include "cinder/Utilities.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
-#include "Resources.h"
 #include "Configuration.h"
+#include "Resources.h"
 #if defined( CINDER_MAC )
-	#include "MacConfigDialog.h"
+#include "MacConfigDialog.h"
 #elif defined( CINDER_MSW )
-	#include "WindowsConfig.h"
+#include "WindowsConfig.h"
 #endif
 
 #define LOAD_LOGO_IN_CONSTRUCTOR 0
@@ -32,7 +32,7 @@ class ScreenSaverTestApp : public AppScreenSaver {
 	void loadLogo();
 
 #if defined( CINDER_MAC )
-	NSWindow* createMacConfigDialog() override
+	NSWindow *createMacConfigDialog() override
 	{
 		return getConfigDialogMac( this, &mConfig ); // defined in MacConfigDialog.cpp
 	}
@@ -44,12 +44,11 @@ class ScreenSaverTestApp : public AppScreenSaver {
 #endif
 
   protected:
-	Configuration	mConfig;
-	ci::Color		mColor, mBackgroundColor;
-	float			mRadius;
-	gl::TextureRef	mLogo;
+	Configuration  mConfig;
+	ci::Color      mColor, mBackgroundColor;
+	float          mRadius;
+	gl::TextureRef mLogo;
 };
-
 
 void prepareSettings( AppScreenSaver::Settings *settings )
 {
@@ -59,7 +58,7 @@ void prepareSettings( AppScreenSaver::Settings *settings )
 #elif defined( CINDER_MSW )
 //	settings->enableDebug();
 #endif
-//	settings->enableSecondaryDisplayBlanking();
+	//	settings->enableSecondaryDisplayBlanking();
 }
 
 ScreenSaverTestApp::ScreenSaverTestApp()
@@ -87,7 +86,7 @@ void ScreenSaverTestApp::setup()
 		CI_LOG_I( "shutting down" );
 	} );
 
-#if ! LOAD_LOGO_IN_CONSTRUCTOR
+#if !LOAD_LOGO_IN_CONSTRUCTOR
 	loadLogo();
 #endif
 }
@@ -121,11 +120,11 @@ void ScreenSaverTestApp::update()
 
 void ScreenSaverTestApp::draw()
 {
-//	CI_LOG_I( "window size: " << getWindowSize() << ", num windows: " << getNumWindows() << ", preview: " << isPreview() );
-//	CI_LOG_I( "Drawing" << *getDisplay() );
+	//	CI_LOG_I( "window size: " << getWindowSize() << ", num windows: " << getNumWindows() << ", preview: " << isPreview() );
+	//	CI_LOG_I( "Drawing" << *getDisplay() );
 
 	gl::enableAlphaBlending();
-		
+
 	if( isPreview() )
 		gl::clear( Color( 0, 0.95f, 1.0f ) );
 	else
@@ -134,7 +133,7 @@ void ScreenSaverTestApp::draw()
 	gl::color( mColor );
 	//gl::drawSolidCircle( getWindowCenter(), mRadius );
 	gl::drawSolidRect( Rectf( getWindowCenter() - vec2( mRadius, mRadius ), getWindowCenter() + vec2( mRadius, mRadius ) ) );
-	
+
 	if( mConfig.mDrawCinderLogo ) {
 		gl::color( Color::white() );
 		gl::draw( mLogo, getWindowCenter() - vec2( mLogo->getSize() / 2 ) );

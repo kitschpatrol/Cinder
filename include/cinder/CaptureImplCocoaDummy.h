@@ -22,9 +22,9 @@
 
 #pragma once
 
+#include "cinder/Capture.h"
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
-#include "cinder/Capture.h"
 #include <vector>
 
 #import <Foundation/Foundation.h>
@@ -35,30 +35,30 @@ namespace cinder {
 class CaptureImplCocoaDummyDevice : public Capture::Device {
   public:
 	CaptureImplCocoaDummyDevice( const std::string &name, const Capture::DeviceIdentifier &uniqueId, bool frontFacing )
-		: Capture::Device(), mUniqueId( uniqueId ), mFrontFacing( frontFacing )
+	    : Capture::Device(), mUniqueId( uniqueId ), mFrontFacing( frontFacing )
 	{
 		mName = name;
 	}
-	
-	bool						checkAvailable() const { return true; }
-	bool						isConnected() const { return true; }
-	Capture::DeviceIdentifier	getUniqueId() const { return mUniqueId; }
-	bool						isFrontFacing() const { return mFrontFacing; }
-	void*						getNative() const { return NULL; }
+
+	bool                      checkAvailable() const { return true; }
+	bool                      isConnected() const { return true; }
+	Capture::DeviceIdentifier getUniqueId() const { return mUniqueId; }
+	bool                      isFrontFacing() const { return mFrontFacing; }
+	void *                    getNative() const { return NULL; }
   private:
-	Capture::DeviceIdentifier	mUniqueId;
-	bool						mFrontFacing;
+	Capture::DeviceIdentifier mUniqueId;
+	bool                      mFrontFacing;
 };
 
 } //namespace
 
 @interface CaptureImplCocoaDummy : NSObject {
-	bool							mCapturing;
-	cinder::Surface8uRef			mSurface;
-	cinder::Capture::DeviceRef		mDevice;
+	bool                       mCapturing;
+	cinder::Surface8uRef       mSurface;
+	cinder::Capture::DeviceRef mDevice;
 }
 
-+ (const std::vector<cinder::Capture::DeviceRef>&)getDevices:(BOOL)forceRefresh;
++ (const std::vector<cinder::Capture::DeviceRef> &)getDevices:(BOOL)forceRefresh;
 
 - (id)initWithDevice:(const cinder::Capture::DeviceRef)device width:(int)width height:(int)height;
 - (void)prepareStartCapture;

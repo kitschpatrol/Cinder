@@ -23,17 +23,18 @@
 
 #pragma once
 
-#include "cinder/audio/Buffer.h"
 #include "cinder/DataSource.h"
 #include "cinder/Noncopyable.h"
+#include "cinder/audio/Buffer.h"
 
-namespace cinder { namespace audio {
-	
-typedef std::shared_ptr<class Source>			SourceRef;
-typedef std::shared_ptr<class SourceFile>		SourceFileRef;
+namespace cinder {
+namespace audio {
+
+typedef std::shared_ptr<class Source>     SourceRef;
+typedef std::shared_ptr<class SourceFile> SourceFileRef;
 
 namespace dsp {
-	class Converter;
+class Converter;
 }
 
 //! Base class that is used to load and read from an audio source.
@@ -42,24 +43,21 @@ class Source : private Noncopyable {
 	virtual ~Source();
 
 	//! Returns the user facing samplerate (output).
-	size_t	getSampleRate() const				{ return mSampleRate; }
-
+	size_t getSampleRate() const { return mSampleRate; }
 	//! Returns the number of channels.
-	virtual size_t	getNumChannels() const = 0;
+	virtual size_t getNumChannels() const = 0;
 	//! Returns the true samplerate of the Source. \note Actual output samplerate may differ. \see getSampleRate()
-	virtual size_t	getSampleRateNative() const = 0;
+	virtual size_t getSampleRateNative() const = 0;
 
 	//! Returns the maximum number of frames that can be read with one call to read().
-	size_t			getMaxFramesPerRead() const			{ return mMaxFramesPerRead; }
+	size_t getMaxFramesPerRead() const { return mMaxFramesPerRead; }
 	//! Sets the maximum number of frames that can be read in one chunk.
-	virtual void	setMaxFramesPerRead( size_t count )		{ mMaxFramesPerRead = count; }
-
+	virtual void setMaxFramesPerRead( size_t count ) { mMaxFramesPerRead = count; }
 	//! Loads either as many frames as \t buffer can hold, or as many as there are left. \return number of frames read into \a buffer.
 	virtual size_t read( Buffer *buffer ) = 0;
 
 	//! Returns the metadata, if any, as a string.
-	virtual std::string getMetaData() const	{ return std::string(); }
-
+	virtual std::string getMetaData() const { return std::string(); }
   protected:
 	Source( size_t sampleRate );
 
@@ -67,15 +65,14 @@ class Source : private Noncopyable {
 	//! \return the actual number of frames read.
 	virtual size_t performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded ) = 0;
 	//! Implementations should override and return true if they can provide samplerate conversion.  If false (default), a Converter will be used if needed.
-	virtual bool supportsConversion()	{ return false; }
+	virtual bool supportsConversion() { return false; }
 	//! Allows implementations to set the output samplerate
-	void setSampleRate( size_t sampleRate )	{ mSampleRate = sampleRate; }
-
-	std::unique_ptr<dsp::Converter>		mConverter;
-	BufferDynamic						mConverterReadBuffer;
+	void setSampleRate( size_t      sampleRate ) { mSampleRate = sampleRate; }
+	std::unique_ptr<dsp::Converter> mConverter;
+	BufferDynamic                   mConverterReadBuffer;
 
   private:
-	size_t								mSampleRate, mMaxFramesPerRead;
+	size_t mSampleRate, mMaxFramesPerRead;
 };
 
 //! Loads and reads from an audio file source.
@@ -83,32 +80,30 @@ class SourceFile : public Source {
   public:
 	//! Creates a new SourceFile from \a dataSource, with optional output samplerate.  If \a sampleRate equals 0 the native file's samplerate is used.
 	static std::unique_ptr<SourceFile> create( const DataSourceRef &dataSource, size_t sampleRate = 0 );
-	virtual ~SourceFile()	{}
-
-	size_t	read( Buffer *buffer ) override;
+	virtual ~SourceFile() {}
+	size_t read( Buffer *buffer ) override;
 
 	//! Returns a copy of this Source, with identical properties and pointing at the same data source.
-	SourceFileRef clone() const		{ return cloneWithSampleRate( getSampleRate() ); }
+	SourceFileRef clone() const { return cloneWithSampleRate( getSampleRate() ); }
 	//! Returns an copy of this Source with all properties identical except the sampleRate. This is useful if the SourceFile must match a samplerate that was unknown when it was first constructed.
 	virtual SourceFileRef cloneWithSampleRate( size_t sampleRate ) const = 0;
 
 	//! Loads and returns the entire contents of this SourceFile. \return a BufferRef containing the file contents.
 	BufferRef loadBuffer();
 	//! Seek the read position to \a readPositionFrames
-	void	seek( size_t readPositionFrames );
+	void seek( size_t readPositionFrames );
 	//! Seek to read position \a readPositionSeconds
-	void	seekToTime( double readPositionSeconds )	{ return seek( size_t( readPositionSeconds * (double)getSampleRate() ) ); }
+	void seekToTime( double readPositionSeconds ) { return seek( size_t( readPositionSeconds * (double)getSampleRate() ) ); }
 	//! Returns the current read position in frames.
-	size_t	getReadPosition() const						{ return mReadPos; }
+	size_t getReadPosition() const { return mReadPos; }
 	//! Returns the current read position in seconds.
-	double	getReadPositionSeconds() const				{ return mReadPos / (double)getSampleRate(); }
+	double getReadPositionSeconds() const { return mReadPos / (double)getSampleRate(); }
 	//! Returns the length in frames.
-	size_t	getNumFrames() const						{ return mNumFrames; }
+	size_t getNumFrames() const { return mNumFrames; }
 	//! Returns the length in seconds.
-	double	getNumSeconds() const						{ return (double)getNumFrames() / (double)getSampleRate(); }
-
+	double getNumSeconds() const { return (double)getNumFrames() / (double)getSampleRate(); }
 	//! Returns a vector of extensions that SourceFile support for loading. Suitable for the \a extensions parameter of getOpenFilePath().
-	static std::vector<std::string>	getSupportedExtensions();
+	static std::vector<std::string> getSupportedExtensions();
 
   protected:
 	SourceFile( size_t sampleRate );
@@ -122,6 +117,9 @@ class SourceFile : public Source {
 };
 
 //! Convenience method for loading a SourceFile from \a dataSource. \return SourceFileRef. \see SourceFile::create()
-inline SourceFileRef	load( const DataSourceRef &dataSource, size_t sampleRate = 0 )	{ return SourceFile::create( dataSource, sampleRate ); }
-
-} } // namespace cinder::audio
+inline SourceFileRef load( const DataSourceRef &dataSource, size_t sampleRate = 0 )
+{
+	return SourceFile::create( dataSource, sampleRate );
+}
+}
+} // namespace cinder::audio

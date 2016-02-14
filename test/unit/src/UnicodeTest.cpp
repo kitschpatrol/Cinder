@@ -1,31 +1,30 @@
 
 #include "cinder/Unicode.h"
+#include "catch.hpp"
 #include "cinder/DataSource.h"
 #include "cinder/Utilities.h"
-#include "cinder/app/Platform.h"
 #include "cinder/app/App.h"
-#include "catch.hpp"
+#include "cinder/app/Platform.h"
 
 using namespace ci;
 using namespace std;
 using namespace ci::app;
 
-template<typename TYPE>
+template <typename TYPE>
 TYPE loadStringFromFile( const DataSourceRef &dataSource )
 {
 	typedef typename TYPE::value_type T;
-	Buffer loadedBuffer( dataSource );
-	size_t dataSize = loadedBuffer.getSize();
-	Buffer padded( dataSize + sizeof(T) );
+	Buffer                            loadedBuffer( dataSource );
+	size_t                            dataSize = loadedBuffer.getSize();
+	Buffer                            padded( dataSize + sizeof( T ) );
 	memcpy( padded.getData(), loadedBuffer.getData(), dataSize );
-	(static_cast<T*>( padded.getData() ))[dataSize/sizeof(T)] = 0;
-	return TYPE( static_cast<const T*>( padded.getData() ) );
+	( static_cast<T *>( padded.getData() ) )[dataSize / sizeof( T )] = 0;
+	return TYPE( static_cast<const T *>( padded.getData() ) );
 }
 
-
-TEST_CASE("Unicode")
+TEST_CASE( "Unicode" )
 {
-	SECTION("Unicode strings are convertible between 8, 16, and 32 bit representations.")
+	SECTION( "Unicode strings are convertible between 8, 16, and 32 bit representations." )
 	{
 		// these files should be identical except for their encoding
 		// includes codes > U+0xFFFF
@@ -43,5 +42,4 @@ TEST_CASE("Unicode")
 		REQUIRE( u16 == toUtf16( u32 ) );
 		REQUIRE( u32 == toUtf32( u16 ) );
 	}
-
 }

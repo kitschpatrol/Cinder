@@ -1,16 +1,16 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/Timeline.h"
 #include "cinder/Log.h"
+#include "cinder/Timeline.h"
+#include "cinder/app/RendererGl.h"
 
-#include "cinder/audio/Context.h"
-#include "cinder/audio/GenNode.h"
-#include "cinder/audio/GainNode.h"
 #include "cinder/audio/ChannelRouterNode.h"
+#include "cinder/audio/Context.h"
+#include "cinder/audio/Exception.h"
+#include "cinder/audio/GainNode.h"
+#include "cinder/audio/GenNode.h"
 #include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/SampleRecorderNode.h"
 #include "cinder/audio/dsp/Dsp.h"
-#include "cinder/audio/Exception.h"
 
 #include "../../common/AudioTestGui.h"
 
@@ -51,22 +51,22 @@ class DeviceTestApp : public App {
 	void processDrag( ivec2 pos );
 	void keyDown( KeyEvent event );
 
-	audio::InputDeviceNodeRef		mInputDeviceNode;
-	audio::OutputDeviceNodeRef		mOutputDeviceNode;
-	audio::MonitorNodeRef			mMonitor;
-	audio::BufferRecorderNodeRef	mRecorder;
-	audio::GainNodeRef				mGain;
-	audio::GenNodeRef				mGen;
+	audio::InputDeviceNodeRef    mInputDeviceNode;
+	audio::OutputDeviceNodeRef   mOutputDeviceNode;
+	audio::MonitorNodeRef        mMonitor;
+	audio::BufferRecorderNodeRef mRecorder;
+	audio::GainNodeRef           mGain;
+	audio::GenNodeRef            mGen;
 
 	vector<TestWidget *> mWidgets;
-	VSelector mTestSelector, mInputSelector, mOutputSelector;
-	Button mPlayButton, mRecordButton;
-	HSlider mGainSlider;
-	TextInput mSamplerateInput, mFramesPerBlockInput, mNumInChannelsInput, mNumOutChannelsInput, mSendChannelInput;
+	VSelector            mTestSelector, mInputSelector, mOutputSelector;
+	Button               mPlayButton, mRecordButton;
+	HSlider              mGainSlider;
+	TextInput            mSamplerateInput, mFramesPerBlockInput, mNumInChannelsInput, mNumOutChannelsInput, mSendChannelInput;
 
 	Anim<float> mInputDeviceNodeUnderrunFade, mInputDeviceNodeOverrunFade, mOutputDeviceNodeClipFade;
 	Anim<float> mViewYOffset; // for iOS keyboard
-	Rectf mUnderrunRect, mOverrunRect, mClipRect;
+	Rectf       mUnderrunRect, mOverrunRect, mClipRect;
 };
 
 void DeviceTestApp::setup()
@@ -86,15 +86,14 @@ void DeviceTestApp::setup()
 	//setInputDevice( audio::Device::getDefaultInput(), 1 ); // force mono input
 
 	//setupMultiChannelDevice( "PreSonus FIREPOD (1431)" );
-//	setupMultiChannelDeviceWindows( "MOTU Analog (MOTU Audio Wave for 64 bit)" );
+	//	setupMultiChannelDeviceWindows( "MOTU Analog (MOTU Audio Wave for 64 bit)" );
 
 	mRecorder = ctx->makeNode( new audio::BufferRecorderNode( RECORD_SECONDS * ctx->getSampleRate() ) );
 	mRecorder->setEnabled( false );
 	mGain >> mRecorder;
 
-
-//	setupInputPulled();
-//	setupIOClean();
+	//	setupInputPulled();
+	//	setupIOClean();
 
 	PRINT_GRAPH( ctx );
 
@@ -116,12 +115,11 @@ void DeviceTestApp::setOutputDevice( const audio::DeviceRef &device, size_t numC
 	mOutputDeviceNode = ctx->createOutputDeviceNode( device, format );
 
 	mOutputDeviceNode->getDevice()->getSignalParamsDidChange().connect(
-							[this] {
-								CI_LOG_V( "OutputDeviceNode params changed:" );
-								printDeviceDetails( mOutputDeviceNode->getDevice() );
-								PRINT_GRAPH( audio::master() );
-							} );
-
+	    [this] {
+		    CI_LOG_V( "OutputDeviceNode params changed:" );
+		    printDeviceDetails( mOutputDeviceNode->getDevice() );
+		    PRINT_GRAPH( audio::master() );
+		} );
 
 	// TODO: if this call is moved to after the mMonitor->connect(), there is a chance that initialization can
 	// take place with samplerate / frames-per-block derived from the default OutputNode (ses default Device)
@@ -141,7 +139,7 @@ void DeviceTestApp::setOutputDevice( const audio::DeviceRef &device, size_t numC
 		mOutputDeviceNode->enable();
 }
 
-void DeviceTestApp::setInputDevice( const audio::DeviceRef &device, size_t numChannels  )
+void DeviceTestApp::setInputDevice( const audio::DeviceRef &device, size_t numChannels )
 {
 	audio::ScopedEnableNode enableNodeScope( mInputDeviceNode, false );
 
@@ -165,15 +163,14 @@ void DeviceTestApp::setupMultiChannelDevice( const string &deviceName )
 	auto dev = audio::Device::findDeviceByName( deviceName );
 	CI_ASSERT( dev );
 
-//	setOutputDevice( dev );
-//	setInputDevice( dev );
+	//	setOutputDevice( dev );
+	//	setInputDevice( dev );
 
 	setOutputDevice( dev, dev->getNumOutputChannels() );
 	setInputDevice( dev, dev->getNumInputChannels() );
-
 }
 
-void DeviceTestApp::setupMultiChannelDeviceWindows(  const string &deviceName )
+void DeviceTestApp::setupMultiChannelDeviceWindows( const string &deviceName )
 {
 	audio::DeviceRef inputDev, outputDev;
 
@@ -274,7 +271,7 @@ void DeviceTestApp::setupSend()
 	auto ctx = audio::master();
 	ctx->disconnectAllNodes();
 
-	auto router = ctx->makeNode( new audio::ChannelRouterNode( audio::Node::Format().channels( mOutputDeviceNode->getNumChannels()	) ) );
+	auto router = ctx->makeNode( new audio::ChannelRouterNode( audio::Node::Format().channels( mOutputDeviceNode->getNumChannels() ) ) );
 
 	mGen = audio::master()->makeNode( new audio::GenSineNode( 440 ) );
 
@@ -294,7 +291,7 @@ void DeviceTestApp::setupSendStereo()
 	auto ctx = audio::master();
 	ctx->disconnectAllNodes();
 
-	auto router = ctx->makeNode( new audio::ChannelRouterNode( audio::Node::Format().channels( mOutputDeviceNode->getNumChannels()	) ) );
+	auto router = ctx->makeNode( new audio::ChannelRouterNode( audio::Node::Format().channels( mOutputDeviceNode->getNumChannels() ) ) );
 	auto upmix = ctx->makeNode( new audio::Node( audio::Node::Format().channels( 2 ) ) );
 
 	int channelIndex = mSendChannelInput.getValue();
@@ -314,7 +311,8 @@ void DeviceTestApp::startRecording()
 	timeline().add( [this] {
 		writeRecordedToFile();
 		mRecorder->disable();
-	}, timeline().getCurrentTime() + RECORD_SECONDS );
+	},
+	    timeline().getCurrentTime() + RECORD_SECONDS );
 }
 
 void DeviceTestApp::writeRecordedToFile()
@@ -385,7 +383,7 @@ void DeviceTestApp::setupUI()
 	}
 	mWidgets.push_back( &mInputSelector );
 
-	Rectf textInputBounds( 0, getWindowCenter().y + 40, 200, getWindowCenter().y + 70  );
+	Rectf textInputBounds( 0, getWindowCenter().y + 40, 200, getWindowCenter().y + 70 );
 	mSamplerateInput.mBounds = textInputBounds;
 	mSamplerateInput.mTitle = "samplerate";
 	mSamplerateInput.setValue( audio::master()->getSampleRate() );
@@ -422,16 +420,16 @@ void DeviceTestApp::setupUI()
 	mOverrunRect = mUnderrunRect + vec2( xrunSize.x + 10, 0 );
 	mClipRect = mOverrunRect + vec2( xrunSize.x + 10, 0 );
 
-	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
 
 #if defined( CINDER_COCOA_TOUCH )
-	getSignalKeyboardWillShow().connect( [this] { timeline().apply( &mViewYOffset, -100.0f, 0.3f, EaseInOutCubic() );	} );
+	getSignalKeyboardWillShow().connect( [this] { timeline().apply( &mViewYOffset, -100.0f, 0.3f, EaseInOutCubic() ); } );
 	getSignalKeyboardWillHide().connect( [this] { timeline().apply( &mViewYOffset, 0.0f, 0.3f, EaseInOutCubic() ); } );
 #endif
 
@@ -446,9 +444,9 @@ void DeviceTestApp::processDrag( ivec2 pos )
 
 void DeviceTestApp::processTap( ivec2 pos )
 {
-//	TextInput *selectedInput = false;
+	//	TextInput *selectedInput = false;
 	if( mPlayButton.hitTest( pos ) )
-		audio::master()->setEnabled( ! audio::master()->isEnabled() );
+		audio::master()->setEnabled( !audio::master()->isEnabled() );
 	else if( mRecordButton.hitTest( pos ) )
 		startRecording();
 	else if( mSamplerateInput.hitTest( pos ) ) {
@@ -538,7 +536,7 @@ void DeviceTestApp::setupTest( string test )
 void DeviceTestApp::keyDown( KeyEvent event )
 {
 	TextInput *currentSelected = TextInput::getCurrentSelected();
-	if( ! currentSelected )
+	if( !currentSelected )
 		return;
 
 	if( event.getCode() == KeyEvent::KEY_RETURN ) {
@@ -620,12 +618,12 @@ void DeviceTestApp::draw()
 		const audio::Buffer &buffer = mMonitor->getBuffer();
 
 		float padding = 20;
-		float waveHeight = ((float)getWindowHeight() - padding * 3.0f ) / (float)buffer.getNumChannels();
+		float waveHeight = ( (float)getWindowHeight() - padding * 3.0f ) / (float)buffer.getNumChannels();
 
 		float yOffset = padding;
 		float xScale = (float)getWindowWidth() / (float)buffer.getNumFrames();
 		for( size_t ch = 0; ch < buffer.getNumChannels(); ch++ ) {
-			PolyLine2f waveform;
+			PolyLine2f   waveform;
 			const float *channel = buffer.getChannel( ch );
 			for( size_t i = 0; i < buffer.getNumFrames(); i++ ) {
 				float x = i * xScale;

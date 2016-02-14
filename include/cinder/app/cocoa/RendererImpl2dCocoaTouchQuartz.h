@@ -23,16 +23,15 @@
 #import "cinder/app/AppBase.h"
 #import <UIKit/UIKit.h>
 
-@interface RendererImpl2dCocoaTouchQuartz : NSObject
-{
-	CGContextRef				mCurrentRef;
-	UIView						*view;
+@interface RendererImpl2dCocoaTouchQuartz : NSObject {
+	CGContextRef mCurrentRef;
+	UIView *     view;
 }
 
 - (id)initWithFrame:(CGRect)frame cinderView:(UIView *)cinderView;
-- (UIView*)view;
+- (UIView *)view;
 
-- (UIImage*)getContents:(cinder::Area)area;
+- (UIImage *)getContents:(cinder::Area)area;
 
 - (void)makeCurrentContext;
 - (void)flushBuffer;

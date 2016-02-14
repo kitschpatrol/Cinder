@@ -22,27 +22,28 @@
 
 #pragma once
 
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 
 #include "cinder/gl/BufferObj.h"
 
-namespace cinder { namespace gl {
-	
-typedef std::shared_ptr<class Pbo>			PboRef;
+namespace cinder {
+namespace gl {
+
+typedef std::shared_ptr<class Pbo> PboRef;
 
 //! Represents an OpenGL Pixel Buffer Object
 class Pbo : public BufferObj {
   public:
 	//! Creates a PBO with no memory allocated
-	static PboRef	create( GLenum target );
+	static PboRef create( GLenum target );
 	//! Creates a PBO at \a target (generally \c GL_PIXEL_PACK_BUFFER or GL_PIXEL_UNPACK_BUFFER), with storage for \a allocationSize bytes, and filled with data \a data if it is not NULL.
-	static PboRef	create( GLenum target, GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_STATIC_DRAW );
+	static PboRef create( GLenum target, GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_STATIC_DRAW );
 
   protected:
 	Pbo( GLenum target );
 	Pbo( GLenum target, GLsizeiptr allocationSize, const void *data = nullptr, GLenum usage = GL_STATIC_DRAW );
 };
-
-} }
+}
+}
 
 #endif // defined( CINDER_GL_ES )

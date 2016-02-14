@@ -23,55 +23,53 @@
 
 #pragma once
 
-#include "cinder/app/Platform.h"
 #include "cinder/Display.h"
+#include "cinder/app/Platform.h"
 #include "cinder/msw/CinderWindowsFwd.h"
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class PlatformMsw : public Platform {
   public:
 	PlatformMsw();
-	static PlatformMsw*		get() { return reinterpret_cast<PlatformMsw*>( Platform::get() ); }
+	static PlatformMsw *get() { return reinterpret_cast<PlatformMsw *>( Platform::get() ); }
+	DataSourceRef loadResource( const fs::path &resourcePath, int mswID, const std::string &mswType ) override;
 
-	DataSourceRef	loadResource( const fs::path &resourcePath, int mswID, const std::string &mswType ) override;
-
-	fs::path getResourceDirectory() const override									{ return fs::path(); }
-	fs::path getResourcePath( const fs::path &rsrcRelativePath ) const override		{ return fs::path(); }
-
+	fs::path getResourceDirectory() const override { return fs::path(); }
+	fs::path getResourcePath( const fs::path &rsrcRelativePath ) const override { return fs::path(); }
 	fs::path getOpenFilePath( const fs::path &initialPath, const std::vector<std::string> &extensions ) override;
 	fs::path getFolderPath( const fs::path &initialPath ) override;
 	fs::path getSaveFilePath( const fs::path &initialPath, const std::vector<std::string> &extensions ) override;
 
-	std::map<std::string,std::string>	getEnvironmentVariables() override;
+	std::map<std::string, std::string> getEnvironmentVariables() override;
 
-	fs::path	expandPath( const fs::path &path ) override;
-	fs::path	getHomeDirectory() const override;
-	fs::path	getDocumentsDirectory() const override;
-	fs::path	getDefaultExecutablePath() const override;
+	fs::path expandPath( const fs::path &path ) override;
+	fs::path getHomeDirectory() const override;
+	fs::path getDocumentsDirectory() const override;
+	fs::path getDefaultExecutablePath() const override;
 
 	// Overridden to use OutputDebugString
-	std::ostream&	console() override;
+	std::ostream &console() override;
 
-	void directConsoleToCout( bool shouldDirect )	{ mDirectConsoleToCout = shouldDirect; }
-
+	void directConsoleToCout( bool shouldDirect ) { mDirectConsoleToCout = shouldDirect; }
 	void launchWebBrowser( const Url &url ) override;
 
 	void sleep( float milliseconds ) override;
 
-	std::vector<std::string>	stackTrace() override;
+	std::vector<std::string> stackTrace() override;
 
-	const std::vector<DisplayRef>&	getDisplays() override;
-	void							refreshDisplays();
+	const std::vector<DisplayRef> &getDisplays() override;
+	void                           refreshDisplays();
 	//! Returns the Display which corresponds to \a hMonitor. Returns main display on failure.
-	DisplayRef						findDisplayFromHmonitor( HMONITOR hMonitor );
+	DisplayRef findDisplayFromHmonitor( HMONITOR hMonitor );
 
   private:
-	std::unique_ptr<std::ostream>	mOutputStream;
-	bool							mDirectConsoleToCout;
+	std::unique_ptr<std::ostream> mOutputStream;
+	bool                          mDirectConsoleToCout;
 
-	bool							mDisplaysInitialized;
-	std::vector<DisplayRef>			mDisplays;
+	bool                    mDisplaysInitialized;
+	std::vector<DisplayRef> mDisplays;
 };
 
 //! MSW-specific Exception for failed resource loading, reports windows resource id and type
@@ -79,20 +77,20 @@ class ResourceLoadExcMsw : public ResourceLoadExc {
   public:
 	ResourceLoadExcMsw( int mswID, const std::string &mswType );
 };
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app
 
 namespace cinder {
 
 class DisplayMsw : public Display {
   public:
-	std::string		getName() const override;
+	std::string getName() const override;
 
   protected:
 	static BOOL CALLBACK enumMonitorProc( HMONITOR hMonitor, HDC hdc, LPRECT rect, LPARAM lParam );
 
-	HMONITOR			mMonitor;
-	bool				mVisitedFlag;
+	HMONITOR mMonitor;
+	bool     mVisitedFlag;
 
 	friend app::PlatformMsw;
 };

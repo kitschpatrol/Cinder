@@ -22,24 +22,25 @@
 */
 
 #include "cinder/audio/Context.h"
-#include "cinder/audio/Device.h"
 #include "cinder/Log.h"
+#include "cinder/audio/Device.h"
 
 #if defined( CINDER_COCOA )
-	#if defined( CINDER_MAC )
-		#include "cinder/audio/cocoa/DeviceManagerCoreAudio.h"
-	#else
-		#include "cinder/audio/cocoa/DeviceManagerAudioSession.h"
-	#endif
+#if defined( CINDER_MAC )
+#include "cinder/audio/cocoa/DeviceManagerCoreAudio.h"
+#else
+#include "cinder/audio/cocoa/DeviceManagerAudioSession.h"
+#endif
 #elif defined( CINDER_MSW )
-	#include "cinder/audio/msw/DeviceManagerWasapi.h"
+#include "cinder/audio/msw/DeviceManagerWasapi.h"
 #endif
 
 #include <sstream>
 
 using namespace std;
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
 // MARK: - Device
@@ -65,7 +66,7 @@ DeviceRef Device::findDeviceByKey( const string &key )
 	return Context::deviceManager()->findDeviceByKey( key );
 }
 
-const vector<DeviceRef>& Device::getDevices()
+const vector<DeviceRef> &Device::getDevices()
 {
 	return Context::deviceManager()->getDevices();
 }
@@ -92,7 +93,7 @@ vector<DeviceRef> Device::getInputDevices()
 	return result;
 }
 
-const string& Device::getName()
+const string &Device::getName()
 {
 	if( mName.empty() )
 		mName = Context::deviceManager()->getName( shared_from_this() );
@@ -100,7 +101,7 @@ const string& Device::getName()
 	return mName;
 }
 
-const string& Device::getKey()
+const string &Device::getKey()
 {
 	return mKey;
 }
@@ -117,7 +118,7 @@ size_t Device::getNumOutputChannels()
 
 size_t Device::getSampleRate()
 {
-	if( ! mSampleRate )
+	if( !mSampleRate )
 		mSampleRate = Context::deviceManager()->getSampleRate( shared_from_this() );
 
 	return mSampleRate;
@@ -125,7 +126,7 @@ size_t Device::getSampleRate()
 
 size_t Device::getFramesPerBlock()
 {
-	if( ! mFramesPerBlock )
+	if( !mFramesPerBlock )
 		mFramesPerBlock = Context::deviceManager()->getFramesPerBlock( shared_from_this() );
 
 	return mFramesPerBlock;
@@ -153,7 +154,7 @@ void Device::updateFormat( const Format &format )
 		deviceMgr->setFramesPerBlock( shared_from_this(), framesPerBlock );
 	}
 
-	if( ! deviceMgr->isFormatUpdatedAsync() )
+	if( !deviceMgr->isFormatUpdatedAsync() )
 		mSignalParamsDidChange.emit();
 }
 
@@ -222,5 +223,5 @@ void DeviceManager::emitParamsDidChange( const DeviceRef &device )
 
 	device->mSignalParamsDidChange.emit();
 }
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

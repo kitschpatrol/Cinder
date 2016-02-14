@@ -29,22 +29,22 @@ using namespace std;
 #include "cinder/app/Platform.h"
 
 #if defined( CINDER_COCOA_TOUCH )
-	#include "cinder/app/cocoa/PlatformCocoa.h"
-	#include <UIKit/UIKit.h>
+#include "cinder/app/cocoa/PlatformCocoa.h"
+#include <UIKit/UIKit.h>
 #endif
 
 namespace cinder {
 
-const vector<DisplayRef>& Display::getDisplays()
+const vector<DisplayRef> &Display::getDisplays()
 {
 	return app::Platform::get()->getDisplays();
 }
 
 DisplayRef Display::getDisplayForPoint( const ivec2 &pt )
 {
-	const vector<DisplayRef>& displays = getDisplays();
+	const vector<DisplayRef> &displays = getDisplays();
 	for( vector<DisplayRef>::const_iterator displayIt = displays.begin(); displayIt != displays.end(); ++displayIt ) {
-		if( (*displayIt)->contains( pt ) )
+		if( ( *displayIt )->contains( pt ) )
 			return *displayIt;
 	}
 
@@ -53,11 +53,11 @@ DisplayRef Display::getDisplayForPoint( const ivec2 &pt )
 
 Area Display::getSpanningArea()
 {
-	Area result = (*Display::getDisplays().begin())->getBounds();
-	for( vector<DisplayRef>::const_iterator displayIt = (Display::getDisplays().begin())++; displayIt != Display::getDisplays().end(); ++displayIt ) {
-		result.include( (*displayIt)->getBounds() );
+	Area result = ( *Display::getDisplays().begin() )->getBounds();
+	for( vector<DisplayRef>::const_iterator displayIt = ( Display::getDisplays().begin() )++; displayIt != Display::getDisplays().end(); ++displayIt ) {
+		result.include( ( *displayIt )->getBounds() );
 	}
-	
+
 	return result;
 }
 
@@ -65,7 +65,7 @@ Area Display::getBounds() const
 {
 #if defined( CINDER_COCOA_TOUCH )
 	// WORKAROUND for iOS 8 - mArea was cached and could be flipped if we're in landscape, so instead use UIScreen's bounds
-	CGRect frame = [reinterpret_cast<const cinder::DisplayCocoaTouch*>( this )->getUiScreen() bounds];
+	CGRect frame = [reinterpret_cast<const cinder::DisplayCocoaTouch *>( this )->getUiScreen() bounds];
 	return Area( frame.origin.x, frame.origin.y, frame.origin.x + frame.size.width, frame.origin.y + frame.size.height );
 #else
 	return mArea;
@@ -80,7 +80,7 @@ ivec2 Display::getSystemCoordinate( const ivec2 &displayRelativeCoordinate ) con
 DisplayRef Display::getMainDisplay()
 {
 	auto displays = app::Platform::get()->getDisplays();
-	if( ! displays.empty() )
+	if( !displays.empty() )
 		return displays[0];
 	else
 		return nullptr;

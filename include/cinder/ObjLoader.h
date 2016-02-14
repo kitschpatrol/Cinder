@@ -29,8 +29,8 @@
 #include "cinder/DataTarget.h"
 #include "cinder/GeomIo.h"
 
-#include <tuple>
 #include <map>
+#include <tuple>
 
 namespace cinder {
 
@@ -61,105 +61,111 @@ class ObjLoader : public geom::Source {
 	 * \param includeNormals if false texture coordinates will be skipped, which can provide a faster load time
 	 * \param includeTexCoords if false normasls will be skipped, which can provide a faster load time
 	**/
-	ObjLoader( DataSourceRef dataSource, DataSourceRef materialSource, bool includeNormals = true, bool includeTexCoords = true,  bool optimize = true );
+	ObjLoader( DataSourceRef dataSource, DataSourceRef materialSource, bool includeNormals = true, bool includeTexCoords = true, bool optimize = true );
 
 	/**Loads a specific group index from the file**/
-	ObjLoader&	groupIndex( size_t groupIndex );
+	ObjLoader &groupIndex( size_t groupIndex );
 	/**Loads a specific group name from the file**/
-	ObjLoader&	groupName( const std::string &groupName );
+	ObjLoader &groupName( const std::string &groupName );
 	/**Returns whether the file contains a group labeled with \a groupName**/
-	bool		hasGroup( const std::string &groupName ) const;
+	bool hasGroup( const std::string &groupName ) const;
 
 	struct Material {
-        Material() {
-            Ka[0] = Ka[1] = Ka[2] = 0;
-            Kd[0] = Kd[1] = Kd[2] = 1;
-        }
+		Material()
+		{
+			Ka[0] = Ka[1] = Ka[2] = 0;
+			Kd[0] = Kd[1] = Kd[2] = 1;
+		}
 
-        Material( const Material& rhs ) {
-            mName = rhs.mName;
-            Ka[0] = rhs.Ka[0];
-            Ka[1] = rhs.Ka[1];
-            Ka[2] = rhs.Ka[2];
-            Kd[0] = rhs.Kd[0];
-            Kd[1] = rhs.Kd[1];
-            Kd[2] = rhs.Kd[2];
-        }
+		Material( const Material &rhs )
+		{
+			mName = rhs.mName;
+			Ka[0] = rhs.Ka[0];
+			Ka[1] = rhs.Ka[1];
+			Ka[2] = rhs.Ka[2];
+			Kd[0] = rhs.Kd[0];
+			Kd[1] = rhs.Kd[1];
+			Kd[2] = rhs.Kd[2];
+		}
 
-        std::string mName;
-        float		Ka[3];
-        float		Kd[3];
-    };
-    
+		std::string mName;
+		float       Ka[3];
+		float       Kd[3];
+	};
+
 	struct Face {
-		int						mNumVertices;
-		std::vector<int32_t>	mVertexIndices;
-		std::vector<int32_t>	mTexCoordIndices;
-		std::vector<int32_t>	mNormalIndices;
-		const Material*			mMaterial;
+		int                  mNumVertices;
+		std::vector<int32_t> mVertexIndices;
+		std::vector<int32_t> mTexCoordIndices;
+		std::vector<int32_t> mNormalIndices;
+		const Material *     mMaterial;
 	};
 
 	struct Group {
-		std::string				mName;
-		int32_t					mBaseVertexOffset, mBaseTexCoordOffset, mBaseNormalOffset;
-		std::vector<Face>		mFaces;
-		bool					mHasTexCoords;
-		bool					mHasNormals;
+		std::string       mName;
+		int32_t           mBaseVertexOffset, mBaseTexCoordOffset, mBaseNormalOffset;
+		std::vector<Face> mFaces;
+		bool              mHasTexCoords;
+		bool              mHasNormals;
 	};
 
 	//! Returns the total number of groups.
-	size_t		getNumGroups() const { return mGroups.size(); }
-	
+	size_t getNumGroups() const { return mGroups.size(); }
 	//! Returns a vector<> of the Groups in the OBJ.
-	const std::vector<Group>&		getGroups() const { return mGroups; }
-
-	size_t			getNumVertices() const override { load(); return mOutputVertices.size(); }
-	size_t			getNumIndices() const override { load(); return mOutputIndices.size(); }
-	geom::Primitive	getPrimitive() const override { return geom::Primitive::TRIANGLES; }
-	uint8_t			getAttribDims( geom::Attrib attr ) const override;
-	geom::AttribSet	getAvailableAttribs() const override;
-	void			loadInto( geom::Target *target, const geom::AttribSet &requestedAttribs ) const override;
-	Source*			clone() const override { return new ObjLoader( *this ); }
-
+	const std::vector<Group> &getGroups() const { return mGroups; }
+	size_t                    getNumVertices() const override
+	{
+		load();
+		return mOutputVertices.size();
+	}
+	size_t getNumIndices() const override
+	{
+		load();
+		return mOutputIndices.size();
+	}
+	geom::Primitive getPrimitive() const override { return geom::Primitive::TRIANGLES; }
+	uint8_t getAttribDims( geom::Attrib attr ) const override;
+	geom::AttribSet getAvailableAttribs() const override;
+	void loadInto( geom::Target *target, const geom::AttribSet &requestedAttribs ) const override;
+	Source *clone() const override { return new ObjLoader( *this ); }
   private:
-	typedef std::tuple<int,int> VertexPair;
-	typedef std::tuple<int,int,int> VertexTriple;
+	typedef std::tuple<int, int> VertexPair;
+	typedef std::tuple<int, int, int> VertexTriple;
 
-	void	parse( bool includeNormals, bool includeTexCoords );
- 	void	parseFace( Group *group, const Material *material, const std::string &s, bool includeNormals, bool includeTexCoords );
-    void    parseMaterial( std::shared_ptr<IStreamCinder> material );
+	void parse( bool includeNormals, bool includeTexCoords );
+	void parseFace( Group *group, const Material *material, const std::string &s, bool includeNormals, bool includeTexCoords );
+	void parseMaterial( std::shared_ptr<IStreamCinder> material );
 
-	void	load() const;
+	void load() const;
 
-	void	loadGroupNormalsTextures( const Group &group, std::map<VertexTriple,int> &uniqueVerts ) const;
-	void	loadGroupNormals( const Group &group, std::map<VertexPair,int> &uniqueVerts ) const;
-	void	loadGroupTextures( const Group &group, std::map<VertexPair,int> &uniqueVerts ) const;
-	void	loadGroup( const Group &group, std::map<int,int> &uniqueVerts ) const;
+	void loadGroupNormalsTextures( const Group &group, std::map<VertexTriple, int> &uniqueVerts ) const;
+	void loadGroupNormals( const Group &group, std::map<VertexPair, int> &uniqueVerts ) const;
+	void loadGroupTextures( const Group &group, std::map<VertexPair, int> &uniqueVerts ) const;
+	void loadGroup( const Group &group, std::map<int, int> &uniqueVerts ) const;
 
-	std::shared_ptr<IStreamCinder>	mStream;
+	std::shared_ptr<IStreamCinder> mStream;
 
-	std::vector<vec3>			    mInternalVertices, mInternalNormals;
-	std::vector<vec2>			    mInternalTexCoords;
-	std::vector<Colorf>				mInternalColors;
+	std::vector<vec3>   mInternalVertices, mInternalNormals;
+	std::vector<vec2>   mInternalTexCoords;
+	std::vector<Colorf> mInternalColors;
 
-    mutable bool					mOptimizeVertices;
-	mutable bool					mOutputCached;
-	mutable std::vector<vec3>		mOutputVertices, mOutputNormals;
-	mutable std::vector<vec2>		mOutputTexCoords;
-	mutable std::vector<Colorf>		mOutputColors;
-	mutable std::vector<uint32_t>	mOutputIndices;
+	mutable bool                  mOptimizeVertices;
+	mutable bool                  mOutputCached;
+	mutable std::vector<vec3>     mOutputVertices, mOutputNormals;
+	mutable std::vector<vec2>     mOutputTexCoords;
+	mutable std::vector<Colorf>   mOutputColors;
+	mutable std::vector<uint32_t> mOutputIndices;
 
-	size_t							mGroupIndex;
+	size_t mGroupIndex;
 
-	std::vector<Group>				mGroups;
-	std::map<std::string, Material>	mMaterials;
-
+	std::vector<Group> mGroups;
+	std::map<std::string, Material> mMaterials;
 };
 
 //! Writes \a source to a new OBJ file to \a dataTarget.
-void		writeObj( const DataTargetRef &dataTarget, const geom::Source &source, bool includeNormals = true, bool includeTexCoords = true );
+void writeObj( const DataTargetRef &dataTarget, const geom::Source &source, bool includeNormals = true, bool includeTexCoords = true );
 //! Writes \a source to a new OBJ file to \a dataTarget.
-inline void	writeObj( const DataTargetRef &dataTarget, const geom::SourceRef &source, bool includeNormals = true, bool includeTexCoords = true )
+inline void writeObj( const DataTargetRef &dataTarget, const geom::SourceRef &source, bool includeNormals = true, bool includeTexCoords = true )
 {
 	writeObj( dataTarget, *source, includeNormals, includeTexCoords );
 }

@@ -26,10 +26,10 @@
 #include "cinder/Cinder.h"
 #include "cinder/app/AppBase.h"
 
+#include "cinder/app/TouchEvent.h"
+#import <AppKit/NSTouch.h>
 #import <AppKit/NSView.h>
 #import <Foundation/Foundation.h>
-#import <AppKit/NSTouch.h> 
-#include "cinder/app/TouchEvent.h"
 
 #include <map>
 
@@ -37,43 +37,45 @@
 @required
 - (void)resize;
 - (void)draw;
-- (void)mouseDown:(cinder::app::MouseEvent*)event;
-- (void)mouseDrag:(cinder::app::MouseEvent*)event;
-- (void)mouseUp:(cinder::app::MouseEvent*)event;
-- (void)mouseMove:(cinder::app::MouseEvent*)event;
-- (void)mouseWheel:(cinder::app::MouseEvent*)event;
-- (void)keyDown:(cinder::app::KeyEvent*)event;
-- (void)keyUp:(cinder::app::KeyEvent*)event;
-- (void)touchesBegan:(cinder::app::TouchEvent*)event;
-- (void)touchesMoved:(cinder::app::TouchEvent*)event;
-- (void)touchesEnded:(cinder::app::TouchEvent*)event;
-- (void)fileDrop:(cinder::app::FileDropEvent*)event;
+- (void)mouseDown:(cinder::app::MouseEvent *)event;
+- (void)mouseDrag:(cinder::app::MouseEvent *)event;
+- (void)mouseUp:(cinder::app::MouseEvent *)event;
+- (void)mouseMove:(cinder::app::MouseEvent *)event;
+- (void)mouseWheel:(cinder::app::MouseEvent *)event;
+- (void)keyDown:(cinder::app::KeyEvent *)event;
+- (void)keyUp:(cinder::app::KeyEvent *)event;
+- (void)touchesBegan:(cinder::app::TouchEvent *)event;
+- (void)touchesMoved:(cinder::app::TouchEvent *)event;
+- (void)touchesEnded:(cinder::app::TouchEvent *)event;
+- (void)fileDrop:(cinder::app::FileDropEvent *)event;
 - (cinder::app::WindowRef)getWindowRef;
 @end
 
 @interface CinderViewMac : NSView {
   @private
-	BOOL						mFullScreen;
-	BOOL						mFullScreenModeKiosk;
-	BOOL						mReadyToDraw; // don't allow draw until setup() and resize() have been called
-	BOOL						mReceivesEvents;
-	BOOL						mHighDensityDisplayEnabled;
-	BOOL						mMultiTouchEnabled;
-	cinder::app::RendererRef	mRenderer;
-	
-	float						mContentScaleFactor;
+	BOOL                     mFullScreen;
+	BOOL                     mFullScreenModeKiosk;
+	BOOL                     mReadyToDraw; // don't allow draw until setup() and resize() have been called
+	BOOL                     mReceivesEvents;
+	BOOL                     mHighDensityDisplayEnabled;
+	BOOL                     mMultiTouchEnabled;
+	cinder::app::RendererRef mRenderer;
 
-	NSMutableDictionary					*mTouchIdMap;
-	std::map<uint32_t,cinder::vec2>	mTouchPrevPointMap;
+	float mContentScaleFactor;
+
+	NSMutableDictionary *mTouchIdMap;
+	std::map<uint32_t, cinder::vec2> mTouchPrevPointMap;
 	std::vector<cinder::app::TouchEvent::Touch> mActiveTouches;
-	id<CinderViewDelegate>				mDelegate;
+	id<CinderViewDelegate>                      mDelegate;
 }
 
-@property (readwrite) BOOL readyToDraw;
-@property (readwrite) BOOL receivesEvents;
+@property ( readwrite ) BOOL readyToDraw;
+@property ( readwrite ) BOOL receivesEvents;
 
 - (CinderViewMac *)initWithFrame:(NSRect)frame renderer:(cinder::app::RendererRef)renderer sharedRenderer:(cinder::app::RendererRef)sharedRenderer
-			appReceivesEvents:(BOOL)appReceivesEvents highDensityDisplay:(BOOL)highDensityDisplay enableMultiTouch:(BOOL)enableMultiTouch;
+               appReceivesEvents:(BOOL)appReceivesEvents
+              highDensityDisplay:(BOOL)highDensityDisplay
+                enableMultiTouch:(BOOL)enableMultiTouch;
 - (void)setupRendererWithFrame:(NSRect)frame renderer:(cinder::app::RendererRef)renderer sharedRenderer:(cinder::app::RendererRef)sharedRenderer;
 
 - (void)setDelegate:(id<CinderViewDelegate>)delegate;
@@ -90,11 +92,10 @@
 
 - (uint32_t)addTouchToMap:(NSTouch *)touch withPoint:(cinder::vec2)point;
 - (void)removeTouchFromMap:(NSTouch *)touch;
-- (std::pair<uint32_t,cinder::vec2>)updateTouch:(NSTouch *)touch withPoint:(cinder::vec2)point;
+- (std::pair<uint32_t, cinder::vec2>)updateTouch:(NSTouch *)touch withPoint:(cinder::vec2)point;
 - (void)updateActiveTouches:(NSEvent *)event;
-- (const std::vector<cinder::app::TouchEvent::Touch>&)getActiveTouches;
+- (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches;
 
 - (float)contentScaleFactor;
-
 
 @end

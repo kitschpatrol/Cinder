@@ -26,18 +26,18 @@
 
 #include <CoreLocation/CoreLocation.h>
 
-@interface LocationManagerDelegate : NSObject<CLLocationManagerDelegate> {
+@interface LocationManagerDelegate : NSObject <CLLocationManagerDelegate> {
   @public
-	cinder::LocationManager		*mMgr;
-	cinder::LocationEvent		*mMostRecentLocationPtr;
-	uint32_t					mErrorCount;
+	cinder::LocationManager *mMgr;
+	cinder::LocationEvent *  mMostRecentLocationPtr;
+	uint32_t                 mErrorCount;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error;
-- (LocationManagerDelegate*)init:(cinder::LocationManager*)mgr mostRecentLocationPtr:(cinder::LocationEvent*)mostRecentLocationPtr;
-- (void)locationManager:( CLLocationManager * )manager didUpdateToLocation:( CLLocation * )newLocation fromLocation:( CLLocation * )oldLocation;
+- (LocationManagerDelegate *)init:(cinder::LocationManager *)mgr mostRecentLocationPtr:(cinder::LocationEvent *)mostRecentLocationPtr;
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
 #if defined( CINDER_COCOA_TOUCH )
-- (void)locationManager:( CLLocationManager * )manager didUpdateHeading:( CLHeading * )heading;
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)heading;
 #endif
 
 @end
@@ -49,33 +49,32 @@
 	++mErrorCount;
 }
 
-- (LocationManagerDelegate*)init:(cinder::LocationManager*)mgr mostRecentLocationPtr:(cinder::LocationEvent*)mostRecentLocationPtr
+- (LocationManagerDelegate *)init:(cinder::LocationManager *)mgr mostRecentLocationPtr:(cinder::LocationEvent *)mostRecentLocationPtr
 {
 	self = [super init];
-	
+
 	mMgr = mgr;
 	mMostRecentLocationPtr = mostRecentLocationPtr;
 	mErrorCount = 0;
-	
+
 	return self;
 }
 
-- (void)locationManager:(CLLocationManager*)manager didUpdateToLocation:(CLLocation*)newLocation fromLocation:( CLLocation * )oldLocation
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
 	if( newLocation.horizontalAccuracy < 0 )
 		return; // not enough accuracy
 
-	*mMostRecentLocationPtr = cinder::LocationEvent( cinder::vec2( newLocation.coordinate.latitude, newLocation.coordinate.longitude ), newLocation.speed,
-								   newLocation.altitude, newLocation.horizontalAccuracy, newLocation.verticalAccuracy );
+	*mMostRecentLocationPtr = cinder::LocationEvent( cinder::vec2( newLocation.coordinate.latitude, newLocation.coordinate.longitude ), newLocation.speed, newLocation.altitude, newLocation.horizontalAccuracy, newLocation.verticalAccuracy );
 
 	mMgr->emitLocationChanged( *mMostRecentLocationPtr );
 }
 
 #if defined( CINDER_COCOA_TOUCH )
-- (void)locationManager:(CLLocationManager*)manager didUpdateHeading:(CLHeading*)heading
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)heading
 {
-    cinder::vec3 data( heading.x, heading.y, heading.z );
-    std::string description( [heading.description UTF8String] );
+	cinder::vec3 data( heading.x, heading.y, heading.z );
+	std::string description( [heading.description UTF8String] );
 	mMgr->emitHeadingChanged( cinder::HeadingEvent( glm::radians( heading.magneticHeading ), glm::radians( heading.trueHeading ), heading.headingAccuracy, description, data ) );
 }
 #endif
@@ -87,7 +86,7 @@ namespace cinder {
 LocationEvent LocationManager::sMostRecentLocation;
 
 LocationManager::LocationManager()
-	: mClLocationManager( 0 ), mDelegate( 0 )
+    : mClLocationManager( 0 ), mDelegate( 0 )
 {
 }
 
@@ -99,13 +98,13 @@ LocationManager::~LocationManager()
 		[mDelegate release];
 }
 
-LocationManager* LocationManager::get()
+LocationManager *LocationManager::get()
 {
 	static LocationManager *sInst = 0;
-	if( ! sInst ) {
+	if( !sInst ) {
 		sInst = new LocationManager;
 	}
-	
+
 	return sInst;
 }
 
@@ -116,16 +115,16 @@ void LocationManager::enable( float accuracyInMeters, float distanceFilter, floa
 
 void LocationManager::enableImpl( float accuracyInMeters, float distanceFilter, float headingFilter )
 {
-	if( ! mClLocationManager ) {
+	if( !mClLocationManager ) {
 		mClLocationManager = [[CLLocationManager alloc] init];
 		mDelegate = [[LocationManagerDelegate alloc] init:this mostRecentLocationPtr:&sMostRecentLocation];
 		mClLocationManager.delegate = mDelegate;
 #if defined( CINDER_COCOA_TOUCH )
 		auto authStatus = [CLLocationManager authorizationStatus];
-		if( (authStatus == kCLAuthorizationStatusDenied) || (authStatus == kCLAuthorizationStatusRestricted) ) {
+		if( ( authStatus == kCLAuthorizationStatusDenied ) || ( authStatus == kCLAuthorizationStatusRestricted ) ) {
 			CI_LOG_E( "Location Services restricted or denied." );
 		}
-		if( [mClLocationManager respondsToSelector:@selector(requestAlwaysAuthorization)] ) {
+		if( [mClLocationManager respondsToSelector:@selector( requestAlwaysAuthorization )] ) {
 			if( authStatus == kCLAuthorizationStatusNotDetermined )
 				[mClLocationManager requestAlwaysAuthorization];
 		}
@@ -136,9 +135,8 @@ void LocationManager::enableImpl( float accuracyInMeters, float distanceFilter, 
 	[mClLocationManager startUpdatingHeading];
 #endif
 	[mClLocationManager startUpdatingLocation];
-	CLLocation *newLocation = mClLocationManager.location;	
-	sMostRecentLocation = LocationEvent( vec2( newLocation.coordinate.latitude, newLocation.coordinate.longitude ), newLocation.speed,
-								   newLocation.altitude, newLocation.horizontalAccuracy, newLocation.verticalAccuracy );
+	CLLocation *newLocation = mClLocationManager.location;
+	sMostRecentLocation = LocationEvent( vec2( newLocation.coordinate.latitude, newLocation.coordinate.longitude ), newLocation.speed, newLocation.altitude, newLocation.horizontalAccuracy, newLocation.verticalAccuracy );
 }
 
 void LocationManager::disable()
@@ -152,7 +150,7 @@ void LocationManager::disableImpl()
 #if defined( CINDER_COCOA_TOUCH )
 		[mClLocationManager stopUpdatingHeading];
 #endif
-		[mClLocationManager stopUpdatingLocation];	
+		[mClLocationManager stopUpdatingLocation];
 	}
 }
 

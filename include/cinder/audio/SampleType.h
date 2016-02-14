@@ -23,7 +23,8 @@
 
 #pragma once
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 //! Identifiers sample types. Primarily used for encoding audio at different bitrates.
 enum class SampleType {
@@ -31,5 +32,5 @@ enum class SampleType {
 	INT_24,
 	FLOAT_32
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

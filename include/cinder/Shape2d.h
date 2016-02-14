@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include "cinder/Vector.h"
-#include "cinder/Rect.h"
-#include "cinder/Path2d.h"
 #include "cinder/Matrix.h"
+#include "cinder/Path2d.h"
+#include "cinder/Rect.h"
+#include "cinder/Vector.h"
 
 #include <vector>
 
@@ -33,58 +33,54 @@ namespace cinder {
 
 class Shape2d {
   public:
-	void	moveTo( const vec2 &p );
-	void	moveTo( float x, float y ) { moveTo( vec2( x, y ) ); }
-	void	lineTo( const vec2 &p );
-	void	lineTo( float x, float y ) { lineTo( vec2( x, y ) ); }
-	void	quadTo( const vec2 &p1, const vec2 &p2 );
-	void	quadTo( float x1, float y1, float x2, float y2 ) { quadTo( vec2( x1, y1 ), vec2( x2, y2 ) ); }
-	void	curveTo( const vec2 &p1, const vec2 &p2, const vec2 &p3 );
-	void	curveTo( float x1, float y1, float x2, float y2, float x3, float y3 ) { curveTo( vec2( x1, y1 ), vec2( x2, y2 ), vec2( x3, y3 ) ); }
-	void	arc( const vec2 &center, float radius, float startRadians, float endRadians, bool forward = true );
-	void	arc( float centerX, float centerY, float radius, float startRadians, float endRadians, bool forward = true ) { arc( vec2( centerX, centerY ), radius, startRadians, endRadians, forward ); }
-	void	arcTo( const vec2 &p, const vec2 &t, float radius );
-	void	arcTo( float x, float y, float tanX, float tanY, float radius) { arcTo( vec2( x, y ), vec2( tanX, tanY ), radius ); }
-	void	close();
-	
-	bool	empty() const { return mContours.empty(); }
-	void	clear() { mContours.clear(); }
-	size_t	getNumContours() const { return mContours.size(); }
-	
-	const Path2d&				getContour( size_t i ) const { return mContours[i]; }
-	Path2d&						getContour( size_t i ) { return mContours[i]; }
-	const std::vector<Path2d>&	getContours() const { return mContours; }
-	std::vector<Path2d>&		getContours() { return mContours; }
-	
-	const vec2&	getCurrentPoint() const { return mContours.back().getCurrentPoint(); }
-	
-	//! Appends the contours of \a shape to this shape
-	void			append( const Shape2d &shape );
-    void			appendContour( const Path2d &contour ) { mContours.push_back( contour ); }
-	void			removeContour( size_t i ) { mContours.erase( mContours.begin() + i ); }
+	void moveTo( const vec2 &p );
+	void moveTo( float x, float y ) { moveTo( vec2( x, y ) ); }
+	void lineTo( const vec2 &p );
+	void lineTo( float x, float y ) { lineTo( vec2( x, y ) ); }
+	void quadTo( const vec2 &p1, const vec2 &p2 );
+	void quadTo( float x1, float y1, float x2, float y2 ) { quadTo( vec2( x1, y1 ), vec2( x2, y2 ) ); }
+	void curveTo( const vec2 &p1, const vec2 &p2, const vec2 &p3 );
+	void curveTo( float x1, float y1, float x2, float y2, float x3, float y3 ) { curveTo( vec2( x1, y1 ), vec2( x2, y2 ), vec2( x3, y3 ) ); }
+	void arc( const vec2 &center, float radius, float startRadians, float endRadians, bool forward = true );
+	void arc( float centerX, float centerY, float radius, float startRadians, float endRadians, bool forward = true ) { arc( vec2( centerX, centerY ), radius, startRadians, endRadians, forward ); }
+	void arcTo( const vec2 &p, const vec2 &t, float radius );
+	void arcTo( float x, float y, float tanX, float tanY, float radius ) { arcTo( vec2( x, y ), vec2( tanX, tanY ), radius ); }
+	void close();
 
+	bool          empty() const { return mContours.empty(); }
+	void          clear() { mContours.clear(); }
+	size_t        getNumContours() const { return mContours.size(); }
+	const Path2d &getContour( size_t i ) const { return mContours[i]; }
+	Path2d &getContour( size_t i ) { return mContours[i]; }
+	const std::vector<Path2d> &getContours() const { return mContours; }
+	std::vector<Path2d> &      getContours() { return mContours; }
+	const vec2 &               getCurrentPoint() const { return mContours.back().getCurrentPoint(); }
+	//! Appends the contours of \a shape to this shape
+	void append( const Shape2d &shape );
+	void appendContour( const Path2d &contour ) { mContours.push_back( contour ); }
+	void removeContour( size_t i ) { mContours.erase( mContours.begin() + i ); }
 	//! Scales the Shape2d by \a amount.x on X and \a amount.y on Y around the center \a scaleCenter
-	void		scale( const vec2 &amount, vec2 scaleCenter = vec2() );
+	void scale( const vec2 &amount, vec2 scaleCenter = vec2() );
 
 	//! Transforms the Shape2d by \a matrix.
-	void		transform( const mat3 &matrix );
+	void transform( const mat3 &matrix );
 	//! Returns a copy transformed by \a matrix.
-	Shape2d		transformed( const mat3 &matrix ) const;
+	Shape2d transformed( const mat3 &matrix ) const;
 
 	//! Returns the bounding box of the Shape's control points. Note that this is not necessarily the bounding box of the path's shape.
-	Rectf	calcBoundingBox() const;
+	Rectf calcBoundingBox() const;
 	//! Returns the precise bounding box of the Shape's curves. Slower to calculate than calcBoundingBox().
-	Rectf	calcPreciseBoundingBox() const;
+	Rectf calcPreciseBoundingBox() const;
 
 	//! Returns whether the point \a pt is contained within the boundaries of the shape
-	bool	contains( const vec2 &pt ) const;
+	bool contains( const vec2 &pt ) const;
 
 	//! Iterates all of the contours and points of a Shape2d.
 	/** Expects a template parameter that implements
 		\code bool operator()( Path2d::SegmentType type, vec2 *points, vec2 *previousPoint ) \endcode.
 		Functor should return false to cease iteration.
 		A \a SegmentType of type \c CLOSE receives &mPoints[0] for its \a points parameters. **/
-	template<typename IT>
+	template <typename IT>
 	void iterate( IT &it )
 	{
 		bool stop = false;
@@ -94,8 +90,8 @@ class Shape2d {
 			pt++;
 			for( std::vector<Path2d::SegmentType>::const_iterator segIt = contourIt->mSegments.begin(); segIt != contourIt->mSegments.end(); ++segIt ) {
 				if( *segIt == Path2d::CLOSE )
-					it( *segIt, &contourIt->mPoints[0], &contourIt->mPoints[pt-1] );
-				else if( ! it( *segIt, &contourIt->mPoints[pt], ( pt > 0 ) ? &contourIt->mPoints[pt-1] : 0 ) ) {
+					it( *segIt, &contourIt->mPoints[0], &contourIt->mPoints[pt - 1] );
+				else if( !it( *segIt, &contourIt->mPoints[pt], ( pt > 0 ) ? &contourIt->mPoints[pt - 1] : 0 ) ) {
 					stop = true;
 					break;
 				}
@@ -108,9 +104,9 @@ class Shape2d {
 			}*/
 		}
 	}
-	
+
   private:
-	std::vector<Path2d>	mContours;
+	std::vector<Path2d> mContours;
 };
 
 } // namespace cinder

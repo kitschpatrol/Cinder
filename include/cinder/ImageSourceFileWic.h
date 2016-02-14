@@ -23,8 +23,8 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/ImageIO.h"
 #include "cinder/Exception.h"
+#include "cinder/ImageIO.h"
 
 #include <guiddef.h>
 
@@ -35,34 +35,32 @@ struct IWICStream;
 
 namespace cinder {
 
-typedef std::shared_ptr<class ImageSourceFileWic>	ImageSourceFileWicRef;
+typedef std::shared_ptr<class ImageSourceFileWic> ImageSourceFileWicRef;
 
 class ImageSourceFileWic : public ImageSource {
   public:
-	static ImageSourceRef			create( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() );
+	static ImageSourceRef create( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() );
 
-	virtual void	load( ImageTargetRef target );
+	virtual void load( ImageTargetRef target );
 
 	static void registerSelf();
 
   protected:
 	ImageSourceFileWic( DataSourceRef dataSourceRef, ImageSource::Options options );
-	
-	static IWICImagingFactory* getFactory();
 
-	bool	processFormat( const ::GUID &guid, ::GUID *convertGUID );
+	static IWICImagingFactory *getFactory();
 
-	std::shared_ptr<IWICBitmapFrameDecode>	mFrame;
-	std::shared_ptr<IWICStream>				mStream;
-	Buffer									mBuffer;
-	bool									mRequiresConversion;
-	int32_t									mRowBytes;
-	::GUID									mPixelFormat, mConvertPixelFormat;
+	bool processFormat( const ::GUID &guid, ::GUID *convertGUID );
+
+	std::shared_ptr<IWICBitmapFrameDecode> mFrame;
+	std::shared_ptr<IWICStream>            mStream;
+	Buffer                                 mBuffer;
+	bool                                   mRequiresConversion;
+	int32_t                                mRowBytes;
+	::GUID                                 mPixelFormat, mConvertPixelFormat;
 };
 
 class ImageSourceFileWicExceptionUnsupportedData : public ImageIoException {
 };
-
-
 
 } // namespace ci

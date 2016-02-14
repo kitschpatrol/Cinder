@@ -23,37 +23,37 @@
 // Concrete implementation of VAO for OpenGL ES 2.
 // Should only be instantiated by Vao::create() in the presence of GL_OES_vertex_array_object
 
-
 #include "cinder/gl/platform.h"
 
-#if defined( CINDER_GL_ES_2 ) && ! defined( CINDER_GL_ANGLE )
+#if defined( CINDER_GL_ES_2 ) && !defined( CINDER_GL_ANGLE )
 
+#include "cinder/Log.h"
+#include "cinder/gl/Context.h"
 #include "cinder/gl/Vao.h"
 #include "cinder/gl/Vbo.h"
-#include "cinder/gl/Context.h"
-#include "cinder/Log.h"
 
-namespace cinder { namespace gl {
+namespace cinder {
+namespace gl {
 
 class VaoImplEs : public Vao {
   public:
 	virtual ~VaoImplEs();
-	
+
 	VaoImplEs();
 
 	// Does the actual "work" of binding the VAO; called by Context
-	void	bindImpl( class Context *context ) override;
-	void	unbindImpl( class Context *context ) override;
-	void	enableVertexAttribArrayImpl( GLuint index ) override;
-	void	disableVertexAttribArrayImpl( GLuint index ) override;
-	void	vertexAttribPointerImpl( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer ) override;
-	void	vertexAttribIPointerImpl( GLuint index, GLint size, GLenum type, GLsizei stride, const GLvoid *pointer ) override;
-	void	vertexAttribDivisorImpl( GLuint index, GLuint divisor ) override;
-	void	reflectBindBufferImpl( GLenum target, GLuint buffer ) override;
-	void	reassignContext( Context *newContext ) override;
+	void bindImpl( class Context *context ) override;
+	void unbindImpl( class Context *context ) override;
+	void enableVertexAttribArrayImpl( GLuint index ) override;
+	void disableVertexAttribArrayImpl( GLuint index ) override;
+	void vertexAttribPointerImpl( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer ) override;
+	void vertexAttribIPointerImpl( GLuint index, GLint size, GLenum type, GLsizei stride, const GLvoid *pointer ) override;
+	void vertexAttribDivisorImpl( GLuint index, GLuint divisor ) override;
+	void reflectBindBufferImpl( GLenum target, GLuint buffer ) override;
+	void reassignContext( Context *newContext ) override;
 
-	void	reassignImpl( Context *newContext );
-	
+	void reassignImpl( Context *newContext );
+
 	friend class Context;
 };
 
@@ -62,10 +62,10 @@ VaoRef createVaoImplEs()
 {
 	return VaoRef( new VaoImplEs );
 }
-	
+
 VaoImplEs::VaoImplEs()
 {
-	mId	= 0;
+	mId = 0;
 
 	glGenVertexArraysOES( 1, &mId );
 }
@@ -104,10 +104,10 @@ void VaoImplEs::reassignImpl( Context *newContext )
 
 	// generate
 	glGenVertexArraysOES( 1, &mId );
-	
+
 	// assign
 	glBindVertexArrayOES( mId );
-	
+
 	// instantiate the VAO using the layout
 	auto oldBuffer = mCtx->getBufferBinding( GL_ARRAY_BUFFER );
 
@@ -127,17 +127,16 @@ void VaoImplEs::reassignImpl( Context *newContext )
 	glBindBuffer( GL_ARRAY_BUFFER, oldBuffer );
 }
 
-
 void VaoImplEs::unbindImpl( Context *context )
 {
 	glBindVertexArrayOES( 0 );
-	
+
 	mCtx->invalidateBufferBindingCache( GL_ELEMENT_ARRAY_BUFFER );
 }
 
 void VaoImplEs::enableVertexAttribArrayImpl( GLuint index )
 {
-	if( ! mLayout.isVertexAttribArrayEnabled( index ) ) {
+	if( !mLayout.isVertexAttribArrayEnabled( index ) ) {
 		mLayout.enableVertexAttribArray( index );
 		glEnableVertexAttribArray( index );
 	}
@@ -146,14 +145,14 @@ void VaoImplEs::enableVertexAttribArrayImpl( GLuint index )
 void VaoImplEs::disableVertexAttribArrayImpl( GLuint index )
 {
 	mLayout.disableVertexAttribArray( index );
-	
+
 	glDisableVertexAttribArray( index );
 }
 
 void VaoImplEs::vertexAttribPointerImpl( GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer )
 {
 	// test to see if the layout doesn't already reflect this, so we can avoid a redundant call to glVertexAttribPointer
-	if( ! mLayout.isVertexAttribEqual( index, size, type, normalized, stride, VertexAttrib::FLOAT, pointer, mLayout.mCachedArrayBufferBinding ) ) {
+	if( !mLayout.isVertexAttribEqual( index, size, type, normalized, stride, VertexAttrib::FLOAT, pointer, mLayout.mCachedArrayBufferBinding ) ) {
 		mLayout.vertexAttribPointer( index, size, type, normalized, stride, pointer );
 		glVertexAttribPointer( index, size, type, normalized, stride, pointer );
 	}
@@ -183,7 +182,7 @@ void VaoImplEs::reflectBindBufferImpl( GLenum target, GLuint buffer )
 
 	glBindBuffer( target, buffer );
 }
-
-} }
+}
+}
 
 #endif // defined( CINDER_GL_ES ) && ! defined( CINDER_GL_ANGLE )

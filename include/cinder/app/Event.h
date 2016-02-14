@@ -25,58 +25,60 @@
 
 #include "cinder/Cinder.h"
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
-typedef std::shared_ptr<class Window>		WindowRef;
+typedef std::shared_ptr<class Window> WindowRef;
 
 //! Base class for all Events
 class Event {
   public:
 	//! Returns whether this event has been marked as handled by one of its slots, terminating the normal iteration of the event's slots
-	bool		isHandled() const { return mHandled; }
+	bool isHandled() const { return mHandled; }
 	//! Marks the event as handled, terminating the normal iteration of the event's slots
-	void		setHandled( bool handled = true ) { mHandled = handled; }
-
+	void setHandled( bool handled = true ) { mHandled = handled; }
 	//! Returns the Window in which the MouseEvent occurred
-	WindowRef	getWindow() const { return mWindow; }
-	void		setWindow( const WindowRef &window ) { mWindow = window; }
-
+	WindowRef getWindow() const { return mWindow; }
+	void setWindow( const WindowRef &window ) { mWindow = window; }
   protected:
-	Event() : mHandled( false ) {}
-	Event( const WindowRef &window ) : mWindow( window ), mHandled( false ) {}
-
+	Event()
+	    : mHandled( false ) {}
+	Event( const WindowRef &window )
+	    : mWindow( window ), mHandled( false ) {}
   public:
 	virtual ~Event() {}
-	
-	bool			mHandled;
-	WindowRef		mWindow;
+	bool      mHandled;
+	WindowRef mWindow;
 };
 
 //! A Collector for use with signals::Signal, which will keep the callback chain running until Event::isHandled() returns \a true.
-template<typename EventT>
+template <typename EventT>
 struct CollectorEvent {
-	typedef void	CollectorResult;
+	typedef void CollectorResult;
 
 	//! Default constructor, sets the internal EventT pointer to null.
 	CollectorEvent()
-		: mEvent( nullptr )
-	{}
+	    : mEvent( nullptr )
+	{
+	}
 	//! Constructor that takes a pointer to an EventT instance, which will be used to determine when to stop signal emission because the event has been handled.
 	CollectorEvent( const EventT *event )
-		: mEvent( event )
-	{}
+	    : mEvent( event )
+	{
+	}
 
 	//! Called by the signal's CollectorInvoker, allows emission to continue until Event::isHandled() returns \a true.
-	inline bool	operator()() const
+	inline bool operator()() const
 	{
-		return ! mEvent->isHandled();
+		return !mEvent->isHandled();
 	}
 	//! This Collector does not return a result.
 	CollectorResult getResult() const
-	{}
+	{
+	}
 
   private:
-	const EventT*	mEvent;
+	const EventT *mEvent;
 };
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

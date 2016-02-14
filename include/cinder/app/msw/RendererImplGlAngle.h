@@ -23,50 +23,56 @@
 
 #pragma once
 
-#include "cinder/app/AppBase.h"
-#include "cinder/app/msw/RendererImplMsw.h"
 #include "EGL/egl.h"
 #include "EGL/eglext.h"
 #include "EGL/eglplatform.h"
+#include "cinder/app/AppBase.h"
+#include "cinder/app/msw/RendererImplMsw.h"
 
-namespace cinder { namespace gl {
-	class Context;
-	typedef std::shared_ptr<Context>	ContextRef;
-} }
+namespace cinder {
+namespace gl {
+class Context;
+typedef std::shared_ptr<Context> ContextRef;
+}
+}
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class RendererImplGlAngle : public RendererImplMsw {
- public:
+  public:
 	RendererImplGlAngle( class RendererGl *renderer );
 
-#if defined( CINDER_MSW )	
-	bool	initialize( HWND wnd, HDC dc, RendererRef sharedRenderer ) override;
+#if defined( CINDER_MSW )
+	bool initialize( HWND wnd, HDC dc, RendererRef sharedRenderer ) override;
 #elif defined( CINDER_WINRT )
-	bool	initialize( ::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer ) override;
+	bool initialize(::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer ) override;
 #endif
-	void	prepareToggleFullScreen() override;
-	void	finishToggleFullScreen() override;
-	void	kill() override;
-	void	defaultResize() const override;
-	void	swapBuffers() const override;
-	void	makeCurrentContext( bool force = false ) override;
+	void prepareToggleFullScreen() override;
+	void finishToggleFullScreen() override;
+	void kill() override;
+	void defaultResize() const override;
+	void swapBuffers() const override;
+	void makeCurrentContext( bool force = false ) override;
 
 #if defined( CINDER_MSW )
-	HDC		getDc() const { return mDc; }
+	HDC getDc() const
+	{
+		return mDc;
+	}
 #endif
- protected:
-	int		initMultisample( PIXELFORMATDESCRIPTOR pfd, int requestedLevelIdx, HDC dc );
-	
-	class RendererGl	*mRenderer;
-	gl::ContextRef		mCinderContext;
+  protected:
+	int initMultisample( PIXELFORMATDESCRIPTOR pfd, int requestedLevelIdx, HDC dc );
 
-	EGLContext		mContext;
-	EGLDisplay		mDisplay;
-	EGLSurface		mSurface;
+	class RendererGl *mRenderer;
+	gl::ContextRef    mCinderContext;
+
+	EGLContext mContext;
+	EGLDisplay mDisplay;
+	EGLSurface mSurface;
 #if defined( CINDER_MSW )
-	HDC				mDc;
+	HDC mDc;
 #endif
 };
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

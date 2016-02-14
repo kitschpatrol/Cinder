@@ -7,15 +7,15 @@ using namespace cinder;
 using namespace app;
 using namespace std;
 
-TEST_CASE("System", "[noisy]")
+TEST_CASE( "System", "[noisy]" )
 {
 	console() << "System information:" << std::endl;
-#if ! defined( CINDER_WINRT )
-  #if ! defined( CINDER_MSW )
+#if !defined( CINDER_WINRT )
+#if !defined( CINDER_MSW )
 	console() << " OS Version " << System::getOsMajorVersion() << "." << System::getOsMinorVersion() << "." << System::getOsBugFixVersion() << std::endl;
-  #else
+#else
 	console() << " OS Version " << System::getOsMajorVersion() << "." << System::getOsMinorVersion() << " Service Pack " << System::getOsBugFixVersion() << std::endl;
-  #endif
+#endif
 	console() << " has SSE2:" << System::hasSse2() << std::endl;
 	console() << " has SSE3:" << System::hasSse3() << std::endl;
 	console() << " has SSE4.1:" << System::hasSse4_1() << std::endl;
@@ -24,7 +24,7 @@ TEST_CASE("System", "[noisy]")
 	console() << " CPUs:" << System::getNumCpus() << std::endl;
 	console() << " Cores:" << System::getNumCores() << std::endl;
 //	console() << " QuickTime version: " << std::hex << qtime::getQuickTimeVersion() << std::dec << " (" << qtime::getQuickTimeVersionString() << ")" << std::endl;
-#endif	
+#endif
 	console() << "Network Adapters: " << std::endl;
 	vector<System::NetworkAdapter> adapters = System::getNetworkAdapters();
 	for( vector<System::NetworkAdapter>::const_iterator netIt = adapters.begin(); netIt != adapters.end(); ++netIt )

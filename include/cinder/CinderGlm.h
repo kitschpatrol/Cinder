@@ -26,11 +26,11 @@
 
 #include "glm/gtc/type_ptr.hpp"
 
+#include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/io.hpp"
 #include "glm/gtx/norm.hpp"
 #include "glm/gtx/transform.hpp"
 #include "glm/gtx/transform2.hpp"
-#include "glm/gtx/euler_angles.hpp"
 
 namespace cinder {
 

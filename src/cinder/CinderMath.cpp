@@ -54,17 +54,16 @@ using namespace glm;
 
 namespace cinder {
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // solveCubic
-template<typename T>
+template <typename T>
 int solveCubic( T a, T b, T c, T d, T result[3] )
 {
 	if( a == 0 )
 		return solveQuadratic( b, c, d, result );
 
-	T f = ((3 * c / a) - ((b * b) / (a * a))) / 3;
-	T g = ((2 * b * b * b) / (a * a * a) - (9 * b * c) / (a * a) + (27 * d) / (a)) / 27;
+	T f = ( ( 3 * c / a ) - ( ( b * b ) / ( a * a ) ) ) / 3;
+	T g = ( ( 2 * b * b * b ) / ( a * a * a ) - ( 9 * b * c ) / ( a * a ) + ( 27 * d ) / ( a ) ) / 27;
 	T h = g * g / 4 + f * f * f / 27;
 
 	if( f == 0 && g == 0 && h == 0 ) {
@@ -75,23 +74,23 @@ int solveCubic( T a, T b, T c, T d, T result[3] )
 		// 1 root
 		T r = -( g / 2 ) + math<T>::sqrt( h );
 		T s = math<T>::cbrt( r );
-		T t = -(g / 2) - math<T>::sqrt( h );
+		T t = -( g / 2 ) - math<T>::sqrt( h );
 		T u = math<T>::cbrt( t );
 
-		result[0] = (s + u) - (b / (3 * a));
+		result[0] = ( s + u ) - ( b / ( 3 * a ) );
 		return 1;
 	}
 	else { // 3 roots
-		T i = math<T>::sqrt( (g * g / 4) - h );
+		T i = math<T>::sqrt( ( g * g / 4 ) - h );
 		T j = math<T>::cbrt( i );
-		T k = math<T>::acos( -(g / (2 * i)) );
+		T k = math<T>::acos( -( g / ( 2 * i ) ) );
 		T l = -j;
 		T m = math<T>::cos( k / 3 );
-		T n = math<T>::sqrt(3) * math<T>::sin( k / 3 );
-		T p = -b / (3 * a);
-		result[0] = 2 * j * math<T>::cos(k / 3) - (b / (3 * a));
-		result[1] = l * (m + n) + p;
-		result[2] = l * (m - n) + p;
+		T n = math<T>::sqrt( 3 ) * math<T>::sin( k / 3 );
+		T p = -b / ( 3 * a );
+		result[0] = 2 * j * math<T>::cos( k / 3 ) - ( b / ( 3 * a ) );
+		result[1] = l * ( m + n ) + p;
+		result[2] = l * ( m - n ) + p;
 		return 3;
 	}
 }
@@ -99,11 +98,11 @@ template int solveCubic( float a, float b, float c, float d, float result[3] );
 template int solveCubic( double a, double b, double c, double d, double result[3] );
 
 namespace {
-float PointOnEllipseBisector( int numComponents, const vec2 &extents, const vec2 &y, vec2& x )
+float PointOnEllipseBisector( int numComponents, const vec2 &extents, const vec2 &y, vec2 &x )
 {
-	vec2 z;
+	vec2  z;
 	float sumZSqr = 0;
-	int i;
+	int   i;
 	for( i = 0; i < numComponents; ++i ) {
 		z[i] = y[i] / extents[i];
 		sumZSqr += z[i] * z[i];
@@ -111,14 +110,14 @@ float PointOnEllipseBisector( int numComponents, const vec2 &extents, const vec2
 
 	if( sumZSqr == 1 ) {
 		// The point is on the hyperellipsoid.
-		for (i = 0; i < numComponents; ++i)
+		for( i = 0; i < numComponents; ++i )
 			x[i] = y[i];
 
 		return 0;
 	}
 
 	float emin = extents[numComponents - 1];
-	vec2 pSqr, numerator;
+	vec2  pSqr, numerator;
 	for( i = 0; i < numComponents; ++i ) {
 		float p = extents[i] / emin;
 		pSqr[i] = p * p;
@@ -139,13 +138,13 @@ float PointOnEllipseBisector( int numComponents, const vec2 &extents, const vec2
 		smax = length( numerator ) - 1;
 
 	for( int j = 0; j < jmax; ++j ) {
-		s = (smin + smax) * 0.5f;
-		if (s == smin || s == smax)
+		s = ( smin + smax ) * 0.5f;
+		if( s == smin || s == smax )
 			break;
 
 		float g = -1;
 		for( i = 0; i < numComponents; ++i ) {
-			float ratio = numerator[i] / (s + pSqr[i]);
+			float ratio = numerator[i] / ( s + pSqr[i] );
 			g += ratio * ratio;
 		}
 
@@ -159,147 +158,144 @@ float PointOnEllipseBisector( int numComponents, const vec2 &extents, const vec2
 
 	float sqrDistance = 0;
 	for( i = 0; i < numComponents; ++i ) {
-		x[i] = pSqr[i] * y[i] / (s + pSqr[i]);
+		x[i] = pSqr[i] * y[i] / ( s + pSqr[i] );
 		float diff = x[i] - y[i];
-		sqrDistance += diff*diff;
+		sqrDistance += diff * diff;
 	}
 	return sqrDistance;
 }
 
 float PointOnEllipseSqrDistanceSpecial( const vec2 &extents, const vec2 &y, vec2 &x )
 {
-    float sqrDistance = 0;
+	float sqrDistance = 0;
 
-    vec2 ePos, yPos, xPos;
-    int numPos = 0;
-    for( int i = 0; i < 2; ++i ) {
-        if( y[i] > 0 ) {
-            ePos[numPos] = extents[i];
-            yPos[numPos] = y[i];
-            ++numPos;
-        }
-        else
-            x[i] = 0;
-    }
+	vec2 ePos, yPos, xPos;
+	int  numPos = 0;
+	for( int i = 0; i < 2; ++i ) {
+		if( y[i] > 0 ) {
+			ePos[numPos] = extents[i];
+			yPos[numPos] = y[i];
+			++numPos;
+		}
+		else
+			x[i] = 0;
+	}
 
-    if( y[2 - 1] > 0 )
-        sqrDistance = PointOnEllipseBisector( numPos, ePos, yPos, xPos );
-    else {  // y[N-1] = 0
-        float numer[1], denom[1];
-        float eNm1Sqr = extents[2 - 1] * extents[2 - 1];
-        for( int i = 0; i < numPos; ++i)
-        {
-            numer[i] = ePos[i] * yPos[i];
-            denom[i] = ePos[i] * ePos[i] - eNm1Sqr;
-        }
+	if( y[2 - 1] > 0 )
+		sqrDistance = PointOnEllipseBisector( numPos, ePos, yPos, xPos );
+	else { // y[N-1] = 0
+		float numer[1], denom[1];
+		float eNm1Sqr = extents[2 - 1] * extents[2 - 1];
+		for( int i = 0; i < numPos; ++i ) {
+			numer[i] = ePos[i] * yPos[i];
+			denom[i] = ePos[i] * ePos[i] - eNm1Sqr;
+		}
 
-        bool inSubHyperbox = true;
-        for( int i = 0; i < numPos; ++i) {
-            if( numer[i] >= denom[i]) {
-                inSubHyperbox = false;
-                break;
-            }
-        }
+		bool inSubHyperbox = true;
+		for( int i = 0; i < numPos; ++i ) {
+			if( numer[i] >= denom[i] ) {
+				inSubHyperbox = false;
+				break;
+			}
+		}
 
-        bool inSubHyperellipsoid = false;
-        if( inSubHyperbox ) {
-            // yPos[] is inside the axis-aligned bounding box of the
-            // subhyperellipsoid.  This intermediate test is designed to guard
-            // against the division by zero when ePos[i] == e[N-1] for some i.
-            float xde[1];
-            float discr = 1;
-            for( int i = 0; i < numPos; ++i)
-            {
-                xde[i] = numer[i] / denom[i];
-                discr -= xde[i] * xde[i];
-            }
-            if( discr > 0 ) {
-                // yPos[] is inside the subhyperellipsoid.  The closest
-                // hyperellipsoid point has x[N-1] > 0.
-                sqrDistance = 0;
-                for( int i = 0; i < numPos; ++i)
-                {
-                    xPos[i] = ePos[i] * xde[i];
-                    float diff = xPos[i] - yPos[i];
-                    sqrDistance += diff*diff;
-                }
-                x[2 - 1] = extents[2 - 1] * sqrt(discr);
-                sqrDistance += x[2 - 1] * x[2 - 1];
-                inSubHyperellipsoid = true;
-            }
-        }
+		bool inSubHyperellipsoid = false;
+		if( inSubHyperbox ) {
+			// yPos[] is inside the axis-aligned bounding box of the
+			// subhyperellipsoid.  This intermediate test is designed to guard
+			// against the division by zero when ePos[i] == e[N-1] for some i.
+			float xde[1];
+			float discr = 1;
+			for( int i = 0; i < numPos; ++i ) {
+				xde[i] = numer[i] / denom[i];
+				discr -= xde[i] * xde[i];
+			}
+			if( discr > 0 ) {
+				// yPos[] is inside the subhyperellipsoid.  The closest
+				// hyperellipsoid point has x[N-1] > 0.
+				sqrDistance = 0;
+				for( int i = 0; i < numPos; ++i ) {
+					xPos[i] = ePos[i] * xde[i];
+					float diff = xPos[i] - yPos[i];
+					sqrDistance += diff * diff;
+				}
+				x[2 - 1] = extents[2 - 1] * sqrt( discr );
+				sqrDistance += x[2 - 1] * x[2 - 1];
+				inSubHyperellipsoid = true;
+			}
+		}
 
-        if( ! inSubHyperellipsoid ) {
-            // yPos[] is outside the subhyperellipsoid.  The closest
-            // hyperellipsoid point has x[N-1] == 0 and is on the
-            // domain-boundary hyperellipsoid.
-            x[2 - 1] = 0;
-            sqrDistance = PointOnEllipseBisector( numPos, ePos, yPos, xPos );
-        }
-    }
+		if( !inSubHyperellipsoid ) {
+			// yPos[] is outside the subhyperellipsoid.  The closest
+			// hyperellipsoid point has x[N-1] == 0 and is on the
+			// domain-boundary hyperellipsoid.
+			x[2 - 1] = 0;
+			sqrDistance = PointOnEllipseBisector( numPos, ePos, yPos, xPos );
+		}
+	}
 
-    // Fill in those x[] values that were not zeroed out initially.
-    for( int i = 0, numPos = 0; i < 2; ++i ) {
-        if( y[i] > 0 ) {
-            x[i] = xPos[numPos];
-            ++numPos;
-        }
-    }
+	// Fill in those x[] values that were not zeroed out initially.
+	for( int i = 0, numPos = 0; i < 2; ++i ) {
+		if( y[i] > 0 ) {
+			x[i] = xPos[numPos];
+			++numPos;
+		}
+	}
 
-    return sqrDistance;
+	return sqrDistance;
 }
 
 float PointOnEllipseSqrDistance( const vec2 &extents, const vec2 &y, vec2 &x )
 {
-    // Determine negations for y to the first octant.
-    bool negate[2];
-    for( int i = 0; i < 2; ++i )
-        negate[i] = y[i] < 0;
+	// Determine negations for y to the first octant.
+	bool negate[2];
+	for( int i = 0; i < 2; ++i )
+		negate[i] = y[i] < 0;
 
-    // Determine the axis order for decreasing extents.
-    std::pair<float, int> permute[2];
-    for( int i = 0; i < 2; ++i ) {
-        permute[i].first = -extents[i];
-        permute[i].second = i;
-    }
-    std::sort( &permute[0], &permute[2] );
+	// Determine the axis order for decreasing extents.
+	std::pair<float, int> permute[2];
+	for( int i = 0; i < 2; ++i ) {
+		permute[i].first = -extents[i];
+		permute[i].second = i;
+	}
+	std::sort( &permute[0], &permute[2] );
 
-    int invPermute[2];
-    for( int i = 0; i < 2; ++i )
-        invPermute[permute[i].second] = i;
+	int invPermute[2];
+	for( int i = 0; i < 2; ++i )
+		invPermute[permute[i].second] = i;
 
-    vec2 locE, locY;
-	int j;
-    for( int i = 0; i < 2; ++i ) {
-        j = permute[i].second;
-        locE[i] = extents[j];
-        locY[i] = std::abs(y[j]);
-    }
+	vec2 locE, locY;
+	int  j;
+	for( int i = 0; i < 2; ++i ) {
+		j = permute[i].second;
+		locE[i] = extents[j];
+		locY[i] = std::abs( y[j] );
+	}
 
-    vec2 locX;
-    float sqrDistance = PointOnEllipseSqrDistanceSpecial( locE, locY, locX );
+	vec2  locX;
+	float sqrDistance = PointOnEllipseSqrDistanceSpecial( locE, locY, locX );
 
-    // Restore the axis order and reflections.
-    for( int i = 0; i < 2; ++i ) {
-        j = invPermute[i];
-        if( negate[i] )
-            locX[j] = -locX[j];
-        x[i] = locX[j];
-    }
+	// Restore the axis order and reflections.
+	for( int i = 0; i < 2; ++i ) {
+		j = invPermute[i];
+		if( negate[i] )
+			locX[j] = -locX[j];
+		x[i] = locX[j];
+	}
 
-    return sqrDistance;
+	return sqrDistance;
 }
 } // anonymous namespace for closestPointOnEllipse
 
-vec2 getClosestPointEllipse( const vec2& center, const vec2& axisA, const vec2& axisB, const vec2& testPoint )
+vec2 getClosestPointEllipse( const vec2 &center, const vec2 &axisA, const vec2 &axisB, const vec2 &testPoint )
 {
 	// Compute the coordinates of Y in the hyperellipsoid coordinate system.
 	float lengthA = length( axisA );
 	float lengthB = length( axisB );
-	vec2 unitA = axisA / lengthA;
-	vec2 unitB = axisB / lengthB;
-	vec2 diff = testPoint - center;
-	vec2 y( dot( diff, unitA ), dot( diff, unitB ) );
+	vec2  unitA = axisA / lengthA;
+	vec2  unitB = axisB / lengthB;
+	vec2  diff = testPoint - center;
+	vec2  y( dot( diff, unitA ), dot( diff, unitB ) );
 
 	// Compute the closest hyperellipsoid point in the axis-aligned
 	// coordinate system.
@@ -315,10 +311,9 @@ vec2 getClosestPointEllipse( const vec2& center, const vec2& axisA, const vec2& 
 	return result;
 }
 
-union float32_t
-{
+union float32_t {
 	float f;
-	uint u;
+	uint  u;
 	struct {
 		uint Mantissa : 23;
 		uint Exponent : 8;
@@ -329,35 +324,35 @@ union float32_t
 // Algorithm due to Fabian "ryg" Giesen.
 static half_float float_to_half( float32_t f )
 {
-    float32_t f32infty = { 255 << 23 };
-    float32_t f16infty = { 31 << 23 };
-    float32_t magic = { 15 << 23 };
-    uint sign_mask = 0x80000000u;
-    uint round_mask = ~0xfffu; 
-    half_float o = { 0 };
- 
-    uint sign = f.u & sign_mask;
-    f.u ^= sign;
- 
-    // NOTE all the integer compares in this function can be safely
-    // compiled into signed compares since all operands are below
-    // 0x80000000. Important if you want fast straight SSE2 code
-    // (since there's no unsigned PCMPGTD).
- 
-    if (f.u >= f32infty.u) // Inf or NaN (all exponent bits set)
-        o.u = (f.u > f32infty.u) ? 0x7e00 : 0x7c00; // NaN->qNaN and Inf->Inf
-    else // (De)normalized number or zero
-    {
-        f.u &= round_mask;
-        f.f *= magic.f;
-        f.u -= round_mask;
-        if (f.u > f16infty.u) f.u = f16infty.u; // Clamp to signed infinity if overflowed
- 
-        o.u = f.u >> 13; // Take the bits!
-    }
- 
-    o.u |= sign >> 16;
-    return o;
+	float32_t  f32infty = { 255 << 23 };
+	float32_t  f16infty = { 31 << 23 };
+	float32_t  magic = { 15 << 23 };
+	uint       sign_mask = 0x80000000u;
+	uint       round_mask = ~0xfffu;
+	half_float o = { 0 };
+
+	uint sign = f.u & sign_mask;
+	f.u ^= sign;
+
+	// NOTE all the integer compares in this function can be safely
+	// compiled into signed compares since all operands are below
+	// 0x80000000. Important if you want fast straight SSE2 code
+	// (since there's no unsigned PCMPGTD).
+
+	if( f.u >= f32infty.u ) // Inf or NaN (all exponent bits set)
+		o.u = ( f.u > f32infty.u ) ? 0x7e00 : 0x7c00; // NaN->qNaN and Inf->Inf
+	else // (De)normalized number or zero
+	{
+		f.u &= round_mask;
+		f.f *= magic.f;
+		f.u -= round_mask;
+		if( f.u > f16infty.u ) f.u = f16infty.u; // Clamp to signed infinity if overflowed
+
+		o.u = f.u >> 13; // Take the bits!
+	}
+
+	o.u |= sign >> 16;
+	return o;
 }
 
 cinder::half_float floatToHalf( float f )
@@ -369,22 +364,22 @@ cinder::half_float floatToHalf( float f )
 float halfToFloat( cinder::half_float h )
 {
 	static const float32_t magic = { 113 << 23 };
-	static const uint shifted_exp = 0x7c00 << 13; // exponent mask after shift
-	float32_t o;
+	static const uint      shifted_exp = 0x7c00 << 13; // exponent mask after shift
+	float32_t              o;
 
-	o.u = (h.u & 0x7fff) << 13;     // exponent/mantissa bits
-	uint exp = shifted_exp & o.u;   // just the exponent
-	o.u += (127 - 15) << 23;        // exponent adjust
+	o.u = ( h.u & 0x7fff ) << 13; // exponent/mantissa bits
+	uint exp = shifted_exp & o.u; // just the exponent
+	o.u += ( 127 - 15 ) << 23; // exponent adjust
 
 	// handle exponent special cases
-	if (exp == shifted_exp) // Inf/NaN?
-		o.u += (128 - 16) << 23;    // extra exp adjust
-	else if (exp == 0) { // Zero/Denormal?
-		o.u += 1 << 23;             // extra exp adjust
-		o.f -= magic.f;             // renormalize
+	if( exp == shifted_exp ) // Inf/NaN?
+		o.u += ( 128 - 16 ) << 23; // extra exp adjust
+	else if( exp == 0 ) { // Zero/Denormal?
+		o.u += 1 << 23; // extra exp adjust
+		o.f -= magic.f; // renormalize
 	}
 
-	o.u |= (h.u & 0x8000) << 16;    // sign bit
+	o.u |= ( h.u & 0x8000 ) << 16; // sign bit
 	return o.f;
 }
 

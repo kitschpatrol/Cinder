@@ -27,33 +27,34 @@ using namespace std;
 
 @implementation CaptureImplCocoaDummy
 
-+ (const std::vector<cinder::Capture::DeviceRef>&)getDevices:(BOOL)forceRefresh
++ (const std::vector<cinder::Capture::DeviceRef> &)getDevices:(BOOL)forceRefresh
 {
-	static bool sInitialized = false;
+	static bool                               sInitialized = false;
 	static vector<cinder::Capture::DeviceRef> sDevices;
-	if( ! sInitialized ) {
+	if( !sInitialized ) {
 		sDevices.push_back( cinder::Capture::DeviceRef( new cinder::CaptureImplCocoaDummyDevice( "Front", "front", true ) ) );
 		sDevices.push_back( cinder::Capture::DeviceRef( new cinder::CaptureImplCocoaDummyDevice( "Rear", "rear", false ) ) );
-		
+
 		sInitialized = true;
 	}
-	
+
 	return sDevices;
 }
 
 - (id)initWithDevice:(const cinder::Capture::DeviceRef)device width:(int)width height:(int)height
 {
 	self = [super init];
-	
+
 	mDevice = device;
 	mSurface = cinder::Surface8u::create( width, height, false );
 	cinder::ip::fill( mSurface.get(), cinder::Color8u( 0, 0, 0 ) );
-	
+
 	return self;
 }
 
 - (void)prepareStartCapture
-{}
+{
+}
 
 - (void)startCapture
 {

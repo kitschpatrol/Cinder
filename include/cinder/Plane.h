@@ -25,15 +25,15 @@
 
 #pragma once
 
-#include "cinder/Vector.h"
 #include "cinder/Exception.h"
+#include "cinder/Vector.h"
 
 #include <iostream>
 
 namespace cinder {
 
 //! Represents a Plane, as a geometric primitive, useful in conducting tests in 3D space.
-template<typename T>
+template <typename T>
 class PlaneT {
   public:
 	typedef glm::tvec3<T, glm::defaultp> Vec3T;
@@ -43,37 +43,38 @@ class PlaneT {
 	PlaneT( const Vec3T &point, const Vec3T &normal );
 	PlaneT( T a, T b, T c, T d );
 
-	//! Defines a plane using 3 points. 
-	void	set( const Vec3T &v1, const Vec3T &v2, const Vec3T &v3 );
+	//! Defines a plane using 3 points.
+	void set( const Vec3T &v1, const Vec3T &v2, const Vec3T &v3 );
 	//! Defines a plane using a normal vector and a point.
-	void	set( const Vec3T &point, const Vec3T &normal );
+	void set( const Vec3T &point, const Vec3T &normal );
 	//! Defines a plane using 4 coefficients.
-	void	set( T a, T b, T c, T d );
+	void set( T a, T b, T c, T d );
 
-	Vec3T			getPoint() const						{ return mNormal * mDistance; };
-	const Vec3T&	getNormal() const						{ return mNormal; };
-	T				getDistance() const						{ return mDistance; }
-	T				distance( const Vec3T &p ) const		{ return dot( mNormal, p ) - mDistance; };
-
-	Vec3T			reflectPoint( const Vec3T &p ) const	{ return mNormal * distance( p ) * (T)(-2) + p; }
-	Vec3T			reflectVector( const Vec3T &v ) const	{ return mNormal * dot( mNormal, v ) * (T)2 - v; }
-
+	Vec3T        getPoint() const { return mNormal * mDistance; };
+	const Vec3T &getNormal() const { return mNormal; };
+	T            getDistance() const { return mDistance; }
+	T distance( const Vec3T &p ) const { return dot( mNormal, p ) - mDistance; };
+	Vec3T reflectPoint( const Vec3T &p ) const { return mNormal * distance( p ) * ( T )( -2 ) + p; }
+	Vec3T reflectVector( const Vec3T &v ) const { return mNormal * dot( mNormal, v ) * (T)2 - v; }
   private:
-	Vec3T		mNormal;
-	T			mDistance;
+	Vec3T mNormal;
+	T     mDistance;
 
   public:
 	// Hack to define the plane using a different type of Vec3 (required for some types that aren't yet templated)
 	template <typename Vec3Y>
-	void	set( const Vec3Y &v1, const Vec3Y &v2, const Vec3Y &v3 )	{ set( Vec3T( v1 ), Vec3T( v2 ), Vec3T( v3 ) ); }
+	void set( const Vec3Y &v1, const Vec3Y &v2, const Vec3Y &v3 )
+	{
+		set( Vec3T( v1 ), Vec3T( v2 ), Vec3T( v3 ) );
+	}
 };
 
-typedef PlaneT<float>	Plane;
-typedef PlaneT<float>	Planef;
-typedef PlaneT<double>	Planed;
+typedef PlaneT<float>  Plane;
+typedef PlaneT<float>  Planef;
+typedef PlaneT<double> Planed;
 
-template<typename T>
-std::ostream& operator<<( std::ostream &o, const PlaneT<T> &p )
+template <typename T>
+std::ostream &operator<<( std::ostream &o, const PlaneT<T> &p )
 {
 	return o << "(" << p.mNormal << ", " << p.mDistance << ")";
 }
@@ -82,8 +83,9 @@ std::ostream& operator<<( std::ostream &o, const PlaneT<T> &p )
 class PlaneExc : public Exception {
   public:
 	PlaneExc()
-		: Exception( "Invalid parameters specified" )
-	{}
+	    : Exception( "Invalid parameters specified" )
+	{
+	}
 };
 
 } // namespace cinder

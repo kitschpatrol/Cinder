@@ -25,14 +25,15 @@
 #include "cinder/gl/Query.h"
 #include "cinder/CinderAssert.h"
 
-namespace cinder { namespace gl {
-	
-#if ! defined( CINDER_GL_ES )
+namespace cinder {
+namespace gl {
+
+#if !defined( CINDER_GL_ES )
 /////////////////////////////////////////////////////////////////////////////////
 // Query
 
 Query::Query( GLuint target )
-	: mTarget( target ), mId( 0 ) 
+    : mTarget( target ), mId( 0 )
 {
 	glGenQueries( 1, &mId );
 }
@@ -105,9 +106,9 @@ QueryTimeSwappedRef QueryTimeSwapped::create()
 {
 	return QueryTimeSwappedRef( new QueryTimeSwapped );
 }
-	
+
 QueryTimeSwapped::QueryTimeSwapped()
-	: mSwapIndex( 0 ), mIsStopped( true )
+    : mSwapIndex( 0 ), mIsStopped( true )
 {
 	mQueryBuffers[0] = Query::create( GL_TIME_ELAPSED );
 	mQueryBuffers[1] = Query::create( GL_TIME_ELAPSED );
@@ -123,7 +124,7 @@ void QueryTimeSwapped::begin()
 
 void QueryTimeSwapped::end()
 {
-	if( ! mIsStopped ) {
+	if( !mIsStopped ) {
 		mQueryBuffers[mSwapIndex]->end();
 		mIsStopped = true;
 		swap();
@@ -134,13 +135,13 @@ void QueryTimeSwapped::swap()
 {
 	mSwapIndex = 1 - mSwapIndex;
 }
-	
+
 uint64_t QueryTimeSwapped::getElapsedNanoseconds() const
 {
-	if( ! mIsStopped ) {
+	if( !mIsStopped ) {
 		throw QueryException( "end() must be called before querying the result." );
 	}
-	const auto& query = mQueryBuffers[mSwapIndex];
+	const auto &query = mQueryBuffers[mSwapIndex];
 	return ( query->isValid() ) ? query->getValueUInt64() : 0;
 }
 
@@ -155,5 +156,5 @@ double QueryTimeSwapped::getElapsedSeconds() const
 }
 
 #endif // ! defined( CINDER_GL_ES )
-
-} } // namespace cinder::gl
+}
+} // namespace cinder::gl

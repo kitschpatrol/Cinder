@@ -31,12 +31,14 @@
 #include <vector>
 
 #if defined( CINDER_AUDIO_VDSP )
-	#include <Accelerate/Accelerate.h>
+#include <Accelerate/Accelerate.h>
 #else
-	#define CINDER_AUDIO_FFT_OOURA
+#define CINDER_AUDIO_FFT_OOURA
 #endif
 
-namespace cinder { namespace audio { namespace dsp {
+namespace cinder {
+namespace audio {
+namespace dsp {
 
 //! Real Discrete Fourier Transform (DFT).
 class Fft {
@@ -50,22 +52,22 @@ class Fft {
 	//! Computes the Inverse DFT of \a spectral, filling \a waveform with time-domain audio data
 	void inverse( const BufferSpectral *spectral, Buffer *waveform );
 	//! Returns the size of the FFT.
-	size_t getSize() const	{ return mSize; }
-
+	size_t getSize() const { return mSize; }
   protected:
 	void init();
 
-	size_t				mSize, mSizeOverTwo;
+	size_t mSize, mSizeOverTwo;
 
 #if defined( CINDER_AUDIO_VDSP )
-	size_t				mLog2FftSize;
-	::FFTSetup			mFftSetup;
-	::DSPSplitComplex	mSplitComplexSignal, mSplitComplexResult;
+	size_t            mLog2FftSize;
+	::FFTSetup        mFftSetup;
+	::DSPSplitComplex mSplitComplexSignal, mSplitComplexResult;
 #elif defined( CINDER_AUDIO_FFT_OOURA )
-	Buffer				mBufferCopy;
-	int					*mOouraIp;
-	float				*mOouraW;
+	Buffer mBufferCopy;
+	int *  mOouraIp;
+	float *mOouraW;
 #endif
 };
-
-} } } // namespace cinder::audio::dsp
+}
+}
+} // namespace cinder::audio::dsp

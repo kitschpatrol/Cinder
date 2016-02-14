@@ -40,55 +40,57 @@
 
 #pragma once
 
-#if ! defined( NDEBUG ) && ! defined( CI_DISABLE_ASSERTS )
+#if !defined( NDEBUG ) && !defined( CI_DISABLE_ASSERTS )
 
-	#include "cinder/CurrentFunction.h"
-	#include <cassert>
+#include "cinder/CurrentFunction.h"
+#include <cassert>
 
-	// defined in CinderAssert.cpp
-	namespace cinder { namespace detail {
-		void assertionFailedBreak( char const *expr, char const *function, char const *file, long line );
-		void assertionFailedMessageBreak( char const *expr, char const *msg, char const *function, char const *file, long line );
-		void assertionFailedMessageAbort( char const *expr, char const *msg, char const *function, char const *file, long line );
-	} } // namespace cinder::detail
+// defined in CinderAssert.cpp
+namespace cinder {
+namespace detail {
+void assertionFailedBreak( char const *expr, char const *function, char const *file, long line );
+void assertionFailedMessageBreak( char const *expr, char const *msg, char const *function, char const *file, long line );
+void assertionFailedMessageAbort( char const *expr, char const *msg, char const *function, char const *file, long line );
+}
+} // namespace cinder::detail
 
-	#if defined( CI_ASSERT_DEBUG_BREAK )
+#if defined( CI_ASSERT_DEBUG_BREAK )
 
-		#define CI_ASSERT( expr ) ( (expr) ? ( (void)0) : ::cinder::detail::assertionFailedBreak( #expr, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
-		#define CI_ASSERT_MSG( expr, msg ) ( (expr) ? ( (void)0) : ::cinder::detail::assertionFailedMessageBreak( #expr, msg, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
+#define CI_ASSERT( expr ) ( ( expr ) ? ( (void)0 ) : ::cinder::detail::assertionFailedBreak( #expr, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
+#define CI_ASSERT_MSG( expr, msg ) ( ( expr ) ? ( (void)0 ) : ::cinder::detail::assertionFailedMessageBreak( #expr, msg, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
 
-	#elif defined( CI_ENABLE_ASSERT_HANDLER )
+#elif defined( CI_ENABLE_ASSERT_HANDLER )
 
-		// User opts to define these assertion handlers
-		namespace cinder {
-			//! Called when CI_ASSERT() fails
-			void assertionFailed( char const *expr, char const *function, char const *file, long line );
-			//! Called when CI_ASSERT_MSG() fails
-			void assertionFailedMessage( char const *expr, char const *msg, char const *function, char const *file, long line );
-		}
+// User opts to define these assertion handlers
+namespace cinder {
+//! Called when CI_ASSERT() fails
+void assertionFailed( char const *expr, char const *function, char const *file, long line );
+//! Called when CI_ASSERT_MSG() fails
+void assertionFailedMessage( char const *expr, char const *msg, char const *function, char const *file, long line );
+}
 
-		#define CI_ASSERT( expr ) ( (expr) ? ( (void)0) : ::cinder::assertionFailed( #expr, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
-		#define CI_ASSERT_MSG( expr, msg ) ( (expr) ? ( (void)0) : ::cinder::assertionFailedMessage( #expr, msg, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
+#define CI_ASSERT( expr ) ( ( expr ) ? ( (void)0 ) : ::cinder::assertionFailed( #expr, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
+#define CI_ASSERT_MSG( expr, msg ) ( ( expr ) ? ( (void)0 ) : ::cinder::assertionFailedMessage( #expr, msg, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
 
-	#else // defined( CI_ENABLE_ASSERT_HANDLER )
+#else // defined( CI_ENABLE_ASSERT_HANDLER )
 
-		#define CI_ASSERT( expr )				assert( expr )
-		#define CI_ASSERT_MSG( expr, msg )		( (expr) ? ( (void)0) : ::cinder::detail::assertionFailedMessageAbort( #expr, msg, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
+#define CI_ASSERT( expr ) assert( expr )
+#define CI_ASSERT_MSG( expr, msg ) ( ( expr ) ? ( (void)0 ) : ::cinder::detail::assertionFailedMessageAbort( #expr, msg, CINDER_CURRENT_FUNCTION, __FILE__, __LINE__ ) )
 
-	#endif // defined( CI_ASSERT_DEBUG_BREAK )
+#endif // defined( CI_ASSERT_DEBUG_BREAK )
 
-	#define CI_VERIFY( expr )			CI_ASSERT( expr )
-	#define CI_VERIFY_MSG( expr, msg )	CI_ASSERT_MSG( expr, msg )
+#define CI_VERIFY( expr ) CI_ASSERT( expr )
+#define CI_VERIFY_MSG( expr, msg ) CI_ASSERT_MSG( expr, msg )
 
-	#define CI_ASSERT_NOT_REACHABLE()	CI_ASSERT_MSG( 0, "not reachable" )
+#define CI_ASSERT_NOT_REACHABLE() CI_ASSERT_MSG( 0, "not reachable" )
 
 #else
 
-	#define CI_ASSERT( expr )			( (void)0 )
-	#define CI_ASSERT_MSG( expr, msg )	( (void)0 )
-	#define CI_VERIFY( expr )			( (void)(expr) )
-	#define CI_VERIFY_MSG( expr, msg )	( (void)(expr) )
+#define CI_ASSERT( expr ) ( (void)0 )
+#define CI_ASSERT_MSG( expr, msg ) ( (void)0 )
+#define CI_VERIFY( expr ) ( (void)( expr ) )
+#define CI_VERIFY_MSG( expr, msg ) ( (void)( expr ) )
 
-	#define CI_ASSERT_NOT_REACHABLE()	( (void)0 )
+#define CI_ASSERT_NOT_REACHABLE() ( (void)0 )
 
 #endif

@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "cinder/Cinder.h"
 #include "cinder/Buffer.h"
+#include "cinder/Cinder.h"
 
 #include <string>
 

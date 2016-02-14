@@ -24,13 +24,13 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "cinder/Cinder.h"
-#include "cinder/Url.h"
 #include "cinder/DataSource.h"
+#include "cinder/Url.h"
 #undef check
 #include <boost/lexical_cast.hpp>
 
@@ -45,7 +45,7 @@ fs::path getDocumentsDirectory();
 
 //! Launches a path in a web browser
 void launchWebBrowser( const Url &url );
-	
+
 //! Returns a vector of substrings split by the separator \a separator. <tt>split( "one two three", ' ' ) -> [ "one", "two", "three" ]</tt> If \a compress is TRUE, it will consider consecutive separators as one.
 std::vector<std::string> split( const std::string &str, char separator, bool compress = true );
 //! Returns a vector of substrings split by the characters in \a separators. <tt>split( "one, two, three", " ," ) -> [ "one", "two", "three" ]</tt> If \a compress is TRUE, it will consider consecutive separators as one.
@@ -58,40 +58,64 @@ std::string loadString( const DataSourceRef &dataSource );
 void sleep( float milliseconds );
 
 //! Returns the path separator for the host operating system's file system, \c '\' on Windows and \c '/' on Mac OS
-#if (defined( CINDER_MSW ) || defined( CINDER_WINRT ))
-inline char getPathSeparator() { return '\\'; }
+#if( defined( CINDER_MSW ) || defined( CINDER_WINRT ) )
+inline char getPathSeparator()
+{
+	return '\\';
+}
 #else
-inline char getPathSeparator() { return '/'; }
+inline char getPathSeparator()
+{
+	return '/';
+}
 #endif
 
 //! Returns a std::map of the system's environment variables. Empty on WinRT.
 std::map<std::string, std::string> getEnvironmentVariables();
 
-template<typename T>
-inline std::string toString( const T &t ) { return boost::lexical_cast<std::string>( t ); }
-template<typename T>
-inline T fromString( const std::string &s ) { return boost::lexical_cast<T>( s ); }
+template <typename T>
+inline std::string toString( const T &t )
+{
+	return boost::lexical_cast<std::string>( t );
+}
+template <typename T>
+inline T fromString( const std::string &s )
+{
+	return boost::lexical_cast<T>( s );
+}
 // This specialization seems to only be necessary with more recent versions of Boost
-template<>
-inline Url fromString( const std::string &s ) { return Url( s ); }
-#if defined(CINDER_COCOA_TOUCH)
+template <>
+inline Url fromString( const std::string &s )
+{
+	return Url( s );
+}
+#if defined( CINDER_COCOA_TOUCH )
 // Necessary because boost::lexical_cast crashes when trying to convert a string to a double on iOS
-template<>
-inline double fromString( const std::string &s ) { return atof( s.c_str() ); }
+template <>
+inline double fromString( const std::string &s )
+{
+	return atof( s.c_str() );
+}
 #endif
 
 //! Returns a stack trace (aka backtrace) where \c stackTrace()[0] == caller, \c stackTrace()[1] == caller's parent, etc
 std::vector<std::string> stackTrace();
 
 // ENDIANNESS
-inline int8_t	swapEndian( int8_t val ) { return val; }
-inline uint8_t	swapEndian( uint8_t val ) { return val; }
-extern int16_t	swapEndian( int16_t val );
-extern uint16_t	swapEndian( uint16_t val );
-extern int32_t	swapEndian( int32_t val );
+inline int8_t swapEndian( int8_t val )
+{
+	return val;
+}
+inline uint8_t swapEndian( uint8_t val )
+{
+	return val;
+}
+extern int16_t swapEndian( int16_t val );
+extern uint16_t swapEndian( uint16_t val );
+extern int32_t swapEndian( int32_t val );
 extern uint32_t swapEndian( uint32_t val );
-extern float	swapEndian( float val );
-extern double	swapEndian( double val );
+extern float swapEndian( float val );
+extern double swapEndian( double val );
 
 extern void swapEndianBlock( uint16_t *blockPtr, size_t blockSizeInBytes );
 extern void swapEndianBlock( float *blockPtr, size_t blockSizeInBytes );

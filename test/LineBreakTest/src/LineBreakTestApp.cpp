@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/gl/gl.h"
-#include "cinder/Unicode.h"
 #include "cinder/Text.h"
+#include "cinder/Unicode.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -10,19 +10,19 @@ using namespace std;
 
 Font font;
 vec2 pos;
-int maxWidth = 230;
+int  maxWidth = 230;
 
 class LineBreakTestApp : public App {
   public:
 	void setup();
-	void mouseDrag( MouseEvent event );	
+	void mouseDrag( MouseEvent event );
 	void update();
 	void draw();
-}; 
+};
 
 bool lineWidth( const char *s, size_t len, size_t maxLen )
 {
-//return len <= 6;
+	//return len <= 6;
 	TextBox box;
 	box.setFont( font );
 	box.setText( string( s, len ) );
@@ -31,7 +31,7 @@ bool lineWidth( const char *s, size_t len, size_t maxLen )
 
 void print( const char *s, size_t len )
 {
-/*	size_t lenBeforeBreak = 0;
+	/*	size_t lenBeforeBreak = 0;
 	bool found = false;
 	while( lenBeforeBreak < len ) {
 		size_t tempLen = lenBeforeBreak;
@@ -43,11 +43,11 @@ void print( const char *s, size_t len )
 		lenBeforeBreak = tempLen;
 	}
 	app::console() << "{" << string( s, lenBeforeBreak ) << ( (found)?"!":"" ) << "}" << std::endl;*/
-	
+
 	gl::drawString( string( s, len ), pos, ColorA::white(), font );
-int asc = font.getAscent();
-int desc = font.getDescent();
-int lead = font.getLeading();
+	int asc = font.getAscent();
+	int desc = font.getDescent();
+	int lead = font.getLeading();
 	pos.y += font.getLeading() + font.getAscent() + font.getDescent();
 }
 
@@ -67,7 +67,7 @@ void LineBreakTestApp::setup()
 	vector<uint16_t> s16;
 	for( int i = 0; i < strlen( s8 ); ++i )
 		s16.push_back( s8[i] );
-	console() << s8 << std::endl;	
+	console() << s8 << std::endl;
 	vector<uint8_t> utf16Breaks;
 	calcLinebreaksUtf16( &s16[0], s16.size(), &utf16Breaks );
 	for( auto it = utf16Breaks.begin(); it != utf16Breaks.end(); ++it )
@@ -88,18 +88,18 @@ void LineBreakTestApp::draw()
 {
 	// clear out the window with black
 	gl::enableAlphaBlending();
-	gl::clear( Color( 0, 0, 0 ) ); 
+	gl::clear( Color( 0, 0, 0 ) );
 	gl::color( ColorA::white() );
 
 	pos.x = 0;
 	pos.y = 10;
-//	const char *s = "a just.";
+	//	const char *s = "a just.";
 	const char *s = "just some stuff\n\nthat\nis longer than one line. I mean substantially longer...";
-//	const char *s = "消費増税\n\n法案をめぐる事前事前事前審査を行っていた民主党税調などの合同総会は２８日未明、「名目３％程度、実質２％程度」の経済成長率の数値目標を付則に盛り込んだ新たな修正案を了承し、前原誠司政調会長に対応を一任した。野内閣は３０日に閣議決定を行う。";
-//	for( size_t l = 1; l < 30; ++l ) {
+	//	const char *s = "消費増税\n\n法案をめぐる事前事前事前審査を行っていた民主党税調などの合同総会は２８日未明、「名目３％程度、実質２％程度」の経済成長率の数値目標を付則に盛り込んだ新たな修正案を了承し、前原誠司政調会長に対応を一任した。野内閣は３０日に閣議決定を行う。";
+	//	for( size_t l = 1; l < 30; ++l ) {
 	//	std::cout << l << ":" << std::endl;
-		lineBreakUtf8( s,std::bind( lineWidth, std::placeholders::_1, std::placeholders::_2, maxWidth ), print );
-//	}
+	lineBreakUtf8( s, std::bind( lineWidth, std::placeholders::_1, std::placeholders::_2, maxWidth ), print );
+	//	}
 	gl::color( ColorA( 1, 0, 0, 0.5 ) );
 	TextBox box;
 	box.setSize( ivec2( maxWidth, TextBox::GROW ) );

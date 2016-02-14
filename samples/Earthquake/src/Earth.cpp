@@ -8,8 +8,8 @@
  */
 
 #include "cinder/app/App.h"
-#include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
+#include "cinder/gl/gl.h"
 
 #include "Earth.h"
 #include "Resources.h"
@@ -18,7 +18,7 @@ using namespace ci;
 using namespace ci::app;
 
 Earth::Earth()
-	: mLoc( 0 ), mRadius( 250 ), mMinMagToRender( 2 ), mNumQuakes( 0 )
+    : mLoc( 0 ), mRadius( 250 ), mMinMagToRender( 2 ), mNumQuakes( 0 )
 {
 	mLightDir = glm::normalize( vec3( 0.025f, 0.25f, 1.0f ) );
 
@@ -67,7 +67,7 @@ void Earth::update()
 
 	// Update the instance data.
 	if( !mQuakes.empty() && mNumQuakes == 0 ) {
-		mat4 *data = (mat4*) mInstanceDataVbo->mapReplace();
+		mat4 *data = (mat4 *)mInstanceDataVbo->mapReplace();
 		{
 			mNumQuakes = 0;
 			for( auto &quake : mQuakes ) {
@@ -107,11 +107,11 @@ void Earth::drawQuakes()
 
 void Earth::drawQuakeLabelsOnSphere( const vec3 &eyeNormal, const float eyeDist )
 {
-	gl::ScopedDepthTest depthTest( true );
+	gl::ScopedDepthTest  depthTest( true );
 	gl::ScopedDepthWrite depthWrite( false );
-	gl::ScopedGlslProg shader( gl::getStockShader( gl::ShaderDef().color().texture() ) );
+	gl::ScopedGlslProg   shader( gl::getStockShader( gl::ShaderDef().color().texture() ) );
 
-	gl::ScopedColor color( 1, 1, 1 );
+	gl::ScopedColor      color( 1, 1, 1 );
 	gl::ScopedBlendAlpha blend;
 
 	const float distMulti = eyeDist * 0.001f;
@@ -128,7 +128,8 @@ void Earth::drawQuakeLabelsOnSphere( const vec3 &eyeNormal, const float eyeDist 
 		// Calculate billboard vectors.
 		vec3 dir = glm::normalize( mLoc - quake.mLoc );
 		vec3 perp1 = glm::cross( dir, vec3( 0, 1, 0 ) );
-		vec3 perp2 = glm::cross( perp1, dir ); perp1 = glm::cross( perp2, dir );
+		vec3 perp2 = glm::cross( perp1, dir );
+		perp1 = glm::cross( perp2, dir );
 
 		float x = quake.mLocTip.x;
 		float y = quake.mLocTip.y;
@@ -185,7 +186,7 @@ void Earth::repelLocTips()
 				continue;
 
 			// Find the distance between the quakes.
-			vec3 direction = quake2->mLocTip - quake1->mLocTip;
+			vec3  direction = quake2->mLocTip - quake1->mLocTip;
 			float distance = glm::length( direction );
 
 			// If too close...

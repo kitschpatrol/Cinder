@@ -25,10 +25,11 @@
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
 
-namespace cinder { namespace ip {
+namespace cinder {
+namespace ip {
 
 /** Finds the bounding rectangle of the area \a bounds inside of \a surface which contains non-zero alpha **/
-template<typename T>
+template <typename T>
 Area findNonTransparentArea( const SurfaceT<T> &surface, const Area &bounds );
-
-} } // namespace cinder::ip
+}
+} // namespace cinder::ip

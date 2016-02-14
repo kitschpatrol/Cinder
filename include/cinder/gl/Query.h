@@ -24,14 +24,15 @@
 
 #pragma once
 
-#include "cinder/gl/platform.h"
 #include "cinder/Exception.h"
+#include "cinder/gl/platform.h"
 
 #include <array>
 
-namespace cinder { namespace gl {
+namespace cinder {
+namespace gl {
 
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 
 typedef std::shared_ptr<class Query> QueryRef;
 
@@ -41,38 +42,39 @@ class Query {
 	static QueryRef create( GLenum target );
 
 	virtual ~Query();
-	
-	//! Returns the id of this object.
-	GLuint		getId() const { return mId; }
-	//! Returns the target of this object.
-	GLenum		getTarget() const { return mTarget; }
 
+	//! Returns the id of this object.
+	GLuint getId() const { return mId; }
+	//! Returns the target of this object.
+	GLenum getTarget() const { return mTarget; }
 	//! Begins a query.
 	virtual void begin();
 	//! Ends a query.
 	virtual void end();
-	
+
 	//! Returns the value of the underlying query with GLint precision.
-	GLint		getValueInt() const;
+	GLint getValueInt() const;
 	//! Returns the value of the underlying query with GLuint precision.
-	GLuint		getValueUInt() const;
+	GLuint getValueUInt() const;
 	//! Returns the value of the underlying query with GLint64 precision.
-	GLint64		getValueInt64() const;
+	GLint64 getValueInt64() const;
 	//! Returns the value of the underlying query with GLuint64 precision.
-	GLuint64	getValueUInt64() const;
-	
+	GLuint64 getValueUInt64() const;
+
 	//! Returns whether the query object is ready.
-	bool		isReady() const;
+	bool isReady() const;
 	//! Returns whether the query's id is valid (corresponds to an actual query object).
-	bool		isValid() const;
+	bool isValid() const;
+
   protected:
 	Query( GLuint target );
-	
+
 	GLuint mId;
 	GLenum mTarget;
+
   private:
-	Query( const Query& );
-	const Query& operator=( const Query& );
+	Query( const Query & );
+	const Query &operator=( const Query & );
 };
 
 typedef std::shared_ptr<class QueryTimeSwapped> QueryTimeSwappedRef;
@@ -87,32 +89,33 @@ class QueryTimeSwapped {
 	void begin();
 	//! Ends the time elapsed query and swaps the currently active query buffer.
 	void end();
-		
+
 	//! Returns the elapsed nano seconds from the previous frame query. This is the native data type of the underlying query object. Throws logic_error if not stopped.
-	uint64_t	getElapsedNanoseconds() const;
+	uint64_t getElapsedNanoseconds() const;
 	//! Returns the elapsed Milliseconds from the previous frame query. Converts from what gl returns, which is nano seconds. Throws logic_error if not stopped.
-	double		getElapsedMilliseconds() const;
+	double getElapsedMilliseconds() const;
 	//! Returns the elapsed seconds from the previous frame query. Converts from what gl returns, which is nano seconds. Throws logic_error if not stopped.
-	double		getElapsedSeconds() const;
-	
+	double getElapsedSeconds() const;
+
   private:
 	QueryTimeSwapped();
 	//! Swap the currently active query buffer.
 	inline void swap();
 
-	QueryTimeSwapped( const QueryTimeSwapped& );
-	const QueryTimeSwapped& operator=( const QueryTimeSwapped& );
+	QueryTimeSwapped( const QueryTimeSwapped & );
+	const QueryTimeSwapped &operator=( const QueryTimeSwapped & );
 
-	std::array<QueryRef, 2>	mQueryBuffers;
-	bool					mIsStopped;
-	size_t					mSwapIndex;
+	std::array<QueryRef, 2> mQueryBuffers;
+	bool   mIsStopped;
+	size_t mSwapIndex;
 };
-	
+
 class QueryException : public Exception {
   public:
-	QueryException( const std::string &description ) : Exception( description ) { }
+	QueryException( const std::string &description )
+	    : Exception( description ) {}
 };
 
 #endif // ! defined( CINDER_GL_ES )
-
-} } // namespace cinder::gl
+}
+} // namespace cinder::gl

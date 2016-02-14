@@ -39,17 +39,17 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 
-#include "cinder/gl/gl.h"
 #include "cinder/gl/Batch.h"
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Vbo.h"
 #include "cinder/gl/VboMesh.h"
+#include "cinder/gl/gl.h"
 
 #include "cinder/Camera.h"
+#include "cinder/CameraUi.h"
 #include "cinder/Font.h"
 #include "cinder/ImageIo.h"
-#include "cinder/CameraUi.h"
 #include "cinder/ObjLoader.h"
 #include "cinder/Rand.h"
 #include "cinder/TriMesh.h"
@@ -64,15 +64,22 @@ using namespace ci::app;
 using namespace std;
 
 class StereoscopicRenderingApp : public App {
-public:
-	enum FocusMethod { SET_CONVERGENCE, SET_FOCUS, AUTO_FOCUS };
-	enum RenderMethod { MONO, ANAGLYPH_RED_CYAN, SIDE_BY_SIDE, OVER_UNDER, INTERLACED_HORIZONTAL };
+  public:
+	enum FocusMethod { SET_CONVERGENCE,
+		SET_FOCUS,
+		AUTO_FOCUS };
+	enum RenderMethod { MONO,
+		ANAGLYPH_RED_CYAN,
+		SIDE_BY_SIDE,
+		OVER_UNDER,
+		INTERLACED_HORIZONTAL };
 
 	typedef struct InstanceData {
 		vec3 position;
 		vec3 color;
 	} InstanceData;
-public:
+
+  public:
 	static void prepareSettings( Settings *settings );
 
 	void setup() override;
@@ -82,7 +89,8 @@ public:
 	void keyDown( KeyEvent event ) override;
 
 	void resize() override;
-private:
+
+  private:
 	void createFbo();
 	void createGrid();
 
@@ -93,36 +101,37 @@ private:
 
 	void render();
 	void renderUI();
-private:
-	bool					mDrawUI;
-	bool					mDrawAutoFocus;
 
-	FocusMethod				mFocusMethod;
-	RenderMethod			mRenderMethod;
+  private:
+	bool mDrawUI;
+	bool mDrawAutoFocus;
 
-	CameraUi				mCamUi;
-	CameraStereo			mCamera;
+	FocusMethod  mFocusMethod;
+	RenderMethod mRenderMethod;
 
-	StereoAutoFocuser		mAF;
+	CameraUi     mCamUi;
+	CameraStereo mCamera;
 
-	gl::GlslProgRef			mShaderPhong;
-	gl::GlslProgRef			mShaderInstancedPhong;
-	gl::GlslProgRef			mShaderAnaglyph;
-	gl::GlslProgRef			mShaderInterlaced;
+	StereoAutoFocuser mAF;
 
-	gl::BatchRef			mBatchTrombone;
-	gl::BatchRef			mBatchNote;
-	gl::VertBatchRef		mGrid;
+	gl::GlslProgRef mShaderPhong;
+	gl::GlslProgRef mShaderInstancedPhong;
+	gl::GlslProgRef mShaderAnaglyph;
+	gl::GlslProgRef mShaderInterlaced;
 
-	int		kGridSize;
-	int		kNumNotes;
-	gl::VboRef				mInstanceDataVbo;
+	gl::BatchRef     mBatchTrombone;
+	gl::BatchRef     mBatchNote;
+	gl::VertBatchRef mGrid;
 
-	gl::FboRef				mFbo;
+	int        kGridSize;
+	int        kNumNotes;
+	gl::VboRef mInstanceDataVbo;
 
-	Color					mColorBackground;
+	gl::FboRef mFbo;
 
-	Font					mFont;
+	Color mColorBackground;
+
+	Font mFont;
 };
 
 void StereoscopicRenderingApp::prepareSettings( Settings *settings )
@@ -207,12 +216,12 @@ void StereoscopicRenderingApp::setup()
 
 void StereoscopicRenderingApp::update()
 {
-	float	d, f;
-	Area	area;
+	float d, f;
+	Area  area;
 
 	// Update the positions of our notes.
-	InstanceData* data = (InstanceData*) mInstanceDataVbo->map( GL_WRITE_ONLY );
-	const float seconds = float( getElapsedSeconds() );
+	InstanceData *data = (InstanceData *)mInstanceDataVbo->map( GL_WRITE_ONLY );
+	const float   seconds = float( getElapsedSeconds() );
 	for( int i = -kGridSize; i <= kGridSize; ++i ) {
 		Rand rnd( i );
 
@@ -234,8 +243,8 @@ void StereoscopicRenderingApp::update()
 		d = glm::distance( mCamera.getPivotPoint(), mCamera.getEyePoint() );
 		f = math<float>::min( 5.0f, d * 0.5f );
 
-		// The setConvergence() method will not change the eye separation distance, 
-		// which may cause the parallax effect to become uncomfortably big. 
+		// The setConvergence() method will not change the eye separation distance,
+		// which may cause the parallax effect to become uncomfortably big.
 		mCamera.setConvergence( f );
 		mCamera.setEyeSeparation( 0.05f );
 		break;
@@ -257,24 +266,24 @@ void StereoscopicRenderingApp::update()
 		// to optimally detect details. This is not required, however.
 		// Use the UP and DOWN keys to adjust the intensity of the parallax effect.
 		switch( mRenderMethod ) {
-			case MONO:
-				break;
-			case SIDE_BY_SIDE:
-				// Sample half the left eye, half the right eye.
-				area = Area( gl::getViewport().first, gl::getViewport().first + gl::getViewport().second );
-				area.expand( -area.getWidth() / 4, 0 );
-				mAF.autoFocus( &mCamera, area );
-				break;
-			case OVER_UNDER:
-				// Sample half the left eye, half the right eye.
-				area = Area( gl::getViewport().first, gl::getViewport().first + gl::getViewport().second );
-				area.expand( 0, -area.getHeight() / 4 );
-				mAF.autoFocus( &mCamera, area );
-				break;
-			case ANAGLYPH_RED_CYAN:
-				// Sample the depth buffer of one of the FBO's.
-				mAF.autoFocus( &mCamera, mFbo );
-				break;
+		case MONO:
+			break;
+		case SIDE_BY_SIDE:
+			// Sample half the left eye, half the right eye.
+			area = Area( gl::getViewport().first, gl::getViewport().first + gl::getViewport().second );
+			area.expand( -area.getWidth() / 4, 0 );
+			mAF.autoFocus( &mCamera, area );
+			break;
+		case OVER_UNDER:
+			// Sample half the left eye, half the right eye.
+			area = Area( gl::getViewport().first, gl::getViewport().first + gl::getViewport().second );
+			area.expand( 0, -area.getHeight() / 4 );
+			mAF.autoFocus( &mCamera, area );
+			break;
+		case ANAGLYPH_RED_CYAN:
+			// Sample the depth buffer of one of the FBO's.
+			mAF.autoFocus( &mCamera, mFbo );
+			break;
 		}
 		break;
 	}
@@ -424,10 +433,10 @@ void StereoscopicRenderingApp::createGrid()
 
 	mGrid->begin( GL_LINES );
 	for( int i = -kGridSize; i <= kGridSize; ++i ) {
-		mGrid->vertex( vec4( (float) i, 0, -kGridSize, 1 ), color );
-		mGrid->vertex( vec4( (float) i, 0, kGridSize, 1 ), color );
-		mGrid->vertex( vec4( -kGridSize, 0, (float) i, 1 ), color );
-		mGrid->vertex( vec4( kGridSize, 0, (float) i, 1 ), color );
+		mGrid->vertex( vec4( (float)i, 0, -kGridSize, 1 ), color );
+		mGrid->vertex( vec4( (float)i, 0, kGridSize, 1 ), color );
+		mGrid->vertex( vec4( -kGridSize, 0, (float)i, 1 ), color );
+		mGrid->vertex( vec4( kGridSize, 0, (float)i, 1 ), color );
 	}
 	mGrid->end();
 }
@@ -516,7 +525,7 @@ void StereoscopicRenderingApp::renderInterlacedHorizontal( const ivec2 &size )
 
 void StereoscopicRenderingApp::render()
 {
-	float seconds = (float) getElapsedSeconds();
+	float seconds = (float)getElapsedSeconds();
 
 	// enable 3D rendering
 	gl::enableDepthRead();
@@ -573,34 +582,50 @@ void StereoscopicRenderingApp::render()
 
 void StereoscopicRenderingApp::renderUI()
 {
-	float w = (float) getWindowWidth() * 0.5f;
-	float h = (float) getWindowHeight();
+	float w = (float)getWindowWidth() * 0.5f;
+	float h = (float)getWindowHeight();
 
 	std::string renderMode, focusMode;
 	switch( mRenderMethod ) {
-	case MONO: renderMode = "Mono"; break;
-	case SIDE_BY_SIDE: renderMode = "Side By Side"; break;
-	case OVER_UNDER: renderMode = "Over Under"; break;
-	case ANAGLYPH_RED_CYAN: renderMode = "Anaglyph Red Cyan"; break;
-	case INTERLACED_HORIZONTAL: renderMode = "Interlaced Horizontal"; break;
+	case MONO:
+		renderMode = "Mono";
+		break;
+	case SIDE_BY_SIDE:
+		renderMode = "Side By Side";
+		break;
+	case OVER_UNDER:
+		renderMode = "Over Under";
+		break;
+	case ANAGLYPH_RED_CYAN:
+		renderMode = "Anaglyph Red Cyan";
+		break;
+	case INTERLACED_HORIZONTAL:
+		renderMode = "Interlaced Horizontal";
+		break;
 	}
 	switch( mFocusMethod ) {
-	case SET_CONVERGENCE: focusMode = "setConvergence(d, false)"; break;
-	case SET_FOCUS: focusMode = "setConvergence(d, true)"; break;
-	case AUTO_FOCUS: focusMode = "autoFocus(cam)"; break;
+	case SET_CONVERGENCE:
+		focusMode = "setConvergence(d, false)";
+		break;
+	case SET_FOCUS:
+		focusMode = "setConvergence(d, true)";
+		break;
+	case AUTO_FOCUS:
+		focusMode = "autoFocus(cam)";
+		break;
 	}
 
-	std::string labels( "Render mode (F1-F5):\nFocus mode (1-3):\nFocal Length:\nEye Distance:\nAuto Focus Depth (Up/Down):\nAuto Focus Speed (Left/Right):" );
+	std::string   labels( "Render mode (F1-F5):\nFocus mode (1-3):\nFocal Length:\nEye Distance:\nAuto Focus Depth (Up/Down):\nAuto Focus Speed (Left/Right):" );
 	boost::format values = boost::format( "%s\n%s\n%.2f\n%.2f\n%.2f\n%.2f" ) % renderMode % focusMode % mCamera.getConvergence() % mCamera.getEyeSeparation() % mAF.getDepth() % mAF.getSpeed();
 
-#if(defined CINDER_MSW)
+#if( defined CINDER_MSW )
 	gl::enableAlphaBlending();
 	gl::drawString( labels, vec2( w - 350.0f, h - 150.0f ), Color::black(), mFont );
 	gl::drawStringRight( values.str(), vec2( w + 350.0f, h - 150.0f ), Color::black(), mFont );
 	gl::disableAlphaBlending();
 #else
 	// \n is not supported on the mac, so we draw separate strings
-	std::vector< std::string > left, right;
+	std::vector<std::string> left, right;
 	left = ci::split( labels, "\n", false );
 	right = ci::split( values.str(), "\n", false );
 

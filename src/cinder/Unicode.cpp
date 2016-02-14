@@ -60,32 +60,32 @@ namespace cinder {
 
 static const char32_t halfBase = 0x0010000UL;
 static const char32_t halfMask = 0x3FFUL;
-static const int halfShift = 10; // shift by 10 bits
+static const int      halfShift = 10; // shift by 10 bits
 
-#define UNI_SUR_HIGH_START		(char32_t)0xD800
-#define UNI_SUR_HIGH_END		(char32_t)0xDBFF
-#define UNI_SUR_LOW_START		(char32_t)0xDC00
-#define UNI_SUR_LOW_END			(char32_t)0xDFFF
-#define UNI_REPLACEMENT_CHAR	(char32_t)0x0000FFFD
-#define UNI_MAX_BMP				(char32_t)0x0000FFFF
-#define UNI_MAX_UTF16			(char32_t)0x0010FFFF
-#define UNI_MAX_UTF32			(char32_t)0x7FFFFFFF
-#define UNI_MAX_LEGAL_UTF32		(char32_t)0x0010FFFF
+#define UNI_SUR_HIGH_START (char32_t)0xD800
+#define UNI_SUR_HIGH_END (char32_t)0xDBFF
+#define UNI_SUR_LOW_START (char32_t)0xDC00
+#define UNI_SUR_LOW_END (char32_t)0xDFFF
+#define UNI_REPLACEMENT_CHAR (char32_t)0x0000FFFD
+#define UNI_MAX_BMP (char32_t)0x0000FFFF
+#define UNI_MAX_UTF16 (char32_t)0x0010FFFF
+#define UNI_MAX_UTF32 (char32_t)0x7FFFFFFF
+#define UNI_MAX_LEGAL_UTF32 (char32_t)0x0010FFFF
 
 std::u16string toUtf16( const char *utf8Str, size_t lengthInBytes )
 {
 	if( lengthInBytes == 0 )
 		lengthInBytes = strlen( utf8Str );
-	
+
 	std::u16string result;
-	utf8::utf8to16( utf8Str, utf8Str + lengthInBytes, back_inserter( result ));
+	utf8::utf8to16( utf8Str, utf8Str + lengthInBytes, back_inserter( result ) );
 	return result;
 }
 
 std::u16string toUtf16( const std::string &utf8Str )
 {
 	std::u16string result;
-	utf8::utf8to16( utf8Str.begin(), utf8Str.end(), back_inserter( result ));
+	utf8::utf8to16( utf8Str.begin(), utf8Str.end(), back_inserter( result ) );
 	return result;
 }
 
@@ -93,16 +93,16 @@ std::u32string toUtf32( const char *utf8Str, size_t lengthInBytes )
 {
 	if( lengthInBytes == 0 )
 		lengthInBytes = strlen( utf8Str );
-	
+
 	std::u32string result;
-	utf8::utf8to32( utf8Str, utf8Str + lengthInBytes, back_inserter( result ));
+	utf8::utf8to32( utf8Str, utf8Str + lengthInBytes, back_inserter( result ) );
 	return result;
 }
 
 std::u32string toUtf32( const std::string &utf8Str )
 {
 	std::u32string result;
-	utf8::utf8to32( utf8Str.begin(), utf8Str.end(), back_inserter( result ));
+	utf8::utf8to32( utf8Str.begin(), utf8Str.end(), back_inserter( result ) );
 	return result;
 }
 
@@ -115,14 +115,14 @@ std::string toUtf8( const char16_t *utf16Str, size_t lengthInBytes )
 		lengthInBytes /= 2;
 
 	std::string result;
-	utf8::utf16to8( utf16Str, utf16Str + lengthInBytes, back_inserter( result ));
-	return result;	
+	utf8::utf16to8( utf16Str, utf16Str + lengthInBytes, back_inserter( result ) );
+	return result;
 }
 
-std::string	toUtf8( const std::u16string &utf16Str )
+std::string toUtf8( const std::u16string &utf16Str )
 {
 	std::string result;
-	utf8::utf16to8( utf16Str.begin(), utf16Str.end(), back_inserter( result ));
+	utf8::utf16to8( utf16Str.begin(), utf16Str.end(), back_inserter( result ) );
 	return result;
 }
 
@@ -135,14 +135,14 @@ std::string toUtf8( const char32_t *utf32Str, size_t lengthInBytes )
 		lengthInBytes /= 4;
 
 	std::string result;
-	utf8::utf32to8( utf32Str, utf32Str + lengthInBytes, back_inserter( result ));
+	utf8::utf32to8( utf32Str, utf32Str + lengthInBytes, back_inserter( result ) );
 	return result;
 }
 
-std::string	toUtf8( const std::u32string &utf32Str )
+std::string toUtf8( const std::u32string &utf32Str )
 {
 	std::string result;
-	utf8::utf32to8( utf32Str.begin(), utf32Str.end(), back_inserter( result ));
+	utf8::utf32to8( utf32Str.begin(), utf32Str.end(), back_inserter( result ) );
 	return result;
 }
 
@@ -152,16 +152,16 @@ size_t stringLengthUtf8( const char *str, size_t lengthInBytes )
 	size_t nextByte = 0;
 	if( lengthInBytes == 0 )
 		lengthInBytes = strlen( str );
-	while( nextCharUtf8( (const char*)str, &nextByte, lengthInBytes ) != 0xFFFF )
+	while( nextCharUtf8( (const char *)str, &nextByte, lengthInBytes ) != 0xFFFF )
 		++result;
-	return result;	
+	return result;
 }
 
 uint32_t nextCharUtf8( const char *str, size_t *inOutByte, size_t lengthInBytes )
 {
 	if( lengthInBytes == 0 )
 		lengthInBytes = strlen( str );
-	return lb_get_next_char_utf8( (const utf8_t*)str, lengthInBytes, inOutByte );
+	return lb_get_next_char_utf8( (const utf8_t *)str, lengthInBytes, inOutByte );
 }
 
 size_t advanceCharUtf8( const char *str, size_t numChars, size_t lengthInBytes )
@@ -170,17 +170,17 @@ size_t advanceCharUtf8( const char *str, size_t numChars, size_t lengthInBytes )
 		lengthInBytes = strlen( str );
 	size_t nextByte = 0;
 	for( size_t curChar = 0; curChar < numChars; ++curChar ) {
-		if( lb_get_next_char_utf8( (const utf8_t*)str, lengthInBytes, &nextByte ) == 0xFFFF )
+		if( lb_get_next_char_utf8( (const utf8_t *)str, lengthInBytes, &nextByte ) == 0xFFFF )
 			break;
 	}
-	
+
 	return nextByte;
 }
 
 std::u16string toUtf16( const std::u32string &utf32str )
 {
 	std::u16string result;
-	auto sourceIt = utf32str.cbegin();
+	auto           sourceIt = utf32str.cbegin();
 	while( sourceIt != utf32str.cend() ) {
 		char32_t ch = *sourceIt++;
 		if( ch <= UNI_MAX_BMP ) { // Target is a character <= 0xFFFF
@@ -195,18 +195,18 @@ std::u16string toUtf16( const std::u32string &utf32str )
 		}
 		else { // target is a character in range 0xFFFF - 0x10FFFF.
 			ch -= halfBase;
-			result.push_back( (char16_t)((ch >> halfShift) + UNI_SUR_HIGH_START) );
-			result.push_back( (char16_t)((ch & halfMask) + UNI_SUR_LOW_START) );
+			result.push_back( (char16_t)( ( ch >> halfShift ) + UNI_SUR_HIGH_START ) );
+			result.push_back( (char16_t)( ( ch & halfMask ) + UNI_SUR_LOW_START ) );
 		}
 	}
 
-    return result;
+	return result;
 }
 
 std::u32string toUtf32( const std::u16string &utf16str )
 {
 	std::u32string result;
-	auto sourceIt = utf16str.cbegin();
+	auto           sourceIt = utf16str.cbegin();
 	while( sourceIt != utf16str.cend() ) {
 		char32_t ch = *sourceIt++;
 		if( ch >= UNI_SUR_HIGH_START && ch <= UNI_SUR_HIGH_END ) {
@@ -214,8 +214,8 @@ std::u32string toUtf32( const std::u16string &utf16str )
 			if( sourceIt != utf16str.cend() ) {
 				char32_t ch2 = *sourceIt;
 				if( ch2 >= UNI_SUR_LOW_START && ch2 <= UNI_SUR_LOW_END ) {
-                    ch = ((ch - UNI_SUR_HIGH_START) << halfShift) + (ch2 - UNI_SUR_LOW_START) + halfBase;
-                    ++sourceIt;
+					ch = ( ( ch - UNI_SUR_HIGH_START ) << halfShift ) + ( ch2 - UNI_SUR_LOW_START ) + halfBase;
+					++sourceIt;
 				}
 				else // We don't have the 16 bits following the high surrogate.
 					break;
@@ -234,12 +234,12 @@ bool shouldBreak( char code )
 }
 } // anonymous namespace
 
-void lineBreakUtf8( const char *line, const std::function<bool(const char *, size_t)> &measureFn, const std::function<void(const char *,size_t)> &lineProcessFn )
+void lineBreakUtf8( const char *line, const std::function<bool( const char *, size_t )> &measureFn, const std::function<void( const char *, size_t )> &lineProcessFn )
 {
-	const size_t lengthInBytes = strlen( line );
-	shared_ptr<char> brks = shared_ptr<char>( (char*)malloc( lengthInBytes ), free );
-	
-	set_linebreaks_utf8( (const uint8_t*)line, lengthInBytes, NULL, brks.get() );
+	const size_t     lengthInBytes = strlen( line );
+	shared_ptr<char> brks = shared_ptr<char>( (char *)malloc( lengthInBytes ), free );
+
+	set_linebreaks_utf8( (const uint8_t *)line, lengthInBytes, NULL, brks.get() );
 
 	// Byte-suffixed variables correspond to a byte in the UTF8 string, as opposed to the character
 	// binary search for the threshold where measureFn() returns false; emerges as curChar
@@ -250,11 +250,11 @@ void lineBreakUtf8( const char *line, const std::function<bool(const char *, siz
 		int minChar = 0;
 		int maxChar = (int)charLen - (int)lineStartChar;
 		int curChar = 0;
-		
+
 		// test to see if we're already on a mustbreak
 		if( brks.get()[lineStartByte] != 0 ) {
 			// update our maxChar to reflect any MUSTBREAKS
-			int maxCharWithMustBreaks = minChar;
+			int    maxCharWithMustBreaks = minChar;
 			size_t maxCharByte = lineStartByte;
 
 			while( maxCharWithMustBreaks < maxChar ) {
@@ -267,11 +267,11 @@ void lineBreakUtf8( const char *line, const std::function<bool(const char *, siz
 					++maxCharWithMustBreaks;
 			}
 			maxChar = maxCharWithMustBreaks + 1;
-		
+
 			while( minChar < maxChar ) {
-				curChar = minChar + (maxChar-minChar+1)/2;
+				curChar = minChar + ( maxChar - minChar + 1 ) / 2;
 				size_t newByte = advanceCharUtf8( line + lineStartByte, curChar, lengthInBytes );
-				if( ! measureFn( line + lineStartByte, newByte ) )
+				if( !measureFn( line + lineStartByte, newByte ) )
 					maxChar = curChar - 1;
 				else
 					minChar = curChar;
@@ -285,7 +285,7 @@ void lineBreakUtf8( const char *line, const std::function<bool(const char *, siz
 		// find ideal place to perform the break, either at curChar or before depending on breaks
 		size_t lineEndByteAfterBreaking = lineEndByte = advanceCharUtf8( line + lineStartByte, curChar ) + lineStartByte;
 		if( ( lineEndByteAfterBreaking < lengthInBytes ) /*&& ( ! shouldBreak( brks.get()[lineEndByteAfterBreaking] ) )*/ ) {
-			while( (lineEndByteAfterBreaking > lineStartByte) && ( ! shouldBreak( brks.get()[lineEndByteAfterBreaking-1] ) ) )
+			while( ( lineEndByteAfterBreaking > lineStartByte ) && ( !shouldBreak( brks.get()[lineEndByteAfterBreaking - 1] ) ) )
 				lineEndByteAfterBreaking--;
 			if( lineEndByteAfterBreaking == lineStartByte ) // there's no good breakpoint; just break where we would have
 				lineEndByteAfterBreaking = lineEndByte;
@@ -295,7 +295,7 @@ void lineBreakUtf8( const char *line, const std::function<bool(const char *, siz
 		lineStartByte = lineEndByteAfterBreaking;
 		// eat any spaces we'd start on on the next line
 		size_t tempByte = lineStartByte;
-		while( nextCharUtf8( line, &tempByte, lengthInBytes ) == (uint32_t)' ') {
+		while( nextCharUtf8( line, &tempByte, lengthInBytes ) == (uint32_t)' ' ) {
 			lineStartByte = tempByte;
 			++lineStartChar;
 		}
@@ -310,9 +310,9 @@ void calcLinebreaksUtf8( const char *str, std::vector<uint8_t> *resultBreaks )
 void calcLinebreaksUtf8( const char *str, size_t strLength, std::vector<uint8_t> *resultBreaks )
 {
 	resultBreaks->resize( strLength, 0 );
-	
+
 	// our UnicodeBreaks enum lines up with the liblinebreak definitions
-	set_linebreaks_utf8( (const uint8_t*)str, strLength, NULL, (char*)&(*resultBreaks)[0] );
+	set_linebreaks_utf8( (const uint8_t *)str, strLength, NULL, (char *)&( *resultBreaks )[0] );
 }
 
 void calcLinebreaksUtf16( const uint16_t *str, std::vector<uint8_t> *resultBreaks )
@@ -327,9 +327,8 @@ void calcLinebreaksUtf16( const uint16_t *str, std::vector<uint8_t> *resultBreak
 void calcLinebreaksUtf16( const uint16_t *str, size_t strLength, std::vector<uint8_t> *resultBreaks )
 {
 	resultBreaks->resize( strLength, 0 );
-	
-	// our UnicodeBreaks enum lines up with the liblinebreak definitions
-	set_linebreaks_utf16( (const unsigned short*)str, strLength, NULL, (char*)&(*resultBreaks)[0] );	
-}
 
+	// our UnicodeBreaks enum lines up with the liblinebreak definitions
+	set_linebreaks_utf16( (const unsigned short *)str, strLength, NULL, (char *)&( *resultBreaks )[0] );
+}
 }

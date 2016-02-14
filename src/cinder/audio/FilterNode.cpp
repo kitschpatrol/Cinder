@@ -25,10 +25,11 @@
 
 using namespace std;
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 FilterBiquadNode::FilterBiquadNode( Mode mode, const Format &format )
-	: Node( format ), mMode( mode ), mCoeffsDirty( true ), mFreq( 200.0f ), mQ( 1.0f ), mGain( 0.0f )
+    : Node( format ), mMode( mode ), mCoeffsDirty( true ), mFreq( 200.0f ), mQ( 1.0f ), mGain( 0.0f )
 {
 }
 
@@ -68,41 +69,43 @@ void FilterBiquadNode::updateBiquadParams()
 	double normalizedFrequency = mFreq / mNiquist;
 
 	switch( mMode ) {
-		case Mode::LOWPASS:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setLowpassParams( normalizedFrequency, mQ );
-			break;
-		case Mode::HIGHPASS:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setHighpassParams( normalizedFrequency, mQ );
-			break;
-		case Mode::BANDPASS:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setBandpassParams( normalizedFrequency, mQ );
-			break;
-		case Mode::LOWSHELF:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setLowShelfParams( mFreq, mGain );;
-			break;
-		case Mode::HIGHSHELF:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setHighShelfParams( mFreq, mGain );;
-			break;
-		case Mode::PEAKING:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setPeakingParams( normalizedFrequency, mQ, mGain );
-			break;
-		case Mode::ALLPASS:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setBandpassParams( normalizedFrequency, mQ );
-			break;
-		case Mode::NOTCH:
-			for( size_t ch = 0; ch < getNumChannels(); ch++ )
-				mBiquads[ch].setNotchParams( normalizedFrequency, mQ );
-			break;
-		default:
-			break;
+	case Mode::LOWPASS:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setLowpassParams( normalizedFrequency, mQ );
+		break;
+	case Mode::HIGHPASS:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setHighpassParams( normalizedFrequency, mQ );
+		break;
+	case Mode::BANDPASS:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setBandpassParams( normalizedFrequency, mQ );
+		break;
+	case Mode::LOWSHELF:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setLowShelfParams( mFreq, mGain );
+		;
+		break;
+	case Mode::HIGHSHELF:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setHighShelfParams( mFreq, mGain );
+		;
+		break;
+	case Mode::PEAKING:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setPeakingParams( normalizedFrequency, mQ, mGain );
+		break;
+	case Mode::ALLPASS:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setBandpassParams( normalizedFrequency, mQ );
+		break;
+	case Mode::NOTCH:
+		for( size_t ch = 0; ch < getNumChannels(); ch++ )
+			mBiquads[ch].setNotchParams( normalizedFrequency, mQ );
+		break;
+	default:
+		break;
 	}
 }
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

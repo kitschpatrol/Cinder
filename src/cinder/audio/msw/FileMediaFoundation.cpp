@@ -22,22 +22,22 @@
 */
 
 #include "cinder/Cinder.h"
-#if ( _WIN32_WINNT >= _WIN32_WINNT_VISTA )
+#if( _WIN32_WINNT >= _WIN32_WINNT_VISTA )
 
-#include "cinder/audio/msw/FileMediaFoundation.h"
-#include "cinder/audio/dsp/Converter.h"
-#include "cinder/audio/Exception.h"
 #include "cinder/Log.h"
+#include "cinder/audio/Exception.h"
+#include "cinder/audio/dsp/Converter.h"
+#include "cinder/audio/msw/FileMediaFoundation.h"
 
-#include <mfidl.h>
 #include <mfapi.h>
+#include <mfidl.h>
 #include <mfreadwrite.h>
 #include <propvarutil.h>
 
-#pragma comment(lib, "mf.lib")
-#pragma comment(lib, "mfplat.lib")
-#pragma comment(lib, "mfuuid.lib")
-#pragma comment(lib, "mfreadwrite.lib")
+#pragma comment( lib, "mf.lib" )
+#pragma comment( lib, "mfplat.lib" )
+#pragma comment( lib, "mfuuid.lib" )
+#pragma comment( lib, "mfreadwrite.lib" )
 
 // TODO: try to minimize the number of copies between IMFSourceReader::ReadSample's IMFSample and loading audio::Buffer
 // - currently uses an intermediate vector<float>
@@ -47,22 +47,34 @@
 using namespace std;
 using namespace ci;
 
-namespace cinder { namespace audio { namespace msw {
+namespace cinder {
+namespace audio {
+namespace msw {
 
 bool MediaFoundationInitializer::sIsMfInitialized = false;
 
 namespace {
 
-inline double	nanoSecondsToSeconds( LONGLONG ns )		{ return (double)ns / 10000000.0; } 
-inline LONGLONG secondsToNanoSeconds( double seconds )	{ return (LONGLONG)seconds * 10000000; }
+inline double nanoSecondsToSeconds( LONGLONG ns )
+{
+	return (double)ns / 10000000.0;
+}
+inline LONGLONG secondsToNanoSeconds( double seconds )
+{
+	return (LONGLONG)seconds * 10000000;
+}
 
 ::GUID getMfAudioFormat( SampleType sampleType )
 {
 	switch( sampleType ) {
-		case SampleType::INT_16:	return ::MFAudioFormat_PCM;
-		case SampleType::INT_24:	return ::MFAudioFormat_PCM;
-		case SampleType::FLOAT_32:	return ::MFAudioFormat_Float;
-		default: break;
+	case SampleType::INT_16:
+		return ::MFAudioFormat_PCM;
+	case SampleType::INT_24:
+		return ::MFAudioFormat_PCM;
+	case SampleType::FLOAT_32:
+		return ::MFAudioFormat_Float;
+	default:
+		break;
 	}
 
 	CI_ASSERT_NOT_REACHABLE();
@@ -72,10 +84,14 @@ inline LONGLONG secondsToNanoSeconds( double seconds )	{ return (LONGLONG)second
 size_t getBytesPerSample( SampleType sampleType )
 {
 	switch( sampleType ) {
-		case SampleType::INT_16:	return 2;
-		case SampleType::INT_24:	return 3;
-		case SampleType::FLOAT_32:	return 4;
-		default: break;
+	case SampleType::INT_16:
+		return 2;
+	case SampleType::INT_24:
+		return 3;
+	case SampleType::FLOAT_32:
+		return 4;
+	default:
+		break;
 	}
 
 	CI_ASSERT_NOT_REACHABLE();
@@ -89,12 +105,12 @@ size_t getBytesPerSample( SampleType sampleType )
 // ----------------------------------------------------------------------------------------------------
 
 SourceFileMediaFoundation::SourceFileMediaFoundation()
-	: SourceFile( 0 ), mCanSeek( false ), mSeconds( 0 ), mReadBufferPos( 0 ), mFramesRemainingInReadBuffer( 0 )
+    : SourceFile( 0 ), mCanSeek( false ), mSeconds( 0 ), mReadBufferPos( 0 ), mFramesRemainingInReadBuffer( 0 )
 {
 }
 
 SourceFileMediaFoundation::SourceFileMediaFoundation( const DataSourceRef &dataSource, size_t sampleRate )
-	: SourceFile( sampleRate ), mDataSource( dataSource ), mCanSeek( false ), mSeconds( 0 ), mReadBufferPos( 0 ), mFramesRemainingInReadBuffer( 0 )
+    : SourceFile( sampleRate ), mDataSource( dataSource ), mCanSeek( false ), mSeconds( 0 ), mReadBufferPos( 0 ), mFramesRemainingInReadBuffer( 0 )
 {
 	MediaFoundationInitializer::initMediaFoundation();
 	initReader();
@@ -119,7 +135,6 @@ size_t SourceFileMediaFoundation::performRead( Buffer *buffer, size_t bufferFram
 
 	size_t readCount = 0;
 	while( readCount < numFramesNeeded ) {
-
 		// first drain any frames that were previously read from an IMFSample
 		if( mFramesRemainingInReadBuffer ) {
 			size_t remainingToDrain = std::min( mFramesRemainingInReadBuffer, numFramesNeeded );
@@ -137,14 +152,14 @@ size_t SourceFileMediaFoundation::performRead( Buffer *buffer, size_t bufferFram
 			continue;
 		}
 
-		CI_ASSERT( ! mFramesRemainingInReadBuffer );
+		CI_ASSERT( !mFramesRemainingInReadBuffer );
 
 		mReadBufferPos = 0;
 		size_t outNumFrames = processNextReadSample();
-		if( ! outNumFrames )
+		if( !outNumFrames )
 			break;
 
-		// if the IMFSample num frames is over the specified buffer size, 
+		// if the IMFSample num frames is over the specified buffer size,
 		// record how many samples are left over and use up what was asked for.
 		if( outNumFrames + readCount > numFramesNeeded ) {
 			mFramesRemainingInReadBuffer = outNumFrames + readCount - numFramesNeeded;
@@ -167,7 +182,7 @@ size_t SourceFileMediaFoundation::performRead( Buffer *buffer, size_t bufferFram
 
 void SourceFileMediaFoundation::performSeek( size_t readPositionFrames )
 {
-	if( ! mCanSeek )
+	if( !mCanSeek )
 		return;
 
 	mReadBufferPos = mFramesRemainingInReadBuffer = 0;
@@ -178,9 +193,9 @@ void SourceFileMediaFoundation::performSeek( size_t readPositionFrames )
 		return;
 	}
 
-	LONGLONG position = secondsToNanoSeconds( positionSeconds );
+	LONGLONG    position = secondsToNanoSeconds( positionSeconds );
 	PROPVARIANT seekVar;
-	HRESULT hr = ::InitPropVariantFromInt64( position, &seekVar );
+	HRESULT     hr = ::InitPropVariantFromInt64( position, &seekVar );
 	CI_ASSERT( hr == S_OK );
 	hr = mSourceReader->SetCurrentPosition( GUID_NULL, seekVar );
 	CI_ASSERT( hr == S_OK );
@@ -195,7 +210,7 @@ void SourceFileMediaFoundation::initReader()
 	mFramesRemainingInReadBuffer = 0;
 
 	::IMFAttributes *attributes;
-	HRESULT hr = ::MFCreateAttributes( &attributes, 1 );
+	HRESULT          hr = ::MFCreateAttributes( &attributes, 1 );
 	CI_ASSERT( hr == S_OK );
 	auto attributesPtr = ci::msw::makeComUnique( attributes );
 
@@ -204,7 +219,7 @@ void SourceFileMediaFoundation::initReader()
 	if( mDataSource->isFilePath() ) {
 		hr = ::MFCreateSourceReaderFromURL( mDataSource->getFilePath().wstring().c_str(), attributesPtr.get(), &sourceReader );
 		if( hr != S_OK ) {
-			string errorString = string( "SourceFileMediaFoundation: Failed to create SourceReader from URL: " ) +  mDataSource->getFilePath().string(); 
+			string errorString = string( "SourceFileMediaFoundation: Failed to create SourceReader from URL: " ) + mDataSource->getFilePath().string();
 			if( hr == HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND ) )
 				errorString += ", file not found.";
 			throw AudioFileExc( errorString );
@@ -227,7 +242,7 @@ void SourceFileMediaFoundation::initReader()
 	// get files native format
 	::IMFMediaType *nativeType;
 	::WAVEFORMATEX *nativeFormat;
-	UINT32 formatSize;
+	UINT32          formatSize;
 	hr = mSourceReader->GetNativeMediaType( MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, &nativeType );
 	CI_ASSERT( hr == S_OK );
 	auto nativeTypeUnique = ci::msw::makeComUnique( nativeType );
@@ -283,7 +298,7 @@ void SourceFileMediaFoundation::initReader()
 	hr = mSourceReader->GetPresentationAttribute( MF_SOURCE_READER_MEDIASOURCE, MF_PD_DURATION, &durationProp );
 	CI_ASSERT( hr == S_OK );
 	LONGLONG duration = durationProp.uhVal.QuadPart;
-	
+
 	mSeconds = nanoSecondsToSeconds( duration );
 	mNumFrames = mFileNumFrames = size_t( mSeconds * (double)mSampleRate );
 
@@ -297,9 +312,9 @@ void SourceFileMediaFoundation::initReader()
 size_t SourceFileMediaFoundation::processNextReadSample()
 {
 	::IMFSample *mediaSample;
-	DWORD streamFlags = 0;
-	LONGLONG timeStamp;
-	HRESULT hr = mSourceReader->ReadSample( MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, NULL, &streamFlags, &timeStamp, &mediaSample );
+	DWORD        streamFlags = 0;
+	LONGLONG     timeStamp;
+	HRESULT      hr = mSourceReader->ReadSample( MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, NULL, &streamFlags, &timeStamp, &mediaSample );
 	CI_ASSERT( hr == S_OK );
 
 	if( streamFlags & MF_SOURCE_READERF_CURRENTMEDIATYPECHANGED ) {
@@ -310,7 +325,7 @@ size_t SourceFileMediaFoundation::processNextReadSample()
 		// end of file
 		return 0;
 	}
-	if( ! mediaSample ) {
+	if( !mediaSample ) {
 		// out of samples
 		mediaSample->Release();
 		return 0;
@@ -326,8 +341,8 @@ size_t SourceFileMediaFoundation::processNextReadSample()
 
 	// get the buffer
 	::IMFMediaBuffer *mediaBuffer;
-	BYTE *audioData = NULL;
-	DWORD audioDataLength;
+	BYTE *            audioData = NULL;
+	DWORD             audioDataLength;
 
 	hr = samplePtr->ConvertToContiguousBuffer( &mediaBuffer );
 	hr = mediaBuffer->Lock( &audioData, NULL, &audioDataLength );
@@ -371,7 +386,7 @@ size_t SourceFileMediaFoundation::processNextReadSample()
 }
 
 // From what I can tell, there is no straightforward way to ask Media Foundation for a list of extensions that relate to the decoders it supports
-// So instead we create the list by hand, with microsoft's supported audio formats webpage as reference: http://msdn.microsoft.com/en-us/library/windows/desktop/dd757927(v=vs.85).aspx 
+// So instead we create the list by hand, with microsoft's supported audio formats webpage as reference: http://msdn.microsoft.com/en-us/library/windows/desktop/dd757927(v=vs.85).aspx
 // To note, I tried MFTEnumEx and was able to get a list of GUID's for codecs, but not extensions. Also, it appears this method is unavailable in Windows Runtime.
 // static
 vector<std::string> SourceFileMediaFoundation::getSupportedExtensions()
@@ -406,14 +421,14 @@ vector<std::string> SourceFileMediaFoundation::getSupportedExtensions()
 // ----------------------------------------------------------------------------------------------------
 
 TargetFileMediaFoundation::TargetFileMediaFoundation( const DataTargetRef &dataTarget, size_t sampleRate, size_t numChannels, SampleType sampleType, const std::string &extension )
-	: TargetFile( dataTarget, sampleRate, numChannels, sampleType ), mStreamIndex( 0 )
+    : TargetFile( dataTarget, sampleRate, numChannels, sampleType ), mStreamIndex( 0 )
 {
 	MediaFoundationInitializer::initMediaFoundation();
 
 	::IMFSinkWriter *sinkWriter;
-	HRESULT hr = ::MFCreateSinkWriterFromURL( dataTarget->getFilePath().wstring().c_str(), NULL, NULL, &sinkWriter );
+	HRESULT          hr = ::MFCreateSinkWriterFromURL( dataTarget->getFilePath().wstring().c_str(), NULL, NULL, &sinkWriter );
 	if( hr != S_OK ) {
-		string errorString = string( "TargetFileMediaFoundation: Failed to create SinkWriter from URL: " ) +  dataTarget->getFilePath().string(); 
+		string errorString = string( "TargetFileMediaFoundation: Failed to create SinkWriter from URL: " ) + dataTarget->getFilePath().string();
 		if( hr == HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND ) )
 			errorString += ", file not found.";
 		throw AudioFileExc( errorString );
@@ -423,8 +438,8 @@ TargetFileMediaFoundation::TargetFileMediaFoundation( const DataTargetRef &dataT
 
 	mSampleSize = getBytesPerSample( mSampleType );
 	const UINT32 bitsPerSample = 8 * mSampleSize;
-	const WORD blockAlignment = mNumChannels * mSampleSize;
-	const DWORD averageBytesPerSecond = mSampleRate * blockAlignment;
+	const WORD   blockAlignment = mNumChannels * mSampleSize;
+	const DWORD  averageBytesPerSecond = mSampleRate * blockAlignment;
 
 	// Set the output media type.
 
@@ -481,24 +496,24 @@ void TargetFileMediaFoundation::performWrite( const Buffer *buffer, size_t numFr
 {
 	// create media sample
 	::IMFSample *mediaSample;
-	HRESULT hr = ::MFCreateSample( &mediaSample );
+	HRESULT      hr = ::MFCreateSample( &mediaSample );
 	CI_ASSERT( hr == S_OK );
 
 	auto samplePtr = ci::msw::makeComUnique( mediaSample );
 
-	double lengthSeconds = (double)numFrames / (double)mSampleRate;
+	double         lengthSeconds = (double)numFrames / (double)mSampleRate;
 	const LONGLONG sampleDuration = secondsToNanoSeconds( lengthSeconds );
 	hr = mediaSample->SetSampleDuration( sampleDuration );
 	CI_ASSERT( hr == S_OK );
 
-	double currentTimeSeconds = (double)frameOffset / (double)mSampleRate;
+	double         currentTimeSeconds = (double)frameOffset / (double)mSampleRate;
 	const LONGLONG sampleTime = secondsToNanoSeconds( currentTimeSeconds );
 	hr = mediaSample->SetSampleTime( sampleTime );
 	CI_ASSERT( hr == S_OK );
 
 	// create media buffer and fill with audio samples.
 
-	DWORD bufferSizeBytes = numFrames * buffer->getNumChannels() * mSampleSize;
+	DWORD             bufferSizeBytes = numFrames * buffer->getNumChannels() * mSampleSize;
 	::IMFMediaBuffer *mediaBuffer;
 	hr = ::MFCreateMemoryBuffer( bufferSizeBytes, &mediaBuffer );
 	CI_ASSERT( hr == S_OK );
@@ -529,7 +544,7 @@ void TargetFileMediaFoundation::performWrite( const Buffer *buffer, size_t numFr
 		if( mNumChannels == 1 )
 			dsp::convertFloatToInt24( buffer->getData(), destInt24Samples, numFrames );
 		else {
-			if( mBitConverterBuffer.getNumFrames() != numFrames || mBitConverterBuffer.getNumChannels() != mNumChannels  )
+			if( mBitConverterBuffer.getNumFrames() != numFrames || mBitConverterBuffer.getNumChannels() != mNumChannels )
 				mBitConverterBuffer.setSize( numFrames, mNumChannels );
 
 			dsp::interleaveBuffer( buffer, &mBitConverterBuffer );
@@ -554,7 +569,7 @@ void TargetFileMediaFoundation::performWrite( const Buffer *buffer, size_t numFr
 // static
 void MediaFoundationInitializer::initMediaFoundation()
 {
-	if( ! sIsMfInitialized ) {
+	if( !sIsMfInitialized ) {
 		sIsMfInitialized = true;
 		HRESULT hr = ::MFStartup( MF_VERSION );
 		CI_ASSERT( hr == S_OK );
@@ -570,7 +585,8 @@ void MediaFoundationInitializer::shutdownMediaFoundation()
 		CI_ASSERT( hr == S_OK );
 	}
 }
-
-} } } // namespace cinder::audio::msw
+}
+}
+} // namespace cinder::audio::msw
 
 #endif // ( _WIN32_WINNT >= 0x0600 )

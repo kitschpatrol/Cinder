@@ -33,11 +33,10 @@ class Exception : public std::exception {
 	Exception();
 	Exception( const std::string &description );
 	virtual ~Exception() throw() {}
-
-	const char* what() const throw() override	{ return mDescription.c_str(); }
-
+	const char *what() const throw() override { return mDescription.c_str(); }
   protected:
-	  void	setDescription( const std::string &description );
+	void setDescription( const std::string &description );
+
   private:
 	std::string mDescription;
 };

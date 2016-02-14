@@ -27,29 +27,29 @@
 
 namespace cinder {
 
-template<typename T>
+template <typename T>
 PlaneT<T>::PlaneT( const Vec3T &v1, const Vec3T &v2, const Vec3T &v3 )
 {
 	set( v1, v2, v3 );
 }
 
-template<typename T>
+template <typename T>
 PlaneT<T>::PlaneT( const Vec3T &point, const Vec3T &normal )
 {
 	set( point, normal );
 }
 
-template<typename T>
+template <typename T>
 PlaneT<T>::PlaneT( T a, T b, T c, T d )
 {
 	set( a, b, c, d );
 }
 
-template<typename T>
+template <typename T>
 void PlaneT<T>::set( const Vec3T &v1, const Vec3T &v2, const Vec3T &v3 )
 {
 	Vec3T normal = cross( v2 - v1, v3 - v1 );
-	
+
 	if( length2( normal ) == 0 ) {
 		// error! invalid parameters
 		throw PlaneExc();
@@ -59,18 +59,18 @@ void PlaneT<T>::set( const Vec3T &v1, const Vec3T &v2, const Vec3T &v3 )
 	mDistance = dot( mNormal, v1 );
 }
 
-template<typename T>
+template <typename T>
 void PlaneT<T>::set( const Vec3T &point, const Vec3T &normal )
 {
 	if( length2( normal ) == 0 )
-		 // error! invalid parameters
+		// error! invalid parameters
 		throw PlaneExc();
 
 	mNormal = normalize( normal );
 	mDistance = dot( mNormal, point );
 }
 
-template<typename T>
+template <typename T>
 void PlaneT<T>::set( T a, T b, T c, T d )
 {
 	Vec3T normal( a, b, c );

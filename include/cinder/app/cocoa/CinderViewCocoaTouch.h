@@ -24,8 +24,8 @@
 
 #import <UIKit/UIKit.h>
 
-#include "cinder/app/cocoa/AppCocoaTouch.h"
 #include "cinder/app/Renderer.h"
+#include "cinder/app/cocoa/AppCocoaTouch.h"
 
 #include <map>
 
@@ -33,23 +33,21 @@
 @required
 - (void)resize;
 - (void)draw;
-- (void)mouseDown:(cinder::app::MouseEvent*)event;
-- (void)mouseDrag:(cinder::app::MouseEvent*)event;
-- (void)mouseUp:(cinder::app::MouseEvent*)event;
-- (void)touchesBegan:(cinder::app::TouchEvent*)event;
-- (void)touchesMoved:(cinder::app::TouchEvent*)event;
-- (void)touchesEnded:(cinder::app::TouchEvent*)event;
+- (void)mouseDown:(cinder::app::MouseEvent *)event;
+- (void)mouseDrag:(cinder::app::MouseEvent *)event;
+- (void)mouseUp:(cinder::app::MouseEvent *)event;
+- (void)touchesBegan:(cinder::app::TouchEvent *)event;
+- (void)touchesMoved:(cinder::app::TouchEvent *)event;
+- (void)touchesEnded:(cinder::app::TouchEvent *)event;
 - (cinder::app::WindowRef)getWindowRef;
 @end
 
+@interface CinderViewCocoaTouch : UIView {
+	cinder::app::AppCocoaTouch *     mApp;
+	id<CinderViewCocoaTouchDelegate> mDelegate;
 
-@interface CinderViewCocoaTouch : UIView
-{
-	cinder::app::AppCocoaTouch					*mApp;
-	id<CinderViewCocoaTouchDelegate>			mDelegate;
-
-	cinder::app::RendererRef					mRenderer;
-	std::map<UITouch*,uint32_t>					mTouchIdMap;
+	cinder::app::RendererRef mRenderer;
+	std::map<UITouch *, uint32_t> mTouchIdMap;
 	std::vector<cinder::app::TouchEvent::Touch> mActiveTouches;
 }
 
@@ -64,7 +62,7 @@
 - (void)removeTouchFromMap:(UITouch *)touch;
 - (uint32_t)findTouchInMap:(UITouch *)touch;
 - (void)updateActiveTouches;
-- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event;
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 - (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches;
 
 @end

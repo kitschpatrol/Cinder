@@ -8,16 +8,16 @@
  */
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/gl/gl.h"
-#include "cinder/gl/TextureFont.h"
 #include "cinder/Camera.h"
 #include "cinder/Rand.h"
-#include <vector>
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/TextureFont.h"
+#include "cinder/gl/gl.h"
 #include <list>
+#include <vector>
 
-#include "Resources.h"
 #include "Character.h"
+#include "Resources.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -34,17 +34,17 @@ class TextInputTweenApp : public App {
 	void addChar( char c );
 	void removeChar();
 
-	gl::TextureFontRef	mTextureFont;
+	gl::TextureFontRef mTextureFont;
 
-	vector<Character>	mCharacters;
-	list<Character>		mDyingCharacters;
-	string				mText;
+	vector<Character> mCharacters;
+	list<Character>   mDyingCharacters;
+	string            mText;
 
-	CameraPersp			mCam;
-	float				mCamDist;
+	CameraPersp mCam;
+	float       mCamDist;
 
-	Anim<mat4>		mSceneMatrix;
-	mat4			mSceneDestMatrix;
+	Anim<mat4> mSceneMatrix;
+	mat4       mSceneDestMatrix;
 };
 
 void TextInputTweenApp::prepareSettings( Settings *settings )
@@ -58,7 +58,7 @@ void TextInputTweenApp::setup()
 	gl::enableAlphaBlending();
 
 	// font
-	Font customFont( Font( loadResource( RES_CUSTOM_FONT ), 100 ) );
+	Font                    customFont( Font( loadResource( RES_CUSTOM_FONT ), 100 ) );
 	gl::TextureFont::Format f;
 	f.enableMipmapping( true );
 	mTextureFont = gl::TextureFont::create( customFont, f );
@@ -81,7 +81,7 @@ void TextInputTweenApp::setup()
 
 void TextInputTweenApp::keyDown( KeyEvent event )
 {
-	char ch = event.getChar();
+	char   ch = event.getChar();
 	string specialChars = " .,:;/?\\!@#%^&*()-_=+[]<>'\""; // the remaining characters that the font provides
 
 	if( event.getCode() == KeyEvent::KEY_BACKSPACE )
@@ -118,11 +118,11 @@ void TextInputTweenApp::addChar( char c )
 
 void TextInputTweenApp::removeChar()
 {
-	if( ! mCharacters.empty() ) {
+	if( !mCharacters.empty() ) {
 		mDyingCharacters.push_back( mCharacters.back() );
 		mCharacters.pop_back();
 
-		if( ! mCharacters.empty() )
+		if( !mCharacters.empty() )
 			mSceneDestMatrix = mCharacters.back().getDestMatrix();
 		else
 			mSceneDestMatrix = mat4();
@@ -157,7 +157,7 @@ void TextInputTweenApp::draw()
 	for( auto &c : mCharacters )
 		c.draw();
 
-	if( ( ! mDyingCharacters.empty() ) && mDyingCharacters.front().isDead() )
+	if( ( !mDyingCharacters.empty() ) && mDyingCharacters.front().isDead() )
 		mDyingCharacters.pop_front();
 }
 

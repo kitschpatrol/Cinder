@@ -23,23 +23,25 @@
 
 #pragma once
 
+#include "cinder/DataSource.h"
 #include "cinder/audio/Source.h"
 #include "cinder/audio/Target.h"
 #include "cinder/audio/cocoa/CinderCoreAudio.h"
-#include "cinder/DataSource.h"
 
 #include <AudioToolbox/ExtendedAudioFile.h>
 
-namespace cinder { namespace audio { namespace cocoa {
+namespace cinder {
+namespace audio {
+namespace cocoa {
 
 struct ExtAudioFileDeleter {
-	void operator()( ::OpaqueExtAudioFile *audioFile )
+	void operator()(::OpaqueExtAudioFile *audioFile )
 	{
 		::ExtAudioFileDispose( audioFile );
 	}
 };
 
-typedef std::unique_ptr<::OpaqueExtAudioFile, ExtAudioFileDeleter>	ExtAudioFilePtr;
+typedef std::unique_ptr<::OpaqueExtAudioFile, ExtAudioFileDeleter> ExtAudioFilePtr;
 
 class SourceFileCoreAudio : public SourceFile {
   public:
@@ -47,38 +49,36 @@ class SourceFileCoreAudio : public SourceFile {
 	SourceFileCoreAudio( const DataSourceRef &dataSource, size_t sampleRate );
 	virtual ~SourceFileCoreAudio();
 
-	SourceFileRef	cloneWithSampleRate( size_t sampleRate ) const		override;
+	SourceFileRef cloneWithSampleRate( size_t sampleRate ) const override;
 
-	size_t	getNumChannels() const		override	{ return mNumChannels; }
-	size_t	getSampleRateNative() const	override	{ return mSampleRateNative; }
-
+	size_t                          getNumChannels() const override { return mNumChannels; }
+	size_t                          getSampleRateNative() const override { return mSampleRateNative; }
 	static std::vector<std::string> getSupportedExtensions();
 
   private:
 	void initImpl();
 
-	size_t		performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded ) override;
-	void		performSeek( size_t readPositionFrames )	override;
-	bool		supportsConversion()						override	{ return true; }
-
-	ExtAudioFilePtr				mExtAudioFile;
-	AudioBufferListPtr			mBufferList;
-	ci::DataSourceRef			mDataSource;
-	size_t						mNumChannels, mSampleRateNative;
+	size_t performRead( Buffer *buffer, size_t bufferFrameOffset, size_t numFramesNeeded ) override;
+	void performSeek( size_t readPositionFrames ) override;
+	bool               supportsConversion() override { return true; }
+	ExtAudioFilePtr    mExtAudioFile;
+	AudioBufferListPtr mBufferList;
+	ci::DataSourceRef  mDataSource;
+	size_t             mNumChannels, mSampleRateNative;
 };
 
 class TargetFileCoreAudio : public TargetFile {
   public:
 	TargetFileCoreAudio( const DataTargetRef &dataTarget, size_t sampleRate, size_t numChannels, SampleType sampleType, const std::string &extension );
 	virtual ~TargetFileCoreAudio() {}
-
 	void performWrite( const Buffer *buffer, size_t numFrames, size_t frameOffset ) override;
 
   private:
 	static ::AudioFileTypeID getFileTypeIdFromExtension( const std::string &ext );
 
-	ExtAudioFilePtr				mExtAudioFile;
-	AudioBufferListPtr			mBufferList;
+	ExtAudioFilePtr    mExtAudioFile;
+	AudioBufferListPtr mBufferList;
 };
-
-} } } // namespace cinder::audio::cocoa
+}
+}
+} // namespace cinder::audio::cocoa

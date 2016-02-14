@@ -1,14 +1,14 @@
 #include "cinder/app/App.h"
+#include "cinder/Utilities.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/Utilities.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 class EventTestApp : public App {
- public:	
+  public:
 	void mouseDown( MouseEvent event );
 	void mouseUp( MouseEvent event );
 	void mouseWheel( MouseEvent event );
@@ -19,7 +19,6 @@ class EventTestApp : public App {
 	void fileDrop( FileDropEvent event );
 	void draw();
 };
-
 
 string mouseModifiersToText( const MouseEvent &event )
 {
@@ -99,15 +98,15 @@ void EventTestApp::mouseDrag( MouseEvent event )
 void EventTestApp::keyDown( KeyEvent event )
 {
 	stringstream ss;
-	char ch = ( event.getChar() == 0 ) ? ' ' : event.getChar();
+	char         ch = ( event.getChar() == 0 ) ? ' ' : event.getChar();
 	ss << "You pressed the '" << ch << "' key with code: " << event.getCode() << keyModifiersToText( event );
-	console() << ss.str() << endl;	
+	console() << ss.str() << endl;
 }
 
 void EventTestApp::keyUp( KeyEvent event )
 {
 	stringstream ss;
-	char ch = ( event.getChar() == 0 ) ? ' ' : event.getChar();
+	char         ch = ( event.getChar() == 0 ) ? ' ' : event.getChar();
 	ss << "You keyupped the '" << ch << "' key with keyCode: " << event.getCode() << keyModifiersToText( event );
 	console() << ss.str() << endl;
 }

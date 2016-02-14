@@ -22,19 +22,19 @@
  */
 
 #include "cinder/app/winrt/PlatformWinRt.h"
-#include "cinder/msw/OutputDebugStringStream.h"
-#include "cinder/Unicode.h"
-#include "cinder/Log.h"
-#include "cinder/msw/CinderMsw.h"
-#include "cinder/winrt/WinRTUtils.h"
+#include "cinder/ImageFileTinyExr.h"
+#include "cinder/ImageSourceFileRadiance.h"
 #include "cinder/ImageSourceFileWic.h"
 #include "cinder/ImageTargetFileWic.h"
-#include "cinder/ImageSourceFileRadiance.h"
-#include "cinder/ImageFileTinyExr.h"
+#include "cinder/Log.h"
+#include "cinder/Unicode.h"
+#include "cinder/msw/CinderMsw.h"
+#include "cinder/msw/OutputDebugStringStream.h"
+#include "cinder/winrt/WinRTUtils.h"
 
-#include <wrl/client.h>
 #include <agile.h>
 #include <collection.h>
+#include <wrl/client.h>
 
 using namespace Windows::Storage;
 using namespace Windows::Storage::Pickers;
@@ -52,7 +52,8 @@ using namespace Platform::Collections;
 using namespace cinder::winrt;
 using namespace std;
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 PlatformWinRt::PlatformWinRt()
 {
@@ -63,9 +64,9 @@ PlatformWinRt::PlatformWinRt()
 	ImageTargetFileTinyExr::registerSelf();
 }
 
-DataSourceRef PlatformWinRt::loadResource( const fs::path &resourcePath  )
+DataSourceRef PlatformWinRt::loadResource( const fs::path &resourcePath )
 {
-	if( ! resourcePath.empty() )
+	if( !resourcePath.empty() )
 		return DataSourcePath::create( resourcePath.string() );
 	else
 		throw AssetLoadExc( resourcePath );
@@ -89,43 +90,42 @@ fs::path PlatformWinRt::getSaveFilePath( const fs::path &initialPath, const std:
 // Add the application path
 void PlatformWinRt::prepareAssetLoading()
 {
-	Windows::ApplicationModel::Package^ package = Windows::ApplicationModel::Package::Current;
-	Windows::Storage::StorageFolder^ installedLocation = package->InstalledLocation;
-	::Platform::String^ output = installedLocation->Path;
+	Windows::ApplicationModel::Package ^ package = Windows::ApplicationModel::Package::Current;
+	Windows::Storage::StorageFolder ^ installedLocation = package->InstalledLocation;
+	::Platform::String ^ output = installedLocation->Path;
 	std::wstring t = std::wstring( output->Data() );
 	Platform::get()->addAssetDirectory( fs::path( winrt::PlatformStringToString( output ) ) );
 }
 
-void PlatformWinRt::getOpenFilePathAsync( const std::function<void(const fs::path&)> &callback, const fs::path &initialPath, const std::vector<std::string> &extensions )
+void PlatformWinRt::getOpenFilePathAsync( const std::function<void( const fs::path & )> &callback, const fs::path &initialPath, const std::vector<std::string> &extensions )
 {
 	if( extensions.empty() )
 		throw Exception( "Must specify at least one file extension in extensions argument" );
 
 	// FilePicker APIs will not work if the application is in a snapped state.
-    // If an app wants to show a FilePicker while snapped, it must attempt to unsnap first
-	if( ! ensureUnsnapped() ) {
+	// If an app wants to show a FilePicker while snapped, it must attempt to unsnap first
+	if( !ensureUnsnapped() ) {
 		CI_LOG_E( "Application must be unsnapped" );
 		return;
 	}
 
-    FileOpenPicker^ picker = ref new FileOpenPicker();
-    picker->SuggestedStartLocation = PickerLocationId::Desktop;
- 
+	FileOpenPicker ^ picker = ref new FileOpenPicker();
+	picker->SuggestedStartLocation = PickerLocationId::Desktop;
+
 	for( auto iter = extensions.begin(); iter != extensions.end(); ++iter ) {
-		std::wstring temp(iter->begin(), iter->end());
-		picker->FileTypeFilter->Append( ref new ::Platform::String(temp.c_str()));
+		std::wstring temp( iter->begin(), iter->end() );
+		picker->FileTypeFilter->Append( ref new ::Platform::String( temp.c_str() ) );
 	}
 
-    create_task( picker->PickSingleFileAsync()).then([callback]( StorageFile^ file )
-    {
-        if( file )
+	create_task( picker->PickSingleFileAsync() ).then( [callback]( StorageFile ^ file ) {
+		if( file )
 			callback( fs::path( msw::toUtf8String( file->Path->Data() ) ) );
-        else
+		else
 			callback( fs::path() );
-    });
+	} );
 }
 
-void PlatformWinRt::getFolderPathAsync( const std::function<void(const fs::path&)> &callback, const fs::path &initialPath )
+void PlatformWinRt::getFolderPathAsync( const std::function<void( const fs::path & )> &callback, const fs::path &initialPath )
 {
 	/*if( extensions.empty() ) {
 		throw Exception( "Must specify at least one file extension in extensions argument" );
@@ -156,64 +156,63 @@ void PlatformWinRt::getFolderPathAsync( const std::function<void(const fs::path&
     });*/
 }
 
-void PlatformWinRt::getSaveFilePathAsync( const std::function<void(const fs::path&)> &callback, const fs::path &initialPath, const std::vector<std::string> &extensions )
+void PlatformWinRt::getSaveFilePathAsync( const std::function<void( const fs::path & )> &callback, const fs::path &initialPath, const std::vector<std::string> &extensions )
 {
 	if( initialPath.empty() )
 		throw Exception( "Must specify initialPath" );
 	if( extensions.empty() )
 		throw Exception( "Must specify at least one file extension" );
 
-    // FilePicker APIs will not work if the application is in a snapped state.
-    // If an app wants to show a FilePicker while snapped, it must attempt to unsnap first
-	if( ! ensureUnsnapped() ) {
+	// FilePicker APIs will not work if the application is in a snapped state.
+	// If an app wants to show a FilePicker while snapped, it must attempt to unsnap first
+	if( !ensureUnsnapped() ) {
 		CI_LOG_E( "Application must be unsnapped" );
 		return;
 	}
 
-    FileSavePicker^ savePicker = ref new FileSavePicker();
+	FileSavePicker ^ savePicker = ref new FileSavePicker();
 	savePicker->SuggestedStartLocation = PickerLocationId::PicturesLibrary;
 
-    auto plainTextExtensions = ref new ::Platform::Collections::Vector<String^>();
-	
-	if( ! extensions.empty() ) {
+	auto plainTextExtensions = ref new ::Platform::Collections::Vector<String ^>();
+
+	if( !extensions.empty() ) {
 		for( auto iter = extensions.begin(); iter != extensions.end(); ++iter ) {
-			std::wstring temp(iter->begin(), iter->end());
-			plainTextExtensions->Append( ref new ::Platform::String(temp.c_str()));
+			std::wstring temp( iter->begin(), iter->end() );
+			plainTextExtensions->Append( ref new ::Platform::String( temp.c_str() ) );
 		}
 	}
-	else if( ! initialPath.empty() ) {
+	else if( !initialPath.empty() ) {
 		plainTextExtensions->Append( ref new ::Platform::String( initialPath.extension().wstring().c_str() ) );
-	} 
+	}
 
-    savePicker->FileTypeChoices->Insert( "", plainTextExtensions );
+	savePicker->FileTypeChoices->Insert( "", plainTextExtensions );
 
-	if( ! initialPath.empty() ) {
+	if( !initialPath.empty() ) {
 		savePicker->SuggestedFileName = ref new ::Platform::String( initialPath.filename().wstring().c_str() );
 	}
 	else {
 		savePicker->SuggestedFileName = "New Document";
 	}
 
-    create_task(savePicker->PickSaveFileAsync()).then([callback]( StorageFile^ file )
-    {
-        if( file )
+	create_task( savePicker->PickSaveFileAsync() ).then( [callback]( StorageFile ^ file ) {
+		if( file )
 			callback( fs::path( msw::toUtf8String( file->Path->Data() ) ) );
-        else
+		else
 			callback( fs::path() );
-    });
+	} );
 }
 
-std::ostream& PlatformWinRt::console()
+std::ostream &PlatformWinRt::console()
 {
-	if( ! mOutputStream )
+	if( !mOutputStream )
 		mOutputStream.reset( new cinder::msw::dostream );
-	
+
 	return *mOutputStream;
 }
 
-map<string,string> PlatformWinRt::getEnvironmentVariables()
+map<string, string> PlatformWinRt::getEnvironmentVariables()
 {
-	return map<string,string>();
+	return map<string, string>();
 }
 
 fs::path PlatformWinRt::expandPath( const fs::path &path )
@@ -229,8 +228,8 @@ fs::path PlatformWinRt::expandPath( const fs::path &path )
 fs::path PlatformWinRt::getHomeDirectory() const
 {
 	// WinRT will throw an exception if access to DocumentsLibrary has not been requested in the App Manifest
-	auto folder = Windows::Storage::KnownFolders::DocumentsLibrary;
-	string result = PlatformStringToString(folder->Path);
+	auto   folder = Windows::Storage::KnownFolders::DocumentsLibrary;
+	string result = PlatformStringToString( folder->Path );
 	return fs::path( result );
 }
 
@@ -238,14 +237,14 @@ fs::path PlatformWinRt::getDocumentsDirectory() const
 {
 	// WinRT will throw an exception if access to DocumentsLibrary has not been requested in the App Manifest
 	auto folder = Windows::Storage::KnownFolders::DocumentsLibrary;
-	return PlatformStringToString(folder->Path);
+	return PlatformStringToString( folder->Path );
 }
 
 fs::path PlatformWinRt::getDefaultExecutablePath() const
 {
-	Windows::ApplicationModel::Package^ package = Windows::ApplicationModel::Package::Current;
-	Windows::Storage::StorageFolder^ installedLocation = package->InstalledLocation;
-	::Platform::String^ output = installedLocation->Path;
+	Windows::ApplicationModel::Package ^ package = Windows::ApplicationModel::Package::Current;
+	Windows::Storage::StorageFolder ^ installedLocation = package->InstalledLocation;
+	::Platform::String ^ output = installedLocation->Path;
 	std::wstring t = std::wstring( output->Data() );
 	return fs::path( winrt::PlatformStringToString( output ) );
 }
@@ -253,7 +252,7 @@ fs::path PlatformWinRt::getDefaultExecutablePath() const
 void PlatformWinRt::launchWebBrowser( const Url &url )
 {
 	std::u16string urlStr = toUtf16( url.str() );
-	auto uri = ref new Windows::Foundation::Uri( ref new ::Platform::String( (wchar_t *)urlStr.c_str() ) );
+	auto           uri = ref new Windows::Foundation::Uri( ref new ::Platform::String( (wchar_t *)urlStr.c_str() ) );
 	Windows::System::Launcher::LaunchUriAsync( uri );
 }
 
@@ -268,12 +267,12 @@ vector<string> PlatformWinRt::stackTrace()
 	return vector<string>();
 }
 
-const vector<DisplayRef>& PlatformWinRt::getDisplays()
+const vector<DisplayRef> &PlatformWinRt::getDisplays()
 {
 	bool sInitialized = false;
-	if( ! sInitialized ) {
-		CoreWindow^ window = CoreWindow::GetForCurrentThread();
-		auto newDisplay = new DisplayWinRt();
+	if( !sInitialized ) {
+		CoreWindow ^ window = CoreWindow::GetForCurrentThread();
+		auto  newDisplay = new DisplayWinRt();
 		float width, height;
 
 		::GetPlatformWindowDimensions( window, &width, &height );
@@ -290,9 +289,9 @@ const vector<DisplayRef>& PlatformWinRt::getDisplays()
 }
 
 ResourceLoadExcMsw::ResourceLoadExcMsw( int mswID, const string &mswType )
-	: ResourceLoadExc( "" )
+    : ResourceLoadExc( "" )
 {
 	setDescription( "Failed to load resource: #" + to_string( mswID ) + " type: " + mswType );
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

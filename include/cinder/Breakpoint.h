@@ -25,10 +25,9 @@
 
 #include "cinder/Cinder.h"
 
-#if ! defined( CINDER_MSW )
-	#include <csignal>
-	#define CI_BREAKPOINT()	std::raise( SIGINT )
+#if !defined( CINDER_MSW )
+#include <csignal>
+#define CI_BREAKPOINT() std::raise( SIGINT )
 #else // MSW
-	#define CI_BREAKPOINT() __debugbreak()
+#define CI_BREAKPOINT() __debugbreak()
 #endif
-

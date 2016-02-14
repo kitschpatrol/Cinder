@@ -38,7 +38,7 @@ void ImageSourceFileRadiance::load( ImageTargetRef target )
 	ImageSource::RowFunc func = setupRowFunc( target );
 	//int number_passes = png_set_interlace_handling( mPngPtr );
 	for( int32_t row = 0; row < mHeight; ++row ) {
-		((*this).*func)( target, row, mRgbData.get() + ( row * mWidth * 3 ) );
+		( ( *this ).*func )( target, row, mRgbData.get() + ( row * mWidth * 3 ) );
 	}
 }
 
@@ -51,17 +51,20 @@ void ImageSourceFileRadiance::registerSelf()
 ImageSourceFileRadiance::ImageSourceFileRadiance( DataSourceRef dataSourceRef, ImageSource::Options options )
 {
 	IStreamRef stream = dataSourceRef->createStream();
-	
+
 	loadStream( stream );
 }
 
 namespace {
 typedef unsigned char RgbePixel[4];
 
-const int MINELEN =	8;				// minimum scanline length for encoding
-const int MAXELEN = 0x7fff;			// maximum scanline length for encoding
+const int MINELEN = 8; // minimum scanline length for encoding
+const int MAXELEN = 0x7fff; // maximum scanline length for encoding
 
-enum { R, G, B, E };
+enum { R,
+	G,
+	B,
+	E };
 
 void workOnRgbeScanline( RgbePixel *scan, int len, float *cols );
 bool decrunchScanline( RgbePixel *scanline, int len, IStreamCinder *stream );
@@ -82,7 +85,7 @@ void ImageSourceFileRadiance::loadStream( IStreamRef stream )
 	stream->seekRelative( 1 );
 
 	char cmd[200];
-	int i = 0;
+	int  i = 0;
 	char c = 0, oldc;
 	while( true ) {
 		oldc = c;
@@ -103,9 +106,9 @@ void ImageSourceFileRadiance::loadStream( IStreamRef stream )
 
 	int width, height;
 #if defined( CINDER_WINRT )
-	if( ! sscanf_s( resolution, "-Y %d +X %d", &height, &width ) )
+	if( !sscanf_s( resolution, "-Y %d +X %d", &height, &width ) )
 #else
-	if( ! sscanf( resolution, "-Y %d +X %d", &height, &width ) )
+	if( !sscanf( resolution, "-Y %d +X %d", &height, &width ) )
 #endif
 		throw ImageSourceFileRadianceException( "Unable to parse size" );
 	setSize( width, height );
@@ -116,7 +119,7 @@ void ImageSourceFileRadiance::loadStream( IStreamRef stream )
 	// convert image
 	float *cols = mRgbData.get();
 	for( int y = height - 1; y >= 0; y-- ) {
-		if( ! decrunchScanline( scanline.get(), width, stream.get() ) )
+		if( !decrunchScanline( scanline.get(), width, stream.get() ) )
 			break;
 		workOnRgbeScanline( scanline.get(), width, cols );
 		cols += width * 3;
@@ -149,7 +152,7 @@ bool decrunchScanline( RgbePixel *scanline, int len, IStreamCinder *stream )
 	char i;
 
 	if( len < MINELEN || len > MAXELEN )
-		return oldStyleDecrunch(scanline, len, stream );
+		return oldStyleDecrunch( scanline, len, stream );
 
 	stream->read( &i );
 	if( i != 2 ) { // old style
@@ -169,31 +172,31 @@ bool decrunchScanline( RgbePixel *scanline, int len, IStreamCinder *stream )
 
 	// read each component
 	for( i = 0; i < 4; i++ ) {
-	    for( int j = 0; j < len; ) {
+		for( int j = 0; j < len; ) {
 			unsigned char code;
 			stream->read( &code );
 			if( code > 128 ) { // run
-			    code &= 127;
-			    unsigned char val;
+				code &= 127;
+				unsigned char val;
 				stream->read( &val );
-			    while( code-- )
+				while( code-- )
 					scanline[j++][i] = val;
 			}
-			else {	// non-run
+			else { // non-run
 				while( code-- )
 					stream->read( &scanline[j++][i] );
 			}
 		}
-    }
+	}
 
-	return ! stream->isEof();
+	return !stream->isEof();
 }
 
 bool oldStyleDecrunch( RgbePixel *scanline, int len, IStreamCinder *stream )
 {
 	int i;
 	int rshift = 0;
-	
+
 	while( len > 0 ) {
 		stream->read( &scanline[0][R] );
 		stream->read( &scanline[0][G] );
@@ -202,9 +205,7 @@ bool oldStyleDecrunch( RgbePixel *scanline, int len, IStreamCinder *stream )
 		if( stream->isEof() )
 			return false;
 
-		if( scanline[0][R] == 1 &&
-			scanline[0][G] == 1 &&
-			scanline[0][B] == 1) {
+		if( scanline[0][R] == 1 && scanline[0][G] == 1 && scanline[0][B] == 1 ) {
 			for( i = scanline[0][E] << rshift; i > 0; i-- ) {
 				memcpy( &scanline[0][0], &scanline[-1][0], 4 );
 				scanline++;
@@ -218,7 +219,7 @@ bool oldStyleDecrunch( RgbePixel *scanline, int len, IStreamCinder *stream )
 			rshift = 0;
 		}
 	}
-	
+
 	return true;
 }
 } // anonymous namespace

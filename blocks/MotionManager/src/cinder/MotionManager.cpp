@@ -35,12 +35,12 @@ void MotionManager::enable( float updateFrequency, SensorMode mode, bool showsCa
 	impl->setSensorMode( mode );
 	impl->setUpdateFrequency( updateFrequency );
 	impl->setShowsCalibrationView( showsCalibrationDisplay );
-    impl->startMotionUpdates();
+	impl->startMotionUpdates();
 }
 
 void MotionManager::disable()
 {
-    get()->mImpl->stopMotionUpdates();
+	get()->mImpl->stopMotionUpdates();
 }
 
 bool MotionManager::isEnabled()
@@ -80,47 +80,47 @@ vec3 MotionManager::getGravityDirection( app::InterfaceOrientation orientation )
 
 quat MotionManager::getRotation( app::InterfaceOrientation orientation )
 {
-    return get()->mImpl->getRotation( orientation );
+	return get()->mImpl->getRotation( orientation );
 }
 
 vec3 MotionManager::getRotationRate( app::InterfaceOrientation orientation )
 {
-    return get()->mImpl->getRotationRate( orientation );
+	return get()->mImpl->getRotationRate( orientation );
 }
 
-vec3 MotionManager::getAcceleration( app::InterfaceOrientation orientation)
+vec3 MotionManager::getAcceleration( app::InterfaceOrientation orientation )
 {
-    return get()->mImpl->getAcceleration( orientation );
+	return get()->mImpl->getAcceleration( orientation );
 }
 
 bool MotionManager::isShaking( float minShakeDeltaThreshold )
 {
-    return get()->isShakingImpl( minShakeDeltaThreshold );
+	return get()->isShakingImpl( minShakeDeltaThreshold );
 }
 
-MotionManager* MotionManager::get()
+MotionManager *MotionManager::get()
 {
-	static MotionManager *sInst = 0;
+	static MotionManager *       sInst = 0;
 	std::unique_lock<std::mutex> lock( sMutex );
-	if( ! sInst ) {
+	if( !sInst ) {
 		sInst = new MotionManager;
-        sInst->mImpl = std::make_shared<MotionImplCoreMotion>();
+		sInst->mImpl = std::make_shared<MotionImplCoreMotion>();
 	}
 	return sInst;
 }
 
 bool MotionManager::isShakingImpl( float minShakeDeltaThreshold )
 {
-    const vec3& accel = getAcceleration();
+	const vec3 &                 accel = getAcceleration();
 	std::unique_lock<std::mutex> lock( sMutex ); // lock after we get the acceleration so there is no deadlock
-    bool isShaking = false;
-    if( mPrevAcceleration != vec3( 0 ) ) {
-        mShakeDelta = length2(accel - mPrevAcceleration);
-        if( length2(accel - mPrevAcceleration) > (minShakeDeltaThreshold * minShakeDeltaThreshold) )
-            isShaking = true;
-    }
-    mPrevAcceleration = accel;
-    return isShaking;
+	bool                         isShaking = false;
+	if( mPrevAcceleration != vec3( 0 ) ) {
+		mShakeDelta = length2( accel - mPrevAcceleration );
+		if( length2( accel - mPrevAcceleration ) > ( minShakeDeltaThreshold * minShakeDeltaThreshold ) )
+			isShaking = true;
+	}
+	mPrevAcceleration = accel;
+	return isShaking;
 }
 
 float MotionManager::getAccelerometerFilterImpl()

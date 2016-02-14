@@ -27,7 +27,9 @@
 
 #include <atomic>
 
-namespace cinder { namespace audio { namespace dsp {
+namespace cinder {
+namespace audio {
+namespace dsp {
 
 //! \brief Ringbuffer (aka circular buffer) data structure for use in concurrent audio scenarios.
 //!
@@ -42,15 +44,17 @@ template <typename T>
 class RingBufferT {
   public:
 	//! Constructs a RingBufferT with size = 0
-	RingBufferT() : mData( nullptr ), mAllocatedSize( 0 ), mWriteIndex( 0 ), mReadIndex( 0 ) {}
+	RingBufferT()
+	    : mData( nullptr ), mAllocatedSize( 0 ), mWriteIndex( 0 ), mReadIndex( 0 ) {}
 	//! Constructs a RingBufferT with \a count maximum elements.
-	RingBufferT( size_t count ) : mAllocatedSize( 0 )
+	RingBufferT( size_t count )
+	    : mAllocatedSize( 0 )
 	{
 		resize( count );
 	}
 
 	RingBufferT( RingBufferT &&other )
-	: mData( other.mData ), mAllocatedSize( other.mAllocatedSize ), mWriteIndex( 0 ), mReadIndex( 0 )
+	    : mData( other.mData ), mAllocatedSize( other.mAllocatedSize ), mWriteIndex( 0 ), mReadIndex( 0 )
 	{
 		other.mData = nullptr;
 		other.mAllocatedSize = 0;
@@ -178,13 +182,13 @@ class RingBufferT {
 
 		return writeIndex + mAllocatedSize - readIndex;
 	}
-	
-	
-	T						*mData;
-	size_t					mAllocatedSize;
-	std::atomic<size_t>		mWriteIndex, mReadIndex;
+
+	T *                 mData;
+	size_t              mAllocatedSize;
+	std::atomic<size_t> mWriteIndex, mReadIndex;
 };
 
 typedef RingBufferT<float> RingBuffer;
-
-} } } // namespace cinder::audio::dsp
+}
+}
+} // namespace cinder::audio::dsp

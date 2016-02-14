@@ -27,25 +27,28 @@
 
 // this is not meant to be a public-facing class, and we will try to gaurantee a unique name due to ObjC's lack of anonymous namespaces
 /// \cond
-@interface WriteToSavedPhotosAlbumDelegate_CINDER_ANONYMOUS_NS : NSObject {}
+@interface WriteToSavedPhotosAlbumDelegate_CINDER_ANONYMOUS_NS : NSObject {
+}
 @end
 @implementation WriteToSavedPhotosAlbumDelegate_CINDER_ANONYMOUS_NS
-- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
-	cinder::cocoa::SafeUiImage *safeImage = reinterpret_cast<cinder::cocoa::SafeUiImage*>( contextInfo );
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+	cinder::cocoa::SafeUiImage *safeImage = reinterpret_cast<cinder::cocoa::SafeUiImage *>( contextInfo );
 	delete safeImage;
 	[self release];
 }
 @end // WriteToSavedPhotosAlbumDelegate_CINDER_ANONYMOUS_NS
 /// \endcond
 
-namespace cinder { namespace cocoa {
+namespace cinder {
+namespace cocoa {
 
 Surface8uRef convertUiImage( UIImage *uiImage, bool assumeOwnership )
 {
 	CGImageRef imageRef = uiImage.CGImage;
-	if( ! imageRef )
+	if( !imageRef )
 		return Surface8uRef();
-	
+
 	if( assumeOwnership ) {
 		[uiImage retain];
 		return std::shared_ptr<Surface8u>( new Surface8u( createImageSource( imageRef ) ), [=]( Surface8u *s ) { delete s; [uiImage release]; } );
@@ -60,10 +63,10 @@ SafeUiImage::SafeUiImage( UIImage *uiImage, CGImageRef imageRef )
 		[uiImage retain];
 	if( imageRef )
 		::CGImageRetain( imageRef );
-	mObj = std::shared_ptr<std::pair<UIImage*,CGImageRef> >( new std::pair<UIImage*,CGImageRef>( uiImage, imageRef ), SafeUiImage::destroy );
+	mObj = std::shared_ptr<std::pair<UIImage *, CGImageRef>>( new std::pair<UIImage *, CGImageRef>( uiImage, imageRef ), SafeUiImage::destroy );
 }
 
-void SafeUiImage::destroy( std::pair<UIImage*,CGImageRef> *data )
+void SafeUiImage::destroy( std::pair<UIImage *, CGImageRef> *data )
 {
 	if( data ) {
 		if( data->first )
@@ -77,9 +80,9 @@ void SafeUiImage::destroy( std::pair<UIImage*,CGImageRef> *data )
 SafeUiImage createUiImage( const ImageSourceRef imageSource )
 {
 	SafeUiImage result;
-	CGImageRef imageRef = createCgImage( imageSource );
+	CGImageRef  imageRef = createCgImage( imageSource );
 	if( imageRef ) {
-		UIImage *uiImage =[UIImage imageWithCGImage:imageRef];
+		UIImage *uiImage = [UIImage imageWithCGImage:imageRef];
 		result = SafeUiImage( uiImage, imageRef );
 		::CGImageRelease( imageRef );
 	}
@@ -93,8 +96,8 @@ void writeToSavedPhotosAlbum( const ImageSourceRef imageSource )
 	if( uiImage ) {
 		// Supposedly this routine gets bummed if you destroy its UIImage, so we'll need to setup a callback
 		WriteToSavedPhotosAlbumDelegate_CINDER_ANONYMOUS_NS *saveFinishedDelegate = [[WriteToSavedPhotosAlbumDelegate_CINDER_ANONYMOUS_NS alloc] init];
-		::UIImageWriteToSavedPhotosAlbum( uiImage, saveFinishedDelegate, @selector(image:didFinishSavingWithError:contextInfo:), new cocoa::SafeUiImage( uiImage ) );
+		::UIImageWriteToSavedPhotosAlbum( uiImage, saveFinishedDelegate, @selector( image:didFinishSavingWithError:contextInfo: ), new cocoa::SafeUiImage( uiImage ) );
 	}
 }
-
-} } // namespace cinder::cocoa
+}
+} // namespace cinder::cocoa

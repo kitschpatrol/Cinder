@@ -27,8 +27,8 @@
 #import <ScreenSaver/ScreenSaver.h>
 
 #include "cinder/app/AppScreenSaver.h"
-#import "cinder/app/cocoa/CinderViewMac.h"
 #import "cinder/app/Window.h"
+#import "cinder/app/cocoa/CinderViewMac.h"
 
 #include <string>
 
@@ -36,16 +36,16 @@
 
 @interface AppImplMacScreenSaver : NSObject {
   @public
-	cinder::app::AppScreenSaver					*mApp;
-	std::list<WindowImplCocoaScreenSaver*>		mWindows;
-	WindowImplCocoaScreenSaver					*mActiveWindow;
-	float										mFrameRate;
+	cinder::app::AppScreenSaver *           mApp;
+	std::list<WindowImplCocoaScreenSaver *> mWindows;
+	WindowImplCocoaScreenSaver *            mActiveWindow;
+	float                                   mFrameRate;
 
-	BOOL										mSetupCalled;
+	BOOL mSetupCalled;
 }
 
-- (AppImplMacScreenSaver*)init;
-- (void)addWindow:(WindowImplCocoaScreenSaver*)windowImpl;
+- (AppImplMacScreenSaver *)init;
+- (void)addWindow:(WindowImplCocoaScreenSaver *)windowImpl;
 - (cinder::app::RendererRef)findSharedRenderer:(cinder::app::RendererRef)sharedRenderer;
 - (BOOL)isPreview;
 
@@ -53,28 +53,28 @@
 - (cinder::app::WindowRef)getWindowIndex:(size_t)index;
 - (cinder::app::WindowRef)getWindow;
 - (void)setActiveWindowToMain;
-- (void)setActiveWindow:(WindowImplCocoaScreenSaver*)activeWindow;
+- (void)setActiveWindow:(WindowImplCocoaScreenSaver *)activeWindow;
 
-- (void)animateOneFrame:(WindowImplCocoaScreenSaver*)callee;
+- (void)animateOneFrame:(WindowImplCocoaScreenSaver *)callee;
 
 - (float)getFrameRate;
 - (void)setFrameRate:(float)frameRate;
 - (cinder::fs::path)getAppPath;
-- (void)removeCinderView:(WindowImplCocoaScreenSaver*)win;
+- (void)removeCinderView:(WindowImplCocoaScreenSaver *)win;
 - (void)finalCleanup;
 
 @end
 
-@interface WindowImplCocoaScreenSaver : ScreenSaverView<WindowImplCocoa,CinderViewDelegate> {
+@interface WindowImplCocoaScreenSaver : ScreenSaverView <WindowImplCocoa, CinderViewDelegate> {
   @public
-	CinderViewMac						*mCinderView;
-	cinder::app::WindowRef				mWindowRef;
-	cinder::DisplayRef					mDisplay;
+	CinderViewMac *        mCinderView;
+	cinder::app::WindowRef mWindowRef;
+	cinder::DisplayRef     mDisplay;
 
-	BOOL								mPreview;	
-	BOOL								mResizeCalled;
-	BOOL								mIsMainView;
-	BOOL								mHasDrawnSinceLastUpdate;
+	BOOL mPreview;
+	BOOL mResizeCalled;
+	BOOL mIsMainView;
+	BOOL mHasDrawnSinceLastUpdate;
 }
 
 // ScreenSaverView methods
@@ -98,8 +98,8 @@
 - (void)setAlwaysOnTop:(BOOL)alwaysOnTop;
 - (cinder::DisplayRef)getDisplay;
 - (cinder::app::RendererRef)getRenderer;
-- (const std::vector<cinder::app::TouchEvent::Touch>&)getActiveTouches;
-- (void*)getNative;
+- (const std::vector<cinder::app::TouchEvent::Touch> &)getActiveTouches;
+- (void *)getNative;
 - (void)hide;
 - (void)show;
 

@@ -23,26 +23,27 @@
 */
 
 #include "cinder/msw/CinderMsw.h"
-#include "cinder/ip/Fill.h"
 #include "cinder/Exception.h"
+#include "cinder/ip/Fill.h"
 
 #include <vector>
 
-namespace cinder { namespace msw {
+namespace cinder {
+namespace msw {
 
 #if !defined( CINDER_WINRT )
 Surface8uRef convertHBitmap( HBITMAP hbitmap )
 {
 	// create a temporary DC
 	HDC hdc = ::CreateCompatibleDC( 0 );
-	
+
 	// determine the dimensions first
 	BITMAP bm;
-	::GetObject( hbitmap, sizeof(BITMAP), &bm );
-	
+	::GetObject( hbitmap, sizeof( BITMAP ), &bm );
+
 	BITMAPINFO bmi;
-	memset( &bmi, 0, sizeof(BITMAPINFO) );
-	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	memset( &bmi, 0, sizeof( BITMAPINFO ) );
+	bmi.bmiHeader.biSize = sizeof( BITMAPINFOHEADER );
 	bmi.bmiHeader.biHeight = -bm.bmHeight;
 	bmi.bmiHeader.biWidth = bm.bmWidth;
 	bmi.bmiHeader.biPlanes = 1;
@@ -59,15 +60,15 @@ Surface8uRef convertHBitmap( HBITMAP hbitmap )
 
 	// allocate enough space to hold the result
 	// We use GlobalAlloc / GlobalFree to ensure 8-byte alignment
-	DWORD dwBmpSize = ((width * 32 + 31) / 32) * 4 * height;
-	uint8_t *data = reinterpret_cast<uint8_t*>( ::GlobalAlloc( GMEM_FIXED, dwBmpSize ) );
-	Surface8u *newSurface = new Surface8u( data, width, height, width * 4, SurfaceChannelOrder::BGRX );
-	Surface8uRef result( newSurface, [=] ( Surface8u *s ) { ::GlobalFree( (HGLOBAL)data ); delete s; } );
+	DWORD        dwBmpSize = ( ( width * 32 + 31 ) / 32 ) * 4 * height;
+	uint8_t *    data = reinterpret_cast<uint8_t *>(::GlobalAlloc( GMEM_FIXED, dwBmpSize ) );
+	Surface8u *  newSurface = new Surface8u( data, width, height, width * 4, SurfaceChannelOrder::BGRX );
+	Surface8uRef result( newSurface, [=]( Surface8u *s ) { ::GlobalFree( (HGLOBAL)data ); delete s; } );
 	// have the Surface's destructor call this to call ::GlobalFree
-	
-	if( ::GetDIBits( hdc, hbitmap, 0, height, result->getData(), &bmi, DIB_RGB_COLORS ) == 0 )
+
+	if(::GetDIBits( hdc, hbitmap, 0, height, result->getData(), &bmi, DIB_RGB_COLORS ) == 0 )
 		throw Exception( "Invalid HBITMAP" );
-	
+
 	::ReleaseDC( NULL, hdc );
 
 	return result;
@@ -77,7 +78,7 @@ Surface8uRef convertHBitmap( HBITMAP hbitmap )
 void ComDelete( void *p )
 {
 	if( p ) {
-		IUnknown *unknown = reinterpret_cast<IUnknown*>( p );
+		IUnknown *unknown = reinterpret_cast<IUnknown *>( p );
 		unknown->Release();
 	}
 }
@@ -85,54 +86,53 @@ void ComDelete( void *p )
 /////////////////////////////////////////////////////////////////////
 // ComOStream
 
-HRESULT STDMETHODCALLTYPE ComOStream::QueryInterface(REFIID iid, void ** ppvObject)
-{ 
-    if (iid == __uuidof(IUnknown)
-        || iid == __uuidof(IStream)
-        || iid == __uuidof(ISequentialStream))
-    {
-        *ppvObject = static_cast<IStream*>(this);
-        AddRef();
-        return S_OK;
-    }
-    else
-        return E_NOINTERFACE; 
-}
-
-ULONG STDMETHODCALLTYPE ComOStream::AddRef() 
-{ 
-    return (ULONG)InterlockedIncrement(&_refcount); 
-}
-
-ULONG STDMETHODCALLTYPE ComOStream::Release() 
+HRESULT STDMETHODCALLTYPE ComOStream::QueryInterface( REFIID iid, void **ppvObject )
 {
-    ULONG res = (ULONG) InterlockedDecrement(&_refcount);
-    if (res == 0) 
-        delete this;
-    return res;
+	if( iid == __uuidof( IUnknown )
+	    || iid == __uuidof( IStream )
+	    || iid == __uuidof( ISequentialStream ) ) {
+		*ppvObject = static_cast<IStream *>( this );
+		AddRef();
+		return S_OK;
+	}
+	else
+		return E_NOINTERFACE;
 }
 
-HRESULT STDMETHODCALLTYPE ComOStream::Write( void const* pv, ULONG cb, ULONG* pcbWritten )
+ULONG STDMETHODCALLTYPE ComOStream::AddRef()
+{
+	return (ULONG)InterlockedIncrement( &_refcount );
+}
+
+ULONG STDMETHODCALLTYPE ComOStream::Release()
+{
+	ULONG res = (ULONG)InterlockedDecrement( &_refcount );
+	if( res == 0 )
+		delete this;
+	return res;
+}
+
+HRESULT STDMETHODCALLTYPE ComOStream::Write( void const *pv, ULONG cb, ULONG *pcbWritten )
 {
 	mOStream->writeData( pv, cb );
 	*pcbWritten = cb;
-    return S_OK;
+	return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE ComOStream::Seek( LARGE_INTEGER liDistanceToMove, DWORD dwOrigin, ULARGE_INTEGER* lpNewFilePointer )
-{ 
+HRESULT STDMETHODCALLTYPE ComOStream::Seek( LARGE_INTEGER liDistanceToMove, DWORD dwOrigin, ULARGE_INTEGER *lpNewFilePointer )
+{
 	switch( dwOrigin ) {
-		case STREAM_SEEK_SET:
-			mOStream->seekAbsolute( (off_t)liDistanceToMove.QuadPart );
+	case STREAM_SEEK_SET:
+		mOStream->seekAbsolute( (off_t)liDistanceToMove.QuadPart );
 		break;
-		case STREAM_SEEK_CUR:
-			mOStream->seekRelative( (off_t)liDistanceToMove.QuadPart );
+	case STREAM_SEEK_CUR:
+		mOStream->seekRelative( (off_t)liDistanceToMove.QuadPart );
 		break;
-		case STREAM_SEEK_END:
-			mOStream->seekAbsolute( (off_t)(-liDistanceToMove.QuadPart) );
+	case STREAM_SEEK_END:
+		mOStream->seekAbsolute( ( off_t )( -liDistanceToMove.QuadPart ) );
 		break;
-		default:   
-			return STG_E_INVALIDFUNCTION;
+	default:
+		return STG_E_INVALIDFUNCTION;
 		break;
 	}
 
@@ -152,7 +152,7 @@ std::wstring toWideString( const std::string &utf8String )
 	}
 
 	std::vector<wchar_t> resultString( wideSize );
-	int convResult = ::MultiByteToWideChar( CP_UTF8, 0, utf8String.c_str(), -1, &resultString[0], wideSize );
+	int                  convResult = ::MultiByteToWideChar( CP_UTF8, 0, utf8String.c_str(), -1, &resultString[0], wideSize );
 	if( convResult != wideSize ) {
 		throw Exception( "Error in UTF-8 to UTF-16 conversion." );
 	}
@@ -181,34 +181,33 @@ std::string toUtf8String( const std::wstring &wideString )
 /////////////////////////////////////////////////////////////////////
 // ComIStream
 
-HRESULT STDMETHODCALLTYPE ComIStream::QueryInterface(REFIID iid, void ** ppvObject)
-{ 
-	if (iid == __uuidof(IUnknown)
-		|| iid == __uuidof(IStream)
-		|| iid == __uuidof(ISequentialStream))
-	{
-		*ppvObject = static_cast<IStream*>(this);
+HRESULT STDMETHODCALLTYPE ComIStream::QueryInterface( REFIID iid, void **ppvObject )
+{
+	if( iid == __uuidof( IUnknown )
+	    || iid == __uuidof( IStream )
+	    || iid == __uuidof( ISequentialStream ) ) {
+		*ppvObject = static_cast<IStream *>( this );
 		AddRef();
 		return S_OK;
 	}
 	else
-		return E_NOINTERFACE; 
+		return E_NOINTERFACE;
 }
 
-ULONG STDMETHODCALLTYPE ComIStream::AddRef() 
-{ 
-	return (ULONG)InterlockedIncrement(&_refcount); 
-}
-
-ULONG STDMETHODCALLTYPE ComIStream::Release() 
+ULONG STDMETHODCALLTYPE ComIStream::AddRef()
 {
-	ULONG res = (ULONG) InterlockedDecrement(&_refcount);
-	if (res == 0) 
+	return (ULONG)InterlockedIncrement( &_refcount );
+}
+
+ULONG STDMETHODCALLTYPE ComIStream::Release()
+{
+	ULONG res = (ULONG)InterlockedDecrement( &_refcount );
+	if( res == 0 )
 		delete this;
 	return res;
 }
 
-HRESULT STDMETHODCALLTYPE ComIStream::Read( void* pv, ULONG cb, ULONG* pcbRead )
+HRESULT STDMETHODCALLTYPE ComIStream::Read( void *pv, ULONG cb, ULONG *pcbRead )
 {
 	ULONG dataLeft = mIStream->size() - mIStream->tell();
 	if( dataLeft < cb ) {
@@ -223,8 +222,8 @@ HRESULT STDMETHODCALLTYPE ComIStream::Read( void* pv, ULONG cb, ULONG* pcbRead )
 	}
 }
 
-HRESULT STDMETHODCALLTYPE ComIStream::Seek( LARGE_INTEGER liDistanceToMove, DWORD dwOrigin, ULARGE_INTEGER* lpNewFilePointer )
-{ 
+HRESULT STDMETHODCALLTYPE ComIStream::Seek( LARGE_INTEGER liDistanceToMove, DWORD dwOrigin, ULARGE_INTEGER *lpNewFilePointer )
+{
 	switch( dwOrigin ) {
 	case STREAM_SEEK_SET:
 		mIStream->seekAbsolute( (off_t)liDistanceToMove.QuadPart );
@@ -233,9 +232,9 @@ HRESULT STDMETHODCALLTYPE ComIStream::Seek( LARGE_INTEGER liDistanceToMove, DWOR
 		mIStream->seekRelative( (off_t)liDistanceToMove.QuadPart );
 		break;
 	case STREAM_SEEK_END:
-		mIStream->seekAbsolute( (off_t)( - liDistanceToMove.QuadPart ) );
+		mIStream->seekAbsolute( ( off_t )( -liDistanceToMove.QuadPart ) );
 		break;
-	default:   
+	default:
 		return STG_E_INVALIDFUNCTION;
 		break;
 	}
@@ -246,7 +245,7 @@ HRESULT STDMETHODCALLTYPE ComIStream::Seek( LARGE_INTEGER liDistanceToMove, DWOR
 	return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE ComIStream::Stat( STATSTG* pStatstg, DWORD grfStatFlag)
+HRESULT STDMETHODCALLTYPE ComIStream::Stat( STATSTG *pStatstg, DWORD grfStatFlag )
 {
 	pStatstg->pwcsName = NULL;
 	pStatstg->cbSize.QuadPart = (ULONGLONG)mIStream->size();
@@ -258,7 +257,8 @@ HRESULT STDMETHODCALLTYPE ComIStream::Stat( STATSTG* pStatstg, DWORD grfStatFlag
 // ComInitializer
 
 struct ComInitializer {
-	ComInitializer( DWORD params ) {
+	ComInitializer( DWORD params )
+	{
 		::CoInitializeEx( NULL, params );
 	}
 
@@ -275,13 +275,13 @@ void initializeCom( DWORD params )
 	::CoInitializeEx( NULL, params );
 }
 #else
-__declspec(thread) ComInitializer *threadComInitializer = nullptr;
+__declspec( thread ) ComInitializer *threadComInitializer = nullptr;
 
-void initializeCom(DWORD params)
+void initializeCom( DWORD params )
 {
-	if( ! threadComInitializer )
-		threadComInitializer = new ComInitializer(params);
+	if( !threadComInitializer )
+		threadComInitializer = new ComInitializer( params );
 }
 #endif
-
-} } // namespace cinder::msw
+}
+} // namespace cinder::msw

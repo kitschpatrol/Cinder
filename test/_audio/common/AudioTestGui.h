@@ -26,33 +26,33 @@
 
 #pragma once
 
-#include "cinder/gl/gl.h"
 #include "cinder/gl/TextureFont.h"
+#include "cinder/gl/gl.h"
 #include <boost/format.hpp>
 
-#include <vector>
 #include <cctype>
+#include <vector>
 
 using namespace ci;
 
-static gl::TextureFontRef getTestWidgetTexFont() {
+static gl::TextureFontRef getTestWidgetTexFont()
+{
 	static gl::TextureFontRef sTestWidgetTexFont;
-	if( ! sTestWidgetTexFont )
+	if( !sTestWidgetTexFont )
 		sTestWidgetTexFont = gl::TextureFont::create( Font( Font::getDefault().getName(), 22 ) );
 	return sTestWidgetTexFont;
 }
 
 struct TestWidget {
-	TestWidget() : mHidden( false ), mPadding( 10.0f ) {}
-
+	TestWidget()
+	    : mHidden( false ), mPadding( 10.0f ) {}
 	virtual void draw() {}
-
-	Rectf mBounds;
-	ColorA mBackgroundColor;
+	Rectf        mBounds;
+	ColorA       mBackgroundColor;
 
 	gl::TextureFontRef mTexFont;
-	bool mHidden;
-	float mPadding;
+	bool               mHidden;
+	float              mPadding;
 };
 
 inline void drawWidgets( const std::vector<TestWidget *> &widgets )
@@ -62,8 +62,8 @@ inline void drawWidgets( const std::vector<TestWidget *> &widgets )
 }
 
 struct Button : public TestWidget {
-	Button( bool isToggle = false, const std::string& titleNormal = "", const std::string& titleEnabled = "" )
-	: TestWidget(), mIsToggle( isToggle ), mTitleNormal( titleNormal ), mTitleEnabled( titleEnabled )
+	Button( bool isToggle = false, const std::string &titleNormal = "", const std::string &titleEnabled = "" )
+	    : TestWidget(), mIsToggle( isToggle ), mTitleNormal( titleNormal ), mTitleEnabled( titleEnabled )
 	{
 		mTextColor = Color::white();
 		mNormalColor = Color( "SlateGray" );
@@ -77,7 +77,8 @@ struct Button : public TestWidget {
 	{
 		if( b ) {
 			mBackgroundColor = mEnabledColor;
-		} else {
+		}
+		else {
 			mBackgroundColor = mNormalColor;
 		}
 		mEnabled = b;
@@ -91,7 +92,7 @@ struct Button : public TestWidget {
 		bool b = mBounds.contains( pos );
 		if( b ) {
 			if( mIsToggle )
-				setEnabled( ! mEnabled );
+				setEnabled( !mEnabled );
 			else {
 				setEnabled( true );
 				mFadeFrames = mTimeout;
@@ -105,10 +106,10 @@ struct Button : public TestWidget {
 	{
 		if( mHidden )
 			return;
-		if( ! mTexFont )
+		if( !mTexFont )
 			mTexFont = getTestWidgetTexFont();
 
-		if( mIsToggle || ! mFadeFrames )
+		if( mIsToggle || !mFadeFrames )
 			gl::color( mBackgroundColor );
 		else {
 			mFadeFrames--;
@@ -118,21 +119,22 @@ struct Button : public TestWidget {
 
 		gl::drawSolidRect( mBounds );
 
-		std::string& title = mEnabled ? mTitleEnabled : mTitleNormal;
+		std::string &title = mEnabled ? mTitleEnabled : mTitleNormal;
 
 		gl::color( mTextColor );
 		mTexFont->drawString( title, vec2( mBounds.x1 + mPadding, mBounds.getCenter().y + mTexFont->getFont().getDescent() ) );
 	}
 
-	ColorA mTextColor;
+	ColorA      mTextColor;
 	std::string mTitleNormal, mTitleEnabled;
-	ColorA mNormalColor, mEnabledColor;
-	bool mEnabled, mIsToggle;
-	size_t mTimeout, mFadeFrames;
+	ColorA      mNormalColor, mEnabledColor;
+	bool        mEnabled, mIsToggle;
+	size_t      mTimeout, mFadeFrames;
 };
 
 struct HSlider : public TestWidget {
-	HSlider() : TestWidget()
+	HSlider()
+	    : TestWidget()
 	{
 		mValue = mValueScaled = 0.0f;
 		mMin = 0.0f;
@@ -142,7 +144,8 @@ struct HSlider : public TestWidget {
 		mTextColor = Color::white();
 	}
 
-	void set( float val ) {
+	void set( float val )
+	{
 		mValueScaled = val;
 		mValue = ( mValueScaled - mMin ) / ( mMax - mMin );
 	}
@@ -155,7 +158,7 @@ struct HSlider : public TestWidget {
 		bool b = mBounds.contains( pos );
 		if( b ) {
 			mValue = ( pos.x - mBounds.x1 ) / mBounds.getWidth();
-			mValueScaled = (mMax - mMin) * mValue + mMin;
+			mValueScaled = ( mMax - mMin ) * mValue + mMin;
 		}
 		return b;
 	}
@@ -164,7 +167,7 @@ struct HSlider : public TestWidget {
 	{
 		if( mHidden )
 			return;
-		if( ! mTexFont )
+		if( !mTexFont )
 			mTexFont = getTestWidgetTexFont();
 
 		gl::color( mBackgroundColor );
@@ -186,13 +189,14 @@ struct HSlider : public TestWidget {
 		gl::drawSolidRect( valRect );
 	}
 
-	float mValue, mValueScaled, mMin, mMax;
-	ColorA mTextColor, mValueColor;
+	float       mValue, mValueScaled, mMin, mMax;
+	ColorA      mTextColor, mValueColor;
 	std::string mTitle;
 };
 
 struct VSelector : public TestWidget {
-	VSelector() : TestWidget()
+	VSelector()
+	    : TestWidget()
 	{
 		mCurrentSectionIndex = 0;
 		mBackgroundColor = ColorA( "MidnightBlue", 0.75f );
@@ -219,7 +223,7 @@ struct VSelector : public TestWidget {
 	{
 		if( mSegments.empty() )
 			return "";
-		
+
 		return mSegments[mCurrentSectionIndex];
 	}
 
@@ -228,7 +232,7 @@ struct VSelector : public TestWidget {
 		if( mHidden )
 			return;
 
-		if( ! mTexFont )
+		if( !mTexFont )
 			mTexFont = getTestWidgetTexFont();
 
 		gl::color( mBackgroundColor );
@@ -252,28 +256,29 @@ struct VSelector : public TestWidget {
 		section.y2 = section.y1 + sectionHeight;
 		gl::drawStrokedRect( section );
 
-		if( ! mSegments.empty() ) {
+		if( !mSegments.empty() ) {
 			gl::color( mSelectedColor );
 			mTexFont->drawString( mSegments[mCurrentSectionIndex], vec2( section.x1 + mPadding, section.getCenter().y + mTexFont->getFont().getDescent() ) );
 		}
 
-		if( ! mTitle.empty() ) {
+		if( !mTitle.empty() ) {
 			gl::color( mTitleColor );
 			mTexFont->drawString( mTitle, vec2( mBounds.x1 + mPadding, mBounds.y1 - mTexFont->getFont().getDescent() ) );
 		}
 	}
 
 	std::vector<std::string> mSegments;
-	ColorA mSelectedColor, mUnselectedColor, mTitleColor;
-	size_t mCurrentSectionIndex;
-	std::string mTitle;
+	ColorA                   mSelectedColor, mUnselectedColor, mTitleColor;
+	size_t                   mCurrentSectionIndex;
+	std::string              mTitle;
 };
 
 struct TextInput : public TestWidget {
-	enum Format { NUMERICAL, ALL };
+	enum Format { NUMERICAL,
+		ALL };
 
-	TextInput( Format format = Format::NUMERICAL, const std::string& title = "" )
-	: TestWidget(), mFormat( format ), mTitle( title )
+	TextInput( Format format = Format::NUMERICAL, const std::string &title = "" )
+	    : TestWidget(), mFormat( format ), mTitle( title )
 	{
 		mBackgroundColor = ColorA( "MidnightBlue", 0.65f );
 		mTitleColor = ColorA::gray( 0.75f, 0.5f );
@@ -312,13 +317,13 @@ struct TextInput : public TestWidget {
 	{
 		if( mInputString.empty() )
 			return 0;
-		
+
 		return stoi( mInputString );
 	}
 
 	void processChar( char c )
 	{
-		if( mFormat == Format::NUMERICAL && ! isdigit( c ) )
+		if( mFormat == Format::NUMERICAL && !isdigit( c ) )
 			return;
 
 		mInputString.push_back( c );
@@ -326,7 +331,7 @@ struct TextInput : public TestWidget {
 
 	void processBackspace()
 	{
-		if( ! mInputString.empty() )
+		if( !mInputString.empty() )
 			mInputString.pop_back();
 	}
 
@@ -350,7 +355,7 @@ struct TextInput : public TestWidget {
 	{
 		if( mHidden )
 			return;
-		if( ! mTexFont )
+		if( !mTexFont )
 			mTexFont = getTestWidgetTexFont();
 
 		gl::color( mBackgroundColor );
@@ -368,18 +373,19 @@ struct TextInput : public TestWidget {
 		mTexFont->drawString( mInputString, textOffset );
 	}
 
-	Format	mFormat;
+	Format      mFormat;
 	std::string mTitle, mInputString;
-	ColorA mNormalColor, mEnabledColor, mTitleColor;
-	bool mSelected;
+	ColorA      mNormalColor, mEnabledColor, mTitleColor;
+	bool        mSelected;
 
 	static std::vector<struct TextInput *> sTextInputs;
 };
 
 std::vector<struct TextInput *> TextInput::sTextInputs;
 
-#define PRINT_GRAPH( context ) {														\
-	ci::app::console() << "-------------- Graph configuration: --------------" << endl;	\
-	ci::app::console() << context->printGraphToString();								\
-	ci::app::console() << "--------------------------------------------------" << endl; \
-}
+#define PRINT_GRAPH( context )                                                              \
+	{                                                                                       \
+		ci::app::console() << "-------------- Graph configuration: --------------" << endl; \
+		ci::app::console() << context->printGraphToString();                                \
+		ci::app::console() << "--------------------------------------------------" << endl; \
+	}

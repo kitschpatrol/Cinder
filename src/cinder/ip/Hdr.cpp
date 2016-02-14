@@ -21,19 +21,20 @@
 */
 
 #include "cinder/ip/Hdr.h"
-#include "cinder/ip/Grayscale.h"
 #include "cinder/ChanTraits.h"
 #include "cinder/ip/Fill.h"
+#include "cinder/ip/Grayscale.h"
 #include <algorithm>
 
-namespace cinder { namespace ip {
+namespace cinder {
+namespace ip {
 
 void hdrNormalize( Surface32f *surface )
 {
 	// first take histogram to find the minimum and maximum values present
-	float minVal = *(surface->getDataRed( ivec2() )), maxVal = *(surface->getDataRed( ivec2() ));
+	float minVal = *( surface->getDataRed( ivec2() ) ), maxVal = *( surface->getDataRed( ivec2() ) );
 
-	const int8_t pixelInc = surface->getPixelInc();
+	const int8_t  pixelInc = surface->getPixelInc();
 	const uint8_t redOffset = surface->getRedOffset(), greenOffset = surface->getGreenOffset(), blueOffset = surface->getBlueOffset();
 	for( int32_t y = 0; y < surface->getHeight(); ++y ) {
 		const float *srcPtr = surface->getData( ivec2( 0, y ) );
@@ -48,13 +49,13 @@ void hdrNormalize( Surface32f *surface )
 			srcPtr += pixelInc;
 		}
 	}
-	
+
 	// if min==max then we should just fill with black
 	if( minVal == maxVal ) {
 		fill( surface, Color( 0, 0, 0 ) );
 		return;
 	}
-	
+
 	float scale = 1.0f / ( maxVal - minVal );
 	for( int32_t y = 0; y < surface->getHeight(); ++y ) {
 		float *dstPtr = surface->getData( ivec2( 0, y ) );
@@ -65,7 +66,7 @@ void hdrNormalize( Surface32f *surface )
 
 			dstPtr += pixelInc;
 		}
-	}	
+	}
 }
 
 void hdrNormalize( Channel32f *channel )
@@ -79,8 +80,8 @@ void hdrNormalize( Channel32f *channel )
 		fill<float>( channel, 0 );
 		return;
 	}
-	
-	float scale = 1.0f / ( maxVal - minVal );
+
+	float            scale = 1.0f / ( maxVal - minVal );
 	Channel32f::Iter iter = channel->getIter();
 	while( iter.line() ) {
 		while( iter.pixel() ) {
@@ -91,7 +92,7 @@ void hdrNormalize( Channel32f *channel )
 
 void getMinMax( const Channel32f &channel, float *resultMin, float *resultMax )
 {
-	float minVal = *(channel.getData( ivec2() )), maxVal = *(channel.getData( ivec2() ));
+	float                 minVal = *( channel.getData( ivec2() ) ), maxVal = *( channel.getData( ivec2() ) );
 	Channel32f::ConstIter iter = channel.getIter();
 	while( iter.line() ) {
 		while( iter.pixel() ) {
@@ -102,5 +103,5 @@ void getMinMax( const Channel32f &channel, float *resultMin, float *resultMax )
 	*resultMin = minVal;
 	*resultMax = maxVal;
 }
-
-} } // namespace cinder::ip
+}
+} // namespace cinder::ip

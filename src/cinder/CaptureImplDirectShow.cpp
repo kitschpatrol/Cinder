@@ -26,29 +26,26 @@
 #include <set>
 using namespace std;
 
-
 namespace cinder {
 
-bool CaptureImplDirectShow::sDevicesEnumerated = false;
+bool                       CaptureImplDirectShow::sDevicesEnumerated = false;
 vector<Capture::DeviceRef> CaptureImplDirectShow::sDevices;
 
-class CaptureMgr : private boost::noncopyable
-{
- public:
+class CaptureMgr : private boost::noncopyable {
+  public:
 	CaptureMgr();
 	~CaptureMgr();
 
-	static std::shared_ptr<CaptureMgr>	instance();
-	static videoInput*	instanceVI() { return instance()->mVideoInput; }
+	static std::shared_ptr<CaptureMgr> instance();
+	static videoInput *                instanceVI() { return instance()->mVideoInput; }
+	static std::shared_ptr<CaptureMgr> sInstance;
+	static int                         sTotalDevices;
 
-	static std::shared_ptr<CaptureMgr>	sInstance;
-	static int						sTotalDevices;
-	
- private:	
-	videoInput			*mVideoInput;
+  private:
+	videoInput *mVideoInput;
 };
-std::shared_ptr<CaptureMgr>	CaptureMgr::sInstance;
-int							CaptureMgr::sTotalDevices = 0;
+std::shared_ptr<CaptureMgr> CaptureMgr::sInstance;
+int                         CaptureMgr::sTotalDevices = 0;
 
 CaptureMgr::CaptureMgr()
 {
@@ -63,31 +60,31 @@ CaptureMgr::~CaptureMgr()
 
 std::shared_ptr<CaptureMgr> CaptureMgr::instance()
 {
-	if( ! sInstance ) {
+	if( !sInstance ) {
 		sInstance = std::shared_ptr<CaptureMgr>( new CaptureMgr );
 	}
 	return sInstance;
 }
 
 class SurfaceCache {
- public:
+  public:
 	SurfaceCache( int32_t width, int32_t height, SurfaceChannelOrder sco, int numSurfaces )
-		: mWidth( width ), mHeight( height ), mSCO( sco )
+	    : mWidth( width ), mHeight( height ), mSCO( sco )
 	{
 		for( int i = 0; i < numSurfaces; ++i ) {
-			mSurfaceData.push_back( std::shared_ptr<uint8_t>( new uint8_t[width*height*sco.getPixelInc()], std::default_delete<uint8_t[]>() ) );
+			mSurfaceData.push_back( std::shared_ptr<uint8_t>( new uint8_t[width * height * sco.getPixelInc()], std::default_delete<uint8_t[]>() ) );
 			mSurfaceUsed.push_back( false );
 		}
 	}
-	
+
 	Surface8uRef getNewSurface()
 	{
-		// try to find an available block of pixel data to wrap a surface around	
+		// try to find an available block of pixel data to wrap a surface around
 		for( size_t i = 0; i < mSurfaceData.size(); ++i ) {
-			if( ! mSurfaceUsed[i] ) {
+			if( !mSurfaceUsed[i] ) {
 				mSurfaceUsed[i] = true;
-				auto newSurface = new Surface( mSurfaceData[i].get(), mWidth, mHeight, mWidth * mSCO.getPixelInc(), mSCO );
-				Surface8uRef result = shared_ptr<Surface8u>( newSurface, [=] ( Surface8u* s ) { mSurfaceUsed[i] = false; } );
+				auto         newSurface = new Surface( mSurfaceData[i].get(), mWidth, mHeight, mWidth * mSCO.getPixelInc(), mSCO );
+				Surface8uRef result = shared_ptr<Surface8u>( newSurface, [=]( Surface8u *s ) { mSurfaceUsed[i] = false; } );
 				return result;
 			}
 		}
@@ -96,11 +93,11 @@ class SurfaceCache {
 		return Surface8u::create( mWidth, mHeight, mSCO.hasAlpha(), mSCO );
 	}
 
- private:
-	vector<std::shared_ptr<uint8_t>>	mSurfaceData;
-	vector<bool>						mSurfaceUsed;
-	int32_t								mWidth, mHeight;
-	SurfaceChannelOrder					mSCO;
+  private:
+	vector<std::shared_ptr<uint8_t>> mSurfaceData;
+	vector<bool>                     mSurfaceUsed;
+	int32_t                          mWidth, mHeight;
+	SurfaceChannelOrder              mSCO;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,7 +105,7 @@ class SurfaceCache {
 
 bool CaptureImplDirectShow::Device::checkAvailable() const
 {
-	return ( mUniqueId < CaptureMgr::sTotalDevices ) && ( ! CaptureMgr::instanceVI()->isDeviceSetup( mUniqueId ) );
+	return ( mUniqueId < CaptureMgr::sTotalDevices ) && ( !CaptureMgr::instanceVI()->isDeviceSetup( mUniqueId ) );
 }
 
 bool CaptureImplDirectShow::Device::isConnected() const
@@ -116,9 +113,9 @@ bool CaptureImplDirectShow::Device::isConnected() const
 	return CaptureMgr::instanceVI()->isDeviceConnected( mUniqueId );
 }
 
-const vector<Capture::DeviceRef>& CaptureImplDirectShow::getDevices( bool forceRefresh )
+const vector<Capture::DeviceRef> &CaptureImplDirectShow::getDevices( bool forceRefresh )
 {
-	if( sDevicesEnumerated && ( ! forceRefresh ) )
+	if( sDevicesEnumerated && ( !forceRefresh ) )
 		return sDevices;
 
 	sDevices.clear();
@@ -133,13 +130,13 @@ const vector<Capture::DeviceRef>& CaptureImplDirectShow::getDevices( bool forceR
 }
 
 CaptureImplDirectShow::CaptureImplDirectShow( int32_t width, int32_t height, const Capture::DeviceRef device )
-	: mWidth( width ), mHeight( height ), mCurrentFrame( Surface8u::create( width, height, false, SurfaceChannelOrder::BGR ) ), mDeviceID( 0 )
+    : mWidth( width ), mHeight( height ), mCurrentFrame( Surface8u::create( width, height, false, SurfaceChannelOrder::BGR ) ), mDeviceID( 0 )
 {
 	mDevice = device;
 	if( mDevice ) {
 		mDeviceID = device->getUniqueId();
 	}
-	if( ! CaptureMgr::instanceVI()->setupDevice( mDeviceID, mWidth, mHeight ) )
+	if( !CaptureMgr::instanceVI()->setupDevice( mDeviceID, mWidth, mHeight ) )
 		throw CaptureExcInitFail();
 	mWidth = CaptureMgr::instanceVI()->getWidth( mDeviceID );
 	mHeight = CaptureMgr::instanceVI()->getHeight( mDeviceID );
@@ -157,10 +154,10 @@ CaptureImplDirectShow::~CaptureImplDirectShow()
 void CaptureImplDirectShow::start()
 {
 	if( mIsCapturing ) return;
-	
-	if( ! CaptureMgr::instanceVI()->setupDevice( mDeviceID, mWidth, mHeight ) )
+
+	if( !CaptureMgr::instanceVI()->setupDevice( mDeviceID, mWidth, mHeight ) )
 		throw CaptureExcInitFail();
-	if( ! CaptureMgr::instanceVI()->isDeviceSetup( mDeviceID ) )
+	if( !CaptureMgr::instanceVI()->isDeviceSetup( mDeviceID ) )
 		throw CaptureExcInitFail();
 	mWidth = CaptureMgr::instanceVI()->getWidth( mDeviceID );
 	mHeight = CaptureMgr::instanceVI()->getHeight( mDeviceID );
@@ -169,7 +166,7 @@ void CaptureImplDirectShow::start()
 
 void CaptureImplDirectShow::stop()
 {
-	if( ! mIsCapturing ) return;
+	if( !mIsCapturing ) return;
 
 	CaptureMgr::instanceVI()->stopDevice( mDeviceID );
 	mIsCapturing = false;
@@ -191,7 +188,7 @@ Surface8uRef CaptureImplDirectShow::getSurface() const
 		mCurrentFrame = mSurfaceCache->getNewSurface();
 		CaptureMgr::instanceVI()->getPixels( mDeviceID, mCurrentFrame->getData(), false, true );
 	}
-	
+
 	return mCurrentFrame;
 }
 

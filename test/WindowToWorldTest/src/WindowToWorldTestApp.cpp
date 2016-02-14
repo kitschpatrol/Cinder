@@ -11,16 +11,16 @@ using namespace std;
 
 //! A rectangle that can be transformed.
 struct EditableRect {
-	Rectf  area;
-	vec2   position;
-	vec2   scale;
-	quat   rotation;
+	Rectf area;
+	vec2  position;
+	vec2  scale;
+	quat  rotation;
 
-	EditableRect() : scale( 1 ) {}
+	EditableRect()
+	    : scale( 1 ) {}
 	~EditableRect() {}
-
 	//! Returns the rectangle's model matrix.
-	mat4  matrix()
+	mat4 matrix()
 	{
 		mat4 m = glm::translate( vec3( position, 0 ) );
 		m *= glm::toMat4( rotation );
@@ -32,7 +32,7 @@ struct EditableRect {
 };
 
 class WindowToWorldTestApp : public App {
-public:
+  public:
 	void setup() override;
 	void update() override;
 	void draw() override;
@@ -42,15 +42,16 @@ public:
 	void mouseDrag( MouseEvent event ) override;
 
 	void resize() override;
-private:
-	EditableRect   mRectangle;
 
-	ivec2          mMouseInitial;
-	EditableRect   mRectangleInitial;
+  private:
+	EditableRect mRectangle;
 
-	ivec2          mMousePos;
-	bool           mIsOver;
-	bool           mIsClicked;
+	ivec2        mMouseInitial;
+	EditableRect mRectangleInitial;
+
+	ivec2 mMousePos;
+	bool  mIsOver;
+	bool  mIsClicked;
 };
 
 void WindowToWorldTestApp::setup()
@@ -76,8 +77,7 @@ void WindowToWorldTestApp::draw()
 	gl::clear();
 
 	// Create a list of (object space) corners, so we can easily draw them.
-	vec2 corners[] = { mRectangle.area.getUpperLeft(), mRectangle.area.getUpperRight(),
-		mRectangle.area.getLowerRight(), mRectangle.area.getLowerLeft() };
+	vec2 corners[] = { mRectangle.area.getUpperLeft(), mRectangle.area.getUpperRight(), mRectangle.area.getLowerRight(), mRectangle.area.getLowerLeft() };
 
 	// Either use setMatricesWindow() or setMatricesWindowPersp() to enable 2D rendering.
 	gl::setMatricesWindow( getWindowSize(), false );

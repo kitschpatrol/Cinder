@@ -23,42 +23,43 @@
 */
 
 #include "cinder/gl/platform.h"
-#include "cinder/gl/Environment.h"
 #include "cinder/Log.h"
+#include "cinder/gl/Environment.h"
 
 #if defined( CINDER_GL_ES )
 
-#include "cinder/gl/Shader.h"
 #include "cinder/gl/Context.h"
-#include "cinder/gl/Vao.h"
+#include "cinder/gl/Shader.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/Vao.h"
 
 #if defined( CINDER_COCOA_TOUCH )
-	#include <OpenGLES/ES2/glext.h>
+#include <OpenGLES/ES2/glext.h>
 #endif
 
-namespace cinder { namespace gl {
+namespace cinder {
+namespace gl {
 
 class EnvironmentEs : public Environment {
   public:
-	void	initializeFunctionPointers() override;
+	void initializeFunctionPointers() override;
 
-	bool	isExtensionAvailable( const std::string &extName ) override;
-	bool	supportsHardwareVao() override;
-	bool	supportsTextureLod() const override;
-	void	objectLabel( GLenum identifier, GLuint name, GLsizei length, const char *label ) override;
-	
-	void	allocateTexStorage1d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, bool immutable, GLint texImageDataType ) override;
-	void	allocateTexStorage2d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable, GLint texImageDataType ) override;
-	void	allocateTexStorage3d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, bool immutable ) override;
-	void	allocateTexStorageCubeMap( GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable ) override;
+	bool isExtensionAvailable( const std::string &extName ) override;
+	bool supportsHardwareVao() override;
+	bool supportsTextureLod() const override;
+	void objectLabel( GLenum identifier, GLuint name, GLsizei length, const char *label ) override;
 
-	std::string		generateVertexShader( const ShaderDef &shader ) override;
-	std::string		generateFragmentShader( const ShaderDef &shader ) override;
-	GlslProgRef		buildShader( const ShaderDef &shader ) override;
+	void allocateTexStorage1d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, bool immutable, GLint texImageDataType ) override;
+	void allocateTexStorage2d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable, GLint texImageDataType ) override;
+	void allocateTexStorage3d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, bool immutable ) override;
+	void allocateTexStorageCubeMap( GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable ) override;
+
+	std::string generateVertexShader( const ShaderDef &shader ) override;
+	std::string generateFragmentShader( const ShaderDef &shader ) override;
+	GlslProgRef buildShader( const ShaderDef &shader ) override;
 };
 
-Environment* allocateEnvironmentEs()
+Environment *allocateEnvironmentEs()
 {
 	return new EnvironmentEs;
 }
@@ -69,22 +70,22 @@ void EnvironmentEs::initializeFunctionPointers()
 
 bool EnvironmentEs::isExtensionAvailable( const std::string &extName )
 {
-	static const char *sExtStr = reinterpret_cast<const char*>( glGetString( GL_EXTENSIONS ) );
+	static const char *sExtStr = reinterpret_cast<const char *>( glGetString( GL_EXTENSIONS ) );
 	static std::map<std::string, bool> sExtMap;
-	
-	std::map<std::string,bool>::const_iterator extIt = sExtMap.find( extName );
-	if ( extIt == sExtMap.end() ) {
-		bool found		= false;
-		size_t extNameLen	= extName.size();
-		const char *p	= sExtStr;
+
+	std::map<std::string, bool>::const_iterator extIt = sExtMap.find( extName );
+	if( extIt == sExtMap.end() ) {
+		bool        found = false;
+		size_t      extNameLen = extName.size();
+		const char *p = sExtStr;
 		const char *end = sExtStr + strlen( sExtStr );
 		while( p < end ) {
 			size_t n = strcspn( p, " " );
-			if ( (extNameLen == n) && ( strncmp( extName.c_str(), p, n) == 0 ) ) {
+			if( ( extNameLen == n ) && ( strncmp( extName.c_str(), p, n ) == 0 ) ) {
 				found = true;
 				break;
 			}
-			p += (n + 1);
+			p += ( n + 1 );
 		}
 		sExtMap[extName] = found;
 		return found;
@@ -155,13 +156,13 @@ void EnvironmentEs::allocateTexStorage3d( GLenum target, GLsizei levels, GLenum 
 #if defined( CINDER_GL_ES_2 )
 	CI_LOG_E( "allocateTexStorage3d called on unsupported platform" );
 #else
-  #if ! defined( CINDER_GL_ES_3 )
+#if !defined( CINDER_GL_ES_3 )
 	// test at runtime for presence of 'glTexStorage2D' and just force mutable storage if it's not available
 	// both ANGLE and iOS support EXT_texture_storage
 	static auto texStorage3DFn = glTexStorage3DEXT;
-  #else
+#else
 	static auto texStorage3DFn = glTexStorage3D;
-  #endif
+#endif
 	if( immutable && texStorage3DFn ) {
 		texStorage3DFn( target, levels, internalFormat, width, height, depth );
 	}
@@ -192,131 +193,116 @@ void EnvironmentEs::allocateTexStorageCubeMap( GLsizei levels, GLenum internalFo
 	}
 }
 
-std::string	EnvironmentEs::generateVertexShader( const ShaderDef &shader )
+std::string EnvironmentEs::generateVertexShader( const ShaderDef &shader )
 {
 	std::string s;
-	
-	s +=		"uniform mat4	ciModelViewProjection;\n";
+
+	s += "uniform mat4	ciModelViewProjection;\n";
 
 	if( shader.mLambert )
-		s +=	"uniform mat3	ciNormalMatrix;\n";
+		s += "uniform mat3	ciNormalMatrix;\n";
 
-	s +=		"\n"
-				"attribute vec4		ciPosition;\n"
-				;
+	s += "\n"
+	     "attribute vec4		ciPosition;\n";
 
 	if( shader.mUniformBasedPosAndTexCoord ) {
-		s +=	"uniform vec2 uPositionOffset, uPositionScale;\n";
+		s += "uniform vec2 uPositionOffset, uPositionScale;\n";
 		if( shader.mTextureMapping ) {
-			s+= "uniform vec2 uTexCoordOffset, uTexCoordScale;\n";
+			s += "uniform vec2 uTexCoordOffset, uTexCoordScale;\n";
 		}
 	}
 
 	if( shader.mTextureMapping ) {
-		s +=	"attribute vec2		ciTexCoord0;\n"
-				"varying highp vec2	TexCoord;\n"
-				;
+		s += "attribute vec2		ciTexCoord0;\n"
+		     "varying highp vec2	TexCoord;\n";
 	}
 	if( shader.mColor ) {
-		s +=	"attribute vec4		ciColor;\n"
-				"varying vec4		Color;\n"
-				;
+		s += "attribute vec4		ciColor;\n"
+		     "varying vec4		Color;\n";
 	}
 	if( shader.mLambert ) {
 		s += "attribute vec3		ciNormal;\n"
-			"varying highp vec3		Normal;\n"
-			;
+		     "varying highp vec3		Normal;\n";
 	}
 
-	s +=		"void main( void )\n"
-				"{\n"
-				;
+	s += "void main( void )\n"
+	     "{\n";
 	if( shader.mUniformBasedPosAndTexCoord )
-		s +=	"	gl_Position = ciModelViewProjection * ( vec4( uPositionOffset, 0, 0 ) + vec4( uPositionScale, 1, 1 ) * ciPosition );\n";
+		s += "	gl_Position = ciModelViewProjection * ( vec4( uPositionOffset, 0, 0 ) + vec4( uPositionScale, 1, 1 ) * ciPosition );\n";
 	else
-		s +=	"	gl_Position	= ciModelViewProjection * ciPosition;\n"
-				;
-				
-	if( shader.mTextureMapping ) {	
+		s += "	gl_Position	= ciModelViewProjection * ciPosition;\n";
+
+	if( shader.mTextureMapping ) {
 		if( shader.mUniformBasedPosAndTexCoord )
-			s+= "	TexCoord	= uTexCoordOffset + uTexCoordScale * ciTexCoord0;\n";
+			s += "	TexCoord	= uTexCoordOffset + uTexCoordScale * ciTexCoord0;\n";
 		else
-			s+=	"	TexCoord	= ciTexCoord0;\n";
-				;
+			s += "	TexCoord	= ciTexCoord0;\n";
+		;
 	}
 	if( shader.mColor ) {
-		s +=	"	Color = ciColor;\n"
-				;
+		s += "	Color = ciColor;\n";
 	}
 	if( shader.mLambert ) {
-		s +=	"	Normal = ciNormalMatrix * ciNormal;\n"
-				;
+		s += "	Normal = ciNormalMatrix * ciNormal;\n";
 	}
-	
-	s +=		"}\n";
-	
+
+	s += "}\n";
+
 	return s;
 }
 
-std::string	EnvironmentEs::generateFragmentShader( const ShaderDef &shader )
+std::string EnvironmentEs::generateFragmentShader( const ShaderDef &shader )
 {
 	std::string s;
 
-	s +=		"precision highp float;\n";
+	s += "precision highp float;\n";
 
 	if( shader.mTextureMapping ) {
-		s +=	"uniform sampler2D	uTex0;\n"
-				"varying highp vec2	TexCoord;\n"
-				;
+		s += "uniform sampler2D	uTex0;\n"
+		     "varying highp vec2	TexCoord;\n";
 	}
 
-	if( shader.mColor ) 
-		s +=	"varying lowp vec4	Color;\n";
-
-	if( shader.mLambert ) 
-		s +=	"varying highp vec3	Normal;\n";
-
-	s +=		"void main( void )\n"
-				"{\n"
-				;
-
-	if( shader.mLambert ) {
-		s +=	"	const vec3 L = vec3( 0, 0, 1 );\n"
-				"	vec3 N = normalize( Normal );\n"
-				"	float lambert = max( 0.0, dot( N, L ) );\n"
-				;
-	}
-	
-	s +=		"	gl_FragColor = vec4( 1 )";
-	
-	if( shader.mTextureMapping ) 
-		s +=	" * texture2D( uTex0, TexCoord.st )";
-	
-	if( shader.mColor ) 
-		s +=	" * Color";
+	if( shader.mColor )
+		s += "varying lowp vec4	Color;\n";
 
 	if( shader.mLambert )
-		s +=	" * vec4( vec3( lambert ), 1.0 )";
+		s += "varying highp vec3	Normal;\n";
 
-	s +=		";\n";
-	
-	s +=		"}\n";
-	
+	s += "void main( void )\n"
+	     "{\n";
+
+	if( shader.mLambert ) {
+		s += "	const vec3 L = vec3( 0, 0, 1 );\n"
+		     "	vec3 N = normalize( Normal );\n"
+		     "	float lambert = max( 0.0, dot( N, L ) );\n";
+	}
+
+	s += "	gl_FragColor = vec4( 1 )";
+
+	if( shader.mTextureMapping )
+		s += " * texture2D( uTex0, TexCoord.st )";
+
+	if( shader.mColor )
+		s += " * Color";
+
+	if( shader.mLambert )
+		s += " * vec4( vec3( lambert ), 1.0 )";
+
+	s += ";\n";
+
+	s += "}\n";
+
 	return s;
 }
 
-
-GlslProgRef	EnvironmentEs::buildShader( const ShaderDef &shader )
+GlslProgRef EnvironmentEs::buildShader( const ShaderDef &shader )
 {
-	GlslProg::Format fmt = GlslProg::Format().vertex( generateVertexShader( shader ) )
-												.fragment( generateFragmentShader( shader ) )
-												.attribLocation( "ciPosition", 0 )
-												.preprocess( false );
+	GlslProg::Format fmt = GlslProg::Format().vertex( generateVertexShader( shader ) ).fragment( generateFragmentShader( shader ) ).attribLocation( "ciPosition", 0 ).preprocess( false );
 	if( shader.mTextureMapping )
 		fmt.attribLocation( "ciTexCoord0", 1 );
 	return GlslProg::create( fmt );
 }
-
-} } // namespace cinder::gl
+}
+} // namespace cinder::gl
 
 #endif // defined( CINDER_GL_ES )

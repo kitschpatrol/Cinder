@@ -24,110 +24,115 @@
 
 #pragma once
 
-#include "cinder/gl/platform.h"
 #include "cinder/gl/Context.h"
+#include "cinder/gl/platform.h"
 
 #if defined( CINDER_MAC )
-	typedef struct _CGLContextObject       *CGLContextObj;
+typedef struct _CGLContextObject *CGLContextObj;
 #elif defined( CINDER_COCOA_TOUCH )
-	#if defined( __OBJC__ )
-		@class	EAGLContext;
-	#else
-		class	EAGLContext;
-	#endif
+#if defined( __OBJC__ )
+@class EAGLContext;
+#else
+class EAGLContext;
+#endif
 #elif defined( CINDER_GL_ANGLE )
-	typedef void*		EGLContext;
-	typedef void*		EGLDisplay;
-	typedef void*		EGLSurface;
-	typedef void*		EGLConfig;
+typedef void *EGLContext;
+typedef void *EGLDisplay;
+typedef void *EGLSurface;
+typedef void *EGLConfig;
 #elif defined( CINDER_MSW )
-	#include "cinder/msw/CinderWindowsFwd.h"
-	struct HGLRC__;
-	typedef HGLRC__* HGLRC;
+#include "cinder/msw/CinderWindowsFwd.h"
+struct HGLRC__;
+typedef HGLRC__ *HGLRC;
 #endif
 
-namespace cinder { namespace gl {
+namespace cinder {
+namespace gl {
 
 class ShaderDef;
 class GlslProg;
-typedef std::shared_ptr<GlslProg>		GlslProgRef;
+typedef std::shared_ptr<GlslProg> GlslProgRef;
 class Context;
-typedef std::shared_ptr<Context>		ContextRef;
+typedef std::shared_ptr<Context> ContextRef;
 
 class Environment {
   public:
-	virtual void			initializeFunctionPointers() = 0;
-	
-	ContextRef				createSharedContext( const Context *sharedContext );
+	virtual void initializeFunctionPointers() = 0;
+
+	ContextRef createSharedContext( const Context *sharedContext );
 	//! NULL for \a context deactivates the current context
-	void					makeContextCurrent( const Context *context );
+	void makeContextCurrent( const Context *context );
 
-	virtual bool			isExtensionAvailable( const std::string &extName ) = 0;
-	virtual bool			supportsHardwareVao() = 0;
+	virtual bool isExtensionAvailable( const std::string &extName ) = 0;
+	virtual bool supportsHardwareVao() = 0;
 	//! Returns whether this platform supports Texture Level-of-Detail. \c true everywhere but ES 2, which requires \c GL_EXT_shader_texture_lod
-	virtual bool			supportsTextureLod() const = 0;
+	virtual bool supportsTextureLod() const = 0;
 
-	virtual void			allocateTexStorage1d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, bool immutable, GLint texImageDataType ) = 0;
-	virtual void			allocateTexStorage2d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable, GLint texImageDataType ) = 0;
-	virtual void			allocateTexStorage3d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, bool immutable ) = 0;
-	virtual void			allocateTexStorageCubeMap( GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable ) = 0;	
+	virtual void allocateTexStorage1d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, bool immutable, GLint texImageDataType ) = 0;
+	virtual void allocateTexStorage2d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable, GLint texImageDataType ) = 0;
+	virtual void allocateTexStorage3d( GLenum target, GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, GLsizei depth, bool immutable ) = 0;
+	virtual void allocateTexStorageCubeMap( GLsizei levels, GLenum internalFormat, GLsizei width, GLsizei height, bool immutable ) = 0;
 
-	virtual void			objectLabel( GLenum identifier, GLuint name, GLsizei length, const char *label ) = 0;
+	virtual void objectLabel( GLenum identifier, GLuint name, GLsizei length, const char *label ) = 0;
 
-	virtual std::string		generateVertexShader( const ShaderDef &shader ) = 0;
-	virtual std::string		generateFragmentShader( const ShaderDef &shader ) = 0;
-	virtual GlslProgRef		buildShader( const ShaderDef &shader ) = 0;
+	virtual std::string generateVertexShader( const ShaderDef &shader ) = 0;
+	virtual std::string generateFragmentShader( const ShaderDef &shader ) = 0;
+	virtual GlslProgRef buildShader( const ShaderDef &shader ) = 0;
 
-#if ! defined( CINDER_GL_ES )	
-	static void				setCore();
+#if !defined( CINDER_GL_ES )
+	static void setCore();
 #else
-	static void				setEs();
+	static void setEs();
 #endif
 };
-
 
 #if defined( CINDER_COCOA_TOUCH )
 struct PlatformDataIos : public Context::PlatformData {
 	PlatformDataIos( EAGLContext *eaglContext )
-		: mEaglContext( eaglContext )
-	{}
-	
-	EAGLContext		*mEaglContext;
+	    : mEaglContext( eaglContext )
+	{
+	}
+
+	EAGLContext *mEaglContext;
 };
 
 #elif defined( CINDER_MAC )
 struct PlatformDataMac : public Context::PlatformData {
 	PlatformDataMac( CGLContextObj cglContext )
-		: mCglContext( cglContext )
-	{}
-	
-	CGLContextObj		mCglContext;
+	    : mCglContext( cglContext )
+	{
+	}
+
+	CGLContextObj mCglContext;
 };
 
 #elif defined( CINDER_GL_ANGLE )
 struct PlatformDataAngle : public Context::PlatformData {
 	PlatformDataAngle( EGLContext context, EGLDisplay display, EGLSurface surface, EGLConfig eglConfig )
-		: mContext( context ), mDisplay( display ), mSurface( surface ), mConfig( eglConfig )
-	{}
+	    : mContext( context ), mDisplay( display ), mSurface( surface ), mConfig( eglConfig )
+	{
+	}
 
-	EGLContext		mContext;
-	EGLDisplay		mDisplay;
-	EGLSurface		mSurface;
-	EGLConfig		mConfig;
+	EGLContext mContext;
+	EGLDisplay mDisplay;
+	EGLSurface mSurface;
+	EGLConfig  mConfig;
 };
 
 #elif defined( CINDER_MSW ) // normal MSW desktop GL
 struct PlatformDataMsw : public Context::PlatformData {
 	PlatformDataMsw( HGLRC glrc, HDC dc )
-		: mGlrc( glrc ), mDc( dc )
-	{}
+	    : mGlrc( glrc ), mDc( dc )
+	{
+	}
 	PlatformDataMsw( const std::shared_ptr<Context::PlatformData> &sharedPlatformData, HGLRC glrc, HDC dc )
-		: Context::PlatformData( *sharedPlatformData ), mGlrc( glrc ), mDc( dc )
-	{}
+	    : Context::PlatformData( *sharedPlatformData ), mGlrc( glrc ), mDc( dc )
+	{
+	}
 
-	HGLRC	mGlrc;
-	HDC		mDc;
+	HGLRC mGlrc;
+	HDC   mDc;
 };
 #endif
-
-} } // namespace cinder::gl
+}
+} // namespace cinder::gl

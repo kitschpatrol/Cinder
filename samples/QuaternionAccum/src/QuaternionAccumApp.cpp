@@ -1,12 +1,12 @@
 #include "Resources.h"
 
+#include "cinder/Bspline.h"
+#include "cinder/Camera.h"
+#include "cinder/ImageIo.h"
+#include "cinder/Rand.h"
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/Bspline.h"
-#include "cinder/Rand.h"
-#include "cinder/Camera.h"
-#include "cinder/ImageIo.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -14,7 +14,7 @@ using namespace ci::app;
 const float BALL_RADIUS = 1.0f;
 
 class QuaternionAccumApp : public App {
-public:
+  public:
 	void setup() override;
 	void update() override;
 	void resize() override;
@@ -28,21 +28,21 @@ public:
 	void drawBall();
 	void draw() override;
 
-private:
-	CameraPersp		mCam;
+  private:
+	CameraPersp mCam;
 
-	BSpline3f		mSpline;
-	float			mSplineValue;
+	BSpline3f mSpline;
+	float     mSplineValue;
 
-	quat			mQuat;
-	vec3			mLastPos;
-	double			mLastTime;
+	quat   mQuat;
+	vec3   mLastPos;
+	double mLastTime;
 
-	gl::TextureRef	mPlaneTexture;
-	gl::TextureRef	mBallTexture;
+	gl::TextureRef mPlaneTexture;
+	gl::TextureRef mBallTexture;
 
-	gl::BatchRef	mPlaneBatch;
-	gl::BatchRef	mBallBatch;
+	gl::BatchRef mPlaneBatch;
+	gl::BatchRef mBallBatch;
 };
 
 void QuaternionAccumApp::setup()
@@ -76,7 +76,6 @@ void QuaternionAccumApp::update()
 
 	// Move 1/5th of the spline per second.
 	mSplineValue += float( 0.2 * elapsed );
-
 }
 
 void QuaternionAccumApp::mouseDown( MouseEvent event )
@@ -114,13 +113,13 @@ void QuaternionAccumApp::drawSpline()
 {
 	// Draw the spline as a line strip.
 	gl::ScopedColor color( 0.8f, 0.2f, 0.8f, 0.8f );
-	
+
 	gl::lineWidth( 2.0f );
 
 	gl::begin( GL_LINE_STRIP );
 	const int numSegments = 100;
 	for( int s = 0; s <= numSegments; ++s ) {
-		float t = s / (float) numSegments;
+		float t = s / (float)numSegments;
 		gl::vertex( mSpline.getPosition( t ) + vec3( 0, 0.5f, 0 ) );
 	}
 	gl::end();

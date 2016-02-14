@@ -1,24 +1,24 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
+#include "cinder/Log.h"
 #include "cinder/Timeline.h"
 #include "cinder/Timer.h"
-#include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
 
+#include "cinder/audio/MonitorNode.h"
+#include "cinder/audio/NodeEffects.h"
+#include "cinder/audio/SamplePlayerNode.h"
+#include "cinder/audio/SampleRecorderNode.h"
 #include "cinder/audio/Source.h"
 #include "cinder/audio/Target.h"
 #include "cinder/audio/dsp/Converter.h"
-#include "cinder/audio/SamplePlayerNode.h"
-#include "cinder/audio/SampleRecorderNode.h"
-#include "cinder/audio/NodeEffects.h"
-#include "cinder/audio/MonitorNode.h"
 
 #include "Resources.h"
 
-#include "../../common/AudioTestGui.h"
 #include "../../../../samples/_audio/common/AudioDrawUtils.h"
+#include "../../common/AudioTestGui.h"
 
 //#define INITIAL_AUDIO_RES	RES_TONE440_WAV
-#define INITIAL_AUDIO_RES	RES_TONE440L220R_WAV
+#define INITIAL_AUDIO_RES RES_TONE440L220R_WAV
 //#define INITIAL_AUDIO_RES RES_TONE440_LOOP_WAV
 //#define INITIAL_AUDIO_RES	RES_TONE440_MP3
 //#define INITIAL_AUDIO_RES	RES_TONE440L220R_MP3
@@ -30,7 +30,6 @@
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-
 
 class SamplePlayerNodeTestApp : public App {
   public:
@@ -59,23 +58,23 @@ class SamplePlayerNodeTestApp : public App {
 	void testConverter();
 	void testWrite();
 
-	audio::SamplePlayerNodeRef		mSamplePlayerNode;
-	audio::SourceFileRef			mSourceFile;
-	audio::MonitorNodeRef			mMonitor;
-	audio::GainNodeRef				mGain;
-	audio::Pan2dNodeRef				mPan;
-	audio::BufferRecorderNodeRef	mRecorder;
+	audio::SamplePlayerNodeRef   mSamplePlayerNode;
+	audio::SourceFileRef         mSourceFile;
+	audio::MonitorNodeRef        mMonitor;
+	audio::GainNodeRef           mGain;
+	audio::Pan2dNodeRef          mPan;
+	audio::BufferRecorderNodeRef mRecorder;
 
-	WaveformPlot				mWaveformPlot;
-	vector<TestWidget *>		mWidgets;
-	Button						mEnableSamplePlayerNodeButton, mStartPlaybackButton, mStopPlaybackButton, mLoopButton, mAsyncButton, mRecordButton, mWriteButton, mAutoResizeButton;
-	VSelector					mTestSelector;
-	HSlider						mGainSlider, mPanSlider, mLoopBeginSlider, mLoopEndSlider, mTriggerDelaySlider;
+	WaveformPlot         mWaveformPlot;
+	vector<TestWidget *> mWidgets;
+	Button               mEnableSamplePlayerNodeButton, mStartPlaybackButton, mStopPlaybackButton, mLoopButton, mAsyncButton, mRecordButton, mWriteButton, mAutoResizeButton;
+	VSelector            mTestSelector;
+	HSlider              mGainSlider, mPanSlider, mLoopBeginSlider, mLoopEndSlider, mTriggerDelaySlider;
 
-	Anim<float>					mUnderrunFade, mOverrunFade, mRecorderOverrunFade;
-	Rectf						mUnderrunRect, mOverrunRect, mRecorderOverrunRect;
-	bool						mSamplePlayerNodeEnabledState;
-	std::future<void>			mAsyncLoadFuture;
+	Anim<float>       mUnderrunFade, mOverrunFade, mRecorderOverrunFade;
+	Rectf             mUnderrunRect, mOverrunRect, mRecorderOverrunRect;
+	bool              mSamplePlayerNodeEnabledState;
+	std::future<void> mAsyncLoadFuture;
 };
 
 void SamplePlayerNodeTestApp::setup()
@@ -100,7 +99,7 @@ void SamplePlayerNodeTestApp::setup()
 	mGain >> mPan >> ctx->getOutput();
 
 	setupBufferPlayerNode();
-//	setupFilePlayerNode();
+	//	setupFilePlayerNode();
 
 	setupUI();
 
@@ -154,14 +153,14 @@ void SamplePlayerNodeTestApp::setupFilePlayerNode()
 
 	auto ctx = audio::master();
 
-//	mSourceFile->setMaxFramesPerRead( 8192 );
+	//	mSourceFile->setMaxFramesPerRead( 8192 );
 	bool asyncRead = mAsyncButton.mEnabled;
 	CI_LOG_V( "async read: " << asyncRead );
 	mSamplePlayerNode = ctx->makeNode( new audio::FilePlayerNode( mSourceFile, asyncRead ) );
 
 	// TODO: it is pretty surprising when you recreate mMonitor here without checking if there has already been one added.
 	//	- user will no longer see the old mMonitor, but the context still owns a reference to it, so another gets added each time we call this method.
-	if( ! mMonitor )
+	if( !mMonitor )
 		mMonitor = ctx->makeNode( new audio::MonitorNode( audio::MonitorNode::Format().windowSize( 1024 ) ) );
 
 	// when these connections are called, some (GainNode and Pan) will already be connected, but this is okay, they should silently no-op.
@@ -182,7 +181,7 @@ void SamplePlayerNodeTestApp::setupBufferRecorderNode()
 	auto ctx = audio::master();
 
 	mRecorder = ctx->makeNode( new audio::BufferRecorderNode( 2 * ctx->getSampleRate() ) );
-//	mRecorder->setNumSeconds( 2 ); // can also set seconds afterwards, which causes a lock and buffer resize
+	//	mRecorder->setNumSeconds( 2 ); // can also set seconds afterwards, which causes a lock and buffer resize
 
 	CI_ASSERT( mSamplePlayerNode );
 
@@ -228,7 +227,10 @@ void SamplePlayerNodeTestApp::triggerStartStop( bool start )
 	}
 	else {
 		CI_LOG_V( "scheduling " << ( start ? "start" : "stop" ) << " with delay: " << delaySeconds
-				 << "\n\tprocessed frames: " << audio::master()->getNumProcessedFrames() << ", seconds: " << audio::master()->getNumProcessedSeconds() );
+		                        << "\n\tprocessed frames: "
+		                        << audio::master()->getNumProcessedFrames()
+		                        << ", seconds: "
+		                        << audio::master()->getNumProcessedSeconds() );
 
 		double when = audio::master()->getNumProcessedSeconds() + delaySeconds;
 		if( start )
@@ -297,7 +299,7 @@ void SamplePlayerNodeTestApp::setupUI()
 	mAutoResizeButton.mBounds = buttonRect;
 	mWidgets.push_back( &mAutoResizeButton );
 
-	vec2 sliderSize( 200, 30 );
+	vec2  sliderSize( 200, 30 );
 	Rectf selectorRect( getWindowWidth() - sliderSize.x - padding, padding, getWindowWidth() - padding, sliderSize.y * 3 + padding );
 	mTestSelector.mSegments.push_back( "BufferPlayerNode" );
 	mTestSelector.mSegments.push_back( "FilePlayerNode" );
@@ -344,10 +346,10 @@ void SamplePlayerNodeTestApp::setupUI()
 	mOverrunRect = mUnderrunRect + vec2( xrunSize.x + padding, 0 );
 	mRecorderOverrunRect = mOverrunRect + vec2( xrunSize.x + padding, 0 );
 
-	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -379,13 +381,13 @@ void SamplePlayerNodeTestApp::processDrag( ivec2 pos )
 void SamplePlayerNodeTestApp::processTap( ivec2 pos )
 {
 	if( mEnableSamplePlayerNodeButton.hitTest( pos ) )
-		mSamplePlayerNode->setEnabled( ! mSamplePlayerNode->isEnabled() );
+		mSamplePlayerNode->setEnabled( !mSamplePlayerNode->isEnabled() );
 	else if( mStartPlaybackButton.hitTest( pos ) )
 		triggerStartStop( true );
 	else if( mStopPlaybackButton.hitTest( pos ) )
 		triggerStartStop( false );
 	else if( mLoopButton.hitTest( pos ) )
-		mSamplePlayerNode->setLoopEnabled( ! mSamplePlayerNode->isLoopEnabled() );
+		mSamplePlayerNode->setLoopEnabled( !mSamplePlayerNode->isLoopEnabled() );
 	else if( mRecordButton.hitTest( pos ) ) {
 		if( mRecordButton.mEnabled )
 			mRecorder->start();
@@ -423,10 +425,10 @@ void SamplePlayerNodeTestApp::seek( size_t xPos )
 void SamplePlayerNodeTestApp::printBufferSamples( size_t xPos )
 {
 	auto bufferPlayer = dynamic_pointer_cast<audio::BufferPlayerNode>( mSamplePlayerNode );
-	if( ! bufferPlayer )
+	if( !bufferPlayer )
 		return;
 
-	auto buffer = bufferPlayer->getBuffer();
+	auto   buffer = bufferPlayer->getBuffer();
 	size_t step = buffer->getNumFrames() / getWindowWidth();
 	size_t xScaled = xPos * step;
 	CI_LOG_V( "samples starting at " << xScaled << ":" );
@@ -450,7 +452,7 @@ void SamplePlayerNodeTestApp::printSupportedExtensions()
 
 void SamplePlayerNodeTestApp::mouseDown( MouseEvent event )
 {
-//	printBufferSamples( event.getX() );
+	//	printBufferSamples( event.getX() );
 }
 
 void SamplePlayerNodeTestApp::keyDown( KeyEvent event )
@@ -491,12 +493,11 @@ void SamplePlayerNodeTestApp::fileDrop( FileDropEvent event )
 	PRINT_GRAPH( audio::master() );
 }
 
-
 void SamplePlayerNodeTestApp::update()
 {
 	// light up rects if an xrun was detected
 	const float xrunFadeTime = 1.3f;
-	auto filePlayer = dynamic_pointer_cast<audio::FilePlayerNode>( mSamplePlayerNode );
+	auto        filePlayer = dynamic_pointer_cast<audio::FilePlayerNode>( mSamplePlayerNode );
 	if( filePlayer ) {
 		if( filePlayer->getLastUnderrun() )
 			timeline().apply( &mUnderrunFade, 1.0f, 0.0f, xrunFadeTime );
@@ -512,7 +513,7 @@ void SamplePlayerNodeTestApp::update()
 	}
 
 	bool testIsRecorder = ( mTestSelector.currentSection() == "recorder" );
-	mRecordButton.mHidden = mWriteButton.mHidden = mAutoResizeButton.mHidden = ! testIsRecorder;
+	mRecordButton.mHidden = mWriteButton.mHidden = mAutoResizeButton.mHidden = !testIsRecorder;
 
 	// test auto resizing the Recorder's buffer depending on how full it is
 	if( testIsRecorder && mAutoResizeButton.mEnabled ) {
@@ -530,7 +531,6 @@ void SamplePlayerNodeTestApp::update()
 		if( mRecorder->getLastOverrun() )
 			timeline().apply( &mRecorderOverrunFade, 1.0f, 0.0f, xrunFadeTime );
 	}
-
 }
 
 void SamplePlayerNodeTestApp::draw()
@@ -580,13 +580,13 @@ void SamplePlayerNodeTestApp::testConverter()
 	size_t destSampleRate = 48000;
 	size_t destChannels = 1;
 	size_t sourceMaxFramesPerBlock = 512;
-	auto converter = audio::dsp::Converter::create( mSourceFile->getSampleRate(), destSampleRate, mSourceFile->getNumChannels(), destChannels, sourceMaxFramesPerBlock );
+	auto   converter = audio::dsp::Converter::create( mSourceFile->getSampleRate(), destSampleRate, mSourceFile->getNumChannels(), destChannels, sourceMaxFramesPerBlock );
 
 	CI_LOG_V( "FROM samplerate: " << converter->getSourceSampleRate() << ", channels: " << converter->getSourceNumChannels() << ", frames per block: " << converter->getSourceMaxFramesPerBlock() );
 	CI_LOG_V( "TO samplerate: " << converter->getDestSampleRate() << ", channels: " << converter->getDestNumChannels() << ", frames per block: " << converter->getDestMaxFramesPerBlock() );
 
 	audio::BufferDynamic sourceBuffer( converter->getSourceMaxFramesPerBlock(), converter->getSourceNumChannels() );
-	audio::Buffer destBuffer( converter->getDestMaxFramesPerBlock(), converter->getDestNumChannels() );
+	audio::Buffer        destBuffer( converter->getDestMaxFramesPerBlock(), converter->getDestNumChannels() );
 
 	audio::TargetFileRef target = audio::TargetFile::create( "resampled.wav", converter->getDestSampleRate(), converter->getDestNumChannels() );
 
@@ -598,14 +598,14 @@ void SamplePlayerNodeTestApp::testConverter()
 		if( audioBuffer->getNumFrames() - numFramesConverted > sourceMaxFramesPerBlock ) {
 			for( size_t ch = 0; ch < audioBuffer->getNumChannels(); ch++ )
 				memcpy( sourceBuffer.getChannel( ch ), audioBuffer->getChannel( ch ) + numFramesConverted, sourceMaxFramesPerBlock * sizeof( float ) );
-				//copy( audioBuffer->getChannel( ch ) + numFramesConverted, audioBuffer->getChannel( ch ) + numFramesConverted + sourceMaxFramesPerBlock, sourceBuffer.getChannel( ch ) );
+			//copy( audioBuffer->getChannel( ch ) + numFramesConverted, audioBuffer->getChannel( ch ) + numFramesConverted + sourceMaxFramesPerBlock, sourceBuffer.getChannel( ch ) );
 		}
 		else {
 			// EOF, shrink sourceBuffer to match remaining
 			sourceBuffer.setNumFrames( audioBuffer->getNumFrames() - numFramesConverted );
 			for( size_t ch = 0; ch < audioBuffer->getNumChannels(); ch++ )
 				memcpy( sourceBuffer.getChannel( ch ), audioBuffer->getChannel( ch ) + numFramesConverted, audioBuffer->getNumFrames() * sizeof( float ) );
-				//copy( audioBuffer->getChannel( ch ) + numFramesConverted, audioBuffer->getChannel( ch ) + audioBuffer->getNumFrames(), sourceBuffer.getChannel( ch ) );
+			//copy( audioBuffer->getChannel( ch ) + numFramesConverted, audioBuffer->getChannel( ch ) + audioBuffer->getNumFrames(), sourceBuffer.getChannel( ch ) );
 		}
 
 		pair<size_t, size_t> result = converter->convert( &sourceBuffer, &destBuffer );
@@ -622,7 +622,7 @@ void SamplePlayerNodeTestApp::testWrite()
 	audio::BufferRef audioBuffer = mSourceFile->loadBuffer();
 
 	try {
-		const string fileName = "out.wav";
+		const string         fileName = "out.wav";
 		audio::TargetFileRef target = audio::TargetFile::create( fileName, mSourceFile->getSampleRate(), mSourceFile->getNumChannels() ); // INT_16
 		//	audio::TargetFileRef target = audio::TargetFile::create( fileName, mSourceFile->getSampleRate(), mSourceFile->getNumChannels(), audio::SampleType::FLOAT_32 );
 
@@ -630,11 +630,11 @@ void SamplePlayerNodeTestApp::testWrite()
 		target->write( audioBuffer.get() );
 		CI_LOG_V( "...complete." );
 
-//		size_t writeCount = 0;
-//		while( numFramesConverted < audioBuffer->getNumFrames() ) {
-//			for( size_t ch = 0; ch < audioBuffer->getNumChannels(); ch++ )
-//				copy( audioBuffer->getChannel( ch ) + writeCount, audioBuffer->getChannel( ch ) + writeCount + sourceFormat.getFramesPerBlock(), sourceBuffer.getChannel( ch ) );
-//		}
+		//		size_t writeCount = 0;
+		//		while( numFramesConverted < audioBuffer->getNumFrames() ) {
+		//			for( size_t ch = 0; ch < audioBuffer->getNumChannels(); ch++ )
+		//				copy( audioBuffer->getChannel( ch ) + writeCount, audioBuffer->getChannel( ch ) + writeCount + sourceFormat.getFramesPerBlock(), sourceBuffer.getChannel( ch ) );
+		//		}
 	}
 	catch( audio::AudioFileExc &exc ) {
 		CI_LOG_E( "AudioFileExc, what: " << exc.what() );

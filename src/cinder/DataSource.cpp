@@ -33,24 +33,24 @@ void DataSource::setFilePathHint( const fs::path &aFilePathHint )
 	mFilePathHint = aFilePathHint;
 }
 
-const fs::path& DataSource::getFilePath()
+const fs::path &DataSource::getFilePath()
 {
 	return mFilePath;
 }
 
-const Url& DataSource::getUrl()
+const Url &DataSource::getUrl()
 {
 	return mUrl;
 }
 
-const fs::path& DataSource::getFilePathHint()
+const fs::path &DataSource::getFilePathHint()
 {
 	return mFilePathHint;
 }
 
 BufferRef DataSource::getBuffer()
 {
-	if( ! mBuffer )
+	if( !mBuffer )
 		createBuffer();
 
 	return mBuffer;
@@ -64,7 +64,7 @@ DataSourcePathRef DataSourcePath::create( const fs::path &path )
 }
 
 DataSourcePath::DataSourcePath( const fs::path &path )
-	: DataSource( path, Url() )
+    : DataSource( path, Url() )
 {
 	setFilePathHint( path );
 }
@@ -73,7 +73,7 @@ void DataSourcePath::createBuffer()
 {
 	// no-op - we already supplied the buffer in the constructor
 	IStreamFileRef stream = loadFileStream( mFilePath );
-	if( ! stream )
+	if( !stream )
 		throw StreamExc();
 
 	mBuffer = loadStreamBuffer( stream );
@@ -98,7 +98,7 @@ DataSourceUrlRef DataSourceUrl::create( const Url &url, const UrlOptions &option
 }
 
 DataSourceUrl::DataSourceUrl( const Url &url, const UrlOptions &options )
-	: DataSource( "", url ), mOptions( options )
+    : DataSource( "", url ), mOptions( options )
 {
 	setFilePathHint( url.str() );
 }
@@ -130,7 +130,7 @@ DataSourceBufferRef DataSourceBuffer::create( const BufferRef &buffer, const fs:
 }
 
 DataSourceBuffer::DataSourceBuffer( const BufferRef &buffer )
-	: DataSource( "", Url() )
+    : DataSource( "", Url() )
 {
 	mBuffer = buffer;
 }

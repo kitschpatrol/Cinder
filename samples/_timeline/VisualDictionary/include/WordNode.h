@@ -6,9 +6,9 @@
 #pragma once
 
 #include "cinder/Cinder.h"
+#include "cinder/Color.h"
 #include "cinder/Timeline.h"
 #include "cinder/Vector.h"
-#include "cinder/Color.h"
 #include "cinder/gl/TextureFont.h"
 
 #include <string>
@@ -18,31 +18,30 @@ class WordNode {
 	WordNode() {}
 	WordNode( const std::string &word );
 
-	const std::string&	getWord() const { return mWord; }
-	
-	bool	shouldBeDeleted() const;
-	void	setShouldBeDeleted();
-	
-	bool	isSelected() const;
-	void	setSelected();
+	const std::string &getWord() const { return mWord; }
+	bool               shouldBeDeleted() const;
+	void               setShouldBeDeleted();
 
-	bool	isPointInside( const ci::vec2 &pt ) const;
-	
-	void	draw() const;
+	bool isSelected() const;
+	void setSelected();
 
-	// Timelined properties		
-	ci::Anim<ci::vec2>		mPos;
-	ci::Anim<float>			mRadius;
-	float					mRadiusDest;
-	ci::Anim<ci::ColorA>	mColor;
+	bool isPointInside( const ci::vec2 &pt ) const;
 
+	void draw() const;
 
-	static	void	setFont( ci::gl::TextureFontRef font );
+	// Timelined properties
+	ci::Anim<ci::vec2>   mPos;
+	ci::Anim<float>      mRadius;
+	float                mRadiusDest;
+	ci::Anim<ci::ColorA> mColor;
+
+	static void setFont( ci::gl::TextureFontRef font );
+
   protected:
-	bool			mIsSelected;
-	bool			mShouldBeDeleted;
-	std::string		mWord;
-	float			mWordPixelLength;
+	bool        mIsSelected;
+	bool        mShouldBeDeleted;
+	std::string mWord;
+	float       mWordPixelLength;
 
-	static ci::gl::TextureFontRef	sFont;
+	static ci::gl::TextureFontRef sFont;
 };

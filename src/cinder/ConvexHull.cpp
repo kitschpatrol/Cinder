@@ -26,10 +26,9 @@
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
 
-
 namespace cinder {
 
-typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double> > polygon;
+typedef boost::geometry::model::polygon<boost::geometry::model::d2::point_xy<double>> polygon;
 
 namespace {
 
@@ -38,15 +37,14 @@ PolyLine2f toPolyLine( const polygon &p )
 	PolyLine2f result;
 
 	for( auto pt = p.outer().begin(); pt != p.outer().end(); ++pt )
-		result.push_back( vec2( boost::geometry::get<0>(*pt), boost::geometry::get<1>(*pt) ) );
+		result.push_back( vec2( boost::geometry::get<0>( *pt ), boost::geometry::get<1>( *pt ) ) );
 
-	
 	return result;
 }
 
 boost::geometry::model::d2::point_xy<double> makePoint( const vec2 &p )
 {
-	return boost::geometry::make<boost::geometry::model::d2::point_xy<double> >( p.x, p.y );
+	return boost::geometry::make<boost::geometry::model::d2::point_xy<double>>( p.x, p.y );
 }
 
 void includePathExtremeties( const Path2d &p, polygon *output )
@@ -54,36 +52,34 @@ void includePathExtremeties( const Path2d &p, polygon *output )
 	size_t firstPoint = 0;
 	for( size_t s = 0; s < p.getSegments().size(); ++s ) {
 		switch( p.getSegments()[s] ) {
-			case Path2d::CUBICTO: {
-				float monotoneT[4];
-				int monotoneCnt = Path2d::calcCubicBezierMonotoneRegions( &(p.getPoints()[firstPoint]), monotoneT );
-				for( int monotoneIdx = 0; monotoneIdx < monotoneCnt; ++monotoneIdx )
-					output->outer().push_back( makePoint( Path2d::calcCubicBezierPos( &(p.getPoints()[firstPoint]), monotoneT[monotoneIdx] ) ) );
+		case Path2d::CUBICTO: {
+			float monotoneT[4];
+			int   monotoneCnt = Path2d::calcCubicBezierMonotoneRegions( &( p.getPoints()[firstPoint] ), monotoneT );
+			for( int monotoneIdx = 0; monotoneIdx < monotoneCnt; ++monotoneIdx )
+				output->outer().push_back( makePoint( Path2d::calcCubicBezierPos( &( p.getPoints()[firstPoint] ), monotoneT[monotoneIdx] ) ) );
 
-				output->outer().push_back( makePoint( p.getPoints()[firstPoint+0] ) );
-				output->outer().push_back( makePoint( p.getPoints()[firstPoint+1] ) );
-				output->outer().push_back( makePoint( p.getPoints()[firstPoint+2] ) );
-			}
+			output->outer().push_back( makePoint( p.getPoints()[firstPoint + 0] ) );
+			output->outer().push_back( makePoint( p.getPoints()[firstPoint + 1] ) );
+			output->outer().push_back( makePoint( p.getPoints()[firstPoint + 2] ) );
+		} break;
+		case Path2d::QUADTO: {
+			float monotoneT[2];
+			int   monotoneCnt = Path2d::calcCubicBezierMonotoneRegions( &( p.getPoints()[firstPoint] ), monotoneT );
+			for( int monotoneIdx = 0; monotoneIdx < monotoneCnt; ++monotoneIdx )
+				output->outer().push_back( makePoint( Path2d::calcQuadraticBezierPos( &( p.getPoints()[firstPoint] ), monotoneT[monotoneIdx] ) ) );
+			output->outer().push_back( makePoint( p.getPoints()[firstPoint + 0] ) );
+			output->outer().push_back( makePoint( p.getPoints()[firstPoint + 1] ) );
+		} break;
+		case Path2d::LINETO:
+			output->outer().push_back( makePoint( p.getPoints()[firstPoint + 0] ) );
 			break;
-			case Path2d::QUADTO: {
-				float monotoneT[2];
-				int monotoneCnt = Path2d::calcCubicBezierMonotoneRegions( &(p.getPoints()[firstPoint]), monotoneT );
-				for( int monotoneIdx = 0; monotoneIdx < monotoneCnt; ++monotoneIdx )
-					output->outer().push_back( makePoint( Path2d::calcQuadraticBezierPos( &(p.getPoints()[firstPoint]), monotoneT[monotoneIdx] ) ) );
-				output->outer().push_back( makePoint( p.getPoints()[firstPoint+0] ) );
-				output->outer().push_back( makePoint( p.getPoints()[firstPoint+1] ) );
-			}
+		case Path2d::CLOSE:
+			output->outer().push_back( makePoint( p.getPoints()[firstPoint + 0] ) );
 			break;
-			case Path2d::LINETO:
-				output->outer().push_back( makePoint( p.getPoints()[firstPoint+0] ) );
-			break;
-			case Path2d::CLOSE:
-				output->outer().push_back( makePoint( p.getPoints()[firstPoint+0] ) );
-			break;
-			default:
-				throw Path2dExc();
+		default:
+			throw Path2dExc();
 		}
-		
+
 		firstPoint += Path2d::sSegmentTypePointCounts[p.getSegments()[s]];
 	}
 }
@@ -102,11 +98,11 @@ PolyLine2f calcConvexHull( const vec2 *points, size_t numPoints )
 {
 	polygon poly;
 	for( size_t p = 0; p < numPoints; ++p )
-		poly.outer().push_back( boost::geometry::make<boost::geometry::model::d2::point_xy<double> >( points[p].x, points[p].y ) );
+		poly.outer().push_back( boost::geometry::make<boost::geometry::model::d2::point_xy<double>>( points[p].x, points[p].y ) );
 
 	polygon result;
 	boost::geometry::convex_hull( poly, result );
-	
+
 	return toPolyLine( result );
 }
 
@@ -129,7 +125,7 @@ PolyLine2f calcConvexHull( const Path2d &path )
 
 	polygon result;
 	boost::geometry::convex_hull( poly, result );
-	
+
 	return toPolyLine( result );
 }
 
@@ -137,11 +133,11 @@ PolyLine2f calcConvexHull( const PolyLine2f &polyLine )
 {
 	polygon poly;
 	for( auto ptIt = polyLine.begin(); ptIt != polyLine.end(); ++ptIt )
-		poly.outer().push_back( boost::geometry::make<boost::geometry::model::d2::point_xy<double> >( ptIt->x, ptIt->y ) );
+		poly.outer().push_back( boost::geometry::make<boost::geometry::model::d2::point_xy<double>>( ptIt->x, ptIt->y ) );
 
 	polygon result;
 	boost::geometry::convex_hull( poly, result );
-	
+
 	return toPolyLine( result );
 }
 

@@ -13,10 +13,10 @@ using namespace ci::app;
 using namespace std;
 
 const std::string destinationHost = "127.0.0.1";
-const uint16_t destinationPort = 10001;
+const uint16_t    destinationPort = 10001;
 
 class SimpleMultiThreadedSenderApp : public App {
-public:
+  public:
 	SimpleMultiThreadedSenderApp();
 	void setup() override;
 	void mouseDown( MouseEvent event ) override;
@@ -25,13 +25,13 @@ public:
 	void mouseMove( MouseEvent event ) override;
 	void draw() override;
 	void cleanup() override;
-	
+
 	ivec2 mCurrentMousePositon;
-	
-	std::shared_ptr<asio::io_service>		mIoService;
-	std::shared_ptr<asio::io_service::work>	mWork;
-	std::thread								mThread;
-	
+
+	std::shared_ptr<asio::io_service>       mIoService;
+	std::shared_ptr<asio::io_service::work> mWork;
+	std::thread                             mThread;
+
 #if USE_UDP
 	osc::SenderUdp mSender;
 #else
@@ -40,21 +40,22 @@ public:
 };
 
 SimpleMultiThreadedSenderApp::SimpleMultiThreadedSenderApp()
-: mIoService( new asio::io_service ), mWork( new asio::io_service::work( *mIoService ) ),
-	mSender( 10000, destinationHost, destinationPort )
+    : mIoService( new asio::io_service ), mWork( new asio::io_service::work( *mIoService ) ),
+      mSender( 10000, destinationHost, destinationPort )
 {
 }
 
 void SimpleMultiThreadedSenderApp::setup()
 {
 	mSender.bind();
-#if ! USE_UDP
+#if !USE_UDP
 	mSender.connect();
 #endif
 	mThread = std::thread( std::bind(
-	[]( std::shared_ptr<asio::io_service> &service ){
-		service->run();
-	}, mIoService ));
+	    []( std::shared_ptr<asio::io_service> &service ) {
+		    service->run();
+		},
+	    mIoService ) );
 }
 
 void SimpleMultiThreadedSenderApp::mouseMove( cinder::app::MouseEvent event )
@@ -63,7 +64,7 @@ void SimpleMultiThreadedSenderApp::mouseMove( cinder::app::MouseEvent event )
 	osc::Message msg( "/mousemove/1" );
 	msg.append( mCurrentMousePositon.x );
 	msg.append( mCurrentMousePositon.y );
-	
+
 	mSender.send( msg );
 }
 
@@ -72,7 +73,7 @@ void SimpleMultiThreadedSenderApp::mouseDown( MouseEvent event )
 	osc::Message msg( "/mouseclick/1" );
 	msg.append( (float)event.getPos().x / getWindowWidth() );
 	msg.append( (float)event.getPos().y / getWindowHeight() );
-	
+
 	mSender.send( msg );
 }
 
@@ -86,7 +87,7 @@ void SimpleMultiThreadedSenderApp::mouseUp( MouseEvent event )
 	osc::Message msg( "/mouseclick/1" );
 	msg.append( (float)event.getPos().x / getWindowWidth() );
 	msg.append( (float)event.getPos().y / getWindowHeight() );
-	
+
 	mSender.send( msg );
 }
 

@@ -28,7 +28,8 @@
 using namespace ci;
 using namespace std;
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 namespace {
 
@@ -47,7 +48,7 @@ void resizeBufferAndShuffleChannels( BufferDynamic *buffer, size_t resultNumFram
 		for( size_t ch = 1; ch < buffer->getNumChannels(); ch++ ) {
 			const size_t numZeroFrames = resultNumFrames - currentNumFrames;
 			const float *currentChannel = &data[ch * currentNumFrames];
-			float *resultChannel = &data[ch * resultNumFrames];
+			float *      resultChannel = &data[ch * resultNumFrames];
 
 			memmove( resultChannel, currentChannel, currentNumFrames * sampleSize );
 			memset( resultChannel - numZeroFrames, 0, numZeroFrames * sampleSize );
@@ -59,7 +60,7 @@ void resizeBufferAndShuffleChannels( BufferDynamic *buffer, size_t resultNumFram
 
 		for( size_t ch = 1; ch < buffer->getNumChannels(); ch++ ) {
 			const float *currentChannel = &data[ch * currentNumFrames];
-			float *resultChannel = &data[ch * resultNumFrames];
+			float *      resultChannel = &data[ch * resultNumFrames];
 
 			memmove( resultChannel, currentChannel, currentNumFrames * sampleSize );
 		}
@@ -70,7 +71,6 @@ void resizeBufferAndShuffleChannels( BufferDynamic *buffer, size_t resultNumFram
 		buffer->setNumFrames( resultNumFrames );
 	}
 }
-	
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ void resizeBufferAndShuffleChannels( BufferDynamic *buffer, size_t resultNumFram
 // ----------------------------------------------------------------------------------------------------
 
 SampleRecorderNode::SampleRecorderNode( const Format &format )
-	: NodeAutoPullable( format ), mWritePos( 0 )
+    : NodeAutoPullable( format ), mWritePos( 0 )
 {
 }
 
@@ -87,13 +87,13 @@ SampleRecorderNode::SampleRecorderNode( const Format &format )
 // ----------------------------------------------------------------------------------------------------
 
 BufferRecorderNode::BufferRecorderNode( const Format &format )
-	: SampleRecorderNode( format ), mLastOverrun( 0 )
+    : SampleRecorderNode( format ), mLastOverrun( 0 )
 {
 	initBuffers( DEFAULT_RECORD_BUFFER_FRAMES );
 }
 
 BufferRecorderNode::BufferRecorderNode( size_t numFrames, const Format &format )
-	: SampleRecorderNode( format ), mLastOverrun( 0 )
+    : SampleRecorderNode( format ), mLastOverrun( 0 )
 {
 	initBuffers( numFrames );
 }
@@ -164,7 +164,7 @@ BufferRef BufferRecorderNode::getRecordedCopy() const
 
 void BufferRecorderNode::writeToFile( const fs::path &filePath, SampleType sampleType )
 {
-	size_t currentWritePos = mWritePos;
+	size_t    currentWritePos = mWritePos;
 	BufferRef copiedBuffer = getRecordedCopy();
 
 	audio::TargetFileRef target = audio::TargetFile::create( filePath, getSampleRate(), getNumChannels(), sampleType );
@@ -181,7 +181,7 @@ uint64_t BufferRecorderNode::getLastOverrun()
 void BufferRecorderNode::process( Buffer *buffer )
 {
 	const size_t writePos = mWritePos;
-	size_t numWriteFrames = buffer->getNumFrames();
+	size_t       numWriteFrames = buffer->getNumFrames();
 
 	if( writePos + numWriteFrames > mRecorderBuffer.getNumFrames() )
 		numWriteFrames = mRecorderBuffer.getNumFrames() - writePos;
@@ -193,5 +193,5 @@ void BufferRecorderNode::process( Buffer *buffer )
 
 	mWritePos += numWriteFrames;
 }
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

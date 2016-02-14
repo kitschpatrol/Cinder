@@ -1,12 +1,12 @@
 #include "cinder/app/App.h"
+#include "cinder/ImageIo.h"
+#include "cinder/Rand.h"
+#include "cinder/Utilities.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/Rand.h"
-#include "cinder/ImageIo.h"
-#include "cinder/Utilities.h"
 
-#include <sstream>
 #include <list>
+#include <sstream>
 
 using namespace ci;
 using namespace ci::app;
@@ -14,7 +14,7 @@ using namespace std;
 
 struct Circle {
 	Circle( const vec2 &aCenter )
-		: mCenter( aCenter )
+	    : mCenter( aCenter )
 	{
 		mRadiusOfTravel = aCenter.x / 10.0f;
 		mRadius = Rand::randFloat( 5, 15 );
@@ -22,37 +22,39 @@ struct Circle {
 		mColor = Color( CM_HSV, Rand::randFloat( 0, 1 ), Rand::randFloat( 0.6f, 0.7f ), 1 );
 		mSpeed = Rand::randPosNegFloat( 0.001f, 0.05f );
 	}
-	
-	void update() {
+
+	void update()
+	{
 		mAngle += mSpeed;
 	}
-	
-	void draw() {
+
+	void draw()
+	{
 		gl::color( mColor );
 		gl::drawSolidCircle( mCenter + vec2( cos( mAngle ), sin( mAngle ) ) * mRadiusOfTravel, mRadius );
 	}
-		
-	vec2	mCenter;
-	float	mSpeed, mAngle;
-	float	mRadiusOfTravel, mRadius;
-	Color	mColor;
+
+	vec2  mCenter;
+	float mSpeed, mAngle;
+	float mRadiusOfTravel, mRadius;
+	Color mColor;
 };
 
 class SaveImageApp : public App {
- public:
+  public:
 	void setup();
 	void mouseDown( MouseEvent event );
 	void update();
 	void draw();
 
-	int				mCurrentFrame;
-	list<Circle>	mCircles;
+	int          mCurrentFrame;
+	list<Circle> mCircles;
 };
 
 void SaveImageApp::setup()
 {
 	mCurrentFrame = 0;
-	
+
 	for( size_t s = 0; s < 100; ++s )
 		mCircles.push_back( Circle( vec2( Rand::randFloat( 0, 640 ), Rand::randFloat( 0, 480 ) ) ) );
 }
@@ -60,7 +62,7 @@ void SaveImageApp::setup()
 void SaveImageApp::mouseDown( MouseEvent event )
 {
 	// pull down the current window as a surface and pass it to writeImage
-	writeImage( getHomeDirectory() / "cinder" / "saveImage_" / ( toString( mCurrentFrame ) + ".png" ), copyWindowSurface() );	
+	writeImage( getHomeDirectory() / "cinder" / "saveImage_" / ( toString( mCurrentFrame ) + ".png" ), copyWindowSurface() );
 	mCurrentFrame++;
 }
 
@@ -73,7 +75,7 @@ void SaveImageApp::update()
 void SaveImageApp::draw()
 {
 	gl::clear( Color( 0.2f, 0.2f, 0.2f ) );
-	
+
 	for( list<Circle>::iterator circleIter = mCircles.begin(); circleIter != mCircles.end(); ++circleIter ) {
 		circleIter->draw();
 	}

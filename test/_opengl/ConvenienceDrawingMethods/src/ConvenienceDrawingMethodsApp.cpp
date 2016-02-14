@@ -1,12 +1,12 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/PolyLine.h"
-#include "cinder/gl/gl.h"
-#include "cinder/gl/VboMesh.h"
-#include "cinder/Rand.h"
-#include "cinder/Path2d.h"
-#include "cinder/Timer.h"
 #include "cinder/Log.h"
+#include "cinder/Path2d.h"
+#include "cinder/PolyLine.h"
+#include "cinder/Rand.h"
+#include "cinder/Timer.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/VboMesh.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -28,19 +28,19 @@ class ConvenienceDrawingMethodsApp : public App {
 	void keyDown( KeyEvent event ) override;
 	void update() override;
 	void draw() override;
+
   private:
 	void drawBasicOverview();
 	void drawSourcesStressTest();
 
-	Path2d		mPath;
-	PolyLine2	mPolyline2D;
-	PolyLine3	mPolyline3D;
-	bool		mPrintFrameRate = false;
+	Path2d    mPath;
+	PolyLine2 mPolyline2D;
+	PolyLine3 mPolyline3D;
+	bool      mPrintFrameRate = false;
 };
 
 void ConvenienceDrawingMethodsApp::setup()
 {
-
 	mPath.arc( vec2( 0 ), cCircleRadius, 0, M_PI * 1.66f );
 	mPath.lineTo( vec2( 0 ) );
 
@@ -50,12 +50,12 @@ void ConvenienceDrawingMethodsApp::setup()
 	}
 
 	// line wrapping around a sphere
-	const int numVertices = 48;
+	const int   numVertices = 48;
 	const float azimuth = 12 * M_PI / numVertices;
 	// divide total inclination change by particles (from straight down to straight up)
 	const float inclination = M_PI / numVertices;
 	// fixed radius to generate a sphere
-	for( int i = 0; i < numVertices; ++i ) {	// give each particle its starting values
+	for( int i = 0; i < numVertices; ++i ) { // give each particle its starting values
 		float x = cCircleRadius * sin( inclination * i ) * cos( azimuth * i );
 		float y = cCircleRadius * cos( inclination * i );
 		float z = cCircleRadius * sin( inclination * i ) * sin( azimuth * i );
@@ -65,18 +65,18 @@ void ConvenienceDrawingMethodsApp::setup()
 
 void ConvenienceDrawingMethodsApp::keyDown( KeyEvent event )
 {
-#if ! defined( CINDER_GL_ES )
+#if !defined( CINDER_GL_ES )
 	if( event.getChar() == 'w' )
-		gl::setWireframeEnabled( ! gl::isWireframeEnabled() );
+		gl::setWireframeEnabled( !gl::isWireframeEnabled() );
 #endif
 	if( event.getChar() == 'f' )
-		mPrintFrameRate = ! mPrintFrameRate;
+		mPrintFrameRate = !mPrintFrameRate;
 }
 
 void ConvenienceDrawingMethodsApp::update()
 {
 	if( mPrintFrameRate && getElapsedFrames() % 30 == 0 )
-		console() << "fps: " << getAverageFps()  << endl;
+		console() << "fps: " << getAverageFps() << endl;
 }
 
 void ConvenienceDrawingMethodsApp::draw()
@@ -84,7 +84,7 @@ void ConvenienceDrawingMethodsApp::draw()
 	gl::clear( Color( 0.2f, 0.2f, 0.2f ) );
 
 	drawBasicOverview();
-//	drawSourcesStressTest();
+	//	drawSourcesStressTest();
 
 	CI_CHECK_GL();
 }
@@ -97,12 +97,12 @@ void ConvenienceDrawingMethodsApp::drawBasicOverview()
 	const int numCircles = 4;
 	gl::color( Color( 1, 1, 0 ) );
 	for( int i = 0; i < numCircles; ++i ) {
-		gl::drawSolidCircle( vec2( (i + 1) * cGridStep, cGridStep ), cCircleRadius, i * 3 );
+		gl::drawSolidCircle( vec2( ( i + 1 ) * cGridStep, cGridStep ), cCircleRadius, i * 3 );
 	}
 
 	gl::color( Color( 1, 0, 0 ) );
 	for( int i = 0; i < numCircles; ++i ) {
-		gl::drawStrokedCircle( vec2( (i + 1) * cGridStep, cGridStep ), cCircleRadius, i * 3 );
+		gl::drawStrokedCircle( vec2( ( i + 1 ) * cGridStep, cGridStep ), cCircleRadius, i * 3 );
 	}
 
 	// Draw a line in 2D
@@ -142,7 +142,7 @@ void ConvenienceDrawingMethodsApp::drawBasicOverview()
 	{
 		gl::ScopedModelMatrix modelScope;
 		gl::translate( cGridStep * 2, cGridStep * 4 );
-		gl::rotate( - getElapsedSeconds() * 2, 0, 0.5f, 1 );
+		gl::rotate( -getElapsedSeconds() * 2, 0, 0.5f, 1 );
 		gl::drawLine( vec3( 0, 0, cCircleRadius ), vec3( 0, 0, -cCircleRadius ) );
 		gl::drawLine( vec3( -cCircleRadius, 0, 0 ), vec3( cCircleRadius, 0, 0 ) );
 		gl::drawLine( vec3( 0, -cCircleRadius, 0 ), vec3( 0, cCircleRadius, 0 ) );
@@ -154,7 +154,7 @@ void ConvenienceDrawingMethodsApp::drawBasicOverview()
 		gl::translate( cGridStep, cGridStep * 5 );
 		gl::ScopedColor color( Color( 0, 0, 1 ) );
 
-//		auto geom = geom::Rect( Rectf( -cCircleRadius, -cCircleRadius, cCircleRadius, cCircleRadius ) );
+		//		auto geom = geom::Rect( Rectf( -cCircleRadius, -cCircleRadius, cCircleRadius, cCircleRadius ) );
 		auto geom = geom::Circle().center( vec2( 0 ) ).radius( cCircleRadius );
 		gl::draw( geom );
 	}
@@ -170,7 +170,7 @@ void ConvenienceDrawingMethodsApp::drawBasicOverview()
 		gl::ScopedColor color( Color( 0, 1, 1 ) );
 
 		auto geom = geom::Torus().radius( cCircleRadius, cCircleRadius * 0.7f ).colors();
-//		auto geom = geom::Sphere().radius( cCircleRadius ).colors();
+		//		auto geom = geom::Sphere().radius( cCircleRadius ).colors();
 		gl::draw( geom );
 	}
 
@@ -196,7 +196,7 @@ void ConvenienceDrawingMethodsApp::drawSourcesStressTest()
 	const int drawCount = 2000;
 
 	vec2 incr = vec2( getWindowSize() ) / (float)drawCount;
-//	auto circleGeom = geom::Circle().center( vec2( 0 ) ).radius( cCircleRadius );
+	//	auto circleGeom = geom::Circle().center( vec2( 0 ) ).radius( cCircleRadius );
 	auto sphereGeom = geom::Sphere().radius( cCircleRadius ).subdivisions( 50 ).colors();
 	auto cubeGeom = geom::Cube().subdivisions( 10 ).colors() >> geom::Scale( 10 );
 
@@ -211,15 +211,15 @@ void ConvenienceDrawingMethodsApp::drawSourcesStressTest()
 		gl::translate( incr.x, incr.y );
 		gl::ScopedColor color( Color( 0, 0.5f + perc, perc ) );
 
-//		gl::draw( circleGeom );
-//		gl::drawSolidCircle( vec2( 0 ), cCircleRadius );
+		//		gl::draw( circleGeom );
+		//		gl::drawSolidCircle( vec2( 0 ), cCircleRadius );
 
-//		gl::drawSphere( vec3(), cCircleRadius, 50 );
+		//		gl::drawSphere( vec3(), cCircleRadius, 50 );
 		if( i % 2 == 0 )
-//			gl::draw( sphereGeom );
+			//			gl::draw( sphereGeom );
 			gl::draw( sphereVboMesh );
 		else
-//			gl::draw( cubeGeom );
+			//			gl::draw( cubeGeom );
 			gl::draw( cubeVboMesh );
 	}
 

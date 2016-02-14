@@ -23,14 +23,15 @@
 
 #pragma once
 
-#include "cinder/Signals.h"
 #include "cinder/Noncopyable.h"
+#include "cinder/Signals.h"
 
 #include <memory>
 #include <string>
 #include <vector>
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 typedef std::shared_ptr<class Device> DeviceRef;
 
@@ -38,7 +39,6 @@ typedef std::shared_ptr<class Device> DeviceRef;
 class Device : public std::enable_shared_from_this<Device>, Noncopyable {
   public:
 	virtual ~Device() {}
-
 	//! Returns a reference to the default output Device on your system.
 	static DeviceRef getDefaultOutput();
 	//! Returns a reference to the default input Device on your system.
@@ -48,16 +48,16 @@ class Device : public std::enable_shared_from_this<Device>, Noncopyable {
 	//! Finds and returns a reference to the unique Device located by \a key, an platform-specific defined identifier.
 	static DeviceRef findDeviceByKey( const std::string &key );
 	//! Returns a vector of all Device's.
-	static const std::vector<DeviceRef>& getDevices();
+	static const std::vector<DeviceRef> &getDevices();
 	//! Returns a vector of all output Device's.
 	static std::vector<DeviceRef> getOutputDevices();
 	//! Returns a vector of all input Device's.
 	static std::vector<DeviceRef> getInputDevices();
 
 	//! Returns the name of this Device, which is a human readable string reported by the system.
-	const std::string& getName();
+	const std::string &getName();
 	//! Returns the key of this Device, which is a unique platform-specific defined identifier.
-	const std::string& getKey();
+	const std::string &getKey();
 	//! Returns the number of input channels this Device supports.
 	size_t getNumInputChannels();
 	//! Returns the number of output channels this Device supports.
@@ -69,37 +69,43 @@ class Device : public std::enable_shared_from_this<Device>, Noncopyable {
 
 	//! Defines the format parameters that are settable when passed in with updateFormat()
 	struct Format {
-		Format() : mSampleRate( 0 ), mFramesPerBlock( 0 ) {}
-
+		Format()
+		    : mSampleRate( 0 ), mFramesPerBlock( 0 ) {}
 		//! Sets the samplerate if the Format.
-		Format& sampleRate( size_t sr )				{ mSampleRate = sr;			return *this; }
+		Format &sampleRate( size_t sr )
+		{
+			mSampleRate = sr;
+			return *this;
+		}
 		//! Sets the frames per block if the Format (only functional on Mac).
-		Format& framesPerBlock( size_t frames )		{ mFramesPerBlock = frames; return *this; }
+		Format &framesPerBlock( size_t frames )
+		{
+			mFramesPerBlock = frames;
+			return *this;
+		}
 
 		//! Returns the samplerate of the Format.
-		size_t getSampleRate() const				{ return mSampleRate; }
+		size_t getSampleRate() const { return mSampleRate; }
 		//! Returns the frames per block of the Format.
-		size_t getFramesPerBlock() const			{ return mFramesPerBlock; }
-
-	private:
+		size_t getFramesPerBlock() const { return mFramesPerBlock; }
+	  private:
 		size_t mSampleRate, mFramesPerBlock;
 	};
 
 	//! Configures the format properties of this Device. This effects the hardware on your system. \note Update is asynchronous on some platforms (mac desktop).
 	void updateFormat( const Format &format );
 	//! Returns a signal that notifies connected slots before the format of this Device will change. This can occur from a call to updateFormat() or by the system.
-	signals::Signal<void()>& getSignalParamsWillChange()	{ return mSignalParamsWillChange; }
+	signals::Signal<void()> &getSignalParamsWillChange() { return mSignalParamsWillChange; }
 	//! Returns a signal that notifies connected slots after the format of this Device has changed. This can occur from a call to updateFormat() or by the system.
-	signals::Signal<void()>& getSignalParamsDidChange()		{ return mSignalParamsDidChange; }
-
+	signals::Signal<void()> &getSignalParamsDidChange() { return mSignalParamsDidChange; }
 	//! Returns a string representation of all devices for debugging purposes.
 	static std::string printDevicesToString();
 
   private:
-	Device( const std::string &key ) : mKey( key ), mSampleRate( 0 ), mFramesPerBlock( 0 ) {}
-
-	std::string mKey, mName;
-	size_t mSampleRate, mFramesPerBlock;
+	Device( const std::string &key )
+	    : mKey( key ), mSampleRate( 0 ), mFramesPerBlock( 0 ) {}
+	std::string             mKey, mName;
+	size_t                  mSampleRate, mFramesPerBlock;
 	signals::Signal<void()> mSignalParamsWillChange, mSignalParamsDidChange;
 
 	friend class DeviceManager;
@@ -109,35 +115,32 @@ class Device : public std::enable_shared_from_this<Device>, Noncopyable {
 class DeviceManager : private Noncopyable {
   public:
 	virtual ~DeviceManager() {}
-
 	virtual DeviceRef findDeviceByName( const std::string &name );
 	virtual DeviceRef findDeviceByKey( const std::string &key );
 
-	virtual const std::vector<DeviceRef>& getDevices()									= 0;
-	virtual DeviceRef getDefaultOutput()												= 0;
-	virtual DeviceRef getDefaultInput()													= 0;
+	virtual const std::vector<DeviceRef> &getDevices() = 0;
+	virtual DeviceRef                     getDefaultOutput() = 0;
+	virtual DeviceRef                     getDefaultInput() = 0;
 
-	virtual std::string		getName( const DeviceRef &device )										= 0;
-	virtual size_t			getNumInputChannels( const DeviceRef &device )							= 0;
-	virtual size_t			getNumOutputChannels( const DeviceRef &device )							= 0;
-	virtual size_t			getSampleRate( const DeviceRef &device )								= 0;
-	virtual size_t			getFramesPerBlock( const DeviceRef &device )							= 0;
+	virtual std::string getName( const DeviceRef &device ) = 0;
+	virtual size_t getNumInputChannels( const DeviceRef &device ) = 0;
+	virtual size_t getNumOutputChannels( const DeviceRef &device ) = 0;
+	virtual size_t getSampleRate( const DeviceRef &device ) = 0;
+	virtual size_t getFramesPerBlock( const DeviceRef &device ) = 0;
 
-	virtual void			setSampleRate( const DeviceRef &device, size_t sampleRate )				= 0;
-	virtual void			setFramesPerBlock( const DeviceRef &device, size_t framesPerBlock )		= 0;
+	virtual void setSampleRate( const DeviceRef &device, size_t sampleRate ) = 0;
+	virtual void setFramesPerBlock( const DeviceRef &device, size_t framesPerBlock ) = 0;
 
 	//! override if subclass needs to update params async, and will issue formatWillChange callbacks
-	virtual bool			isFormatUpdatedAsync() const		{ return false; }
-
+	virtual bool isFormatUpdatedAsync() const { return false; }
   protected:
-	DeviceManager()	{}
-
-	DeviceRef	addDevice( const std::string &key );
+	DeviceManager() {}
+	DeviceRef addDevice( const std::string &key );
 
 	void emitParamsWillChange( const DeviceRef &device );
 	void emitParamsDidChange( const DeviceRef &device );
 
 	std::vector<DeviceRef> mDevices;
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

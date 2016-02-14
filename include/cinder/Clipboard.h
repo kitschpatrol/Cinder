@@ -32,19 +32,19 @@ namespace cinder {
 class Clipboard {
   public:
 	//! Returns whether the clipboard contains a string
-	static bool			hasString();
+	static bool hasString();
 	//! Returns whether the clipboard contains an image
-	static bool			hasImage();
+	static bool hasImage();
 
 	//! Returns the clipboard contents as a UTF-8 string or an empty string if the clipboard does not contain a string
-	static std::string		getString();
+	static std::string getString();
 	//! Returns the clipboard contents as an ImageSourceRef or a null if the clipboard does not contain an image
-	static ImageSourceRef	getImage();
+	static ImageSourceRef getImage();
 
 	//! Sets the clipboard contents to the UTF-8 string \a str
-	static void				setString( const std::string &str );
+	static void setString( const std::string &str );
 	//! Sets the clipboard contents to the ImageSource \a image
-	static void				setImage( ImageSourceRef image, ImageTarget::Options options = ImageTarget::Options() );	
+	static void setImage( ImageSourceRef image, ImageTarget::Options options = ImageTarget::Options() );
 };
 
 } // namespace cinder

@@ -23,7 +23,8 @@
 
 #pragma once
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 //! Identifiers for the classic waveform types.
 enum class WaveformType {
@@ -32,5 +33,5 @@ enum class WaveformType {
 	SAWTOOTH,
 	TRIANGLE
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

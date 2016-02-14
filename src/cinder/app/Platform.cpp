@@ -25,29 +25,30 @@
 #include "cinder/CinderAssert.h"
 
 #if defined( CINDER_COCOA )
-	#include "cinder/app/cocoa/PlatformCocoa.h"
+#include "cinder/app/cocoa/PlatformCocoa.h"
 #elif defined( CINDER_MSW )
-	#include "cinder/app/msw/PlatformMsw.h"
+#include "cinder/app/msw/PlatformMsw.h"
 #elif defined( CINDER_WINRT )
-	#include "cinder/app/winrt/PlatformWinRt.h"
+#include "cinder/app/winrt/PlatformWinRt.h"
 #endif
 
 using namespace std;
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 namespace {
 
-const size_t ASSET_SEARCH_DEPTH = 10;
+const size_t     ASSET_SEARCH_DEPTH = 10;
 static Platform *sInstance = nullptr;
 
 } // anonymous namespace
 
 // static
-Platform* Platform::get()
+Platform *Platform::get()
 {
-	if( ! sInstance ) {
-		// set a default platform instance
+	if( !sInstance ) {
+// set a default platform instance
 #if defined( CINDER_COCOA )
 		sInstance = new PlatformCocoa;
 #elif defined( CINDER_MSW )
@@ -93,7 +94,7 @@ void Platform::initAssetDirectories()
 DataSourceRef Platform::loadAsset( const fs::path &relativePath )
 {
 	fs::path assetPath = getAssetPath( relativePath );
-	if( ! assetPath.empty() )
+	if( !assetPath.empty() )
 		return DataSourcePath::create( assetPath.string() );
 	else
 		throw AssetLoadExc( relativePath );
@@ -119,7 +120,7 @@ void Platform::addAssetDirectory( const fs::path &directory )
 		mAssetDirectories.push_back( directory );
 }
 
-const vector<fs::path>& Platform::getAssetDirectories() const
+const vector<fs::path> &Platform::getAssetDirectories() const
 {
 	return mAssetDirectories;
 }
@@ -128,7 +129,7 @@ void Platform::findAndAddDefaultAssetPath()
 {
 	// first search the local directory, then its parent, up to ASSET_SEARCH_DEPTH levels up
 	// check at least the app path, even if it has no parent directory
-	auto execPath = getExecutablePath();
+	auto   execPath = getExecutablePath();
 	size_t parentCt = 0;
 	for( fs::path curPath = execPath; curPath.has_parent_path() || ( curPath == execPath ); curPath = curPath.parent_path(), ++parentCt ) {
 		if( parentCt >= ASSET_SEARCH_DEPTH )
@@ -142,7 +143,7 @@ void Platform::findAndAddDefaultAssetPath()
 	}
 }
 
-std::ostream& Platform::console()
+std::ostream &Platform::console()
 {
 	return std::cout;
 }
@@ -156,7 +157,6 @@ ResourceLoadExc::ResourceLoadExc( const fs::path &resourcePath )
 	setDescription( "Failed to load resource: " + resourcePath.string() );
 }
 
-
 //ResourceLoadExc::ResourceLoadExc( const string &macPath, int mswID, const string &mswType )
 //{
 //	setDescription( "Failed to load resource: #" + to_string( mswID ) + " type: " + mswType + " Mac path: " + macPath );
@@ -166,5 +166,5 @@ AssetLoadExc::AssetLoadExc( const fs::path &relativePath )
 {
 	setDescription( "Failed to load asset with relative path: " + relativePath.string() );
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

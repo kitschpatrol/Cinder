@@ -1,17 +1,17 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/Log.h"
+#include "cinder/app/RendererGl.h"
 
-#include "cinder/audio/GenNode.h"
-#include "cinder/audio/GainNode.h"
-#include "cinder/audio/ChannelRouterNode.h"
-#include "cinder/audio/MonitorNode.h"
 #include "cinder/CinderAssert.h"
+#include "cinder/audio/ChannelRouterNode.h"
+#include "cinder/audio/GainNode.h"
+#include "cinder/audio/GenNode.h"
+#include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/dsp/Converter.h"
 
-#include "InterleavedPassThruNode.h"
-#include "../../common/AudioTestGui.h"
 #include "../../../../samples/_audio/common/AudioDrawUtils.h"
+#include "../../common/AudioTestGui.h"
+#include "InterleavedPassThruNode.h"
 
 #include "cinder/audio/Utilities.h"
 
@@ -20,7 +20,7 @@ using namespace ci::app;
 using namespace std;
 
 class NodeTestApp : public App {
-public:
+  public:
 	void setup() override;
 	void resize() override;
 	void draw() override;
@@ -41,22 +41,23 @@ public:
 	void processDrag( ivec2 pos );
 	void processTap( ivec2 pos );
 
-	audio::GainNodeRef			mGain;
-	audio::MonitorNodeRef	mMonitor;
-	audio::GenNodeRef		mGen, mNoise;
+	audio::GainNodeRef    mGain;
+	audio::MonitorNodeRef mMonitor;
+	audio::GenNodeRef     mGen, mNoise;
 
-	vector<TestWidget *>	mWidgets;
-	Button					mPlayButton, mEnableNoiseButton, mEnableSineButton, mDelayedEnableButton;
-	VSelector				mTestSelector;
-	HSlider					mGainSlider;
+	vector<TestWidget *> mWidgets;
+	Button               mPlayButton, mEnableNoiseButton, mEnableSineButton, mDelayedEnableButton;
+	VSelector            mTestSelector;
+	HSlider              mGainSlider;
 
-	enum InputBus { SINE, NOISE };
+	enum InputBus { SINE,
+		NOISE };
 };
 
 void NodeTestApp::setup()
 {
 	printDefaultOutput();
-	
+
 	auto ctx = audio::master();
 	mGain = ctx->makeNode( new audio::GainNode( 0.04f ) );
 	mGen = ctx->makeNode<audio::GenSineNode>( 440 );
@@ -65,10 +66,10 @@ void NodeTestApp::setup()
 	mMonitor = audio::master()->makeNode( new audio::MonitorNode( audio::MonitorNode::Format().windowSize( 2048 ) ) );
 
 	setupGen();
-//	setupMerge();
-//	setupMerge4();
-//	setupSplitStereo();
-//	setupSplitMerge();
+	//	setupMerge();
+	//	setupMerge4();
+	//	setupSplitStereo();
+	//	setupSplitMerge();
 
 	PRINT_GRAPH( ctx );
 
@@ -146,7 +147,6 @@ void NodeTestApp::setupAutoPulled()
 	mGen >> mMonitor;
 
 	mGen->enable();
-
 }
 
 void NodeTestApp::setupFunnelCase()
@@ -156,7 +156,7 @@ void NodeTestApp::setupFunnelCase()
 
 	auto gain1 = ctx->makeNode( new audio::GainNode );
 	auto gain2 = ctx->makeNode( new audio::GainNode );
-//	auto gain2 = ctx->makeNode( new audio::GainNode( audio::Node::Format().autoEnable( false ) ) );
+	//	auto gain2 = ctx->makeNode( new audio::GainNode( audio::Node::Format().autoEnable( false ) ) );
 
 	mGen >> gain1 >> mMonitor;
 	mNoise >> gain2 >> mMonitor;
@@ -305,10 +305,10 @@ void NodeTestApp::setupUI()
 	mDelayedEnableButton.mBounds = buttonRect;
 	mWidgets.push_back( &mDelayedEnableButton );
 
-	getWindow()->getSignalMouseDown().connect( [this] ( MouseEvent &event ) { processTap( event.getPos() ); } );
-	getWindow()->getSignalMouseDrag().connect( [this] ( MouseEvent &event ) { processDrag( event.getPos() ); } );
-	getWindow()->getSignalTouchesBegan().connect( [this] ( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
-	getWindow()->getSignalTouchesMoved().connect( [this] ( TouchEvent &event ) {
+	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent &event ) { processTap( event.getPos() ); } );
+	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent &event ) { processDrag( event.getPos() ); } );
+	getWindow()->getSignalTouchesBegan().connect( [this]( TouchEvent &event ) { processTap( event.getTouches().front().getPos() ); } );
+	getWindow()->getSignalTouchesMoved().connect( [this]( TouchEvent &event ) {
 		for( const TouchEvent::Touch &touch : getActiveTouches() )
 			processDrag( touch.getPos() );
 	} );
@@ -327,13 +327,13 @@ void NodeTestApp::processTap( ivec2 pos )
 	auto ctx = audio::master();
 
 	if( mPlayButton.hitTest( pos ) )
-		ctx->setEnabled( ! ctx->isEnabled() );
+		ctx->setEnabled( !ctx->isEnabled() );
 	if( mGen && mEnableSineButton.hitTest( pos ) )
-		mGen->setEnabled( ! mGen->isEnabled() );
+		mGen->setEnabled( !mGen->isEnabled() );
 	if( mNoise && mEnableNoiseButton.hitTest( pos ) ) // FIXME: this check doesn't work any more because there is always an mNoise / mGen
-		mNoise->setEnabled( ! mNoise->isEnabled() );
+		mNoise->setEnabled( !mNoise->isEnabled() );
 	if( mDelayedEnableButton.hitTest( pos ) ) {
-		mGen->setEnabled( ! mGen->isEnabled(), ctx->getNumProcessedSeconds() + 1.0 );
+		mGen->setEnabled( !mGen->isEnabled(), ctx->getNumProcessedSeconds() + 1.0 );
 	}
 
 	size_t currentIndex = mTestSelector.mCurrentSectionIndex;
@@ -372,9 +372,8 @@ void NodeTestApp::resize()
 
 	const float padding = 10;
 	const float sliderHeght = 50;
-	Rectf sliderRect( padding, getWindowHeight() - sliderHeght - padding, getWindowCenter().x, getWindowHeight() - padding );
+	Rectf       sliderRect( padding, getWindowHeight() - sliderHeght - padding, getWindowCenter().x, getWindowHeight() - padding );
 	mGainSlider.mBounds = sliderRect;
-
 }
 
 void NodeTestApp::draw()

@@ -1,11 +1,11 @@
 #include "cinder/app/App.h"
+#include "cinder/Rand.h"
+#include "cinder/Text.h"
+#include "cinder/Utilities.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/Texture.h"
-#include "cinder/Text.h"
-#include "cinder/Rand.h"
-#include "cinder/gl/gl.h"
 #include "cinder/gl/TextureFont.h"
-#include "cinder/Utilities.h"
+#include "cinder/gl/gl.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -14,14 +14,13 @@ using namespace std;
 class TextureFontApp : public App {
   public:
 	static void prepareSettings( Settings *settings ) { settings->setMultiTouchEnabled( false ); }
-
-	void setup() override;
+	void                                   setup() override;
 	void mouseDown( MouseEvent event ) override;
 	void keyDown( KeyEvent event ) override;
 	void draw() override;
 
-	Font				mFont;
-	gl::TextureFontRef	mTextureFont;
+	Font               mFont;
+	gl::TextureFontRef mTextureFont;
 };
 
 void TextureFontApp::setup()
@@ -39,14 +38,14 @@ void TextureFontApp::setup()
 void TextureFontApp::keyDown( KeyEvent event )
 {
 	switch( event.getChar() ) {
-		case '=':
-		case '+':
-			mFont = Font( mFont.getName(), mFont.getSize() + 1 );
-			mTextureFont = gl::TextureFont::create( mFont );
+	case '=':
+	case '+':
+		mFont = Font( mFont.getName(), mFont.getSize() + 1 );
+		mTextureFont = gl::TextureFont::create( mFont );
 		break;
-		case '-':
-			mFont = Font( mFont.getName(), mFont.getSize() - 1 );
-			mTextureFont = gl::TextureFont::create( mFont );
+	case '-':
+		mFont = Font( mFont.getName(), mFont.getSize() - 1 );
+		mTextureFont = gl::TextureFont::create( mFont );
 		break;
 	}
 }
@@ -68,9 +67,9 @@ void TextureFontApp::draw()
 	gl::setMatricesWindow( getWindowSize() );
 	gl::enableAlphaBlending();
 	gl::clear( Color( 0, 0, 0 ) );
-	
+
 	std::string str( "Granted, then, that certain transformations do happen, it is essential that we should regard them in the philosophic manner of fairy tales, not in the unphilosophic manner of science and the \"Laws of Nature.\" When we are asked why eggs turn into birds or fruits fall in autumn, we must answer exactly as the fairy godmother would answer if Cinderella asked her why mice turned into horses or her clothes fell from her at twelve o'clock. We must answer that it is MAGIC. It is not a \"law,\" for we do not understand its general formula." );
-	Rectf boundsRect( 40, mTextureFont->getAscent() + 40, getWindowWidth() - 40, getWindowHeight() - 40 );
+	Rectf       boundsRect( 40, mTextureFont->getAscent() + 40, getWindowWidth() - 40, getWindowHeight() - 40 );
 
 	gl::color( ColorA( 1, 0.5f, 0.25f, 1.0f ) );
 
@@ -78,9 +77,9 @@ void TextureFontApp::draw()
 
 	// Draw FPS
 	gl::color( Color::white() );
-	mTextureFont->drawString( toString( floor(getAverageFps()) ) + " FPS", vec2( 10, getWindowHeight() - mTextureFont->getDescent() ) );
-    
-    // Draw Font Name
+	mTextureFont->drawString( toString( floor( getAverageFps() ) ) + " FPS", vec2( 10, getWindowHeight() - mTextureFont->getDescent() ) );
+
+	// Draw Font Name
 	float fontNameWidth = mTextureFont->measureString( mTextureFont->getName() ).x;
 	mTextureFont->drawString( mTextureFont->getName(), vec2( getWindowWidth() - fontNameWidth - 10, getWindowHeight() - mTextureFont->getDescent() ) );
 }

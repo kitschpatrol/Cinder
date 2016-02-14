@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/Camera.h"
-#include "cinder/params/Params.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/params/Params.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -22,21 +22,21 @@ class TweakBarApp : public App {
 	void button();
 
   private:
-	CameraPersp				mCam;
-	params::InterfaceGlRef	mParams;
-	float					mObjSize;
-	quat					mObjOrientation;
-	ColorA					mColor;
-	string					mString;
-	bool					mPrintFps;
-	
-	void					setLightDirection( vec3 direction );
-	vec3					getLightDirection() { return mLightDirection; }
-	vec3					mLightDirection;
-	uint32_t				mSomeValue;
+	CameraPersp            mCam;
+	params::InterfaceGlRef mParams;
+	float                  mObjSize;
+	quat                   mObjOrientation;
+	ColorA                 mColor;
+	string                 mString;
+	bool                   mPrintFps;
 
-	vector<string>			mEnumNames;
-	int						mEnumSelection;
+	void setLightDirection( vec3 direction );
+	vec3     getLightDirection() { return mLightDirection; }
+	vec3     mLightDirection;
+	uint32_t mSomeValue;
+
+	vector<string> mEnumNames;
+	int            mEnumSelection;
 };
 
 void TweakBarApp::setLightDirection( vec3 direction )
@@ -72,8 +72,8 @@ void TweakBarApp::setup()
 	mParams->addParam( "some value", &mSomeValue ).updateFn( [this] { console() << "new value: " << mSomeValue << endl; } );
 
 	// Add a param with no target, but instead provide setter and getter functions.
-	function<void( vec3 )> setter	= bind( &TweakBarApp::setLightDirection, this, placeholders::_1 );
-	function<vec3 ()> getter		= bind( &TweakBarApp::getLightDirection, this );
+	function<void( vec3 )> setter = bind( &TweakBarApp::setLightDirection, this, placeholders::_1 );
+	function<vec3()>       getter = bind( &TweakBarApp::getLightDirection, this );
 	mParams->addParam( "Light Direction", setter, getter );
 
 	// Other types of controls that can be added to the interface.
@@ -87,9 +87,9 @@ void TweakBarApp::setup()
 	mEnumNames = { "apple", "banana", "orange" };
 
 	mParams->addParam( "an enum", mEnumNames, &mEnumSelection )
-		.keyDecr( "[" )
-		.keyIncr( "]" )
-		.updateFn( [this] { console() << "enum updated: " << mEnumNames[mEnumSelection] << endl; } );
+	    .keyDecr( "[" )
+	    .keyIncr( "]" )
+	    .updateFn( [this] { console() << "enum updated: " << mEnumNames[mEnumSelection] << endl; } );
 }
 
 void TweakBarApp::button()

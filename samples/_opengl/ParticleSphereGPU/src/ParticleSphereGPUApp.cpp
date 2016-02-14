@@ -9,8 +9,8 @@
 //
 
 #include "cinder/app/App.h"
-#include "cinder/app/RendererGl.h"
 #include "cinder/Rand.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
 using namespace ci;
@@ -21,13 +21,12 @@ using namespace std;
  Particle type holds information for rendering and simulation.
  Used to buffer initial simulation values.
  */
-struct Particle
-{
-	vec3	pos;
-	vec3	ppos;
-	vec3	home;
-	ColorA  color;
-	float	damping;
+struct Particle {
+	vec3   pos;
+	vec3   ppos;
+	vec3   home;
+	ColorA color;
+	float  damping;
 };
 
 // How many particles to create. (600k default)
@@ -49,24 +48,25 @@ class ParticleSphereGPUApp : public App {
 	void setup() override;
 	void update() override;
 	void draw() override;
+
   private:
 	gl::GlslProgRef mRenderProg;
 	gl::GlslProgRef mUpdateProg;
 
 	// Descriptions of particle data layout.
-	gl::VaoRef		mAttributes[2];
+	gl::VaoRef mAttributes[2];
 	// Buffers holding raw particle data on GPU.
-	gl::VboRef		mParticleBuffer[2];
+	gl::VboRef mParticleBuffer[2];
 
 	// Current source and destination buffers for transform feedback.
 	// Source and destination are swapped each frame after update.
-	std::uint32_t	mSourceIndex		= 0;
-	std::uint32_t	mDestinationIndex	= 1;
+	std::uint32_t mSourceIndex = 0;
+	std::uint32_t mDestinationIndex = 1;
 
 	// Mouse state suitable for passing as uniforms to update program
-	bool			mMouseDown = false;
-	float			mMouseForce = 0.0f;
-	vec3			mMousePos = vec3( 0, 0, 0 );
+	bool  mMouseDown = false;
+	float mMouseForce = 0.0f;
+	vec3  mMousePos = vec3( 0, 0, 0 );
 };
 
 void ParticleSphereGPUApp::setup()
@@ -77,13 +77,12 @@ void ParticleSphereGPUApp::setup()
 	const float azimuth = 256.0f * M_PI / particles.size();
 	const float inclination = M_PI / particles.size();
 	const float radius = 180.0f;
-	vec3 center = vec3( getWindowCenter() + vec2( 0.0f, 40.0f ), 0.0f );
-	for( int i = 0; i < particles.size(); ++i )
-	{	// assign starting values to particles.
+	vec3        center = vec3( getWindowCenter() + vec2( 0.0f, 40.0f ), 0.0f );
+	for( int i = 0; i < particles.size(); ++i ) { // assign starting values to particles.
 		float x = radius * sin( inclination * i ) * cos( azimuth * i );
 		float y = radius * cos( inclination * i );
 		float z = radius * sin( inclination * i ) * sin( azimuth * i );
-		
+
 		auto &p = particles.at( i );
 		p.pos = center + vec3( x, y, z );
 		p.home = p.pos;
@@ -91,17 +90,16 @@ void ParticleSphereGPUApp::setup()
 		p.damping = Rand::randFloat( 0.965f, 0.985f );
 		p.color = Color( CM_HSV, lmap<float>( i, 0.0f, particles.size(), 0.0f, 0.66f ), 1.0f, 1.0f );
 	}
-	
+
 	// Create particle buffers on GPU and copy data into the first buffer.
 	// Mark as static since we only write from the CPU once.
-	mParticleBuffer[mSourceIndex] = gl::Vbo::create( GL_ARRAY_BUFFER, particles.size() * sizeof(Particle), particles.data(), GL_STATIC_DRAW );
-	mParticleBuffer[mDestinationIndex] = gl::Vbo::create( GL_ARRAY_BUFFER, particles.size() * sizeof(Particle), nullptr, GL_STATIC_DRAW );
+	mParticleBuffer[mSourceIndex] = gl::Vbo::create( GL_ARRAY_BUFFER, particles.size() * sizeof( Particle ), particles.data(), GL_STATIC_DRAW );
+	mParticleBuffer[mDestinationIndex] = gl::Vbo::create( GL_ARRAY_BUFFER, particles.size() * sizeof( Particle ), nullptr, GL_STATIC_DRAW );
 
-	for( int i = 0; i < 2; ++i )
-	{	// Describe the particle layout for OpenGL.
+	for( int i = 0; i < 2; ++i ) { // Describe the particle layout for OpenGL.
 		mAttributes[i] = gl::Vao::create();
 		gl::ScopedVao vao( mAttributes[i] );
-		
+
 		// Define attributes as offsets into the bound particle buffer
 		gl::ScopedBuffer buffer( mParticleBuffer[i] );
 		gl::enableVertexAttribArray( 0 );
@@ -109,57 +107,51 @@ void ParticleSphereGPUApp::setup()
 		gl::enableVertexAttribArray( 2 );
 		gl::enableVertexAttribArray( 3 );
 		gl::enableVertexAttribArray( 4 );
-		gl::vertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (const GLvoid*)offsetof(Particle, pos) );
-		gl::vertexAttribPointer( 1, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (const GLvoid*)offsetof(Particle, color) );
-		gl::vertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (const GLvoid*)offsetof(Particle, ppos) );
-		gl::vertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (const GLvoid*)offsetof(Particle, home) );
-		gl::vertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (const GLvoid*)offsetof(Particle, damping) );
+		gl::vertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, sizeof( Particle ), (const GLvoid *)offsetof( Particle, pos ) );
+		gl::vertexAttribPointer( 1, 4, GL_FLOAT, GL_FALSE, sizeof( Particle ), (const GLvoid *)offsetof( Particle, color ) );
+		gl::vertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, sizeof( Particle ), (const GLvoid *)offsetof( Particle, ppos ) );
+		gl::vertexAttribPointer( 3, 3, GL_FLOAT, GL_FALSE, sizeof( Particle ), (const GLvoid *)offsetof( Particle, home ) );
+		gl::vertexAttribPointer( 4, 1, GL_FLOAT, GL_FALSE, sizeof( Particle ), (const GLvoid *)offsetof( Particle, damping ) );
 	}
-	
-	// Load our update program.
-	// Match up our attribute locations with the description we gave.
-	
+
+// Load our update program.
+// Match up our attribute locations with the description we gave.
+
 #if defined( CINDER_GL_ES_3 )
-	mRenderProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "draw_es3.vert" ) )
-									   .fragment( loadAsset( "draw_es3.frag" ) ) );
-	mUpdateProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "particleUpdate_es3.vs" ) )
-									   .fragment( loadAsset( "no_op_es3.fs" ) )
+	mRenderProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "draw_es3.vert" ) ).fragment( loadAsset( "draw_es3.frag" ) ) );
+	mUpdateProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "particleUpdate_es3.vs" ) ).fragment( loadAsset( "no_op_es3.fs" ) )
 #else
 	mRenderProg = gl::getStockShader( gl::ShaderDef().color() );
 	mUpdateProg = gl::GlslProg::create( gl::GlslProg::Format().vertex( loadAsset( "particleUpdate.vs" ) )
 #endif
-			.feedbackFormat( GL_INTERLEAVED_ATTRIBS )
-			.feedbackVaryings( { "position", "pposition", "home", "color", "damping" } )
-			.attribLocation( "iPosition", 0 )
-			.attribLocation( "iColor", 1 )
-			.attribLocation( "iPPosition", 2 )
-			.attribLocation( "iHome", 3 )
-			.attribLocation( "iDamping", 4 )
-			);
+	                                        .feedbackFormat( GL_INTERLEAVED_ATTRIBS )
+	                                        .feedbackVaryings( { "position", "pposition", "home", "color", "damping" } )
+	                                        .attribLocation( "iPosition", 0 )
+	                                        .attribLocation( "iColor", 1 )
+	                                        .attribLocation( "iPPosition", 2 )
+	                                        .attribLocation( "iHome", 3 )
+	                                        .attribLocation( "iDamping", 4 ) );
 
 	// Listen to mouse events so we can send data as uniforms.
-	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent event )
-											  {
-												  mMouseDown = true;
-												  mMouseForce = 500.0f;
-												  mMousePos = vec3( event.getX(), event.getY(), 0.0f );
-											  } );
-	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent event )
-											  {
-												  mMousePos = vec3( event.getX(), event.getY(), 0.0f );
-											  } );
-	getWindow()->getSignalMouseUp().connect( [this]( MouseEvent event )
-											{
-												mMouseForce = 0.0f;
-												mMouseDown = false;
-											} );
+	getWindow()->getSignalMouseDown().connect( [this]( MouseEvent event ) {
+		mMouseDown = true;
+		mMouseForce = 500.0f;
+		mMousePos = vec3( event.getX(), event.getY(), 0.0f );
+	} );
+	getWindow()->getSignalMouseDrag().connect( [this]( MouseEvent event ) {
+		mMousePos = vec3( event.getX(), event.getY(), 0.0f );
+	} );
+	getWindow()->getSignalMouseUp().connect( [this]( MouseEvent event ) {
+		mMouseForce = 0.0f;
+		mMouseDown = false;
+	} );
 }
 
 void ParticleSphereGPUApp::update()
 {
 	// Update particles on the GPU
 	gl::ScopedGlslProg prog( mUpdateProg );
-	gl::ScopedState rasterizer( GL_RASTERIZER_DISCARD, true );	// turn off fragment stage
+	gl::ScopedState    rasterizer( GL_RASTERIZER_DISCARD, true ); // turn off fragment stage
 	mUpdateProg->uniform( "uMouseForce", mMouseForce );
 	mUpdateProg->uniform( "uMousePos", mMousePos );
 
@@ -191,12 +183,12 @@ void ParticleSphereGPUApp::draw()
 	gl::enableDepthWrite();
 
 	gl::ScopedGlslProg render( mRenderProg );
-	gl::ScopedVao vao( mAttributes[mSourceIndex] );
+	gl::ScopedVao      vao( mAttributes[mSourceIndex] );
 	gl::context()->setDefaultShaderVars();
 	gl::drawArrays( GL_POINTS, 0, NUM_PARTICLES );
 }
 
-CINDER_APP( ParticleSphereGPUApp, RendererGl, [] ( App::Settings *settings ) {
+CINDER_APP( ParticleSphereGPUApp, RendererGl, []( App::Settings *settings ) {
 	settings->setWindowSize( 1280, 720 );
 	settings->setMultiTouchEnabled( false );
 } )

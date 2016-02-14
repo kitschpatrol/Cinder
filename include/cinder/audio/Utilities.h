@@ -23,12 +23,13 @@
 
 #pragma once
 
-#include "cinder/audio/Buffer.h"
 #include "cinder/CinderMath.h"
+#include "cinder/audio/Buffer.h"
 
 #include <string>
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
 //! Scale \a gainLinear from linear (0-1) to decibel (0-100) scale
 float linearToDecibel( float gainLinear );
@@ -48,7 +49,7 @@ float midiToFreq( float midi );
 //! Convert \a timeSeconds to frames running at \a sampleRate, rounding to the nearest integral frame.
 uint64_t timeToFrame( double timeSeconds, double sampleRate );
 
-//! Checks if the absolute value of any sample in \a buffer is over \a threshold. Optionally provide \a recordFrame to record the frame index. \return true if one is found, false otherwise. 
+//! Checks if the absolute value of any sample in \a buffer is over \a threshold. Optionally provide \a recordFrame to record the frame index. \return true if one is found, false otherwise.
 bool thresholdBuffer( const Buffer &buffer, float threshold, size_t *recordFrame = nullptr );
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

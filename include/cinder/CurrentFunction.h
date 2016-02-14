@@ -24,9 +24,9 @@
 #pragma once
 
 #if defined( __clang__ )
-	#define CINDER_CURRENT_FUNCTION __PRETTY_FUNCTION__
+#define CINDER_CURRENT_FUNCTION __PRETTY_FUNCTION__
 #elif defined( _MSC_VER )
-	#define CINDER_CURRENT_FUNCTION __FUNCTION__
+#define CINDER_CURRENT_FUNCTION __FUNCTION__
 #else
-	#define CINDER_CURRENT_FUNCTION "(unknown function)"
+#define CINDER_CURRENT_FUNCTION "(unknown function)"
 #endif

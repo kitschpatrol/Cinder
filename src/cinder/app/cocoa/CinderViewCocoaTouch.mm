@@ -20,7 +20,6 @@
  POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 #include "cinder/app/cocoa/CinderViewCocoaTouch.h"
 #include "cinder/cocoa/CinderCocoa.h"
 
@@ -46,19 +45,19 @@ static bool sIsEaglLayer;
 {
 	// This needs to get setup immediately as +layerClass will be called when the view is initialized
 	sIsEaglLayer = renderer->isEaglLayer();
-	
-	if( (self = [super initWithFrame:frame]) ) {
+
+	if( ( self = [super initWithFrame:frame] ) ) {
 		mApp = app;
 		mRenderer = renderer;
 
 		renderer->setup( cocoa::CgRectToArea( frame ), self, sharedRenderer );
-		
+
 		self.multipleTouchEnabled = mApp->isMultiTouchEnabled();
 	}
 
 	mDelegate = nil;
-	
-    return self;
+
+	return self;
 }
 
 - (void)setDelegate:(id<CinderViewCocoaTouchDelegate>)delegate
@@ -74,8 +73,8 @@ static bool sIsEaglLayer;
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-	
-	if( ! mApp->isHighDensityDisplayEnabled() )
+
+	if( !mApp->isHighDensityDisplayEnabled() )
 		self.layer.contentsScale = 1.0f;
 
 	mRenderer->setFrameSize( self.bounds.size.width, self.bounds.size.height );
@@ -98,7 +97,7 @@ static bool sIsEaglLayer;
 		mRenderer->finishDraw();
 	}
 	else
-		[self performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:self waitUntilDone:NO];
+		[self performSelectorOnMainThread:@selector( setNeedsDisplay ) withObject:self waitUntilDone:NO];
 }
 
 - (void)makeCurrentContext
@@ -106,10 +105,10 @@ static bool sIsEaglLayer;
 	mRenderer->startDraw();
 }
 
-- (uint32_t)addTouchToMap:(UITouch*)touch
+- (uint32_t)addTouchToMap:(UITouch *)touch
 {
 	uint32_t candidateId = 0;
-	bool found = true;
+	bool     found = true;
 	while( found ) {
 		candidateId++;
 		found = false;
@@ -120,26 +119,26 @@ static bool sIsEaglLayer;
 			}
 		}
 	}
-	
+
 	mTouchIdMap.insert( std::make_pair( touch, candidateId ) );
-	
+
 	return candidateId;
 }
 
-- (void)removeTouchFromMap:(UITouch*)touch
+- (void)removeTouchFromMap:(UITouch *)touch
 {
 	auto found( mTouchIdMap.find( touch ) );
 	if( found == mTouchIdMap.end() )
-		;//std::cout << "Couldn' find touch in map?" << std::endl;
+		; //std::cout << "Couldn' find touch in map?" << std::endl;
 	else
 		mTouchIdMap.erase( found );
 }
 
-- (uint32_t)findTouchInMap:(UITouch*)touch
+- (uint32_t)findTouchInMap:(UITouch *)touch
 {
 	const auto found( mTouchIdMap.find( touch ) );
 	if( found == mTouchIdMap.end() ) {
-		;//std::cout << "Couldn' find touch in map?" << std::endl;
+		; //std::cout << "Couldn' find touch in map?" << std::endl;
 		return 0;
 	}
 	else
@@ -159,7 +158,7 @@ static bool sIsEaglLayer;
 /////////////////////////////////////////////////////////////////////////////////////////////
 // Event handlers
 
-- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if( mApp->isMultiTouchEnabled() ) {
 		std::vector<TouchEvent::Touch> touchList;
@@ -169,15 +168,15 @@ static bool sIsEaglLayer;
 			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), [self addTouchToMap:touch], [touch timestamp], touch ) );
 		}
 		[self updateActiveTouches];
-		if( ! touchList.empty() ) {
+		if( !touchList.empty() ) {
 			TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 			[mDelegate touchesBegan:&touchEvent];
 		}
 	}
 	else {
 		for( UITouch *touch in touches ) {
-			CGPoint pt = [touch locationInView:self];		
-			int mods = 0;
+			CGPoint pt = [touch locationInView:self];
+			int     mods = 0;
 			mods |= MouseEvent::LEFT_DOWN;
 			MouseEvent mouseEvent( [mDelegate getWindowRef], MouseEvent::LEFT_DOWN, pt.x, pt.y, mods, 0.0f, 0 );
 			[mDelegate mouseDown:&mouseEvent];
@@ -185,17 +184,17 @@ static bool sIsEaglLayer;
 	}
 }
 
-- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if( mApp->isMultiTouchEnabled() ) {
 		std::vector<TouchEvent::Touch> touchList;
 		for( UITouch *touch in touches ) {
 			CGPoint pt = [touch locationInView:self];
-			CGPoint prevPt = [touch previousLocationInView:self];			
+			CGPoint prevPt = [touch previousLocationInView:self];
 			touchList.push_back( TouchEvent::Touch( vec2( pt.x, pt.y ), vec2( prevPt.x, prevPt.y ), [self findTouchInMap:touch], [touch timestamp], touch ) );
 		}
 		[self updateActiveTouches];
-		if( ! touchList.empty() ) {
+		if( !touchList.empty() ) {
 			TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 			[mDelegate touchesMoved:&touchEvent];
 		}
@@ -203,7 +202,7 @@ static bool sIsEaglLayer;
 	else {
 		for( UITouch *touch in touches ) {
 			CGPoint pt = [touch locationInView:self];
-			int mods = 0;
+			int     mods = 0;
 			mods |= MouseEvent::LEFT_DOWN;
 			MouseEvent mouseEvent( [mDelegate getWindowRef], MouseEvent::LEFT_DOWN, pt.x, pt.y, mods, 0.0f, 0 );
 			[mDelegate mouseDrag:&mouseEvent];
@@ -211,7 +210,7 @@ static bool sIsEaglLayer;
 	}
 }
 
-- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	if( mApp->isMultiTouchEnabled() ) {
 		std::vector<TouchEvent::Touch> touchList;
@@ -222,15 +221,15 @@ static bool sIsEaglLayer;
 			[self removeTouchFromMap:touch];
 		}
 		[self updateActiveTouches];
-		if( ! touchList.empty() ) {
+		if( !touchList.empty() ) {
 			TouchEvent touchEvent( [mDelegate getWindowRef], touchList );
 			[mDelegate touchesEnded:&touchEvent];
 		}
 	}
 	else {
 		for( UITouch *touch in touches ) {
-			CGPoint pt = [touch locationInView:self];		
-			int mods = 0;
+			CGPoint pt = [touch locationInView:self];
+			int     mods = 0;
 			mods |= MouseEvent::LEFT_DOWN;
 			MouseEvent mouseEvent( [mDelegate getWindowRef], MouseEvent::LEFT_DOWN, pt.x, pt.y, mods, 0.0f, 0 );
 			[mDelegate mouseUp:&mouseEvent];
@@ -238,12 +237,12 @@ static bool sIsEaglLayer;
 	}
 }
 
-- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	[self touchesEnded:touches withEvent:event];
 }
 
-- (const std::vector<TouchEvent::Touch>&)getActiveTouches
+- (const std::vector<TouchEvent::Touch> &)getActiveTouches
 {
 	return mActiveTouches;
 }

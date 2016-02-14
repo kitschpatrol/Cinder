@@ -39,11 +39,11 @@ class TuioClientApp : public App {
   public:
 	void setup() override;
 	void draw() override;
-	
+
 	void added( const tuio::Cursor2d &cursor );
 	void updated( const tuio::Cursor2d &cursor );
 	void removed( const tuio::Cursor2d &cursor );
-	
+
 	std::shared_ptr<tuio::Receiver> tuio;
 	std::map<std::string, std::vector<vec2>> mTouches;
 };
@@ -52,7 +52,7 @@ void TuioClientApp::setup()
 {
 	tuio = std::shared_ptr<tuio::Receiver>( new tuio::Receiver() );
 	tuio->connect();
-	
+
 	tuio->setAddedFn<tuio::Cursor2d>( std::bind( &TuioClientApp::added, this, std::placeholders::_1 ) );
 	tuio->setUpdatedFn<tuio::Cursor2d>( std::bind( &TuioClientApp::updated, this, std::placeholders::_1 ) );
 	tuio->setRemovedFn<tuio::Cursor2d>( std::bind( &TuioClientApp::removed, this, std::placeholders::_1 ) );
@@ -61,19 +61,19 @@ void TuioClientApp::setup()
 void TuioClientApp::added( const tuio::Cursor2d &cursor )
 {
 	auto windowPos = vec2( getWindowSize() ) * cursor.getPosition();
-	mTouches.insert( { cursor.getSource() + std::to_string(cursor.getSessionId()), std::vector<vec2>( { windowPos } ) } );
+	mTouches.insert( { cursor.getSource() + std::to_string( cursor.getSessionId() ), std::vector<vec2>( { windowPos } ) } );
 }
 
 void TuioClientApp::updated( const tuio::Cursor2d &cursor )
 {
 	auto windowPos = vec2( getWindowSize() ) * cursor.getPosition();
-	auto source = cursor.getSource() + std::to_string(cursor.getSessionId());
+	auto source = cursor.getSource() + std::to_string( cursor.getSessionId() );
 	mTouches[source].push_back( windowPos );
 }
 
 void TuioClientApp::removed( const tuio::Cursor2d &cursor )
 {
-	auto source = cursor.getSource() + std::to_string(cursor.getSessionId());
+	auto source = cursor.getSource() + std::to_string( cursor.getSessionId() );
 	mTouches.erase( source );
 }
 
@@ -81,10 +81,10 @@ void TuioClientApp::draw()
 {
 	gl::clear( Color( 0, 0, 0 ) );
 	gl::setMatricesWindow( getWindowSize() );
-	
-	for( auto & touch : mTouches ) {
+
+	for( auto &touch : mTouches ) {
 		gl::begin( GL_POINTS );
-		for( auto & pos : touch.second ) {
+		for( auto &pos : touch.second ) {
 			gl::color( ColorA( 1, 1, 1, 1 ) );
 			gl::vertex( pos );
 		}

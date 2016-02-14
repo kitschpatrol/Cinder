@@ -39,16 +39,17 @@
 */
 
 #include "cinder/gl/Vao.h"
-#include "cinder/gl/Vbo.h"
+#include "cinder/gl/ConstantConversions.h"
 #include "cinder/gl/Context.h"
 #include "cinder/gl/Environment.h"
-#include "cinder/gl/ConstantConversions.h"
+#include "cinder/gl/Vbo.h"
 
 #include <set>
 
 using namespace std;
 
-namespace cinder { namespace gl {
+namespace cinder {
+namespace gl {
 
 // defined in VaoImplEs
 #if defined( CINDER_GL_ES_2 )
@@ -60,24 +61,24 @@ extern VaoRef createVaoImplSoftware();
 
 VaoRef Vao::create()
 {
-#if defined( CINDER_GL_ES ) && ! defined( CINDER_GL_ES_3 )
-	#if defined( CINDER_COCOA_TOUCH )
+#if defined( CINDER_GL_ES ) && !defined( CINDER_GL_ES_3 )
+#if defined( CINDER_COCOA_TOUCH )
+	return createVaoImplEs();
+#elif defined( CINDER_GL_ANGLE )
+	return createVaoImplSoftware();
+#else
+	if( env()->supportsHardwareVao() )
 		return createVaoImplEs();
-	#elif defined( CINDER_GL_ANGLE )
+	else
 		return createVaoImplSoftware();
-	#else
-		if( env()->supportsHardwareVao() )
-			return createVaoImplEs();
-		else
-			return createVaoImplSoftware();
-	#endif
+#endif
 #else
 	return createVaoImplCore();
 #endif
 }
 
 Vao::Vao()
-	: mCtx( gl::context() )
+    : mCtx( gl::context() )
 {
 	mCtx->vaoCreated( this );
 }
@@ -111,7 +112,7 @@ void Vao::replacementBindBegin()
 	mReplacementBindPrevious = mLayout;
 	mLayout.clear();
 	bind();
-	// a fresh VAO would 
+	// a fresh VAO would
 	mCtx->bindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 }
 
@@ -141,9 +142,9 @@ void Vao::replacementBindEnd()
 {
 	// disable any attributes which were enabled in the previous layout
 	for( auto &attrib : mReplacementBindPrevious.mVertexAttribs ) {
-		if( attrib.second.mEnabled) {
+		if( attrib.second.mEnabled ) {
 			VertexAttrib *existing;
-			if( ( ! mLayout.findVertexAttribForLocation( attrib.first, &existing ) ) || ( ! existing->mEnabled ) )
+			if( ( !mLayout.findVertexAttribForLocation( attrib.first, &existing ) ) || ( !existing->mEnabled ) )
 				disableVertexAttribArrayImpl( attrib.first );
 		}
 	}
@@ -156,7 +157,7 @@ void Vao::setLabel( const std::string &label )
 	mLabel = label;
 #if defined( CINDER_COCOA_TOUCH )
 	env()->objectLabel( GL_VERTEX_ARRAY_OBJECT_EXT, mId, (GLsizei)label.size(), label.c_str() );
-#elif ! defined( CINDER_GL_ANGLE )
+#elif !defined( CINDER_GL_ANGLE )
 	env()->objectLabel( GL_VERTEX_ARRAY, mId, (GLsizei)label.size(), label.c_str() );
 #endif
 }
@@ -164,7 +165,7 @@ void Vao::setLabel( const std::string &label )
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Vao::Layout
 Vao::Layout::Layout()
-	: mElementArrayBufferBinding( 0 ), mCachedArrayBufferBinding( 0 )
+    : mElementArrayBufferBinding( 0 ), mCachedArrayBufferBinding( 0 )
 {
 }
 
@@ -245,12 +246,12 @@ bool Vao::Layout::isVertexAttribEqual( GLuint index, GLint size, GLenum type, GL
 	const VertexAttrib *existing;
 	if( findVertexAttribForLocation( index, &existing ) ) {
 		return existing->mSize == size
-			&& existing->mType == type
-			&& existing->mNormalized == normalized
-			&& existing->mStride == stride
-			&& existing->mPointerType == pointerType
-			&& existing->mPointer == pointer
-			&& existing->mArrayBufferBinding == arrayBufferBinding;
+		    && existing->mType == type
+		    && existing->mNormalized == normalized
+		    && existing->mStride == stride
+		    && existing->mPointerType == pointerType
+		    && existing->mPointer == pointer
+		    && existing->mArrayBufferBinding == arrayBufferBinding;
 	}
 	else
 		return false;
@@ -274,17 +275,17 @@ void Vao::Layout::clear()
 	mVertexAttribs.clear();
 }
 
-std::ostream& operator<<( std::ostream &os, const Vao &rhs )
+std::ostream &operator<<( std::ostream &os, const Vao &rhs )
 {
 	os << "ID: " << rhs.getId() << std::endl;
-	if( ! rhs.mLabel.empty() )
+	if( !rhs.mLabel.empty() )
 		os << "  Label: " << rhs.mLabel << std::endl;
 	os << "  " << rhs.getLayout();
-	
+
 	return os;
 }
 
-std::ostream& operator<<( std::ostream &os, const Vao::Layout &rhs )
+std::ostream &operator<<( std::ostream &os, const Vao::Layout &rhs )
 {
 	os << "Cached ARRAY_BUFFER binding: " << rhs.mCachedArrayBufferBinding << "  ELEMENT_ARRAY_BUFFER_BINDING: " << rhs.mElementArrayBufferBinding << std::endl;
 	os << "{" << std::endl;
@@ -303,5 +304,5 @@ std::ostream& operator<<( std::ostream &os, const Vao::Layout &rhs )
 
 	return os;
 }
-
-} }
+}
+}

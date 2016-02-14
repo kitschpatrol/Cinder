@@ -23,29 +23,29 @@
 
 #pragma once
 
-#include "cinder/audio/Node.h"
 #include "cinder/audio/Device.h"
+#include "cinder/audio/Node.h"
 
-namespace cinder { namespace audio {
+namespace cinder {
+namespace audio {
 
-typedef std::shared_ptr<class OutputNode>			OutputNodeRef;
-typedef std::shared_ptr<class OutputDeviceNode>		OutputDeviceNodeRef;
+typedef std::shared_ptr<class OutputNode>       OutputNodeRef;
+typedef std::shared_ptr<class OutputDeviceNode> OutputDeviceNodeRef;
 
 //! Base class for Node's that consume an audio signal, for example speakers. It cannot have any outputs.
 class OutputNode : public Node {
   public:
 	virtual ~OutputNode() {}
-
 	//! Returns the output samplerate, which governs the current context.
-	virtual size_t getOutputSampleRate()				= 0;
+	virtual size_t getOutputSampleRate() = 0;
 	//! Returns the output frames per block, which governs the current context.
-	virtual size_t getOutputFramesPerBlock()			= 0;
+	virtual size_t getOutputFramesPerBlock() = 0;
 
 	//! Enables clip detection, so that values over \a threshold will be interpreted as a clip (enabled by default).
 	//! \note if a clip is detected, the internal buffer will be silenced in order to prevent speaker / ear damage.
 	void enableClipDetection( bool enable = true, float threshold = 2 );
 	//! Returns whether clip detection is enabled or not.
-	bool isClipDetectionEnabled() const		{ return mClipDetectionEnabled; }
+	bool isClipDetectionEnabled() const { return mClipDetectionEnabled; }
 	//! Returns the frame of the last buffer clip or 0 if none since the last time this method was called.
 	uint64_t getLastClip();
 
@@ -55,9 +55,9 @@ class OutputNode : public Node {
 	//! Implementations should call this to detect if the internal audio buffer is clipping. Always returns false if clip detection is disabled.
 	bool checkNotClipping();
 
-	std::atomic<uint64_t>		mLastClip;
-	bool						mClipDetectionEnabled;
-	float						mClipThreshold;
+	std::atomic<uint64_t> mLastClip;
+	bool                  mClipDetectionEnabled;
+	float                 mClipThreshold;
 
   private:
 	// OutputNode does not have outputs, overridden to assert this method isn't called
@@ -71,24 +71,21 @@ class OutputNode : public Node {
 class OutputDeviceNode : public OutputNode {
   public:
 	virtual ~OutputDeviceNode() {}
-
 	//! Returns a shared_ptr to the Device that this OutputDeviceNode operates.
-	const DeviceRef& getDevice() const		{ return mDevice; }
-
+	const DeviceRef &getDevice() const { return mDevice; }
 	//! Implemented to return the samplerate of the owned Device.
-	size_t getOutputSampleRate() override			{ return getDevice()->getSampleRate(); }
+	size_t getOutputSampleRate() override { return getDevice()->getSampleRate(); }
 	//! Implemented to return the frames per block of the owned Device.
-	size_t getOutputFramesPerBlock() override		{ return getDevice()->getFramesPerBlock(); }
-
+	size_t getOutputFramesPerBlock() override { return getDevice()->getFramesPerBlock(); }
   protected:
 	OutputDeviceNode( const DeviceRef &device, const Format &format = Format() );
 
 	virtual void deviceParamsWillChange();
 	virtual void deviceParamsDidChange();
 
-	DeviceRef					mDevice;
-	bool						mWasEnabledBeforeParamsChange;
-	signals::ScopedConnection	mWillChangeConn, mDidChangeConn;
+	DeviceRef                 mDevice;
+	bool                      mWasEnabledBeforeParamsChange;
+	signals::ScopedConnection mWillChangeConn, mDidChangeConn;
 };
-
-} } // namespace cinder::audio
+}
+} // namespace cinder::audio

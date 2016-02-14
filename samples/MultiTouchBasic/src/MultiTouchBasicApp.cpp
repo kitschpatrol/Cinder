@@ -1,13 +1,13 @@
 #include "cinder/app/App.h"
+#include "cinder/Log.h"
+#include "cinder/Rand.h"
+#include "cinder/System.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/System.h"
-#include "cinder/Rand.h"
-#include "cinder/Log.h"
 
-#include <vector>
-#include <map>
 #include <list>
+#include <map>
+#include <vector>
 
 using namespace ci;
 using namespace ci::app;
@@ -15,14 +15,14 @@ using namespace std;
 
 struct TouchPoint {
 	TouchPoint() {}
-	TouchPoint( const vec2 &initialPt, const Color &color ) : mColor( color ), mTimeOfDeath( -1.0 ) 
+	TouchPoint( const vec2 &initialPt, const Color &color )
+	    : mColor( color ), mTimeOfDeath( -1.0 )
 	{
-		mLine.push_back( initialPt ); 
+		mLine.push_back( initialPt );
 	}
-	
+
 	void addPoint( const vec2 &pt ) { mLine.push_back( pt ); }
-	
-	void draw() const
+	void                       draw() const
 	{
 		if( mTimeOfDeath > 0 ) // are we dying? then fade out
 			gl::color( ColorA( mColor, ( mTimeOfDeath - getElapsedSeconds() ) / 2.0f ) );
@@ -31,31 +31,29 @@ struct TouchPoint {
 
 		gl::draw( mLine );
 	}
-	
-	void startDying() { mTimeOfDeath = getElapsedSeconds() + 2.0f; } // two seconds til dead
-	
-	bool isDead() const { return getElapsedSeconds() > mTimeOfDeath; }
-	
-	PolyLine2f		mLine;
-	Color			mColor;
-	float			mTimeOfDeath;
+
+	void       startDying() { mTimeOfDeath = getElapsedSeconds() + 2.0f; } // two seconds til dead
+	bool       isDead() const { return getElapsedSeconds() > mTimeOfDeath; }
+	PolyLine2f mLine;
+	Color      mColor;
+	float      mTimeOfDeath;
 };
 
 class MultiTouchApp : public App {
- public:
-	void	mouseDown( MouseEvent event ) override;
-	void	mouseDrag( MouseEvent event ) override;
+  public:
+	void mouseDown( MouseEvent event ) override;
+	void mouseDrag( MouseEvent event ) override;
 
-	void	touchesBegan( TouchEvent event ) override;
-	void	touchesMoved( TouchEvent event ) override;
-	void	touchesEnded( TouchEvent event ) override;
+	void touchesBegan( TouchEvent event ) override;
+	void touchesMoved( TouchEvent event ) override;
+	void touchesEnded( TouchEvent event ) override;
 
-	void	setup() override;
-	void	draw() override;
+	void setup() override;
+	void draw() override;
 
   private:
-	map<uint32_t,TouchPoint>	mActivePoints;
-	list<TouchPoint>			mDyingPoints;
+	map<uint32_t, TouchPoint> mActivePoints;
+	list<TouchPoint> mDyingPoints;
 };
 
 void prepareSettings( MultiTouchApp::Settings *settings )
@@ -65,7 +63,7 @@ void prepareSettings( MultiTouchApp::Settings *settings )
 	settings->setMultiTouchEnabled( true );
 
 	// On mobile, if you disable multitouch then touch events will arrive via mouseDown(), mouseDrag(), etc.
-//	settings->setMultiTouchEnabled( false );
+	//	settings->setMultiTouchEnabled( false );
 }
 
 void MultiTouchApp::setup()
@@ -127,7 +125,7 @@ void MultiTouchApp::draw()
 		else
 			++dyingIt;
 	}
-	
+
 	// draw yellow circles at the active touch points
 	gl::color( Color( 1, 1, 0 ) );
 	for( const auto &touch : getActiveTouches() )

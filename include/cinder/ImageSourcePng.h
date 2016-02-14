@@ -23,8 +23,8 @@
 #pragma once
 
 #include "cinder/Cinder.h"
-#include "cinder/ImageIo.h"
 #include "cinder/Exception.h"
+#include "cinder/ImageIo.h"
 
 struct png_struct_def;
 typedef struct png_info_def png_info;
@@ -33,30 +33,31 @@ namespace cinder {
 
 struct ci_png_info;
 
-typedef std::shared_ptr<class ImageSourcePng>	ImageSourcePngRef;
+typedef std::shared_ptr<class ImageSourcePng> ImageSourcePngRef;
 
 class ImageSourcePng : public ImageSource {
   public:
-	static ImageSourcePngRef	createRef( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() );
-	static ImageSourceRef		createSourceRef( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() ) { return createRef( dataSourceRef, options ); }
+	static ImageSourcePngRef createRef( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() );
+	static ImageSourceRef createSourceRef( DataSourceRef dataSourceRef, ImageSource::Options options = ImageSource::Options() ) { return createRef( dataSourceRef, options ); }
 	~ImageSourcePng();
 
-	virtual void	load( ImageTargetRef target );
+	virtual void load( ImageTargetRef target );
 
-	static void		registerSelf();
+	static void registerSelf();
 
   protected:
 	ImageSourcePng( DataSourceRef dataSourceRef, ImageSource::Options options );
 	bool loadHeader();
-	
-	std::shared_ptr<ci_png_info>	mCiInfoPtr;
-	png_struct_def					*mPngPtr;
-	png_info						*mInfoPtr;
+
+	std::shared_ptr<ci_png_info> mCiInfoPtr;
+	png_struct_def *             mPngPtr;
+	png_info *                   mInfoPtr;
 };
 
 class ImageSourcePngException : public ImageIoException {
   public:
-	ImageSourcePngException( const std::string &description ) : ImageIoException( description ) {}
+	ImageSourcePngException( const std::string &description )
+	    : ImageIoException( description ) {}
 };
 
 } // namespace cinder

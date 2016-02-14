@@ -27,130 +27,127 @@
 #include "cinder/app/AppBase.h"
 
 #if defined( CINDER_MAC )
-	#ifdef __OBJC__
-		@class AppImplMacScreenSaver;
-		@class NSWindow;
-		@class NSBundle;
-	#else
-		class AppImplMacScreenSaver;
-		class NSWindow;
-		class NSBundle;
-	#endif
+#ifdef __OBJC__
+@class AppImplMacScreenSaver;
+@class NSWindow;
+@class NSBundle;
+#else
+class AppImplMacScreenSaver;
+class NSWindow;
+class NSBundle;
+#endif
 #elif defined( CINDER_MSW )
-	#include <windows.h>
-	#undef min
-	#undef max
-	#include <ScrnSave.h>
+#include <windows.h>
+#undef min
+#undef max
+#include <ScrnSave.h>
 #endif
 
-
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class AppScreenSaver : public AppBase {
- public:
+  public:
 	class Settings : public AppBase::Settings {
 	  public:
 		Settings()
-			: AppBase::Settings(),
+		    : AppBase::Settings(),
 #if defined( CINDER_MAC )
-			mEnableSecondaryDisplayBlanking( false ),
-			mProvidesMacConfigDialog( false ),
+		      mEnableSecondaryDisplayBlanking( false ),
+		      mProvidesMacConfigDialog( false ),
 #elif defined( CINDER_MSW )
-			mEnableSecondaryDisplayBlanking( true ),
+		      mEnableSecondaryDisplayBlanking( true ),
 #endif
-			mEnableDebug( false )
-		{}
+		      mEnableDebug( false )
+		{
+		}
 
 		//! When enabled, secondary displays are blanked (rendered as black) rather than issued \a draw() calls. Disabled by default on Mac OS X, enabled by default on MSW.
-		void	enableSecondaryDisplayBlanking( bool enable = true ) { mEnableSecondaryDisplayBlanking = enable; }
+		void enableSecondaryDisplayBlanking( bool enable = true ) { mEnableSecondaryDisplayBlanking = enable; }
 		//! Returns whether secondary displays will be blanked (rendered as black) rather than issued \a draw() calls. Disabled by default on Mac OS X, enabled by default on MSW.
-		bool	isSecondaryDisplayBlankingEnabled() const { return mEnableSecondaryDisplayBlanking; }	
-
+		bool isSecondaryDisplayBlankingEnabled() const { return mEnableSecondaryDisplayBlanking; }
 #if defined( CINDER_MAC )
 		//! Declares whether the application will respond to a \a createMacConfigDialog() call. Default is \c false
-		void	setProvidesMacConfigDialog( bool provides = true ) { mProvidesMacConfigDialog = provides; }
+		void setProvidesMacConfigDialog( bool provides = true ) { mProvidesMacConfigDialog = provides; }
 		//! Returns whether the application will respond to a \a createMacConfigDialog() call. Default is \c false
-		bool	getProvidesMacConfigDialog() const { return mProvidesMacConfigDialog; }
+		bool getProvidesMacConfigDialog() const { return mProvidesMacConfigDialog; }
 #endif
 
 		//! Prevents the screensaver from quitting in response to anything but clicks in its window, and from being the top-most window. Currenty ignored on Mac.
-		void	enableDebug( bool enable = true ) { mEnableDebug = true; }
-		bool	isDebugEnabled() const { return mEnableDebug; }
-
+		void enableDebug( bool enable = true ) { mEnableDebug = true; }
+		bool                   isDebugEnabled() const { return mEnableDebug; }
 	  protected:
-		bool	mEnableSecondaryDisplayBlanking;
+		bool mEnableSecondaryDisplayBlanking;
 #if defined( CINDER_MAC )
-		bool	mProvidesMacConfigDialog;
+		bool mProvidesMacConfigDialog;
 #endif
-		bool	mEnableDebug;
+		bool mEnableDebug;
 	};
 
 	AppScreenSaver();
 
-	typedef std::function<void ( Settings *settings )>	SettingsFn;
+	typedef std::function<void( Settings *settings )> SettingsFn;
 
 	//! Returns the maximum frame-rate the App will attempt to maintain.
-	float		getFrameRate() const override;
+	float getFrameRate() const override;
 	//! Sets the maximum frame-rate the App will attempt to maintain.
-	void		setFrameRate( float frameRate ) override;
+	void setFrameRate( float frameRate ) override;
 
 	//! Returns whether the ScreenSaver is running in preview mode or not
-	bool		isPreview() const;
+	bool isPreview() const;
 
 	//! Ignored for ScreenSavers
-	void		quit() override {}
-
-	ivec2		getMousePos() const override	{ return ivec2( 0 ); }
-
+	void  quit() override {}
+	ivec2 getMousePos() const override { return ivec2( 0 ); }
 	//! no-op, no cursor on this platform
-	void		hideCursor() override {}
+	void hideCursor() override {}
 	//! no-op, no cursor on this platform
-	void		showCursor() override {}
-
+	void showCursor() override {}
 	//! \note no-op and returns an empty WindowRef, screensavers only have one window
-	WindowRef	createWindow( const Window::Format &format = Window::Format() ) override	{ return WindowRef(); }
-	WindowRef	getForegroundWindow() const override	{ return getWindow(); }
-
+	WindowRef createWindow( const Window::Format &format = Window::Format() ) override { return WindowRef(); }
+	WindowRef                                     getForegroundWindow() const override { return getWindow(); }
 	//! ignored on screensavers
-	void		disableFrameRate() override {}
+	void disableFrameRate() override {}
 	//! ignored on screensavers
-	bool		isFrameRateEnabled() const	{ return false; }
-
+	bool isFrameRateEnabled() const { return false; }
 #if defined( CINDER_MAC )
 	//! Should return a NSWindow* on Mac OS implementing a custom configuration dialog. Requires settings->setProvidesMacConfigDialog() in prepareSettings().
-	virtual NSWindow*		createMacConfigDialog() { return NULL; }
-
+	virtual NSWindow *createMacConfigDialog() { return NULL; }
 #elif defined( CINDER_MSW )
 	//! Static method designed to be overridden in order to handle MSW messages for a configuration dialog
-	static BOOL doConfigureDialog( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam ) {
+	static BOOL doConfigureDialog( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam )
+	{
 		return FALSE;
 	}
 #endif
 
 #if defined( CINDER_COCOA )
-	NSBundle*		getBundle() const;
+	NSBundle *getBundle() const;
 #endif
 
-	size_t			getNumWindows() const override;
-	WindowRef		getWindow() const override;
-	WindowRef		getWindowIndex( size_t index ) const override;
+	size_t    getNumWindows() const override;
+	WindowRef getWindow() const override;
+	WindowRef getWindowIndex( size_t index ) const override;
 
 #if defined( CINDER_MAC )
-	void			privateSetImpl__( void *impl ) { mImpl = reinterpret_cast<AppImplMacScreenSaver*>( impl ); }
-	void			launch() override { /* do nothing - this gets handled a weirder way for screensavers */ }
+	void privateSetImpl__( void *impl )
+	{
+		mImpl = reinterpret_cast<AppImplMacScreenSaver *>( impl );
+	}
+	void launch() override { /* do nothing - this gets handled a weirder way for screensavers */}
 
-	template<typename RendererT>
+	template <typename RendererT>
 	static void callSettings( Settings *settings, const char *title, const SettingsFn &settingsFn = SettingsFn() )
 	{
 		AppBase::prepareLaunch();
 		AppBase::initialize( settings, std::make_shared<RendererT>(), title, 0, nullptr );
-	
+
 		if( settingsFn )
 			settingsFn( settings );
 	}
 
-	template<typename AppT>
-	static AppScreenSaver* main( void *impl, const char *title, Settings *settings )
+	template <typename AppT>
+	static AppScreenSaver *main( void *impl, const char *title, Settings *settings )
 	{
 		AppScreenSaver *app = new AppT;
 		app->privateSetImpl__( impl );
@@ -160,12 +157,12 @@ class AppScreenSaver : public AppBase {
 	}
 
 #elif defined( CINDER_MSW )
-	void							launch() override;
-	virtual bool					getsWindowsPaintEvents() { return false; }
-	LRESULT							eventHandler( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
+	void         launch() override;
+	virtual bool getsWindowsPaintEvents() { return false; }
+	LRESULT eventHandler( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
-	template<typename AppT, typename RendererT>
-	static AppScreenSaver* main( HWND mainHwnd, const char *title, const SettingsFn &settingsFn = SettingsFn() )
+	template <typename AppT, typename RendererT>
+	static AppScreenSaver *main( HWND mainHwnd, const char *title, const SettingsFn &settingsFn = SettingsFn() )
 	{
 		static Settings settings;
 
@@ -184,48 +181,57 @@ class AppScreenSaver : public AppBase {
 	}
 #endif
 
-	bool		receivesEvents() const override { return false; }
+	bool receivesEvents() const override
+	{
+		return false;
+	}
 
- private:
-	static AppScreenSaver		*sInstance;
+  private:
+	static AppScreenSaver *sInstance;
 #if defined( CINDER_MAC )
-	AppImplMacScreenSaver		*mImpl;
+	AppImplMacScreenSaver *mImpl;
 #elif defined( CINDER_MSW )
-	class AppImplMswScreenSaver	*mImpl;
-	static HWND					sMainHwnd;
+	class AppImplMswScreenSaver *mImpl;
+	static HWND                  sMainHwnd;
 #endif
-	Settings			mSettings;
+	Settings mSettings;
 };
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app
 
 #if defined( CINDER_MAC )
-extern "C" void	ScreenSaverSettingsMethod( cinder::app::AppScreenSaver::Settings *settings );
-extern "C" cinder::app::AppScreenSaver*	ScreenSaverFactoryMethod( void *impl, cinder::app::AppScreenSaver::Settings *settings );
-#define CINDER_APP_SCREENSAVER( APP, RENDERER, ... )												\
-extern "C" {																						\
-	void ScreenSaverSettingsMethod( cinder::app::AppScreenSaver::Settings *settings )				\
-	{																								\
-		return cinder::app::AppScreenSaver::callSettings<RENDERER>( settings, #APP, ##__VA_ARGS__ );\
-	}																								\
-																									\
-	cinder::app::AppScreenSaver* ScreenSaverFactoryMethod( void *impl, cinder::app::AppScreenSaver::Settings *settings )	\
-	{																								\
-		return cinder::app::AppScreenSaver::main<APP>( impl, #APP, settings );						\
-	}																								\
-}
+extern "C" void ScreenSaverSettingsMethod( cinder::app::AppScreenSaver::Settings *settings );
+extern "C" cinder::app::AppScreenSaver *ScreenSaverFactoryMethod( void *impl, cinder::app::AppScreenSaver::Settings *settings );
+#define CINDER_APP_SCREENSAVER( APP, RENDERER, ... )                                                                     \
+	extern "C" {                                                                                                         \
+	void ScreenSaverSettingsMethod( cinder::app::AppScreenSaver::Settings *settings )                                    \
+	{                                                                                                                    \
+		return cinder::app::AppScreenSaver::callSettings<RENDERER>( settings, #APP, ##__VA_ARGS__ );                     \
+	}                                                                                                                    \
+                                                                                                                         \
+	cinder::app::AppScreenSaver *ScreenSaverFactoryMethod( void *impl, cinder::app::AppScreenSaver::Settings *settings ) \
+	{                                                                                                                    \
+		return cinder::app::AppScreenSaver::main<APP>( impl, #APP, settings );                                           \
+	}                                                                                                                    \
+	}
 
 #elif defined( CINDER_MSW )
-	#define CINDER_APP_SCREENSAVER( APP, RENDERER, ... ) \
-		cinder::app::AppScreenSaver *sScreenSaverMswInstance = 0; \
-		LRESULT CALLBACK ScreenSaverProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam ) { \
-			switch( message ) { \
-				case WM_CREATE: \
-					sScreenSaverMswInstance = cinder::app::AppScreenSaver::main<APP,RENDERER>( hWnd, #APP, ##__VA_ARGS__ ); return 0; break; \
-				default: if( sScreenSaverMswInstance ) return sScreenSaverMswInstance->eventHandler( hWnd, message, wParam, lParam ); \
-				else return ::DefScreenSaverProc( hWnd, message, wParam, lParam ); \
-			} \
-		} \
-		extern "C" BOOL CALLBACK ScreenSaverConfigureDialog( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam ) { return APP::doConfigureDialog( hDlg, message, wParam, lParam ); } \
-		extern "C" BOOL CALLBACK RegisterDialogClasses(HANDLE hInst) { return TRUE; }
+#define CINDER_APP_SCREENSAVER( APP, RENDERER, ... )                                                                                                                                 \
+	cinder::app::AppScreenSaver *sScreenSaverMswInstance = 0;                                                                                                                        \
+	LRESULT CALLBACK ScreenSaverProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )                                                                                        \
+	{                                                                                                                                                                                \
+		switch( message ) {                                                                                                                                                          \
+		case WM_CREATE:                                                                                                                                                              \
+			sScreenSaverMswInstance = cinder::app::AppScreenSaver::main<APP, RENDERER>( hWnd, #APP, ##__VA_ARGS__ );                                                                 \
+			return 0;                                                                                                                                                                \
+			break;                                                                                                                                                                   \
+		default:                                                                                                                                                                     \
+			if( sScreenSaverMswInstance )                                                                                                                                            \
+				return sScreenSaverMswInstance->eventHandler( hWnd, message, wParam, lParam );                                                                                       \
+			else                                                                                                                                                                     \
+				return ::DefScreenSaverProc( hWnd, message, wParam, lParam );                                                                                                        \
+		}                                                                                                                                                                            \
+	}                                                                                                                                                                                \
+	extern "C" BOOL CALLBACK ScreenSaverConfigureDialog( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam ) { return APP::doConfigureDialog( hDlg, message, wParam, lParam ); } \
+	extern "C" BOOL CALLBACK RegisterDialogClasses( HANDLE hInst ) { return TRUE; }
 #endif

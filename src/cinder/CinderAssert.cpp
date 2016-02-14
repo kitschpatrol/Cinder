@@ -26,7 +26,8 @@
 
 #include <iostream>
 
-namespace cinder { namespace detail {
+namespace cinder {
+namespace detail {
 
 void assertionFailedBreak( char const *expr, char const *function, char const *file, long line )
 {
@@ -45,5 +46,5 @@ void assertionFailedMessageAbort( char const *expr, char const *msg, char const 
 	std::cerr << "*** Assertion Failed *** | expression: ( " << expr << " ), location: " << file << "[" << line << "], " << function << "\n\tmessage: " << msg << std::endl;
 	std::abort();
 }
-
-} } // namespace cinder::detail
+}
+} // namespace cinder::detail

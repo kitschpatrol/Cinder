@@ -25,13 +25,14 @@
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
 
-namespace cinder { namespace ip {
+namespace cinder {
+namespace ip {
 
 //! Converts Surface \a srcSurface to grayscale and stores the result in Surface \a dstSurface. Uses primary weights dictated by the Rec. 709 Video Standard
-template<typename T>
+template <typename T>
 void grayscale( const SurfaceT<T> &srcSurface, SurfaceT<T> *dstSurface );
 //! Converts Surface \a srcSurface to grayscale and stores the result in Channel \a dstChannel. Uses primary weights dictated by the Rec. 709 Video Standard
-template<typename T>
+template <typename T>
 void grayscale( const SurfaceT<T> &srcSurface, ChannelT<T> *dstChannel );
-
-} } // namespace cinder::ip
+}
+} // namespace cinder::ip

@@ -1,8 +1,8 @@
 #include "cinder/app/App.h"
+#include "Resources.h"
+#include "cinder/ImageIo.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "cinder/ImageIo.h"
-#include "Resources.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -10,10 +10,10 @@ using namespace std;
 
 class SurfaceBasicApp : public App {
   public:
-	void	setup();
-	void	draw();	
-	
-	gl::Texture2dRef		mProcessedImageTex;
+	void setup();
+	void draw();
+
+	gl::Texture2dRef mProcessedImageTex;
 };
 
 // We can invert the image by subtracting each R,G,B value from 255
@@ -62,7 +62,7 @@ void edgeDetectArea( Surface *surface, Area area )
 
 	// we'll need to iterate the inputSurface as well as the output surface
 	Surface::ConstIter inputIter( inputSurface.getIter() );
-	Surface::Iter outputIter( surface->getIter( area ) );
+	Surface::Iter      outputIter( surface->getIter( area ) );
 
 	while( inputIter.line() ) {
 		outputIter.line();
@@ -84,7 +84,7 @@ Surface processImage( const Surface input )
 {
 	// make the result be a copy of input, taking care of our upper-left quadrant as well
 	Surface resultSurface( input.clone() );
-	
+
 	// let's do the upper-right, an inverted image
 	invertArea( &resultSurface, Area( input.getWidth() / 2, 0, input.getWidth(), input.getHeight() / 2 ) );
 
@@ -92,8 +92,8 @@ Surface processImage( const Surface input )
 	thresholdArea( &resultSurface, Area( input.getWidth() / 2, input.getHeight() / 2, input.getWidth(), input.getHeight() ) );
 
 	// and finally the lower left, an edge-detected image
-	edgeDetectArea( &resultSurface, Area( 0, input.getHeight() / 2, input.getWidth() / 2, input.getHeight() ) ); 
-	
+	edgeDetectArea( &resultSurface, Area( 0, input.getHeight() / 2, input.getWidth() / 2, input.getHeight() ) );
+
 	return resultSurface;
 }
 

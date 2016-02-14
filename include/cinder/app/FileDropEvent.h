@@ -24,50 +24,50 @@
 #pragma once
 
 #include "cinder/Cinder.h"
+#include "cinder/Filesystem.h"
 #include "cinder/Vector.h"
 #include "cinder/app/Event.h"
-#include "cinder/Filesystem.h"
 
-#include <vector>
-#include <string>
 #include <iostream>
+#include <string>
+#include <vector>
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 //! Represents a file-drop event, typically received from Windows Explorer or Mac OS X Finder
 class FileDropEvent : public Event {
   public:
 	FileDropEvent( WindowRef win, int aX, int aY, const std::vector<fs::path> &aFiles )
-		: Event( win ), mX( aX ), mY( aY ), mFiles( aFiles )
-	{}
-	
+	    : Event( win ), mX( aX ), mY( aY ), mFiles( aFiles )
+	{
+	}
+
 	//! Returns the X coordinate measured in points of the mouse during the event
-	int			getX() const { return mX; }
-	//! Returns the Y coordinate measured in points of the mouse during the event	
-	int			getY() const { return mY; }
+	int getX() const { return mX; }
+	//! Returns the Y coordinate measured in points of the mouse during the event
+	int getY() const { return mY; }
 	//! Returns the coordinates measured in points of the mouse during the event
-	glm::ivec2	getPos() const { return ivec2( mX, mY ); }
-
+	glm::ivec2 getPos() const { return ivec2( mX, mY ); }
 	//! Returns the vector of file paths which were dropped
-	const std::vector<fs::path>&	getFiles() const { return mFiles; }
+	const std::vector<fs::path> &getFiles() const { return mFiles; }
 	//! Returns the number of files dropped during the event
-	size_t							getNumFiles() const { return mFiles.size(); }
-	//! Returns the path for file number \a index. 
-	const fs::path&					getFile( size_t index ) const { return mFiles.at(index); }
-
+	size_t getNumFiles() const { return mFiles.size(); }
+	//! Returns the path for file number \a index.
+	const fs::path &getFile( size_t index ) const { return mFiles.at( index ); }
   private:
-	int							mX, mY;
-	std::vector<fs::path>		mFiles;
+	int                   mX, mY;
+	std::vector<fs::path> mFiles;
 };
 
-inline std::ostream& operator<<( std::ostream &os, const FileDropEvent &event )
+inline std::ostream &operator<<( std::ostream &os, const FileDropEvent &event )
 {
-//	os << event.getPos() << ": ";
+	//	os << event.getPos() << ": ";
 	os << "{" << std::endl;
 	for( std::vector<fs::path>::const_iterator fIt = event.getFiles().begin(); fIt != event.getFiles().end(); ++fIt )
 		os << "  " << *fIt << std::endl;
 	os << "}";
 	return os;
 }
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app

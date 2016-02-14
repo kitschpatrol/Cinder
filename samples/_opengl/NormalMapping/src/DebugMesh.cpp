@@ -31,7 +31,7 @@ DebugMesh::DebugMesh()
 	clear();
 }
 
-DebugMesh::DebugMesh( const TriMesh& mesh )
+DebugMesh::DebugMesh( const TriMesh &mesh )
 {
 	setMesh( mesh );
 }
@@ -47,12 +47,12 @@ void DebugMesh::clear()
 	mIndices.clear();
 }
 
-void DebugMesh::setMesh( const TriMesh& mesh )
+void DebugMesh::setMesh( const TriMesh &mesh )
 {
 	clear();
 
 	// check if mesh is valid and count vertices
-	if( ! mesh.hasNormals() )
+	if( !mesh.hasNormals() )
 		return;
 
 	size_t numVertices = mesh.getNumVertices();
@@ -60,7 +60,7 @@ void DebugMesh::setMesh( const TriMesh& mesh )
 		return;
 
 	// reserve memory to prevent reallocations
-	bool hasTangents = mesh.hasTangents();
+	bool   hasTangents = mesh.hasTangents();
 	size_t numEntriesPerVertex = hasTangents ? 4 : 2;
 	size_t numIndicesPerVertex = hasTangents ? 6 : 2;
 
@@ -70,8 +70,8 @@ void DebugMesh::setMesh( const TriMesh& mesh )
 
 	// determine the right scale, based on the bounding box
 	AxisAlignedBox bbox = mesh.calcBoundingBox();
-	vec3 size = bbox.getMax() - bbox.getMin();
-	float scale = math<float>::max( math<float>::max( size.x, size.y ), size.z ) / 100.0f;
+	vec3           size = bbox.getMax() - bbox.getMin();
+	float          scale = math<float>::max( math<float>::max( size.x, size.y ), size.z ) / 100.0f;
 
 	// construct mesh
 	for( size_t i = 0; i < numVertices; ++i ) {
@@ -79,10 +79,10 @@ void DebugMesh::setMesh( const TriMesh& mesh )
 
 		mVertices.push_back( mesh.getPositions<3>()[i] );
 		mVertices.push_back( mesh.getPositions<3>()[i] + scale * mesh.getNormals()[i] );
-		
+
 		mColors.push_back( Color( 0, 0, 0 ) );
 		mColors.push_back( Color( 0, 0, 1 ) );
-		
+
 		mIndices.push_back( idx );
 		mIndices.push_back( idx + 1 );
 
@@ -104,10 +104,12 @@ void DebugMesh::setMesh( const TriMesh& mesh )
 uint8_t DebugMesh::getAttribDims( Attrib attr ) const
 {
 	switch( attr ) {
-		case Attrib::POSITION: return 3;
-		case Attrib::COLOR: return 3;
-		default:
-			return 0;
+	case Attrib::POSITION:
+		return 3;
+	case Attrib::COLOR:
+		return 3;
+	default:
+		return 0;
 	}
 }
 
@@ -118,7 +120,7 @@ geom::AttribSet DebugMesh::getAvailableAttribs() const
 
 void DebugMesh::loadInto( Target *target, const geom::AttribSet &requestedAttribs ) const
 {
-	target->copyAttrib( Attrib::POSITION, 3, 0, reinterpret_cast<const float*>(&mVertices.front()), mVertices.size() );
-	target->copyAttrib( Attrib::COLOR, 3, 0, reinterpret_cast<const float*>(&mColors.front()), mColors.size() );
+	target->copyAttrib( Attrib::POSITION, 3, 0, reinterpret_cast<const float *>( &mVertices.front() ), mVertices.size() );
+	target->copyAttrib( Attrib::COLOR, 3, 0, reinterpret_cast<const float *>( &mColors.front() ), mColors.size() );
 	target->copyIndices( Primitive::LINES, &mIndices.front(), mIndices.size(), 4 );
 }

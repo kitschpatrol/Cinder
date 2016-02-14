@@ -25,14 +25,15 @@
 #include "cinder/Cinder.h"
 #include "cinder/Surface.h"
 
-namespace cinder { namespace ip {
+namespace cinder {
+namespace ip {
 
 /** Premultiplies the contents of a Surface using its own alpha channel. Marks the Surface as being premultiplied. **/
-template<typename T>
+template <typename T>
 void premultiply( SurfaceT<T> *surface );
 
 /** Unpremultiplies the contents of a Surface using its own alpha channel. Marks the Surface as being unpremultiplied. **/
-template<typename T>
+template <typename T>
 void unpremultiply( SurfaceT<T> *surface );
-
-} } // namespace cinder::ip
+}
+} // namespace cinder::ip

@@ -24,38 +24,41 @@
 #pragma once
 
 #if defined( CINDER_MSW )
-	#include <windows.h>
-	#undef min
-	#undef max
+#include <windows.h>
+#undef min
+#undef max
 #endif
 
 #include "cinder/app/Renderer.h"
 
-namespace cinder { namespace app {
+namespace cinder {
+namespace app {
 
 class AppBase;
 class AppImplMswBasic;
 
 class RendererImplMsw {
- public:
+  public:
 #if defined( CINDER_MSW )
-	virtual bool	initialize( HWND wnd, HDC dc, RendererRef sharedRenderer ) = 0;
-#elif defined( CINDER_WINRT)
-	virtual bool	initialize( ::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer ) = 0;
+	virtual bool initialize( HWND wnd, HDC dc, RendererRef sharedRenderer ) = 0;
+#elif defined( CINDER_WINRT )
+	virtual bool initialize(::Platform::Agile<Windows::UI::Core::CoreWindow> wnd, RendererRef sharedRenderer ) = 0;
 #endif
-	virtual void	prepareToggleFullScreen() {}
-	virtual void	finishToggleFullScreen() {}
-	virtual void	kill() = 0;
-	virtual void	defaultResize() const = 0;
-	virtual void	swapBuffers() const = 0;
-	virtual void	makeCurrentContext( bool force = false ) = 0;
+	virtual void prepareToggleFullScreen()
+	{
+	}
+	virtual void finishToggleFullScreen() {}
+	virtual void kill() = 0;
+	virtual void defaultResize() const = 0;
+	virtual void swapBuffers() const = 0;
+	virtual void makeCurrentContext( bool force = false ) = 0;
 
- protected:
-  #if defined( CINDER_MSW )
-	HWND				mWnd;
-  #else
-	::Platform::Agile<Windows::UI::Core::CoreWindow>		mWnd;
-  #endif
+  protected:
+#if defined( CINDER_MSW )
+	HWND mWnd;
+#else
+	::Platform::Agile<Windows::UI::Core::CoreWindow> mWnd;
+#endif
 };
-
-} } // namespace cinder::app
+}
+} // namespace cinder::app
