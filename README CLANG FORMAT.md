@@ -7,7 +7,7 @@ See [this Cinder forum thread](https://forum.libcinder.org/topic/cinder-clangfor
 
 ----
 
-###Running Clang-Format
+###Running ClangFormat
 
 **From the Cinder root:**
 
@@ -40,5 +40,5 @@ Third-party library directories that should be ignored have a very simple .clang
 	
 ###TODO
 
-- Windows support.
+- Windows support in format.py... bundle windows binary?
 - Tweak the root `.clang-format` file to minimize the diff.
