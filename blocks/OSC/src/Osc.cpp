@@ -88,7 +88,7 @@ Message::Message( const std::string& address )
 }
 	
 Message::Message( Message &&message ) NOEXCEPT
-: mAddress( move( message.mAddress ) ), mDataBuffer( move( message.mDataBuffer ) ),
+: mAddress( move( message.mAddress ) ), mSenderIpAddress(message.mSenderIpAddress), mDataBuffer( move( message.mDataBuffer ) ),
 	mDataViews( move( message.mDataViews ) ), mIsCached( message.mIsCached ),
 	mCache( move( message.mCache ) )
 {
@@ -101,6 +101,7 @@ Message& Message::operator=( Message &&message ) NOEXCEPT
 {
 	if( this != &message ) {
 		mAddress = move( message.mAddress );
+		mSenderIpAddress = move( message.mSenderIpAddress );
 		mDataBuffer = move( message.mDataBuffer );
 		mDataViews = move( message.mDataViews );
 		mIsCached = message.mIsCached;
@@ -113,7 +114,7 @@ Message& Message::operator=( Message &&message ) NOEXCEPT
 }
 	
 Message::Message( const Message &message )
-: mAddress( message.mAddress ), mDataBuffer( message.mDataBuffer ),
+: mAddress( message.mAddress ), mSenderIpAddress(message.mSenderIpAddress), mDataBuffer( message.mDataBuffer ),
 	mDataViews( message.mDataViews ), mIsCached( message.mIsCached ),
 	mCache( mIsCached ? new ByteBuffer( *(message.mCache) ) : nullptr )
 {
@@ -126,6 +127,7 @@ Message& Message::operator=( const Message &message )
 {
 	if( this != &message ) {
 		mAddress = message.mAddress;
+		mSenderIpAddress = message.mSenderIpAddress;
 		mDataBuffer = message.mDataBuffer;
 		mDataViews = message.mDataViews;
 		mIsCached = message.mIsCached;
@@ -1100,10 +1102,10 @@ void ReceiverBase::removeListener( const std::string &address )
 		mListeners.erase( foundListener );
 }
 
-void ReceiverBase::dispatchMethods( uint8_t *data, uint32_t size )
+void ReceiverBase::dispatchMethods( uint8_t *data, uint32_t size, asio::ip::address senderIpAddress)
 {
 	std::vector<Message> messages;
-	decodeData( data, size, messages );
+	decodeData( data, size, messages, senderIpAddress);
 	if( messages.empty() )
 		return;
 	
@@ -1127,7 +1129,7 @@ void ReceiverBase::dispatchMethods( uint8_t *data, uint32_t size )
 	}
 }
 	
-bool ReceiverBase::decodeData( uint8_t *data, uint32_t size, std::vector<Message> &messages, uint64_t timetag ) const
+bool ReceiverBase::decodeData(uint8_t *data, uint32_t size, std::vector<Message> &messages, asio::ip::address senderIpAddress, uint64_t timetag) const
 {
 	if( ! memcmp( data, "#bundle\0", 8 ) ) {
 		data += 8; size -= 8;
@@ -1145,26 +1147,27 @@ bool ReceiverBase::decodeData( uint8_t *data, uint32_t size, std::vector<Message
 				CI_LOG_E( "Problem Parsing Bundle: Segment Size is greater than bundle size." );
 				return false;
 			}
-			if( !decodeData( data, seg_size, messages, ntohll( timestamp ) ) )
+			if( !decodeData( data, seg_size, messages, senderIpAddress, ntohll( timestamp ) ) )
 				return false;
 			
 			data += seg_size; size -= seg_size;
 		}
 	}
 	else {
-		if( ! decodeMessage( data, size, messages, timetag ) )
+		if( ! decodeMessage( data, size, messages, senderIpAddress, timetag ) )
 			return false;
 	}
 	
 	return true;
 }
 
-bool ReceiverBase::decodeMessage( uint8_t *data, uint32_t size, std::vector<Message> &messages, uint64_t timetag ) const
+bool ReceiverBase::decodeMessage( uint8_t *data, uint32_t size, std::vector<Message> &messages, asio::ip::address senderIpAddress, uint64_t timetag ) const
 {
 	Message message;
 	if( ! message.bufferCache( data, size ) )
 		return false;
 	
+	message.mSenderIpAddress = senderIpAddress;
 	messages.push_back( std::move( message ) );
 	return true;
 }
@@ -1309,6 +1312,8 @@ void ReceiverUdp::listenImpl()
 {
 	if ( ! mSocket->is_open() ) return;
 	
+
+
 	uint32_t prepareAmount = 0;
 	{
 		std::lock_guard<std::mutex> lock( mAmountToReceiveMutex );
@@ -1316,6 +1321,7 @@ void ReceiverUdp::listenImpl()
 	}
 	auto tempBuffer = mBuffer.prepare( prepareAmount );
 	auto uniqueEndpoint = std::make_shared<asio::ip::udp::endpoint>();
+
 	mSocket->async_receive_from( tempBuffer, *uniqueEndpoint,
 	[&, uniqueEndpoint]( const asio::error_code &error, size_t bytesTransferred ) {
 		if( error )
@@ -1326,7 +1332,8 @@ void ReceiverUdp::listenImpl()
 			data[ bytesTransferred ] = 0;
 			istream stream( &mBuffer );
 			stream.read( reinterpret_cast<char*>( data.get() ), bytesTransferred );
-			dispatchMethods( data.get(), bytesTransferred );
+
+			dispatchMethods( data.get(), bytesTransferred, uniqueEndpoint->address());
 		}
 		listen();
 	});
@@ -1412,6 +1419,8 @@ void ReceiverTcp::Connection::read()
 			uint8_t *dataPtr = nullptr;
 			size_t dataSize = 0;
 			
+			
+
 			if( mReceiver->mPacketFraming ) {
 				data = mReceiver->mPacketFraming->decode( data );
 				dataPtr = data->data();
@@ -1423,7 +1432,7 @@ void ReceiverTcp::Connection::read()
 			}
 			{
 				std::lock_guard<std::mutex> lock( mReceiver->mDispatchMutex );
-				receiver->dispatchMethods( dataPtr, dataSize );
+				receiver->dispatchMethods( dataPtr, dataSize, mSocket->remote_endpoint().address()); // TODO test this...
 			}
 			read();
 		}

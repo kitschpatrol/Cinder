@@ -69,6 +69,10 @@ class Message {
   public:
 	
 	Message();
+
+	// Cram this on for now
+	asio::ip::address mSenderIpAddress;
+
 	//! Create an OSC message.
 	explicit Message( const std::string& address );
 	Message( const Message & );
@@ -659,11 +663,13 @@ public:
 	
 	//! Decodes and routes messages from the networking layer stream. Dispatches all messages with an address that
 	//! has an associated listener.
-	void dispatchMethods( uint8_t *data, uint32_t size );
+	void dispatchMethods(uint8_t *data, uint32_t size, asio::ip::address senderIpAddress);
 	//! Decodes a complete OSC Packet into it's individual parts. \a timetag is ignored within the below implementations.
-	bool decodeData( uint8_t *data, uint32_t size, std::vector<Message> &messages, uint64_t timetag = 0 ) const;
+
+
+	bool decodeData( uint8_t *data, uint32_t size, std::vector<Message> &messages, asio::ip::address senderIpAddress, uint64_t timetag = 0) const;
 	//! Decodes an individual message. \a timetag is ignored within the below implementations.
-	bool decodeMessage( uint8_t *data, uint32_t size, std::vector<Message> &messages, uint64_t timetag = 0 ) const;
+	bool decodeMessage( uint8_t *data, uint32_t size, std::vector<Message> &messages, asio::ip::address senderIpAddress, uint64_t timetag = 0 ) const;
 	//! Matches the addresses of messages based on the OSC spec.
 	bool patternMatch( const std::string &lhs, const std::string &rhs ) const;
 	
