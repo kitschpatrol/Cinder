@@ -88,9 +88,9 @@ Message::Message( const std::string& address )
 }
 	
 Message::Message( Message &&message ) NOEXCEPT
-: mAddress( move( message.mAddress ) ), mSenderIpAddress(message.mSenderIpAddress), mDataBuffer( move( message.mDataBuffer ) ),
+: mAddress( move( message.mAddress ) ), mDataBuffer( move( message.mDataBuffer ) ),
 	mDataViews( move( message.mDataViews ) ), mIsCached( message.mIsCached ),
-	mCache( move( message.mCache ) )
+	mCache( move( message.mCache ) ), mSenderIpAddress( move( message.mSenderIpAddress ) )
 {
 	for( auto & dataView : mDataViews ) {
 		dataView.mOwner = this;
@@ -101,11 +101,11 @@ Message& Message::operator=( Message &&message ) NOEXCEPT
 {
 	if( this != &message ) {
 		mAddress = move( message.mAddress );
-		mSenderIpAddress = move( message.mSenderIpAddress );
 		mDataBuffer = move( message.mDataBuffer );
 		mDataViews = move( message.mDataViews );
 		mIsCached = message.mIsCached;
 		mCache = move( message.mCache );
+		mSenderIpAddress = move( message.mSenderIpAddress );
 		for( auto & dataView : mDataViews ) {
 			dataView.mOwner = this;
 		}
@@ -114,9 +114,10 @@ Message& Message::operator=( Message &&message ) NOEXCEPT
 }
 	
 Message::Message( const Message &message )
-: mAddress( message.mAddress ), mSenderIpAddress(message.mSenderIpAddress), mDataBuffer( message.mDataBuffer ),
+: mAddress( message.mAddress ), mDataBuffer( message.mDataBuffer ),
 	mDataViews( message.mDataViews ), mIsCached( message.mIsCached ),
-	mCache( mIsCached ? new ByteBuffer( *(message.mCache) ) : nullptr )
+	mCache( mIsCached ? new ByteBuffer( *(message.mCache) ) : nullptr ),
+	mSenderIpAddress( message.mSenderIpAddress )
 {
 	for( auto & dataView : mDataViews ) {
 		dataView.mOwner = this;
@@ -127,11 +128,11 @@ Message& Message::operator=( const Message &message )
 {
 	if( this != &message ) {
 		mAddress = message.mAddress;
-		mSenderIpAddress = message.mSenderIpAddress;
 		mDataBuffer = message.mDataBuffer;
 		mDataViews = message.mDataViews;
 		mIsCached = message.mIsCached;
 		mCache.reset( mIsCached ? new ByteBuffer( *(message.mCache) ) : nullptr );
+		mSenderIpAddress = message.mSenderIpAddress;
 		for( auto & dataView : mDataViews ) {
 			dataView.mOwner = this;
 		}
@@ -861,6 +862,8 @@ void Message::clear()
 std::ostream& operator<<( std::ostream &os, const Message &rhs )
 {
 	os << "Address: " << rhs.getAddress() << std::endl;
+	if( ! rhs.getSenderIpAddress().is_unspecified() )
+		os << "Sender Ip Address: " << rhs.getSenderIpAddress() << std::endl;
 	for( auto &dataView : rhs.mDataViews )
 		os << "\t" << dataView << std::endl;
 	return os;
@@ -999,19 +1002,25 @@ void SenderUdp::closeImpl()
 
 SenderTcp::SenderTcp( uint16_t localPort, const string &destinationHost, uint16_t destinationPort, PacketFramingRef packetFraming, const protocol &protocol, io_service &service )
 : SenderBase( packetFraming ), mSocket( new tcp::socket( service ) ), mLocalEndpoint( protocol, localPort ),
-	mRemoteEndpoint( tcp::endpoint( address::from_string( destinationHost ), destinationPort ) )
+	mRemoteEndpoint( tcp::endpoint( address::from_string( destinationHost ), destinationPort ) ), mIsConnected( false )
 {
 }
 	
 SenderTcp::SenderTcp( uint16_t localPort, const protocol::endpoint &destination, PacketFramingRef packetFraming, const protocol &protocol, io_service &service )
 : SenderBase( packetFraming ), mSocket( new tcp::socket( service ) ), mLocalEndpoint( protocol, localPort ),
-	mRemoteEndpoint( destination )
+	mRemoteEndpoint( destination ), mIsConnected( false )
 {
 }
 	
 SenderTcp::SenderTcp( const TcpSocketRef &socket, const protocol::endpoint &destination, PacketFramingRef packetFraming )
-: SenderBase( packetFraming ), mSocket( socket ), mLocalEndpoint( socket->local_endpoint() ), mRemoteEndpoint( destination )
+: SenderBase( packetFraming ), mSocket( socket ), mLocalEndpoint( socket->local_endpoint() ), mRemoteEndpoint( destination ),
+	mIsConnected( false )
 {
+}
+	
+SenderTcp::~SenderTcp()
+{
+	SenderTcp::closeImpl();
 }
 	
 void SenderTcp::bindImpl()
@@ -1037,11 +1046,25 @@ void SenderTcp::connect()
 		if( error )
 			handleError( error, "" );
 		else {
+			mIsConnected.store( true );
 			std::lock_guard<std::mutex> lock( mOnConnectFnMutex );
 			if( mOnConnectFn )
 				mOnConnectFn( mSocket );
 		}
 	});
+}
+	
+void SenderTcp::shutdown( asio::socket_base::shutdown_type shutdownType )
+{
+	if( ! mSocket->is_open() || ! mIsConnected )
+		return;
+	
+	asio::error_code ec;
+	mSocket->shutdown( shutdownType, ec );
+	mIsConnected.store( false );
+	// the other side may have already shutdown the connection.
+	if( ec && ec != asio::error::not_connected )
+		handleError( ec, "" );
 }
 
 void SenderTcp::setOnConnectFn( OnConnectFn onConnectFn )
@@ -1069,6 +1092,7 @@ void SenderTcp::sendImpl( const ByteBufferRef &data )
 	
 void SenderTcp::closeImpl()
 {
+	shutdown();
 	asio::error_code ec;
 	mSocket->close( ec );
 	if( ec )
@@ -1102,10 +1126,10 @@ void ReceiverBase::removeListener( const std::string &address )
 		mListeners.erase( foundListener );
 }
 
-void ReceiverBase::dispatchMethods( uint8_t *data, uint32_t size, asio::ip::address senderIpAddress)
+void ReceiverBase::dispatchMethods( uint8_t *data, uint32_t size, const asio::ip::address &senderIpAddress )
 {
 	std::vector<Message> messages;
-	decodeData( data, size, messages, senderIpAddress);
+	decodeData( data, size, messages );
 	if( messages.empty() )
 		return;
 	
@@ -1113,7 +1137,8 @@ void ReceiverBase::dispatchMethods( uint8_t *data, uint32_t size, asio::ip::addr
 	// iterate through all the messages and find matches with registered methods
 	for( auto & message : messages ) {
 		bool dispatchedOnce = false;
-		auto address = message.getAddress();
+		auto &address = message.getAddress();
+		message.mSenderIpAddress = senderIpAddress;
 		for( auto & listener : mListeners ) {
 			if( patternMatch( address, listener.first ) ) {
 				listener.second( message );
@@ -1129,7 +1154,7 @@ void ReceiverBase::dispatchMethods( uint8_t *data, uint32_t size, asio::ip::addr
 	}
 }
 	
-bool ReceiverBase::decodeData(uint8_t *data, uint32_t size, std::vector<Message> &messages, asio::ip::address senderIpAddress, uint64_t timetag) const
+bool ReceiverBase::decodeData( uint8_t *data, uint32_t size, std::vector<Message> &messages, uint64_t timetag ) const
 {
 	if( ! memcmp( data, "#bundle\0", 8 ) ) {
 		data += 8; size -= 8;
@@ -1147,27 +1172,26 @@ bool ReceiverBase::decodeData(uint8_t *data, uint32_t size, std::vector<Message>
 				CI_LOG_E( "Problem Parsing Bundle: Segment Size is greater than bundle size." );
 				return false;
 			}
-			if( !decodeData( data, seg_size, messages, senderIpAddress, ntohll( timestamp ) ) )
+			if( !decodeData( data, seg_size, messages, ntohll( timestamp ) ) )
 				return false;
 			
 			data += seg_size; size -= seg_size;
 		}
 	}
 	else {
-		if( ! decodeMessage( data, size, messages, senderIpAddress, timetag ) )
+		if( ! decodeMessage( data, size, messages, timetag ) )
 			return false;
 	}
 	
 	return true;
 }
 
-bool ReceiverBase::decodeMessage( uint8_t *data, uint32_t size, std::vector<Message> &messages, asio::ip::address senderIpAddress, uint64_t timetag ) const
+bool ReceiverBase::decodeMessage( uint8_t *data, uint32_t size, std::vector<Message> &messages, uint64_t timetag ) const
 {
 	Message message;
 	if( ! message.bufferCache( data, size ) )
 		return false;
 	
-	message.mSenderIpAddress = senderIpAddress;
 	messages.push_back( std::move( message ) );
 	return true;
 }
@@ -1312,8 +1336,6 @@ void ReceiverUdp::listenImpl()
 {
 	if ( ! mSocket->is_open() ) return;
 	
-
-
 	uint32_t prepareAmount = 0;
 	{
 		std::lock_guard<std::mutex> lock( mAmountToReceiveMutex );
@@ -1321,7 +1343,6 @@ void ReceiverUdp::listenImpl()
 	}
 	auto tempBuffer = mBuffer.prepare( prepareAmount );
 	auto uniqueEndpoint = std::make_shared<asio::ip::udp::endpoint>();
-
 	mSocket->async_receive_from( tempBuffer, *uniqueEndpoint,
 	[&, uniqueEndpoint]( const asio::error_code &error, size_t bytesTransferred ) {
 		if( error )
@@ -1332,8 +1353,7 @@ void ReceiverUdp::listenImpl()
 			data[ bytesTransferred ] = 0;
 			istream stream( &mBuffer );
 			stream.read( reinterpret_cast<char*>( data.get() ), bytesTransferred );
-
-			dispatchMethods( data.get(), bytesTransferred, uniqueEndpoint->address());
+			dispatchMethods( data.get(), bytesTransferred, uniqueEndpoint->address() );
 		}
 		listen();
 	});
@@ -1364,15 +1384,34 @@ void ReceiverUdp::handleError( const asio::error_code &error, const protocol::en
 	
 /////////////////////////////////////////////////////////////////////////////////////////
 //// ReceiverTcp
+	
+ReceiverTcp::~ReceiverTcp()
+{
+	ReceiverTcp::closeImpl();
+	
+}
 
 ReceiverTcp::Connection::Connection( TcpSocketRef socket, ReceiverTcp *receiver, uint64_t identifier )
-: mSocket( socket ), mReceiver( receiver ), mIdentifier( identifier )
+: mSocket( socket ), mReceiver( receiver ), mIdentifier( identifier ), mIsConnected( true )
 {
 }
 
 ReceiverTcp::Connection::~Connection()
 {
 	mReceiver = nullptr;
+}
+	
+void ReceiverTcp::Connection::shutdown( asio::socket_base::shutdown_type shutdownType )
+{
+	if( ! mSocket->is_open() || ! mIsConnected )
+		return;
+	
+	asio::error_code ec;
+	mSocket->shutdown( asio::socket_base::shutdown_both, ec );
+	mIsConnected.store( false );
+	// the other side may have already shutdown the connection.
+	if( ec && ec != asio::error::not_connected )
+		mReceiver->handleSocketError( ec, mIdentifier, mSocket->remote_endpoint() );
 }
 	
 using iterator = asio::buffers_iterator<asio::streambuf::const_buffers_type>;
@@ -1419,8 +1458,6 @@ void ReceiverTcp::Connection::read()
 			uint8_t *dataPtr = nullptr;
 			size_t dataSize = 0;
 			
-			
-
 			if( mReceiver->mPacketFraming ) {
 				data = mReceiver->mPacketFraming->decode( data );
 				dataPtr = data->data();
@@ -1432,7 +1469,7 @@ void ReceiverTcp::Connection::read()
 			}
 			{
 				std::lock_guard<std::mutex> lock( mReceiver->mDispatchMutex );
-				receiver->dispatchMethods( dataPtr, dataSize, mSocket->remote_endpoint().address()); // TODO test this...
+				receiver->dispatchMethods( dataPtr, dataSize, mSocket->remote_endpoint().address() );
 			}
 			read();
 		}
@@ -1441,25 +1478,25 @@ void ReceiverTcp::Connection::read()
 
 ReceiverTcp::ReceiverTcp( uint16_t port, PacketFramingRef packetFraming, const protocol &protocol, asio::io_service &service )
 : ReceiverBase( packetFraming ), mAcceptor( new tcp::acceptor( service ) ), mLocalEndpoint( protocol, port ),
-	mConnectionIdentifiers( 0 )
+	mConnectionIdentifiers( 0 ), mIsShuttingDown( false )
 {
 }
 
 ReceiverTcp::ReceiverTcp( const protocol::endpoint &localEndpoint, PacketFramingRef packetFraming, asio::io_service &service )
 : ReceiverBase( packetFraming ), mAcceptor( new tcp::acceptor( service ) ), mLocalEndpoint( localEndpoint ),
-	mConnectionIdentifiers( 0 )
+	mConnectionIdentifiers( 0 ), mIsShuttingDown( false )
 {
 }
 	
 ReceiverTcp::ReceiverTcp( AcceptorRef acceptor, PacketFramingRef packetFraming )
 : ReceiverBase( packetFraming ), mAcceptor( acceptor ), mLocalEndpoint( mAcceptor->local_endpoint() ),
-	mConnectionIdentifiers( 0 )
+	mConnectionIdentifiers( 0 ), mIsShuttingDown( false )
 {
 }
 	
 ReceiverTcp::ReceiverTcp( TcpSocketRef socket, PacketFramingRef packetFraming )
 : ReceiverBase( packetFraming ), mAcceptor( nullptr ), mLocalEndpoint( socket->local_endpoint() ),
-	mConnectionIdentifiers( 0 )
+	mConnectionIdentifiers( 0 ), mIsShuttingDown( false )
 {
 	auto identifier = mConnectionIdentifiers++;
 	std::lock_guard<std::mutex> lock( mConnectionMutex );
@@ -1469,7 +1506,10 @@ ReceiverTcp::ReceiverTcp( TcpSocketRef socket, PacketFramingRef packetFraming )
 	
 void ReceiverTcp::bindImpl()
 {
-	if( ! mAcceptor ) return;
+	if( ! mAcceptor )
+		return;
+	
+	mIsShuttingDown.store( false );
 	
 	asio::error_code ec;
 	mAcceptor->open( mLocalEndpoint.protocol(), ec );
@@ -1477,11 +1517,7 @@ void ReceiverTcp::bindImpl()
 		handleAcceptorError( ec );
 		return;
 	}
-	mAcceptor->set_option(tcp::acceptor::reuse_address(true), ec);
-	if( ec ) {
-		handleAcceptorError( ec );
-		return;
-	}
+	mAcceptor->set_option( socket_base::reuse_address( true ) );
 	mAcceptor->bind( mLocalEndpoint, ec );
 	if( ec ) {
 		handleAcceptorError( ec );
@@ -1555,19 +1591,32 @@ void ReceiverTcp::closeAcceptor()
 void ReceiverTcp::closeImpl()
 {
 	closeAcceptor();
+	// if there's an error on a socket while shutting down the receiver, it could
+	// cause a recursive run on the mConnectionMutex by someone listening for
+	// connection error and attempting to close the connection on error through
+	// the closeConnection function. This blocks against that ability. Basically,
+	// if we're shutting down we disregard the closeConnection function.
+	mIsShuttingDown.store( true );
 	std::lock_guard<std::mutex> lock( mConnectionMutex );
+	for( auto & connection : mConnections )
+		connection->shutdown( socket_base::shutdown_both );
 	mConnections.clear();
 }
 	
-void ReceiverTcp::closeConnection( uint64_t connectionIdentifier )
+void ReceiverTcp::closeConnection( uint64_t connectionIdentifier, asio::socket_base::shutdown_type shutdownType )
 {
+	if( mIsShuttingDown )
+		return;
+	
 	std::lock_guard<std::mutex> lock( mConnectionMutex );
 	auto rem = remove_if( mConnections.begin(), mConnections.end(),
 	[connectionIdentifier]( const UniqueConnection &cached ) {
 		return cached->mIdentifier == connectionIdentifier;
 	} );
-	if( rem != mConnections.end() )
+	if( rem != mConnections.end() ) {
+		(*rem)->shutdown( shutdownType );
 		mConnections.erase( rem );
+	}
 }
 	
 void ReceiverTcp::handleSocketError( const asio::error_code &error, uint64_t originatorId, const asio::ip::tcp::endpoint &endpoint )
