@@ -1891,7 +1891,7 @@ void Sphere::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 	normals.resize( numSegments * numRings );
 	texCoords.resize( numSegments * numRings );
 	colors.resize( numSegments * numRings );
-	indices.resize( numSegments * numRings * 6 );
+	indices.resize( (numSegments - 1) * (numRings - 1) * 6 );
 
 	float ringIncr = 1.0f / (float)( numRings - 1 );
 	float segIncr = 1.0f / (float)( numSegments - 1 );
@@ -3764,6 +3764,38 @@ void WireRoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &r
 	}
 	
 	target->copyAttrib( geom::Attrib::POSITION, 2, 0, value_ptr( *verts.data() ), verts.size() );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+// WireRect
+WireRect::WireRect()
+{
+	// upper-left, upper-right, lower-right, lower-left & upper-left again to close the loop
+	mPositions[0] = vec2( -0.5f, -0.5f );
+	mPositions[1] = vec2( 0.5f, -0.5f );
+	mPositions[2] = vec2( 0.5f, 0.5f );
+	mPositions[3] = vec2( -0.5f, 0.5f );
+	mPositions[4] = vec2( -0.5f, -0.5f );
+}
+
+WireRect::WireRect( const Rectf &r )
+{
+	rect( r );
+}
+
+WireRect& WireRect::rect( const Rectf &r )
+{
+	mPositions[0] = r.getUpperLeft();
+	mPositions[1] = r.getUpperRight();
+	mPositions[2] = r.getLowerRight();
+	mPositions[3] = r.getLowerLeft();
+	mPositions[4] = r.getUpperLeft();
+	return *this;
+}
+
+void WireRect::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+{
+	target->copyAttrib( Attrib::POSITION, 2, 0, (const float*)mPositions.data(), 5 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
