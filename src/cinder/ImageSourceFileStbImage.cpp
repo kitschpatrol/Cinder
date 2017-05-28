@@ -25,6 +25,7 @@
 #define STBI_NO_PIC
 #define STBI_NO_PNM
 #define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
 #include "stb/stb_image.h"
 
 namespace cinder {
@@ -56,11 +57,11 @@ void ImageSourceFileStbImage::registerSelf()
 
 ///////////////////////////////////////////////////////////////////////////////
 // ImageSourceFileStbImage
-ImageSourceFileStbImage::ImageSourceFileStbImage( DataSourceRef dataSourceRef, ImageSource::Options options )
+ImageSourceFileStbImage::ImageSourceFileStbImage( DataSourceRef dataSourceRef, ImageSource::Options /*options*/ )
 	: mData8u( nullptr ), mData32f( nullptr ), mRowBytes( 0 )
 {
 	int width = 0, height = 0, components = 0;
-	
+
 	if( dataSourceRef->isFilePath() ) {
 		if( stbi_is_hdr( dataSourceRef->getFilePath().string().c_str() ) ) {
 			mData32f = stbi_loadf( dataSourceRef->getFilePath().string().c_str(), &width, &height, &components, 0 /*any # of components*/ );

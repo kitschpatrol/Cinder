@@ -29,7 +29,7 @@ using namespace std;
 namespace cinder { namespace audio {
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - InputNode
+// InputNode
 // ----------------------------------------------------------------------------------------------------
 
 InputNode::InputNode( const Format &format )
@@ -46,13 +46,13 @@ InputNode::~InputNode()
 {
 }
 
-void InputNode::connectInput( const NodeRef &input )
+void InputNode::connectInput( const NodeRef & /*input*/ )
 {
 	CI_ASSERT_MSG( 0, "InputNode does not support inputs" );
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - InputDeviceNode
+// InputDeviceNode
 // ----------------------------------------------------------------------------------------------------
 
 InputDeviceNode::InputDeviceNode( const DeviceRef &device, const Format &format )
@@ -116,7 +116,7 @@ void InputDeviceNode::markOverrun()
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - CallbackProcessorNode
+// CallbackProcessorNode
 // ----------------------------------------------------------------------------------------------------
 
 CallbackProcessorNode::CallbackProcessorNode( const CallbackProcessorFn &callbackFn, const Format &format )

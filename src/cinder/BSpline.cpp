@@ -131,7 +131,7 @@ void BSplineBasis::create( int iNumCtrlPoints, int iDegree, bool bOpen )
 
 BSplineBasis::BSplineBasis( int aNumCtrlPoints, int iDegree, const float *afKnot )
 {
-    create( mNumCtrlPoints, iDegree, afKnot );
+    create( aNumCtrlPoints, iDegree, afKnot );
 }
 
 void BSplineBasis::create( int aNumCtrlPoints, int iDegree, const float *afKnot )
@@ -661,8 +661,8 @@ T BSpline<D,T>::getSpeed( float t ) const
 }
 
 // explicit template instantiations
-template class BSpline<2,float>;
-template class BSpline<3,float>;
-template class BSpline<4,float>;
+template class CI_API BSpline<2,float>;
+template class CI_API BSpline<3,float>;
+template class CI_API BSpline<4,float>;
 
 } // namespace cinder

@@ -33,7 +33,7 @@ namespace cinder { namespace gl {
 
 namespace cinder { namespace gl {
 
-class ShaderDef {
+class CI_API ShaderDef {
   public:
 	ShaderDef();
 
@@ -53,6 +53,9 @@ class ShaderDef {
   protected:
 	bool					mTextureMapping;
 	bool					mTextureMappingRectangleArb;
+#if defined( CINDER_ANDROID )
+	bool 					mTextureMappingExternalOes;
+#endif	
 	std::array<GLint,4>		mTextureSwizzleMask;
 	bool					mUniformBasedPosAndTexCoord;
 

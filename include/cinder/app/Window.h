@@ -83,13 +83,21 @@ typedef std::shared_ptr<Window>		WindowRef;
 	#if defined( CINDER_COCOA_TOUCH )
 		class UIViewController;
 	#endif
-#elif defined( CINDER_WINRT )
+#elif defined( CINDER_UWP )
 	namespace cinder { namespace app {
 		class WindowImplWinRt;
 	} } // namespace cinder::app
-#elif defined( CINDER_MSW )
+#elif defined( CINDER_MSW_DESKTOP )
 	namespace cinder { namespace app {
 		class WindowImplMsw;
+	} } // namespace cinder::app
+#elif defined( CINDER_ANDROID )
+	namespace cinder { namespace app {
+  	class WindowImplAndroid;
+	} } // namespace cinder::app
+#elif defined( CINDER_LINUX )
+	namespace cinder { namespace app {
+		class WindowImplLinux;
 	} } // namespace cinder::app
 #endif
 
@@ -102,12 +110,12 @@ typedef	 signals::Signal<void( FileDropEvent & ),	CollectorEvent<FileDropEvent> 
 typedef	 signals::Signal<void()>														EventSignalWindow;
 
 //! Thrown when an operation is performed on a WindowRef which refers to an invalid Window
-class ExcInvalidWindow : public cinder::Exception {
+class CI_API ExcInvalidWindow : public cinder::Exception {
 	virtual const char * what() const throw() { return "Invalid Window"; }
 };
 
 //! Options passed when entering fullscreen.
-struct FullScreenOptions {
+struct CI_API FullScreenOptions {
 	FullScreenOptions() : mKioskMode( true ), mSecondaryDisplayBlanking( false ), mExclusive( false )
 	{}
 
@@ -134,7 +142,7 @@ struct FullScreenOptions {
 	bool		mKioskMode, mSecondaryDisplayBlanking, mExclusive;
 };
 
-class Window : public std::enable_shared_from_this<Window> {
+class CI_API Window : public std::enable_shared_from_this<Window> {
   public:
 	// Parameters for a Window, which are used to create the physical window by the App
 	struct Format {
@@ -290,6 +298,8 @@ class Window : public std::enable_shared_from_this<Window> {
 	//! Returns the multiplier (typically 2 on high-density (Retina) displays, 1 otherwise) mapping points to pixels
 	float	getContentScale() const;
 	//! Returns a scalar mapped from points to pixels by multiplying by getContentScale()
+	int32_t	toPixels( int32_t s ) const { return static_cast<int32_t>( s * getContentScale() ); }
+	//! Returns a scalar mapped from points to pixels by multiplying by getContentScale()
 	float	toPixels( float s ) const { return s * getContentScale(); }
 	//! Returns a vec2 mapped from points to pixels by multiplying by getContentScale()
 	vec2	toPixels( vec2 s ) const { return s * getContentScale(); }
@@ -301,6 +311,8 @@ class Window : public std::enable_shared_from_this<Window> {
 	Rectf	toPixels( const Rectf &a ) const { return a * getContentScale(); }
 	//! Returns a scalar mapped from pixels to points by dividing by getContentScale()
 	float	toPoints( float s ) const { return s / getContentScale(); }
+	//! Returns a scalar mapped from points to pixels by multiplying by getContentScale()
+	int32_t	toPoints( int32_t s ) const { return static_cast<int32_t>( s / getContentScale() ); }
 	//! Returns a vec2 mapped from pixels to points by dividing by getContentScale()
 	vec2	toPoints( vec2 s ) const { return s / getContentScale(); }
 	//! Returns a ivec2 mapped from pixels to points by dividing by getContentScale()
@@ -343,10 +355,10 @@ class Window : public std::enable_shared_from_this<Window> {
 #if defined( CINDER_COCOA_TOUCH )
 	//! Returns the UIViewController instance that manages the assoicated UIView on iOS
 	UIViewController* getNativeViewController();
-#elif defined( CINDER_WINRT )
+#elif defined( CINDER_UWP )
 	::Platform::Agile<Windows::UI::Core::CoreWindow> getNativeCoreWindow();
 #endif
-#if defined( CINDER_MSW )
+#if defined( CINDER_MSW_DESKTOP )
 	//! Returns the Window's HDC on MSW. Suitable for GDI+ calls with Renderer2d.
 	HDC				getDc() const { return getRenderer()->getDc(); }
 #endif
@@ -423,10 +435,14 @@ class Window : public std::enable_shared_from_this<Window> {
 	// This should not be called except by App implementations
 #if defined( CINDER_COCOA ) && defined( __OBJC__ )
 	static WindowRef		privateCreate__( id<WindowImplCocoa> impl, AppBase *app )
-#elif defined( CINDER_MSW )
+#elif defined( CINDER_MSW_DESKTOP )
 	static WindowRef		privateCreate__( WindowImplMsw *impl, AppBase *app )
-#elif defined( CINDER_WINRT )
+#elif defined( CINDER_UWP )
 	static WindowRef		privateCreate__( WindowImplWinRt *impl, AppBase *app )
+#elif defined( CINDER_ANDROID )
+  static WindowRef    privateCreate__( WindowImplAndroid *impl, AppBase *app )
+#elif defined( CINDER_LINUX )
+  static WindowRef    privateCreate__( WindowImplLinux *impl, AppBase *app )
 #else
 	static WindowRef		privateCreate__( WindowImplCocoa *impl, AppBase *app )
 #endif
@@ -457,10 +473,14 @@ class Window : public std::enable_shared_from_this<Window> {
   #else
 	void		setImpl( WindowImplCocoa *impl ) { mImpl = impl; }
   #endif
-#elif defined( CINDER_MSW )
+#elif defined( CINDER_MSW_DESKTOP )
 	void		setImpl( WindowImplMsw *impl ) { mImpl = impl; }
-#elif defined( CINDER_WINRT )
+#elif defined( CINDER_UWP )
 	void		setImpl( WindowImplWinRt *impl ) { mImpl = impl; }
+#elif defined( CINDER_ANDROID )
+  void    setImpl( WindowImplAndroid *impl ) { mImpl = impl; }    
+#elif defined( CINDER_LINUX )
+  void    setImpl( WindowImplLinux *impl ) { mImpl = impl; }    
 #endif
 
 	AppBase							*mApp;
@@ -479,11 +499,24 @@ class Window : public std::enable_shared_from_this<Window> {
   #else
     WindowImplCocoa			*mImpl; // necessary to trick c++ translation units
   #endif
-#elif defined( CINDER_MSW )
+#elif defined( CINDER_MSW_DESKTOP )
 	WindowImplMsw		*mImpl;
-#elif defined( CINDER_WINRT )
-	WindowImplWinRt *mImpl;
+#elif defined( CINDER_UWP )
+	WindowImplWinRt 	*mImpl;
+#elif defined( CINDER_ANDROID )
+	WindowImplAndroid	*mImpl;
+#elif defined( CINDER_LINUX )
+	WindowImplLinux		*mImpl;
 #endif
+ 
+private:
+#if defined( CINDER_ANDROID )
+	friend class AppImplAndroid;
+	WindowImplAndroid   *getImpl() { return mImpl; }
+#elif defined( CINDER_LINUX )
+	friend class AppImplLinux;
+	WindowImplLinux     *getImpl() { return mImpl; }
+#endif    
 };
 
 } } // namespace cinder::app

@@ -36,7 +36,7 @@ namespace cinder { namespace gl {
 typedef std::shared_ptr<class Query> QueryRef;
 
 //! Base class for OpenGL Query objects.
-class Query {
+class CI_API Query {
   public:
 	static QueryRef create( GLenum target );
 
@@ -61,6 +61,15 @@ class Query {
 	//! Returns the value of the underlying query with GLuint64 precision.
 	GLuint64	getValueUInt64() const;
 	
+	//! Writes the value of the query to the buffer bound to \c GL_QUERY_BUFFER, offset by \a params. Writes to address \a params when none is bound.
+	void		getValueInt( GLint* params ) const;
+	//! Writes the value of the query to the buffer bound to \c GL_QUERY_BUFFER, offset by \a params. Writes to address \a params when none is bound.
+	void		getValueUInt( GLuint* params ) const;
+	//! Writes the value of the query to the buffer bound to \c GL_QUERY_BUFFER, offset by \a params. Writes to address \a params when none is bound.
+	void		getValueInt64( GLint64* params ) const;
+	//! Writes the value of the query to the buffer bound to \c GL_QUERY_BUFFER, offset by \a params. Writes to address \a params when none is bound.
+	void		getValueUInt64( GLuint64* params ) const;
+
 	//! Returns whether the query object is ready.
 	bool		isReady() const;
 	//! Returns whether the query's id is valid (corresponds to an actual query object).
@@ -78,7 +87,7 @@ class Query {
 typedef std::shared_ptr<class QueryTimeSwapped> QueryTimeSwappedRef;
 
 //! Represents a pair of GL_TIME_ELAPSED Query objects, swapped on each end() call.
-class QueryTimeSwapped {
+class CI_API QueryTimeSwapped {
   public:
 	//! Constructs a swap buffer of GL_TIME_ELAPSED queries.
 	static QueryTimeSwappedRef create();
@@ -108,7 +117,7 @@ class QueryTimeSwapped {
 	size_t					mSwapIndex;
 };
 	
-class QueryException : public Exception {
+class CI_API QueryException : public Exception {
   public:
 	QueryException( const std::string &description ) : Exception( description ) { }
 };

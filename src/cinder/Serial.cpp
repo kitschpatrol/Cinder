@@ -118,7 +118,7 @@ Serial::Impl::Impl( const Serial::Device &device, int baudRate )
 	::DWORD configSize = sizeof( ::COMMCONFIG );
 	::GetCommConfig( mDeviceHandle, &config, &configSize );
 	
-	string settingsStr = string("baud=") + toString( baudRate ) + " parity=N data=8 stop=1";
+	string settingsStr = "baud=" + toString( baudRate ) + " parity=N data=8 stop=1";
 	if( ! ::BuildCommDCBA( settingsStr.c_str(), &config.dcb ) ) {
 		throw SerialExcOpenFailed();	
 	}	
@@ -151,23 +151,21 @@ Serial::Impl::~Impl()
 
 Serial::Device Serial::findDeviceByName( const std::string &name, bool forceRefresh )
 {
-	const std::vector<Serial::Device> &devices = getDevices( forceRefresh );
-	for( std::vector<Serial::Device>::const_iterator deviceIt = devices.begin(); deviceIt != devices.end(); ++deviceIt ) {
-		if( deviceIt->getName() == name )
-			return *deviceIt;
+	for( const auto& device : getDevices( forceRefresh ) ) {
+		if ( device.getName() == name )
+			return device;
 	}
-	
+
 	return Serial::Device();
 }
 
 Serial::Device Serial::findDeviceByNameContains( const std::string &searchString, bool forceRefresh )
 {
-	const std::vector<Serial::Device> &devices = getDevices( forceRefresh );
-	for( std::vector<Serial::Device>::const_iterator deviceIt = devices.begin(); deviceIt != devices.end(); ++deviceIt ) {
-		if( deviceIt->getName().find( searchString ) != std::string::npos )
-			return *deviceIt;
+	for( const auto& device : getDevices( forceRefresh ) ) {
+		if( device.getName().find( searchString ) != std::string::npos )
+			return device;
 	}
-	
+
 	return Serial::Device();
 }
 	
@@ -256,7 +254,7 @@ void Serial::writeBytes( const void *data, size_t numBytes )
 			throw SerialExcWriteFailure();
 #elif defined( CINDER_MSW )
 		::DWORD bytesWritten;
-		if( ! ::WriteFile( mImpl->mDeviceHandle, data, numBytes - totalBytesWritten, &bytesWritten, 0 ) )
+		if( ! ::WriteFile( mImpl->mDeviceHandle, data, static_cast<DWORD>( numBytes - totalBytesWritten ), &bytesWritten, 0 ) )
 			throw SerialExcWriteFailure();
 #endif
 		if( bytesWritten != -1 )
@@ -274,7 +272,7 @@ void Serial::readBytes( void *data, size_t numBytes )
 			throw SerialExcReadFailure();
 #elif defined( CINDER_MSW )
 		::DWORD bytesRead = 0;
-		if( ! ::ReadFile( mImpl->mDeviceHandle, data, numBytes - totalBytesRead, &bytesRead, 0 ) )
+		if( ! ::ReadFile( mImpl->mDeviceHandle, data, static_cast<DWORD>( numBytes - totalBytesRead ), &bytesRead, 0 ) )
 			throw SerialExcReadFailure();
 #endif
 		if( bytesRead != -1 )
@@ -291,7 +289,7 @@ size_t Serial::readAvailableBytes( void *data, size_t maximumBytes )
 	long bytesRead = ::read( mImpl->mFd, data, maximumBytes );
 #elif defined( CINDER_MSW )
 	::DWORD bytesRead = 0;
-	if( ! ::ReadFile( mImpl->mDeviceHandle, data, maximumBytes, &bytesRead, 0 ) )
+	if( ! ::ReadFile( mImpl->mDeviceHandle, data, static_cast<DWORD>( maximumBytes ), &bytesRead, 0 ) )
 		throw SerialExcReadFailure();
 #endif
 
@@ -315,47 +313,33 @@ uint8_t Serial::readByte()
 
 std::string Serial::readStringUntil( char token, size_t maxLength, double timeoutSeconds )
 {
-	size_t bufferSize = 1024, bufferOffset = 0;
-	shared_ptr<char> buffer( (char*)malloc( bufferSize ), free );
+	std::string buffer;
+	buffer.reserve( 1024 );
 
 	bool useMaxLength = maxLength > 0;
 	bool useTimer = timeoutSeconds > 0;
-	Timer timer;
-	if( useTimer )
-		timer.start();
+	Timer timer( useTimer );
 
 	bool done = false;
 	while( ! done ) {
 		char v = readChar();
-		buffer.get()[bufferOffset++] = v;
+		buffer.push_back( v );
 		if( v == token ) {
 			done = true;
 		}
-		else if( useMaxLength && ( bufferOffset == maxLength ) ) {
+		else if( useMaxLength && ( buffer.size() >= maxLength ) ) {
 			done = true;
 		}
-		else if( useTimer && ( timer.getSeconds() > timeoutSeconds ) )
+		else if( useTimer && ( timer.getSeconds() > timeoutSeconds ) ) {
 			throw SerialTimeoutExc();
-
-		// we need to reallocate even if this happens to be the last byte, because we need room for a null-terminator
-		if( bufferOffset == bufferSize ) {
-			char *newBuffer = (char*)malloc( bufferSize * 2 );
-			memcpy( newBuffer, buffer.get(), bufferSize );
-			bufferSize *= 2;
-			buffer = shared_ptr<char>( newBuffer, free );
 		}
 	}
-
-	buffer.get()[bufferOffset] = 0; // need to null terminate this thing
-	std::string result( buffer.get() );
-
-	return result;
+	return buffer;
 }
 
 void Serial::writeString( const std::string &str )
 {
-	for( string::const_iterator strIt = str.begin(); strIt != str.end(); ++strIt )
-		writeByte( *strIt );
+	writeBytes( str.data(), str.size() );
 }
 
 size_t Serial::getNumBytesAvailable() const

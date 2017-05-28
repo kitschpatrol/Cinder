@@ -28,7 +28,6 @@
 	#endif
 #endif
 
-#define GLM_FORCE_SIZE_FUNC
 #include "glm/fwd.hpp"
 
 #include <cstdint>
@@ -36,8 +35,8 @@
 //  CINDER_VERSION % 100 is the patch level
 //  CINDER_VERSION / 100 % 1000 is the minor version
 //  CINDER_VERSION / 100000 is the major version
-#define CINDER_VERSION		901
-#define CINDER_VERSION_STR	"0.9.1dev"
+#define CINDER_VERSION		902
+#define CINDER_VERSION_STR	"0.9.2dev"
 
 #if ! defined( ASIO_STANDALONE )
 #define ASIO_STANDALONE 1
@@ -55,21 +54,24 @@ using std::uint64_t;
 
 #define CINDER_CINDER
 
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-	#if defined(WINAPI_PARTITION_DESKTOP)
-		#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
-			#define CINDER_MSW
+#if defined( _WIN32 ) || defined( __WIN32__ ) || defined( WIN32 )
+	#define CINDER_MSW
+	#if defined( WINAPI_PARTITION_DESKTOP )
+		#if WINAPI_FAMILY_PARTITION( WINAPI_PARTITION_DESKTOP )
+			#define CINDER_MSW_DESKTOP
 		#else
-			#define CINDER_WINRT
+			#define CINDER_UWP
 			#define ASIO_WINDOWS_RUNTIME 1
 		#endif
 	#else
-		#define CINDER_MSW
+		#define CINDER_MSW_DESKTOP
 		#include <sdkddkver.h>
 	#endif
-#elif defined(linux) || defined(__linux) || defined(__linux__)
+#elif (defined( linux ) || defined( __linux ) || defined( __linux__ )) && ! defined( __ANDROID__ )
+	#define CINDER_POSIX
 	#define CINDER_LINUX
-#elif defined(macintosh) || defined(__APPLE__) || defined(__APPLE_CC__)
+#elif defined( macintosh ) || defined( __APPLE__ ) || defined( __APPLE_CC__ )
+	#define CINDER_POSIX
 	#define CINDER_COCOA
 	#include <TargetConditionals.h>
 	#include <AvailabilityMacros.h>
@@ -85,6 +87,10 @@ using std::uint64_t;
 	#endif
 	// This is defined to prevent the inclusion of some unfortunate macros in <AssertMacros.h>
 	#define __ASSERTMACROS__
+#elif defined( __ANDROID__ ) && (defined( linux ) || defined( __linux ) || defined( __linux__ ))
+    #define CINDER_POSIX
+	#define CINDER_ANDROID
+	#include <android/api-level.h>
 #else
 	#error "cinder compile error: Unknown platform"
 #endif
@@ -98,6 +104,8 @@ using std::uint64_t;
 #endif
 
 #include <memory>
+#include "cinder/CinderFwd.h"
+#include "cinder/Export.h"
 
 // Create a namepace alias as shorthand for cinder::
 #if ! defined( CINDER_NO_NS_ALIAS )

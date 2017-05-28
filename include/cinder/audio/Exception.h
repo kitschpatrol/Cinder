@@ -31,40 +31,39 @@
 namespace cinder { namespace audio {
 
 //! General audio exception.
-class AudioExc : public Exception {
+class CI_API AudioExc : public Exception {
   public:
-	AudioExc( const std::string &description, int32_t errorCode = 0 ) : Exception( description )	{}
+	AudioExc( const std::string &description, int32_t errorCode = 0 ) : Exception( description ), mErrorCode( errorCode ) {}
 
 	//! Returns a platform-specific error code. Could return 0 (meaning none was available).
 	int32_t getCode() const						{ return mErrorCode; }
 
   protected:
-	std::string	mDescription;
 	int32_t		mErrorCode;
 };
 
 //! Audio exception related to Device management.
-class AudioDeviceExc : public AudioExc {
+class CI_API AudioDeviceExc : public AudioExc {
   public:
 	AudioDeviceExc( const std::string &description ) : AudioExc( description )	{}
 };
 
 //! Audio exception originating from within the Context.
-class AudioContextExc : public AudioExc {
+class CI_API AudioContextExc : public AudioExc {
   public:
 	AudioContextExc( const std::string &description ) : AudioExc( description )	{}
 };
 
 //! Audio exception that occurs when the format of a Node leads to an irrecoverable error.
-class AudioFormatExc : public AudioExc {
+class CI_API AudioFormatExc : public AudioExc {
   public:
 	AudioFormatExc( const std::string &description ) : AudioExc( description )	{}
 };
 
 //! Audio exception related to file i/o.
-class AudioFileExc : public AudioExc {
+class CI_API AudioFileExc : public AudioExc {
   public:
-	AudioFileExc( const std::string &description, int32_t errorCode = 0 ) : AudioExc( description )	{}
+	AudioFileExc( const std::string &description, int32_t errorCode = 0 ) : AudioExc( description, errorCode )	{}
 };
 
 } } // namespace cinder::audio

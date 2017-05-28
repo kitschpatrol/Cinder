@@ -56,7 +56,7 @@ typedef std::shared_ptr<class Node>				NodeRef;
 //! initialize() is called, uninitialize() is called before a Node is deallocated or channel counts change.
 //!
 //! \see InputNode, OutputNode
-class Node : public std::enable_shared_from_this<Node>, private Noncopyable {
+class CI_API Node : public std::enable_shared_from_this<Node>, private Noncopyable {
   public:
 	//! Used to specifiy how the corresponding channels are to be resolved between two connected Node's,
 	//! based on either a Node's input (the default), it's output, or specified by user.
@@ -174,17 +174,18 @@ class Node : public std::enable_shared_from_this<Node>, private Noncopyable {
 
   protected:
 
-	//! Called before audio buffers need to be used. There is always a valid Context at this point.
+	//! Called before audio buffers need to be used. There is always a valid Context at this point. Default implementation is empty.
 	virtual void initialize()				{}
-	//! Called once the contents of initialize are no longer relevant, i.e. connections have changed. \note Not guaranteed to be called at Node destruction.
+	//! Called once the contents of initialize are no longer relevant, i.e. connections have changed. Default implementation is empty.
+	//! \note Not guaranteed to be called at Node destruction.
 	virtual void uninitialize()				{}
-	//! Callled when this Node should enable processing. Initiated from Node::enable().
+	//! Callled when this Node should enable processing. Initiated from Node::enable(). Default implementation is empty.
 	virtual void enableProcessing()			{}
-	//! Callled when this Node should disable processing. Initiated from Node::disable().
+	//! Callled when this Node should disable processing. Initiated from Node::disable(). Default implementation is empty.
 	virtual void disableProcessing()		{}
-	//! Override to perform audio processing on \t buffer.
-	virtual void process( Buffer *buffer )	{}
-
+	//! Override to perform audio processing on \t buffer. Default implementation is empty.
+	virtual void process( Buffer *buffer );
+	//! Override to customize how input Nodes are summed into the internal summing buffer. You usually don't need to do this.
 	virtual void sumInputs();
 
 	//! Default implementation returns true if numChannels matches our format.
@@ -254,7 +255,7 @@ inline const NodeRef& operator>>( const NodeRef &input, const NodeRef &output )
 }
 
 //! a Node that can be pulled without being connected to any outputs.
-class NodeAutoPullable : public Node {
+class CI_API NodeAutoPullable : public Node {
   public:
 	virtual ~NodeAutoPullable();
 
@@ -274,7 +275,7 @@ class NodeAutoPullable : public Node {
 };
 
 //! RAII-style utility class to set a \a Node's enabled state and have it restored at the end of the current scope block.
-struct ScopedEnableNode {
+struct CI_API ScopedEnableNode {
 	//! Constructs an object that will store \a node's enabled state and restore it at the end of the current scope.
 	ScopedEnableNode( const NodeRef &node );
 	//! Constructs an object that will set \a node's enabled state to \a enable and restore it to the original state at the end of the current scope.
@@ -285,7 +286,7 @@ struct ScopedEnableNode {
 	bool		mWasEnabled;
 };
 
-class NodeCycleExc : public AudioExc {
+class CI_API NodeCycleExc : public AudioExc {
   public:
 	NodeCycleExc( const NodeRef &sourceNode, const NodeRef &destNode );
 };

@@ -121,7 +121,7 @@ struct WasapiCaptureClientImpl : public WasapiAudioClientImpl {
 };
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - WasapiAudioClientImpl
+// WasapiAudioClientImpl
 // ----------------------------------------------------------------------------------------------------
 
 WasapiAudioClientImpl::WasapiAudioClientImpl()
@@ -194,7 +194,7 @@ void WasapiAudioClientImpl::initAudioClient( const DeviceRef &device, size_t num
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - WasapiRenderClientImpl
+// WasapiRenderClientImpl
 // ----------------------------------------------------------------------------------------------------
 
 WasapiRenderClientImpl::WasapiRenderClientImpl( OutputDeviceNodeWasapi *outputDeviceNode )
@@ -308,7 +308,7 @@ void WasapiRenderClientImpl::renderAudio()
 		mOutputDeviceNode->renderInputs();
 
 	float *renderBuffer;
-	hr = mRenderClient->GetBuffer( numWriteFramesAvailable, (BYTE **)&renderBuffer );
+	hr = mRenderClient->GetBuffer( static_cast<UINT32>(numWriteFramesAvailable), (BYTE **)&renderBuffer );
 	CI_ASSERT( hr == S_OK );
 
 	DWORD bufferFlags = 0;
@@ -318,7 +318,7 @@ void WasapiRenderClientImpl::renderAudio()
 
 	mNumFramesBuffered -= numWriteFramesAvailable;
 
-	hr = mRenderClient->ReleaseBuffer( numWriteFramesAvailable, bufferFlags );
+	hr = mRenderClient->ReleaseBuffer( static_cast<UINT32>( numWriteFramesAvailable ), bufferFlags );
 	CI_ASSERT( hr == S_OK );
 }
 
@@ -333,7 +333,7 @@ void WasapiRenderClientImpl::increaseThreadPriority()
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - WasapiCaptureClientImpl
+// WasapiCaptureClientImpl
 // ----------------------------------------------------------------------------------------------------
 
 WasapiCaptureClientImpl::WasapiCaptureClientImpl( InputDeviceNodeWasapi *inputDeviceNode )
@@ -440,7 +440,7 @@ void WasapiCaptureClientImpl::captureAudio()
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - OutputDeviceNodeWasapi
+// OutputDeviceNodeWasapi
 // ----------------------------------------------------------------------------------------------------
 
 OutputDeviceNodeWasapi::OutputDeviceNodeWasapi( const DeviceRef &device, const Format &format )
@@ -512,7 +512,7 @@ void OutputDeviceNodeWasapi::renderInputs()
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - InputDeviceNodeWasapi
+// InputDeviceNodeWasapi
 // ----------------------------------------------------------------------------------------------------
 
 InputDeviceNodeWasapi::InputDeviceNodeWasapi( const DeviceRef &device, const Format &format )
@@ -565,7 +565,7 @@ void InputDeviceNodeWasapi::process( Buffer *buffer )
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - ContextWasapi
+// ContextWasapi
 // ----------------------------------------------------------------------------------------------------
 
 OutputDeviceNodeRef ContextWasapi::createOutputDeviceNode( const DeviceRef &device, const Node::Format &format )

@@ -31,7 +31,7 @@
 namespace cinder { namespace app {
 
 //! Represents a mouse event
-class MouseEvent : public Event {
+class CI_API MouseEvent : public Event {
   public:
 	MouseEvent() : Event() {}
 	MouseEvent( const WindowRef &win, int initiator, int x, int y, unsigned int modifiers, float wheelIncrement, uint32_t nativeModifiers )
@@ -82,7 +82,7 @@ class MouseEvent : public Event {
 		ALT_DOWN	= 0x0010,
 		CTRL_DOWN	= 0x0020,
 		META_DOWN	= 0x0040,
-#if (defined( CINDER_MSW ) || defined( CINDER_WINRT ))
+#if defined( CINDER_MSW )
 		ACCEL_DOWN	= CTRL_DOWN
 #else
 		ACCEL_DOWN	= META_DOWN

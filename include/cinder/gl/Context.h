@@ -56,9 +56,9 @@ class Renderbuffer;
 
 class TextureBase;
 
-class Context {
+class CI_API Context {
   public:
-	struct PlatformData {
+	struct CI_API PlatformData {
 		PlatformData() : mDebug( false ), mObjectTracking( false ), mDebugLogSeverity( 0 ), mDebugBreakSeverity( 0 )
 		{}
 
@@ -278,6 +278,17 @@ class Context {
 	//! Returns the active texture unit with values relative to \c 0, \em not GL_TEXTURE0
 	uint8_t		getActiveTexture();
 
+#if defined( CINDER_GL_HAS_SAMPLERS )
+	//! Analogous to glBindSampler( \a textureUnit, \a samplerId )
+	void		bindSampler( uint8_t textureUnit, GLuint samplerId );
+	//! Duplicates and pushes the sampler binding for \a textureUnit, setting it to \a samplerId
+	void		pushSamplerBinding( uint8_t textureUnit, GLuint samplerId );
+	//! Pops the sampler binding \a textureUnit. If \a forceRestore then redundancy checks are skipped and the hardware state is always set.
+	void		popSamplerBinding( uint8_t textureUnit, bool forceRestore = false );
+	//! Returns the current sampler binding \a textureUnit. If not cached, queries the GL for the current value (and caches it).
+	GLuint		getSamplerBinding( uint8_t textureUnit );
+#endif // defined( CINDER_GL_HAS_SAMPLERS )
+
 	//! Analogous to glBindFramebuffer()
 	void		bindFramebuffer( const FboRef &fbo, GLenum target = GL_FRAMEBUFFER );
 	//! Analogous to glBindFramebuffer(). Prefer the FboRef variant when possible. This does not allow gl::Fbo to mark itself as needing multisample resolution.
@@ -414,12 +425,34 @@ class Context {
 	void		drawArrays( GLenum mode, GLint first, GLsizei count );
 	//! Analogous to glDrawElements()
 	void		drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid *indices );
+
+#if defined( CINDER_GL_HAS_MULTI_DRAW )
+	//! Analogous to glMultiDrawArrays()
+	void		multiDrawArrays( GLenum mode, GLint *first, GLsizei *count, GLsizei primcount );
+	//! Analogous to glMultiDrawElements()
+	void		multiDrawElements( GLenum mode, GLsizei *count, GLenum type, const GLvoid * const *indices, GLsizei primcount );
+#endif // defined( CINDER_GL_HAS_MULTI_DRAW )
+
 #if defined( CINDER_GL_HAS_DRAW_INSTANCED )
 	//! Analogous to glDrawArraysInstanced()
 	void		drawArraysInstanced( GLenum mode, GLint first, GLsizei count, GLsizei primcount );
 	//! Analogous to glDrawElementsInstanced()
 	void		drawElementsInstanced( GLenum mode, GLsizei count, GLenum type, const GLvoid *indices, GLsizei primcount );
 #endif // defined( CINDER_GL_HAS_DRAW_INSTANCED )
+
+#if defined( CINDER_GL_HAS_DRAW_INDIRECT )
+	//! Analogous to glDrawArraysIndirect()
+	void		drawArraysIndirect( GLenum mode, const GLvoid *indirect );
+	//! Analogous to glDrawElementsIndirect()
+	void		drawElementsIndirect( GLenum mode, GLenum type, const GLvoid *indirect );
+#endif // defined( CINDER_GL_HAS_DRAW_INDIRECT )
+
+#if defined( CINDER_GL_HAS_MULTI_DRAW_INDIRECT )
+	//! Analogous to glMultiDrawArraysIndirect()
+	void		multiDrawArraysIndirect( GLenum mode, const GLvoid *indirect, GLsizei drawcount, GLsizei stride );
+	//! Analogous to glMultiDrawElementsIndirect()
+	void		multiDrawElementsIndirect( GLenum mode, GLenum type, const GLvoid *indirect, GLsizei drawcount, GLsizei stride );
+#endif // defined( CINDER_GL_HAS_MULTI_DRAW_INDIRECT )
 
 	//! Returns the current active color, used in immediate-mode emulation and as UNIFORM_COLOR
 	const ColorAf&		getCurrentColor() const { return mColor; }
@@ -442,7 +475,11 @@ class Context {
 	VertBatch&		immediate() { return *mImmediateMode; }
 
 #if defined( CINDER_GL_HAS_DEBUG_OUTPUT )
-	static void	 __stdcall debugMessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, void *userParam );
+  #if defined( CINDER_MSW )
+	static void __stdcall 	debugMessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, void *userParam );
+  #else
+	static void 		debugMessageCallback( GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, void *userParam );
+#endif
 #endif
 
   protected:
@@ -476,10 +513,15 @@ class Context {
 	std::vector<GLint>					mBlendSrcRgbStack, mBlendDstRgbStack;
 	std::vector<GLint>					mBlendSrcAlphaStack, mBlendDstAlphaStack;
 
-#if defined( CINDER_GL_ES_2 ) && (! defined( CINDER_COCOA_TOUCH )) && (! defined( CINDER_GL_ANGLE ))
-	std::vector<GLint>			mFramebufferStack;
-#else
+// #if defined( CINDER_GL_ES_2 ) && (! defined( CINDER_COCOA_TOUCH )) && (! defined( CINDER_GL_ANGLE ))
+// 	std::vector<GLint>			mFramebufferStack;
+// #else
+// 	std::vector<GLint>			mReadFramebufferStack, mDrawFramebufferStack;
+// #endif
+#if defined( CINDER_GL_HAS_FBO_MULTISAMPLING )
 	std::vector<GLint>			mReadFramebufferStack, mDrawFramebufferStack;
+#else
+	std::vector<GLint>			mFramebufferStack;
 #endif
 
 	std::vector<GLenum>			mCullFaceStack;
@@ -497,6 +539,10 @@ class Context {
 	// map<TextureUnit,map<TextureTarget,vector<Binding ID Stack>>>
 	std::map<uint8_t,std::map<GLenum,std::vector<GLint>>>	mTextureBindingStack;
 	std::vector<uint8_t>					mActiveTextureStack;
+	
+#if defined( CINDER_GL_HAS_SAMPLERS )
+	std::vector<std::vector<GLuint>>	mSamplerBindingStack;
+#endif	
 	
 	VaoRef						mDefaultVao;
 	VboRef						mDefaultArrayVbo[4], mDefaultElementVbo;
@@ -541,7 +587,7 @@ class Context {
 	friend class				Texture2d;
 };
 
-class ExcContextAllocation : public Exception {
+class CI_API ExcContextAllocation : public Exception {
 };
 
 } } // namespace cinder::gl

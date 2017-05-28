@@ -177,8 +177,10 @@ void Renderer::setVisitor( const function<bool(const Node&, svg::Style *)> &visi
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Statics
-Paint Style::sPaintNone = svg::Paint();
-Paint Style::sPaintBlack = svg::Paint( Color::black() );
+namespace {
+	const Paint sPaintNone = svg::Paint();
+	const Paint sPaintBlack = svg::Paint( Color::black() );
+}
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Paint
@@ -322,6 +324,15 @@ void Style::clear()
 	mSpecifiesFontFamilies = mSpecifiesFontSize = mSpecifiesFontWeight = false;
 	mSpecifiesVisible = false;
 	mDisplayNone = false;
+}
+
+const Paint& Style::getFillDefault() 
+{ 
+	return sPaintBlack; 
+}
+const Paint& Style::getStrokeDefault() 
+{ 
+	return sPaintNone; 
 }
 
 const std::vector<std::string>&	Style::getFontFamiliesDefault()
@@ -941,7 +952,7 @@ void Node::finishRender( Renderer &renderer, const Style &style ) const
 {
 	if( mSpecifiesTransform )
 		renderer.popMatrix();
-	renderer.popStyle( style );		
+	renderer.popStyle();		
 	style.finishRender( renderer, this->isDrawable() );
 }
 
@@ -1703,7 +1714,8 @@ const Node* Group::findNodeByIdContains( const std::string &idPartial, bool recu
 
 	if( recurse ) {
 		for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-			if( typeid(**childIt) == typeid(Group) ) {
+			auto childItPtr = *childIt;
+			if( typeid(*childItPtr) == typeid(Group) ) {
 				Group* group = static_cast<Group*>(*childIt);
 				const Node* result = group->findNodeByIdContains( idPartial );
 				if( result )
@@ -1733,7 +1745,8 @@ const Node* Group::findNode( const std::string &id, bool recurse ) const
 	// see if any groups contain children named 'id'
 	if( recurse ) {
 		for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-			if( typeid(**childIt) == typeid(Group) ) {
+			auto childItPtr = *childIt;
+			if( typeid(*childItPtr) == typeid(Group) ) {
 				Group* group = static_cast<Group*>(*childIt);
 				const Node* result = group->findNode( id );
 				if( result )
@@ -1753,7 +1766,8 @@ Node* Group::nodeUnderPoint( const vec2 &absolutePoint, const mat3 &parentInvers
 	vec2 localPt = vec2( invTransform * vec3( absolutePoint, 1 ) );
 	
 	for( list<Node*>::const_reverse_iterator nodeIt = mChildren.rbegin(); nodeIt != mChildren.rend(); ++nodeIt ) {
-		if( typeid(**nodeIt) == typeid(svg::Group) ) {
+		auto nodeItPtr = *nodeIt;
+		if( typeid(*nodeItPtr) == typeid(svg::Group) ) {
 			Node *node = static_cast<svg::Group*>( *nodeIt )->nodeUnderPoint( absolutePoint, invTransform );
 			if( node )
 				return node;
@@ -1804,7 +1818,8 @@ Shape2d	Group::getMergedShape2d() const
 void Group::appendMergedShape2d( Shape2d *appendTo ) const
 {
 	for( list<Node*>::const_iterator childIt = mChildren.begin(); childIt != mChildren.end(); ++childIt ) {
-		if( typeid(**childIt) == typeid(Group) )
+		auto childItPtr = *childIt;
+		if( typeid(*childItPtr) == typeid(Group) )
 			reinterpret_cast<Group*>( *childIt )->appendMergedShape2d( appendTo );
 		else
 			appendTo->append( (*childIt)->getShape() );
@@ -1820,7 +1835,8 @@ void Group::renderSelf( Renderer &renderer ) const
 			continue;
 		if( (*childIt)->getStyle().isDisplayNone() ) // display: none we don't even descend groups
 			continue;
-		if( (! (*childIt)->isVisible()) && ( typeid(svg::Group) != typeid(**childIt) ) ) // if this isn't visible and isn't a group, just move along
+		auto childItPtr = *childIt;
+		if( (! childItPtr->isVisible()) && ( typeid(svg::Group) != typeid(*childItPtr) ) ) // if this isn't visible and isn't a group, just move along
 			continue;
 		(*childIt)->startRender( renderer, style );
 		(*childIt)->renderSelf( renderer );
@@ -2038,10 +2054,22 @@ void TextSpan::renderSelf( Renderer &renderer ) const
 
 std::vector<std::pair<uint16_t,vec2> > TextSpan::getGlyphMeasures() const
 {
-	if( ! mGlyphMeasures ) {
+	if( ! mGlyphMeasures ) {		
 		TextBox tbox = TextBox().font( *getFont() ).text( mString );
+#if defined( CINDER_ANDROID ) || defined( CINDER_LINUX )
+		auto tmpGlyphs = tbox.measureGlyphs();
+		mGlyphMeasures = shared_ptr<std::vector<std::pair<uint16_t,vec2> > >( 
+			new std::vector<std::pair<uint16_t,vec2> >( tmpGlyphs.size() ) );
+		for( size_t i = 0; i < tmpGlyphs.size(); ++i ) {
+			const auto& src = tmpGlyphs[i];
+			auto& dst = (*mGlyphMeasures)[i];
+			dst.first = (uint16_t)src.first;
+			dst.second = src.second;
+		}
+#else	
 		mGlyphMeasures = shared_ptr<std::vector<std::pair<uint16_t,vec2> > >( 
 			new std::vector<std::pair<uint16_t,vec2> >( tbox.measureGlyphs() ) );
+#endif		
 	}
 	
 	return *mGlyphMeasures;
@@ -2251,7 +2279,7 @@ shared_ptr<Surface8u> Doc::loadImage( fs::path relativePath )
 {
 	if( mImageCache.find( relativePath ) == mImageCache.end() ) {
 		try {
-#if defined( CINDER_WINRT )
+#if defined( CINDER_UWP )
 			fs::path fullPath = ( mFilePath / relativePath );
 #else
 			fs::path fullPath = ( mFilePath / relativePath ).make_preferred();

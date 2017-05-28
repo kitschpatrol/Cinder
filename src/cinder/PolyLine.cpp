@@ -55,7 +55,7 @@ bool PolyLineT<T>::isClockwise( bool *isColinear ) const
 	// ...then get the next and previous point
 	size_t prev = ( smallest == 0 )    ? last : ( smallest - 1 );
 	size_t next = ( smallest == last ) ? 0    : ( smallest + 1 );
-	vec2 a = mPoints[next], b = mPoints[smallest], c = mPoints[prev];
+	T a = mPoints[next], b = mPoints[smallest], c = mPoints[prev];
 
 	// The sign of the determinate indicates the orientation:
 	//   positive is clockwise
@@ -175,7 +175,7 @@ bool PolyLineT<T>::contains( const vec2 &pt ) const
 		crossings += linearCrossings( &(mPoints[s]), pt );
 	}
 
-	vec2 temp[2];
+	T temp[2];
 	temp[0] = mPoints[mPoints.size()-1];
 	temp[1] = mPoints[0];
 	crossings += linearCrossings( &(temp[0]), pt );
@@ -200,18 +200,18 @@ double PolyLineT<T>::calcArea() const
 template<typename T>
 T PolyLineT<T>::calcCentroid() const
 {
-	dvec2 result( 0 );
+	T result( 0 );
 
 	const size_t numPoints = mPoints.size();
 	double area = 0;
 	if( numPoints > 2 ) {
 		for( size_t i = 0; i < numPoints - 1; ++i ) {
-			double subExpr = mPoints[i].x * mPoints[i+1].y - mPoints[i+1].x * mPoints[i].y;
+			auto subExpr = mPoints[i].x * mPoints[i+1].y - mPoints[i+1].x * mPoints[i].y;
 			result.x += ( mPoints[i].x + mPoints[i+1].x ) * subExpr;
 			result.y += ( mPoints[i].y + mPoints[i+1].y ) * subExpr;
 			area += subExpr;
 		}
-		double subExpr = mPoints[numPoints-1].x * mPoints[0].y - mPoints[0].x * mPoints[numPoints-1].y;
+		auto subExpr = mPoints[numPoints-1].x * mPoints[0].y - mPoints[0].x * mPoints[numPoints-1].y;
 		result.x += ( mPoints[numPoints-1].x + mPoints[0].x ) * subExpr;
 		result.y += ( mPoints[numPoints-1].y + mPoints[0].y ) * subExpr;
 		area += subExpr;
@@ -344,7 +344,7 @@ std::vector<PolyLineT<T> > PolyLineT<T>::calcDifference( const std::vector<PolyL
 	return convertBoostGeometryPolygons<T>( output );
 }
 
-template class PolyLineT<vec2>;
-template class PolyLineT<dvec2>;
+template class CI_API PolyLineT<vec2>;
+template class CI_API PolyLineT<dvec2>;
 
 } // namespace cinder

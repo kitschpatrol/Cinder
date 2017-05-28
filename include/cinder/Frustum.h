@@ -30,7 +30,7 @@
 
 #pragma once
 
-#if defined( CINDER_MSW ) || defined( CINDER_WINRT )
+#if defined( CINDER_MSW )
 	#pragma push_macro( "NEAR" )
 	#undef NEAR
 	#pragma push_macro( "FAR" )
@@ -40,7 +40,7 @@
 namespace cinder {
 
 template<typename T>
-class FrustumT {
+class CI_API FrustumT {
   public:
 	enum FrustumSection { NEAR, FAR, LEFT, RIGHT, TOP, BOTTOM };
 

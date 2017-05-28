@@ -33,6 +33,10 @@
 #include "cinder/Sphere.h"
 #include <algorithm>
 
+#if defined( CINDER_ANDROID )
+  #include "cinder/app/App.h"
+#endif
+
 using namespace std;
 
 namespace cinder { namespace geom {
@@ -82,7 +86,7 @@ Primitive Modifier::getPrimitive( const Modifier::Params &upstreamParams ) const
 	return upstreamParams.getPrimitive();
 }
 
-uint8_t	Modifier::getAttribDims( Attrib attr, uint8_t upstreamDims ) const
+uint8_t	Modifier::getAttribDims( Attrib /*attr*/, uint8_t upstreamDims ) const
 {
 	return upstreamDims;
 }
@@ -318,46 +322,66 @@ void copyData( uint8_t srcDimensions, const float *srcData, size_t numElements, 
 
 namespace { 
 template<typename T>
+bool indicesInRange( const uint32_t *indices, size_t numIndices, T indexOffset )
+{
+    for( size_t i = 0; i < numIndices; ++i )
+        if( indices[i] + indexOffset > std::numeric_limits<T>::max() )
+            return false;
+
+    return true;
+}
+
+template<>
+bool indicesInRange<uint32_t>( const uint32_t *, size_t, uint32_t )
+{
+	return true;
+}
+
+template<typename T>
 void copyIndexDataForceTrianglesImpl( Primitive primitive, const uint32_t *source, size_t numIndices, T indexOffset, T *target )
 {
+	// verify that all indices are within the range expressible by 'T'
+	CI_ASSERT( indicesInRange<T>( source, numIndices, indexOffset ) );
+
 	switch( primitive ) {
 		case Primitive::LINES:
 		case Primitive::LINE_STRIP:
 		case Primitive::TRIANGLES:
-			if( indexOffset == 0 ) {
-				memcpy( target, source, sizeof(uint32_t) * numIndices );
-			}
+			if( indexOffset == 0 )
+				std::copy_n( source, numIndices, target );
 			else {
 				for( size_t i = 0; i < numIndices; ++i )
-					target[i] = source[i] + indexOffset;
+					target[i] = static_cast<T>( source[i] + indexOffset );
 			}
 		break;
 		case Primitive::TRIANGLE_STRIP: { // ABC, CBD, CDE, EDF, etc
+			CI_ASSERT( indexOffset == 0 ); // unsupported with TRIANGLE_STRIP
 			if( numIndices < 3 )
 				return;
 			size_t outIdx = 0; // (012, 213), (234, 435), etc : (odd,even), (odd,even), etc
 			for( size_t i = 0; i < numIndices - 2; ++i ) {
 				if( i & 1 ) { // odd
-					target[outIdx++] = source[i+1];
-					target[outIdx++] = source[i];
-					target[outIdx++] = source[i+2];
+					target[outIdx++] = static_cast<T>( source[i+1] );
+					target[outIdx++] = static_cast<T>( source[i] );
+					target[outIdx++] = static_cast<T>( source[i+2] );
 				}
 				else { // even
-					target[outIdx++] = source[i];
-					target[outIdx++] = source[i+1];
-					target[outIdx++] = source[i+2];
+					target[outIdx++] = static_cast<T>( source[i] );
+					target[outIdx++] = static_cast<T>( source[i+1] );
+					target[outIdx++] = static_cast<T>( source[i+2] );
 				}
 			}
 		}
 		break;
 		case Primitive::TRIANGLE_FAN: { // ABC, ACD, ADE, etc
+			CI_ASSERT( indexOffset == 0 ); // unsupported with TRIANGLE_FAN 
 			if( numIndices < 3 )
 				return;
 			size_t outIdx = 0;
 			for( size_t i = 0; i < numIndices - 2; ++i ) {
-				target[outIdx++] = source[0];
-				target[outIdx++] = source[i+1];
-				target[outIdx++] = source[i+2];
+				target[outIdx++] = static_cast<T>( source[0] );
+				target[outIdx++] = static_cast<T>( source[i+1] );
+				target[outIdx++] = static_cast<T>( source[i+2] );
 			}
 		}
 		break;
@@ -536,13 +560,13 @@ void Target::generateIndicesForceLines( Primitive primitive, size_t numInputIndi
 
 void Target::copyIndexData( const uint32_t *source, size_t numIndices, uint32_t *target )
 {
-	memcpy( target, source, numIndices * sizeof(float) );
+	memcpy( target, source, numIndices * sizeof(uint32_t) );
 }
 
 void Target::copyIndexData( const uint32_t *source, size_t numIndices, uint16_t *target )
 {
 	for( size_t v = 0; v < numIndices; ++v )
-		target[v] = source[v];
+		target[v] = static_cast<uint16_t>(source[v]);
 }
 
 uint8_t calcIndicesRequiredBytes( size_t numIndices )
@@ -581,11 +605,6 @@ Primitive Target::determineCombinedPrimitive( Primitive a, Primitive b )
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Rect
-//float Rect::sPositions[4*2] = { 0.5f,-0.5f,	-0.5f,-0.5f,	0.5f,0.5f,	-0.5f,0.5f };
-//float Rect::sColors[4*3] = { 1, 0, 1,	0, 0, 1,	1, 1, 1,	0, 1, 1 };
-//float Rect::sTexCoords[4*2] = { 1, 1,		0, 1,		1, 0,		0, 0 };
-const float Rect::sNormals[4*3] = {0, 0, 1,	0, 0, 1,	0, 0, 1,	0, 0, 1 };
-const float Rect::sTangents[4*3] = {0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0 };
 
 Rect::Rect()
 	: mHasColors( false )
@@ -635,18 +654,26 @@ Rect& Rect::texCoords( const vec2 &upperLeft, const vec2 &upperRight, const vec2
 	return *this;
 }
 
+//float Rect::sPositions[4*2] = { 0.5f,-0.5f,	-0.5f,-0.5f,	0.5f,0.5f,	-0.5f,0.5f };
+//float Rect::sColors[4*3] = { 1, 0, 1,	0, 0, 1,	1, 1, 1,	0, 1, 1 };
+//float Rect::sTexCoords[4*2] = { 1, 1,		0, 1,		1, 0,		0, 0 };
+namespace {
+	const float sRectNormals[4*3] = {0, 0, 1,	0, 0, 1,	0, 0, 1,	0, 0, 1 };
+	const float sRectTangents[4*3] = {0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0,	0.7071067f, 0.7071067f, 0 };
+}
+
 void Rect::loadInto( Target *target, const AttribSet &requestedAttribs ) const
 {
 	if( requestedAttribs.count( Attrib::POSITION ) )
 		target->copyAttrib( Attrib::POSITION, 2, 0, (const float*)mPositions.data(), 4 );
 	if( requestedAttribs.count( Attrib::NORMAL ) )
-		target->copyAttrib( Attrib::NORMAL, 3, 0, sNormals, 4 );
+		target->copyAttrib( Attrib::NORMAL, 3, 0, sRectNormals, 4 );
 	if( requestedAttribs.count( Attrib::TEX_COORD_0 ) )
 		target->copyAttrib( Attrib::TEX_COORD_0, 2, 0, (const float*)mTexCoords.data(), 4 );
 	if( requestedAttribs.count( Attrib::COLOR ) )
 		target->copyAttrib( Attrib::COLOR, 4, 0, (const float*)mColors.data(), 4 );
 	if( requestedAttribs.count( Attrib::TANGENT ) )
-		target->copyAttrib( Attrib::TANGENT, 3, 0, sTangents, 4 );
+		target->copyAttrib( Attrib::TANGENT, 3, 0, sRectTangents, 4 );
 }
 
 uint8_t	Rect::getAttribDims( Attrib attr ) const
@@ -822,7 +849,6 @@ void RoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &reque
 		float angle = (float)(corner * M_PI / 2.0f);
 		vec2 cornerCenter( cornerCenterVerts[corner] );
 		vec2 cornerTexCoord( cornerCenterTexCoords[corner] );
-		vec4 cornerColor( mColors[corner] );
 		for( int s = 0; s <= mSubdivisions; s++ ) {
 			auto cosVal = math<float>::cos( angle );
 			auto sinVal = math<float>::sin( angle );
@@ -1171,7 +1197,7 @@ AttribSet Icosahedron::getAvailableAttribs() const
 	return { Attrib::POSITION, Attrib::NORMAL, Attrib::COLOR, Attrib::TEX_COORD_0 };
 }
 
-void Icosahedron::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void Icosahedron::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	vector<vec3> positions, normals, colors;
 	vector<vec2> texcoords;
@@ -1699,7 +1725,7 @@ AttribSet Circle::getAvailableAttribs() const
 	return { Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0 };
 }
 
-void Circle::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void Circle::loadInto( Target *target, const AttribSet &/*requestedAttribs*/ ) const
 {
 	std::vector<vec2> positions, texCoords;
 	std::vector<vec3> normals;
@@ -1790,7 +1816,7 @@ AttribSet Ring::getAvailableAttribs() const
 	return{ Attrib::POSITION, Attrib::NORMAL, Attrib::TEX_COORD_0 };
 }
 
-void Ring::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void Ring::loadInto( Target *target, const AttribSet &/*requestedAttribs*/ ) const
 {
 	std::vector<vec2> positions, texCoords;
 	std::vector<vec3> normals;
@@ -3292,18 +3318,19 @@ void Extrude::loadInto( Target *target, const AttribSet &requestedAttribs ) cons
 ///////////////////////////////////////////////////////////////////////////////////////
 // Extrude
 ExtrudeSpline::ExtrudeSpline( const Shape2d &shape, const ci::BSpline<3,float> &spline, int splineSubdivisions, float approximationScale )
-	: mApproximationScale( approximationScale ), mFrontCap( true ), mBackCap( true ), mSubdivisions( splineSubdivisions )
+	: mApproximationScale( approximationScale ), mFrontCap( true ), mBackCap( true ), mSubdivisions( splineSubdivisions ), mThicknessFn( []( float ) { return 1.0f; } )
 {
 	for( const auto &contour : shape.getContours() )
 		mPaths.push_back( contour );
-
-	const float splineLength = spline.getLength( 0, 1 );
+	
+	const vec3 firstFrameEps = vec3( 0.0000001f );
+	mSplineLength = spline.getLength( 0, 1 );
 	vec3 prevPos = spline.getPosition( 0 );
 	vec3 prevTangent = spline.getDerivative( 0 );
-	mSplineFrames.emplace_back( firstFrame( prevPos, spline.getPosition( 0.1f ), spline.getPosition( 0.2f ) ) );
+	mSplineFrames.emplace_back( firstFrame( prevPos + firstFrameEps, spline.getPosition( 0.1f ), spline.getPosition( 0.2f ) ) );
 	mSplineTimes.push_back( 0 );
 	for( int sub = 1; sub <= mSubdivisions; ++sub ) {
-		const float t = spline.getTime( sub / (float)mSubdivisions * splineLength );
+		const float t = spline.getTime( sub / (float)mSubdivisions * mSplineLength );
 		const vec3 curPos = spline.getPosition( t );
 		const vec3 curTangent = normalize( spline.getDerivative( t ) );
 		mSplineFrames.emplace_back( nextFrame( mSplineFrames.back(), prevPos, curPos, prevTangent, curTangent ) );
@@ -3330,9 +3357,21 @@ void ExtrudeSpline::updatePathSubdivision()
 		mPathSubdivisionPositions.emplace_back( vector<vec2>() );
 		mPathSubdivisionTangents.emplace_back( vector<vec2>() );
 		path.subdivide( &mPathSubdivisionPositions.back(), &mPathSubdivisionTangents.back(), mApproximationScale );
+		
+		// Path2d::subdivide might returns duplicates
+		mPathSubdivisionPositions.back().erase( std::unique( mPathSubdivisionPositions.back().begin(), mPathSubdivisionPositions.back().end() ), mPathSubdivisionPositions.back().end() );	
+		mPathSubdivisionTangents.back().erase( std::unique( mPathSubdivisionTangents.back().begin(), mPathSubdivisionTangents.back().end() ), mPathSubdivisionTangents.back().end() );	
+
 		// normalize the tangents
 		for( auto& tan : mPathSubdivisionTangents.back() )
 			tan = normalize( tan );
+
+		// calculate path length
+		float pathLength = 0.0f;
+		for( size_t i = 1; i < mPathSubdivisionPositions.back().size(); ++i ) {
+			pathLength += glm::length( mPathSubdivisionPositions.back()[i-1] - mPathSubdivisionPositions.back()[i] );
+		}
+		mPathSubdivisionLengths.emplace_back( pathLength );
 	}
 
 	// Each of the subdivided paths' positions constitute a new contour on our triangulation
@@ -3353,22 +3392,22 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 	if( mFrontCap ) {
 		const vec3 frontNormal = vec3( mSplineFrames.front() * vec4( 0, 0, -1, 0 ) );
 		for( size_t v = 0; v < mCap->getNumVertices(); ++v ) {
-			positions->emplace_back( mSplineFrames.front() * vec4( capPositions[v], 0, 1 ) );
+			positions->emplace_back( mSplineFrames.front() * vec4( capPositions[v] * mThicknessFn( 0.0f ), 0, 1 ) );
 			normals->emplace_back( frontNormal );
 			texCoords->emplace_back( vec3( ( capPositions[v].x - mCapBounds.x1 ) / mCapBounds.getWidth(),
 											1.0f - ( capPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-											0 ) );
+											0 ) ); // the uv z-component allows to differentiate caps and extrusion
 		}
 	}
 	// back cap
 	if( mBackCap ) {
 		const vec3 backNormal = vec3( mSplineFrames.back() * vec4( 0, 0, 1, 0 ) );
 		for( size_t v = 0; v < mCap->getNumVertices(); ++v ) {
-			positions->emplace_back( mSplineFrames.back() * vec4( capPositions[v], 0, 1 ) );
+			positions->emplace_back( mSplineFrames.back() * vec4( capPositions[v] * mThicknessFn( 1.0f ), 0, 1 ) );
 			normals->emplace_back( backNormal );
 			texCoords->emplace_back( vec3( ( capPositions[v].x - mCapBounds.x1 ) / mCapBounds.getWidth(),
 											1.0f - ( capPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-											1 ) );
+											0 ) ); // the uv z-component allows to differentiate caps and extrusion
 		}
 	}
 	
@@ -3390,7 +3429,7 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 	// EXTRUSION
 	for( size_t p = 0; p < mPathSubdivisionPositions.size(); ++p ) {
 		for( int sub = 0; sub <= mSubdivisions; ++sub ) {
-			const mat4 &transform = mSplineFrames[sub];
+			const mat4 &transform = mSplineFrames[sub] * glm::scale( vec3( mThicknessFn( static_cast<float>( sub ) / static_cast<float>( mSubdivisions ) ) ) );
 			const auto &pathPositions = mPathSubdivisionPositions[p];
 			const auto &pathTangents = mPathSubdivisionTangents[p];
 			// add all the positions & normals
@@ -3398,9 +3437,9 @@ void ExtrudeSpline::calculate( vector<vec3> *positions, vector<vec3> *normals, v
 			for( size_t v = 0; v < pathPositions.size(); ++v ) {
 				positions->emplace_back( vec3( transform * vec4( pathPositions[v], 0, 1 ) ) );
 				normals->emplace_back( transform * vec4( vec2( pathTangents[v].y, -pathTangents[v].x ), 0, 0 ) );
-				texCoords->emplace_back( ( pathPositions[v].x - mCapBounds.x1 ) / mCapBounds.getWidth(),
-											1.0f - ( pathPositions[v].y - mCapBounds.y1 ) / mCapBounds.getHeight(),
-											mSplineTimes[sub] );
+				texCoords->emplace_back( (float) v / (float) ( pathPositions.size() ),
+										mSplineTimes[sub] * mSplineLength / mPathSubdivisionLengths[p],
+										1 ); // the uv z-component allows to differentiate caps and extrusion
 			}
 			// add the indices
 			if( sub != mSubdivisions ) {
@@ -3487,13 +3526,13 @@ void ExtrudeSpline::loadInto( Target *target, const AttribSet &requestedAttribs 
 // BSpline
 template<int D, typename T>
 BSpline::BSpline( const ci::BSpline<D,T> &spline, int subdivisions )
-	: mPositionDims( D )
+	: mPositionDims( static_cast<uint8_t>( D ) )
 {
 	CI_ASSERT( D >= 2 && D <= 4 );
-	
+
 	subdivisions = std::max( 2, subdivisions );
 	mNumVertices = subdivisions;
-	
+
 	mPositions.reserve( mNumVertices * D );
 	mNormals.reserve( mNumVertices );
 
@@ -3554,14 +3593,14 @@ AttribSet BSpline::getAvailableAttribs() const
 	return { Attrib::POSITION, Attrib::NORMAL };
 }
 
-void BSpline::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void BSpline::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	target->copyAttrib( Attrib::POSITION, mPositionDims, 0, mPositions.data(), mNumVertices );
 	target->copyAttrib( Attrib::NORMAL, 3, 0, (const float*)mNormals.data(), mNumVertices );
 }
 
-template BSpline::BSpline( const ci::BSpline<2,float>&, int );
-template BSpline::BSpline( const ci::BSpline<3, float>&, int );
+template CI_API BSpline::BSpline( const ci::BSpline<2, float>&, int );
+template CI_API BSpline::BSpline( const ci::BSpline<3, float>&, int );
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireCapsule
@@ -3651,7 +3690,7 @@ size_t WireCapsule::getNumVertices() const
 	return ( mNumSegments * ( mSubdivisionsHeight - 1 ) + subdivisionsAxis * ( 1 + 2 * numSegments ) ) * 2;
 }
 
-void WireCapsule::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireCapsule::loadInto( Target *target, const AttribSet &/*requestedAttribs*/ ) const
 {
 	std::vector<vec3> positions;
 
@@ -3673,7 +3712,7 @@ size_t WireCircle::getNumVertices() const
 	return mNumSegments + 1;
 }
 
-void WireCircle::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireCircle::loadInto( Target *target, const AttribSet &/*requestedAttribs*/ ) const
 {
 	size_t numVertices = getNumVertices();
 
@@ -3729,11 +3768,11 @@ void WireRoundedRect::updateVertexCount()
 		mCornerSubdivisions = (int)math<double>::floor( mCornerRadius * M_PI * 2 / 4 );
 	}
 	if( mCornerSubdivisions < 2 ) mCornerSubdivisions = 2;
-	
+
 	mNumVertices = (2 * ( mCornerSubdivisions + 1 ) * 4) + 1;
 }
-	
-void WireRoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &requestedAttribs ) const
+
+void WireRoundedRect::loadInto( cinder::geom::Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	float cornerRadius = glm::max( 0.0f, glm::min( mCornerRadius, 0.5f * glm::min( mRectPositions.getWidth(), mRectPositions.getHeight() ) ) );
 
@@ -3762,7 +3801,7 @@ void WireRoundedRect::loadInto( cinder::geom::Target *target, const AttribSet &r
 			angle += angleDelta;
 		}
 	}
-	
+
 	target->copyAttrib( geom::Attrib::POSITION, 2, 0, value_ptr( *verts.data() ), verts.size() );
 }
 
@@ -3793,14 +3832,14 @@ WireRect& WireRect::rect( const Rectf &r )
 	return *this;
 }
 
-void WireRect::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireRect::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	target->copyAttrib( Attrib::POSITION, 2, 0, (const float*)mPositions.data(), 5 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireCube
-void WireCube::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireCube::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	size_t numVertices = getNumVertices();
 
@@ -3880,6 +3919,14 @@ void WireCube::loadInto( Target *target, const AttribSet &requestedAttribs ) con
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // WireCylinder
+WireCylinder& WireCylinder::set( const vec3 &from, const vec3 &to )
+{
+	const vec3 axis = ( to - from );
+	mHeight = length( axis );
+	mDirection = normalize( axis );
+	mOrigin = from;
+	return *this;
+}
 size_t WireCylinder::getNumVertices() const
 {
 	int subdivisionAxis = ( mSubdivisionsAxis > 1 ) ? mSubdivisionsAxis : 0;
@@ -3893,7 +3940,7 @@ size_t WireCylinder::getNumVertices() const
 	return ( subdivisionAxis + subdivisionHeight * mNumSegments ) * 2;
 }
 
-void WireCylinder::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireCylinder::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	size_t numVertices = getNumVertices();
 
@@ -3940,7 +3987,7 @@ size_t WireIcosahedron::getNumVertices() const
 	return 120;
 }
 
-void WireIcosahedron::loadInto( Target * target, const AttribSet & requestedAttribs ) const
+void WireIcosahedron::loadInto( Target * target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	calculate();
 	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) sPositions.data(), 120 );
@@ -3968,7 +4015,7 @@ WireFrustum::WireFrustum( const CameraPersp &cam )
 	cam.getFarClipCoordinates( &ftl, &ftr, &fbl, &fbr );
 }
 
-void WireFrustum::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireFrustum::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	/*// extract camera position from view matrix, so that it will work with CameraStereo as well
 	//  see: http://www.gamedev.net/topic/397751-how-to-get-camera-position/page__p__3638207#entry3638207
@@ -4043,7 +4090,7 @@ WirePlane& WirePlane::axes( const vec3 &uAxis, const vec3 &vAxis )
 	return *this;
 }
 
-void WirePlane::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WirePlane::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	size_t numVertices = getNumVertices();
 
@@ -4078,20 +4125,17 @@ size_t WireSphere::getNumVertices() const
 	return ( mSubdivisionsHeight - 1 ) * mNumSegments * 2 + ( ( mNumSegments + 1 ) / 2 ) * subdivisionAxis * 2;
 }
 
-void WireSphere::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireSphere::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
-	size_t numVertices = getNumVertices();
-
-	std::vector<vec3> positions;
-	positions.resize( numVertices );
+	std::vector<vec3> positions( getNumVertices() );
 
 	vec3 *ptr = positions.data();
 
-	float angle = float( 2.0 * M_PI / mNumSegments );
+	const float angle = float( 2.0 * M_PI / mNumSegments );
 	for( int i = 1; i < mSubdivisionsHeight; ++i ) {
-		float f = float( i ) / mSubdivisionsHeight * 2.0f - 1.0f;
-		float radius = mRadius * glm::cos( f * float( M_PI / 2.0 ) );
-		vec3 center = mCenter + mRadius * vec3( 0, glm::sin( f * float( M_PI / 2.0 ) ), 0 );
+		const float f = float( i ) / mSubdivisionsHeight * 2.0f - 1.0f;
+		const float radius = mRadius * glm::cos( f * float( M_PI / 2.0 ) );
+		const vec3 center = mCenter + mRadius * vec3( 0, glm::sin( f * float( M_PI / 2.0 ) ), 0 );
 
 		*ptr++ = center + vec3( 0, 0, 1 ) * radius;
 		for( int j = 1; j < mNumSegments; ++j ) {
@@ -4103,14 +4147,14 @@ void WireSphere::loadInto( Target *target, const AttribSet &requestedAttribs ) c
 	}
 
 	if( mSubdivisionsAxis > 1 ) {
-		int semidiv = ( mNumSegments + 1 ) / 2;
-		float semi = float( M_PI / semidiv );
-		float angle = float( 2.0 * M_PI / mSubdivisionsAxis );
+		const int semidiv = ( mNumSegments + 1 ) / 2;
+		const float semi = float( M_PI / semidiv );
+		const float angle_subdiv = float( 2.0 * M_PI / mSubdivisionsAxis );
 
 		for( int i = 0; i < mSubdivisionsAxis; ++i ) {
 			*ptr++ = mCenter + vec3( 0, 1, 0 ) * mRadius;
 			for( int j = 1; j < semidiv; ++j ) {
-				vec3 v = mCenter + vec3( glm::sin( j * semi ) * glm::sin( i * angle ), glm::cos( j * semi ), glm::sin( j * semi ) * glm::cos( i * angle ) ) * mRadius;
+				vec3 v = mCenter + vec3( glm::sin( j * semi ) * glm::sin( i * angle_subdiv ), glm::cos( j * semi ), glm::sin( j * semi ) * glm::cos( i * angle_subdiv ) ) * mRadius;
 				*ptr++ = v;
 				*ptr++ = v;
 			}
@@ -4118,7 +4162,7 @@ void WireSphere::loadInto( Target *target, const AttribSet &requestedAttribs ) c
 		}
 	}
 
-	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), numVertices );
+	target->copyAttrib( Attrib::POSITION, 3, 0, (const float*) positions.data(), positions.size() );
 }
 
 
@@ -4131,7 +4175,7 @@ size_t WireTorus::getNumVertices() const
 	return ( subdivisionHeight + subdivisionAxis ) * mNumSegments * 2;
 }
 
-void WireTorus::loadInto( Target *target, const AttribSet &requestedAttribs ) const
+void WireTorus::loadInto( Target *target, const AttribSet & /*requestedAttribs*/ ) const
 {
 	size_t numVertices = getNumVertices();
 
@@ -4243,7 +4287,7 @@ void VertexNormalLines::process( SourceModsContext *ctx, const AttribSet &reques
 	const vec3 *positions = reinterpret_cast<const vec3*>( ctx->getAttribData( Attrib::POSITION ) );
 	const vec3 *attrib = reinterpret_cast<const vec3*>( ctx->getAttribData( mAttrib ) );
 	const float *texCoords = nullptr;
-	size_t texCoordDims = ctx->getAttribDims( Attrib::TEX_COORD_0 );
+	auto texCoordDims = ctx->getAttribDims( Attrib::TEX_COORD_0 );
 	if( texCoordDims > 0 )
 		texCoords = reinterpret_cast<const float*>( ctx->getAttribData( Attrib::TEX_COORD_0 ) );
 
@@ -4512,7 +4556,7 @@ void Subdivide::process( SourceModsContext *ctx, const AttribSet &requestedAttri
 	ctx->processUpstream( request );
 	
 	if( ctx->getPrimitive() != Primitive::TRIANGLES ) {
-		CI_LOG_E( "geom::PhongTessellate only supports TRIANGLES primitive." );
+		CI_LOG_E( "geom::Subdivide only supports TRIANGLES primitive." );
 		return;
 	}
 
@@ -5110,9 +5154,9 @@ void SourceModsContext::clearIndices()
 ///////////////////////////////////////////////////////////////////////////////////////
 // Modifier
 
-template class AttribFn<float,float>;	template class AttribFn<float,vec2>;	template class AttribFn<float,vec3>;	template class AttribFn<float,vec4>;
-template class AttribFn<vec2,float>;	template class AttribFn<vec2,vec2>;		template class AttribFn<vec2,vec3>;		template class AttribFn<vec2,vec4>;
-template class AttribFn<vec3,float>;	template class AttribFn<vec3,vec2>;		template class AttribFn<vec3,vec3>;		template class AttribFn<vec3,vec4>;
-template class AttribFn<vec4,float>;	template class AttribFn<vec4,vec2>;		template class AttribFn<vec4,vec3>;		template class AttribFn<vec4,vec4>;
+template class CI_API AttribFn<float,float>;	template class CI_API AttribFn<float,vec2>;		template class CI_API AttribFn<float,vec3>;		template class CI_API AttribFn<float,vec4>;
+template class CI_API AttribFn<vec2,float>;		template class CI_API AttribFn<vec2,vec2>;		template class CI_API AttribFn<vec2,vec3>;		template class CI_API AttribFn<vec2,vec4>;
+template class CI_API AttribFn<vec3,float>;		template class CI_API AttribFn<vec3,vec2>;		template class CI_API AttribFn<vec3,vec3>;		template class CI_API AttribFn<vec3,vec4>;
+template class CI_API AttribFn<vec4,float>;		template class CI_API AttribFn<vec4,vec2>;		template class CI_API AttribFn<vec4,vec3>;		template class CI_API AttribFn<vec4,vec4>;
 
 } } // namespace cinder::geom

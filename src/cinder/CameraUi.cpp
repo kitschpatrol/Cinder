@@ -69,23 +69,22 @@ CameraUi& CameraUi::operator=( const CameraUi &rhs )
 //! Connects to mouseDown, mouseDrag, mouseWheel and resize signals of \a window, with optional priority \a signalPriority
 void CameraUi::connect( const app::WindowRef &window, int signalPriority )
 {
-	if( ! mMouseConnections.empty() ) {
-		for( auto &conn : mMouseConnections )
-			conn.disconnect();
+	if( ! mConnections.empty() ) {
+		disconnect();
 	}
 
 	mWindow = window;
 	mSignalPriority = signalPriority;
 	if( window ) {
-		mMouseConnections.push_back( window->getSignalMouseDown().connect( signalPriority,
+		mConnections.push_back( window->getSignalMouseDown().connect( signalPriority,
 			[this]( app::MouseEvent &event ) { mouseDown( event ); } ) );
-		mMouseConnections.push_back( window->getSignalMouseUp().connect( signalPriority,
+		mConnections.push_back( window->getSignalMouseUp().connect( signalPriority,
 			[this]( app::MouseEvent &event ) { mouseUp( event ); } ) );
-		mMouseConnections.push_back( window->getSignalMouseDrag().connect( signalPriority,
+		mConnections.push_back( window->getSignalMouseDrag().connect( signalPriority,
 			[this]( app::MouseEvent &event ) { mouseDrag( event ); } ) );
-		mMouseConnections.push_back( window->getSignalMouseWheel().connect( signalPriority,
+		mConnections.push_back( window->getSignalMouseWheel().connect( signalPriority,
 			[this]( app::MouseEvent &event ) { mouseWheel( event ); } ) );
-		mMouseConnections.push_back( window->getSignalResize().connect( signalPriority,
+		mConnections.push_back( window->getSignalResize().connect( signalPriority,
 			[this]() {
 				setWindowSize( mWindow->getSize() );
 				if( mCamera )
@@ -93,17 +92,16 @@ void CameraUi::connect( const app::WindowRef &window, int signalPriority )
 			}
 		) );
 	}
-	else
-		disconnect();
-		
+
 	mLastAction = ACTION_NONE;
 }
 
 //! Disconnects all signal handlers
 void CameraUi::disconnect()
 {
-	for( auto &conn : mMouseConnections )
+	for( auto &conn : mConnections )
 		conn.disconnect();
+	mConnections.clear();
 
 	mWindow.reset();
 }
@@ -145,7 +143,7 @@ void CameraUi::mouseWheel( app::MouseEvent &event )
 	event.setHandled();
 }
 
-void CameraUi::mouseUp( const vec2 &mousePos )
+void CameraUi::mouseUp( const vec2 & /*mousePos*/ )
 {
 	mLastAction = ACTION_NONE;
 }
@@ -201,7 +199,7 @@ void CameraUi::mouseDrag( const vec2 &mousePos, bool leftDown, bool middleDown, 
 	mLastAction = action;
 
 	if( action == ACTION_ZOOM ) { // zooming
-		int mouseDelta = ( mousePos.x - mInitialMousePos.x ) + ( mousePos.y - mInitialMousePos.y );
+		auto mouseDelta = ( mousePos.x - mInitialMousePos.x ) + ( mousePos.y - mInitialMousePos.y );
 
 		float newPivotDistance = powf( 2.71828183f, 2 * -mouseDelta / length( vec2( getWindowSize() ) ) ) * mInitialPivotDistance;
 		vec3 oldTarget = mInitialCam.getEyePoint() + mInitialCam.getViewDirection() * mInitialPivotDistance;

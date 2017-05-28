@@ -28,20 +28,16 @@
 #include "cinder/gl/Texture.h"
 
 #include <map>
-#if defined( _MSC_VER ) && ( _MSC_VER >= 1600 ) || defined( _LIBCPP_VERSION )
-	#include <unordered_map>
-#else
-	#include <boost/unordered_map.hpp>
-#endif
+#include <unordered_map>
 
 namespace cinder { namespace gl {
 
 typedef std::shared_ptr<class TextureFont>	TextureFontRef;
 typedef std::shared_ptr<class GlslProg>		GlslProgRef;
 
-class TextureFont {
+class CI_API TextureFont {
   public:
-	class Format {
+	class CI_API Format {
 	  public:
 		Format() : mTextureWidth( 1024 ), mTextureHeight( 1024 ), mPremultiply( false ), mMipmapping( false )
 		{}
@@ -71,7 +67,7 @@ class TextureFont {
 		bool		mMipmapping;
 	};
 
-	struct DrawOptions {
+	struct CI_API DrawOptions {
 		DrawOptions() : mClipHorizontal( true ), mClipVertical( true ), mPixelSnap( true ), mLigate( false ), mScale( 1 ) {}
 
 		//! Returns whether the output clips horizontally
@@ -121,9 +117,9 @@ class TextureFont {
 	//! Draws word-wrapped string \a str fit inside \a fitRect, with internal offset \a offset and DrawOptions \a options. Mac & iOS only.
 	void	drawStringWrapped( const std::string &str, const Rectf &fitRect, const vec2 &offset = vec2(), const DrawOptions &options = DrawOptions() );
 	//! Draws the glyphs in \a glyphMeasures at baseline \a baseline with DrawOptions \a options. \a glyphMeasures is a vector of pairs of glyph indices and offsets for the glyph baselines
-	void	drawGlyphs( const std::vector<std::pair<uint16_t,vec2> > &glyphMeasures, const vec2 &baseline, const DrawOptions &options = DrawOptions(), const std::vector<ColorA8u> &colors = std::vector<ColorA8u>() );
+	void	drawGlyphs( const std::vector<std::pair<Font::Glyph,vec2> > &glyphMeasures, const vec2 &baseline, const DrawOptions &options = DrawOptions(), const std::vector<ColorA8u> &colors = std::vector<ColorA8u>() );
 	//! Draws the glyphs in \a glyphMeasures clipped by \a clip, with \a offset added to each of the glyph offsets with DrawOptions \a options. \a glyphMeasures is a vector of pairs of glyph indices and offsets for the glyph baselines.
-	void	drawGlyphs( const std::vector<std::pair<uint16_t,vec2> > &glyphMeasures, const Rectf &clip, vec2 offset, const DrawOptions &options = DrawOptions(), const std::vector<ColorA8u> &colors = std::vector<ColorA8u>() );
+	void	drawGlyphs( const std::vector<std::pair<Font::Glyph,vec2> > &glyphMeasures, const Rectf &clip, vec2 offset, const DrawOptions &options = DrawOptions(), const std::vector<ColorA8u> &colors = std::vector<ColorA8u>() );
 
 	//! Returns the size in pixels necessary to render the string \a str with DrawOptions \a options.
 	vec2	measureString( const std::string &str, const DrawOptions &options = DrawOptions() ) const;
@@ -133,11 +129,11 @@ class TextureFont {
 #endif
     
 	//! Returns a vector of glyph/placement pairs representing \a str, suitable for use with drawGlyphs. Useful for caching placement and optimizing batching.
-	std::vector<std::pair<uint16_t,vec2> >		getGlyphPlacements( const std::string &str, const DrawOptions &options = DrawOptions() ) const;
+	std::vector<std::pair<Font::Glyph,vec2> >		getGlyphPlacements( const std::string &str, const DrawOptions &options = DrawOptions() ) const;
 	//! Returns a vector of glyph/placement pairs representing \a str fit inside \a fitRect, suitable for use with drawGlyphs. Useful for caching placement and optimizing batching.
-	std::vector<std::pair<uint16_t,vec2> >		getGlyphPlacements( const std::string &str, const Rectf &fitRect, const DrawOptions &options = DrawOptions() ) const;
+	std::vector<std::pair<Font::Glyph,vec2> >		getGlyphPlacements( const std::string &str, const Rectf &fitRect, const DrawOptions &options = DrawOptions() ) const;
 	//! Returns a  word-wrapped vector of glyph/placement pairs representing \a str fit inside \a fitRect, suitable for use with drawGlyphs. Useful for caching placement and optimizing batching. Mac & iOS only.
-	std::vector<std::pair<uint16_t,vec2> >		getGlyphPlacementsWrapped( const std::string &str, const Rectf &fitRect, const DrawOptions &options = DrawOptions() ) const;
+	std::vector<std::pair<Font::Glyph,vec2> >		getGlyphPlacementsWrapped( const std::string &str, const Rectf &fitRect, const DrawOptions &options = DrawOptions() ) const;
 
 	//! Returns the font the TextureFont represents
 	const Font&		getFont() const { return mFont; }
@@ -163,14 +159,16 @@ class TextureFont {
 		vec2		mOriginOffset;
 	};
 	
-#if defined( _MSC_VER ) && ( _MSC_VER >= 1600 ) || defined( _LIBCPP_VERSION )
 	std::unordered_map<Font::Glyph, GlyphInfo>		mGlyphMap;
-#else
-	boost::unordered_map<Font::Glyph, GlyphInfo>	mGlyphMap;
-#endif
 	std::vector<gl::TextureRef>						mTextures;
 	Font											mFont;
 	Format											mFormat;
+
+#if defined( CINDER_ANDROID ) || defined( CINDER_LINUX )
+	std::map<Font::Glyph, Font::GlyphMetrics>  mCachedGlyphMetrics;
+	const std::map<Font::Glyph, Font::GlyphMetrics>* getCachedGlyphMetrics() const
+	{ return mCachedGlyphMetrics.empty() ? nullptr : &mCachedGlyphMetrics; }
+#endif	
 };
 
 } } // namespace cinder::gl

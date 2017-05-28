@@ -24,6 +24,7 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/gl/Context.h"
 #include "cinder/gl/ConstantConversions.h"
+#include "cinder/gl/Environment.h"
 #include "cinder/Log.h"
 
 using namespace std;
@@ -106,7 +107,7 @@ uint8_t	VboMeshGeomTarget::getAttribDims( geom::Attrib attr ) const
 	return mVboMesh->getAttribDims( attr );
 }
 
-void VboMeshGeomTarget::copyAttrib( geom::Attrib attr, uint8_t dims, size_t strideBytes, const float *srcData, size_t count )
+void VboMeshGeomTarget::copyAttrib( geom::Attrib attr, uint8_t dims, size_t /*strideBytes*/, const float *srcData, size_t count )
 {
 	// if we don't have it we don't want it
 	if( getAttribDims( attr ) == 0 )
@@ -145,11 +146,21 @@ void VboMeshGeomTarget::copyAttrib( geom::Attrib attr, uint8_t dims, size_t stri
 		geom::copyData( dims, srcData, count, dstDims, dstStride, reinterpret_cast<float*>( dstData ) );
 }
 
-void VboMeshGeomTarget::copyIndices( geom::Primitive primitive, const uint32_t *source, size_t numIndices, uint8_t requiredBytesPerIndex )
+void VboMeshGeomTarget::copyIndices( geom::Primitive /*primitive*/, const uint32_t *source, size_t numIndices, uint8_t requiredBytesPerIndex )
 {
-	mVboMesh->mNumIndices = (uint32_t)numIndices;
+// @TODO: Find a better way to handle this
+#if defined( CINDER_GL_ES_2 )
+	if( GL_UNSIGNED_SHORT == gl::env()->getPreferredIndexType() ) {
+		requiredBytesPerIndex = 2;
+		numIndices = std::min<size_t>( numIndices, 65535 );
+	}
+#endif
 
-	if( requiredBytesPerIndex <= 2 ) {
+	mVboMesh->mNumIndices = (uint32_t)numIndices;
+	if( mVboMesh->mNumIndices == 0 ) {
+		mVboMesh->mIndices.reset();
+	}
+	else if( requiredBytesPerIndex <= 2 ) {
 		mVboMesh->mIndexType = GL_UNSIGNED_SHORT;
 		std::unique_ptr<uint16_t[]> indices( new uint16_t[numIndices] );
 		copyIndexData( source, numIndices, indices.get() );
@@ -336,6 +347,13 @@ VboMesh::VboMesh( const geom::Source &source, std::vector<pair<Layout,VboRef>> v
 VboMesh::VboMesh( uint32_t numVertices, uint32_t numIndices, GLenum glPrimitive, GLenum indexType, const std::vector<pair<geom::BufferLayout,VboRef>> &vertexArrayBuffers, const VboRef &indexVbo )
 	: mNumVertices( numVertices ), mNumIndices( numIndices ), mGlPrimitive( glPrimitive ), mIndexType( indexType ), mVertexArrayVbos( vertexArrayBuffers ), mIndices( indexVbo )
 {
+// @TODO: Find a better way to handle this
+#if defined( CINDER_GL_ES_2 )
+	if( GL_UNSIGNED_SHORT == gl::env()->getPreferredIndexType() ) {
+		mIndexType = GL_UNSIGNED_SHORT;
+	}
+#endif
+
 	if( ! mIndices )
 		allocateIndexVbo();
 }
@@ -343,6 +361,13 @@ VboMesh::VboMesh( uint32_t numVertices, uint32_t numIndices, GLenum glPrimitive,
 VboMesh::VboMesh( uint32_t numVertices, uint32_t numIndices, GLenum glPrimitive, GLenum indexType, const std::vector<Layout> &vertexArrayLayouts, const VboRef &indexVbo )
 	: mNumVertices( numVertices ), mNumIndices( numIndices ), mGlPrimitive( glPrimitive ), mIndexType( indexType ), mIndices( indexVbo )
 {
+// @TODO: Find a better way to handle this
+#if defined( CINDER_GL_ES_2 )
+	if( GL_UNSIGNED_SHORT == gl::env()->getPreferredIndexType() ) {
+		mIndexType = GL_UNSIGNED_SHORT;
+	}
+#endif
+
 	geom::BufferLayout bufferLayout;
 	for( const auto &layout : vertexArrayLayouts ) {
 		VboRef vbo;
@@ -424,17 +449,17 @@ void VboMesh::buildVao( const GlslProg* shader, const AttribGlslMap &attributeMa
 						continue;
 					}
 				}
-				
+
 				uint32_t dataTypeBytes = 0;
 				switch ( vertAttribInfo.getDataType() ) {
 					case geom::DataType::FLOAT: dataTypeBytes = 4; break;
 					case geom::DataType::INTEGER: dataTypeBytes = 4; break;
 					case geom::DataType::DOUBLE: dataTypeBytes = 8; break;
 				}
-				
+
 				uint32_t numTimes = numLocationsExpected * shaderAttribCount;
 				size_t currentInnerOffset = 0;
-				for( int i = 0; i < numTimes; i++ ) {
+				for( uint32_t i = 0; i < numTimes; i++ ) {
 					ctx->enableVertexAttribArray( shaderLoc + i );
 					if( vertAttribInfo.getDataType() != geom::DataType::INTEGER )
 						ctx->vertexAttribPointer( shaderLoc + i, numDimsPerVertexPointer, GL_FLOAT, GL_FALSE, (GLsizei)vertAttribInfo.getStride(), (const void*)(vertAttribInfo.getOffset() + currentInnerOffset) );
@@ -502,6 +527,17 @@ void VboMesh::drawInstancedImpl( GLsizei instanceCount )
 		ctx->drawArraysInstanced( mGlPrimitive, 0, mNumVertices, instanceCount );
 }
 #endif // defined( CINDER_GL_HAS_DRAW_INSTANCED )
+
+#if defined( CINDER_GL_HAS_DRAW_INDIRECT )
+void VboMesh::drawIndirectImpl( const GLvoid *indirect )
+{
+	auto ctx = gl::context();
+	if( mNumIndices )
+		ctx->drawElementsIndirect( mGlPrimitive, mIndexType, indirect );
+	else
+		ctx->drawArraysIndirect( mGlPrimitive, indirect );
+}
+#endif // defined( CINDER_GL_HAS_DRAW_INDIRECT )
 
 std::pair<geom::BufferLayout,VboRef>* VboMesh::findAttrib( geom::Attrib attr )
 {
@@ -834,7 +870,7 @@ void VboMesh::echoVertices( std::ostream &os, const vector<uint32_t> &indices, b
 		int numSpaces = std::max<int>( (int)(colStartCharIndex - ss.str().length()), 0 );
 		// center string
 		numSpaces += std::max<int>( (int)(attribColLengths[a] - (attribSemanticNames[a].length()+2)) / 2, 0 );
-		for( size_t s = 0; s < numSpaces; s++ )
+		for( int s = 0; s < numSpaces; s++ )
 			ss << " ";
 		ss << "<" << attribSemanticNames[a] << "> ";
 	}
@@ -861,7 +897,7 @@ void VboMesh::echoVertices( std::ostream &os, const vector<uint32_t> &indices, b
 			int numSpaces = std::max<int>( (int)(colStartCharIndex - ss.str().length()), 0 );
 			// center string
 			numSpaces += std::max<int>( (int)(attribColLengths[a] - attribData[a][v].length()) / 2, 0 );
-			for( size_t s = 0; s < numSpaces; s++ )
+			for( int s = 0; s < numSpaces; s++ )
 				ss << " ";
 			ss << attribData[a][v];
 		}
@@ -889,7 +925,7 @@ std::shared_ptr<VboMeshSource> VboMeshSource::create( const gl::VboMesh *vboMesh
 	return std::shared_ptr<VboMeshSource>( new VboMeshSource( vboMesh ) );
 }
 
-void VboMeshSource::loadInto( geom::Target *target, const geom::AttribSet &requestedAttribs ) const
+void VboMeshSource::loadInto( geom::Target *target, const geom::AttribSet & /*requestedAttribs*/ ) const
 {
 	// iterate all the vertex array VBOs; map<geom::BufferLayout,VboRef>
 	for( const auto &vertArrayVbo : mVboMesh->getVertexArrayLayoutVbos() ) {

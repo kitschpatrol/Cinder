@@ -122,6 +122,20 @@ void Batch::drawInstanced( GLsizei instanceCount )
 
 #endif // defined( CINDER_GL_HAS_DRAW_INSTANCED )
 
+#if defined( CINDER_GL_HAS_DRAW_INDIRECT )
+
+void Batch::drawIndirect( const GLvoid *indirect )
+{
+	auto ctx = gl::context();
+
+	gl::ScopedGlslProg ScopedGlslProg( mGlsl );
+	gl::ScopedVao ScopedVao( mVao );
+	ctx->setDefaultShaderVars();
+	mVboMesh->drawIndirectImpl( indirect );
+}
+
+#endif // defined( CINDER_GL_HAS_DRAW_INDIRECT )
+
 void Batch::bind()
 {
 	mGlsl->bind();
@@ -374,7 +388,7 @@ uint8_t	VertBatch::getAttribDims( geom::Attrib attr ) const
 	}
 }
 
-void VertBatch::loadInto( geom::Target *target, const geom::AttribSet &requestedAttribs ) const
+void VertBatch::loadInto( geom::Target *target, const geom::AttribSet & /*requestedAttribs*/ ) const
 {
 	if( ! mVertices.empty() )
 		target->copyAttrib( geom::Attrib::POSITION, 4, 0, value_ptr( *mVertices.data() ), mVertices.size() );

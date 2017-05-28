@@ -42,6 +42,12 @@
 	#define CINDER_AUDIO_WASAPI
 	#include "cinder/audio/msw/ContextWasapi.h"
 	#include "cinder/audio/msw/DeviceManagerWasapi.h"
+#elif defined( CINDER_ANDROID )
+	#include "cinder/audio/android/ContextOpenSl.h"
+	#include "cinder/audio/android/DeviceManagerOpenSl.h"
+#elif defined( CINDER_LINUX )
+	#include "cinder/audio/linux/ContextPulseAudio.h"
+ 	#include "cinder/audio/linux/DeviceManagerPulseAudio.h"
 #else
 	#define CINDER_AUDIO_DISABLED
 #endif
@@ -84,6 +90,10 @@ Context* Context::master()
 	#else
 		sMasterContext.reset( new msw::ContextXAudio() );
 	#endif
+#elif defined( CINDER_ANDROID )
+		sMasterContext.reset( new android::ContextOpenSl() );
+#elif defined( CINDER_LINUX )
+		sMasterContext.reset( new linux::ContextPulseAudio() );
 #endif
 		if( ! sIsRegisteredForCleanup )
 			registerClearStatics();
@@ -105,7 +115,12 @@ DeviceManager* Context::deviceManager()
 	//#else
 	//	CI_ASSERT( 0 && "TODO: simple DeviceManagerXp" );
 	#endif
+#elif defined( CINDER_ANDROID )
+		sDeviceManager.reset( new android::DeviceManagerOpenSl() );
+#elif defined( CINDER_LINUX )
+		sDeviceManager.reset( new linux::DeviceManagerPulseAudio() );
 #endif
+
 		if( ! sIsRegisteredForCleanup )
 			registerClearStatics();
 	}
@@ -163,6 +178,10 @@ void Context::setEnabled( bool b )
 		disable();
 }
 
+void Context::connectionsDidChange( const NodeRef & /*node*/ )
+{
+}
+
 void Context::initializeAllNodes()
 {
 	set<NodeRef> traversedNodes;
@@ -197,8 +216,9 @@ void Context::setOutput( const OutputNodeRef &output )
 
 const OutputNodeRef& Context::getOutput()
 {
-	if( ! mOutput )
+	if( ! mOutput ) {
 		mOutput = createOutputDeviceNode();
+	}
 	return mOutput;
 }
 
@@ -276,7 +296,7 @@ void Context::removeAutoPulledNode( const NodeRef &node )
 void Context::schedule( double when, const NodeRef &node, bool enable, const std::function<void ()> &func )
 {
 	const uint64_t framesPerBlock = (uint64_t)getFramesPerBlock();
-	uint64_t eventFrameThreshold = timeToFrame( when, getSampleRate() );
+	uint64_t eventFrameThreshold = timeToFrame( when, static_cast<double>( getSampleRate() ) );
 
 	// Place the threshold back one block so we can process the block first, guarding against wrap around
 	if( eventFrameThreshold >= framesPerBlock )
@@ -426,7 +446,7 @@ string Context::printGraphToString()
 }
 
 // ----------------------------------------------------------------------------------------------------
-// MARK: - ScopedEnableContext
+// ScopedEnableContext
 // ----------------------------------------------------------------------------------------------------
 
 ScopedEnableContext::ScopedEnableContext( Context *context )
